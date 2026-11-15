@@ -10,7 +10,6 @@ import java.util.Objects;
  * @param warnings the warning findings of the part
  */
 public record GateSection(String name, int errors, int warnings) {
-
   /** Requires a name. */
   public GateSection {
     Objects.requireNonNull(name, "name");

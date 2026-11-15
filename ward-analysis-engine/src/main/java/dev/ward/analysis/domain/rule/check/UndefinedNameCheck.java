@@ -21,7 +21,6 @@ import java.util.Set;
  * the same package or module declares.
  */
 public final class UndefinedNameCheck implements RuleCheck {
-
   private static final String NAME = "{value}";
   private static final Set<AnalysisLanguage> PACKAGE_TYPES =
       Set.of(AnalysisLanguage.JAVA, AnalysisLanguage.KOTLIN, AnalysisLanguage.SWIFT);
@@ -54,7 +53,11 @@ public final class UndefinedNameCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes(environments);
     final boolean packageTypes = PACKAGE_TYPES.contains(unit.language());
     final List<RuleMatch> found = new ArrayList<>();

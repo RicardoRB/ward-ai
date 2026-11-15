@@ -11,7 +11,6 @@ import java.util.List;
  * command is never hardcoded here.
  */
 public class MavenTestGate implements QualityGate {
-
   public static final String NAME = "tests";
 
   private final CommandExecutor executor;

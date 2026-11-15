@@ -24,7 +24,6 @@ import java.util.regex.Pattern;
  * cloneable only through a superclass. It reports nothing when the member facts are unknown.
  */
 public final class InheritedSignatureCheck implements RuleCheck {
-
   /** What the check looks for. */
   public enum Mode {
     /**
@@ -43,7 +42,8 @@ public final class InheritedSignatureCheck implements RuleCheck {
   private static final Pattern SINGLETON =
       Pattern.compile(
           "^class(\\w+)(?=[\\s\\S]*private\\1\\()"
-              + "(?=[\\s\\S]*static(?:final|volatile)*\\1\\w+[=;])");
+              + "(?=[\\s\\S]*static(?:final|volatile)*\\1\\w+[=;])"
+      );
   private static final FactNeed MEMBERS =
       new FactNeed(Set.of(CLASS_DECLARATION), Set.of(FactKind.MEMBERS));
   private static final FactNeed WITH_TYPES =
@@ -79,7 +79,8 @@ public final class InheritedSignatureCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(CLASS_DECLARATION))) {
       types
@@ -91,7 +92,8 @@ public final class InheritedSignatureCheck implements RuleCheck {
                 } else {
                   wrongPackage(visit.node(), members, types, matches);
                 }
-              });
+              }
+          );
     }
     return List.copyOf(matches);
   }
@@ -100,7 +102,8 @@ public final class InheritedSignatureCheck implements RuleCheck {
       final SyntaxNode type,
       final TypeMembers members,
       final UnitTypeFacts types,
-      final List<RuleMatch> out) {
+      final List<RuleMatch> out
+  ) {
     final boolean intentional = mode == Mode.WRONG_PACKAGE_INTENTIONAL;
     for (final DeclaredMethods.Method method : DeclaredMethods.of(type)) {
       final List<CallTarget> candidates =
@@ -127,7 +130,8 @@ public final class InheritedSignatureCheck implements RuleCheck {
       final SyntaxNode type,
       final DeclaredMethods.Method method,
       final List<CallTarget> candidates,
-      final UnitTypeFacts types) {
+      final UnitTypeFacts types
+  ) {
     return DeclaredMethods.of(type).stream()
         .filter(other -> !other.node().span().equals(method.node().span()))
         .filter(other -> other.name().equals(method.name()))
@@ -136,11 +140,13 @@ public final class InheritedSignatureCheck implements RuleCheck {
             other ->
                 other.parameterNodes().stream()
                     .map(node -> types.typeOf(node.span()).map(TypeRef::name))
-                    .toList())
+                    .toList()
+        )
         .anyMatch(
             declared ->
                 declared.stream().allMatch(Optional::isPresent)
-                    && candidates.stream().anyMatch(c -> sameTypes(c, declared)));
+                    && candidates.stream().anyMatch(c -> sameTypes(c, declared))
+        );
   }
 
   private static boolean sameTypes(final CallTarget target, final List<Optional<String>> declared) {
@@ -153,7 +159,9 @@ public final class InheritedSignatureCheck implements RuleCheck {
   }
 
   private static boolean sameSimpleNames(
-      final CallTarget target, final List<Optional<String>> declared) {
+      final CallTarget target,
+      final List<Optional<String>> declared
+  ) {
     for (int i = 0; i < declared.size(); i++) {
       if (!simple(target.parameters().get(i).name()).equals(simple(declared.get(i).orElse("")))) {
         return false;
@@ -167,7 +175,10 @@ public final class InheritedSignatureCheck implements RuleCheck {
   }
 
   private void indirectCloneable(
-      final SyntaxNode type, final TypeMembers members, final List<RuleMatch> out) {
+      final SyntaxNode type,
+      final TypeMembers members,
+      final List<RuleMatch> out
+  ) {
     final String text = SyntaxWalk.text(type);
     final String header = text.substring(0, Math.max(0, text.indexOf('{')));
     final boolean inherits = members.ancestors().stream().anyMatch(a -> CLONEABLE.equals(a.name()));

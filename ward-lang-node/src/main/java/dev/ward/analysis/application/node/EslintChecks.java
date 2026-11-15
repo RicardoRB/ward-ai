@@ -22,7 +22,6 @@ import org.tomlj.TomlParseResult;
 
 /** The TypeScript and JavaScript checks that only the ESLint core rules use (issue #326). */
 final class EslintChecks {
-
   private static final String MESSAGE = "message";
   private static final String DUPLICATE = "duplicate-message";
 
@@ -42,10 +41,12 @@ final class EslintChecks {
         Map.entry(
             "node-no-constructor-return",
             (CheckFactory)
-                toml -> new NodeConstructorReturnCheck(TomlValues.required(toml, MESSAGE))),
+                toml -> new NodeConstructorReturnCheck(TomlValues.required(toml, MESSAGE))
+        ),
         Map.entry(
             "node-no-dupe-else-if",
-            (CheckFactory) toml -> new NodeDupeElseIfCheck(TomlValues.required(toml, MESSAGE))),
+            (CheckFactory)toml -> new NodeDupeElseIfCheck(TomlValues.required(toml, MESSAGE))
+        ),
         Map.entry("node-no-irregular-whitespace", EslintOptionChecks::irregularWhitespace),
         Map.entry("node-no-inner-declarations", EslintOptionChecks::innerDeclarations),
         Map.entry("node-no-unsafe-optional-chaining", EslintOptionChecks::unsafeOptionalChaining),
@@ -58,46 +59,59 @@ final class EslintChecks {
         Map.entry(
             "node-no-loss-of-precision",
             (CheckFactory)
-                toml -> new NodeLossOfPrecisionCheck(TomlValues.required(toml, MESSAGE))),
+                toml -> new NodeLossOfPrecisionCheck(TomlValues.required(toml, MESSAGE))
+        ),
         Map.entry(
             "node-no-unused-private-class-members",
-            (CheckFactory) toml -> new NodeUnusedPrivateMembersCheck()),
+            (CheckFactory)toml -> new NodeUnusedPrivateMembersCheck()
+        ),
         Map.entry(
             "node-no-unexpected-multiline",
-            (CheckFactory) toml -> new NodeUnexpectedMultilineCheck()),
+            (CheckFactory)toml -> new NodeUnexpectedMultilineCheck()
+        ),
         Map.entry(
             "node-no-dupe-class-members",
             (CheckFactory)
-                toml -> new NodeDupeClassMembersCheck(TomlValues.required(toml, MESSAGE))),
+                toml -> new NodeDupeClassMembersCheck(TomlValues.required(toml, MESSAGE))
+        ),
         Map.entry(
             "node-no-useless-escape",
             (CheckFactory)
                 toml ->
-                    new NodeUselessEscapeCheck(
-                        TomlValues.optionalStrings(toml, "allow-regex-characters"),
-                        TomlValues.required(toml, MESSAGE))));
+                new NodeUselessEscapeCheck(
+                    TomlValues.optionalStrings(toml, "allow-regex-characters"),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        )
+    );
   }
 
   private static GetterReturnCheck getterReturn(final TomlParseResult toml) {
     return new GetterReturnCheck(
-        Boolean.TRUE.equals(toml.getBoolean("allow-implicit")), TomlValues.required(toml, MESSAGE));
+        Boolean.TRUE.equals(toml.getBoolean("allow-implicit")),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static UnsafeNegationCheck unsafeNegation(final TomlParseResult toml) {
     return new UnsafeNegationCheck(
         Boolean.TRUE.equals(toml.getBoolean("enforce-for-ordering-relations")),
-        TomlValues.required(toml, MESSAGE));
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static PreferRegexLiteralsCheck preferRegexLiterals(final TomlParseResult toml) {
     return new PreferRegexLiteralsCheck(
         Boolean.TRUE.equals(toml.getBoolean("disallow-redundant-wrapping")),
-        TomlValues.required(toml, MESSAGE));
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static NodeConstructorSuperCheck constructorSuper(final TomlParseResult toml) {
     return new NodeConstructorSuperCheck(
-        TomlValues.required(toml, MESSAGE), TomlValues.required(toml, DUPLICATE));
+        TomlValues.required(toml, MESSAGE),
+        TomlValues.required(toml, DUPLICATE)
+    );
   }
 
   private static PreferRestParamsCheck preferRestParams(final TomlParseResult toml) {
@@ -110,7 +124,9 @@ final class EslintChecks {
 
   private static StringEscapeCheck stringEscape(final TomlParseResult toml) {
     return new StringEscapeCheck(
-        Boolean.TRUE.equals(toml.getBoolean("decimal")), TomlValues.required(toml, MESSAGE));
+        Boolean.TRUE.equals(toml.getBoolean("decimal")),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static NodeCatchParameterAssignCheck catchParameterAssign(final TomlParseResult toml) {

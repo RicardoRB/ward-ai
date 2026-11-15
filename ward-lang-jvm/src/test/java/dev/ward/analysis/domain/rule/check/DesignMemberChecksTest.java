@@ -7,7 +7,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class DesignMemberChecksTest extends DesignFlowTrees {
-
   private static final String MESSAGE = "flagged";
   private static final String PUBLIC = "public";
   private static final String PRIVATE = "private";
@@ -45,7 +44,8 @@ class DesignMemberChecksTest extends DesignFlowTrees {
         compilationUnit(classOf(member(field(COUNT), PRIVATE), member(method("read"))));
     final SyntaxNode assigned =
         compilationUnit(
-            classOf(member(field(COUNT), PRIVATE), member(method("set", assignment(COUNT, "1")))));
+            classOf(member(field(COUNT), PRIVATE), member(method("set", assignment(COUNT, "1"))))
+        );
     final SyntaxNode finalField = compilationUnit(classOf(member(field(COUNT), PRIVATE, "final")));
     final SyntaxNode staticField =
         compilationUnit(classOf(member(field(COUNT), PRIVATE, "static")));
@@ -63,18 +63,23 @@ class DesignMemberChecksTest extends DesignFlowTrees {
   void reportsPrivateFieldsWithOneUserThatAssignsIt() {
     final SyntaxNode singular =
         compilationUnit(
-            classOf(member(field(COUNT), PRIVATE), member(method("bump", assignment(COUNT, "1")))));
+            classOf(member(field(COUNT), PRIVATE), member(method("bump", assignment(COUNT, "1"))))
+        );
     final SyntaxNode sharedByTwo =
         compilationUnit(
             classOf(
                 member(field(COUNT), PRIVATE),
                 member(method("read", n("identifier", t("IDENTIFIER", COUNT)))),
-                member(method("bump", assignment(COUNT, "1")))));
+                member(method("bump", assignment(COUNT, "1")))
+            )
+        );
     final SyntaxNode readOnly =
         compilationUnit(
             classOf(
                 member(field(COUNT), PRIVATE),
-                member(method("read", n("identifier", t("IDENTIFIER", COUNT))))));
+                member(method("read", n("identifier", t("IDENTIFIER", COUNT))))
+            )
+        );
 
     assertThat(messagesOf(new SingularFieldCheck(MESSAGE), singular)).containsExactly(MESSAGE);
     assertThat(messagesOf(new SingularFieldCheck(MESSAGE), sharedByTwo)).isEmpty();
@@ -89,7 +94,9 @@ class DesignMemberChecksTest extends DesignFlowTrees {
             null,
             classOf(
                 n("classBodyDeclaration", t("'static'", "static"), n("block")),
-                member(method("helper"), PUBLIC, "static")));
+                member(method("helper"), PUBLIC, "static")
+            )
+        );
 
     assertThat(messagesOf(new UtilityClassCheck(MESSAGE), utility)).containsExactly(MESSAGE);
     assertThat(messagesOf(new UtilityClassCheck(MESSAGE), staticInitializer))
@@ -104,7 +111,10 @@ class DesignMemberChecksTest extends DesignFlowTrees {
         topLevel(
             null,
             classWith(
-                List.of(t("'extends'", "extends")), member(method("helper"), PUBLIC, "static")));
+                List.of(t("'extends'", "extends")),
+                member(method("helper"), PUBLIC, "static")
+            )
+        );
     final SyntaxNode withMain = topLevel(null, classOf(member(method("main"), PUBLIC, "static")));
     final SyntaxNode instanceMember = topLevel(null, classOf(member(method("helper"), PUBLIC)));
 
@@ -161,6 +171,8 @@ class DesignMemberChecksTest extends DesignFlowTrees {
             "variableDeclarator",
             n("variableDeclaratorId", id(name)),
             t("'='", "="),
-            n("variableInitializer")));
+            n("variableInitializer")
+        )
+    );
   }
 }

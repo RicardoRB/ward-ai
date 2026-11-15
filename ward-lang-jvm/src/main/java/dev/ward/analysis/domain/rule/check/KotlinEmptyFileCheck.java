@@ -10,7 +10,6 @@ import java.util.Objects;
  * package and imports or comments, as ktlint's {@code no-empty-file} rule does.
  */
 public final class KotlinEmptyFileCheck implements RuleCheck {
-
   private static final String FILE = "kotlinFile";
   private static final String TOP_LEVEL = "topLevelObject";
   private static final String PREAMBLE = "preamble";
@@ -40,7 +39,8 @@ public final class KotlinEmptyFileCheck implements RuleCheck {
         .anyMatch(
             child ->
                 TOP_LEVEL.equals(child.kind())
-                    || (PREAMBLE.equals(child.kind()) && hasFileAnnotations(child)));
+                    || (PREAMBLE.equals(child.kind()) && hasFileAnnotations(child))
+        );
   }
 
   private static boolean hasFileAnnotations(final SyntaxNode preamble) {

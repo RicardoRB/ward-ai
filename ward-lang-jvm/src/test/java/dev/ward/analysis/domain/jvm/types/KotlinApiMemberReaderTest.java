@@ -24,7 +24,8 @@ class KotlinApiMemberReaderTest {
         .read(
             units,
             new AntlrLanguageFrontend(),
-            name -> ClassLoader.getSystemResource(name.replace('.', '/') + ".class") != null);
+            name -> ClassLoader.getSystemResource(name.replace('.', '/') + ".class") != null
+        );
   }
 
   private static ApiType type(final List<ApiType> types, final String name) {
@@ -39,8 +40,10 @@ class KotlinApiMemberReaderTest {
                 PACKAGE
                     + "open class A(val id: Int, var name: String?) {\n"
                     + "  val ok: Boolean = true\n  val isOn: Boolean = true\n"
-                    + "  private var secret: Int = 0\n}\n"),
-            "p.A");
+                    + "  private var secret: Int = 0\n}\n"
+            ),
+            "p.A"
+        );
 
     assertThat(ApiSurfaceFixtures.ids(api))
         .containsExactlyInAnyOrder(
@@ -49,7 +52,8 @@ class KotlinApiMemberReaderTest {
             "getName()",
             "setName(java.lang.String)",
             "getOk()",
-            "isOn()");
+            "isOn()"
+        );
     assertThat(ApiSurfaceFixtures.member(api, "getName()").type().nullable()).isTrue();
     assertThat(ApiSurfaceFixtures.member(api, "getId()").isFinal()).isTrue();
   }
@@ -63,8 +67,10 @@ class KotlinApiMemberReaderTest {
                     + "class A {\n"
                     + "  fun f(a: Int, b: String = \"x\", c: String?): Int? = null\n"
                     + "  fun g(vararg xs: Int) {}\n"
-                    + "  fun String.ext(n: Int) {}\n}\n"),
-            "p.A");
+                    + "  fun String.ext(n: Int) {}\n}\n"
+            ),
+            "p.A"
+        );
 
     final ApiMember f = ApiSurfaceFixtures.member(api, "f(int,java.lang.String,java.lang.String)");
     assertThat(f.parameters().get(1).hasDefault()).isTrue();
@@ -89,7 +95,8 @@ class KotlinApiMemberReaderTest {
     final List<ApiType> types =
         read(
             PACKAGE + "fun one() {}\nval two: Int = 2\nprivate fun hidden() {}\n",
-            PACKAGE + "fun three(x: Int) {}\n");
+            PACKAGE + "fun three(x: Int) {}\n"
+        );
 
     final ApiType facade = type(types, "p.<top-level>");
     assertThat(ApiSurfaceFixtures.ids(facade))

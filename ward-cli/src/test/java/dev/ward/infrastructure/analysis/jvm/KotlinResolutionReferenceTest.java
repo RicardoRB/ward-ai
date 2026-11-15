@@ -58,7 +58,9 @@ class KotlinResolutionReferenceTest {
             "-classpath",
             stdlib.toString(),
             "-d",
-            classes.toString()));
+            classes.toString()
+        )
+    );
     run(kotlin);
 
     final JavaCompiler javac = ToolProvider.getSystemJavaCompiler();
@@ -69,7 +71,9 @@ class KotlinResolutionReferenceTest {
                 classes.toString(),
                 "-nowarn",
                 "-classpath",
-                classes + File.pathSeparator + stdlib));
+                classes + File.pathSeparator + stdlib
+            )
+        );
     java.addAll(KotlinFixtures.sourcesOf(project, ".java"));
     assertThat(javac.run(null, null, null, java.toArray(String[]::new))).isZero();
   }

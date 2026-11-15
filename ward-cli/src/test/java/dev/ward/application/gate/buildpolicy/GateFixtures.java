@@ -36,7 +36,8 @@ final class GateFixtures {
           "g:a",
           "pom.xml",
           DYNAMIC_LINE,
-          Declaration.Flag.NONE);
+          Declaration.Flag.NONE
+      );
 
   private GateFixtures() {}
 
@@ -68,7 +69,11 @@ final class GateFixtures {
   }
 
   static RuleConfigFile file(
-      final RuleConfigFile.Select select, final Map<String, Map<String, Object>> rules) {
+      final RuleConfigFile.Select select,
+      final Map<String,
+      Map<String,
+      Object>> rules
+  ) {
     return new RuleConfigFile("ward-rules.toml", select, rules, List.of());
   }
 }

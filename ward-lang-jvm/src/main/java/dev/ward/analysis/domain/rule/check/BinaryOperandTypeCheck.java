@@ -41,7 +41,6 @@ public final class BinaryOperandTypeCheck implements RuleCheck {
    * @param max the highest allowed literal, if the right must be a literal
    */
   public record Range(Optional<BigInteger> min, Optional<BigInteger> max) {
-
     /** The range that does not limit the right operand. */
     public static final Range ANY = new Range(Optional.empty(), Optional.empty());
 
@@ -76,9 +75,11 @@ public final class BinaryOperandTypeCheck implements RuleCheck {
    */
   public BinaryOperandTypeCheck(
       final Set<String> operators,
-      final Map<String, Range> types,
+      final Map<String,
+      Range> types,
       final boolean both,
-      final String message) {
+      final String message
+  ) {
     this.operators = Set.copyOf(operators);
     this.types = Map.copyOf(types);
     this.both = both;
@@ -101,7 +102,8 @@ public final class BinaryOperandTypeCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts facts,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(EXPRESSION)).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(node -> reported(node, facts))

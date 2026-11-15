@@ -20,9 +20,7 @@ class WardCliPartialCheckTest extends WardCliIntegrationSupport {
 
   @BeforeEach
   void configure() throws IOException {
-    Files.writeString(
-        project.resolve(WARD_TOML),
-        """
+    Files.writeString(project.resolve(WARD_TOML), """
         version = 2
         [checks.format]
         profiles = ["default", "edit"]
@@ -56,16 +54,18 @@ class WardCliPartialCheckTest extends WardCliIntegrationSupport {
   @Test
   void sourcePathNarrowsTheGateCommand() {
     assertThat(
-            run(
-                CHECK,
-                "-C",
-                project.toString(),
-                FORMAT_OPTION,
-                JSON,
-                PATH_OPTION,
-                ORDER,
-                PATH_OPTION,
-                README))
+        run(
+            CHECK,
+            "-C",
+            project.toString(),
+            FORMAT_OPTION,
+            JSON,
+            PATH_OPTION,
+            ORDER,
+            PATH_OPTION,
+            README
+        )
+    )
         .isEqualTo(ExitCodes.OK);
 
     final JsonTree lint = JsonTree.parse(out.toString()).get(CHECKS).get(1);

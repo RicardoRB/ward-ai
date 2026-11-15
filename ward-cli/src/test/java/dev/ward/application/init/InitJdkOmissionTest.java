@@ -49,7 +49,8 @@ class InitJdkOmissionTest {
             new ProjectDetector(new FileSystemProjectInspection()),
             Set.of(),
             catalog,
-            InitFixtures.projectFiles(new MutationOmittedOnJdk8(), new NoRuleFileGeneration()));
+            InitFixtures.projectFiles(new MutationOmittedOnJdk8(), new NoRuleFileGeneration())
+        );
   }
 
   @Test
@@ -101,7 +102,8 @@ class InitJdkOmissionTest {
         false,
         null,
         false,
-        null);
+        null
+    );
   }
 
   /** Writes Maven tools with their default versions, and omits {@code mutation} as on JDK 8. */
@@ -118,7 +120,8 @@ class InitJdkOmissionTest {
         final Project project,
         final List<InitGateOption> gates,
         final QualityPreset preset,
-        final Predicate<? super CompatibilityFinding> approval) {
+        final Predicate<? super CompatibilityFinding> approval
+    ) {
       return maven.apply(project, gates, preset, approval);
     }
 
@@ -127,7 +130,8 @@ class InitJdkOmissionTest {
         final Project project,
         final List<InitGateOption> gates,
         final QualityPreset preset,
-        final boolean approved) {
+        final boolean approved
+    ) {
       return maven.plan(project, gates, preset, approved);
     }
 

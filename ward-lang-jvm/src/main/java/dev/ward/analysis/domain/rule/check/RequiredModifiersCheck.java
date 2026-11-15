@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
  * annotation type declared elsewhere is not known, so it is not checked.
  */
 public final class RequiredModifiersCheck implements RuleCheck {
-
   private static final String ANNOTATION_TYPE = "annotationTypeDeclaration";
   private static final String IDENTIFIER = "identifier";
   private static final String REQUIRED = "RequiredModifiers";

@@ -15,7 +15,6 @@ import java.util.Optional;
  * ProviderReadPermissionOnly check), or a {@code path-permission} child.
  */
 public final class ExportedComponentCheck implements RuleCheck {
-
   private static final String PROVIDER = "provider";
   private static final String EXPORTED = "exported";
   private static final String PERMISSION = "permission";
@@ -48,7 +47,8 @@ public final class ExportedComponentCheck implements RuleCheck {
         at.span(),
         "Exported "
             + component
-            + " requires no permission: add android:permission or set android:exported=\"false\".");
+            + " requires no permission: add android:permission or set android:exported=\"false\"."
+    );
   }
 
   private boolean exported(final SyntaxNode element) {
@@ -63,9 +63,9 @@ public final class ExportedComponentCheck implements RuleCheck {
   private boolean protectedByPermission(final SyntaxNode element) {
     return has(element, PERMISSION)
         || PROVIDER.equals(component)
-            && (has(element, "readPermission")
-                || has(element, "writePermission")
-                || AndroidNodes.hasChild(element, "path-permission"));
+        && (has(element, "readPermission")
+            || has(element, "writePermission")
+            || AndroidNodes.hasChild(element, "path-permission"));
   }
 
   private static boolean has(final SyntaxNode element, final String local) {

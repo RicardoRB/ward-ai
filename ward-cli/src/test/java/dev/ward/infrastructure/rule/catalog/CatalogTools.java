@@ -4,7 +4,6 @@ import java.util.List;
 
 /** The tools whose rules the catalog maps, in the order the catalog files list them. */
 public final class CatalogTools {
-
   /** Every tool of roadmaps #306 and #348, by the key a catalog row uses for its counterparts. */
   public static final List<String> ALL =
       List.of(
@@ -30,7 +29,8 @@ public final class CatalogTools {
           "jscpd",
           "gitleaks",
           "spectral",
-          "oasdiff");
+          "oasdiff"
+      );
 
   private CatalogTools() {}
 }

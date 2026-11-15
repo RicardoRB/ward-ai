@@ -28,11 +28,12 @@ import java.util.Map;
 
 @Module(
     includes = {
-      BuildToolBindingsModule.class,
-      NodeBindingsModule.class,
-      PythonBindingsModule.class,
-      SwiftBindingsModule.class
-    })
+        BuildToolBindingsModule.class,
+        NodeBindingsModule.class,
+        PythonBindingsModule.class,
+        SwiftBindingsModule.class
+    }
+)
 interface InitBindingsModule {
   @Binds
   ConfigurationStorage configurationStorage(FileConfigurationStorage implementation);
@@ -60,7 +61,8 @@ interface InitBindingsModule {
   static Map<Toolchain, RuleFileTargets> ruleFileTargets(
       final NodeRuleFileTargets node,
       final PythonRuleFileTargets python,
-      final SwiftRuleFileTargets swift) {
+      final SwiftRuleFileTargets swift
+  ) {
     return Map.of(Toolchain.NODE, node, Toolchain.PYTHON, python, Toolchain.SWIFT, swift);
   }
 
@@ -70,7 +72,8 @@ interface InitBindingsModule {
       final RuleFileGeneration ruleFiles,
       final ArchitectureTables architectureTables,
       final ConfigurationStorage configuration,
-      final OwnedSectionGeneration sections) {
+      final OwnedSectionGeneration sections
+  ) {
     return new InitProjectFiles(buildTools, ruleFiles, architectureTables, configuration, sections);
   }
 }

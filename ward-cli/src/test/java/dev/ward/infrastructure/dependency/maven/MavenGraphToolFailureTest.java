@@ -25,7 +25,10 @@ class MavenGraphToolFailureTest {
   void aFailingBuildNamesTheExecutableAndTheFirstErrorLine() {
     final FakeCommandExecutor executor =
         new FakeCommandExecutor(
-            1, "[INFO] x\n[ERROR] Could not resolve dependencies for api\n", "");
+            1,
+            "[INFO] x\n[ERROR] Could not resolve dependencies for api\n",
+            ""
+        );
 
     assertThatThrownBy(() -> new MavenGraphTool(executor, false).resolve(project(false)))
         .isInstanceOf(DependencyInventoryException.class)
@@ -43,7 +46,9 @@ class MavenGraphToolFailureTest {
                 "",
                 "Could not start mvn: no such file",
                 Duration.ZERO,
-                "PROCESS_START_FAILURE"));
+                "PROCESS_START_FAILURE"
+            )
+        );
 
     assertThatThrownBy(() -> new MavenGraphTool(executor, false).resolve(project(false)))
         .hasMessageContaining("mvn was not found");
@@ -53,7 +58,8 @@ class MavenGraphToolFailureTest {
   void aTimeoutIsReported() {
     final FakeCommandExecutor executor =
         new FakeCommandExecutor(
-            new CommandResult(-3, "", "Timed out", Duration.ZERO, "PROCESS_TIMEOUT"));
+            new CommandResult(-3, "", "Timed out", Duration.ZERO, "PROCESS_TIMEOUT")
+        );
 
     assertThatThrownBy(() -> new MavenGraphTool(executor, false).resolve(project(false)))
         .hasMessageContaining("did not finish");

@@ -15,7 +15,6 @@ import java.util.Map;
 
 /** Builds Kotlin trees and the type facts of their nodes, by hand, for the typed checks' tests. */
 final class KotlinTypedCheckFixtures {
-
   private KotlinTypedCheckFixtures() {}
 
   static SourceUnit unit(final String source) {
@@ -75,7 +74,8 @@ final class KotlinTypedCheckFixtures {
         null,
         Map.of(),
         Map.of(),
-        null);
+        null
+    );
   }
 
   /** A call target of a method with the given parameter types. */
@@ -96,7 +96,8 @@ final class KotlinTypedCheckFixtures {
         null,
         Map.of(),
         Map.of(),
-        null);
+        null
+    );
   }
 
   static List<SyntaxNode> nodes(final SyntaxNode root, final String kind) {
@@ -106,7 +107,10 @@ final class KotlinTypedCheckFixtures {
   }
 
   private static void collect(
-      final SyntaxNode node, final String kind, final List<SyntaxNode> found) {
+      final SyntaxNode node,
+      final String kind,
+      final List<SyntaxNode> found
+  ) {
     if (kind.equals(node.kind())) {
       found.add(node);
     }
@@ -114,8 +118,20 @@ final class KotlinTypedCheckFixtures {
   }
 
   private static SpanFacts facts(
-      final TypeRef type, final CallTarget call, final List<String> annotations) {
+      final TypeRef type,
+      final CallTarget call,
+      final List<String> annotations
+  ) {
     return new SpanFacts(
-        type, null, call, annotations, List.of(), List.of(), List.of(), null, null);
+        type,
+        null,
+        call,
+        annotations,
+        List.of(),
+        List.of(),
+        List.of(),
+        null,
+        null
+    );
   }
 }

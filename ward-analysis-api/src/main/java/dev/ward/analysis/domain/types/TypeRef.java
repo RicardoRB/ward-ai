@@ -13,7 +13,6 @@ import java.util.Objects;
  * @param primitive whether the type is a primitive, including {@code void}
  */
 public record TypeRef(String name, List<TypeRef> arguments, int arrayDepth, boolean primitive) {
-
   /**
    * Copies the arguments.
    *

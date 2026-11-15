@@ -16,7 +16,6 @@ import java.util.Set;
  * as two methods with the same name and parameter count, or a lock taken on a call result.
  */
 final class SyncModel {
-
   private static final String FIELD = "fieldDeclaration";
   private static final String STATEMENT = "statement";
   private static final Set<String> NESTED =
@@ -26,7 +25,8 @@ final class SyncModel {
           "classDeclaration",
           "interfaceDeclaration",
           "enumDeclaration",
-          "recordDeclaration");
+          "recordDeclaration"
+      );
 
   private final List<SyncMethod> methods;
   private final Map<String, SyntaxNode> fields;
@@ -35,9 +35,11 @@ final class SyncModel {
 
   private SyncModel(
       final List<SyncMethod> methods,
-      final Map<String, SyntaxNode> fields,
+      final Map<String,
+      SyntaxNode> fields,
       final Set<String> instanceFields,
-      final Set<SyncMethod> locked) {
+      final Set<SyncMethod> locked
+  ) {
     this.methods = List.copyOf(methods);
     this.fields = Collections.unmodifiableMap(new LinkedHashMap<>(fields));
     this.instanceFields = Set.copyOf(instanceFields);
@@ -81,13 +83,16 @@ final class SyncModel {
     candidates.keySet().removeAll(nested);
     candidates.keySet().removeIf(name -> inFinally(clazz, name));
     return Optional.of(
-        new SyncModel(methods, candidates, instance, SyncLocking.lockedMethods(members, methods)));
+        new SyncModel(methods, candidates, instance, SyncLocking.lockedMethods(members, methods))
+    );
   }
 
   private static void fieldsOf(
       final List<JavaNodes.Member> members,
-      final Map<String, SyntaxNode> candidates,
-      final Set<String> instance) {
+      final Map<String,
+      SyntaxNode> candidates,
+      final Set<String> instance
+  ) {
     for (final JavaNodes.Member member : members) {
       if (FIELD.equals(member.node().kind()) && !member.has("static")) {
         final boolean candidate =
@@ -139,6 +144,7 @@ final class SyncModel {
         .anyMatch(
             v ->
                 SyntaxWalk.leaves(v.node()).stream()
-                    .anyMatch(l -> field.equals(SyntaxWalk.text(l))));
+                    .anyMatch(l -> field.equals(SyntaxWalk.text(l)))
+        );
   }
 }

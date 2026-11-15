@@ -68,7 +68,8 @@ public final class StrykerJsonMutationReport implements MutationReport {
     final List<Path> fresh = ReportFiles.fresh(SupportedQualityGates.STRYKER, since, reports);
     if (fresh.isEmpty()) {
       return MutationCounts.unusable(
-          "Stryker's JSON report " + REPORT + " was written before the gate started.");
+          "Stryker's JSON report " + REPORT + " was written before the gate started."
+      );
     }
     int detected = 0;
     int undetected = 0;
@@ -89,7 +90,8 @@ public final class StrykerJsonMutationReport implements MutationReport {
     }
     if (ReportFiles.fresh(SupportedQualityGates.STRYKER, since, List.of(report)).isEmpty()) {
       return MutationCounts.unusable(
-          "Stryker's JSON report " + REPORT + " was written before the gate started.");
+          "Stryker's JSON report " + REPORT + " was written before the gate started."
+      );
     }
     return readReport(report);
   }
@@ -114,14 +116,16 @@ public final class StrykerJsonMutationReport implements MutationReport {
                 status ->
                     !DETECTED.contains(status)
                         && !UNDETECTED.contains(status)
-                        && !EXCLUDED.contains(status))
+                        && !EXCLUDED.contains(status)
+            )
             .count();
     if (unknown > 0) {
       LOGGER.log(Level.FINE, () -> "event=stryker-status-unknown count=" + unknown);
     }
     return MutationCounts.of(
-        (int) statuses.stream().filter(DETECTED::contains).count(),
-        (int) statuses.stream().filter(UNDETECTED::contains).count());
+        (int)statuses.stream().filter(DETECTED::contains).count(),
+        (int)statuses.stream().filter(UNDETECTED::contains).count()
+    );
   }
 
   @JsonType

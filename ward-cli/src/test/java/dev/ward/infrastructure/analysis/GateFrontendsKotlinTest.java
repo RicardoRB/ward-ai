@@ -16,13 +16,13 @@ import org.junit.jupiter.api.Test;
 
 /** What the Kotlin frontend declares, and which rules that switches on. */
 class GateFrontendsKotlinTest {
-
   private static final Set<RuleCapability> GRAPH_CAPABILITIES =
       Set.of(
           RuleCapability.CFG,
           RuleCapability.DATAFLOW,
           RuleCapability.TAINT,
-          RuleCapability.SYMBOLS);
+          RuleCapability.SYMBOLS
+      );
 
   private static final int TAINT_RULES = 18;
 
@@ -40,7 +40,8 @@ class GateFrontendsKotlinTest {
             RuleCapability.SCOPES,
             RuleCapability.CFG,
             RuleCapability.DATAFLOW,
-            RuleCapability.TAINT);
+            RuleCapability.TAINT
+        );
   }
 
   @Test
@@ -56,10 +57,10 @@ class GateFrontendsKotlinTest {
     final Set<String> graphRules =
         new ClasspathRuleSource()
             .load().rules().stream()
-                .filter(rule -> rule.languages().contains(AnalysisLanguage.KOTLIN))
-                .filter(rule -> GRAPH_CAPABILITIES.contains(rule.capability()))
-                .map(RuleDefinition::id)
-                .collect(Collectors.toSet());
+            .filter(rule -> rule.languages().contains(AnalysisLanguage.KOTLIN))
+            .filter(rule -> GRAPH_CAPABILITIES.contains(rule.capability()))
+            .map(RuleDefinition::id)
+            .collect(Collectors.toSet());
 
     assertThat(graphRules).allMatch(id -> id.startsWith("ward:kotlin/"));
     assertThat(graphRules).hasSize(TAINT_RULES);

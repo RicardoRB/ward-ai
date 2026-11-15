@@ -21,7 +21,6 @@ import org.junit.jupiter.params.provider.MethodSource;
  * without {@code expected} must be refused.
  */
 class KotlinFormatterFixturesTest {
-
   private static final String FIXTURE_ROOT = "/format/kotlin";
   private static final String[] EXTENSIONS = {"kt", "kts"};
   private static final String INPUT = "input.";
@@ -32,7 +31,8 @@ class KotlinFormatterFixturesTest {
       new FormatFixtureChecks(
           FORMATTER,
           new FormatSafety(new KotlinFormatSyntax()),
-          FormatOptions.defaults(FORMATTER.options()));
+          FormatOptions.defaults(FORMATTER.options())
+      );
 
   @ParameterizedTest(name = "{0}")
   @MethodSource("cases")
@@ -69,7 +69,10 @@ class KotlinFormatterFixturesTest {
 
   /** Finds the file with the stem and an extension, using the input's extension when given. */
   private static Optional<Path> findOptional(
-      final Path caseDir, final String stem, final Path matching) {
+      final Path caseDir,
+      final String stem,
+      final Path matching
+  ) {
     for (final String extension : EXTENSIONS) {
       if (matching != null && !matching.getFileName().toString().endsWith("." + extension)) {
         continue;

@@ -23,7 +23,6 @@ import org.junit.jupiter.api.Test;
 
 /** The checks on redefinitions, yields and returns outside functions, and star-import names. */
 final class ScopeReferenceChecksTest {
-
   private static final SourceUnit UNIT = new SourceUnit("m.py", AnalysisLanguage.PYTHON, "");
   private static final int MODULE = 1;
   private static final int FUNCTION = 2;
@@ -35,9 +34,11 @@ final class ScopeReferenceChecksTest {
         ScopeFixtures.binding("f", BindingKind.FUNCTION, Nodes.at(50, 1), MODULE);
 
     assertThat(
-            run(
-                new RedefinitionCheck("redefined '{value}'"),
-                ScopeFixtures.moduleScopes(false, first, second)))
+        run(
+            new RedefinitionCheck("redefined '{value}'"),
+            ScopeFixtures.moduleScopes(false, first, second)
+        )
+    )
         .extracting(RuleMatch::message)
         .containsExactly("redefined 'f'");
   }
@@ -51,15 +52,24 @@ final class ScopeReferenceChecksTest {
         new UnitScopes(
             List.of(
                 new Scope(
-                    0, ScopeKind.BUILTIN, Scope.NO_PARENT, ScopeFixtures.WHOLE, List.of(), false),
+                    0,
+                    ScopeKind.BUILTIN,
+                    Scope.NO_PARENT,
+                    ScopeFixtures.WHOLE,
+                    List.of(),
+                    false
+                ),
                 new Scope(
                     MODULE,
                     ScopeKind.MODULE,
                     0,
                     ScopeFixtures.WHOLE,
                     List.of(first, second),
-                    false)),
-            List.of(ScopeFixtures.resolvedReference("f", MODULE, first)));
+                    false
+                )
+            ),
+            List.of(ScopeFixtures.resolvedReference("f", MODULE, first))
+        );
 
     assertThat(run(new RedefinitionCheck("m"), used)).isEmpty();
     assertThat(run(new RedefinitionCheck("m"), ScopeFixtures.moduleScopes(true, first, second)))
@@ -72,8 +82,9 @@ final class ScopeReferenceChecksTest {
     final SyntaxNode root = Nodes.node("file_input", yield);
 
     assertThat(
-            new OutsideScopeCheck(Set.of("yield_expr"), Set.of(ScopeKind.FUNCTION), "outside")
-                .matches(root, null, view(ScopeFixtures.moduleScopes(false)), UNIT))
+        new OutsideScopeCheck(Set.of("yield_expr"), Set.of(ScopeKind.FUNCTION), "outside")
+            .matches(root, null, view(ScopeFixtures.moduleScopes(false)), UNIT)
+    )
         .hasSize(1);
   }
 
@@ -85,15 +96,30 @@ final class ScopeReferenceChecksTest {
         new UnitScopes(
             List.of(
                 new Scope(
-                    0, ScopeKind.BUILTIN, Scope.NO_PARENT, ScopeFixtures.WHOLE, List.of(), false),
+                    0,
+                    ScopeKind.BUILTIN,
+                    Scope.NO_PARENT,
+                    ScopeFixtures.WHOLE,
+                    List.of(),
+                    false
+                ),
                 new Scope(MODULE, ScopeKind.MODULE, 0, ScopeFixtures.WHOLE, List.of(), false),
                 new Scope(
-                    FUNCTION, ScopeKind.FUNCTION, MODULE, ScopeFixtures.WHOLE, List.of(), false)),
-            List.of());
+                    FUNCTION,
+                    ScopeKind.FUNCTION,
+                    MODULE,
+                    ScopeFixtures.WHOLE,
+                    List.of(),
+                    false
+                )
+            ),
+            List.of()
+        );
 
     assertThat(
-            new OutsideScopeCheck(Set.of("yield_expr"), Set.of(ScopeKind.FUNCTION), "outside")
-                .matches(root, null, view(withFunction), UNIT))
+        new OutsideScopeCheck(Set.of("yield_expr"), Set.of(ScopeKind.FUNCTION), "outside")
+            .matches(root, null, view(withFunction), UNIT)
+    )
         .isEmpty();
   }
 
@@ -101,18 +127,33 @@ final class ScopeReferenceChecksTest {
   void starImportUsageReportsAnUnresolvedNameInAnOpenScope() {
     final NameReference unresolved =
         new NameReference(
-            "sep", ScopeFixtures.READ, ReferenceAccess.READ, MODULE, Optional.empty(), false);
+            "sep",
+            ScopeFixtures.READ,
+            ReferenceAccess.READ,
+            MODULE,
+            Optional.empty(),
+            false
+        );
     final UnitScopes open =
         new UnitScopes(
             List.of(
                 new Scope(
-                    0, ScopeKind.BUILTIN, Scope.NO_PARENT, ScopeFixtures.WHOLE, List.of(), false),
-                new Scope(MODULE, ScopeKind.MODULE, 0, ScopeFixtures.WHOLE, List.of(), true)),
-            List.of(unresolved));
+                    0,
+                    ScopeKind.BUILTIN,
+                    Scope.NO_PARENT,
+                    ScopeFixtures.WHOLE,
+                    List.of(),
+                    false
+                ),
+                new Scope(MODULE, ScopeKind.MODULE, 0, ScopeFixtures.WHOLE, List.of(), true)
+            ),
+            List.of(unresolved)
+        );
 
     assertThat(
-            new StarImportUsageCheck("'{value}' may be from a star import")
-                .matches(Nodes.leaf(""), null, view(open), UNIT))
+        new StarImportUsageCheck("'{value}' may be from a star import")
+            .matches(Nodes.leaf(""), null, view(open), UNIT)
+    )
         .extracting(RuleMatch::message)
         .containsExactly("'sep' may be from a star import");
   }

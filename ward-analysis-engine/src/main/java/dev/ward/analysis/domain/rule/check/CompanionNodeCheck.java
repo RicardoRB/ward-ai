@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
  * the statements or the calls between methods.
  */
 public final class CompanionNodeCheck implements UnitCheck {
-
   private static final String GROUP = "{1}";
 
   private final NodeFilter filter;
@@ -41,7 +40,8 @@ public final class CompanionNodeCheck implements UnitCheck {
       final String nodeKind,
       final Pattern match,
       final String companion,
-      final String message) {
+      final String message
+  ) {
     this.filter = Objects.requireNonNull(filter, "filter");
     this.nodeKind = Objects.requireNonNull(nodeKind, "nodeKind");
     this.match = Objects.requireNonNull(match, "match");

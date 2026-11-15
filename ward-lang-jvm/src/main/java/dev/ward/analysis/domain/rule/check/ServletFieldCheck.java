@@ -15,7 +15,6 @@ import java.util.Set;
  * field is.
  */
 public final class ServletFieldCheck implements RuleCheck {
-
   private static final Set<String> SERVLETS = Set.of("HttpServlet", "GenericServlet");
   private static final Set<String> ACTIONS =
       Set.of("Action", "DispatchAction", "LookupDispatchAction", "MappingDispatchAction");
@@ -41,7 +40,8 @@ public final class ServletFieldCheck implements RuleCheck {
           "Date",
           "Calendar",
           "StringBuilder",
-          "StringBuffer");
+          "StringBuffer"
+      );
   private static final String IMPORT = "importDeclaration";
 
   private final boolean struts;
@@ -102,8 +102,8 @@ public final class ServletFieldCheck implements RuleCheck {
     }
     final boolean isMutable =
         MUTABLE.contains(
-            ClassHeaders.simple(
-                ClassMembers.typeText(ClassMembers.declarationOf(field)).orElse("")));
+            ClassHeaders.simple(ClassMembers.typeText(ClassMembers.declarationOf(field)).orElse(""))
+        );
     return mutable ? isMutable : !isMutable && !modifiers.contains(MemberDeclarations.FINAL);
   }
 }

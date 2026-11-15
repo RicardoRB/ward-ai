@@ -20,7 +20,6 @@ import javax.inject.Inject;
  * severity} and {@code body}. A file that cannot be used is skipped as a whole and reported.
  */
 public final class ClasspathRuleSource implements AnalysisRuleSource {
-
   private final List<String> resources;
 
   /** Creates the source that loads the packaged rule files of the bundled language modules. */
@@ -57,7 +56,9 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
   }
 
   private static List<RuleDefinition> concat(
-      final List<RuleDefinition> loaded, final List<RuleDefinition> file) {
+      final List<RuleDefinition> loaded,
+      final List<RuleDefinition> file
+  ) {
     final List<RuleDefinition> all = new ArrayList<>(loaded);
     all.addAll(file);
     return all;
@@ -71,7 +72,8 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
       throw RuleFileProblems.problem(
           resource,
           "rule '" + definition.id() + "' cannot be used: " + exception.getMessage(),
-          exception);
+          exception
+      );
     }
   }
 }

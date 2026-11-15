@@ -29,7 +29,6 @@ import java.util.regex.Pattern;
  * left alone.
  */
 public final class UnusedImportBindingCheck implements RuleCheck {
-
   private static final String FUTURE = "__future__";
   private static final String ALL = "__all__";
   private static final String EXPR_STMT = "expr_stmt";
@@ -69,7 +68,11 @@ public final class UnusedImportBindingCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes(Set.of());
     final Set<String> reexported = reexported(root);
     final List<RuleMatch> found = new ArrayList<>();
@@ -85,7 +88,10 @@ public final class UnusedImportBindingCheck implements RuleCheck {
   }
 
   private static boolean unused(
-      final Binding binding, final UnitScopes scopes, final Set<String> reexported) {
+      final Binding binding,
+      final UnitScopes scopes,
+      final Set<String> reexported
+  ) {
     return binding.kind() == BindingKind.IMPORT
         && !isFuture(binding)
         && !reexported.contains(binding.name())

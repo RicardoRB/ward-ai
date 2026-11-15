@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
  * ConstructorsDeclarationGrouping.
  */
 public final class NodeConstructorGroupCheck implements RuleCheck {
-
   private static final String BODY = "classTail";
   private static final String MEMBER = "classElement";
   private static final Pattern CONSTRUCTOR =

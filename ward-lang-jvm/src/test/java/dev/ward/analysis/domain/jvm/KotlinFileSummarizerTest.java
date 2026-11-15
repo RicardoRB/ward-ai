@@ -11,8 +11,7 @@ class KotlinFileSummarizerTest {
   @Test
   void declaresTypesNestedTypesAndCompanions() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             package shop.domain
 
             class Order {
@@ -33,15 +32,15 @@ class KotlinFileSummarizerTest {
             "shop.domain.Prices",
             "shop.domain.Money",
             "shop.domain.Priced",
-            "shop.domain.Level");
+            "shop.domain.Level"
+        );
     assertThat(summary.exports()).isEqualTo(summary.declared());
   }
 
   @Test
   void topLevelFunctionsAndPropertiesAreDeclaredWithTheFileFacade() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             package shop.util
 
             fun formatPrice(amount: Long): String = ""
@@ -55,8 +54,7 @@ class KotlinFileSummarizerTest {
   @Test
   void aJvmNameAnnotationRenamesTheFacade() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             @file:JvmName("Formats")
             package shop.util
 
@@ -70,8 +68,7 @@ class KotlinFileSummarizerTest {
   @Test
   void membersAreNotDeclaredAsTopLevelNames() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             package shop.domain
 
             class Order {
@@ -86,8 +83,7 @@ class KotlinFileSummarizerTest {
   @Test
   void aFileWithoutTopLevelMembersHasNoFacade() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             package shop.domain
 
             class Price

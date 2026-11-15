@@ -31,13 +31,15 @@ public class QualityGateFactory {
           SupportedQualityGates.CRAP,
           SupportedQualityGates.COVERAGE,
           SupportedQualityGates.VULNERABILITIES,
-          SupportedQualityGates.BUILD_POLICY);
+          SupportedQualityGates.BUILD_POLICY
+      );
   private static final Set<String> REPORTING_GATES =
       Set.of(
           SupportedQualityGates.SECRETS,
           SupportedQualityGates.CRAP,
           SupportedQualityGates.COVERAGE,
-          SupportedQualityGates.VULNERABILITIES);
+          SupportedQualityGates.VULNERABILITIES
+      );
   private static final Set<String> PLATFORM_GATES =
       Set.of(
           SupportedQualityGates.STRYKER,
@@ -46,7 +48,8 @@ public class QualityGateFactory {
           SupportedQualityGates.XCODEBUILD_TEST,
           SupportedQualityGates.SWIFT_COVERAGE,
           SupportedQualityGates.ANDROID_COVERAGE,
-          SupportedQualityGates.API_COMPAT);
+          SupportedQualityGates.API_COMPAT
+      );
   private static final String STRYKER_REPORT_HINT =
       "Enable Stryker's json reporter in the command, for example with"
           + " --reporters clear-text,progress,json.";
@@ -57,9 +60,13 @@ public class QualityGateFactory {
           + " outputFormats = ['XML', 'HTML'] in the Gradle pitest block.";
   private static final Map<String, String> MUTATION_REPORT_HINTS =
       Map.of(
-          SupportedQualityGates.STRYKER, STRYKER_REPORT_HINT,
-          SupportedQualityGates.MUTMUT, MUTMUT_REPORT_HINT,
-          SupportedQualityGates.MUTATION, PIT_REPORT_HINT);
+          SupportedQualityGates.STRYKER,
+          STRYKER_REPORT_HINT,
+          SupportedQualityGates.MUTMUT,
+          MUTMUT_REPORT_HINT,
+          SupportedQualityGates.MUTATION,
+          PIT_REPORT_HINT
+      );
 
   private final CommandExecutor executor;
   private final ReportDirectories reportDirectories;
@@ -79,7 +86,9 @@ public class QualityGateFactory {
    * their tools write reports.
    */
   public QualityGateFactory(
-      final CommandExecutor executor, final ReportDirectories reportDirectories) {
+      final CommandExecutor executor,
+      final ReportDirectories reportDirectories
+  ) {
     this(executor, new GateReportPorts(reportDirectories, null, null, null), null);
   }
 
@@ -92,7 +101,8 @@ public class QualityGateFactory {
   public QualityGateFactory(
       final CommandExecutor executor,
       final GateReportPorts reports,
-      final GateExtensions extensions) {
+      final GateExtensions extensions
+  ) {
     this.reportDirectories = reports.directories();
     this.strykerReport = reports.stryker();
     this.pitReport = reports.pit();
@@ -127,16 +137,20 @@ public class QualityGateFactory {
   public List<QualityGate> create(
       final WardConfiguration configuration,
       final Project project,
-      final Map<String, List<String>> focus) {
+      final Map<String,
+      List<String>> focus
+  ) {
     configuration.checks().values().forEach(QualityGateFactory::requireSupportedType);
     return configuration.checks().values().stream()
-        .<QualityGate>map(
+        .<QualityGate> map(
             check ->
                 new TypedQualityGate(
                     check.type(),
                     check.enabled()
                         ? createGate(check, project, focus.getOrDefault(check.name(), List.of()))
-                        : new SkippedQualityGate(check.name())))
+                        : new SkippedQualityGate(check.name())
+                )
+        )
         .toList();
   }
 
@@ -149,12 +163,16 @@ public class QualityGateFactory {
               + "' of check '"
               + check.name()
               + "' is unknown. Supported types: "
-              + SUPPORTED_GATES);
+              + SUPPORTED_GATES
+      );
     }
   }
 
   private QualityGate createGate(
-      final GateConfiguration check, final Project project, final List<String> focus) {
+      final GateConfiguration check,
+      final Project project,
+      final List<String> focus
+  ) {
     final String name = check.name();
     final String type = check.type();
     if (IN_PROCESS_GATES.contains(type)) {
@@ -181,8 +199,8 @@ public class QualityGateFactory {
           .create(
               check,
               () ->
-                  new CommandQualityGate(
-                      check.name(), executor, check.command(), reportDirectories));
+                  new CommandQualityGate(check.name(), executor, check.command(), reportDirectories)
+          );
     }
     if (SupportedQualityGates.ANDROID_COVERAGE.equals(check.type())) {
       return CoverageGates.minimum(check, executor, reports, reports.swift().android());
@@ -212,7 +230,11 @@ public class QualityGateFactory {
       throw new WardException("The '" + check.name() + "' check cannot check its minimum here.");
     }
     return new MutationScoreGate(
-        command, report, check.minimum(), MUTATION_REPORT_HINTS.get(check.type()));
+        command,
+        report,
+        check.minimum(),
+        MUTATION_REPORT_HINTS.get(check.type())
+    );
   }
 
   /**
@@ -243,7 +265,10 @@ public class QualityGateFactory {
   }
 
   private QualityGate openApiGate(
-      final String name, final GateConfiguration check, final Project project) {
+      final String name,
+      final GateConfiguration check,
+      final Project project
+  ) {
     if (extensions.openApi() == null) {
       throw new WardException("OpenAPI gate dependencies are unavailable.");
     }

@@ -13,41 +13,48 @@ import java.util.regex.PatternSyntaxException;
  * beyond month lengths; upgrade when a format's edge cases matter.
  */
 final class Formats {
-
   private static final Pattern DATE = Pattern.compile("^(\\d{4})-(\\d{2})-(\\d{2})\\z");
   private static final Pattern TIME =
       Pattern.compile(
           "^(\\d{2}):(\\d{2}):(\\d{2})(\\.\\d+)?(z|[+-]\\d{2}(?::?\\d{2})?)?\\z",
-          Pattern.CASE_INSENSITIVE);
+          Pattern.CASE_INSENSITIVE
+      );
   private static final Pattern DATE_TIME =
       Pattern.compile("^(.*?)[t ](.*)\\z", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
   private static final Pattern URI =
       Pattern.compile(
           "^[a-z][a-z0-9+.-]*:(?:\\/?\\/(?:(?:[a-z0-9\\-._~!$&'()*+,;=:]|%[0-9a-f]{2})*@)?(?:\\[(?:(?:[0-9a-f:.]+)|v[0-9a-f]+\\.[a-z0-9\\-._~!$&'()*+,;=:]+)\\]|(?:[a-z0-9\\-._~!$&'()*+,;=]|%[0-9a-f]{2})*)(?::\\d*)?(?:\\/(?:[a-z0-9\\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})*)*|\\/(?:(?:[a-z0-9\\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})+(?:\\/(?:[a-z0-9\\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})*)*)?|(?:[a-z0-9\\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})+(?:\\/(?:[a-z0-9\\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})*)*)(?:\\?(?:[a-z0-9\\-._~!$&'()*+,;=:@\\/?]|%[0-9a-f]{2})*)?(?:#(?:[a-z0-9\\-._~!$&'()*+,;=:@\\/?]|%[0-9a-f]{2})*)?\\z",
-          Pattern.CASE_INSENSITIVE);
+          Pattern.CASE_INSENSITIVE
+      );
   private static final Pattern URI_REFERENCE =
       Pattern.compile(
           "^(?:[a-z][a-z0-9+.-]*:)?(?:\\/?\\/(?:(?:[a-z0-9\\-._~!$&'()*+,;=:]|%[0-9a-f]{2})*@)?(?:\\[(?:(?:[0-9a-f:.]+)|v[0-9a-f]+\\.[a-z0-9\\-._~!$&'()*+,;=:]+)\\]|(?:[a-z0-9\\-._~!$&'()*+,;=]|%[0-9a-f]{2})*)(?::\\d*)?(?:\\/(?:[a-z0-9\\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})*)*|\\/(?:(?:[a-z0-9\\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})+(?:\\/(?:[a-z0-9\\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})*)*)?|(?:[a-z0-9\\-._~!$&'()*+,;=@]|%[0-9a-f]{2})+(?:\\/(?:[a-z0-9\\-._~!$&'()*+,;=:@]|%[0-9a-f]{2})*)*)?(?:\\?(?:[a-z0-9\\-._~!$&'()*+,;=:@\\/?]|%[0-9a-f]{2})*)?(?:#(?:[a-z0-9\\-._~!$&'()*+,;=:@\\/?]|%[0-9a-f]{2})*)?\\z",
-          Pattern.CASE_INSENSITIVE);
+          Pattern.CASE_INSENSITIVE
+      );
   private static final Pattern EMAIL =
       Pattern.compile(
           "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\z",
-          Pattern.CASE_INSENSITIVE);
+          Pattern.CASE_INSENSITIVE
+      );
   private static final Pattern HOSTNAME =
       Pattern.compile(
           "^(?=.{1,253}\\.?\\z)[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\\.[a-z0-9](?:[-0-9a-z]{0,61}[0-9a-z])?)*\\.?\\z",
-          Pattern.CASE_INSENSITIVE);
+          Pattern.CASE_INSENSITIVE
+      );
   private static final Pattern IPV4 =
       Pattern.compile(
-          "^(?:(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.){3}(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\z");
+          "^(?:(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.){3}(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\z"
+      );
   private static final Pattern IPV6 =
       Pattern.compile(
           "^((([0-9a-f]{1,4}:){7}([0-9a-f]{1,4}|:))|(([0-9a-f]{1,4}:){6}(:[0-9a-f]{1,4}|((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3})|:))|(([0-9a-f]{1,4}:){5}(((:[0-9a-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3})|:))|(([0-9a-f]{1,4}:){4}(((:[0-9a-f]{1,4}){1,3})|((:[0-9a-f]{1,4})?:((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3}))|:))|(([0-9a-f]{1,4}:){3}(((:[0-9a-f]{1,4}){1,4})|((:[0-9a-f]{1,4}){0,2}:((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3}))|:))|(([0-9a-f]{1,4}:){2}(((:[0-9a-f]{1,4}){1,5})|((:[0-9a-f]{1,4}){0,3}:((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3}))|:))|(([0-9a-f]{1,4}:){1}(((:[0-9a-f]{1,4}){1,6})|((:[0-9a-f]{1,4}){0,4}:((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3}))|:))|(:(((:[0-9a-f]{1,4}){1,7})|((:[0-9a-f]{1,4}){0,5}:((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3}))|:)))(%.+)?\\z",
-          Pattern.CASE_INSENSITIVE);
+          Pattern.CASE_INSENSITIVE
+      );
   private static final Pattern UUID =
       Pattern.compile(
           "^(?:urn:uuid:)?[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}\\z",
-          Pattern.CASE_INSENSITIVE);
+          Pattern.CASE_INSENSITIVE
+      );
   private static final Pattern BYTE =
       Pattern.compile("^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?\\z");
   private static final Pattern JSON_POINTER = Pattern.compile("^(?:\\/(?:[^~/]|~0|~1)*)*\\z");
@@ -76,7 +83,8 @@ final class Formats {
           Map.entry("uuid", text -> UUID.matcher(text).find()),
           Map.entry("byte", text -> BYTE.matcher(text).find()),
           Map.entry("json-pointer", text -> JSON_POINTER.matcher(text).find()),
-          Map.entry("regex", Formats::regex));
+          Map.entry("regex", Formats::regex)
+      );
 
   private Formats() {}
 

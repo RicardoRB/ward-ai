@@ -8,7 +8,6 @@ import java.util.regex.Matcher;
 
 /** The text-level helpers of a secret match: the secret, its line, and positions. */
 final class SecretText {
-
   private SecretText() {}
 
   /** The secret group, else the first group that matched, else the whole match. */
@@ -33,8 +32,7 @@ final class SecretText {
     int to = value.length();
     while (from < to && value.charAt(from) == '\n') {
       from++;
-    }
-    while (to > from && value.charAt(to - 1) == '\n') {
+    } while (to > from && value.charAt(to - 1) == '\n') {
       to--;
     }
     return value.substring(from, to);

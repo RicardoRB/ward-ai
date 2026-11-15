@@ -4,7 +4,6 @@ import dev.ward.analysis.domain.ir.Span;
 
 /** The line-level moves of the parser: blanks, comments, line breaks, indentation and positions. */
 final class YamlLines {
-
   private static final char TAB = '\t';
   private static final char COMMENT = '#';
   private static final String DOCUMENT_START = "---";

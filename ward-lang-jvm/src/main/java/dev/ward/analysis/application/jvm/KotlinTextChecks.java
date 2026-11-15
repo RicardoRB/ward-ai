@@ -10,7 +10,6 @@ import java.util.Map;
 
 /** Builds the Kotlin checks of detekt's style set that read the file text, not the tree. */
 final class KotlinTextChecks {
-
   private static final String MESSAGE = "message";
 
   private KotlinTextChecks() {}
@@ -20,9 +19,12 @@ final class KotlinTextChecks {
     return Map.ofEntries(
         entry(
             "kotlin-new-line-at-end-of-file",
-            toml -> new KotlinNewLineAtEndOfFileCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new KotlinNewLineAtEndOfFileCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "kotlin-trailing-whitespace",
-            toml -> new KotlinTrailingWhitespaceCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new KotlinTrailingWhitespaceCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 }

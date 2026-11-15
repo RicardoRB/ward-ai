@@ -11,7 +11,6 @@ import java.util.Set;
  * private constructor are not counted, as PMD does.
  */
 public final class ParameterCountCheck implements UnitCheck {
-
   private static final String PARAMETERS = "formalParameters";
   private static final String PARAMETER = "formalParameter";
   private static final String CONSTRUCTOR = "constructorDeclaration";
@@ -48,7 +47,9 @@ public final class ParameterCountCheck implements UnitCheck {
     return List.of(
         CheckSupport.at(
             list.span(),
-            CheckSupport.fill(message, String.valueOf(count), String.valueOf(minimum))));
+            CheckSupport.fill(message, String.valueOf(count), String.valueOf(minimum))
+        )
+    );
   }
 
   private static boolean inPrivateConstructor(final List<SyntaxNode> ancestors) {

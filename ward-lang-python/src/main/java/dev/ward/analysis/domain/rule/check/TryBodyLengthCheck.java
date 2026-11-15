@@ -12,7 +12,6 @@ import java.util.Set;
  * too-many-try-statements}. The handlers, the {@code else} and the {@code finally} are not counted.
  */
 public final class TryBodyLengthCheck implements RuleCheck {
-
   private static final Set<String> TRIES = Set.of("try_stmt");
   private static final Set<String> STATEMENTS = Set.of("simple_stmt", "compound_stmt");
 
@@ -41,7 +40,9 @@ public final class TryBodyLengthCheck implements RuleCheck {
                 visit.node().span(),
                 message
                     .replace("{value}", String.valueOf(count))
-                    .replace("{max}", String.valueOf(max))));
+                    .replace("{max}", String.valueOf(max))
+            )
+        );
       }
     }
     return List.copyOf(found);

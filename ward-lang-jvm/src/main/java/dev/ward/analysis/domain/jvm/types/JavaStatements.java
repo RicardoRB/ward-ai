@@ -54,7 +54,10 @@ final class JavaStatements {
   }
 
   private void outcome(
-      final SyntaxNode statement, final Ctx ctx, final List<Optional<JType>> results) {
+      final SyntaxNode statement,
+      final Ctx ctx,
+      final List<Optional<JType>> results
+  ) {
     final Optional<SyntaxNode> value =
         Syntax.find(statement, STATEMENT).flatMap(found -> Syntax.child(found, EXPRESSION));
     if (value.isPresent() && Syntax.find(statement, "block").isEmpty()) {

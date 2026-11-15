@@ -13,7 +13,6 @@ import picocli.CommandLine;
  * Bridges application startup to Picocli and turns the command's result into the process exit code.
  */
 public class CommandLineRunnerImpl {
-
   private final WardCommand rootCommand;
   private final DaggerCommandFactory factory;
   private final UpdateNoticePrinter updateNotice;
@@ -26,7 +25,8 @@ public class CommandLineRunnerImpl {
   public CommandLineRunnerImpl(
       final DaggerCommandFactory factory,
       final WardCommand rootCommand,
-      final UpdateNoticePrinter updateNotice) {
+      final UpdateNoticePrinter updateNotice
+  ) {
     this.factory = factory;
     this.rootCommand = rootCommand;
     this.updateNotice = updateNotice;
@@ -37,14 +37,16 @@ public class CommandLineRunnerImpl {
     return run(
         new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8), true),
         new PrintWriter(new OutputStreamWriter(System.err, StandardCharsets.UTF_8), true),
-        args);
+        args
+    );
   }
 
   /** Runs {@code args}, writing to {@code out} and {@code err}, and returns the exit code. */
   public int run(final PrintWriter out, final PrintWriter err, final String... args) {
     final CommandLine commandLine = createCommandLine(rootCommand, factory, out, err);
     commandLine.setExecutionStrategy(
-        new VerboseExecutionStrategy(updateNotice.around(new CommandLine.RunLast())));
+        new VerboseExecutionStrategy(updateNotice.around(new CommandLine.RunLast()))
+    );
     final int exitCode = commandLine.execute(args);
     commandLine.getOut().flush();
     commandLine.getErr().flush();
@@ -56,7 +58,8 @@ public class CommandLineRunnerImpl {
       final WardCommand root,
       final DaggerCommandFactory factory,
       final PrintWriter out,
-      final PrintWriter err) {
+      final PrintWriter err
+  ) {
     final CommandLine commandLine = new CommandLine(root, factory);
     commandLine.setOut(out);
     commandLine.setErr(err);
@@ -77,7 +80,10 @@ public class CommandLineRunnerImpl {
    * trace.
    */
   static final int handle(
-      final Exception e, final CommandLine commandLine, final CommandLine.ParseResult parseResult) {
+      final Exception e,
+      final CommandLine commandLine,
+      final CommandLine.ParseResult parseResult
+  ) {
     if (e instanceof WardException) {
       commandLine.getErr().println("ward: " + e.getMessage());
     } else {

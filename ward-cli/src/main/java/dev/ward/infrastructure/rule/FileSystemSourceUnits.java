@@ -30,7 +30,6 @@ import javax.inject.Inject;
  * compiles.
  */
 public final class FileSystemSourceUnits implements AnalysisSourceUnits {
-
   private static final Map<String, AnalysisLanguage> LANGUAGES_BY_EXTENSION =
       Map.ofEntries(
           Map.entry("java", AnalysisLanguage.JAVA),
@@ -42,7 +41,8 @@ public final class FileSystemSourceUnits implements AnalysisSourceUnits {
           Map.entry("mjs", AnalysisLanguage.JAVASCRIPT),
           Map.entry("cjs", AnalysisLanguage.JAVASCRIPT),
           Map.entry("py", AnalysisLanguage.PYTHON),
-          Map.entry("swift", AnalysisLanguage.SWIFT));
+          Map.entry("swift", AnalysisLanguage.SWIFT)
+      );
   private static final Set<String> SKIPPED_DIRECTORIES =
       Set.of("target", "build", "dist", "node_modules", "mutants");
   private static final Set<AnalysisLanguage> JVM_LANGUAGES =
@@ -57,7 +57,8 @@ public final class FileSystemSourceUnits implements AnalysisSourceUnits {
   private static final Pattern ANDROID_FILE =
       Pattern.compile(
           "(^|/)(AndroidManifest\\.xml|res/(layout|menu|xml|values|drawable|navigation|color)"
-              + "(-[^/]+)?/[^/]+\\.xml)$");
+              + "(-[^/]+)?/[^/]+\\.xml)$"
+      );
 
   private final CommandExecutor executor;
 
@@ -89,7 +90,10 @@ public final class FileSystemSourceUnits implements AnalysisSourceUnits {
 
   @Override
   public TextRead readText(
-      final Path root, final List<String> paths, final Predicate<String> excluded) {
+      final Path root,
+      final List<String> paths,
+      final Predicate<String> excluded
+  ) {
     return FileSystemTextFiles.read(root, paths, excluded, executor);
   }
 
@@ -109,7 +113,8 @@ public final class FileSystemSourceUnits implements AnalysisSourceUnits {
         final Path root,
         final Set<AnalysisLanguage> languages,
         final Set<String> ignored,
-        final List<SourceUnit> units) {
+        final List<SourceUnit> units
+    ) {
       super();
       this.root = root;
       this.languages = languages;
@@ -119,7 +124,9 @@ public final class FileSystemSourceUnits implements AnalysisSourceUnits {
 
     @Override
     public FileVisitResult preVisitDirectory(
-        final Path directory, final BasicFileAttributes attributes) {
+        final Path directory,
+        final BasicFileAttributes attributes
+    ) {
       final boolean skipped =
           !directory.equals(root)
               && (skipsDirectory(nameOf(directory)) || ignored.contains(relative(directory) + "/"));

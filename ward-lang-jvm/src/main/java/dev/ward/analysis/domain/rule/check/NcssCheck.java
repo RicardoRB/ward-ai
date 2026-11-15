@@ -14,7 +14,6 @@ import java.util.Set;
  * types inside it. Each counted node also adds one for itself.
  */
 public final class NcssCheck implements RuleCheck {
-
   private static final Set<String> METHODS = Set.of("methodDeclaration", "constructorDeclaration");
   private static final Set<String> TYPES =
       Set.of(
@@ -22,7 +21,8 @@ public final class NcssCheck implements RuleCheck {
           "interfaceDeclaration",
           "enumDeclaration",
           "recordDeclaration",
-          "annotationTypeDeclaration");
+          "annotationTypeDeclaration"
+      );
   private static final Set<String> COUNTED =
       Set.of(
           "statement",
@@ -34,7 +34,8 @@ public final class NcssCheck implements RuleCheck {
           "interfaceDeclaration",
           "enumDeclaration",
           "recordDeclaration",
-          "annotationTypeDeclaration");
+          "annotationTypeDeclaration"
+      );
   private static final Set<String> METHOD_SKIPS = Set.of("classBody", "classDeclaration");
   private static final Set<String> TYPE_SKIPS = TYPES;
   private static final Set<String> NO_SKIPS = Set.of();
@@ -56,7 +57,11 @@ public final class NcssCheck implements RuleCheck {
    * @throws IllegalArgumentException if a limit is negative
    */
   public NcssCheck(
-      final int methodMax, final int classMax, final int fileMax, final String message) {
+      final int methodMax,
+      final int classMax,
+      final int fileMax,
+      final String message
+  ) {
     this.methodMax = CheckSupport.nonNegative(methodMax, "method-maximum");
     this.classMax = CheckSupport.nonNegative(classMax, "class-maximum");
     this.fileMax = CheckSupport.nonNegative(fileMax, "file-maximum");
@@ -79,11 +84,18 @@ public final class NcssCheck implements RuleCheck {
   }
 
   private void report(
-      final SyntaxNode node, final int value, final int max, final List<RuleMatch> matches) {
+      final SyntaxNode node,
+      final int value,
+      final int max,
+      final List<RuleMatch> matches
+  ) {
     if (value > max) {
       matches.add(
           new RuleMatch(
-              node.span(), CheckSupport.fill(message, String.valueOf(value), String.valueOf(max))));
+              node.span(),
+              CheckSupport.fill(message, String.valueOf(value), String.valueOf(max))
+          )
+      );
     }
   }
 

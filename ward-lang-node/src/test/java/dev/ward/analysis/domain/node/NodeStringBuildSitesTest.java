@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** The string-building flow sites that the TypeScript and JavaScript lowering records. */
 class NodeStringBuildSitesTest {
-
   private static final int ONE_VALUE = 1;
 
   /** Scenario: a {@code +} chain with a literal operand is one site named by its literal text. */

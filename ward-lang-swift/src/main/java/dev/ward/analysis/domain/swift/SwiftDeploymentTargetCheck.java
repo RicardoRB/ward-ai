@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * {@code deployment_target}. The check does nothing for a platform without a configured target.
  */
 public final class SwiftDeploymentTargetCheck implements RuleCheck {
-
   private static final String CONDITION = "availability_condition";
   private static final String ATTRIBUTE = "attribute";
   private static final Pattern CONDITION_TEXT =

@@ -24,7 +24,6 @@ import org.junit.jupiter.params.provider.MethodSource;
  * refused.
  */
 class SwiftFormatterFixturesTest {
-
   private static final String FIXTURE_ROOT = "/format/swift";
   private static final String INPUT = "input.swift";
   private static final String EXPECTED = "expected.swift";
@@ -33,7 +32,8 @@ class SwiftFormatterFixturesTest {
       new FormatFixtureChecks(
           FORMATTER,
           new FormatSafety(new SwiftFormatSyntax()),
-          FormatOptions.defaults(FORMATTER.options()));
+          FormatOptions.defaults(FORMATTER.options())
+      );
 
   @ParameterizedTest(name = "{0}")
   @MethodSource("cases")

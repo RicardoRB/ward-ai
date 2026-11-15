@@ -22,7 +22,9 @@ final class ScopeIndex {
                 Collectors.toMap(
                     reference -> reference.span().startOffset(),
                     Function.identity(),
-                    (first, second) -> first));
+                    (first, second) -> first
+                )
+            );
     this.declared =
         scopes.bindings().stream()
             .map(binding -> binding.declaration().startOffset())

@@ -26,15 +26,18 @@ final class DowncallBinder {
             method.getName(),
             linker.downcallHandle(
                 linker.defaultLookup().find(symbol(method.getName())).orElseThrow(),
-                descriptor(method)));
+                descriptor(method)
+            )
+        );
       }
     }
     return (TerminalLibc)
         Proxy.newProxyInstance(
             Thread.currentThread().getContextClassLoader(),
-            new Class<?>[] {TerminalLibc.class},
+            new Class<?> [] {TerminalLibc.class},
             (instance, method, arguments) ->
-                functions.get(method.getName()).invokeWithArguments(arguments));
+                functions.get(method.getName()).invokeWithArguments(arguments)
+        );
   }
 
   private static String symbol(final String methodName) {

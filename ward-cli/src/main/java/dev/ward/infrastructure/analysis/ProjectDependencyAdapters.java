@@ -10,7 +10,6 @@ import java.util.Optional;
 
 /** Combines the dependency adapters of every language that resolves dependencies. */
 public final class ProjectDependencyAdapters implements DependencyAdapters {
-
   private final List<DependencyAdapters> languages;
 
   /**
@@ -29,7 +28,10 @@ public final class ProjectDependencyAdapters implements DependencyAdapters {
 
   @Override
   public List<DependencySupport> forProject(
-      final Path projectRoot, final List<SourceUnit> units, final Optional<String> javaClasspath) {
+      final Path projectRoot,
+      final List<SourceUnit> units,
+      final Optional<String> javaClasspath
+  ) {
     final List<DependencySupport> supports = new ArrayList<>();
     for (final DependencyAdapters language : languages) {
       supports.addAll(language.forProject(projectRoot, units, javaClasspath));

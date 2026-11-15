@@ -24,7 +24,8 @@ record NodeReference(String kind, String specifier) {
       return Optional.empty();
     }
     return Optional.of(
-        new NodeReference(recorded.substring(0, colon), recorded.substring(colon + 1)));
+        new NodeReference(recorded.substring(0, colon), recorded.substring(colon + 1))
+    );
   }
 
   /**

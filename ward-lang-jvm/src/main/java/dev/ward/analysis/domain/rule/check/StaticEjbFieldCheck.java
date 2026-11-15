@@ -12,7 +12,6 @@ import java.util.Set;
  * implements an EJB interface; both are read from names, with or without a package.
  */
 public final class StaticEjbFieldCheck implements UnitCheck {
-
   private static final Set<String> ANNOTATIONS =
       Set.of("@Stateless", "@Stateful", "@Singleton", "@MessageDriven");
   private static final Set<String> INTERFACES =

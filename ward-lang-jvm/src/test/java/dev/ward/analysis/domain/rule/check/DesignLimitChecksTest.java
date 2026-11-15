@@ -7,7 +7,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import org.junit.jupiter.api.Test;
 
 class DesignLimitChecksTest extends DesignFlowTrees {
-
   private static final String TEMPLATE = "{value}/{max}";
   private static final int DEEPER_THAN_TWO = 3;
 
@@ -64,7 +63,9 @@ class DesignLimitChecksTest extends DesignFlowTrees {
             classOf(
                 member(field("a"), "private"),
                 member(field("b"), "final"),
-                member(field("c"), "static")));
+                member(field("c"), "static")
+            )
+        );
     final SyntaxNode two = compilationUnit(classOf(member(field("a")), member(field("b"))));
 
     assertThat(messagesOf(new FieldLimitCheck(1, TEMPLATE), mixed)).isEmpty();
@@ -75,12 +76,15 @@ class DesignLimitChecksTest extends DesignFlowTrees {
   void skipsTrivialAccessorsWhenCountingMethods() {
     final SyntaxNode accessorAndMethod =
         compilationUnit(
-            classOf(member(method("getName")), member(method("compute", assignment("a", "1")))));
+            classOf(member(method("getName")), member(method("compute", assignment("a", "1"))))
+        );
     final SyntaxNode longGetterAndMethod =
         compilationUnit(
             classOf(
                 member(method("getName", assignment("a", "1"), assignment("b", "2"))),
-                member(method("compute"))));
+                member(method("compute"))
+            )
+        );
 
     assertThat(messagesOf(new MethodLimitCheck(1, TEMPLATE), accessorAndMethod)).isEmpty();
     assertThat(messagesOf(new MethodLimitCheck(1, TEMPLATE), longGetterAndMethod))
@@ -94,10 +98,13 @@ class DesignLimitChecksTest extends DesignFlowTrees {
             classOf(
                 member(method("run"), "public"),
                 member(field("count"), "public"),
-                member(method("hide"), "private")));
+                member(method("hide"), "private")
+            )
+        );
     final SyntaxNode notEnough =
         compilationUnit(
-            classOf(member(method("run"), "public"), member(method("hide"), "private")));
+            classOf(member(method("run"), "public"), member(method("hide"), "private"))
+        );
 
     assertThat(messagesOf(new PublicCountCheck(2, TEMPLATE), enough)).containsExactly("2/2");
     assertThat(messagesOf(new PublicCountCheck(2, TEMPLATE), notEnough)).isEmpty();

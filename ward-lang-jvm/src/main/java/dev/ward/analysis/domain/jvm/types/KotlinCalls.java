@@ -49,7 +49,8 @@ final class KotlinCalls {
       final List<SyntaxNode> parts,
       final Optional<Typed> receiver,
       final boolean callFollows,
-      final Ctx ctx) {
+      final Ctx ctx
+  ) {
     final Optional<String> written =
         parts.get(0).children().isEmpty()
             ? Optional.empty()
@@ -111,7 +112,11 @@ final class KotlinCalls {
   }
 
   private Typed member(
-      final Typed receiver, final String name, final SyntaxNode suffix, final Ctx ctx) {
+      final Typed receiver,
+      final String name,
+      final SyntaxNode suffix,
+      final Ctx ctx
+  ) {
     final Arguments arguments = arguments(suffix, ctx);
     final Optional<JType.ClassType> site = siteOf(receiver, ctx);
     if (!arguments.complete() || site.isEmpty()) {
@@ -125,7 +130,9 @@ final class KotlinCalls {
   }
 
   private Typed finish(
-      final List<Hierarchy.Found<JvmMethod>> candidates, final List<Overloads.Argument> arguments) {
+      final List<Hierarchy.Found<JvmMethod>> candidates,
+      final List<Overloads.Argument> arguments
+  ) {
     final Optional<Hierarchy.Found<JvmMethod>> chosen =
         session.overloads.select(candidates, arguments);
     if (chosen.isEmpty()) {
@@ -134,7 +141,9 @@ final class KotlinCalls {
     final Map<String, JType> bound = session.inference.infer(chosen.get(), arguments);
     final JType returned =
         Types.substitute(
-            Types.substitute(chosen.get().member().returnType(), chosen.get().bindings()), bound);
+            Types.substitute(chosen.get().member().returnType(), chosen.get().bindings()),
+            bound
+        );
     final boolean unresolved =
         Types.mentionsVariable(returned) && !chosen.get().member().typeParameters().isEmpty();
     return (unresolved ? Typed.UNKNOWN : Typed.of(returned)).withCall(chosen.get());
@@ -153,7 +162,8 @@ final class KotlinCalls {
             .map(
                 found ->
                     Typed.of(Types.substitute(found.member().type(), found.bindings()))
-                        .withConstant(found.member().constant()));
+                        .withConstant(found.member().constant())
+            );
     if (field.isPresent()) {
       return field.get();
     }

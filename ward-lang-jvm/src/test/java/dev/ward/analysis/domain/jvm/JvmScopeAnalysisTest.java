@@ -13,7 +13,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class JvmScopeAnalysisTest {
-
   private static final int LINE_2 = 2;
   private static final int LINE_3 = 3;
   private static final int LINE_4 = 4;
@@ -32,8 +31,7 @@ class JvmScopeAnalysisTest {
   @Test
   void aLocalShadowsAFieldInTheMethodOnly() {
     final UnitScopes scopes =
-        JvmScopeFixtures.java(
-            """
+        JvmScopeFixtures.java("""
             class A {
               int x;
               int get() { int x = 1; return x; }
@@ -52,11 +50,13 @@ class JvmScopeAnalysisTest {
   void aLambdaSeesTheEnclosingLocalsAndOwnsItsParameters() {
     final UnitScopes scopes =
         JvmScopeFixtures.java(
-            "class A { void m(int k) { java.util.function.Function<Integer,Integer> f = x -> x + k; x; } }\n");
+            "class A { void m(int k) { java.util.function.Function<Integer,Integer> f = x -> x + k; x; } }\n"
+        );
 
     assertThat(scopes.references())
         .filteredOn(
-            reference -> "x".equals(reference.name()) && reference.access() == ReferenceAccess.READ)
+            reference -> "x".equals(reference.name()) && reference.access() == ReferenceAccess.READ
+        )
         .extracting(reference -> reference.resolved().isPresent())
         .containsExactly(true, false);
   }
@@ -65,7 +65,8 @@ class JvmScopeAnalysisTest {
   void anInheritingClassIsOpenAndAPlainOneIsNot() {
     final UnitScopes scopes =
         JvmScopeFixtures.java(
-            "class A extends B { void m() { inherited(); a = 1; } }\nclass C { void m() { c = 1; } }\n");
+            "class A extends B { void m() { inherited(); a = 1; } }\nclass C { void m() { c = 1; } }\n"
+        );
 
     final List<NameReference> unresolved = scopes.unresolved();
 
@@ -78,7 +79,8 @@ class JvmScopeAnalysisTest {
   void aStaticWildcardImportOpensTheFile() {
     final UnitScopes scopes =
         JvmScopeFixtures.java(
-            "import static java.lang.Math.*;\nclass A { int m() { return max(1, 2) + z; } }\n");
+            "import static java.lang.Math.*;\nclass A { int m() { return max(1, 2) + z; } }\n"
+        );
 
     assertThat(scopes.isOpen(only(scopes, "z", LINE_2))).isTrue();
   }
@@ -87,13 +89,15 @@ class JvmScopeAnalysisTest {
   void importsAndForEachVariablesAreRecorded() {
     final UnitScopes scopes =
         JvmScopeFixtures.java(
-            "import java.util.List;\nclass A { void m(List<String> l) { for (String s : l) {} } }\n");
+            "import java.util.List;\nclass A { void m(List<String> l) { for (String s : l) {} } }\n"
+        );
 
     assertThat(scopes.module().bindings())
         .extracting(Binding::name, Binding::kind)
         .containsExactly(
             org.assertj.core.groups.Tuple.tuple("List", BindingKind.IMPORT),
-            org.assertj.core.groups.Tuple.tuple("A", BindingKind.CLASS));
+            org.assertj.core.groups.Tuple.tuple("A", BindingKind.CLASS)
+        );
     assertThat(scopes.bindings())
         .filteredOn(binding -> "s".equals(binding.name()))
         .allSatisfy(binding -> assertThat(binding.has(BindingFlag.DESTRUCTURED)).isTrue());
@@ -103,7 +107,8 @@ class JvmScopeAnalysisTest {
   void aKotlinLambdaWithoutParametersHasItAndIsOpen() {
     final UnitScopes scopes =
         JvmScopeFixtures.kotlin(
-            "fun f(xs: List<Int>) { xs.map { it + 1 }; xs.map { y -> y + z } }\n");
+            "fun f(xs: List<Int>) { xs.map { it + 1 }; xs.map { y -> y + z } }\n"
+        );
 
     assertThat(scopes.references())
         .filteredOn(reference -> "it".equals(reference.name()))
@@ -126,7 +131,8 @@ class JvmScopeAnalysisTest {
   void aKotlinCompanionOpensItsClass() {
     final UnitScopes scopes =
         JvmScopeFixtures.kotlin(
-            "class A {\n  fun m() = LIMIT\n  companion object { const val LIMIT = 1 }\n}\n");
+            "class A {\n  fun m() = LIMIT\n  companion object { const val LIMIT = 1 }\n}\n"
+        );
 
     assertThat(scopes.isOpen(only(scopes, "LIMIT", LINE_2))).isTrue();
   }
@@ -135,7 +141,8 @@ class JvmScopeAnalysisTest {
   void kotlinParametersPropertiesAndLocalsAreSeparate() {
     final UnitScopes scopes =
         JvmScopeFixtures.kotlin(
-            "class P(val a: Int, b: Int) { fun m(c: Int): Int { val d = c; var e = 1; e++; return d } }\n");
+            "class P(val a: Int, b: Int) { fun m(c: Int): Int { val d = c; var e = 1; e++; return d } }\n"
+        );
 
     assertThat(scopes.bindings())
         .extracting(Binding::name, Binding::kind)
@@ -144,6 +151,7 @@ class JvmScopeAnalysisTest {
             org.assertj.core.groups.Tuple.tuple("b", BindingKind.PARAMETER),
             org.assertj.core.groups.Tuple.tuple("c", BindingKind.PARAMETER),
             org.assertj.core.groups.Tuple.tuple("d", BindingKind.CONSTANT),
-            org.assertj.core.groups.Tuple.tuple("e", BindingKind.VARIABLE));
+            org.assertj.core.groups.Tuple.tuple("e", BindingKind.VARIABLE)
+        );
   }
 }

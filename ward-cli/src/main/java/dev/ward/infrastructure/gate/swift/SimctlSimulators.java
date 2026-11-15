@@ -65,7 +65,9 @@ public final class SimctlSimulators implements Simulators {
                 "The "
                     + runtime.name
                     + " simulator runtime has no available iPhone. Create one in Xcode > Window >"
-                    + " Devices and Simulators, or with `xcrun simctl create`."));
+                    + " Devices and Simulators, or with `xcrun simctl create`."
+            )
+        );
         continue;
       }
       LOGGER.log(
@@ -74,7 +76,8 @@ public final class SimctlSimulators implements Simulators {
               "event=simulator-selected runtime="
                   + runtime.identifier
                   + " state="
-                  + device.get().state);
+                  + device.get().state
+      );
       final Simulator simulator = boot(device.get(), workingDirectory);
       if (simulator.problem() == null) {
         return simulator;
@@ -106,11 +109,13 @@ public final class SimctlSimulators implements Simulators {
   private static List<SimRuntime> iosRuntimesNewestFirst(final RuntimeList runtimes) {
     return runtimes.runtimesOrEmpty().stream()
         .filter(
-            runtime -> IOS.equals(runtime.platform) && !Boolean.FALSE.equals(runtime.isAvailable))
+            runtime -> IOS.equals(runtime.platform) && !Boolean.FALSE.equals(runtime.isAvailable)
+        )
         .filter(runtime -> runtime.identifier != null && runtime.version != null)
         .sorted(
             Comparator.comparing((SimRuntime runtime) -> version(runtime.version), Arrays::compare)
-                .reversed())
+                .reversed()
+        )
         .toList();
   }
 
@@ -146,7 +151,8 @@ public final class SimctlSimulators implements Simulators {
                 + device.name
                 + " simulator did not boot. Run `xcrun simctl boot "
                 + device.udid
-                + "` to see why.");
+                + "` to see why."
+        );
       }
     }
     final CommandResult status =
@@ -154,7 +160,8 @@ public final class SimctlSimulators implements Simulators {
     if (!status.succeeded()) {
       return unavailable(
           "boot-unfinished",
-          "The " + device.name + " simulator did not finish booting. " + LIST_FAILED);
+          "The " + device.name + " simulator did not finish booting. " + LIST_FAILED
+      );
     }
     return Simulator.ready(device.udid);
   }

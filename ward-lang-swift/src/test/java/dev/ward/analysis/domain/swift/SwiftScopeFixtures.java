@@ -8,7 +8,6 @@ import java.util.Set;
 
 /** Builds the scopes of Swift source for tests. */
 final class SwiftScopeFixtures {
-
   private SwiftScopeFixtures() {}
 
   /** Parses {@code source} and builds its scopes, with no built-in names. */

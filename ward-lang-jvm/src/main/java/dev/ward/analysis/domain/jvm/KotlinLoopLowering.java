@@ -8,7 +8,6 @@ import java.util.Map;
 
 /** Lowers the {@code while}, {@code do}/{@code while} and {@code for} loops of a Kotlin body. */
 final class KotlinLoopLowering {
-
   private static final String EXPRESSION = "expression";
   private static final String BODY = "controlStructureBody";
 
@@ -61,7 +60,8 @@ final class KotlinLoopLowering {
             "forBinding",
             KotlinFlowSyntax.between(binding.span(), iterable.span()),
             Map.of(),
-            List.of(binding, iterable));
+            List.of(binding, iterable)
+        );
     final int header = flow.newBlock();
     final int body = flow.newBlock();
     final int after = flow.newBlock();
@@ -83,7 +83,8 @@ final class KotlinLoopLowering {
       final SyntaxNode body,
       final int bodyBlock,
       final int after,
-      final int continueBlock) {
+      final int continueBlock
+  ) {
     flow.jumps().pushLoop(label, after, continueBlock);
     flow.moveTo(bodyBlock);
     run(body);

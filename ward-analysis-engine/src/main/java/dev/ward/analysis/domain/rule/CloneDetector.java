@@ -21,7 +21,6 @@ import java.util.stream.IntStream;
  * to the distance between them.
  */
 public final class CloneDetector {
-
   private static final long BASE = 1_000_003L;
   private static final int MIN_LENGTH = 1;
   private static final int MIN_COPIES = 2;
@@ -35,7 +34,6 @@ public final class CloneDetector {
 
   /** A token sequence of {@code length} tokens that occurs at two or more places. */
   public record Clone(int length, List<Copy> copies) {
-
     /** Copies the list of copies. */
     public Clone {
       copies = List.copyOf(copies);
@@ -51,7 +49,10 @@ public final class CloneDetector {
    * @throws IllegalArgumentException if {@code minTokens} is below one
    */
   public static List<Clone> detect(
-      final SortedMap<String, List<Token>> files, final int minTokens) {
+      final SortedMap<String,
+      List<Token>> files,
+      final int minTokens
+  ) {
     if (minTokens < MIN_LENGTH) {
       throw new IllegalArgumentException("minTokens must be at least 1");
     }
@@ -122,7 +123,9 @@ public final class CloneDetector {
               Collectors.groupingBy(
                   start -> prefix[start + length] - prefix[start] * power,
                   LinkedHashMap::new,
-                  Collectors.toList()));
+                  Collectors.toList()
+              )
+          );
     }
 
     /** Splits the starts of one hash bucket into groups whose windows are equal token for token. */
@@ -164,8 +167,12 @@ public final class CloneDetector {
                       member ->
                           new Copy(
                               paths.get(fileOf[member]),
-                              copySpan(spans[member], spans[member + extended - 1])))
-                  .toList()));
+                              copySpan(spans[member], spans[member + extended - 1])
+                          )
+                  )
+                  .toList()
+          )
+      );
     }
 
     /** Whether every member has a token before it in its file, and all those tokens are equal. */
@@ -248,6 +255,7 @@ public final class CloneDetector {
         last.endLine(),
         last.endColumn(),
         first.startOffset(),
-        last.endOffset());
+        last.endOffset()
+    );
   }
 }

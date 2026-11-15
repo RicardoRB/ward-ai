@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class SwiftLayoutsTest {
-
   private static final Path FIXTURES = Path.of("src/test/resources/fixtures");
 
   @TempDir Path root;
@@ -72,7 +71,8 @@ class SwiftLayoutsTest {
             + "  .target(name: \"Gen\", path: \".build/gen\"),\n"
             + "  .target(name: \"Lib\", path: \"Vendor/Pods/Lib\"),\n"
             + "  .target(name: \"Shop\", path: \"Sources/Shop\")\n"
-            + "])");
+            + "])"
+    );
 
     final SwiftProjectLayout layout = SwiftLayouts.read(root);
 
@@ -87,7 +87,8 @@ class SwiftLayoutsTest {
   void aComputedManifestFallsBackToTheImplicitModule() throws IOException {
     Files.writeString(
         root.resolve("Package.swift"),
-        "let package = Package(name: \"X\", targets: names.map { .target(name: $0) })");
+        "let package = Package(name: \"X\", targets: names.map { .target(name: $0) })"
+    );
     Files.createDirectories(root.resolve("Sources/X"));
 
     final SwiftProjectLayout layout = SwiftLayouts.read(root);

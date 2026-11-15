@@ -14,18 +14,18 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 /** An identifier followed by an operator, a call or a subscript parses as an expression. */
 class TypeScriptMemberAccessTest {
-
   @ParameterizedTest
   @ValueSource(
       strings = {
-        "const x = config['timeout'];",
-        "const x = config.b['c'];",
-        "const x = f()['x'];",
-        "const x = a as T;",
-        "const x = a + b;",
-        "const x = a[i];",
-        "const x = a(b);",
-      })
+          "const x = config['timeout'];",
+          "const x = config.b['c'];",
+          "const x = f()['x'];",
+          "const x = a as T;",
+          "const x = a + b;",
+          "const x = a[i];",
+          "const x = a(b);",
+      }
+  )
   void identifierExpressionParsesWithoutSwallowingTheNextOperand(final String statement) {
     final AntlrLanguageFrontend frontend = new AntlrLanguageFrontend();
     for (final String path : List.of("member.ts", "member.tsx")) {
@@ -44,7 +44,11 @@ class TypeScriptMemberAccessTest {
         new AntlrLanguageFrontend()
             .parse(
                 new SourceUnit(
-                    "block.ts", AnalysisLanguage.TYPESCRIPT, "function f() { { return 2 } }\n"));
+                    "block.ts",
+                    AnalysisLanguage.TYPESCRIPT,
+                    "function f() { { return 2 } }\n"
+                )
+            );
 
     assertThat(result.diagnostics()).isEmpty();
     assertThat(kindsOf(result.tree())).contains("block").doesNotContain("objectLiteral");
@@ -68,8 +72,9 @@ class TypeScriptMemberAccessTest {
 
   private static List<String> kindsOf(final SyntaxNode node) {
     return Stream.concat(
-            Stream.of(node.kind()),
-            node.children().stream().flatMap(child -> kindsOf(child).stream()))
+        Stream.of(node.kind()),
+        node.children().stream().flatMap(child -> kindsOf(child).stream())
+    )
         .toList();
   }
 }

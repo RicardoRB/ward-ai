@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * tuple, so it is not checked.
  */
 public final class IndexRangeCheck implements RuleCheck {
-
   private static final Pattern SUBSCRIPT =
       Pattern.compile("^(\\[|\\()([^\\[\\](){}*]*)(\\]|\\))\\[(-?\\d+)\\]$");
   private static final String ATOM_EXPR = "atom_expr";

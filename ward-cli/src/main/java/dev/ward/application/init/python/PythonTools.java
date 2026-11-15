@@ -31,7 +31,8 @@ public record PythonTools(
     Framework framework,
     boolean ownMypyConfig,
     boolean ownCoverageConfig,
-    Optional<String> pytestSettings) {
+    Optional<String> pytestSettings
+) {
   static final String GROUP = "ward";
   private static final String VENV_BIN = ".venv/bin/";
   private static final int STANDARD_COVERAGE = 80;
@@ -44,7 +45,8 @@ public record PythonTools(
       final Project project,
       final PythonToolConfigs configs,
       final boolean executableAvailable,
-      final QualityPreset preset) {
+      final QualityPreset preset
+  ) {
     return new PythonTools(
         project.buildTool(),
         executableAvailable,
@@ -53,9 +55,10 @@ public record PythonTools(
         configs.userConfig(project.root(), "mypy").isPresent(),
         configs.userConfig(project.root(), "coverage").isPresent(),
         project.framework() == Framework.DJANGO
-                && configs.userConfig(project.root(), "pytest").isPresent()
+            && configs.userConfig(project.root(), "pytest").isPresent()
             ? configs.djangoSettings(project.root())
-            : Optional.empty());
+            : Optional.empty()
+    );
   }
 
   /** Returns the executable whose presence means the manager is available. */
@@ -80,7 +83,10 @@ public record PythonTools(
 
   /** Returns the command that runs {@code tool} with {@code arguments} under {@code manager}. */
   static List<String> command(
-      final BuildTool manager, final String tool, final String... arguments) {
+      final BuildTool manager,
+      final String tool,
+      final String... arguments
+  ) {
     final List<String> command = new ArrayList<>(runner(manager, tool));
     command.addAll(List.of(arguments));
     return List.copyOf(command);
@@ -104,7 +110,9 @@ public record PythonTools(
       final String id,
       final String description,
       final List<String> command,
-      final Map<String, String> settings) {
+      final Map<String,
+      String> settings
+  ) {
     final String name = manager.displayName();
     return new InitGateOption(
         id,
@@ -114,7 +122,8 @@ public record PythonTools(
         available
             ? name + " command available; init adds the tool to the " + GROUP + " group."
             : name + " is unavailable; install " + name + " before running this gate.",
-        settings);
+        settings
+    );
   }
 
   /** Returns the mutation score minimum that strict sets on the mutmut gate. */

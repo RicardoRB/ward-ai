@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
  * the names of functions, so the whole-run unused rule can see uses across files.
  */
 public final class SwiftFileSummarizer implements FileSummarizer {
-
   /** The specifier prefix of an import, so the resolver can tell modules from other references. */
   public static final String MODULE_PREFIX = "module:";
 
@@ -83,7 +82,8 @@ public final class SwiftFileSummarizer implements FileSummarizer {
           "struct_declaration",
           "enum_declaration",
           "protocol_declaration",
-          "typealias_declaration");
+          "typealias_declaration"
+      );
 
   private static final Set<String> TYPE_NAMES =
       Set.of("class_name", "struct_name", "enum_name", "protocol_name", "typealias_name");
@@ -124,7 +124,11 @@ public final class SwiftFileSummarizer implements FileSummarizer {
 
   /** Records the first use of each identifier outside imports and the file's own names. */
   private static void collectNames(
-      final SyntaxNode node, final Set<String> own, final Map<String, Span> names) {
+      final SyntaxNode node,
+      final Set<String> own,
+      final Map<String,
+      Span> names
+  ) {
     if (IMPORT.equals(node.kind())) {
       return;
     }
@@ -146,7 +150,8 @@ public final class SwiftFileSummarizer implements FileSummarizer {
             type ->
                 found.protocolNames.contains(type.span())
                     ? new Symbol(type.name(), type.span(), PROTOCOL_KIND)
-                    : type)
+                    : type
+        )
         .toList();
   }
 
@@ -155,7 +160,10 @@ public final class SwiftFileSummarizer implements FileSummarizer {
    * Its name is a declaration, not a use.
    */
   private static void declareProtocol(
-      final SyntaxNode node, final SourceUnit unit, final SwiftMemberDeclarations.Collected found) {
+      final SyntaxNode node,
+      final SourceUnit unit,
+      final SwiftMemberDeclarations.Collected found
+  ) {
     final Optional<SyntaxNode> name = nameOf(node);
     if (name.isEmpty()) {
       return;
@@ -185,7 +193,8 @@ public final class SwiftFileSummarizer implements FileSummarizer {
       final String scope,
       final SwiftMemberDeclarations.Context context,
       final SourceUnit unit,
-      final SwiftMemberDeclarations.Collected found) {
+      final SwiftMemberDeclarations.Collected found
+  ) {
     if (IMPORT.equals(node.kind())) {
       importOf(node).ifPresent(found.imports::add);
       return;
@@ -212,7 +221,8 @@ public final class SwiftFileSummarizer implements FileSummarizer {
       final SyntaxNode node,
       final String scope,
       final SourceUnit unit,
-      final SwiftMemberDeclarations.Collected found) {
+      final SwiftMemberDeclarations.Collected found
+  ) {
     if (!TYPE_DECLARATIONS.contains(node.kind())) {
       return scope;
     }

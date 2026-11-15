@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 /** Tests annotations, initializer inference and call targets of the Python type facts. */
 class PythonTypeFactsTest {
-
   private static final Set<FactKind> CALL = Set.of(FactKind.CALL);
   private static final Set<FactKind> TYPE = Set.of(FactKind.TYPE);
 

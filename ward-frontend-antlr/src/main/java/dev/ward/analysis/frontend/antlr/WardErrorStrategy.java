@@ -14,7 +14,6 @@ import org.antlr.v4.runtime.misc.IntervalSet;
  * listener, so ANTLR's six-parameter listener method is not needed.
  */
 final class WardErrorStrategy extends DefaultErrorStrategy {
-
   private final SyntaxFindings findings;
 
   WardErrorStrategy(final SyntaxFindings findings) {
@@ -27,7 +26,8 @@ final class WardErrorStrategy extends DefaultErrorStrategy {
     super.reportNoViableAlternative(recognizer, e);
     record(
         e.getOffendingToken(),
-        "no viable alternative at input " + getTokenErrorDisplay(e.getOffendingToken()));
+        "no viable alternative at input " + getTokenErrorDisplay(e.getOffendingToken())
+    );
   }
 
   @Override
@@ -38,7 +38,8 @@ final class WardErrorStrategy extends DefaultErrorStrategy {
         "mismatched input "
             + getTokenErrorDisplay(e.getOffendingToken())
             + " expecting "
-            + e.getExpectedTokens().toString(recognizer.getVocabulary()));
+            + e.getExpectedTokens().toString(recognizer.getVocabulary())
+    );
   }
 
   @Override
@@ -57,7 +58,8 @@ final class WardErrorStrategy extends DefaultErrorStrategy {
           "extraneous input "
               + getTokenErrorDisplay(recognizer.getCurrentToken())
               + " expecting "
-              + expected(recognizer));
+              + expected(recognizer)
+      );
     }
   }
 
@@ -71,7 +73,8 @@ final class WardErrorStrategy extends DefaultErrorStrategy {
           "missing "
               + expected(recognizer)
               + " at "
-              + getTokenErrorDisplay(recognizer.getCurrentToken()));
+              + getTokenErrorDisplay(recognizer.getCurrentToken())
+      );
     }
   }
 

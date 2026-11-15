@@ -35,7 +35,6 @@ import org.tomlj.TomlParseResult;
  * positions and the passing one nothing, with the rule's default options or those of the case.
  */
 class PythonFixturesTest {
-
   private static final Path FIXTURES =
       Path.of("..", "ward-cli", "src", "test", "resources", "rules");
   private static final String EXTENSION = "py";
@@ -78,7 +77,8 @@ class PythonFixturesTest {
   @ParameterizedTest(name = "{0}")
   @MethodSource("ownedRules")
   void violatingFixtureReportsExactlyTheExpectedPositionsAndPassingReportsNone(
-      final OwnedRule owned) throws IOException {
+      final OwnedRule owned
+  ) throws IOException {
     final List<String> cases = new ArrayList<>();
     cases.add("");
     try (Stream<Path> files = Files.list(owned.directory())) {
@@ -97,10 +97,12 @@ class PythonFixturesTest {
               .filter(line -> !line.isBlank())
               .toList();
       assertThat(
-              run(
-                  rule,
-                  owned.directory().resolve(VIOLATING + suffix + "." + EXTENSION),
-                  owned.directory()))
+          run(
+              rule,
+              owned.directory().resolve(VIOLATING + suffix + "." + EXTENSION),
+              owned.directory()
+          )
+      )
           .as("%s %s", owned, VIOLATING + suffix)
           .isEqualTo(expected);
       final Path passing = owned.directory().resolve("passing" + suffix + "." + EXTENSION);
@@ -132,7 +134,10 @@ class PythonFixturesTest {
     final RuleMatcher matcher = definition -> compile(definition, factories);
     if (PythonFixtureFrontends.isDeadCode(rule)) {
       return PythonFixtureFrontends.unusedPositions(
-          rule, file.getFileName().toString(), Files.readString(file, StandardCharsets.UTF_8));
+          rule,
+          file.getFileName().toString(),
+          Files.readString(file, StandardCharsets.UTF_8)
+      );
     }
     return PythonRuleRun.findings(matcher, rule, file, directory).stream()
         .map(PythonFixturesTest::position)
@@ -140,7 +145,10 @@ class PythonFixturesTest {
   }
 
   private static CompiledRule compile(
-      final RuleDefinition definition, final Map<String, CheckFactory> factories) {
+      final RuleDefinition definition,
+      final Map<String,
+      CheckFactory> factories
+  ) {
     final TomlParseResult toml = Toml.parse(definition.body());
     return new CheckedRule(definition, factories.get(toml.getString(CHECK)).create(toml));
   }

@@ -8,7 +8,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class OpenApiModelTest {
-
   private static final String SPEC =
       """
       openapi: 3.0.3

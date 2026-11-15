@@ -16,7 +16,6 @@ import java.util.Set;
  * because it brings in names that the file does not spell.
  */
 final class PythonImports {
-
   private static final String STAR = "*";
   private static final String DOT = ".";
   private static final String IMPORT = "import";
@@ -80,7 +79,11 @@ final class PythonImports {
   }
 
   private void declareImport(
-      final SyntaxNode bound, final String module, final String member, final Span site) {
+      final SyntaxNode bound,
+      final String module,
+      final String member,
+      final Span site
+  ) {
     final String identifier = PythonNames.identifier(bound);
     final Set<BindingFlag> flags = EnumSet.noneOf(BindingFlag.class);
     if (builder.current() == UnitScopes.MODULE_ID && exported.contains(identifier)) {

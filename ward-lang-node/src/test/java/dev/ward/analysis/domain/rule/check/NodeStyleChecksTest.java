@@ -11,29 +11,33 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the TypeScript style checks on parsed sources; each finding is one match. */
 class NodeStyleChecksTest {
-
   private static List<RuleMatch> run(final RuleCheck check, final String text) {
     return check.matches(
         new AntlrLanguageFrontend()
             .parse(new SourceUnit("src/sample", AnalysisLanguage.TYPESCRIPT, text))
-            .tree());
+            .tree()
+    );
   }
 
   @Test
   void constructorAfterOtherMemberThatFollowedAConstructorIsReported() {
     assertThat(
-            run(
-                new NodeConstructorGroupCheck("grouped"),
-                "class A { constructor() {} m() {} constructor(x) {} }"))
+        run(
+            new NodeConstructorGroupCheck("grouped"),
+            "class A { constructor() {} m() {} constructor(x) {} }"
+        )
+    )
         .hasSize(1);
   }
 
   @Test
   void groupedConstructorsAreNotReported() {
     assertThat(
-            run(
-                new NodeConstructorGroupCheck("grouped"),
-                "class A { constructor() {} constructor(x) {} m() {} }"))
+        run(
+            new NodeConstructorGroupCheck("grouped"),
+            "class A { constructor() {} constructor(x) {} m() {} }"
+        )
+    )
         .isEmpty();
   }
 
@@ -52,9 +56,11 @@ class NodeStyleChecksTest {
   @Test
   void elseAfterReturnIsReported() {
     assertThat(
-            run(
-                new NodeElseAfterJumpCheck(true, "else"),
-                "function f(x) { if (x) { return 1; } else { return 2; } }"))
+        run(
+            new NodeElseAfterJumpCheck(true, "else"),
+            "function f(x) { if (x) { return 1; } else { return 2; } }"
+        )
+    )
         .hasSize(1);
   }
 
@@ -68,9 +74,11 @@ class NodeStyleChecksTest {
   @Test
   void elseAfterConsequentThatDoesNotReturnIsNotReported() {
     assertThat(
-            run(
-                new NodeElseAfterJumpCheck(true, "else"),
-                "function f(x) { if (x) { x = 1; } else { x = 2; } }"))
+        run(
+            new NodeElseAfterJumpCheck(true, "else"),
+            "function f(x) { if (x) { x = 1; } else { x = 2; } }"
+        )
+    )
         .isEmpty();
   }
 }

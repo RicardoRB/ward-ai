@@ -15,10 +15,14 @@ import org.junit.jupiter.api.Test;
 
 /** The {@code secret-scan} check: SecretScanBundledRulesTest. */
 final class SecretScanBundledRulesTest extends SecretScanSupport {
-
   /** Word-like text with the words of the key rules, in pieces so no source line matches one. */
   private static final String[] WORDS = {
-    "tok", "en=abcDEF123_k", "ey sec", "ret: value api", "-key = 'x1Y2z3' pass", "word "
+      "tok",
+      "en=abcDEF123_k",
+      "ey sec",
+      "ret: value api",
+      "-key = 'x1Y2z3' pass",
+      "word "
   };
 
   /** Where the first window of a long line ends, so a token there is cut by it. */
@@ -59,7 +63,9 @@ final class SecretScanBundledRulesTest extends SecretScanSupport {
 
     final List<RuleMatch> matches =
         org.junit.jupiter.api.Assertions.assertTimeout(
-            Duration.ofSeconds(5), () -> run(bundled("github-pat"), "dist/app.js", line));
+            Duration.ofSeconds(5),
+            () -> run(bundled("github-pat"), "dist/app.js", line)
+        );
 
     assertThat(matches).hasSize(1);
     assertThat(matches.get(0).span().startColumn())
@@ -105,7 +111,9 @@ final class SecretScanBundledRulesTest extends SecretScanSupport {
     final TextFile file = new TextFile("src/mixed.txt", mixed);
 
     org.junit.jupiter.api.Assertions.assertTimeout(
-        LIMIT, () -> rules.forEach(rule -> text(matcher.compile(rule)).textMatches(file)));
+        LIMIT,
+        () -> rules.forEach(rule -> text(matcher.compile(rule)).textMatches(file))
+    );
   }
 
   @Test
@@ -116,6 +124,8 @@ final class SecretScanBundledRulesTest extends SecretScanSupport {
     final TextFile file = new TextFile("dist/bundle.js", line);
 
     org.junit.jupiter.api.Assertions.assertTimeout(
-        LIMIT, () -> rules.forEach(rule -> text(matcher.compile(rule)).textMatches(file)));
+        LIMIT,
+        () -> rules.forEach(rule -> text(matcher.compile(rule)).textMatches(file))
+    );
   }
 }

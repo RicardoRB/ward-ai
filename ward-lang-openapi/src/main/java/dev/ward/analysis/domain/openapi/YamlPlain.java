@@ -4,7 +4,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 
 /** Reads plain block scalars, which can continue over several lines. */
 final class YamlPlain {
-
   private final YamlCursor cursor;
   private final YamlLines lines;
   private final YamlKeys keys;

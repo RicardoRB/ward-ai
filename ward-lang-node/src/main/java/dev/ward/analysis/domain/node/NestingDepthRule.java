@@ -17,7 +17,6 @@ import java.util.Set;
  * @param limit the deepest allowed nesting
  */
 public record NestingDepthRule(RuleDefinition definition, int limit) implements CompiledRule {
-
   private static final String BLOCK = "block";
   private static final String STATEMENT = "statement";
   private static final String IF = "ifStatement";
@@ -46,10 +45,12 @@ public record NestingDepthRule(RuleDefinition definition, int limit) implements 
       final SyntaxNode node,
       final int depth,
       final boolean elseBranch,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     if (BLOCK.equals(node.kind()) && depth > limit) {
       matches.add(
-          new RuleMatch(node.span(), "Block is nested " + depth + " deep (limit " + limit + ")"));
+          new RuleMatch(node.span(), "Block is nested " + depth + " deep (limit " + limit + ")")
+      );
     }
     final boolean elseIf = elseBranch && IF.equals(node.kind());
     final int inner = NESTING.contains(node.kind()) && !elseIf ? depth + 1 : depth;
@@ -63,7 +64,10 @@ public record NestingDepthRule(RuleDefinition definition, int limit) implements 
   }
 
   private static boolean isElseChild(
-      final SyntaxNode parent, final int index, final boolean parentIsElseBranch) {
+      final SyntaxNode parent,
+      final int index,
+      final boolean parentIsElseBranch
+  ) {
     final boolean afterElse =
         IF.equals(parent.kind())
             && index > 0

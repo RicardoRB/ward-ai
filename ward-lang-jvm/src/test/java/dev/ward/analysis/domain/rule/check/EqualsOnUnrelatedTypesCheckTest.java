@@ -11,7 +11,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class EqualsOnUnrelatedTypesCheckTest {
-
   @Test
   void declaresTheNodeAndFactKindsItReads() {
     assertThat(Calls.CHECK.needs().nodeKinds()).containsExactly("expression");
@@ -33,7 +32,9 @@ class EqualsOnUnrelatedTypesCheckTest {
                 Calls.RECEIVER,
                 Calls.type(Calls.TYPE_A, true),
                 Calls.ARGUMENT,
-                Calls.type(Calls.TYPE_B, true)));
+                Calls.type(Calls.TYPE_B, true)
+            )
+        );
 
     assertThat(found)
         .singleElement()
@@ -46,9 +47,11 @@ class EqualsOnUnrelatedTypesCheckTest {
     final SpanFacts aRecord = Calls.facts(TypeRef.of("b.R"), TypeShape.Kind.RECORD, false);
 
     assertThat(
-            Calls.run(
-                Calls.call(Calls.EQUALS, Calls.ARGUMENT),
-                Calls.table(Calls.RECEIVER, anEnum, Calls.ARGUMENT, aRecord)))
+        Calls.run(
+            Calls.call(Calls.EQUALS, Calls.ARGUMENT),
+            Calls.table(Calls.RECEIVER, anEnum, Calls.ARGUMENT, aRecord)
+        )
+    )
         .hasSize(1);
   }
 }

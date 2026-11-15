@@ -34,14 +34,16 @@ public final class MavenDependencySource implements DependencySource {
       final CommandExecutor executor,
       final GraphCache cache,
       final JsonCodec codec,
-      final boolean offline) {
+      final boolean offline
+  ) {
     this.delegate =
         new ResolvingDependencySource(
             new MavenGraphTool(executor, offline),
             MavenDependencySource::buildFiles,
             "maven-dependency-plugin:" + MavenGraphTool.PLUGIN_VERSION + ":tree:tgf:verbose",
             cache,
-            codec);
+            codec
+        );
   }
 
   @Override

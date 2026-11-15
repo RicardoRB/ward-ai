@@ -12,8 +12,10 @@ import java.util.Optional;
  * @param excludePaths globs of the project-relative paths no secrets rule reads
  */
 public record SecretsOptions(
-    boolean scanHistory, Optional<LocalDate> historySince, List<String> excludePaths) {
-
+    boolean scanHistory,
+    Optional<LocalDate> historySince,
+    List<String> excludePaths
+) {
   /** The options of a check that sets none. */
   public static final SecretsOptions NONE = new SecretsOptions(false, Optional.empty(), List.of());
 

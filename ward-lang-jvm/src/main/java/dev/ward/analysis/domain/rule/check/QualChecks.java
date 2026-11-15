@@ -15,7 +15,6 @@ import java.util.Set;
  * are collected without duplicates, each at the place that requires the qualifier.
  */
 final class QualChecks {
-
   private final QualSites sites;
   private final Set<Found> found = new HashSet<>();
 
@@ -45,11 +44,15 @@ final class QualChecks {
           if (held != null && QualFlow.conflict(strict, held.flow(), need.flow())) {
             add(pattern(strict, held.flow(), need.flow()), first(need));
           }
-        });
+        }
+    );
   }
 
   private static QualPattern pattern(
-      final boolean strict, final QualFlow flow, final QualFlow needed) {
+      final boolean strict,
+      final QualFlow flow,
+      final QualFlow needed
+  ) {
     if (strict && flow == QualFlow.UNKNOWN) {
       return QualPattern.UNKNOWN_VALUE_USED_WHERE_ALWAYS_STRICTLY_REQUIRED;
     }
@@ -77,7 +80,8 @@ final class QualChecks {
     if (needed.isPresent() && source.isPresent()) {
       source(
           source.get(),
-          new QualState.Need(needed.get(), Set.of(new QualState.Sink(at, when.get()))));
+          new QualState.Need(needed.get(), Set.of(new QualState.Sink(at, when.get())))
+      );
     }
   }
 
@@ -104,7 +108,8 @@ final class QualChecks {
           need.flow() == QualFlow.NEVER
               ? QualPattern.MAYBE_SOURCE_VALUE_REACHES_NEVER_SINK
               : QualPattern.MAYBE_SOURCE_VALUE_REACHES_ALWAYS_SINK,
-          first(need));
+          first(need)
+      );
     } else if (source.when() == QualWhen.UNKNOWN
         && source.origin() == QualState.Origin.PARAMETER
         && source.explicit()) {
@@ -112,15 +117,19 @@ final class QualChecks {
           need.flow() == QualFlow.NEVER
               ? QualPattern.EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_NEVER_SINK
               : QualPattern.EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_ALWAYS_SINK,
-          first(need));
+          first(need)
+      );
     }
   }
 
   /** Looks at the parameters of the body as sources, given what is required of them. */
   void parameters(
       final List<VariableAccess> parameters,
-      final Map<Span, QualState.Held> initial,
-      final Map<Span, QualState.Need> needs) {
+      final Map<Span,
+      QualState.Held> initial,
+      final Map<Span,
+      QualState.Need> needs
+  ) {
     for (final VariableAccess parameter : parameters) {
       final QualState.Held held = initial.get(parameter.declaration());
       final QualState.Need need = needs.get(parameter.declaration());

@@ -8,7 +8,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import org.junit.jupiter.api.Test;
 
 class AnnotationUseStyleCheckTest {
-
   private static final String ANNOTATION = "annotation";
   private static final String ARGUMENTS = "annotationFieldValues";
   private static final String ALWAYS = "always";
@@ -72,7 +71,11 @@ class AnnotationUseStyleCheckTest {
   }
 
   private static java.util.List<dev.ward.analysis.domain.rule.RuleMatch> run(
-      final String closing, final String element, final String trailing, final SyntaxNode node) {
+      final String closing,
+      final String element,
+      final String trailing,
+      final SyntaxNode node
+  ) {
     return unitMatches(new AnnotationUseStyleCheck(closing, element, trailing, MESSAGE), node);
   }
 
@@ -84,6 +87,7 @@ class AnnotationUseStyleCheckTest {
         ANNOTATION,
         TreeBuilders.t("'@'", "@"),
         TreeBuilders.id("Tag"),
-        TreeBuilders.t(ARGUMENTS, arguments));
+        TreeBuilders.t(ARGUMENTS, arguments)
+    );
   }
 }

@@ -15,7 +15,6 @@ import java.util.List;
 
 /** Runs one bundled Java injection rule through the rule engine on a single source file. */
 final class JavaSecurityRuleRun {
-
   /** The imports of the servlet and JDBC types that the scenarios use. */
   static final String IMPORTS =
       """
@@ -34,7 +33,8 @@ final class JavaSecurityRuleRun {
             AnalysisLanguage.JAVA,
             new AntlrLanguageFrontend(),
             DataFlowFixtures.FLOW,
-            new JavaControlFlow());
+            new JavaControlFlow()
+        );
     final List<RuleDefinition> rules =
         new ClasspathRuleSource()
             .load().rules().stream().filter(rule -> rule.id().equals(ruleId)).toList();
@@ -43,7 +43,8 @@ final class JavaSecurityRuleRun {
             .run(
                 List.of(new SourceUnit("Search.java", AnalysisLanguage.JAVA, source)),
                 List.of(support),
-                rules);
+                rules
+            );
     assertThat(result.executionErrors()).isEmpty();
     return result.findings();
   }

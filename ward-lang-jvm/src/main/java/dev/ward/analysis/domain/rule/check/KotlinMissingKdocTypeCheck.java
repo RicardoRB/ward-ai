@@ -13,7 +13,6 @@ import java.util.Set;
  * modifier says otherwise.
  */
 public final class KotlinMissingKdocTypeCheck implements UnitCheck {
-
   private static final Set<String> TYPES = Set.of("classDeclaration", "objectDeclaration");
   private static final Set<String> NOT_PUBLIC = Set.of("private", "protected", "internal");
   private static final String MODIFIERS = "modifierList";

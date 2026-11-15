@@ -30,7 +30,8 @@ class NativeAdapterPayloadTest {
             adapter,
             "{\"hook_event_name\":\"PreToolUse\",\"tool_name\":\"Edit\",\"cwd\":\"/p\","
                 + "\"file_path\":\"docs/a/guide.md\",\"command\":\"ls\","
-                + "\"patch\":\"*** Begin Patch\",\"skill\":\"archive\"}");
+                + "\"patch\":\"*** Begin Patch\",\"skill\":\"archive\"}"
+        );
 
     assertThat(event.eventName()).isEqualTo("PreToolUse");
     assertThat(event.toolName()).isEqualTo("Edit");
@@ -49,7 +50,8 @@ class NativeAdapterPayloadTest {
         parse(
             adapter,
             "{\"event\":\"AfterTool\",\"event_name\":\"ignored\",\"type\":\"ignored\","
-                + "\"name\":\"write_file\",\"path\":\"src/A.java\",\"patchText\":\"diff\"}");
+                + "\"name\":\"write_file\",\"path\":\"src/A.java\",\"patchText\":\"diff\"}"
+        );
 
     assertThat(event.eventName()).isEqualTo("AfterTool");
     assertThat(event.toolName()).isEqualTo("write_file");

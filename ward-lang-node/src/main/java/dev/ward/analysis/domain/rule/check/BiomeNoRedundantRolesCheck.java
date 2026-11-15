@@ -18,7 +18,6 @@ import java.util.Set;
  * never reported.
  */
 public final class BiomeNoRedundantRolesCheck implements RuleCheck {
-
   private static final String ROLE = "role";
 
   private final AriaRoleTable table;
@@ -43,7 +42,10 @@ public final class BiomeNoRedundantRolesCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(JsxAttributes.OPENING, JsxAttributes.SELF_CLOSING))
         .stream()
         .flatMap(visit -> redundant(visit.node(), unit.text()).stream())
@@ -58,7 +60,8 @@ public final class BiomeNoRedundantRolesCheck implements RuleCheck {
     attributes.forEach(
         attribute ->
             JsxAttributes.literal(attribute)
-                .ifPresent(value -> literals.put(JsxAttributes.name(attribute), value)));
+                .ifPresent(value -> literals.put(JsxAttributes.name(attribute), value))
+    );
     final Set<String> present =
         attributes.stream().map(JsxAttributes::name).collect(java.util.stream.Collectors.toSet());
     final Optional<String> implicit =

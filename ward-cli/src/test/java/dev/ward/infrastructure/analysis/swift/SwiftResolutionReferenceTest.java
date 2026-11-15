@@ -33,7 +33,6 @@ import org.junit.jupiter.api.io.TempDir;
  * Edges inside one module, from type-name uses, are not target dependencies and are left out.
  */
 class SwiftResolutionReferenceTest {
-
   private static final Path FIXTURES = Path.of("src/test/resources/fixtures");
   private static final String ARROW = "->";
   private static final FileSummaryCache NO_SUMMARIES =
@@ -111,7 +110,8 @@ class SwiftResolutionReferenceTest {
             .flatMap(
                 (SwiftTarget target) ->
                     target.dependencies().stream()
-                        .map(dependency -> target.name() + ARROW + dependency))
+                        .map(dependency -> target.name() + ARROW + dependency)
+            )
             .collect(Collectors.toSet());
 
     assertThat(resolved).as(fixture).isEqualTo(declared).isNotEmpty();
@@ -121,10 +121,16 @@ class SwiftResolutionReferenceTest {
       throws IOException {
     final FrontendSupport frontend =
         new FrontendSupport(
-            AnalysisLanguage.SWIFT, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX));
+            AnalysisLanguage.SWIFT,
+            new AntlrLanguageFrontend(),
+            Set.of(RuleCapability.SYNTAX)
+        );
     final DependencySupport support =
         new DependencySupport(
-            AnalysisLanguage.SWIFT, new SwiftFileSummarizer(), new SwiftModuleResolver(layout));
+            AnalysisLanguage.SWIFT,
+            new SwiftFileSummarizer(),
+            new SwiftModuleResolver(layout)
+        );
     return new DependencyAnalysis(List.of(frontend), List.of(support))
         .analyze(units(root), NO_SUMMARIES);
   }

@@ -51,7 +51,8 @@ final class ValueDeclReader {
         List.of(),
         TsType.UNKNOWN,
         List.of(),
-        flags);
+        flags
+    );
   }
 
   /** Returns the identifier child of a declaration, or the declaration itself. */

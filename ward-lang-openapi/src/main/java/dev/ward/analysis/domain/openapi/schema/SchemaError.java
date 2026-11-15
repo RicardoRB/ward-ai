@@ -19,8 +19,8 @@ public record SchemaError(
     String message,
     String detail,
     List<DocNode> allowed,
-    boolean combinatorUnmatched) {
-
+    boolean combinatorUnmatched
+) {
   /** Copies the allowed values. */
   public SchemaError {
     allowed = List.copyOf(allowed);
@@ -33,7 +33,11 @@ public record SchemaError(
 
   /** An error about the property {@code detail}. */
   static SchemaError about(
-      final String keyword, final String path, final String message, final String detail) {
+      final String keyword,
+      final String path,
+      final String message,
+      final String detail
+  ) {
     return new SchemaError(keyword, path, message, detail, List.of(), false);
   }
 }

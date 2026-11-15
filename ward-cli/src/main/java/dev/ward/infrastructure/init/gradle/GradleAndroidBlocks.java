@@ -21,7 +21,8 @@ final class GradleAndroidBlocks {
       edit.append(
           "\n" + MARKER + "\n" + unitTestCoverage(kotlin),
           SupportedQualityGates.ANDROID_COVERAGE,
-          "");
+          ""
+      );
     }
   }
 

@@ -57,11 +57,15 @@ public final class MavenCompatibilityInspection implements CompatibilityInspecti
               version.flatMap(output -> match(JAVA_VERSION, output)).map(JavaVersions::feature),
               release,
               version.flatMap(output -> match(MAVEN_VERSION, output)),
-              project.framework()),
-          plugins);
+              project.framework()
+          ),
+          plugins
+      );
     } catch (ParserConfigurationException | SAXException | IOException e) {
       throw new WardException(
-          "Could not inspect Maven compatibility metadata: " + e.getMessage(), e);
+          "Could not inspect Maven compatibility metadata: " + e.getMessage(),
+          e
+      );
     }
   }
 
@@ -93,7 +97,10 @@ public final class MavenCompatibilityInspection implements CompatibilityInspecti
   }
 
   private static Optional<Integer> compilerRelease(
-      final Element root, final Map<String, String> properties) {
+      final Element root,
+      final Map<String,
+      String> properties
+  ) {
     for (final String name :
         new String[] {"maven.compiler.release", "maven.compiler.source", "java.version"}) {
       final String value = directText(root, name).orElse(properties.get(name));

@@ -7,7 +7,6 @@ import dev.ward.domain.project.Project;
  * ID.
  */
 public interface QualityGate {
-
   /** Returns the gate ID from {@code ward.toml}. */
   String name();
 

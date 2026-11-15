@@ -21,7 +21,6 @@ import java.util.regex.PatternSyntaxException;
  * ZoneId.of} rejects.
  */
 public final class LiteralArgumentCheck implements RuleCheck {
-
   /** What the literal must be. */
   public enum Mode {
     /** A regular expression. */
@@ -32,7 +31,7 @@ public final class LiteralArgumentCheck implements RuleCheck {
     ZONE_ID
   }
 
-  private static final char BACKSLASH = (char) 92;
+  private static final char BACKSLASH = (char)92;
   private static final String EXPRESSION = "expression";
   private static final Pattern CUSTOM_ZONE = Pattern.compile("GMT[+-]\\d{1,2}(?::?\\d{2})?");
   private static final Set<String> TIME_ZONES =
@@ -53,7 +52,8 @@ public final class LiteralArgumentCheck implements RuleCheck {
     this.mode = Objects.requireNonNull(mode, "mode");
     this.argument =
         Pattern.compile(
-            "(?:" + Objects.requireNonNull(call, "call") + ")\\(\"((?:[^\"\\\\]|\\\\.)*)\"[,)]");
+            "(?:" + Objects.requireNonNull(call, "call") + ")\\(\"((?:[^\"\\\\]|\\\\.)*)\"[,)]"
+        );
     this.message = Objects.requireNonNull(message, "message");
   }
 
@@ -66,7 +66,8 @@ public final class LiteralArgumentCheck implements RuleCheck {
         final String literal = unescape(found.group(1));
         if (!valid(literal)) {
           matches.add(
-              CheckSupport.at(visit.node().span(), CheckSupport.fill(message, literal, "")));
+              CheckSupport.at(visit.node().span(), CheckSupport.fill(message, literal, ""))
+          );
         }
       }
     }

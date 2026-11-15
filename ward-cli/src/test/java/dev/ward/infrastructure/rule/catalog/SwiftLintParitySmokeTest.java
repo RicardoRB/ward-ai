@@ -22,7 +22,6 @@ import org.junit.jupiter.api.condition.EnabledIf;
  * comparison is by line only, since SwiftLint marks some findings at a different column.
  */
 final class SwiftLintParitySmokeTest {
-
   private static final String SWIFTLINT_PROPERTY = "ward.swiftlint.binary";
   private static final Pattern LINE = Pattern.compile("\"line\"\\s*:\\s*(\\d+)");
   private static final int LINE_GROUP = 1;
@@ -85,19 +84,23 @@ final class SwiftLintParitySmokeTest {
   }
 
   private static List<Integer> reportedLines(
-      final String swiftLint, final Path config, final Path file)
+      final String swiftLint,
+      final Path config,
+      final Path file
+  )
       throws IOException, InterruptedException {
     final Process process =
         new ProcessBuilder(
-                swiftLint,
-                "lint",
-                "--quiet",
-                "--no-cache",
-                "--config",
-                config.toString(),
-                "--reporter",
-                "json",
-                file.toString())
+            swiftLint,
+            "lint",
+            "--quiet",
+            "--no-cache",
+            "--config",
+            config.toString(),
+            "--reporter",
+            "json",
+            file.toString()
+        )
             .redirectErrorStream(false)
             .start();
     final String output =

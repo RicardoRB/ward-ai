@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * val}), private properties and other properties each have their own pattern.
  */
 public final class KotlinObjectPropertyCheck implements RuleCheck {
-
   private static final Set<String> OWNERS = Set.of("objectDeclaration", "companionObject");
   private static final String CLASS_BODY = "classBody";
   private static final String MEMBER = "classMemberDeclaration";
@@ -43,7 +42,8 @@ public final class KotlinObjectPropertyCheck implements RuleCheck {
       final String constant,
       final String propertyPattern,
       final String privatePattern,
-      final String message) {
+      final String message
+  ) {
     this.constant = Pattern.compile(Objects.requireNonNull(constant, "constant"));
     this.propertyPattern =
         Pattern.compile(Objects.requireNonNull(propertyPattern, "propertyPattern"));

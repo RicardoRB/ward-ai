@@ -20,7 +20,10 @@ class StrykerGateScoreTest {
   void scoreAtTheMinimumPasses() {
     final GateResult result =
         MutationGateFixtures.run(
-            0, new FakeReport(MutationGateFixtures.SIXTY_PERCENT), MutationGateFixtures.MINIMUM);
+            0,
+            new FakeReport(MutationGateFixtures.SIXTY_PERCENT),
+            MutationGateFixtures.MINIMUM
+        );
 
     assertThat(result.name()).isEqualTo(MutationGateFixtures.STRYKER);
     assertThat(result.status()).isEqualTo(GateStatus.PASSED);
@@ -31,7 +34,10 @@ class StrykerGateScoreTest {
   void scoreBelowTheMinimumFailsStatingBothValues() {
     final GateResult result =
         MutationGateFixtures.run(
-            0, new FakeReport(MutationGateFixtures.SIXTY_PERCENT), HIGHER_MINIMUM);
+            0,
+            new FakeReport(MutationGateFixtures.SIXTY_PERCENT),
+            HIGHER_MINIMUM
+        );
 
     assertThat(result.status()).isEqualTo(GateStatus.FAILED);
     assertThat(result.summary()).contains("60%", "minimum of 80%");
@@ -41,8 +47,9 @@ class StrykerGateScoreTest {
   @Test
   void fractionalScoreJustBelowTheMinimumFails() {
     assertThat(
-            MutationGateFixtures.run(0, new FakeReport(JUST_BELOW), MutationGateFixtures.MINIMUM)
-                .status())
+        MutationGateFixtures.run(0, new FakeReport(JUST_BELOW), MutationGateFixtures.MINIMUM)
+            .status()
+    )
         .isEqualTo(GateStatus.FAILED);
   }
 

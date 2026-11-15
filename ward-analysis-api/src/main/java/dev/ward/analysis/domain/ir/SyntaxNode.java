@@ -17,8 +17,12 @@ import java.util.Objects;
  * @param children child nodes in source order
  */
 public record SyntaxNode(
-    String kind, Span span, Map<String, String> fields, List<SyntaxNode> children) {
-
+    String kind,
+    Span span,
+    Map<String,
+    String> fields,
+    List<SyntaxNode> children
+) {
   /**
    * Copies the fields and children.
    *

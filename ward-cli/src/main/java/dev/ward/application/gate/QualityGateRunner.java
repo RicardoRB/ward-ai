@@ -41,7 +41,9 @@ public class QualityGateRunner {
    */
   @Inject
   public QualityGateRunner(
-      final FindingExtractor findingExtractor, final GatePrerequisites prerequisites) {
+      final FindingExtractor findingExtractor,
+      final GatePrerequisites prerequisites
+  ) {
     this.findingExtractor = findingExtractor;
     this.prerequisites = prerequisites;
   }
@@ -53,13 +55,19 @@ public class QualityGateRunner {
 
   /** Runs every gate in order, reporting progress to {@code listener}. */
   public CheckReport run(
-      final Project project, final List<QualityGate> gates, final CheckProgressListener listener) {
+      final Project project,
+      final List<QualityGate> gates,
+      final CheckProgressListener listener
+  ) {
     return run(project, gates, listener, false);
   }
 
   /** Runs the gates in order, skipping the rest after the first failure when {@code failFast}. */
   public CheckReport run(
-      final Project project, final List<QualityGate> gates, final boolean failFast) {
+      final Project project,
+      final List<QualityGate> gates,
+      final boolean failFast
+  ) {
     return run(project, gates, CheckProgressListener.NO_OP, failFast);
   }
 
@@ -71,7 +79,8 @@ public class QualityGateRunner {
       final Project project,
       final List<QualityGate> gates,
       final CheckProgressListener listener,
-      final boolean failFast) {
+      final boolean failFast
+  ) {
     final List<GateResult> results = new ArrayList<>();
     final GatePrerequisites.RunPrerequisites checks = prerequisites.start();
     for (int i = 0; i < gates.size(); i++) {
@@ -84,8 +93,11 @@ public class QualityGateRunner {
           withFindings(
               project,
               checks.attach(
-                  project, gate.execute(project, step -> listener.gateStep(gate.name(), step))),
-              gateStart);
+                  project,
+                  gate.execute(project, step -> listener.gateStep(gate.name(), step))
+              ),
+              gateStart
+          );
       results.add(result);
       listener.gateFinished(result);
       LOGGER.log(
@@ -96,14 +108,17 @@ public class QualityGateRunner {
                   + " status="
                   + result.status()
                   + " duration-ms="
-                  + TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start));
+                  + TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start)
+      );
       if (failFast && result.status() != GateStatus.PASSED) {
         for (final QualityGate skipped : gates.subList(i + 1, gates.size())) {
           final GateResult skippedResult = skippedByFailFast(skipped);
           results.add(skippedResult);
           listener.gateFinished(skippedResult);
           LOGGER.log(
-              Level.INFO, () -> "event=gate-skip gate=" + skipped.name() + " reason=fail-fast");
+              Level.INFO,
+              () -> "event=gate-skip gate=" + skipped.name() + " reason=fail-fast"
+          );
         }
         break;
       }
@@ -116,7 +131,10 @@ public class QualityGateRunner {
    * change the verdict: they are logged and the gate keeps no findings.
    */
   private GateResult withFindings(
-      final Project project, final GateResult result, final Instant gateStart) {
+      final Project project,
+      final GateResult result,
+      final Instant gateStart
+  ) {
     if (result.status() != GateStatus.FAILED || !result.findings().isEmpty()) {
       return result;
     }
@@ -131,7 +149,8 @@ public class QualityGateRunner {
                   + " total="
                   + findings.total()
                   + " truncated="
-                  + findings.truncated());
+                  + findings.truncated()
+      );
       return result.withFindings(findings);
     } catch (FindingExtractionException exception) {
       LOGGER.log(
@@ -140,7 +159,8 @@ public class QualityGateRunner {
               "event=findings-failed gate="
                   + result.name()
                   + " error="
-                  + exception.getClass().getSimpleName());
+                  + exception.getClass().getSimpleName()
+      );
       return result;
     }
   }

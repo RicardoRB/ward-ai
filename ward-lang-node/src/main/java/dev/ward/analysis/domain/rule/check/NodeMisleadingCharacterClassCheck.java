@@ -16,7 +16,6 @@ import java.util.OptionalInt;
  * literals; the {@code RegExp} constructor is not read.
  */
 public final class NodeMisleadingCharacterClassCheck implements RuleCheck {
-
   private static final String REGEX = "RegularExpressionLiteral";
   private static final char SLASH = '/';
   private static final char BACKSLASH = '\\';
@@ -80,7 +79,8 @@ public final class NodeMisleadingCharacterClassCheck implements RuleCheck {
         span.startLine(),
         span.startColumn() + index + 1,
         span.startOffset() + index,
-        span.startOffset() + index + 1);
+        span.startOffset() + index + 1
+    );
   }
 
   private static String flagsOf(final String literal, final int end) {
@@ -112,7 +112,6 @@ public final class NodeMisleadingCharacterClassCheck implements RuleCheck {
 
   /** The helpers that read a class body: its end, its characters and the sequences they form. */
   private static final class Classes {
-
     /** The index of the bracket that closes a class, or the end of the pattern. */
     static int classEnd(final String pattern, final int open) {
       int index = open + 1;
@@ -159,8 +158,8 @@ public final class NodeMisleadingCharacterClassCheck implements RuleCheck {
       for (int position = 1; position < points.size(); position++) {
         if (escaped.get(position - 1)
             && escaped.get(position)
-            && Character.isHighSurrogate((char) points.get(position - 1).intValue())
-            && Character.isLowSurrogate((char) points.get(position).intValue())) {
+            && Character.isHighSurrogate((char)points.get(position - 1).intValue())
+            && Character.isLowSurrogate((char)points.get(position).intValue())) {
           return position - 1;
         }
       }
@@ -198,14 +197,16 @@ public final class NodeMisleadingCharacterClassCheck implements RuleCheck {
       if (kind == 'u' && index + 2 < body.length() && body.charAt(index + 2) == '{') {
         final int close = body.indexOf('}', index + 3);
         return new int[] {
-          Integer.parseInt(body.substring(index + BRACED_START, close), HEX_RADIX), close + 1, 1
+            Integer.parseInt(body.substring(index + BRACED_START, close), HEX_RADIX),
+            close + 1,
+            1
         };
       }
       if (kind == 'u' && index + 2 + SHORT_HEX <= body.length()) {
         return new int[] {
-          Integer.parseInt(body.substring(index + 2, index + 2 + SHORT_HEX), HEX_RADIX),
-          index + 2 + SHORT_HEX,
-          1
+            Integer.parseInt(body.substring(index + 2, index + 2 + SHORT_HEX), HEX_RADIX),
+            index + 2 + SHORT_HEX,
+            1
         };
       }
       return new int[] {kind, index + 2, 0};

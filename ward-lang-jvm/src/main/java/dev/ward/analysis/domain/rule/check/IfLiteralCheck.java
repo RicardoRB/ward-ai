@@ -64,7 +64,11 @@ public final class IfLiteralCheck implements UnitCheck {
               node ->
                   found.add(
                       CheckSupport.at(
-                          node.span(), CheckSupport.fill(message, SyntaxWalk.text(node), ""))));
+                          node.span(),
+                          CheckSupport.fill(message, SyntaxWalk.text(node), "")
+                      )
+                  )
+          );
     }
   }
 
@@ -101,8 +105,8 @@ public final class IfLiteralCheck implements UnitCheck {
     }
     final SyntaxNode primary = inner.children().get(0);
     return PRIMARY.equals(primary.kind())
-            && primary.children().size() == SINGLE
-            && LITERAL.equals(primary.children().get(0).kind())
+        && primary.children().size() == SINGLE
+        && LITERAL.equals(primary.children().get(0).kind())
         ? Optional.of(primary.children().get(0))
         : Optional.empty();
   }

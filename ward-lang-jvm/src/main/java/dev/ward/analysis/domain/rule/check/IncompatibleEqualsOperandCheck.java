@@ -21,7 +21,6 @@ import java.util.Set;
  * could implement.
  */
 public final class IncompatibleEqualsOperandCheck extends FactsCheck {
-
   private static final String CLASS = "classDeclaration";
   private static final String EXPRESSION = "expression";
   private static final String TYPE_TYPE = "typeType";
@@ -31,7 +30,8 @@ public final class IncompatibleEqualsOperandCheck extends FactsCheck {
   private static final FactNeed NEED =
       new FactNeed(
           Set.of(CLASS, EXPRESSION, TYPE_TYPE),
-          Set.of(FactKind.TYPE, FactKind.SHAPE, FactKind.MEMBERS));
+          Set.of(FactKind.TYPE, FactKind.SHAPE, FactKind.MEMBERS)
+      );
 
   private final String message;
 
@@ -67,7 +67,8 @@ public final class IncompatibleEqualsOperandCheck extends FactsCheck {
       final String self,
       final TypeMembers members,
       final UnitTypeFacts types,
-      final List<RuleMatch> out) {
+      final List<RuleMatch> out
+  ) {
     for (final SyntaxNode test : SyntaxWalk.descendants(method)) {
       final List<SyntaxNode> parts = test.children();
       if (EXPRESSION.equals(test.kind())
@@ -84,7 +85,8 @@ public final class IncompatibleEqualsOperandCheck extends FactsCheck {
       final SyntaxNode tested,
       final String self,
       final TypeMembers members,
-      final UnitTypeFacts types) {
+      final UnitTypeFacts types
+  ) {
     final Optional<String> name = types.typeOf(tested.span()).map(TypeRef::name);
     final boolean plainClass =
         types.shapeOf(tested.span()).filter(s -> s.kind() == TypeShape.Kind.CLASS).isPresent();

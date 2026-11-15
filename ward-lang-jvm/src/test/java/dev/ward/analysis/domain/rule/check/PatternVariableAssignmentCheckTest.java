@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 /** The pattern-variable-assignment check: names an instanceof pattern declares, and assignments. */
 class PatternVariableAssignmentCheckTest extends TreeBuilders {
-
   private static final String BLOCK_STATEMENT = "blockStatement";
   private static final String STATEMENT = "statement";
   private static final String MESSAGE = "pattern {value}";
@@ -39,6 +38,7 @@ class PatternVariableAssignmentCheckTest extends TreeBuilders {
         EXPRESSION,
         n(EXPRESSION, id("value")),
         t("'instanceof'", "instanceof"),
-        n("typeType", t(TOKEN_IDENTIFIER, type), t(TOKEN_IDENTIFIER, name)));
+        n("typeType", t(TOKEN_IDENTIFIER, type), t(TOKEN_IDENTIFIER, name))
+    );
   }
 }

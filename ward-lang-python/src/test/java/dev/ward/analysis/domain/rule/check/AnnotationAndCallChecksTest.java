@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Test;
 
 /** The checks on annotations, groupby loops and version-gated strict calls, on hand-made trees. */
 final class AnnotationAndCallChecksTest {
-
   private static final SourceUnit UNIT = new SourceUnit("m.py", AnalysisLanguage.PYTHON, "");
   private static final int FUNCTION = 2;
   private static final String ANNOTATION = "annassign";
@@ -33,7 +32,9 @@ final class AnnotationAndCallChecksTest {
         ScopeFixtures.binding("y", BindingKind.VARIABLE, Nodes.at(0, 1), FUNCTION);
     final UnitScopes scopes =
         ScopeFixtures.functionScopes(
-            local, ScopeFixtures.reference("other", false, FUNCTION, ReferenceAccess.READ));
+            local,
+            ScopeFixtures.reference("other", false, FUNCTION, ReferenceAccess.READ)
+        );
 
     assertThat(unusedAnnotation(scopes, annotated(false)))
         .extracting(RuleMatch::message)
@@ -49,16 +50,24 @@ final class AnnotationAndCallChecksTest {
 
     assertThat(unusedAnnotation(read, annotated(false))).isEmpty();
     assertThat(
-            unusedAnnotation(
-                ScopeFixtures.functionScopes(
-                    local, ScopeFixtures.reference("o", false, FUNCTION, ReferenceAccess.READ)),
-                annotated(true)))
+        unusedAnnotation(
+            ScopeFixtures.functionScopes(
+                local,
+                ScopeFixtures.reference("o", false, FUNCTION, ReferenceAccess.READ)
+            ),
+            annotated(true)
+        )
+    )
         .isEmpty();
     assertThat(
-            unusedAnnotation(
-                ScopeFixtures.moduleScopes(
-                    false, ScopeFixtures.binding("y", BindingKind.VARIABLE, Nodes.at(0, 1), 1)),
-                annotated(false)))
+        unusedAnnotation(
+            ScopeFixtures.moduleScopes(
+                false,
+                ScopeFixtures.binding("y", BindingKind.VARIABLE, Nodes.at(0, 1), 1)
+            ),
+            annotated(false)
+        )
+    )
         .isEmpty();
   }
 
@@ -77,8 +86,10 @@ final class AnnotationAndCallChecksTest {
     final StringAnnotationCheck check = new StringAnnotationCheck("m");
 
     assertThat(
-            check.matches(
-                Nodes.node("tfpdef", Nodes.leaf("x"), Nodes.leaf(":"), Nodes.leaf("\"int +\""))))
+        check.matches(
+            Nodes.node("tfpdef", Nodes.leaf("x"), Nodes.leaf(":"), Nodes.leaf("\"int +\""))
+        )
+    )
         .hasSize(1);
     assertThat(check.matches(Nodes.node(ANNOTATION, Nodes.leaf(":"), Nodes.leaf("\"list[int\""))))
         .hasSize(1);
@@ -93,9 +104,10 @@ final class AnnotationAndCallChecksTest {
     final StringAnnotationCheck check = new StringAnnotationCheck("m");
 
     assertThat(
-            check.matches(
-                Nodes.node(
-                    "tfpdef", Nodes.leaf("x"), Nodes.leaf(":"), Nodes.leaf("\"list[int]\""))))
+        check.matches(
+            Nodes.node("tfpdef", Nodes.leaf("x"), Nodes.leaf(":"), Nodes.leaf("\"list[int]\""))
+        )
+    )
         .isEmpty();
     assertThat(check.matches(Nodes.node(ANNOTATION, Nodes.leaf(":"), Nodes.leaf("name"))))
         .isEmpty();
@@ -111,8 +123,9 @@ final class AnnotationAndCallChecksTest {
     assertThat(new StrictCallCheck(batched, "py313", "m").matches(Shapes.call(BATCHED))).hasSize(1);
     assertThat(new StrictCallCheck(batched, "py310", "m").matches(Shapes.call(BATCHED))).isEmpty();
     assertThat(
-            new StrictCallCheck(batched, "py313", "m")
-                .matches(Shapes.call("itertools.batched([1],2,strict=True)")))
+        new StrictCallCheck(batched, "py313", "m")
+            .matches(Shapes.call("itertools.batched([1],2,strict=True)"))
+    )
         .isEmpty();
     assertThat(new StrictCallCheck(batched, "py313", "m").matches(Shapes.call("other([1],2)")))
         .isEmpty();
@@ -140,7 +153,12 @@ final class AnnotationAndCallChecksTest {
     final SyntaxNode annotation =
         withValue
             ? Nodes.node(
-                ANNOTATION, Nodes.leaf(":"), Nodes.leaf("int"), Nodes.leaf("="), Nodes.leaf("1"))
+                ANNOTATION,
+                Nodes.leaf(":"),
+                Nodes.leaf("int"),
+                Nodes.leaf("="),
+                Nodes.leaf("1")
+            )
             : Nodes.node(ANNOTATION, Nodes.leaf(":"), Nodes.leaf("int"));
     return Nodes.node("expr_stmt", Nodes.leaf("y"), annotation);
   }
@@ -158,6 +176,7 @@ final class AnnotationAndCallChecksTest {
         Nodes.leaf("in"),
         Nodes.leaf(iterable),
         Nodes.leaf(":"),
-        Nodes.block(tokens));
+        Nodes.block(tokens)
+    );
   }
 }

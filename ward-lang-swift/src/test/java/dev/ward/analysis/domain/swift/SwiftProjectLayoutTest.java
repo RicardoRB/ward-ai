@@ -6,13 +6,14 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class SwiftProjectLayoutTest {
-
   private static final SwiftProjectLayout LAYOUT =
       new SwiftProjectLayout(
           List.of(
               new SwiftTarget("Shop", List.of("Modules/Shop"), List.of(), List.of()),
               new SwiftTarget("Kit", List.of("Modules"), List.of("Scripts/Kit.swift"), List.of()),
-              new SwiftTarget("Inner", List.of("Modules/Shop/Inner"), List.of(), List.of())));
+              new SwiftTarget("Inner", List.of("Modules/Shop/Inner"), List.of(), List.of())
+          )
+      );
 
   @Test
   void aFileBelongsToTheTargetWhoseDirectoryHoldsItMostDeeply() {
@@ -35,7 +36,10 @@ class SwiftProjectLayoutTest {
                     "Shop",
                     List.of("Modules"),
                     List.of("Modules/Shop/Inner/Listed.swift"),
-                    List.of())));
+                    List.of()
+                )
+            )
+        );
 
     assertThat(layout.moduleOf("Modules/Shop/Inner/Listed.swift")).isEqualTo("Shop");
     assertThat(layout.moduleOf("Modules/Shop/Inner/Other.swift")).isEqualTo("Inner");

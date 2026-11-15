@@ -14,7 +14,6 @@ import java.util.regex.Matcher;
  * alone; the options decide the named and the {@code this} cases.
  */
 public final class NodeArrowCallbackCheck implements RuleCheck {
-
   private static final String ARGUMENT = "argument";
   private static final String ARGUMENTS = "arguments";
   private static final String ANONYMOUS = "anonymousFunction";
@@ -36,7 +35,10 @@ public final class NodeArrowCallbackCheck implements RuleCheck {
    * @param message the message of each finding
    */
   public NodeArrowCallbackCheck(
-      final boolean allowNamedFunctions, final boolean allowUnboundThis, final String message) {
+      final boolean allowNamedFunctions,
+      final boolean allowUnboundThis,
+      final String message
+  ) {
     this.allowNamedFunctions = allowNamedFunctions;
     this.allowUnboundThis = allowUnboundThis;
     this.message = message;

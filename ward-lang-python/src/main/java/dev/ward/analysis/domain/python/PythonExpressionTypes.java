@@ -11,7 +11,6 @@ import java.util.Optional;
  * definitions and stubs. Anything it cannot determine is unknown, never a guess.
  */
 final class PythonExpressionTypes {
-
   private static final int MAX_DEPTH = 8;
   private static final int SINGLE_PART = 1;
   private static final int PAIR_PARTS = 2;

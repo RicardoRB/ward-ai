@@ -9,7 +9,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class TypeMembersTest {
-
   private static final Span SPAN = new Span(1, 1, 1, 2, 0, 1);
 
   @Test
@@ -41,7 +40,8 @@ class TypeMembersTest {
             null,
             Map.of(),
             Map.of(),
-            null);
+            null
+        );
     final CallTarget annotated =
         new CallTarget(
             TypeRef.of("a.T"),
@@ -59,7 +59,8 @@ class TypeMembersTest {
             null,
             Map.of(),
             Map.of(),
-            null);
+            null
+        );
 
     assertThat(plain.annotations()).isEmpty();
     assertThat(plain.parameterAnnotations()).isEmpty();

@@ -9,7 +9,6 @@ import dev.ward.analysis.domain.ir.ControlFlowFrames.Phase;
  * exception that leaves through it; its end continues each of those exits.
  */
 public final class ControlFlowTries {
-
   private final ControlFlowBuilder builder;
   private final ControlFlowFrames frames;
 

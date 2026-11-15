@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 
 /** Reports {@code raise StopIteration} inside a generator, like Pylint R1708. */
 public final class StopIterationReturnCheck implements RuleCheck {
-
   private static final Set<String> FUNCTIONS = Set.of("funcdef");
   private static final Set<String> YIELDS = Set.of("yield_expr", "yield_stmt");
   private static final Set<String> RAISES = Set.of("raise_stmt");

@@ -7,7 +7,6 @@ import java.util.List;
 
 /** Builds the statement, package and import trees the design checks read. */
 class DesignFlowTrees extends DesignTrees {
-
   protected DesignFlowTrees() {
     super();
   }
@@ -19,7 +18,8 @@ class DesignFlowTrees extends DesignTrees {
         t("'('", "("),
         id(condition),
         t("')'", ")"),
-        n("block", inner));
+        n("block", inner)
+    );
   }
 
   static SyntaxNode switchOf(final int labels, final int statements) {
@@ -32,7 +32,9 @@ class DesignFlowTrees extends DesignTrees {
       children.add(
           n(
               "switchBlockStatementGroup",
-              n("switchLabel", t("'case'", "case"), t("INT", "1"), t("':'", ":"))));
+              n("switchLabel", t("'case'", "case"), t("INT", "1"), t("':'", ":"))
+          )
+      );
     }
     final List<SyntaxNode> blockStatements =
         Collections.nCopies(statements, n("blockStatement", id("x")));
@@ -45,7 +47,8 @@ class DesignFlowTrees extends DesignTrees {
         "statement",
         t("'try'", "try"),
         n("block", thrown),
-        n("catchClause", t("'catch'", "catch"), n("catchType", id(caught)), n("block")));
+        n("catchClause", t("'catch'", "catch"), n("catchType", id(caught)), n("block"))
+    );
   }
 
   static SyntaxNode tryWithoutCatch(final SyntaxNode thrown) {
@@ -60,7 +63,8 @@ class DesignFlowTrees extends DesignTrees {
         n("createdName", id(type)),
         t("'('", "("),
         t("')'", ")"),
-        t("';'", ";"));
+        t("';'", ";")
+    );
   }
 
   static SyntaxNode packageDecl(final String name) {

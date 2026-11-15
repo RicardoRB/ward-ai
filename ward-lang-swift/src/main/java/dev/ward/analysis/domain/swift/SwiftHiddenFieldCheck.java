@@ -25,7 +25,6 @@ import java.util.regex.Pattern;
  * standard preset's {@code ignoreConstructorParameter} does.
  */
 public final class SwiftHiddenFieldCheck implements RuleCheck {
-
   private static final String NAME = "{value}";
   private static final Pattern INITIALIZER = Pattern.compile("init[?!]?\\(");
   private static final Set<ScopeKind> LOCAL_SCOPES = Set.of(ScopeKind.FUNCTION, ScopeKind.BLOCK);
@@ -55,7 +54,11 @@ public final class SwiftHiddenFieldCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes();
     final List<RuleMatch> found = new ArrayList<>();
     for (final Scope scope : scopes.scopes()) {
@@ -74,7 +77,11 @@ public final class SwiftHiddenFieldCheck implements RuleCheck {
   }
 
   private static boolean hides(
-      final Binding binding, final Scope scope, final UnitScopes scopes, final SourceUnit unit) {
+      final Binding binding,
+      final Scope scope,
+      final UnitScopes scopes,
+      final SourceUnit unit
+  ) {
     final boolean local =
         binding.kind() == BindingKind.VARIABLE
             || binding.kind() == BindingKind.CONSTANT
@@ -85,7 +92,10 @@ public final class SwiftHiddenFieldCheck implements RuleCheck {
   }
 
   private static Optional<Binding> enclosingMember(
-      final Scope scope, final String name, final UnitScopes scopes) {
+      final Scope scope,
+      final String name,
+      final UnitScopes scopes
+  ) {
     Optional<Scope> ancestor = scopes.parent(scope);
     while (ancestor.isPresent() && ancestor.get().kind() != ScopeKind.CLASS) {
       ancestor = scopes.parent(ancestor.get());
@@ -95,7 +105,8 @@ public final class SwiftHiddenFieldCheck implements RuleCheck {
             type.bindings().stream()
                 .filter(member -> SHADOWING_KINDS.contains(member.kind()))
                 .filter(member -> member.name().equals(name))
-                .findFirst());
+                .findFirst()
+    );
   }
 
   private static boolean isInitializer(final Scope scope, final SourceUnit unit) {

@@ -5,7 +5,6 @@ import java.util.List;
 
 /** Shared builders and constants for the review check tests; the tests extend it. */
 final class Declarations extends TreeBuilders {
-
   private Declarations() {
     super();
   }
@@ -14,7 +13,10 @@ final class Declarations extends TreeBuilders {
     final SyntaxNode modifier =
         isAbstract ? n(MODIFIER, t("'abstract'", ABSTRACT)) : n(MODIFIER, t("'final'", "final"));
     return n(
-        CLASS_BODY_DECLARATION, modifier, n(MEMBER_DECLARATION, n(METHOD_DECLARATION, id("area"))));
+        CLASS_BODY_DECLARATION,
+        modifier,
+        n(MEMBER_DECLARATION, n(METHOD_DECLARATION, id("area")))
+    );
   }
 
   static SyntaxNode abstractClass(final List<SyntaxNode> members) {
@@ -23,7 +25,9 @@ final class Declarations extends TreeBuilders {
         n(
             "typeDeclaration",
             n("classOrInterfaceModifier", t("'abstract'", ABSTRACT)),
-            n("classDeclaration", t("'class'", "class"), id("Shape"), body)));
+            n("classDeclaration", t("'class'", "class"), id("Shape"), body)
+        )
+    );
   }
 
   static SyntaxNode interfaceUnit(final List<SyntaxNode> modifiers, final List<String> methods) {
@@ -35,18 +39,27 @@ final class Declarations extends TreeBuilders {
                         "interfaceBodyDeclaration",
                         n(
                             "interfaceMemberDeclaration",
-                            n("interfaceMethodDeclaration", t("'void'", "void"), id(text)))))
+                            n("interfaceMethodDeclaration", t("'void'", "void"), id(text))
+                        )
+                    )
+            )
             .toArray(SyntaxNode[]::new);
     final SyntaxNode decl =
         n(
             "interfaceDeclaration",
             t("'interface'", "interface"),
             id("Greeter"),
-            n("interfaceBody", bodies));
+            n("interfaceBody", bodies)
+        );
     final SyntaxNode wrapper = n("typeDeclaration", modifiers.toArray(SyntaxNode[]::new));
     return unit(
         new SyntaxNode(
-            wrapper.kind(), wrapper.span(), wrapper.fields(), append(wrapper.children(), decl)));
+            wrapper.kind(),
+            wrapper.span(),
+            wrapper.fields(),
+            append(wrapper.children(), decl)
+        )
+    );
   }
 
   static SyntaxNode classWith(final SyntaxNode... members) {
@@ -73,7 +86,10 @@ final class Declarations extends TreeBuilders {
             n(
                 "fieldDeclaration",
                 typeNode,
-                n("variableDeclarators", n("variableDeclarator", n(PARAMETER_ID, id(name)))))));
+                n("variableDeclarators", n("variableDeclarator", n(PARAMETER_ID, id(name))))
+            )
+        )
+    );
   }
 
   static SyntaxNode returnOf(final String name) {
@@ -94,7 +110,14 @@ final class Declarations extends TreeBuilders {
                                 STATEMENT,
                                 t("'return'", "return"),
                                 n(EXPRESSION, n(PRIMARY, id(name))),
-                                t(TOKEN_SEMICOLON, ";"))))))));
+                                t(TOKEN_SEMICOLON, ";")
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    );
   }
 
   static SyntaxNode constructorStoring(final String field, final String param, final String value) {
@@ -110,8 +133,10 @@ final class Declarations extends TreeBuilders {
                     n(
                         FORMAL_PARAMETER,
                         n("typeType", t("'int'", "int"), t("'['", "["), t("']'", "]")),
-                        n(PARAMETER_ID, id(param))),
-                    t(TOKEN_CLOSE, ")")),
+                        n(PARAMETER_ID, id(param))
+                    ),
+                    t(TOKEN_CLOSE, ")")
+                ),
                 n(
                     BLOCK,
                     n(
@@ -120,8 +145,14 @@ final class Declarations extends TreeBuilders {
                             EXPRESSION,
                             n(EXPRESSION, t("'this'", "this"), t(TOKEN_DOT, "."), id(field)),
                             t(TOKEN_EQUALS, "="),
-                            n(EXPRESSION, n(PRIMARY, id(value)))),
-                        t(TOKEN_SEMICOLON, ";"))))));
+                            n(EXPRESSION, n(PRIMARY, id(value)))
+                        ),
+                        t(TOKEN_SEMICOLON, ";")
+                    )
+                )
+            )
+        )
+    );
   }
 
   static SyntaxNode privateMethod(final String name) {
@@ -134,6 +165,9 @@ final class Declarations extends TreeBuilders {
                 METHOD_DECLARATION,
                 t("'void'", "void"),
                 id(name),
-                n(FORMAL_PARAMETERS, t(TOKEN_OPEN, "("), t(TOKEN_CLOSE, ")")))));
+                n(FORMAL_PARAMETERS, t(TOKEN_OPEN, "("), t(TOKEN_CLOSE, ")"))
+            )
+        )
+    );
   }
 }

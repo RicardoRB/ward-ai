@@ -10,7 +10,6 @@ import java.util.Set;
  * scoping rules.
  */
 public interface ScopeAnalysis {
-
   /**
    * Builds the scopes of {@code unit}. The result depends on the unit alone, so it may be cached by
    * the unit's content.

@@ -29,7 +29,6 @@ import java.util.Map;
  * and try blocks. Each parameter is a rule option, named after the PMD property in kebab-case.
  */
 final class DesignChecks {
-
   private static final String MESSAGE = "message";
   private static final String MAX = "max";
   private static final String MINIMUM = "minimum";
@@ -47,55 +46,84 @@ final class DesignChecks {
             "nested-if",
             toml ->
                 new NestedIfCheck(
-                    TomlValues.integer(toml, "problem-depth"), TomlValues.required(toml, MESSAGE))),
+                    TomlValues.integer(toml, "problem-depth"),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "import-count",
             toml ->
                 new ImportCountCheck(
-                    TomlValues.integer(toml, MINIMUM), TomlValues.required(toml, MESSAGE))),
+                    TomlValues.integer(toml, MINIMUM),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "parameter-limit",
             toml ->
                 new ParameterCountCheck(
-                    TomlValues.integer(toml, MINIMUM), TomlValues.required(toml, MESSAGE))),
+                    TomlValues.integer(toml, MINIMUM),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "field-limit",
             toml ->
                 new FieldLimitCheck(
-                    TomlValues.integer(toml, MAX), TomlValues.required(toml, MESSAGE))),
+                    TomlValues.integer(toml, MAX),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "method-limit",
             toml ->
                 new MethodLimitCheck(
-                    TomlValues.integer(toml, MAX), TomlValues.required(toml, MESSAGE))),
+                    TomlValues.integer(toml, MAX),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "public-count",
             toml ->
                 new PublicCountCheck(
-                    TomlValues.integer(toml, MINIMUM), TomlValues.required(toml, MESSAGE))),
+                    TomlValues.integer(toml, MINIMUM),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "switch-density",
             toml ->
                 new SwitchDensityCheck(
-                    TomlValues.integer(toml, MINIMUM), TomlValues.required(toml, MESSAGE))));
+                    TomlValues.integer(toml, MINIMUM),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        )
+    );
   }
 
   private static Map<String, CheckFactory> members() {
     return Map.ofEntries(
         entry(
             "protected-in-final",
-            toml -> new ProtectedInFinalCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new ProtectedInFinalCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "public-in-non-public",
-            toml -> new PublicInNonPublicCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new PublicInNonPublicCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "constants-in-interface",
-            toml -> new ConstantsInInterfaceCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new ConstantsInInterfaceCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
-            "null-assignment", toml -> new NullAssignmentCheck(TomlValues.required(toml, MESSAGE))),
+            "null-assignment",
+            toml -> new NullAssignmentCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry("exception-flow", toml -> new ExceptionFlowCheck(TomlValues.required(toml, MESSAGE))),
         entry(
-            "immutable-field", toml -> new ImmutableFieldCheck(TomlValues.required(toml, MESSAGE))),
+            "immutable-field",
+            toml -> new ImmutableFieldCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry("singular-field", toml -> new SingularFieldCheck(TomlValues.required(toml, MESSAGE))),
         entry("utility-class", toml -> new UtilityClassCheck(TomlValues.required(toml, MESSAGE))),
         entry(
@@ -103,6 +131,9 @@ final class DesignChecks {
             toml ->
                 new PackageCouplingCheck(
                     List.copyOf(TomlValues.optionalStrings(toml, "packages")),
-                    TomlValues.required(toml, MESSAGE))));
+                    TomlValues.required(toml, MESSAGE)
+                )
+        )
+    );
   }
 }

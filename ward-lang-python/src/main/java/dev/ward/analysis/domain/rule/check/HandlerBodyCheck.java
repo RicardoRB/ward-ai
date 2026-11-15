@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * one statement and one handler).
  */
 public final class HandlerBodyCheck implements RuleCheck {
-
   private static final Set<String> KINDS = Set.of("try_stmt");
   private static final String EXCEPT_CLAUSE = "except_clause";
   private static final int BODY_OFFSET = 2;

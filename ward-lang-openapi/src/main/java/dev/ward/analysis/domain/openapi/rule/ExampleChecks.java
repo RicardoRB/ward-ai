@@ -17,7 +17,6 @@ import java.util.Set;
 
 /** Checks values against schemas for one run of an example rule and collects the findings. */
 final class ExampleChecks {
-
   private static final List<String> CONTAINERS = List.of("content", "headers", "parameters");
 
   private final OpenApiDocument document;
@@ -33,7 +32,11 @@ final class ExampleChecks {
 
   /** Checks {@code value}, which a document wrote as the {@code property} of a node. */
   void validate(
-      final DocNode schema, final DocNode value, final String property, final Relax relax) {
+      final DocNode schema,
+      final DocNode value,
+      final String property,
+      final Relax relax
+  ) {
     if (cyclic(schema, Collections.newSetFromMap(new IdentityHashMap<>()))) {
       return;
     }
@@ -44,9 +47,10 @@ final class ExampleChecks {
     }
     final JsonSchemaValidator validator =
         new JsonSchemaValidator(
-                document.isVersion31() ? Dialect.DRAFT2020 : Dialect.DRAFT4,
-                false,
-                holder -> document.target(holder).map(document::resolve))
+            document.isVersion31() ? Dialect.DRAFT2020 : Dialect.DRAFT4,
+            false,
+            holder -> document.target(holder).map(document::resolve)
+        )
             .relaxing(relax);
     final List<SchemaError> errors;
     try {

@@ -47,7 +47,8 @@ class InitJavaScriptSelectionTest {
         PROJECT,
         "apps/web",
         "--dry-run",
-        "--yes");
+        "--yes"
+    );
 
     assertThat(init.output())
         .contains("Selected quality gate 'vitest'")

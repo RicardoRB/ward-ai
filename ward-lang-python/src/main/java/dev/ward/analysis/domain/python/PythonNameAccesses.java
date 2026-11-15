@@ -13,7 +13,6 @@ import java.util.Set;
  * the names of nested scopes, which have scopes of their own.
  */
 final class PythonNameAccesses {
-
   private static final String NAME = "name";
   private static final String TRAILER = "trailer";
   private static final String ARGUMENT = "argument";
@@ -25,7 +24,14 @@ final class PythonNameAccesses {
   /** Nodes that bind or use names of another scope, which this body does not read or write. */
   private static final Set<String> OTHER_SCOPE =
       Set.of(
-          "funcdef", "classdef", "decorated", "lambdef", "lambdef_nocond", "comp_for", "comp_if");
+          "funcdef",
+          "classdef",
+          "decorated",
+          "lambdef",
+          "lambdef_nocond",
+          "comp_for",
+          "comp_if"
+      );
 
   private static final String STRING = "STRING";
   private static final Set<String> NOTHING = Set.of("global_stmt", "nonlocal_stmt", "pass_stmt");

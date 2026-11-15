@@ -12,7 +12,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class BiomeDuplicatePropsCheckTest {
-
   private static final BiomeDuplicatePropsCheck CHECK = new BiomeDuplicatePropsCheck("message");
 
   @Test

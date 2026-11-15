@@ -4,7 +4,6 @@ import java.util.Map;
 
 /** Resolves the five predefined entities and the numeric character references of XML text. */
 final class XmlEntities {
-
   private static final int HEX_RADIX = 16;
   private static final int DECIMAL_RADIX = 10;
   private static final Map<String, String> NAMED =
@@ -58,7 +57,8 @@ final class XmlEntities {
     final String digits = name.substring(hex ? 2 : 1);
     try {
       return new String(
-          Character.toChars(Integer.parseInt(digits, hex ? HEX_RADIX : DECIMAL_RADIX)));
+          Character.toChars(Integer.parseInt(digits, hex ? HEX_RADIX : DECIMAL_RADIX))
+      );
     } catch (final IllegalArgumentException invalid) {
       throw new XmlSyntaxException("invalid character reference &" + name + ";", offset, invalid);
     }

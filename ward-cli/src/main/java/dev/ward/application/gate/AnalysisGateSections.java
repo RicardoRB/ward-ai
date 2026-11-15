@@ -22,17 +22,25 @@ final class AnalysisGateSections {
    * A category whose rules found nothing is still listed, so the report shows it was checked.
    */
   static List<GateSection> of(
-      final List<AnalysisFinding> findings, final List<RuleDefinition> rules) {
+      final List<AnalysisFinding> findings,
+      final List<RuleDefinition> rules
+  ) {
     final Map<String, String> categories =
         rules.stream()
             .collect(
                 Collectors.toMap(
-                    RuleDefinition::id, AnalysisGateSections::category, (first, second) -> first));
+                    RuleDefinition::id,
+                    AnalysisGateSections::category,
+                    (first, second) -> first
+                )
+            );
     final Map<String, List<AnalysisFinding>> byCategory =
         findings.stream()
             .collect(
                 Collectors.groupingBy(
-                    finding -> categories.getOrDefault(finding.ruleId(), NO_CATEGORY)));
+                    finding -> categories.getOrDefault(finding.ruleId(), NO_CATEGORY)
+                )
+            );
     return Stream.concat(categories.values().stream(), byCategory.keySet().stream())
         .distinct()
         .sorted()
@@ -44,7 +52,8 @@ final class AnalysisGateSections {
     return new GateSection(
         name,
         countOf(findings, AnalysisSeverity.ERROR),
-        countOf(findings, AnalysisSeverity.WARNING));
+        countOf(findings, AnalysisSeverity.WARNING)
+    );
   }
 
   private static String category(final RuleDefinition rule) {
@@ -52,8 +61,11 @@ final class AnalysisGateSections {
   }
 
   private static int countOf(
-      final List<AnalysisFinding> findings, final AnalysisSeverity severity) {
+      final List<AnalysisFinding> findings,
+      final AnalysisSeverity severity
+  ) {
     return Math.toIntExact(
-        findings.stream().filter(finding -> finding.severity() == severity).count());
+        findings.stream().filter(finding -> finding.severity() == severity).count()
+    );
   }
 }

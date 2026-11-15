@@ -14,7 +14,6 @@ import java.util.Optional;
  * binds the Android namespace to another prefix is not read; upgrade when a real project does.
  */
 final class AndroidNodes {
-
   static final String ANDROID = "android";
 
   private AndroidNodes() {}
@@ -43,7 +42,10 @@ final class AndroidNodes {
 
   /** Returns the attribute {@code prefix:local} of an element; {@code prefix} may be empty. */
   static Optional<SyntaxNode> attribute(
-      final SyntaxNode element, final String prefix, final String local) {
+      final SyntaxNode element,
+      final String prefix,
+      final String local
+  ) {
     return element.children().stream()
         .filter(child -> AndroidSyntax.ATTRIBUTE.equals(child.kind()))
         .filter(child -> prefix.equals(child.fields().get(AndroidSyntax.PREFIX)))

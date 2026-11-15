@@ -23,8 +23,8 @@ record QualSites(
     QualifierScope scope,
     QualifierScope.Qualifier qualifier,
     String type,
-    QualifierScope.Method method) {
-
+    QualifierScope.Method method
+) {
   private static final Pattern NAME = Pattern.compile("(?:this\\.)?([A-Za-z_$][A-Za-z0-9_$]*)");
 
   /** Returns what the callee of {@code call} requires of argument {@code index}. */
@@ -63,7 +63,8 @@ record QualSites(
             .flatMap(this::declared)
             .map(
                 found ->
-                    source(QualState.Origin.RETURN_VALUE, found.returns().get(qualifier.name())));
+                    source(QualState.Origin.RETURN_VALUE, found.returns().get(qualifier.name()))
+            );
     return returned.isPresent() ? returned : field(operand);
   }
 
@@ -72,7 +73,8 @@ record QualSites(
     final String key = matcher.matches() ? type + "#" + matcher.group(1) : "";
     return scope.fields().containsKey(key)
         ? Optional.of(
-            source(QualState.Origin.FIELD_LOAD, scope.fields().get(key).get(qualifier.name())))
+            source(QualState.Origin.FIELD_LOAD, scope.fields().get(key).get(qualifier.name()))
+        )
         : Optional.empty();
   }
 
@@ -89,7 +91,10 @@ record QualSites(
   /** Returns the source a declaration makes: its annotation, or unknown when it has none. */
   static QualState.Source source(final QualState.Origin origin, final QualWhen declared) {
     return new QualState.Source(
-        origin, declared == null ? QualWhen.UNKNOWN : declared, declared != null);
+        origin,
+        declared == null ? QualWhen.UNKNOWN : declared,
+        declared != null
+    );
   }
 
   /** Tells whether a source is tracked: an unknown value only counts for a strict qualifier. */

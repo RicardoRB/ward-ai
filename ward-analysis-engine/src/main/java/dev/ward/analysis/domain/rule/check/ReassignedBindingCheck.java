@@ -25,7 +25,6 @@ import java.util.Set;
  * The declaring reference itself is not a write to report.
  */
 public final class ReassignedBindingCheck implements RuleCheck {
-
   private static final String NAME = "{value}";
 
   private final Set<BindingKind> kinds;
@@ -48,7 +47,9 @@ public final class ReassignedBindingCheck implements RuleCheck {
    * @throws IllegalArgumentException if a name is not a binding kind
    */
   public static ReassignedBindingCheck of(
-      final Collection<String> kindNames, final String message) {
+      final Collection<String> kindNames,
+      final String message
+  ) {
     final Set<BindingKind> kinds = EnumSet.noneOf(BindingKind.class);
     for (final String name : kindNames) {
       kinds.add(BindingKind.valueOf(name));
@@ -69,7 +70,11 @@ public final class ReassignedBindingCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes();
     final List<RuleMatch> found = new ArrayList<>();
     for (final Binding binding : scopes.bindings()) {

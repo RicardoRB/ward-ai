@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the magic-number check on parsed TypeScript. */
 class NodeMagicNumberCheckTest {
-
   private static final int HEX_VALUE = 31;
   private static final int BINARY_VALUE = 5;
   private static final int THOUSAND = 1000;
@@ -84,7 +83,11 @@ class NodeMagicNumberCheckTest {
   void ignoredValueIsSilent() {
     final NodeMagicNumberCheck check =
         new NodeMagicNumberCheck(
-            List.of(BigDecimal.valueOf(9)), DEFAULTS, "{value} is magic", "use const");
+            List.of(BigDecimal.valueOf(9)),
+            DEFAULTS,
+            "{value} is magic",
+            "use const"
+        );
 
     assertThat(check.matches(parse("f(9);\n"))).isEmpty();
   }

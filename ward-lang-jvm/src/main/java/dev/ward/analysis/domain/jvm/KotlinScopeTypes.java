@@ -13,7 +13,6 @@ import java.util.Set;
 
 /** Handles imports, types, members and functions of Kotlin. */
 final class KotlinScopeTypes {
-
   private static final String SIMPLE = "simpleIdentifier";
   private static final String EXPRESSION = "expression";
 
@@ -38,7 +37,8 @@ final class KotlinScopeTypes {
         KotlinScopeWalk.text(bound),
         bound.span(),
         new ImportOrigin(KotlinScopeWalk.text(path), KotlinScopeWalk.text(last), node.span()),
-        EnumSet.noneOf(BindingFlag.class));
+        EnumSet.noneOf(BindingFlag.class)
+    );
   }
 
   void classLike(final SyntaxNode node) {
@@ -69,26 +69,36 @@ final class KotlinScopeTypes {
         node.children().stream()
             .anyMatch(
                 c ->
-                    "val".equals(KotlinScopeWalk.text(c)) || "var".equals(KotlinScopeWalk.text(c)));
+                    "val".equals(KotlinScopeWalk.text(c)) || "var".equals(KotlinScopeWalk.text(c))
+            );
     final boolean constant =
         node.children().stream().anyMatch(c -> "val".equals(KotlinScopeWalk.text(c)));
     walk.declare(
         name,
         property ? (constant ? BindingKind.CONSTANT : BindingKind.VARIABLE) : BindingKind.PARAMETER,
         false,
-        Set.of());
+        Set.of()
+    );
     node.children().stream().filter(c -> EXPRESSION.equals(c.kind())).forEach(walk::visit);
   }
 
   void enumEntry(final SyntaxNode node) {
     walk.declare(
-        KotlinScopeWalk.simple(node), BindingKind.CONSTANT, false, EnumSet.of(BindingFlag.CONST));
+        KotlinScopeWalk.simple(node),
+        BindingKind.CONSTANT,
+        false,
+        EnumSet.of(BindingFlag.CONST)
+    );
     node.children().stream().filter(c -> !SIMPLE.equals(c.kind())).forEach(walk::visit);
   }
 
   void typeAlias(final SyntaxNode node) {
     walk.declare(
-        KotlinScopeWalk.simple(node), BindingKind.TYPE, false, EnumSet.of(BindingFlag.TYPE_ONLY));
+        KotlinScopeWalk.simple(node),
+        BindingKind.TYPE,
+        false,
+        EnumSet.of(BindingFlag.TYPE_ONLY)
+    );
   }
 
   void function(final SyntaxNode node) {
@@ -98,8 +108,13 @@ final class KotlinScopeTypes {
         identifier -> {
           final SyntaxNode last = identifier.children().get(identifier.children().size() - 1);
           walk.builder.declare(
-              KotlinScopeWalk.text(last), BindingKind.FUNCTION, last.span(), Set.of());
-        });
+              KotlinScopeWalk.text(last),
+              BindingKind.FUNCTION,
+              last.span(),
+              Set.of()
+          );
+        }
+    );
     final boolean extension = KotlinScopeWalk.has(node, "receiverType") || hasReceiver(node);
     walk.scoped(node, ScopeKind.FUNCTION, extension);
   }

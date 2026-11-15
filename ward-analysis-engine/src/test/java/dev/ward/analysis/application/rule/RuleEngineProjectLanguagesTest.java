@@ -30,7 +30,6 @@ import org.junit.jupiter.api.Test;
  * them again.
  */
 final class RuleEngineProjectLanguagesTest {
-
   private static final Span AT = new Span(1, 1, 1, 2, 0, 1);
   private static final String TS_FILE = "src/a.ts";
   private static final String JS_FILE = "src/b.js";
@@ -47,7 +46,8 @@ final class RuleEngineProjectLanguagesTest {
               return List.of();
             },
             withJavascript(),
-            List.of(definition(TS_RULE, AnalysisLanguage.TYPESCRIPT)));
+            List.of(definition(TS_RULE, AnalysisLanguage.TYPESCRIPT))
+        );
 
     assertThat(findings).isEmpty();
     assertThat(seen).containsExactly(TS_FILE, JS_FILE);
@@ -61,7 +61,9 @@ final class RuleEngineProjectLanguagesTest {
             withJavascript(),
             List.of(
                 definition(TS_RULE, AnalysisLanguage.TYPESCRIPT),
-                definition(JS_RULE, AnalysisLanguage.JAVASCRIPT)));
+                definition(JS_RULE, AnalysisLanguage.JAVASCRIPT)
+            )
+        );
 
     assertThat(findings)
         .extracting(AnalysisFinding::file)
@@ -74,7 +76,8 @@ final class RuleEngineProjectLanguagesTest {
         run(
             (trees, files) -> matchEachFile(trees),
             typescriptOnly(),
-            List.of(definition(TS_RULE, AnalysisLanguage.TYPESCRIPT)));
+            List.of(definition(TS_RULE, AnalysisLanguage.TYPESCRIPT))
+        );
 
     assertThat(findings).extracting(AnalysisFinding::file).containsExactly(TS_FILE);
   }
@@ -86,22 +89,28 @@ final class RuleEngineProjectLanguagesTest {
   }
 
   private static List<AnalysisFinding> run(
-      final Check check, final List<FrontendSupport> frontends, final List<RuleDefinition> rules) {
+      final Check check,
+      final List<FrontendSupport> frontends,
+      final List<RuleDefinition> rules
+  ) {
     return new RuleEngine(matcher(check))
         .runProject(
             List.of(
                 new SourceUnit(TS_FILE, AnalysisLanguage.TYPESCRIPT, "export const a = 1;"),
-                new SourceUnit(JS_FILE, AnalysisLanguage.JAVASCRIPT, "export const b = 1;")),
+                new SourceUnit(JS_FILE, AnalysisLanguage.JAVASCRIPT, "export const b = 1;")
+            ),
             frontends,
             rules,
-            ProjectFiles.empty());
+            ProjectFiles.empty()
+        );
   }
 
   private static List<FrontendSupport> withJavascript() {
     return List.of(
         support(AnalysisLanguage.TYPESCRIPT)
             .withProjectLanguages(Set.of(AnalysisLanguage.JAVASCRIPT)),
-        support(AnalysisLanguage.JAVASCRIPT));
+        support(AnalysisLanguage.JAVASCRIPT)
+    );
   }
 
   private static List<FrontendSupport> typescriptOnly() {
@@ -116,7 +125,12 @@ final class RuleEngineProjectLanguagesTest {
 
   private static RuleDefinition definition(final String id, final AnalysisLanguage language) {
     return new RuleDefinition(
-        id, Set.of(language), RuleCapability.SYNTAX, AnalysisSeverity.WARNING, "body");
+        id,
+        Set.of(language),
+        RuleCapability.SYNTAX,
+        AnalysisSeverity.WARNING,
+        "body"
+    );
   }
 
   /** A project check body: the trees and the manifest files in, the matches out. */
@@ -145,7 +159,10 @@ final class RuleEngineProjectLanguagesTest {
 
           @Override
           public List<ProjectMatch> project(
-              final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
+              final SortedMap<String,
+              SyntaxNode> trees,
+              final ProjectFiles files
+          ) {
             return check.run(trees, files);
           }
         };

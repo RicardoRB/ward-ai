@@ -9,9 +9,7 @@ final class TypeScriptPackages {
 
   /** Whether {@code typescript} is installed in {@code projectRoot} or an ancestor directory. */
   static boolean resolvable(final Path projectRoot) {
-    for (Path directory = projectRoot.toAbsolutePath().normalize();
-        directory != null;
-        directory = directory.getParent()) {
+    for (Path directory = projectRoot.toAbsolutePath().normalize(); directory != null; directory = directory.getParent()) {
       if (Files.isRegularFile(directory.resolve("node_modules/typescript/package.json"))) {
         return true;
       }

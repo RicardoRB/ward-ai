@@ -16,7 +16,6 @@ import java.util.Set;
  * resolved, so only written constituents count.
  */
 public final class RedundantConstituentsCheck implements RuleCheck {
-
   private static final String TYPE = "{type}";
   private static final String ANY = "any";
   private static final String UNKNOWN = "unknown";
@@ -56,7 +55,10 @@ public final class RedundantConstituentsCheck implements RuleCheck {
 
   /** Reports whether a constituent does nothing or overrides the others of its type. */
   private static boolean isRedundant(
-      final String operator, final String text, final Set<String> texts) {
+      final String operator,
+      final String text,
+      final Set<String> texts
+  ) {
     if (ANY.equals(text) || UNKNOWN.equals(text) || NEVER.equals(text)) {
       return texts.size() > 1;
     }

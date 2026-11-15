@@ -1,0 +1,18 @@
+root = true
+
+[*.java]
+indent_style = space
+indent_size = 2
+ward_continuation_indent_size = 4
+max_line_length = 100
+insert_final_newline = true
+ward_max_blank_lines = 1
+
+# Only the Java sources are formatted; the other languages here are fixtures, the website and
+# the compatibility drivers.
+[*.{ts,tsx,js,jsx,mjs,cjs,py,swift,kt,kts}]
+ward_format = false
+
+# Fixtures are the inputs of tests and stay byte for byte as written.
+[**/src/test/resources/**]
+ward_format = false

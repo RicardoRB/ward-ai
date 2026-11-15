@@ -95,6 +95,7 @@ class PomDeclarationValidatorTest {
     assertThatThrownBy(() -> PomDeclarationValidator.validate(pom, List.of(PIT)))
         .isInstanceOf(WardException.class)
         .hasMessageContaining(
-            "pitest-maven declaration is not in the project-level <build/plugins>");
+            "pitest-maven declaration is not in the project-level <build/plugins>"
+        );
   }
 }

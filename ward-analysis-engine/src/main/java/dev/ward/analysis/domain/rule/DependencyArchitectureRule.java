@@ -14,7 +14,6 @@ import java.util.function.Predicate;
  * every dependency edge that breaks it, at the import that creates the edge.
  */
 public final class DependencyArchitectureRule implements GraphRule {
-
   /** The id of the rule, the same in every language. */
   public static final String ID = "ward:architecture/dependencies";
 
@@ -53,7 +52,10 @@ public final class DependencyArchitectureRule implements GraphRule {
                     matches.add(
                         new GraphMatch(
                             edge.from(),
-                            new RuleMatch(edge.reference().span(), rule.message(problem)))));
+                            new RuleMatch(edge.reference().span(), rule.message(problem))
+                        )
+                    )
+            );
       }
     }
     return List.copyOf(matches);
@@ -63,7 +65,8 @@ public final class DependencyArchitectureRule implements GraphRule {
       final ArchitectureRule rule,
       final DependencyEdge edge,
       final Predicate<String> selected,
-      final Predicate<String> target) {
+      final Predicate<String> target
+  ) {
     return switch (rule.constraint().kind()) {
       case MUST_NOT_DEPEND_ON -> forbidden(edge, selected, target);
       case MAY_ONLY_DEPEND_ON -> outside(edge, selected, target);
@@ -73,21 +76,30 @@ public final class DependencyArchitectureRule implements GraphRule {
   }
 
   private static Optional<String> forbidden(
-      final DependencyEdge edge, final Predicate<String> selected, final Predicate<String> target) {
+      final DependencyEdge edge,
+      final Predicate<String> selected,
+      final Predicate<String> target
+  ) {
     return selected.test(edge.from()) && target.test(edge.to())
         ? Optional.of(edge.from() + " must not depend on " + edge.to())
         : Optional.empty();
   }
 
   private static Optional<String> outside(
-      final DependencyEdge edge, final Predicate<String> selected, final Predicate<String> target) {
+      final DependencyEdge edge,
+      final Predicate<String> selected,
+      final Predicate<String> target
+  ) {
     return selected.test(edge.from()) && !selected.test(edge.to()) && !target.test(edge.to())
         ? Optional.of(edge.from() + " may not depend on " + edge.to())
         : Optional.empty();
   }
 
   private static Optional<String> accessed(
-      final DependencyEdge edge, final Predicate<String> selected, final Predicate<String> target) {
+      final DependencyEdge edge,
+      final Predicate<String> selected,
+      final Predicate<String> target
+  ) {
     return selected.test(edge.to()) && !selected.test(edge.from()) && !target.test(edge.from())
         ? Optional.of(edge.to() + " may not be accessed by " + edge.from())
         : Optional.empty();

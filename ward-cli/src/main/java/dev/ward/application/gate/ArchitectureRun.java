@@ -44,7 +44,8 @@ final class ArchitectureRun {
   static List<AnalysisFinding> findings(
       final List<RuleDefinition> rules,
       final DependencySnapshot snapshot,
-      final List<SourceUnit> units) {
+      final List<SourceUnit> units
+  ) {
     return of(rules, snapshot, units).findings(snapshot.graph());
   }
 
@@ -53,14 +54,16 @@ final class ArchitectureRun {
       final RuleRunResult run,
       final List<RuleDefinition> rules,
       final DependencySnapshot snapshot,
-      final List<SourceUnit> units) {
+      final List<SourceUnit> units
+  ) {
     return of(rules, snapshot, units).withErrors(run);
   }
 
   private static ArchitectureRun of(
       final List<RuleDefinition> rules,
       final DependencySnapshot snapshot,
-      final List<SourceUnit> units) {
+      final List<SourceUnit> units
+  ) {
     final Map<String, AnalysisLanguage> sources = new LinkedHashMap<>();
     for (final SourceUnit unit : units) {
       if (unit.language() != AnalysisLanguage.OPENAPI) {
@@ -68,7 +71,9 @@ final class ArchitectureRun {
       }
     }
     return new ArchitectureRun(
-        rules, new ProjectFiles(snapshot.summaries().keySet(), snapshot.entries(), sources));
+        rules,
+        new ProjectFiles(snapshot.summaries().keySet(), snapshot.entries(), sources)
+    );
   }
 
   /**
@@ -77,7 +82,10 @@ final class ArchitectureRun {
    */
   static List<RuleDefinition> definitions(final List<ArchitectureRule> rules) {
     return Stream.of(
-            DependencyArchitectureRule.ID, NamingArchitectureRule.ID, LocationArchitectureRule.ID)
+        DependencyArchitectureRule.ID,
+        NamingArchitectureRule.ID,
+        LocationArchitectureRule.ID
+    )
         .map(id -> family(id, rules))
         .flatMap(Optional::stream)
         .toList();
@@ -95,12 +103,18 @@ final class ArchitectureRun {
             definition ->
                 errors.addAll(
                     ArchitectureRuleCheck.errors(
-                        ArchitectureRuleBody.decode(definition.body()), project)));
+                        ArchitectureRuleBody.decode(definition.body()),
+                        project
+                    )
+                )
+        );
     return new RuleRunResult(run.findings(), errors, run.notRun());
   }
 
   private static Optional<RuleDefinition> family(
-      final String id, final List<ArchitectureRule> rules) {
+      final String id,
+      final List<ArchitectureRule> rules
+  ) {
     final List<ArchitectureRule> own =
         rules.stream().filter(rule -> rule.constraint().kind().ruleId().equals(id)).toList();
     return own.isEmpty()

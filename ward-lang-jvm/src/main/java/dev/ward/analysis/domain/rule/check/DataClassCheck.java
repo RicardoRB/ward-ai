@@ -15,7 +15,6 @@ import java.util.function.Predicate;
  * 31 complexity or over five of the first with under 47.
  */
 public final class DataClassCheck implements UnitCheck {
-
   private static final double WOC_LIMIT = 1.0 / 3.0;
   private static final int FEW_REVEALED = 3;
   private static final int MANY_REVEALED = 5;
@@ -83,7 +82,9 @@ public final class DataClassCheck implements UnitCheck {
   }
 
   private static List<SyntaxNode> methods(
-      final List<SyntaxNode> members, final Predicate<SyntaxNode> visibility) {
+      final List<SyntaxNode> members,
+      final Predicate<SyntaxNode> visibility
+  ) {
     return members.stream()
         .filter(visibility)
         .map(ClassMembers::declarationOf)

@@ -67,7 +67,9 @@ final class MemberSink {
               SigReader.annotated(TreeKit.child(node, "typeAnnotation")),
               List.of(),
               0,
-              List.of()));
+              List.of()
+          )
+      );
     }
   }
 
@@ -85,7 +87,9 @@ final class MemberSink {
               TsType.named(enumName + "." + name),
               List.of(),
               Member.READONLY | Member.STATIC,
-              List.of()));
+              List.of()
+          )
+      );
     }
   }
 
@@ -100,7 +104,8 @@ final class MemberSink {
                 TreeText.leaves(decorator).stream()
                     .skip(1)
                     .takeWhile(leaf -> !"(".equals(leaf))
-                    .collect(Collectors.joining()))
+                    .collect(Collectors.joining())
+        )
         .toList();
   }
 }

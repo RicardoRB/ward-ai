@@ -37,7 +37,8 @@ public final class TurborepoPlan {
           Map.entry(NodeTools.JEST, TEST),
           Map.entry(NodeTools.BUN_TEST, TEST),
           Map.entry(NodeTools.NG_TEST, TEST),
-          Map.entry("stryker", MUTATION));
+          Map.entry("stryker", MUTATION)
+      );
 
   /** The test runners in tie-break order when members use different ones. */
   private static final List<String> TEST_RUNNERS =
@@ -59,8 +60,11 @@ public final class TurborepoPlan {
       Project project,
       String name,
       List<InitGateOption> gates,
-      Map<String, String> scripts,
-      Map<String, String> current) {
+      Map<String,
+      String> scripts,
+      Map<String,
+      String> current
+  ) {
     /** Copies the gates and scripts. */
     MemberPlan {
       gates = List.copyOf(gates);
@@ -107,24 +111,32 @@ public final class TurborepoPlan {
   public static List<InitGateOption> rootGates(
       final List<InitGateOption> analysis,
       final TaskRunnerStrategy strategy,
-      final BuildTool manager) {
+      final BuildTool manager
+  ) {
     return analysis.stream()
         .map(
             gate ->
-                taskOf(gate.id()).map(task -> rootGate(gate, task, strategy, manager)).orElse(gate))
+                taskOf(gate.id()).map(task -> rootGate(gate, task, strategy, manager)).orElse(gate)
+        )
         .toList();
   }
 
   /** Returns each plannable member's scripts, with the test runner and checker it keeps. */
   static List<MemberPlan> memberScripts(
-      final Project root, final QualityPreset preset, final InitInputs inputs) {
+      final Project root,
+      final QualityPreset preset,
+      final InitInputs inputs
+  ) {
     return plannable(root, inputs).stream()
         .map(member -> memberScripts(member, preset, inputs))
         .toList();
   }
 
   private static MemberPlan memberScripts(
-      final WorkspaceMember member, final QualityPreset preset, final InitInputs inputs) {
+      final WorkspaceMember member,
+      final QualityPreset preset,
+      final InitInputs inputs
+  ) {
     final Project project = member.project();
     final PackageManifest manifest = manifest(member, inputs);
     final NodeTools tools = NodeTools.of(project, manifest, inputs, preset);
@@ -138,7 +150,10 @@ public final class TurborepoPlan {
                     task ->
                         scripts.putIfAbsent(
                             task,
-                            ScriptLine.of(withoutRunner(gate.command(), project.buildTool())))));
+                            ScriptLine.of(withoutRunner(gate.command(), project.buildTool()))
+                        )
+                )
+    );
     return new MemberPlan(project, member.name(), gates, scripts, member.scripts());
   }
 
@@ -155,13 +170,15 @@ public final class TurborepoPlan {
       final InitGateOption gate,
       final String task,
       final TaskRunnerStrategy strategy,
-      final BuildTool manager) {
+      final BuildTool manager
+  ) {
     return new InitGateOption(
         gate.id(),
         gate.description(),
         strategy.rootTaskCommand(manager, task),
         gate.available(),
         gate.availabilityMessage(),
-        gate.settings());
+        gate.settings()
+    );
   }
 }

@@ -17,7 +17,6 @@ import java.util.Set;
  * aria-labelledby are silent.
  */
 public final class BiomeSvgTitleCheck implements RuleCheck {
-
   private static final String SVG = "svg";
   private static final String TITLE = "title";
   private static final String ELEMENT = "jsxElement";
@@ -47,7 +46,10 @@ public final class BiomeSvgTitleCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(ELEMENT)).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(node -> reported(node, unit.text()))
@@ -95,7 +97,8 @@ public final class BiomeSvgTitleCheck implements RuleCheck {
         .anyMatch(
             attribute ->
                 JsxAttributes.value(attribute).isEmpty()
-                    || JsxAttributes.literal(attribute).filter("true"::equals).isPresent());
+                    || JsxAttributes.literal(attribute).filter("true"::equals).isPresent()
+        );
   }
 
   /** Biome's title check: the child at index 1 is a title element with content. */
@@ -104,7 +107,8 @@ public final class BiomeSvgTitleCheck implements RuleCheck {
         svg.children().stream()
             .filter(
                 child ->
-                    !JsxAttributes.OPENING.equals(child.kind()) && !CLOSING.equals(child.kind()))
+                    !JsxAttributes.OPENING.equals(child.kind()) && !CLOSING.equals(child.kind())
+            )
             .toList();
     if (children.size() < 2 || !isElementWithOpening(children.get(1))) {
       return false;
@@ -115,7 +119,8 @@ public final class BiomeSvgTitleCheck implements RuleCheck {
         && title.children().stream()
             .anyMatch(
                 child ->
-                    !JsxAttributes.OPENING.equals(child.kind()) && !CLOSING.equals(child.kind()));
+                    !JsxAttributes.OPENING.equals(child.kind()) && !CLOSING.equals(child.kind())
+            );
   }
 
   /** aria-labelledby names the id of a direct jsxElement child, as Biome's id check does. */
@@ -137,6 +142,8 @@ public final class BiomeSvgTitleCheck implements RuleCheck {
                             attribute ->
                                 JsxAttributes.literal(attribute)
                                     .filter(labelledBy.get()::equals)
-                                    .isPresent()));
+                                    .isPresent()
+                        )
+            );
   }
 }

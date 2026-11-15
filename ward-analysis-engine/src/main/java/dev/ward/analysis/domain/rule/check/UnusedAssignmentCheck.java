@@ -26,7 +26,6 @@ import java.util.Set;
  * {@code unused}. A variable that a nested body captures is never reported.
  */
 public final class UnusedAssignmentCheck implements RuleCheck {
-
   private static final String NAME = "{value}";
   private static final String UNDERSCORE = "_";
   private static final String IGNORED = "ignored";
@@ -86,7 +85,9 @@ public final class UnusedAssignmentCheck implements RuleCheck {
    * its name is not exempt.
    */
   private static boolean reportable(
-      final AccessSite definition, final ReachingDefinitions reaching) {
+      final AccessSite definition,
+      final ReachingDefinitions reaching
+  ) {
     final VariableAccess access = definition.access();
     return reaching.overwritten(definition) || isAssignment(access) && !exempt(access.name());
   }

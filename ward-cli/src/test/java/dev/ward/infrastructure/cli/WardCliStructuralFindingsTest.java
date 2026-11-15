@@ -38,7 +38,8 @@ class WardCliStructuralFindingsTest extends WardCliIntegrationSupport {
         uses = "ward"
         rules = ["%s"]
         """
-            .formatted(NAMING));
+            .formatted(NAMING)
+    );
   }
 
   @Test
@@ -60,10 +61,10 @@ class WardCliStructuralFindingsTest extends WardCliIntegrationSupport {
     nodeProject();
     Files.writeString(source.resolve("fake-eslint"), "#!/bin/sh\necho '[]'\n");
     Files.setPosixFilePermissions(
-        source.resolve("fake-eslint"), PosixFilePermissions.fromString("rwxr-xr-x"));
-    Files.writeString(
-        source.resolve(WARD_TOML),
-        """
+        source.resolve("fake-eslint"),
+        PosixFilePermissions.fromString("rwxr-xr-x")
+    );
+    Files.writeString(source.resolve(WARD_TOML), """
         version = 2
         [checks.eslint]
         command = ["./fake-eslint"]

@@ -13,7 +13,6 @@ import java.util.Locale;
 import org.junit.jupiter.api.Test;
 
 class RuleDefinitionsTest {
-
   @Test
   void rejectsTwoRulesWithTheSameId() {
     final List<RuleDefinition> rules =
@@ -48,11 +47,18 @@ class RuleDefinitionsTest {
                                     .next()
                                     .name()
                                     .toLowerCase(Locale.ROOT))
-                            + "/"));
+                            + "/"
+                    )
+        );
   }
 
   private static RuleDefinition rule(final String id) {
     return new RuleDefinition(
-        id, AnalysisLanguage.JAVA, RuleCapability.SYNTAX, AnalysisSeverity.ERROR, "body");
+        id,
+        AnalysisLanguage.JAVA,
+        RuleCapability.SYNTAX,
+        AnalysisSeverity.ERROR,
+        "body"
+    );
   }
 }

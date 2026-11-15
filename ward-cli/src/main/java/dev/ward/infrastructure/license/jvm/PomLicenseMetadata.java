@@ -43,7 +43,10 @@ public final class PomLicenseMetadata implements LicenseMetadata {
 
   @Override
   public LicenseLookup lookup(
-      final Project project, final String modulePath, final Dependency dependency) {
+      final Project project,
+      final String modulePath,
+      final Dependency dependency
+  ) {
     final String[] parts = dependency.id().name().split(":", 2);
     final Coordinates start =
         new Coordinates(parts[0], parts[parts.length - 1], dependency.id().version());
@@ -54,10 +57,13 @@ public final class PomLicenseMetadata implements LicenseMetadata {
       final Coordinates coordinates,
       final Set<Coordinates> seen,
       final int depth,
-      final Path member) {
+      final Path member
+  ) {
     if (depth > MAX_PARENTS || !seen.add(coordinates)) {
       return LicenseLookup.missing(
-          LicenseLookup.Reason.NO_LICENSE_DECLARED, "the parent POM chain is too deep or cyclic");
+          LicenseLookup.Reason.NO_LICENSE_DECLARED,
+          "the parent POM chain is too deep or cyclic"
+      );
     }
     final Optional<PomDocument> pom = find(coordinates, member);
     if (pom.isEmpty()) {
@@ -65,7 +71,8 @@ public final class PomLicenseMetadata implements LicenseMetadata {
           LicenseLookup.Reason.NOT_INSTALLED,
           "POM of "
               + coordinates
-              + " is in neither the local Maven repository nor the Gradle cache");
+              + " is in neither the local Maven repository nor the Gradle cache"
+      );
     }
     final List<DeclaredLicense.Entry> licenses = pom.get().licenses();
     if (!licenses.isEmpty()) {
@@ -75,7 +82,9 @@ public final class PomLicenseMetadata implements LicenseMetadata {
     return parent.isPresent()
         ? inherit(parent.get(), seen, depth + 1, member)
         : LicenseLookup.missing(
-            LicenseLookup.Reason.NO_LICENSE_DECLARED, "the POM declares no license");
+            LicenseLookup.Reason.NO_LICENSE_DECLARED,
+            "the POM declares no license"
+        );
   }
 
   private Optional<PomDocument> find(final Coordinates coordinates, final Path member) {
@@ -124,6 +133,7 @@ public final class PomLicenseMetadata implements LicenseMetadata {
         .filter(
             pom ->
                 coordinates.artifact().equals(pom.artifactId())
-                    && coordinates.version().equals(pom.version()));
+                    && coordinates.version().equals(pom.version())
+        );
   }
 }

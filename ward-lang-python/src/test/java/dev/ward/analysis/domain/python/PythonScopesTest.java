@@ -11,7 +11,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class PythonScopesTest {
-
   private static final int LINE_2 = 2;
   private static final int LINE_3 = 3;
   private static final int LINE_4 = 4;
@@ -30,8 +29,7 @@ class PythonScopesTest {
   @Test
   void nonlocalWriteResolvesToTheEnclosingFunction() {
     final UnitScopes scopes =
-        PythonScopeFixtures.scopes(
-            """
+        PythonScopeFixtures.scopes("""
             def outer():
                 count = 0
                 def inner():
@@ -52,8 +50,7 @@ class PythonScopesTest {
   @Test
   void globalWriteDeclaresTheNameInTheModule() {
     final UnitScopes scopes =
-        PythonScopeFixtures.scopes(
-            """
+        PythonScopeFixtures.scopes("""
             def f():
                 global flag
                 flag = True
@@ -69,8 +66,7 @@ class PythonScopesTest {
   @Test
   void methodsDoNotSeeClassVariables() {
     final UnitScopes scopes =
-        PythonScopeFixtures.scopes(
-            """
+        PythonScopeFixtures.scopes("""
             class A:
                 x = 1
                 y = x
@@ -105,8 +101,7 @@ class PythonScopesTest {
   @Test
   void execOpensTheFunctionScopeOnly() {
     final UnitScopes scopes =
-        PythonScopeFixtures.scopes(
-            """
+        PythonScopeFixtures.scopes("""
             def f():
                 exec("x = 1")
                 return x
@@ -121,8 +116,7 @@ class PythonScopesTest {
   @Test
   void aWriteBeforeTheDeclarationInTheSameFunctionIsLocal() {
     final UnitScopes scopes =
-        PythonScopeFixtures.scopes(
-            """
+        PythonScopeFixtures.scopes("""
             x = 1
             def f():
                 print(x)

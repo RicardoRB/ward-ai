@@ -19,7 +19,6 @@ import java.util.Set;
  * {@link AccessKind#CAPTURE}.
  */
 public final class ReachingDefinitions {
-
   private final List<AccessSite> definitions;
   private final List<AccessSite> uses;
   private final Map<AccessSite, List<AccessSite>> reaching;
@@ -28,8 +27,10 @@ public final class ReachingDefinitions {
   private ReachingDefinitions(
       final List<AccessSite> definitions,
       final List<AccessSite> uses,
-      final Map<AccessSite, List<AccessSite>> reaching,
-      final Set<AccessSite> overwritten) {
+      final Map<AccessSite,
+      List<AccessSite>> reaching,
+      final Set<AccessSite> overwritten
+  ) {
     this.definitions = definitions;
     this.uses = uses;
     this.reaching = reaching;
@@ -51,7 +52,11 @@ public final class ReachingDefinitions {
       sweep.block(block, in[block.id()], writes);
     }
     return new ReachingDefinitions(
-        writes.ordered(), List.copyOf(sweep.uses), sweep.reaching, Set.copyOf(sweep.overwritten));
+        writes.ordered(),
+        List.copyOf(sweep.uses),
+        sweep.reaching,
+        Set.copyOf(sweep.overwritten)
+    );
   }
 
   /** Returns the writes of the graph, in block order. */
@@ -89,13 +94,12 @@ public final class ReachingDefinitions {
 
   /** The uses, their reaching writes and the overwritten writes, collected block by block. */
   private static final class Sweep {
-
     private final List<AccessSite> uses = new ArrayList<>();
     private final Map<AccessSite, List<AccessSite>> reaching = new HashMap<>();
     private final Set<AccessSite> overwritten = new HashSet<>();
 
     void block(final BasicBlock block, final BitSet entry, final Writes writes) {
-      final BitSet current = (BitSet) entry.clone();
+      final BitSet current = (BitSet)entry.clone();
       for (final AccessSite site : sites(block)) {
         if (isWrite(site.access())) {
           write(site, current, writes);
@@ -133,7 +137,6 @@ public final class ReachingDefinitions {
 
   /** The writes of one graph, numbered in block order, with the writes of each variable. */
   static final class Writes {
-
     private final List<AccessSite> sites = new ArrayList<>();
     private final Map<VariableKey, BitSet> ofVariable = new HashMap<>();
     private final Map<AccessSite, Integer> numbers = new HashMap<>();
@@ -169,7 +172,7 @@ public final class ReachingDefinitions {
       if (writesOfVariable == null) {
         return List.of();
       }
-      final BitSet same = (BitSet) current.clone();
+      final BitSet same = (BitSet)current.clone();
       same.and(writesOfVariable);
       final List<AccessSite> found = new ArrayList<>();
       for (int number = same.nextSetBit(0); number >= 0; number = same.nextSetBit(number + 1)) {

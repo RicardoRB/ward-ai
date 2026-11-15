@@ -14,13 +14,13 @@ import java.util.regex.Pattern;
  * {@code init}.
  */
 public final class ConstructorGroupCheck implements RuleCheck {
-
   private static final Set<String> BODIES =
       Set.of("class_body", "struct_body", "extension_body", "protocol_body");
   private static final Pattern INITIALIZER =
       Pattern.compile(
           "^(@\\w+(\\([^)]*\\))?)*(public|open|internal|fileprivate|private|required|convenience"
-              + "|override|final)*init[?!]?\\(");
+              + "|override|final)*init[?!]?\\("
+      );
   private final String message;
 
   /**

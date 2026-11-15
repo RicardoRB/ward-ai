@@ -17,8 +17,8 @@ public record ArchitectureRule(
     ArchitectureSelector select,
     ArchitectureConstraint constraint,
     String because,
-    boolean allowEmpty) {
-
+    boolean allowEmpty
+) {
   /**
    * Validates the parts.
    *

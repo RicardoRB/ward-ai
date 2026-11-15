@@ -13,7 +13,10 @@ public final class WorkspaceGlobs {
    * patterns}, which are relative to {@code root}. The root itself never matches.
    */
   public static boolean matchesAny(
-      final List<String> patterns, final Path root, final Path candidate) {
+      final List<String> patterns,
+      final Path root,
+      final Path candidate
+  ) {
     if (root.equals(candidate)) {
       return false;
     }
@@ -21,6 +24,7 @@ public final class WorkspaceGlobs {
     return patterns.stream()
         .map(pattern -> pattern.replaceFirst("^\\./", "").replaceFirst("/$", ""))
         .anyMatch(
-            glob -> FileSystems.getDefault().getPathMatcher("glob:" + glob).matches(relative));
+            glob -> FileSystems.getDefault().getPathMatcher("glob:" + glob).matches(relative)
+        );
   }
 }

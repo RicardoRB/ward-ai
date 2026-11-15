@@ -26,7 +26,11 @@ class GateOutputVisibilityTest {
                         null,
                         null,
                         null,
-                        List.of()))));
+                        List.of()
+                    )
+                )
+            )
+        );
     final GateResult empty = result(GateStatus.FAILED, GateFindings.NONE);
 
     assertThat(GateOutputVisibility.of(passed, SeverityThreshold.WARNING))
@@ -63,6 +67,16 @@ class GateOutputVisibilityTest {
 
   private static Finding finding() {
     return new Finding(
-        "g", "t", "r", FindingSeverity.ERROR, "m", null, null, null, null, List.of());
+        "g",
+        "t",
+        "r",
+        FindingSeverity.ERROR,
+        "m",
+        null,
+        null,
+        null,
+        null,
+        List.of()
+    );
   }
 }

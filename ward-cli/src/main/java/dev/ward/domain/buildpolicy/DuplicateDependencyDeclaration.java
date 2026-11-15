@@ -36,6 +36,7 @@ final class DuplicateDependencyDeclaration implements BuildPolicyRule {
             + earlier.line()
             + ".",
         repeat.file(),
-        repeat.line());
+        repeat.line()
+    );
   }
 }

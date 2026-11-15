@@ -20,15 +20,16 @@ class SwiftPartialChecksTest {
   @Test
   void testAndCoverageGatesAreNotPartialChecks() {
     assertThat(
-            PartialCheckDefaults.forGate(
-                "swift-build", SWIFT_PM, QualityPreset.STANDARD, List.of()))
+        PartialCheckDefaults.forGate("swift-build", SWIFT_PM, QualityPreset.STANDARD, List.of())
+    )
         .isEmpty();
     assertThat(
-            PartialCheckDefaults.forGate("swift-test", SWIFT_PM, QualityPreset.STANDARD, List.of()))
+        PartialCheckDefaults.forGate("swift-test", SWIFT_PM, QualityPreset.STANDARD, List.of())
+    )
         .isEmpty();
     assertThat(
-            PartialCheckDefaults.forGate(
-                "swift-coverage", SWIFT_PM, QualityPreset.STANDARD, List.of()))
+        PartialCheckDefaults.forGate("swift-coverage", SWIFT_PM, QualityPreset.STANDARD, List.of())
+    )
         .isEmpty();
   }
 }

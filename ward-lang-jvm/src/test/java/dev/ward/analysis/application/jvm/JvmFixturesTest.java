@@ -38,7 +38,6 @@ import org.tomlj.TomlParseResult;
  * positions and the passing one nothing, with the rule's default options or those of the case.
  */
 class JvmFixturesTest {
-
   private static final Path FIXTURES =
       Path.of("..", "ward-cli", "src", "test", "resources", "rules");
   private static final String JAVA_EXTENSION = "java";
@@ -78,7 +77,8 @@ class JvmFixturesTest {
   @ParameterizedTest(name = "{0}")
   @MethodSource("ownedRules")
   void violatingFixtureReportsExactlyTheExpectedPositionsAndPassingReportsNone(
-      final OwnedRule owned) throws IOException {
+      final OwnedRule owned
+  ) throws IOException {
     final List<String> cases = new ArrayList<>();
     cases.add("");
     try (Stream<Path> files = Files.list(owned.directory())) {
@@ -97,10 +97,12 @@ class JvmFixturesTest {
               .filter(line -> !line.isBlank())
               .toList();
       assertThat(
-              run(
-                  rule,
-                  owned.directory().resolve(VIOLATING + suffix + "." + extension(owned.rule())),
-                  owned.directory()))
+          run(
+              rule,
+              owned.directory().resolve(VIOLATING + suffix + "." + extension(owned.rule())),
+              owned.directory()
+          )
+      )
           .as("%s %s", owned, VIOLATING + suffix)
           .isEqualTo(expected);
       final Path passing =
@@ -139,8 +141,8 @@ class JvmFixturesTest {
     final RuleEngine engine = new RuleEngine(matcher);
     final List<SourceUnit> units =
         List.of(
-            new SourceUnit(
-                unitName(file), language, Files.readString(file, StandardCharsets.UTF_8)));
+            new SourceUnit(unitName(file), language, Files.readString(file, StandardCharsets.UTF_8))
+        );
     final RuleRunResult result =
         engine.run(units, JvmFixtureFrontends.forRule(rule, language, directory), List.of(rule));
     assertThat(result.executionErrors()).as("execution errors of %s", rule.id()).isEmpty();
@@ -148,7 +150,11 @@ class JvmFixturesTest {
     final List<AnalysisFinding> all = new ArrayList<>(result.findings());
     all.addAll(
         engine.runProject(
-            units, JvmFixtureFrontends.forRule(rule, language, directory), List.of(rule)));
+            units,
+            JvmFixtureFrontends.forRule(rule, language, directory),
+            List.of(rule)
+        )
+    );
     return all.stream()
         .filter(finding -> finding.ruleId().equals(rule.id()))
         .map(JvmFixturesTest::position)
@@ -164,7 +170,10 @@ class JvmFixturesTest {
   }
 
   private static CompiledRule compile(
-      final RuleDefinition definition, final Map<String, CheckFactory> factories) {
+      final RuleDefinition definition,
+      final Map<String,
+      CheckFactory> factories
+  ) {
     final TomlParseResult toml = Toml.parse(definition.body());
     return new CheckedRule(definition, factories.get(toml.getString(CHECK)).create(toml));
   }

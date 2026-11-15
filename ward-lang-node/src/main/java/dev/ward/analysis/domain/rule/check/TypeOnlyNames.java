@@ -4,7 +4,6 @@ import java.util.List;
 
 /** Formats the names of type-only imports and exports for the messages of the type-only checks. */
 final class TypeOnlyNames {
-
   private static final int SINGLE = 1;
 
   private TypeOnlyNames() {}

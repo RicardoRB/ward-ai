@@ -28,7 +28,8 @@ class InitSetupCatalogPreviousChoicesTest {
       new InitSetupCatalog(
           new FakeEnvironmentInspection(),
           new NoQualityHookGeneration(),
-          new TomlConfigurationReader());
+          new TomlConfigurationReader()
+      );
   private final InitService service =
       new InitService(
           new ProjectDetector(new FileSystemProjectInspection()),
@@ -39,7 +40,9 @@ class InitSetupCatalogPreviousChoicesTest {
               new NoRuleFileGeneration(),
               ArchitectureTablesFixtures.create(),
               new FileConfigurationStorage(),
-              new OwnedSectionWriter()));
+              new OwnedSectionWriter()
+          )
+      );
 
   @Test
   void strictConfigurationGivesItsGatesInOrderWithoutAPreset(@TempDir final Path dir)
@@ -47,8 +50,8 @@ class InitSetupCatalogPreviousChoicesTest {
     withPom(dir, PLAIN_POM);
     service.initialize(
         dir,
-        new InitSelection(
-            List.of("none"), JavaPresetGates.STRICT, "layered", QualityPreset.STRICT));
+        new InitSelection(List.of("none"), JavaPresetGates.STRICT, "layered", QualityPreset.STRICT)
+    );
 
     assertThat(catalog.previousChoices(project(dir)))
         .hasValue(new PreviousChoices(JavaPresetGates.STRICT));

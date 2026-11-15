@@ -10,7 +10,6 @@ import java.util.List;
  * DocPrinter}.
  */
 final class FakeJavaFormatter implements SourceFormatter {
-
   private static final String INDENT_WIDTH = "indent-width";
   private static final int LINE_WIDTH = 100;
 

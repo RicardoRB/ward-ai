@@ -2,7 +2,6 @@ package dev.ward.analysis.domain.openapi;
 
 /** The position in a YAML text and the character-level moves every part of the parser shares. */
 final class YamlCursor {
-
   private final String text;
   private int pos;
 

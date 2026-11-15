@@ -20,7 +20,6 @@ import java.util.Set;
  * call of {@code eval} make a scope open.
  */
 public final class NodeScopeAnalysis implements ScopeAnalysis {
-
   private final BuiltinNames builtins;
 
   /** Creates the analysis over the global names of the JavaScript environments. */
@@ -37,14 +36,22 @@ public final class NodeScopeAnalysis implements ScopeAnalysis {
     globals.forEach(
         name ->
             builder.declareIn(
-                UnitScopes.BUILTIN_ID, name, BindingKind.BUILTIN, UnitScopes.NOWHERE, Set.of()));
+                UnitScopes.BUILTIN_ID,
+                name,
+                BindingKind.BUILTIN,
+                UnitScopes.NOWHERE,
+                Set.of()
+            )
+    );
     imports.bindings().forEach(binding -> declareImport(builder, binding));
     new NodeScopeWalk(builder, imports.sites()).visit(tree);
     return builder.build();
   }
 
   private static void declareImport(
-      final ScopeBuilder builder, final NodeImportScan.Binding binding) {
+      final ScopeBuilder builder,
+      final NodeImportScan.Binding binding
+  ) {
     final Set<BindingFlag> flags = EnumSet.noneOf(BindingFlag.class);
     if (binding.typeOnly()) {
       flags.add(BindingFlag.TYPE_ONLY);
@@ -53,7 +60,8 @@ public final class NodeScopeAnalysis implements ScopeAnalysis {
         NodeFlowSyntax.text(binding.local()),
         binding.local().span(),
         new ImportOrigin(binding.specifier(), binding.member(), binding.site()),
-        flags);
+        flags
+    );
   }
 
   @Override

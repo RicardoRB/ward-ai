@@ -10,7 +10,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class InheritedSignatureCheckTest {
-
   private static final InheritedSignatureCheck WRONG_PACKAGE =
       new InheritedSignatureCheck(InheritedSignatureCheck.Mode.WRONG_PACKAGE, "message");
   private static final InheritedSignatureCheck CLONEABLE =
@@ -22,7 +21,9 @@ class InheritedSignatureCheckTest {
 
   private static TypeMembers inheriting(final String parameter, final String method) {
     return ParsedFacts.withMethods(
-        List.of(), List.of(ParsedFacts.method("app.B", method, List.of(TypeRef.of(parameter)))));
+        List.of(),
+        List.of(ParsedFacts.method("app.B", method, List.of(TypeRef.of(parameter))))
+    );
   }
 
   private static List<String> handler(final TypeMembers members, final String declared) {
@@ -30,7 +31,8 @@ class InheritedSignatureCheckTest {
         .at(
             "classDeclaration",
             "classCextendsB{voidhandle(Evente){}}",
-            ParsedFacts.members(members))
+            ParsedFacts.members(members)
+        )
         .at("typeType", "Event", ParsedFacts.type(TypeRef.of(declared)))
         .run(WRONG_PACKAGE);
   }
@@ -41,7 +43,8 @@ class InheritedSignatureCheckTest {
         .at(
             "classDeclaration",
             text.replace("classRextendsB", "classRextendsB"),
-            ParsedFacts.members(new TypeMembers(List.of(), List.of(), List.of(above), List.of())))
+            ParsedFacts.members(new TypeMembers(List.of(), List.of(), List.of(above), List.of()))
+        )
         .run(CLONEABLE);
   }
 
@@ -61,12 +64,14 @@ class InheritedSignatureCheckTest {
     assertThat(handler(inheriting("app.other.Event", "other"), "java.awt.Event")).isEmpty();
     assertThat(new ParsedFacts(HANDLER).run(WRONG_PACKAGE)).isEmpty();
     assertThat(
-            new ParsedFacts(HANDLER)
-                .at(
-                    "classDeclaration",
-                    "classCextendsB{voidhandle(Evente){}}",
-                    ParsedFacts.members(inheriting("app.other.Event", "handle")))
-                .run(WRONG_PACKAGE))
+        new ParsedFacts(HANDLER)
+            .at(
+                "classDeclaration",
+                "classCextendsB{voidhandle(Evente){}}",
+                ParsedFacts.members(inheriting("app.other.Event", "handle"))
+            )
+            .run(WRONG_PACKAGE)
+    )
         .isEmpty();
     assertThat(new ParsedFacts(HANDLER).plain(WRONG_PACKAGE)).isEmpty();
   }
@@ -81,14 +86,16 @@ class InheritedSignatureCheckTest {
   void aClassThatImplementsCloneableItselfOrIsNotASingletonIsNotReported() {
     assertThat(singleton(SINGLETON, TypeRef.of("app.B"))).isEmpty();
     assertThat(
-            singleton(
-                SINGLETON.replace("extends B", "extends B implements Cloneable"), CLONEABLE_TYPE))
+        singleton(SINGLETON.replace("extends B", "extends B implements Cloneable"), CLONEABLE_TYPE)
+    )
         .isEmpty();
     assertThat(
-            singleton(
-                "class R extends B {\n  public R() {\n  }\n}\n",
-                TypeRef.of("app.B"),
-                CLONEABLE_TYPE))
+        singleton(
+            "class R extends B {\n  public R() {\n  }\n}\n",
+            TypeRef.of("app.B"),
+            CLONEABLE_TYPE
+        )
+    )
         .isEmpty();
     assertThat(new ParsedFacts(SINGLETON).run(CLONEABLE)).isEmpty();
     assertThat(new ParsedFacts(SINGLETON).plain(CLONEABLE)).isEmpty();

@@ -6,7 +6,6 @@ import dev.ward.analysis.domain.types.SpanFacts;
 /** Decides, from the syntax and the type facts of a declaration, whether it is reported. */
 @FunctionalInterface
 public interface DeclarationFactTest {
-
   /**
    * Tells whether the declaration is reported; unknown facts must give {@code false}.
    *

@@ -9,7 +9,6 @@ import dev.ward.analysis.domain.rule.RuleMatcher;
  * names the grammar kinds it applies to, and the body keys say where the names and parameters are.
  */
 public final class MetricMatcher implements RuleMatcher {
-
   @Override
   public CompiledRule compile(final RuleDefinition definition) {
     return new MetricCompiledRule(definition, MetricRuleBody.parse(definition.body()));

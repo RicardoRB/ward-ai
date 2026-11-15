@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 /** The functions whose parameters and assigned names exceed the limit. */
 final class TooManyLocalsCheckTest {
-
   private static final TooManyLocalsCheck CHECK = new TooManyLocalsCheck(2, "m");
 
   @Test

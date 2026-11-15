@@ -18,7 +18,10 @@ class DispatchedCallsTest {
   private static final TaintSpec EMPTY = new TaintSpec(List.of(), List.of(), List.of(), List.of());
 
   private static FlowSite call(
-      final String qualifier, final Optional<String> type, final List<String> annotations) {
+      final String qualifier,
+      final Optional<String> type,
+      final List<String> annotations
+  ) {
     return new FlowSite(FlowSiteKind.CALL, "go", qualifier, type, annotations, List.of(SPAN), SPAN);
   }
 
@@ -60,9 +63,16 @@ class DispatchedCallsTest {
             List.of(),
             List.of(
                 new TaintEntry(
-                    FlowSiteKind.CALL, "go", Optional.empty(), Optional.of("i"), List.of(0))),
+                    FlowSiteKind.CALL,
+                    "go",
+                    Optional.empty(),
+                    Optional.of("i"),
+                    List.of(0)
+                )
+            ),
             List.of(),
-            List.of());
+            List.of()
+        );
     assertThat(qualifierAfter(call("i", Optional.of("shop.Impl"), List.of()), sink)).isEqualTo("i");
   }
 }

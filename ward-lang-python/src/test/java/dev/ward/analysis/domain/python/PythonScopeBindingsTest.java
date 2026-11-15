@@ -12,12 +12,12 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class PythonScopeBindingsTest {
-
   @Test
   void fStringFieldsReadNames() {
     final UnitScopes scopes =
         PythonScopeFixtures.scopes(
-            "w = 3\nv = {'k': 1}\nprint(f\"{v['k']:>{w}} {{literal}} {v.keys()}\")\n");
+            "w = 3\nv = {'k': 1}\nprint(f\"{v['k']:>{w}} {{literal}} {v.keys()}\")\n"
+        );
 
     assertThat(scopes.references())
         .filteredOn(reference -> reference.access() == ReferenceAccess.READ)
@@ -43,7 +43,8 @@ class PythonScopeBindingsTest {
         .allSatisfy(
             binding ->
                 assertThat(binding.flags())
-                    .contains(BindingFlag.DESTRUCTURED, BindingFlag.EXPORTED));
+                    .contains(BindingFlag.DESTRUCTURED, BindingFlag.EXPORTED)
+        );
   }
 
   @Test

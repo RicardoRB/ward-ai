@@ -17,7 +17,6 @@ import java.util.stream.Stream;
  * never part of the repository and is only read: nothing in it is installed or run.
  */
 final class JuiceShopCorpus {
-
   /** The release the committed report measures. */
   static final String TAG = "v20.4.0";
 
@@ -72,7 +71,8 @@ final class JuiceShopCorpus {
       return new SourceUnit(
           root.relativize(file).toString().replace('\\', '/'),
           language(file),
-          Files.readString(file, StandardCharsets.UTF_8));
+          Files.readString(file, StandardCharsets.UTF_8)
+      );
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }

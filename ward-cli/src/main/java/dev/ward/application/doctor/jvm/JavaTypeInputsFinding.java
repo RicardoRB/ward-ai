@@ -21,11 +21,13 @@ public final class JavaTypeInputsFinding {
           NAME,
           Status.OK,
           "A JDK is available for native Java type resolution. Set java-classpath to a file of"
-              + " library jars to resolve library types.");
+              + " library jars to resolve library types."
+      );
     }
     return new Finding(
         NAME,
         Status.WARNING,
-        "hint: native Java type resolution reads a JDK image; install a JDK and put javac on PATH.");
+        "hint: native Java type resolution reads a JDK image; install a JDK and put javac on PATH."
+    );
   }
 }

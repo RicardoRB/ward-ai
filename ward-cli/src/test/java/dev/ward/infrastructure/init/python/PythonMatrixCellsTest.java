@@ -43,7 +43,7 @@ class PythonMatrixCellsTest {
   @Test
   void everyRowNamesAFixtureThatExists() throws IOException {
     for (final String row : rows()) {
-      final String fixture = row.split(",", -1)[FIXTURE_COLUMN];
+      final String fixture = row.split(",", -1) [FIXTURE_COLUMN];
       assertThat(Path.of("src/test/resources/fixtures/python-matrix", fixture))
           .as("fixture for row %s", row)
           .isDirectory();

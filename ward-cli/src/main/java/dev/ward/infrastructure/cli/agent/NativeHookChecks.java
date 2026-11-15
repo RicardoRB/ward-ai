@@ -19,7 +19,10 @@ final class NativeHookChecks {
 
   /** Returns the findings of the partial checks for the files {@code event} edited, if any. */
   static Optional<String> afterEdit(
-      final HookChecks checks, final NativeHookInput event, final Path directory) {
+      final HookChecks checks,
+      final NativeHookInput event,
+      final Path directory
+  ) {
     final Map<Path, List<Path>> projects =
         checks.scope().editedProjects(directory, NativeHookEditedPaths.of(event, directory));
     final List<String> findings = new ArrayList<>();
@@ -29,7 +32,9 @@ final class NativeHookChecks {
                 findings,
                 directory,
                 project,
-                checks.checks().checkPartial(project, paths, Set.of())));
+                checks.checks().checkPartial(project, paths, Set.of())
+            )
+    );
     return joined(findings);
   }
 
@@ -46,7 +51,8 @@ final class NativeHookChecks {
       final List<String> findings,
       final Path directory,
       final Path project,
-      final CheckReport report) {
+      final CheckReport report
+  ) {
     if (report.passed()) {
       return;
     }
@@ -54,7 +60,8 @@ final class NativeHookChecks {
     findings.add(
         project.equals(directory)
             ? text
-            : "Ward checked " + directory.relativize(project) + ":\n" + text);
+            : "Ward checked " + directory.relativize(project) + ":\n" + text
+    );
   }
 
   private static Optional<String> joined(final List<String> findings) {

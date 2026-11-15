@@ -25,7 +25,8 @@ public final class EditWriteGuardRunner {
         result.succeeded() && !result.hasExecutionError(),
         output,
         result.exitCode(),
-        result.executionError());
+        result.executionError()
+    );
   }
 
   /**
@@ -37,5 +38,9 @@ public final class EditWriteGuardRunner {
    * @param executionError why the process could not run, if it could not
    */
   public record GuardRunResult(
-      boolean succeeded, String output, int exitCode, String executionError) {}
+      boolean succeeded,
+      String output,
+      int exitCode,
+      String executionError
+  ) {}
 }

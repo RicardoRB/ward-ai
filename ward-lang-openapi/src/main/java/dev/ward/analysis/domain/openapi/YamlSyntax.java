@@ -8,7 +8,6 @@ package dev.ward.analysis.domain.openapi;
  * except for their positions.
  */
 public final class YamlSyntax {
-
   /** A mapping; its children are entries in file order. */
   public static final String OBJECT = "object";
 

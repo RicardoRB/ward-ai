@@ -37,11 +37,13 @@ class AnsweringTest {
     final Answering answering = new Answering(true, writer());
 
     assertThatThrownBy(
-            () ->
-                answering.ask(
-                    () -> {
-                      throw new WardException("input ended");
-                    }))
+        () ->
+            answering.ask(
+                () -> {
+                  throw new WardException("input ended");
+                }
+            )
+    )
         .isNotInstanceOf(InvalidAnswerException.class)
         .hasMessage("input ended");
   }

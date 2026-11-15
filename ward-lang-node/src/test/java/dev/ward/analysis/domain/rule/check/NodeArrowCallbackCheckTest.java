@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the arrow callback check on parsed JavaScript with the given options. */
 class NodeArrowCallbackCheckTest {
-
   @Test
   void anonymousCallbackIsReported() {
     assertThat(run("run(function () { return 1; });", false, true)).hasSize(1);
@@ -62,7 +61,10 @@ class NodeArrowCallbackCheckTest {
   }
 
   private static List<RuleMatch> run(
-      final String source, final boolean allowNamed, final boolean allowUnboundThis) {
+      final String source,
+      final boolean allowNamed,
+      final boolean allowUnboundThis
+  ) {
     final SyntaxNode root =
         new AntlrLanguageFrontend()
             .parse(new SourceUnit("m", AnalysisLanguage.JAVASCRIPT, source))

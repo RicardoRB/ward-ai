@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
  * IllegalTokenText. With no token kinds listed, nothing is reported, as in Checkstyle's defaults.
  */
 public final class NodeIllegalTokenCheck implements RuleCheck {
-
   private static final String COMMENT = "comment";
 
   private final Set<String> tokens;
@@ -32,7 +31,8 @@ public final class NodeIllegalTokenCheck implements RuleCheck {
       final Set<String> tokens,
       final String format,
       final boolean ignoreCase,
-      final String message) {
+      final String message
+  ) {
     this.tokens = Set.copyOf(tokens);
     this.format = Pattern.compile(format, ignoreCase ? Pattern.CASE_INSENSITIVE : 0);
     this.message = message;

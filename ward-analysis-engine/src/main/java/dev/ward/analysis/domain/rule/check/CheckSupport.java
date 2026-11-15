@@ -7,7 +7,6 @@ import java.util.Optional;
 
 /** Argument checks and message filling shared by the checks. */
 final class CheckSupport {
-
   /** The placeholder for the measured value in a message. */
   static final String VALUE = "{value}";
 
@@ -40,7 +39,8 @@ final class CheckSupport {
   static boolean admits(
       final List<String> modifiers,
       final Optional<String> required,
-      final Optional<String> excluded) {
+      final Optional<String> excluded
+  ) {
     final boolean hasRequired = required.map(modifiers::contains).orElse(true);
     final boolean hasExcluded = excluded.map(modifiers::contains).orElse(false);
     return hasRequired && !hasExcluded;

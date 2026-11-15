@@ -29,7 +29,8 @@ public final class LearningPolicy {
       final LearningLedger ledger,
       final CheckReport report,
       final int threshold,
-      final Instant now) {
+      final Instant now
+  ) {
     if (threshold <= 0) {
       throw new IllegalArgumentException("Learning threshold must be at least 1");
     }
@@ -48,11 +49,15 @@ public final class LearningPolicy {
           (rule, message) -> {
             final String key = result.type() + ":" + rule;
             records.put(key, failing(records.get(key), result.type(), rule, message, now));
-          });
+          }
+      );
       prompts.addAll(resolve(records, result.type(), rules.keySet(), threshold, now));
     }
     return new LearningOutcome(
-        new LearningLedger(ledger.formatVersion(), records), prompts, List.of());
+        new LearningLedger(ledger.formatVersion(), records),
+        prompts,
+        List.of()
+    );
   }
 
   /** Returns the first message of each learnable rule a failed gate reported, in report order. */
@@ -74,7 +79,8 @@ public final class LearningPolicy {
       final String gate,
       final String rule,
       final String message,
-      final Instant now) {
+      final Instant now
+  ) {
     if (current != null && current.state() != LearningState.RESOLVED) {
       return current.withState(LearningState.FAILING, now, current.prompted());
     }
@@ -87,16 +93,19 @@ public final class LearningPolicy {
         LearningState.FAILING,
         current == null ? now : current.firstSeen(),
         now,
-        current != null && current.prompted());
+        current != null && current.prompted()
+    );
   }
 
   /** Resolves the failing records of {@code gate} whose rule this run no longer reported. */
   private static List<LearningPrompt> resolve(
-      final Map<String, LearningRecord> records,
+      final Map<String,
+      LearningRecord> records,
       final String gate,
       final Set<String> reported,
       final int threshold,
-      final Instant now) {
+      final Instant now
+  ) {
     final List<LearningPrompt> prompts = new ArrayList<>();
     records.replaceAll(
         (key, record) -> {
@@ -113,10 +122,13 @@ public final class LearningPolicy {
                     record.gate(),
                     record.rule(),
                     record.occurrences(),
-                    record.summary()));
+                    record.summary()
+                )
+            );
           }
           return record.withState(LearningState.RESOLVED, now, record.prompted() || emit);
-        });
+        }
+    );
     return prompts;
   }
 

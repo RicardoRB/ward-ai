@@ -41,7 +41,8 @@ public final class CrapGate implements QualityGate {
       final String name,
       final CrapOptions options,
       final AnalysisPorts analysis,
-      final CrapPorts ports) {
+      final CrapPorts ports
+  ) {
     this.name = name;
     this.options = options;
     this.analysis = analysis;
@@ -72,11 +73,13 @@ public final class CrapGate implements QualityGate {
         CoverageMatching.of(
             project.root(),
             hits,
-            units.stream().map(SourceUnit::path).collect(Collectors.toUnmodifiableSet()));
+            units.stream().map(SourceUnit::path).collect(Collectors.toUnmodifiableSet())
+        );
     if (matching.lines().isEmpty()) {
       throw new CrapReportException(
           "The coverage reports name no project source file."
-              + " The coverage check must run first.");
+              + " The coverage check must run first."
+      );
     }
     reports.requireFresh(project.root(), matching.namedBy());
     final List<Finding> findings = new ArrayList<>();
@@ -87,7 +90,8 @@ public final class CrapGate implements QualityGate {
               unit,
               complexity.rules().get(unit.language()),
               complexity.frontends().get(unit.language()),
-              matching);
+              matching
+          );
       scored += functions.size();
       functions.stream()
           .filter(function -> function.score().score() > options.max())
@@ -96,7 +100,8 @@ public final class CrapGate implements QualityGate {
     findings.sort(
         Comparator.comparing(Finding::file)
             .thenComparing(Finding::line)
-            .thenComparing(Finding::column));
+            .thenComparing(Finding::column)
+    );
     return result(findings, scored);
   }
 
@@ -104,7 +109,8 @@ public final class CrapGate implements QualityGate {
       final SourceUnit unit,
       final CompiledRule rule,
       final FrontendSupport frontend,
-      final CoverageMatching matching) {
+      final CoverageMatching matching
+  ) {
     final Optional<FileLines> lines = Optional.ofNullable(matching.lines().get(unit.path()));
     try {
       final ParseResult parsed = frontend.frontend().parse(unit);
@@ -116,7 +122,8 @@ public final class CrapGate implements QualityGate {
     }
     if (lines.isPresent()) {
       throw new CrapReportException(
-          unit.path() + " is named by a coverage report but cannot be parsed.");
+          unit.path() + " is named by a coverage report but cannot be parsed."
+      );
     }
     return List.of();
   }
@@ -132,7 +139,8 @@ public final class CrapGate implements QualityGate {
                 + " above="
                 + findings.size()
                 + " max="
-                + options.max());
+                + options.max()
+    );
     final String summary =
         scored + " function(s) scored, " + findings.size() + " above " + options.max();
     return GateResult.builder(name, findings.isEmpty() ? GateStatus.PASSED : GateStatus.FAILED)

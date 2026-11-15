@@ -29,7 +29,6 @@ import org.junit.jupiter.api.Test;
  * is not compared. The test is skipped when the property is not set.
  */
 class AngularEslintParitySmokeTest {
-
   private static final String BINARY_PROPERTY = "ward.angular-eslint.binary";
   private static final String COUNTERPART = "angular-eslint";
   private static final String PARSER = "@typescript-eslint/parser/dist/index.js";
@@ -83,7 +82,9 @@ class AngularEslintParitySmokeTest {
 
   /** Copies each violating and passing fixture; returns the expected lines of each copy. */
   private static Map<String, List<String>> copyFixtures(
-      final Path workspace, final List<CatalogRow> rows) throws IOException {
+      final Path workspace,
+      final List<CatalogRow> rows
+  ) throws IOException {
     final Map<String, List<String>> expected = new HashMap<>();
     for (final CatalogRow row : rows) {
       final RuleFixtureSet set =
@@ -98,7 +99,11 @@ class AngularEslintParitySmokeTest {
   }
 
   private static String copy(
-      final Path workspace, final String row, final String file, final Path source)
+      final Path workspace,
+      final String row,
+      final String file,
+      final Path source
+  )
       throws IOException {
     final String relative = row + "/" + file;
     final Path target = workspace.resolve(relative);
@@ -116,7 +121,10 @@ class AngularEslintParitySmokeTest {
   }
 
   private static void writeConfig(
-      final Path workspace, final Path modules, final List<CatalogRow> rows) throws IOException {
+      final Path workspace,
+      final Path modules,
+      final List<CatalogRow> rows
+  ) throws IOException {
     final Map<String, String> entries = new TreeMap<>();
     for (final CatalogRow row : rows) {
       entries.put("\"@angular-eslint/" + row.name() + "\"", "\"error\"");
@@ -129,7 +137,7 @@ class AngularEslintParitySmokeTest {
             + " }";
     final String config =
         "import tsParser from \"%s\";\nimport angular from \"%s\";\n"
-                .formatted(modules.resolve(PARSER).toUri(), modules.resolve(PLUGIN).toUri())
+            .formatted(modules.resolve(PARSER).toUri(), modules.resolve(PLUGIN).toUri())
             + "export default [\n"
             + "  { files: [\"**/*.ts\"], languageOptions: { parser: tsParser, sourceType: \"script\" },"
             + " plugins: { \"@angular-eslint\": angular }, rules: %s },\n".formatted(rules)
@@ -154,8 +162,10 @@ class AngularEslintParitySmokeTest {
   /** Compares the lines per file; a rule with a listed approximation is not compared. */
   private static List<String> compare(
       final List<CatalogRow> rows,
-      final Map<String, List<String>> expected,
-      final List<String> output)
+      final Map<String,
+      List<String>> expected,
+      final List<String> output
+  )
       throws IOException {
     final Map<String, Set<String>> found =
         output.stream()
@@ -166,7 +176,11 @@ class AngularEslintParitySmokeTest {
                     fields -> fields[FILE] + "#" + fields[RULE],
                     TreeMap::new,
                     Collectors.mapping(
-                        fields -> fields[LINE], Collectors.toCollection(TreeSet::new))));
+                        fields -> fields[LINE],
+                        Collectors.toCollection(TreeSet::new)
+                    )
+                )
+            );
     final Map<String, Set<String>> wantedLines =
         expected.entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> new TreeSet<>(entry.getValue())));
@@ -187,7 +201,8 @@ class AngularEslintParitySmokeTest {
                     + " angular-eslint lines "
                     + actual
                     + " but fixture expects "
-                    + wanted);
+                    + wanted
+            );
           }
         }
       }
@@ -202,7 +217,7 @@ class AngularEslintParitySmokeTest {
       return new String(stream.readAllBytes(), StandardCharsets.UTF_8)
           .lines()
           .filter(line -> !line.startsWith("#") && !line.isBlank())
-          .map(line -> line.split(SEPARATOR)[0])
+          .map(line -> line.split(SEPARATOR) [0])
           .collect(Collectors.toSet());
     }
   }

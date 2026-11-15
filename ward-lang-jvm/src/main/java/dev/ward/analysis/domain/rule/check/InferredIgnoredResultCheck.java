@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
  * unknown, is never reported.
  */
 public final class InferredIgnoredResultCheck implements RuleCheck {
-
   private static final String EXPRESSION = "expression";
   private static final String STATEMENT = "statement";
   private static final int STATEMENT_PARTS = 2;
@@ -57,7 +56,8 @@ public final class InferredIgnoredResultCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts facts,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final Map<String, Set<String>> pure = pureMethods(root);
     return SyntaxWalk.visits(root, Set.of(STATEMENT)).stream()
         .map(SyntaxWalk.Visit::node)
@@ -72,7 +72,8 @@ public final class InferredIgnoredResultCheck implements RuleCheck {
     SyntaxWalk.visits(root, Set.of("classDeclaration"))
         .forEach(
             visit ->
-                pure.merge(ClassMembers.nameOf(visit.node()), pureIn(visit.node()), (l, r) -> l));
+                pure.merge(ClassMembers.nameOf(visit.node()), pureIn(visit.node()), (l, r) -> l)
+        );
     return pure;
   }
 
@@ -83,18 +84,24 @@ public final class InferredIgnoredResultCheck implements RuleCheck {
             .map(ClassMembers::declarationOf)
             .filter(declaration -> MemberDeclarations.METHOD.equals(declaration.kind()))
             .filter(
-                declaration -> ClassMembers.typeText(declaration).filter(name::equals).isPresent())
+                declaration -> ClassMembers.typeText(declaration).filter(name::equals).isPresent()
+            )
             .map(MemberDeclarations::name)
             .collect(Collectors.toCollection(HashSet::new));
     FieldAccesses.of(clazz).members().stream()
         .filter(
-            member -> member.accesses().stream().anyMatch(a -> a.use() != FieldAccesses.Use.READ))
+            member -> member.accesses().stream().anyMatch(a -> a.use() != FieldAccesses.Use.READ)
+        )
         .forEach(member -> names.remove(member.name()));
     return names;
   }
 
   private static boolean dropsPure(
-      final SyntaxNode statement, final UnitTypeFacts facts, final Map<String, Set<String>> pure) {
+      final SyntaxNode statement,
+      final UnitTypeFacts facts,
+      final Map<String,
+      Set<String>> pure
+  ) {
     final List<SyntaxNode> parts = statement.children();
     if (parts.size() != STATEMENT_PARTS || !EXPRESSION.equals(parts.get(0).kind())) {
       return false;
@@ -106,7 +113,10 @@ public final class InferredIgnoredResultCheck implements RuleCheck {
   }
 
   private static boolean returnsDeclaring(
-      final CallTarget call, final Map<String, Set<String>> pure) {
+      final CallTarget call,
+      final Map<String,
+      Set<String>> pure
+  ) {
     final String owner = simple(call.declaringType().name());
     return call.returnType() != null
         && owner.equals(simple(call.returnType().name()))

@@ -33,7 +33,10 @@ final class NodeTsConfigs {
 
   /** The TypeScript config of every directory that holds a file, or an ancestor of one. */
   static List<NodeTsConfig> of(
-      final Path root, final Set<String> files, final List<NodePackage> packages) {
+      final Path root,
+      final Set<String> files,
+      final List<NodePackage> packages
+  ) {
     final List<NodeTsConfig> configs = new ArrayList<>();
     for (final String directory : directoriesOf(files)) {
       final Path config = root.resolve(directory).resolve(NodeProjectInspection.TSCONFIG);
@@ -41,7 +44,12 @@ final class NodeTsConfigs {
         final Effective effective = load(root, config, packages, 0);
         configs.add(
             new NodeTsConfig(
-                directory, effective.baseUrl(), effective.pathsBase(), effective.paths()));
+                directory,
+                effective.baseUrl(),
+                effective.pathsBase(),
+                effective.paths()
+            )
+        );
       }
     }
     return configs;
@@ -72,7 +80,11 @@ final class NodeTsConfigs {
   }
 
   private static Effective load(
-      final Path root, final Path config, final List<NodePackage> packages, final int depth) {
+      final Path root,
+      final Path config,
+      final List<NodePackage> packages,
+      final int depth
+  ) {
     final Map<?, ?> json = read(config);
     final Effective parent = inherited(root, config, json, packages, depth);
     final Map<?, ?> options = json.get(COMPILER_OPTIONS) instanceof Map<?, ?> map ? map : Map.of();
@@ -91,9 +103,11 @@ final class NodeTsConfigs {
   private static Effective inherited(
       final Path root,
       final Path config,
-      final Map<?, ?> json,
+      final Map<?,
+      ?> json,
       final List<NodePackage> packages,
-      final int depth) {
+      final int depth
+  ) {
     if (!(json.get(EXTENDS) instanceof String extended) || depth >= MAX_EXTENDS_DEPTH) {
       return Effective.empty();
     }
@@ -104,7 +118,8 @@ final class NodeTsConfigs {
         LOGGER.log(
             Level.WARNING,
             "Skipping an unresolved tsconfig extends in {0}",
-            NodeLayouts.relative(root, config));
+            NodeLayouts.relative(root, config)
+        );
       }
       return Effective.empty();
     }
@@ -118,9 +133,11 @@ final class NodeTsConfigs {
           if (value instanceof List<?> list) {
             paths.put(
                 String.valueOf(pattern),
-                list.stream().filter(String.class::isInstance).map(String.class::cast).toList());
+                list.stream().filter(String.class::isInstance).map(String.class::cast).toList()
+            );
           }
-        });
+        }
+    );
     return paths;
   }
 
@@ -140,7 +157,8 @@ final class NodeTsConfigs {
         LOGGER.log(
             Level.WARNING,
             "Skipping an unreadable tsconfig or package manifest: {0}",
-            file.getFileName());
+            file.getFileName()
+        );
       }
       return Map.of();
     }

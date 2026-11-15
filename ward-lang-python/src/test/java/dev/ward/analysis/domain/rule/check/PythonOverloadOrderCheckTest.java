@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 /** The overload check reports an overload that is not right after the earlier ones of its name. */
 final class PythonOverloadOrderCheckTest {
-
   private static java.util.List<String> run(final String source) {
     return positions(new PythonOverloadOrderCheck("overloads apart").matches(tree(source)));
   }

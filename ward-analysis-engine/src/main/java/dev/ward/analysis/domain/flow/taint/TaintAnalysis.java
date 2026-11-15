@@ -24,7 +24,6 @@ import java.util.stream.IntStream;
  * specification always give the same findings and paths.
  */
 public final class TaintAnalysis {
-
   private static final String SINK = "sink: ";
   private static final String ARGUMENT = " argument ";
   private static final String SOURCE = "source: ";
@@ -78,7 +77,9 @@ public final class TaintAnalysis {
       final FlowSite site,
       final TaintSpec spec,
       final ReachingDefinitions reaching,
-      final Map<AccessSite, Taint> origins) {
+      final Map<AccessSite,
+      Taint> origins
+  ) {
     final List<TaintFinding> found = new ArrayList<>();
     final Optional<TaintEntry> sink =
         isSinkKind(site.kind()) ? TaintSpans.sinkOf(site, spec) : Optional.empty();
@@ -101,8 +102,10 @@ public final class TaintAnalysis {
       final BasicBlock block,
       final Span argument,
       final ReachingDefinitions reaching,
-      final Map<AccessSite, Taint> origins,
-      final TaintSpec spec) {
+      final Map<AccessSite,
+      Taint> origins,
+      final TaintSpec spec
+  ) {
     return directSource(block, argument, spec)
         .or(() -> fromReads(block, argument, reaching, origins, spec));
   }
@@ -133,7 +136,10 @@ public final class TaintAnalysis {
 
   /** A source call written directly in the guarded argument, such as {@code sink(source())}. */
   private static Optional<Taint> directSource(
-      final BasicBlock block, final Span argument, final TaintSpec spec) {
+      final BasicBlock block,
+      final Span argument,
+      final TaintSpec spec
+  ) {
     return block.sites().stream()
         .filter(site -> TaintSpans.contains(argument, site.span()))
         .filter(site -> site.kind() != FlowSiteKind.PARAMETER)
@@ -143,7 +149,8 @@ public final class TaintAnalysis {
         .findFirst()
         .map(
             site ->
-                new Taint(site.name(), List.of(new FlowStep(site.span(), SOURCE + site.name()))));
+                new Taint(site.name(), List.of(new FlowStep(site.span(), SOURCE + site.name())))
+        );
   }
 
   /**
@@ -154,8 +161,10 @@ public final class TaintAnalysis {
       final BasicBlock block,
       final Span argument,
       final ReachingDefinitions reaching,
-      final Map<AccessSite, Taint> origins,
-      final TaintSpec spec) {
+      final Map<AccessSite,
+      Taint> origins,
+      final TaintSpec spec
+  ) {
     for (final AccessSite use : reaching.uses()) {
       if (use.block() == block.id()
           && isRead(use.access())

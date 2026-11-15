@@ -20,7 +20,6 @@ import org.junit.jupiter.api.Test;
  * renderers, and compares the path output with goldens written by hand from the fixture.
  */
 class TaintPathReportTest {
-
   private static final String GOLDEN = "src/test/resources/golden/";
   private static final int STEPS = 3;
 
@@ -46,7 +45,8 @@ class TaintPathReportTest {
             1,
             1,
             null,
-            List.of());
+            List.of()
+        );
     final JsonTree check = JsonTree.parse(jsonOf(plain)).get("checks").get(0);
     assertThat(check.get("findings").get(0).has("path")).isFalse();
   }

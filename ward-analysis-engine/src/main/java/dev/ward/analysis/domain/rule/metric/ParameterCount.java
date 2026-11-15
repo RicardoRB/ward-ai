@@ -6,23 +6,27 @@ import java.util.Optional;
 
 /** Counts the parameters of a function, leaving out the receiver of a method. */
 final class ParameterCount implements Measure {
-
   @Override
   public Optional<Violation> check(
       final SyntaxNode node,
       final MetricRule.Target target,
       final boolean method,
-      final MetricRule rule) {
+      final MetricRule rule
+  ) {
     final int count = parameters(node, method, rule);
     if (count <= rule.max()) {
       return Optional.empty();
     }
     return Optional.of(
-        new Violation(node.span(), SyntaxTrees.nameOf(node, rule.keys().name()), count, ""));
+        new Violation(node.span(), SyntaxTrees.nameOf(node, rule.keys().name()), count, "")
+    );
   }
 
   private static int parameters(
-      final SyntaxNode node, final boolean method, final MetricRule rule) {
+      final SyntaxNode node,
+      final boolean method,
+      final MetricRule rule
+  ) {
     final List<SyntaxNode> items =
         rule.keys().parameterPaths().stream().flatMap(path -> items(node, path).stream()).toList();
     return items.size() - receiver(items, method, rule);
@@ -37,7 +41,10 @@ final class ParameterCount implements Measure {
   }
 
   private static int receiver(
-      final List<SyntaxNode> items, final boolean method, final MetricRule rule) {
+      final List<SyntaxNode> items,
+      final boolean method,
+      final MetricRule rule
+  ) {
     final boolean first =
         !items.isEmpty()
             && rule.keys()

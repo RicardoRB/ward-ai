@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
  * a base class is judged by its presence, not by its own slots.
  */
 public final class SlotsCheck implements RuleCheck {
-
   /** The problem each check reports. */
   public enum Problem {
     CLASS_VARIABLE_CONFLICT,
@@ -92,7 +91,10 @@ public final class SlotsCheck implements RuleCheck {
   }
 
   private List<RuleMatch> declares(
-      final SyntaxNode body, final Set<String> slots, final SyntaxNode classNode) {
+      final SyntaxNode body,
+      final Set<String> slots,
+      final SyntaxNode classNode
+  ) {
     final List<RuleMatch> found = new ArrayList<>();
     if (slots.contains(SlotsSyntax.DICT) || SlotsSyntax.hasBases(classNode)) {
       return found;
@@ -117,13 +119,17 @@ public final class SlotsCheck implements RuleCheck {
         && !slots.contains(name)
         && NAME.matcher(name).matches()) {
       return Optional.of(
-          new RuleMatch(simple.children().get(0).span(), message.replace(MESSAGE_NAME, name)));
+          new RuleMatch(simple.children().get(0).span(), message.replace(MESSAGE_NAME, name))
+      );
     }
     return Optional.empty();
   }
 
   private List<RuleMatch> assignments(
-      final SyntaxNode body, final Set<String> slots, final SyntaxNode classNode) {
+      final SyntaxNode body,
+      final Set<String> slots,
+      final SyntaxNode classNode
+  ) {
     final List<RuleMatch> found = new ArrayList<>();
     if (slots.contains(SlotsSyntax.DICT) || SlotsSyntax.hasBases(classNode)) {
       return found;
@@ -139,7 +145,8 @@ public final class SlotsCheck implements RuleCheck {
       final Matcher matcher = SELF_TARGET.matcher(SyntaxWalk.text(children.get(0)));
       if (matcher.matches() && !slots.contains(matcher.group(1))) {
         found.add(
-            new RuleMatch(visit.node().span(), message.replace(MESSAGE_NAME, matcher.group(1))));
+            new RuleMatch(visit.node().span(), message.replace(MESSAGE_NAME, matcher.group(1)))
+        );
       }
     }
     return found;

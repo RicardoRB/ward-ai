@@ -13,7 +13,6 @@ import java.util.Set;
  * an element with a {@code popover} attribute.
  */
 public final class BiomeAutofocusCheck implements RuleCheck {
-
   private static final String ATTRIBUTE = "jsxAttribute";
   private static final String ELEMENT = "jsxOpeningElement";
   private static final String ELEMENT_WRAPPER = "jsxElement";
@@ -44,7 +43,9 @@ public final class BiomeAutofocusCheck implements RuleCheck {
             visit ->
                 CheckSupport.at(
                     visit.node().span(),
-                    CheckSupport.fill(message, SyntaxWalk.text(visit.node()), "")))
+                    CheckSupport.fill(message, SyntaxWalk.text(visit.node()), "")
+                )
+        )
         .toList();
   }
 

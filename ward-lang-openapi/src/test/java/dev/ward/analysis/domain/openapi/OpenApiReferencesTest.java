@@ -8,7 +8,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class OpenApiReferencesTest {
-
   @Test
   void resolvesALocalReference() {
     final String spec =
@@ -48,7 +47,8 @@ class OpenApiReferencesTest {
             "api/schemas/b/b.yaml",
             "type: object\nproperties:\n  id:\n    $ref: '../../common.yaml#/Id'\n",
             "api/common.yaml",
-            "Id:\n  type: string\n");
+            "Id:\n  type: string\n"
+        );
     final LoadResult result = new FakeProject(files).load("api/openapi.yaml");
     assertThat(result.errors()).isEmpty();
     final OpenApiDocument document = result.document().orElseThrow();
@@ -62,7 +62,11 @@ class OpenApiReferencesTest {
     assertThat(id.string("type")).contains("string");
     assertThat(document.files().keySet())
         .containsExactly(
-            "api/common.yaml", "api/openapi.yaml", "api/schemas/a.yaml", "api/schemas/b/b.yaml");
+            "api/common.yaml",
+            "api/openapi.yaml",
+            "api/schemas/a.yaml",
+            "api/schemas/b/b.yaml"
+        );
   }
 
   @Test

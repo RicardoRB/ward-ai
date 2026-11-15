@@ -14,7 +14,6 @@ import java.util.Map;
  * Builds the checks of Error Prone rules that read the members of a class or the body of a loop.
  */
 final class ErrorProneShapeChecks {
-
   private static final String MESSAGE = "message";
 
   private ErrorProneShapeChecks() {}
@@ -24,15 +23,20 @@ final class ErrorProneShapeChecks {
     return Map.ofEntries(
         entry(
             "inject-on-member-and-constructor",
-            toml -> new JavaInjectMemberConstructorCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new JavaInjectMemberConstructorCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "junit3-test-not-run",
-            toml -> new JavaJUnit3TestNotRunCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new JavaJUnit3TestNotRunCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "junit-parameter-method",
-            toml -> new JavaJUnitParameterMethodCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new JavaJUnitParameterMethodCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "loop-condition",
-            toml -> new JavaLoopConditionCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new JavaLoopConditionCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 }

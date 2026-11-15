@@ -14,7 +14,6 @@ import java.util.OptionalInt;
 import org.junit.jupiter.api.Test;
 
 class EditorConfigPrecedenceTest extends EditorConfigTestSupport {
-
   @Test
   void noEditorConfigUsesBuiltInDefaults() throws IOException {
     final FormatSettings java = resolve("App.java", AnalysisLanguage.JAVA, JAVA_OPTIONS);
@@ -37,7 +36,8 @@ class EditorConfigPrecedenceTest extends EditorConfigTestSupport {
   void laterSectionOverridesEarlierAndGlobSectionsApplyPerFile() throws IOException {
     write(".editorconfig", "[*]\nmax_line_length = 120\n[*.py]\nmax_line_length = 88\n");
     assertThat(
-            resolve("app.py", AnalysisLanguage.PYTHON, TYPESCRIPT_OPTIONS).layout().maxLineLength())
+        resolve("app.py", AnalysisLanguage.PYTHON, TYPESCRIPT_OPTIONS).layout().maxLineLength()
+    )
         .isEqualTo(OptionalInt.of(PYTHON_WIDTH));
     assertThat(resolve("App.java", AnalysisLanguage.JAVA, JAVA_OPTIONS).layout().maxLineLength())
         .isEqualTo(OptionalInt.of(WIDE_WIDTH));
@@ -55,14 +55,16 @@ class EditorConfigPrecedenceTest extends EditorConfigTestSupport {
     write("[*.ts]\nindent_size = 4\n");
     write("web/.editorconfig", "[*.ts]\nindent_size = 2\n");
     assertThat(
-            resolve("web/app.ts", AnalysisLanguage.TYPESCRIPT, TYPESCRIPT_OPTIONS)
-                .layout()
-                .indentSize())
+        resolve("web/app.ts", AnalysisLanguage.TYPESCRIPT, TYPESCRIPT_OPTIONS)
+            .layout()
+            .indentSize()
+    )
         .isEqualTo(TYPESCRIPT_INDENT);
     assertThat(
-            resolve("api/app.ts", AnalysisLanguage.TYPESCRIPT, TYPESCRIPT_OPTIONS)
-                .layout()
-                .indentSize())
+        resolve("api/app.ts", AnalysisLanguage.TYPESCRIPT, TYPESCRIPT_OPTIONS)
+            .layout()
+            .indentSize()
+    )
         .isEqualTo(JAVA_INDENT);
   }
 
@@ -86,10 +88,11 @@ class EditorConfigPrecedenceTest extends EditorConfigTestSupport {
     final FormatConfiguration configuration =
         new EditorConfigFormatConfiguration(parent.resolve("project"));
     assertThat(
-            configuration
-                .resolve(JAVA_FILE, AnalysisLanguage.JAVA, JAVA_OPTIONS)
-                .layout()
-                .indentSize())
+        configuration
+            .resolve(JAVA_FILE, AnalysisLanguage.JAVA, JAVA_OPTIONS)
+            .layout()
+            .indentSize()
+    )
         .isEqualTo(JAVA_INDENT);
   }
 

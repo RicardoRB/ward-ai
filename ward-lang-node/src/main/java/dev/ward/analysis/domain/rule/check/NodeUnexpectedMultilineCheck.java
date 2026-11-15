@@ -12,7 +12,6 @@ import java.util.Optional;
  * opening parenthesis, the bracket or the template, as ESLint reports it.
  */
 public final class NodeUnexpectedMultilineCheck implements RuleCheck {
-
   private static final String ACCESS = "singleExpression";
   private static final String ARGUMENTS = "arguments";
   private static final String TEMPLATE = "templateStringLiteral";

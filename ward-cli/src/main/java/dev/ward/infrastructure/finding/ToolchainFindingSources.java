@@ -18,7 +18,8 @@ public final class ToolchainFindingSources {
       final JvmFindingSources jvm,
       final NodeFindingSources node,
       final PythonFindingSources python,
-      final SwiftFindingSources swift) {
+      final SwiftFindingSources swift
+  ) {
     this.sources =
         Stream.of(jvm.sources(), node.sources(), python.sources(), swift.sources())
             .flatMap(List::stream)

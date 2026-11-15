@@ -23,7 +23,6 @@ import java.util.Set;
  * control-flow graph of the constructor; a nested function or class has its own {@code this}.
  */
 public final class NodeThisBeforeSuperCheck implements RuleCheck {
-
   private static final String CLASS_DECLARATION = "classDeclaration";
   private static final String CLASS_EXPRESSION = "classExpression";
   private static final String CLASS_HERITAGE = "classHeritage";
@@ -49,7 +48,8 @@ public final class NodeThisBeforeSuperCheck implements RuleCheck {
           "getAccessor",
           "setAccessor",
           CLASS_DECLARATION,
-          CLASS_EXPRESSION);
+          CLASS_EXPRESSION
+      );
 
   private final String message;
 
@@ -78,7 +78,8 @@ public final class NodeThisBeforeSuperCheck implements RuleCheck {
       final SyntaxNode node,
       final FlowView flow,
       final boolean derived,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     final boolean inDerived = isClass(node) ? extendsSomething(node) : derived;
     if (inDerived && isConstructor(node)) {
       checkConstructor(node, flow, matches);
@@ -99,21 +100,26 @@ public final class NodeThisBeforeSuperCheck implements RuleCheck {
         .anyMatch(
             child ->
                 (CLASS_HERITAGE.equals(child.kind())
-                        && child.children().stream().anyMatch(c -> CLASS_EXTENDS.equals(c.kind())))
+                    && child.children().stream().anyMatch(c -> CLASS_EXTENDS.equals(c.kind())))
                     || (CLASS_TAIL.equals(child.kind())
-                        && child.children().stream().anyMatch(c -> EXTENDS.equals(c.kind()))));
+                        && child.children().stream().anyMatch(c -> EXTENDS.equals(c.kind())))
+        );
   }
 
   private static boolean isConstructor(final SyntaxNode node) {
     return CONSTRUCTOR_DECLARATION.equals(node.kind())
         || METHOD.equals(node.kind())
-            && node.children().stream()
-                .anyMatch(
-                    c -> CLASS_NAME.equals(c.kind()) && CONSTRUCTOR_NAME.equals(firstLeafText(c)));
+        && node.children().stream()
+            .anyMatch(
+                c -> CLASS_NAME.equals(c.kind()) && CONSTRUCTOR_NAME.equals(firstLeafText(c))
+            );
   }
 
   private void checkConstructor(
-      final SyntaxNode constructor, final FlowView flow, final List<RuleMatch> matches) {
+      final SyntaxNode constructor,
+      final FlowView flow,
+      final List<RuleMatch> matches
+  ) {
     final Optional<ControlFlowGraph> graph = NodeFlow.graphOf(flow, constructor);
     if (graph.isEmpty()) {
       return;
@@ -149,7 +155,10 @@ public final class NodeThisBeforeSuperCheck implements RuleCheck {
 
   /** Runs the nodes of a block in order; a {@code this} before the call is early. */
   private static boolean runBlock(
-      final BasicBlock block, final boolean startCalled, final Set<SyntaxNode> early) {
+      final BasicBlock block,
+      final boolean startCalled,
+      final Set<SyntaxNode> early
+  ) {
     boolean called = startCalled;
     for (final SyntaxNode node : block.nodes()) {
       if (!called) {

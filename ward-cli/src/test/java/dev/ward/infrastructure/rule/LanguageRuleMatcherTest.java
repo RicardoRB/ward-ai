@@ -15,7 +15,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class LanguageRuleMatcherTest {
-
   private static final Span ANY = new Span(1, 1, 1, 1, 0, 0);
 
   @Test

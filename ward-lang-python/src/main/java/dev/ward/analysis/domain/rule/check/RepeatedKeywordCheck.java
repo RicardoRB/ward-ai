@@ -13,7 +13,6 @@ import java.util.Set;
  * dictionary that is not a display is not read.
  */
 public final class RepeatedKeywordCheck implements RuleCheck {
-
   private static final String DOUBLE_STAR = "**";
   private static final String ARGLIST = "arglist";
   private static final int KEYWORD_PARTS = 3;
@@ -63,7 +62,10 @@ public final class RepeatedKeywordCheck implements RuleCheck {
   }
 
   private static void collect(
-      final SyntaxNode argument, final List<String> keywords, final List<String> keys) {
+      final SyntaxNode argument,
+      final List<String> keywords,
+      final List<String> keys
+  ) {
     final List<SyntaxNode> parts = argument.children();
     if (parts.size() == KEYWORD_PARTS && EQUALS.equals(SyntaxWalk.text(parts.get(1)))) {
       keywords.add(SyntaxWalk.text(parts.get(0)));
@@ -85,7 +87,8 @@ public final class RepeatedKeywordCheck implements RuleCheck {
                   && "dictorsetmaker".equals(parts.get(1).kind())) {
                 readKeys(parts.get(1).children(), keys);
               }
-            });
+            }
+        );
     return keys;
   }
 

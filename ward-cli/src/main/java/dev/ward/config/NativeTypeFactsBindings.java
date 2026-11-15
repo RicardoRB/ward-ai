@@ -31,7 +31,10 @@ final class NativeTypeFactsBindings {
    * @param classpathFile the project's {@code java-classpath} file, if it has one
    */
   static Map<AnalysisLanguage, TypeFacts> forProject(
-      final Path projectRoot, final LanguageFrontend frontend, final Optional<Path> classpathFile) {
+      final Path projectRoot,
+      final LanguageFrontend frontend,
+      final Optional<Path> classpathFile
+  ) {
     final Map<AnalysisLanguage, TypeFacts> sources = new EnumMap<>(AnalysisLanguage.class);
     new NativeJvmTypes(projectRoot, frontend)
         .facts(classpathFile)
@@ -39,14 +42,17 @@ final class NativeTypeFactsBindings {
             facts -> {
               sources.put(AnalysisLanguage.JAVA, facts);
               sources.put(AnalysisLanguage.KOTLIN, facts);
-            });
+            }
+        );
     final TypeFacts node = new NativeNodeTypes(projectRoot, frontend).facts();
     sources.put(AnalysisLanguage.TYPESCRIPT, node);
     sources.put(AnalysisLanguage.JAVASCRIPT, node);
     sources.put(AnalysisLanguage.SWIFT, new NativeSwiftTypes(projectRoot, frontend));
     final PythonStubs stubs = new PythonStubs(frontend, new PythonStubFiles(projectRoot)::text);
     sources.put(
-        AnalysisLanguage.PYTHON, new CachedTypeFacts(new PythonTypeFacts(frontend, stubs), ""));
+        AnalysisLanguage.PYTHON,
+        new CachedTypeFacts(new PythonTypeFacts(frontend, stubs), "")
+    );
     return Map.copyOf(sources);
   }
 }

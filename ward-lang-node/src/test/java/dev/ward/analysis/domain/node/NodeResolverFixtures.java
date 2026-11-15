@@ -21,12 +21,17 @@ final class NodeResolverFixtures {
   static NodeProjectLayout layout(
       final List<String> files,
       final List<NodeTsConfig> configs,
-      final List<NodePackage> packages) {
+      final List<NodePackage> packages
+  ) {
     return new NodeProjectLayout(Set.copyOf(files), configs, packages);
   }
 
   static NodePackage pkg(
-      final String name, final String directory, final Map<String, List<ExportEntry>> exports) {
+      final String name,
+      final String directory,
+      final Map<String,
+      List<ExportEntry>> exports
+  ) {
     return new NodePackage(name, directory, exports, null, null, null);
   }
 

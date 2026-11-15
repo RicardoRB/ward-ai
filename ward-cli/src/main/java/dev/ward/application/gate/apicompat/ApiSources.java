@@ -45,7 +45,9 @@ final class ApiSources {
         new Tree(
             path -> git.read(root, commit, path),
             directory -> git.files(root, commit, directory),
-            " at " + baseline.ref()));
+            " at " + baseline.ref()
+        )
+    );
   }
 
   /** Returns the Java and Kotlin files of the main source roots in the working tree. */
@@ -55,7 +57,9 @@ final class ApiSources {
         new Tree(
             path -> working.read(root, path),
             directory -> working.files(root, directory),
-            " in the working tree"));
+            " in the working tree"
+        )
+    );
   }
 
   private Sources read(final Tree tree) {
@@ -106,12 +110,16 @@ final class ApiSources {
             directory ->
                 tree.files().apply(directory).stream()
                     .filter(ApiSources::isSource)
-                    .map(file -> directory + "/" + file))
+                    .map(file -> directory + "/" + file)
+        )
         .toList();
   }
 
   private static Optional<String> first(
-      final Tree tree, final String dir, final List<String> scripts) {
+      final Tree tree,
+      final String dir,
+      final List<String> scripts
+  ) {
     return scripts.stream()
         .map(script -> tree.read().apply(join(dir, script)))
         .flatMap(Optional::stream)
@@ -127,16 +135,23 @@ final class ApiSources {
   }
 
   private static SourceUnit unit(
-      final String path, final Optional<String> text, final String failure) {
+      final String path,
+      final Optional<String> text,
+      final String failure
+  ) {
     return new SourceUnit(
         path,
         path.endsWith(KOTLIN) ? AnalysisLanguage.KOTLIN : AnalysisLanguage.JAVA,
-        text.orElseThrow(() -> new ApiCompatException(failure + ".")));
+        text.orElseThrow(() -> new ApiCompatException(failure + "."))
+    );
   }
 
   /** A file tree at one revision: a reader, a lister and how to name the revision. */
   private record Tree(
-      Function<String, Optional<String>> read,
-      Function<String, List<String>> files,
-      String where) {}
+      Function<String,
+      Optional<String>> read,
+      Function<String,
+      List<String>> files,
+      String where
+  ) {}
 }

@@ -49,7 +49,8 @@ class GithubLatestReleaseLookupTest {
           }
           exchange.sendResponseHeaders(status.get(), -1);
           exchange.close();
-        });
+        }
+    );
     server.start();
   }
 
@@ -60,7 +61,9 @@ class GithubLatestReleaseLookupTest {
 
   private GithubLatestReleaseLookup lookup(final Duration timeout) {
     return new GithubLatestReleaseLookup(
-        URI.create("http://127.0.0.1:" + server.getAddress().getPort() + PATH), timeout);
+        URI.create("http://127.0.0.1:" + server.getAddress().getPort() + PATH),
+        timeout
+    );
   }
 
   @Test

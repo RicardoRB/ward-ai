@@ -13,7 +13,6 @@ import java.util.Set;
  * shadows a builtin of the same name.
  */
 final class ExceptionHierarchy {
-
   private static final Map<String, List<String>> BUILTIN_PARENTS = parents();
   private static final Map<String, String> ALIASES =
       Map.of("EnvironmentError", "OSError", "IOError", "OSError");
@@ -42,7 +41,10 @@ final class ExceptionHierarchy {
   }
 
   private static List<String> parentsOf(
-      final String name, final Map<String, List<String>> moduleBases) {
+      final String name,
+      final Map<String,
+      List<String>> moduleBases
+  ) {
     return moduleBases.getOrDefault(name, BUILTIN_PARENTS.getOrDefault(name, List.of()));
   }
 
@@ -55,7 +57,8 @@ final class ExceptionHierarchy {
             "GeneratorExit",
             "KeyboardInterrupt",
             "SystemExit",
-            "Exception")) {
+            "Exception"
+        )) {
       parents.put(base, List.of("BaseException"));
     }
     parents.put("ExceptionGroup", List.of("BaseExceptionGroup", "Exception"));
@@ -80,7 +83,8 @@ final class ExceptionHierarchy {
         "SystemError",
         "TypeError",
         "ValueError",
-        "Warning");
+        "Warning"
+    );
     addAll(parents, "ArithmeticError", "FloatingPointError", "OverflowError", "ZeroDivisionError");
     addLeafParents(parents);
     return Map.copyOf(parents);
@@ -104,20 +108,23 @@ final class ExceptionHierarchy {
         "NotADirectoryError",
         "PermissionError",
         "ProcessLookupError",
-        "TimeoutError");
+        "TimeoutError"
+    );
     addAll(
         parents,
         "ConnectionError",
         "BrokenPipeError",
         "ConnectionAbortedError",
         "ConnectionRefusedError",
-        "ConnectionResetError");
+        "ConnectionResetError"
+    );
     addAll(
         parents,
         "RuntimeError",
         "NotImplementedError",
         "PythonFinalizationError",
-        "RecursionError");
+        "RecursionError"
+    );
     addAll(parents, "SyntaxError", "IndentationError");
     addAll(parents, "IndentationError", "TabError");
     addAll(parents, "ValueError", "UnicodeError");
@@ -126,7 +133,8 @@ final class ExceptionHierarchy {
         "UnicodeError",
         "UnicodeDecodeError",
         "UnicodeEncodeError",
-        "UnicodeTranslateError");
+        "UnicodeTranslateError"
+    );
     addAll(
         parents,
         "Warning",
@@ -140,12 +148,17 @@ final class ExceptionHierarchy {
         "RuntimeWarning",
         "SyntaxWarning",
         "UnicodeWarning",
-        "UserWarning");
+        "UserWarning"
+    );
   }
 
   /** Records each name as a direct subclass of {@code base}. */
   private static void addAll(
-      final Map<String, List<String>> parents, final String base, final String... names) {
+      final Map<String,
+      List<String>> parents,
+      final String base,
+      final String... names
+  ) {
     for (final String name : names) {
       parents.put(name, List.of(base));
     }

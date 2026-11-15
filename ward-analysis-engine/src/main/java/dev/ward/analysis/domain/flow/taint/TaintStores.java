@@ -29,7 +29,6 @@ import java.util.regex.Pattern;
  * variable named by itself is a container; {@code this.items} and {@code a.b.c} are not followed.
  */
 final class TaintStores {
-
   private static final String STORED = "stored into ";
   private static final Pattern VARIABLE = Pattern.compile("[A-Za-z_$][\\w$]*");
   private static final String THIS = "this";
@@ -45,7 +44,9 @@ final class TaintStores {
       final ControlFlowGraph graph,
       final ReachingDefinitions reaching,
       final TaintSpec spec,
-      final Map<AccessSite, Taint> tainted) {
+      final Map<AccessSite,
+      Taint> tainted
+  ) {
     boolean changed = false;
     for (final BasicBlock block : graph.blocks()) {
       for (final FlowSite site : block.sites()) {
@@ -60,7 +61,9 @@ final class TaintStores {
       final FlowSite site,
       final ReachingDefinitions reaching,
       final TaintSpec spec,
-      final Map<AccessSite, Taint> tainted) {
+      final Map<AccessSite,
+      Taint> tainted
+  ) {
     if (!isContainer(site.qualifier())) {
       return false;
     }
@@ -99,7 +102,9 @@ final class TaintStores {
       final FlowSite site,
       final Taint taint,
       final ReachingDefinitions reaching,
-      final Map<AccessSite, Taint> tainted) {
+      final Map<AccessSite,
+      Taint> tainted
+  ) {
     boolean changed = false;
     for (final AccessSite use : containerReads(block, site, reaching)) {
       for (final AccessSite definition : reaching.reaching(use)) {
@@ -115,7 +120,10 @@ final class TaintStores {
    * the same statement.
    */
   private static List<AccessSite> containerReads(
-      final BasicBlock block, final FlowSite site, final ReachingDefinitions reaching) {
+      final BasicBlock block,
+      final FlowSite site,
+      final ReachingDefinitions reaching
+  ) {
     final Optional<SyntaxNode> statement = TaintSpans.nodeContaining(block, site.span());
     final List<AccessSite> reads =
         reaching.uses().stream()
@@ -141,7 +149,9 @@ final class TaintStores {
       final AccessSite definition,
       final FlowSite site,
       final Taint taint,
-      final Map<AccessSite, Taint> tainted) {
+      final Map<AccessSite,
+      Taint> tainted
+  ) {
     if (tainted.containsKey(definition)) {
       return false;
     }

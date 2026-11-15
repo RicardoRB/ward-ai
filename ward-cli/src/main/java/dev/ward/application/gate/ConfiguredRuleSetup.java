@@ -35,8 +35,8 @@ final class ConfiguredRuleSetup implements RuleSetup {
       List<RuleDefinition> listed,
       boolean listsRules,
       List<RuleDefinition> available,
-      List<RuleDefinition> architecture) {
-
+      List<RuleDefinition> architecture
+  ) {
     /** Copies the lists. */
     Choices {
       listed = List.copyOf(listed);
@@ -57,7 +57,8 @@ final class ConfiguredRuleSetup implements RuleSetup {
       final String checkName,
       final String ruleFile,
       final Choices choices,
-      final AnalysisRuleSource source) {
+      final AnalysisRuleSource source
+  ) {
     this.checkName = checkName;
     this.ruleFile = ruleFile;
     this.choices = choices;
@@ -82,7 +83,9 @@ final class ConfiguredRuleSetup implements RuleSetup {
                   + name
                   + " exists; remove it and select rules in "
                   + name
-                  + " under [select]"));
+                  + " under [select]"
+          )
+      );
     }
     if (LOGGER.isLoggable(Level.FINE)) {
       LOGGER.fine("event=rule-config-file check=" + checkName + " file=" + file.get().name());
@@ -93,7 +96,9 @@ final class ConfiguredRuleSetup implements RuleSetup {
   }
 
   private static List<RuleDefinition> withDefaults(
-      final List<RuleDefinition> rules, final int javaRelease) {
+      final List<RuleDefinition> rules,
+      final int javaRelease
+  ) {
     return rules.stream()
         .filter(rule -> rule.runsOn(javaRelease))
         .map(rule -> JavaRelease.withDefault(rule, javaRelease))

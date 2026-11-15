@@ -7,7 +7,6 @@ import java.util.Map;
 
 /** Lists the fields of a class with their type texts, split by whether they are static. */
 final class ClassFieldTypes {
-
   private ClassFieldTypes() {}
 
   /** Returns the fields of the class that are static, or that are not, by name to type text. */

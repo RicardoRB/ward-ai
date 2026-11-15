@@ -8,7 +8,6 @@ import java.util.Set;
 
 /** Builds the scopes of Python source for tests. */
 final class PythonScopeFixtures {
-
   private PythonScopeFixtures() {}
 
   /** Parses {@code source} and builds its scopes, with no built-in names. */

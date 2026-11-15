@@ -11,14 +11,16 @@ import java.util.Set;
  * non-empty part of the requirement must hold.
  */
 public final class RequiredNodeCheck implements UnitCheck {
-
   private final NodeFilter filter;
   private final Requirement requirement;
   private final String message;
 
   /** Creates the check. */
   public RequiredNodeCheck(
-      final NodeFilter filter, final Requirement requirement, final String message) {
+      final NodeFilter filter,
+      final Requirement requirement,
+      final String message
+  ) {
     this.filter = Objects.requireNonNull(filter, "filter");
     this.requirement = Objects.requireNonNull(requirement, "requirement");
     this.message = Objects.requireNonNull(message, "message");
@@ -41,8 +43,11 @@ public final class RequiredNodeCheck implements UnitCheck {
    * @param sibling kinds of which a sibling must exist, if not empty
    */
   public record Requirement(
-      Set<String> child, Set<String> descendant, Set<String> skip, Set<String> sibling) {
-
+      Set<String> child,
+      Set<String> descendant,
+      Set<String> skip,
+      Set<String> sibling
+  ) {
     /**
      * Copies the sets.
      *
@@ -82,7 +87,8 @@ public final class RequiredNodeCheck implements UnitCheck {
     private boolean hasDescendant(final SyntaxNode node) {
       return node.children().stream()
           .anyMatch(
-              c -> descendant.contains(c.kind()) || !skip.contains(c.kind()) && hasDescendant(c));
+              c -> descendant.contains(c.kind()) || !skip.contains(c.kind()) && hasDescendant(c)
+          );
     }
 
     private boolean hasSibling(final SyntaxWalk.Visit visit) {

@@ -8,7 +8,6 @@ import java.util.Set;
 
 /** Reads of a Java syntax tree that the nullness checks share: annotations, kinds and operators. */
 final class NullSyntax {
-
   /** The kinds of node that hold the annotations of a declaration. */
   static final Set<String> HOLDERS =
       Set.of("modifier", "classOrInterfaceModifier", "variableModifier");
@@ -85,7 +84,10 @@ final class NullSyntax {
   }
 
   private static void scan(
-      final SyntaxNode node, final Set<String> kinds, final List<SyntaxNode> out) {
+      final SyntaxNode node,
+      final Set<String> kinds,
+      final List<SyntaxNode> out
+  ) {
     for (final SyntaxNode child : node.children()) {
       if (kinds.contains(child.kind())) {
         out.add(child);

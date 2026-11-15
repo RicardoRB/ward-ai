@@ -16,7 +16,6 @@ import java.util.Set;
  * unset, the layout takes the value that the formatter declares as its default.
  */
 final class EditorConfigLayout {
-
   /** The shared formatter option for the line width. */
   static final String LINE_WIDTH_OPTION = "line-width";
 
@@ -46,7 +45,8 @@ final class EditorConfigLayout {
           END_OF_LINE,
           INSERT_FINAL_NEWLINE,
           MAX_LINE_LENGTH,
-          CHARSET);
+          CHARSET
+      );
 
   /**
    * Used only when a formatter does not declare the shared option: every formatter declares them.
@@ -83,15 +83,18 @@ final class EditorConfigLayout {
     return new FormatLayout(
         maxLineLength(
             effective.get(MAX_LINE_LENGTH),
-            declaredInt(defaults, LINE_WIDTH_OPTION, FALLBACK_LINE_WIDTH)),
+            declaredInt(defaults, LINE_WIDTH_OPTION, FALLBACK_LINE_WIDTH)
+        ),
         indentStyle(
             effective.get(INDENT_STYLE),
-            defaults.values().getOrDefault(INDENT_STYLE_OPTION, FALLBACK_INDENT_STYLE)),
+            defaults.values().getOrDefault(INDENT_STYLE_OPTION, FALLBACK_INDENT_STYLE)
+        ),
         tabIndent ? tabWidth : numericIndent,
         tabWidth,
         lineEnding(effective.get(END_OF_LINE)),
         EditorConfigValues.flag(effective, INSERT_FINAL_NEWLINE, true),
-        byteOrderMark(effective.get(CHARSET)));
+        byteOrderMark(effective.get(CHARSET))
+    );
   }
 
   /**

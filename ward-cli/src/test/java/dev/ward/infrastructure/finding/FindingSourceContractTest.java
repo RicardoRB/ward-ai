@@ -20,12 +20,15 @@ class FindingSourceContractTest {
     final CompositeFindingExtractor extractor =
         new CompositeFindingExtractor(
             Stream.concat(
-                    Stream.of(
-                        new JavacOutputFindings(),
-                        new TscOutputFindings(),
-                        new MypyJsonFindings(new ForyJsonCodec())),
-                    new SwiftFindingSources().sources().stream())
-                .toList());
+                Stream.of(
+                    new JavacOutputFindings(),
+                    new TscOutputFindings(),
+                    new MypyJsonFindings(new ForyJsonCodec())
+                ),
+                new SwiftFindingSources().sources().stream()
+            )
+                .toList()
+        );
 
     assertThat(extractor.gates())
         .contains("swift-build", "xcodebuild-test")
@@ -33,7 +36,8 @@ class FindingSourceContractTest {
             gate ->
                 assertThat(QualityGateDefinitions.find(gate))
                     .as("finding source for undefined gate %s", gate)
-                    .isPresent());
+                    .isPresent()
+        );
     assertThat(new TurborepoFindings(new TscOutputFindings(), WorkspaceMembers.none()).gateId())
         .as("the turbo wrapper names its delegate's gate")
         .isEqualTo("tsc");

@@ -11,7 +11,6 @@ import java.util.Objects;
  * @param message what is wrong
  */
 public record OpenApiFinding(String file, Span span, String message) {
-
   /**
    * Validates the parts.
    *

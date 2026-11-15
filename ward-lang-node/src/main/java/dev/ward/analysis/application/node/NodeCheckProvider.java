@@ -11,7 +11,6 @@ import java.util.Map;
  * of its rule step; each family is its own class so parallel steps never edit the same file.
  */
 public final class NodeCheckProvider implements CheckProvider {
-
   @Override
   public Map<String, CheckFactory> checks() {
     return CheckRegistry.union(
@@ -23,6 +22,8 @@ public final class NodeCheckProvider implements CheckProvider {
             EslintScopeChecks.checks(),
             EslintSyntaxChecks.checks(),
             StyleChecks.checks(),
-            TypeScriptEslintChecks.checks()));
+            TypeScriptEslintChecks.checks()
+        )
+    );
   }
 }

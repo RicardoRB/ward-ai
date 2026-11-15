@@ -15,6 +15,8 @@ public final class PolicyEvaluator {
         new PolicyResult(
             strict ? "strict" : "all-gates-pass",
             allPassed,
-            allPassed ? "Policy passed." : "One or more quality gates failed."));
+            allPassed ? "Policy passed." : "One or more quality gates failed."
+        )
+    );
   }
 }

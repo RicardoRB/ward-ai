@@ -14,13 +14,20 @@ import dev.ward.domain.gate.swift.Simulators;
  *     unavailable
  */
 public record PlatformGatePorts(
-    Simulators simulators, CoverageReport llvmCov, CoverageReport xccov, CoverageReport android) {
+    Simulators simulators,
+    CoverageReport llvmCov,
+    CoverageReport xccov,
+    CoverageReport android
+) {
   /** No platform ports, for factories that do not run platform gates. */
   public static final PlatformGatePorts NONE = new PlatformGatePorts(null, null, null, null);
 
   /** Creates the Swift ports, without the Android coverage report. */
   public PlatformGatePorts(
-      final Simulators simulators, final CoverageReport llvmCov, final CoverageReport xccov) {
+      final Simulators simulators,
+      final CoverageReport llvmCov,
+      final CoverageReport xccov
+  ) {
     this(simulators, llvmCov, xccov, null);
   }
 }

@@ -29,7 +29,8 @@ class HookScopeTest {
           Set.of(),
           "",
           TaskRunner.NONE,
-          null);
+          null
+      );
   private static final Project ROOT =
       new Project(REPOSITORY, Language.JAVA, BuildTool.MAVEN, Framework.NONE);
 
@@ -60,6 +61,7 @@ class HookScopeTest {
           asked.add(directory);
           return changed;
         },
-        null);
+        null
+    );
   }
 }

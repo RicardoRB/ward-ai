@@ -6,7 +6,6 @@ import java.util.List;
 
 /** Test helpers that read comment nodes out of a syntax tree. */
 final class SyntaxTrees {
-
   private SyntaxTrees() {}
 
   /** Returns every comment node below {@code root}, in source order. */

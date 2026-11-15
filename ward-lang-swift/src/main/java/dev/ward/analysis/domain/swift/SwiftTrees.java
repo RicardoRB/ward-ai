@@ -12,7 +12,6 @@ import java.util.Optional;
  * kind. Comments are trivia, so they are never leaves.
  */
 final class SwiftTrees {
-
   private static final String TEXT = "text";
   private static final String COMMENT = "comment";
 
@@ -60,7 +59,10 @@ final class SwiftTrees {
   }
 
   private static void collectKind(
-      final SyntaxNode node, final String kind, final List<SyntaxNode> out) {
+      final SyntaxNode node,
+      final String kind,
+      final List<SyntaxNode> out
+  ) {
     if (kind.equals(node.kind())) {
       out.add(node);
     }
@@ -78,6 +80,7 @@ final class SwiftTrees {
     final int column = end.endColumn() + 1;
     return new RuleMatch(
         new Span(end.endLine(), column, end.endLine(), column, end.endOffset(), end.endOffset()),
-        message);
+        message
+    );
   }
 }

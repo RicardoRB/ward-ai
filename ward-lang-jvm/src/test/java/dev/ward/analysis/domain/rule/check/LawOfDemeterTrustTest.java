@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 
 /** The calls and types that {@link LawOfDemeterCheck} trusts. */
 class LawOfDemeterTrustTest extends LawOfDemeterTrees {
-
   private static final String MESSAGE = "{value}";
   private static final String RUN_METHOD = "run";
   private static final String RESULT = "sample.Result";
@@ -25,7 +24,8 @@ class LawOfDemeterTrustTest extends LawOfDemeterTrees {
         compilationUnit(classNamed(CLASS_NAME, member(method(RUN_METHOD, 0, 0, chainOn(FOREIGN)))));
     final SyntaxNode getter =
         compilationUnit(
-            classNamed(CLASS_NAME, member(method(RUN_METHOD, 0, 0, chainOf(FOREIGN, "getName")))));
+            classNamed(CLASS_NAME, member(method(RUN_METHOD, 0, 0, chainOf(FOREIGN, "getName"))))
+        );
     final SyntaxNode plain =
         compilationUnit(classNamed(CLASS_NAME, member(method(RUN_METHOD, 0, 0, chainOf(FOREIGN)))));
 
@@ -57,7 +57,16 @@ class LawOfDemeterTrustTest extends LawOfDemeterTrees {
 
   private static SpanFacts typedFacts(final String type) {
     return new SpanFacts(
-        TypeRef.of(type), null, null, List.of(), List.of(), List.of(), List.of(), null, null);
+        TypeRef.of(type),
+        null,
+        null,
+        List.of(),
+        List.of(),
+        List.of(),
+        List.of(),
+        null,
+        null
+    );
   }
 
   private static String display(final String type) {
@@ -66,6 +75,7 @@ class LawOfDemeterTrustTest extends LawOfDemeterTrees {
 
   private static List<String> lawOfDemeter(final SyntaxNode root, final UnitTypeFacts types) {
     return Trees.messages(
-        new LawOfDemeterCheck(MESSAGE, List.of()).matches(root, null, null, types, null));
+        new LawOfDemeterCheck(MESSAGE, List.of()).matches(root, null, null, types, null)
+    );
   }
 }

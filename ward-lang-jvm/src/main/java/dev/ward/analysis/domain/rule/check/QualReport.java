@@ -14,7 +14,6 @@ import java.util.Optional;
  * both have it. Each is reported at the place that requires the qualifier.
  */
 final class QualReport {
-
   private final QualSites sites;
   private final QualForward forward;
   private final QualBackward backward;
@@ -25,7 +24,8 @@ final class QualReport {
       final NullGraph graph,
       final QualSites sites,
       final QualForward forward,
-      final QualBackward backward) {
+      final QualBackward backward
+  ) {
     this.graph = graph;
     this.sites = sites;
     this.forward = forward;
@@ -35,7 +35,10 @@ final class QualReport {
 
   /** Reports the findings of the body, given its parameters and the state at each block start. */
   List<QualChecks.Found> run(
-      final List<VariableAccess> parameters, final Map<Span, QualState.Held> initial) {
+      final List<VariableAccess> parameters,
+      final Map<Span,
+      QualState.Held> initial
+  ) {
     checks.parameters(parameters, initial, backward.before(graph.graph().entry(), 0));
     forward.entries(initial).forEach(this::block);
     return checks.found();
@@ -89,7 +92,9 @@ final class QualReport {
         && !first.get().equals(second.get())
         && QualFlow.conflict(sites.qualifier().strict(), first.get(), second.get())) {
       checks.add(
-          QualPattern.COMPARING_VALUES_WITH_INCOMPATIBLE_TYPE_QUALIFIERS, event.node().span());
+          QualPattern.COMPARING_VALUES_WITH_INCOMPATIBLE_TYPE_QUALIFIERS,
+          event.node().span()
+      );
     }
   }
 }

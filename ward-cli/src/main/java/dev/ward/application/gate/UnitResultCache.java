@@ -43,7 +43,8 @@ final class UnitResultCache {
       final RuleEngine engine,
       final AnalysisResultCodec codec,
       final String engineVersion,
-      final List<DependencySupport> dependencies) {
+      final List<DependencySupport> dependencies
+  ) {
     this(engine, codec, engineVersion, dependencies, GateProgress.NONE);
   }
 
@@ -53,7 +54,8 @@ final class UnitResultCache {
       final AnalysisResultCodec codec,
       final String engineVersion,
       final List<DependencySupport> dependencies,
-      final GateProgress progress) {
+      final GateProgress progress
+  ) {
     this.engine = engine;
     this.codec = codec;
     this.engineVersion = engineVersion;
@@ -69,9 +71,15 @@ final class UnitResultCache {
       final AnalysisCache cache,
       final List<SourceUnit> units,
       final List<FrontendSupport> frontends,
-      final List<RuleDefinition> rules) {
+      final List<RuleDefinition> rules
+  ) {
     return analyze(
-            cache, units, frontends, rules, dev.ward.analysis.domain.rule.ProjectFiles.empty())
+        cache,
+        units,
+        frontends,
+        rules,
+        dev.ward.analysis.domain.rule.ProjectFiles.empty()
+    )
         .result();
   }
 
@@ -80,9 +88,15 @@ final class UnitResultCache {
       final AnalysisCache cache,
       final List<SourceUnit> units,
       final List<FrontendSupport> frontends,
-      final List<RuleDefinition> rules) {
+      final List<RuleDefinition> rules
+  ) {
     return analyze(
-        cache, units, frontends, rules, dev.ward.analysis.domain.rule.ProjectFiles.empty());
+        cache,
+        units,
+        frontends,
+        rules,
+        dev.ward.analysis.domain.rule.ProjectFiles.empty()
+    );
   }
 
   /** Like {@link #analyze(AnalysisCache, List, List, List)}, and gives project checks the files. */
@@ -91,7 +105,8 @@ final class UnitResultCache {
       final List<SourceUnit> units,
       final List<FrontendSupport> frontends,
       final List<RuleDefinition> rules,
-      final dev.ward.analysis.domain.rule.ProjectFiles files) {
+      final dev.ward.analysis.domain.rule.ProjectFiles files
+  ) {
     final List<RuleDefinition> unitRules =
         rules.stream()
             .filter(rule -> !GraphRules.isGraphRule(rule))
@@ -123,7 +138,8 @@ final class UnitResultCache {
             + units.size()
             + " files with "
             + unitRules.size()
-            + " rules");
+            + " rules"
+    );
     final RuleRunResult analyzed = engine.run(misses, frontends, unitRules, snapshot);
     if (analyzed.executionErrors().isEmpty() && analyzed.notRun().isEmpty()) {
       store(cache, keys, misses, analyzed.findings());
@@ -134,12 +150,18 @@ final class UnitResultCache {
         new ArrayList<>(ArchitectureRun.findings(rules, snapshot, units));
     wholeRunFindings.addAll(DuplicateCodeFindings.findings(rules, units, frontends));
     wholeRunFindings.addAll(
-        UnusedDefinitionFindings.findings(rules, snapshot.summaries(), moduleOf()));
+        UnusedDefinitionFindings.findings(rules, snapshot.summaries(), moduleOf())
+    );
     wholeRunFindings.addAll(engine.runProject(units, frontends, rules, files));
     return new CachedRun(
         ArchitectureRun.withErrors(
-            merged(reused, analyzed, wholeRunFindings), rules, snapshot, units),
-        snapshot.graph());
+            merged(reused, analyzed, wholeRunFindings),
+            rules,
+            snapshot,
+            units
+        ),
+        snapshot.graph()
+    );
   }
 
   /**
@@ -159,9 +181,11 @@ final class UnitResultCache {
 
   private void store(
       final AnalysisCache cache,
-      final Map<SourceUnit, String> keys,
+      final Map<SourceUnit,
+      String> keys,
       final List<SourceUnit> misses,
-      final List<AnalysisFinding> analyzed) {
+      final List<AnalysisFinding> analyzed
+  ) {
     final Map<String, List<AnalysisFinding>> byFile =
         analyzed.stream().collect(Collectors.groupingBy(AnalysisFinding::file));
     for (final SourceUnit unit : misses) {
@@ -174,7 +198,8 @@ final class UnitResultCache {
   private static RuleRunResult merged(
       final List<AnalysisFinding> reused,
       final RuleRunResult analyzed,
-      final List<AnalysisFinding> graphFindings) {
+      final List<AnalysisFinding> graphFindings
+  ) {
     final List<AnalysisFinding> all = new ArrayList<>(reused);
     all.addAll(analyzed.findings());
     all.addAll(graphFindings);

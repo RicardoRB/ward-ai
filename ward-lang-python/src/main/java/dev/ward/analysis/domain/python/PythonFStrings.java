@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
  * quotes differ from the outer string's; upgrade by parsing the field with the expression grammar.
  */
 final class PythonFStrings {
-
   private static final Pattern PREFIX = Pattern.compile("^[rRbBuU]*[fF][rRbBuU]*['\"]");
   private static final int NONE = Integer.MAX_VALUE;
   private static final char OPEN = '{';
@@ -35,7 +34,10 @@ final class PythonFStrings {
    * Records a read of each name in the replacement fields of an f-string token, unless excluded.
    */
   static void reads(
-      final SyntaxNode token, final Set<String> excluded, final List<VariableAccess> out) {
+      final SyntaxNode token,
+      final Set<String> excluded,
+      final List<VariableAccess> out
+  ) {
     final String text = PythonSyntax.text(token);
     if (!isFString(text)) {
       return;
@@ -103,7 +105,11 @@ final class PythonFStrings {
 
   /** A format spec may hold replacement fields of its own, such as {@code {x:>{width}}}. */
   private static void nestedFields(
-      final String token, final int from, final int to, final List<Use> uses) {
+      final String token,
+      final int from,
+      final int to,
+      final List<Use> uses
+  ) {
     int index = from;
     while (index < to) {
       index = token.charAt(index) == OPEN ? field(token, index + 1, uses) : index + 1;

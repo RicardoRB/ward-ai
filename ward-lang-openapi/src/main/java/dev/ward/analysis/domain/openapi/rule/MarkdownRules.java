@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 
 /** The rules that forbid script-like content in the descriptions and titles of a document. */
 final class MarkdownRules {
-
   private static final Pattern EVAL = Pattern.compile("eval\\(");
   private static final Pattern SCRIPT = Pattern.compile("<script");
   private static final List<String> KEYS = List.of("description", "title");
@@ -27,7 +26,10 @@ final class MarkdownRules {
   }
 
   private static List<OpenApiFinding> forbidden(
-      final OpenApiDocument document, final Pattern pattern, final String message) {
+      final OpenApiDocument document,
+      final Pattern pattern,
+      final String message
+  ) {
     final List<OpenApiFinding> findings = new ArrayList<>();
     document
         .walk(View.RESOLVED)
@@ -41,7 +43,8 @@ final class MarkdownRules {
                   findings.add(Findings.atValue(entry.value(), message));
                 }
               }
-            });
+            }
+        );
     return findings;
   }
 }

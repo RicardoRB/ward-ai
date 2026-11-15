@@ -6,7 +6,6 @@ import java.util.Set;
 
 /** Classifies the TypeScript and JavaScript expressions that matter for control-flow lowering. */
 final class NodeExpressions {
-
   private static final String SINGLE_EXPRESSION = "singleExpression";
   private static final int BINARY_PARTS = 3;
   private static final int TERNARY_PARTS = 5;

@@ -21,7 +21,6 @@ import org.antlr.v4.runtime.Token;
  * dev.ward.analysis.domain.format.FormatSafety} checks the result before anything is written.
  */
 public final class SwiftFormatter implements SourceFormatter {
-
   /** Option key for the line width the printer fills. */
   static final String LINE_WIDTH = "line-width";
 
@@ -45,10 +44,19 @@ public final class SwiftFormatter implements SourceFormatter {
       List.of(
           new FormatOption(LINE_WIDTH, FormatOptionType.INTEGER, DEFAULT_LINE_WIDTH, List.of()),
           new FormatOption(
-              INDENT_STYLE, FormatOptionType.TEXT, SPACE_STYLE, List.of(SPACE_STYLE, TAB_STYLE)),
+              INDENT_STYLE,
+              FormatOptionType.TEXT,
+              SPACE_STYLE,
+              List.of(SPACE_STYLE, TAB_STYLE)
+          ),
           new FormatOption(INDENT_WIDTH, FormatOptionType.INTEGER, DEFAULT_INDENT_WIDTH, List.of()),
           new FormatOption(
-              MAX_BLANK_LINES, FormatOptionType.INTEGER, DEFAULT_MAX_BLANK_LINES, List.of()));
+              MAX_BLANK_LINES,
+              FormatOptionType.INTEGER,
+              DEFAULT_MAX_BLANK_LINES,
+              List.of()
+          )
+      );
 
   /**
    * The language this formatter handles.
@@ -90,7 +98,8 @@ public final class SwiftFormatter implements SourceFormatter {
             options.integer(LINE_WIDTH),
             indentStyle(options.get(INDENT_STYLE)),
             options.integer(INDENT_WIDTH),
-            EndOfLine.LF);
+            EndOfLine.LF
+        );
     final String text = finalNewline(new DocPrinter(style).print(document));
     return text.equals(source) ? new FormatResult.Unchanged() : new FormatResult.Formatted(text);
   }

@@ -5,7 +5,6 @@ import java.util.List;
 
 /** Splits the text of a literal sequence or argument list into its top-level elements. */
 final class Elements {
-
   private Elements() {}
 
   /**

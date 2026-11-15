@@ -41,7 +41,9 @@ public final class JvmDependencyResolver implements DependencyResolver {
 
   /** Picks the lookup order of the file's language, from its path. */
   private static List<DependencyEdge> edgesOf(
-      final JvmSourceIndex index, final FileSummary summary) {
+      final JvmSourceIndex index,
+      final FileSummary summary
+  ) {
     if (summary.path().endsWith(KOTLIN_SUFFIX)) {
       return new KotlinFileResolution(index, summary).edges();
     }

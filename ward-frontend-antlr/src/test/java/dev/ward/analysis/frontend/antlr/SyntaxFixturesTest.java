@@ -31,7 +31,6 @@ import org.junit.jupiter.params.provider.MethodSource;
  * diagnostic, format without refusal, and format to the same text a second time.
  */
 class SyntaxFixturesTest {
-
   private static final String FIXTURE_ROOT = "/syntax";
   private static final int MINIMUM_FIXTURES = 8;
 
@@ -40,7 +39,10 @@ class SyntaxFixturesTest {
   @ParameterizedTest(name = "{0}")
   @MethodSource("fixtures")
   void fixtureParsesWithoutDiagnostics(
-      final String name, final AnalysisLanguage language, final Path file) throws IOException {
+      final String name,
+      final AnalysisLanguage language,
+      final Path file
+  ) throws IOException {
     final ParseResult result = FRONTEND.parse(unit(language, file));
 
     assertThat(result.diagnostics()).isEmpty();
@@ -49,7 +51,10 @@ class SyntaxFixturesTest {
   @ParameterizedTest(name = "{0}")
   @MethodSource("fixtures")
   void fixtureFormatsToAStableResult(
-      final String name, final AnalysisLanguage language, final Path file) throws IOException {
+      final String name,
+      final AnalysisLanguage language,
+      final Path file
+  ) throws IOException {
     final String input = Files.readString(file);
     final FormatSafety safety = safety(language);
     final SourceFormatter formatter = formatter(language);
@@ -77,7 +82,9 @@ class SyntaxFixturesTest {
             .forEach(
                 file ->
                     all.add(
-                        Arguments.of(folder(language) + "/" + file.getFileName(), language, file)));
+                        Arguments.of(folder(language) + "/" + file.getFileName(), language, file)
+                    )
+            );
       }
     }
     return all.stream();
@@ -90,7 +97,7 @@ class SyntaxFixturesTest {
     if (result instanceof FormatResult.Unchanged) {
       return fallback;
     }
-    throw new AssertionError("refused: " + ((FormatResult.Refused) result).reason());
+    throw new AssertionError("refused: " + ((FormatResult.Refused)result).reason());
   }
 
   private static SourceUnit unit(final AnalysisLanguage language, final Path file)

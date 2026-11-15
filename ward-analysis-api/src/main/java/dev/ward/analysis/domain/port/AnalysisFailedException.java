@@ -8,7 +8,6 @@ package dev.ward.analysis.domain.port;
  * message is for developers; reports do not show it, so it must not contain source text.
  */
 public final class AnalysisFailedException extends RuntimeException {
-
   private static final long serialVersionUID = 1L;
 
   /** Creates the exception with a developer-facing message. */

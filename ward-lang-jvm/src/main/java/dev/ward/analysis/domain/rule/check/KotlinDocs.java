@@ -15,7 +15,6 @@ import java.util.Set;
  * leaves in the source, not the order of the siblings.
  */
 final class KotlinDocs {
-
   /** The kinds of the declarations that a KDoc comment documents. */
   static final Set<String> DECLARATIONS =
       Set.of(
@@ -25,7 +24,8 @@ final class KotlinDocs {
           "propertyDeclaration",
           "secondaryConstructor",
           "typeAlias",
-          "enumEntry");
+          "enumEntry"
+      );
 
   private static final Set<String> STARTS =
       Set.of(
@@ -37,7 +37,8 @@ final class KotlinDocs {
           "propertyDeclaration",
           "secondaryConstructor",
           "typeAlias",
-          "enumEntry");
+          "enumEntry"
+      );
   private static final Set<String> KEYWORDS_BEFORE_DECLARATIONS = Set.of("package", "import");
   private static final String TEXT = "text";
   private static final String KDOC_OPEN = "/**";

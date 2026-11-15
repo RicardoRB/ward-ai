@@ -59,22 +59,29 @@ class EnforcerParitySmokeTest {
   private static final List<Pairing> PAIRINGS =
       List.of(
           new Pairing(
-              BuildRule.PLUGIN_VERSION_PINNED, "requirePluginVersions", "maven-shade-plugin"),
+              BuildRule.PLUGIN_VERSION_PINNED,
+              "requirePluginVersions",
+              "maven-shade-plugin"
+          ),
           new Pairing(BuildRule.NO_DYNAMIC_VERSION, "banDynamicVersions", "junit"),
           new Pairing(
               BuildRule.DUPLICATE_DEPENDENCY_DECLARATION,
               "banDuplicatePomDependencyVersions",
-              "guava"),
+              "guava"
+          ),
           new Pairing(
               BuildRule.DEPENDENCY_CONVERGENCE,
               "dependencyConvergence",
               "commons-lang3",
-              INVENTORY_FIXTURES),
+              INVENTORY_FIXTURES
+          ),
           new Pairing(
               BuildRule.REQUIRE_UPPER_BOUND,
               "requireUpperBoundDeps",
               "commons-lang3",
-              INVENTORY_FIXTURES));
+              INVENTORY_FIXTURES
+          )
+      );
 
   /** One native rule and the Enforcer rule it replaces, with what each reports for a fixture. */
   private record Pairing(BuildRule rule, String enforcerRule, String named, Path fixtures) {
@@ -103,7 +110,11 @@ class EnforcerParitySmokeTest {
   }
 
   private static List<String> agreement(
-      final Path folder, final List<Finding> findings, final Run enforcer, final Pairing pairing) {
+      final Path folder,
+      final List<Finding> findings,
+      final Run enforcer,
+      final Pairing pairing
+  ) {
     final List<String> disagreements = new ArrayList<>();
     final boolean enforcerFails = enforcer.exitCode() != 0;
     if (enforcerFails == findings.isEmpty()) {
@@ -135,11 +146,16 @@ class EnforcerParitySmokeTest {
                         new ProcessCommandExecutor(),
                         new NoGraphCache(),
                         new ForyJsonCodec(),
-                        false))));
+                        false
+                    )
+                )
+            )
+        );
     return service.run(
         new Project(folder, Language.JAVA, BuildTool.MAVEN, Framework.NONE),
         "policy",
-        List.of(new BuildPolicySetting(rule, false, Map.of())));
+        List.of(new BuildPolicySetting(rule, false, Map.of()))
+    );
   }
 
   private record Run(int exitCode, String output) {}
@@ -162,13 +178,14 @@ class EnforcerParitySmokeTest {
     final Path log = Files.createTempFile("enforcer", ".log");
     final Process process =
         new ProcessBuilder(
-                WRAPPER.toString(),
-                "-B",
-                "-f",
-                folder.resolve("pom.xml").toAbsolutePath().toString(),
-                ENFORCER,
-                "-Drules=" + rule,
-                "-Denforcer.fail=true")
+            WRAPPER.toString(),
+            "-B",
+            "-f",
+            folder.resolve("pom.xml").toAbsolutePath().toString(),
+            ENFORCER,
+            "-Drules=" + rule,
+            "-Denforcer.fail=true"
+        )
             .redirectErrorStream(true)
             .redirectOutput(log.toFile())
             .start();

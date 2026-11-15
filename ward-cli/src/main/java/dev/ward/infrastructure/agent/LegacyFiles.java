@@ -19,7 +19,6 @@ import java.util.stream.Stream;
  * @param marker the pattern of the ownership marker inside the file
  */
 record LegacyFiles(Path directory, Pattern name, Pattern marker) {
-
   /** The files that Ward owns today, in name order. */
   List<Path> owned() throws IOException {
     if (!Files.isDirectory(directory)) {

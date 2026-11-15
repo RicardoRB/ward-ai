@@ -12,7 +12,6 @@ import java.util.Set;
  * {@code continue} statement of the same block: it can never run.
  */
 public final class UnreachableStatementCheck implements UnitCheck {
-
   private static final String JUMP = "jumpExpression";
 
   private final String message;

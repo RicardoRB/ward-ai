@@ -11,7 +11,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class UncallableAnonymousMethodCheckTest {
-
   private static final UncallableAnonymousMethodCheck CHECK =
       new UncallableAnonymousMethodCheck("message");
   private static final TypeRef RUNNABLE = TypeRef.of("java.lang.Runnable");
@@ -33,7 +32,8 @@ class UncallableAnonymousMethodCheckTest {
         List.of(),
         List.of(),
         null,
-        ParsedFacts.withMethods(List.of(run()), inherited));
+        ParsedFacts.withMethods(List.of(run()), inherited)
+    );
   }
 
   private static List<String> report(final String source, final SpanFacts facts) {
@@ -63,9 +63,11 @@ class UncallableAnonymousMethodCheckTest {
     final CallTarget inherited = ParsedFacts.method("a.Base", "extra", List.of(TypeRef.of("int")));
     assertThat(report(SOURCE, supertype(RUNNABLE, List.of(inherited)))).isEmpty();
     assertThat(
-            report(
-                SOURCE.replace("void extra", "static void extra"),
-                supertype(RUNNABLE, List.of(inherited))))
+        report(
+            SOURCE.replace("void extra", "static void extra"),
+            supertype(RUNNABLE, List.of(inherited))
+        )
+    )
         .hasSize(1);
   }
 

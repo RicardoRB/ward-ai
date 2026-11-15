@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 
 /** Reads the output of {@code git log -p -U0}: the added lines per commit and file. */
 final class PatchParser {
-
   private static final Pattern HUNK = Pattern.compile("^@@ -\\S+ \\+(\\d+)(?:,\\d+)? @@");
   private static final String FILE_MARK = "+++ b/";
   private static final String NO_FILE = "+++ /dev/null";

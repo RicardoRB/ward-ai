@@ -9,7 +9,6 @@ import java.util.List;
  * graph shows only reachable code and the code that is there.
  */
 final class ControlFlowCompaction {
-
   private ControlFlowCompaction() {}
 
   /**
@@ -24,7 +23,8 @@ final class ControlFlowCompaction {
       final List<List<SyntaxNode>> nodes,
       final List<List<FlowEdge>> edges,
       final List<List<VariableAccess>> accesses,
-      final List<List<FlowSite>> sites) {
+      final List<List<FlowSite>> sites
+  ) {
     final boolean[] reached = reachableFromEntry(edges);
     final int[] newId = new int[nodes.size()];
     int next = 0;
@@ -50,7 +50,9 @@ final class ControlFlowCompaction {
                 nodes.get(id),
                 renumber(edges.get(id), newId),
                 accesses.get(id),
-                sites.get(id)));
+                sites.get(id)
+            )
+        );
       }
     }
     return blocks;

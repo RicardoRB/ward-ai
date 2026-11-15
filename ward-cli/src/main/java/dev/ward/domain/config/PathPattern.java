@@ -51,7 +51,8 @@ final class PathPattern {
             case STAR -> "[^/]*";
             case ANY -> "[^/]";
             default -> Pattern.quote(String.valueOf(character));
-          });
+          }
+      );
     }
     return regex.toString();
   }

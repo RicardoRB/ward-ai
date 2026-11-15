@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 
 /** Contract verification that the learning store fixture loads back to the same values. */
 class LearningStoreLoadContractTest {
-
   @Test
   void storeLoadsContractFixtureBackToSameValues() throws Exception {
     final Path root = Files.createTempDirectory("ward-load");

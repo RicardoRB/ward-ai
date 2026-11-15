@@ -28,7 +28,8 @@ public enum TaskRunner {
       final String displayName,
       final String packageName,
       final String cacheDirectory,
-      final boolean rootRunner) {
+      final boolean rootRunner
+  ) {
     this.displayName = displayName;
     this.packageName = packageName;
     this.cacheDirectory = cacheDirectory;

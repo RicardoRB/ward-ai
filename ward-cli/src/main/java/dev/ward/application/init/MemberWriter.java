@@ -18,7 +18,8 @@ public interface MemberWriter {
             final List<InitGateOption> gates,
             final QualityPreset preset,
             final boolean replaceScripts,
-            final Predicate<? super CompatibilityFinding> approval) {}
+            final Predicate<? super CompatibilityFinding> approval
+        ) {}
 
         @Override
         public List<String> kept() {
@@ -35,7 +36,8 @@ public interface MemberWriter {
       List<InitGateOption> gates,
       QualityPreset preset,
       boolean replaceScripts,
-      Predicate<? super CompatibilityFinding> approval);
+      Predicate<? super CompatibilityFinding> approval
+  );
 
   /** Returns the scripts the last {@link #apply} kept, for the summary. */
   List<String> kept();

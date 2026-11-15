@@ -32,11 +32,18 @@ final class RuleFixtures {
             AnalysisLanguage.JAVA,
             "sizes",
             Set.of(RulePreset.STANDARD),
-            List.of(RuleOption.integer("max", 1))),
+            List.of(RuleOption.integer("max", 1))
+        ),
         rule(FIELD, AnalysisLanguage.JAVA, "architecture", Set.of(RulePreset.STRICT), List.of()),
         rule(
-            KOTLIN, AnalysisLanguage.KOTLIN, "duplication", Set.of(RulePreset.STANDARD), List.of()),
-        rule(STREAMS, AnalysisLanguage.JAVA, "architecture", Set.of(), List.of()));
+            KOTLIN,
+            AnalysisLanguage.KOTLIN,
+            "duplication",
+            Set.of(RulePreset.STANDARD),
+            List.of()
+        ),
+        rule(STREAMS, AnalysisLanguage.JAVA, "architecture", Set.of(), List.of())
+    );
   }
 
   /** A body reader whose description is the body itself. */
@@ -84,9 +91,15 @@ final class RuleFixtures {
     return new RuleConfigFile(
         RuleConfigFile.DEFAULT_NAME,
         new RuleConfigFile.Select(
-            null, List.of(), List.of(), List.of("java.no-field-di"), List.of("java.method-length")),
+            null,
+            List.of(),
+            List.of(),
+            List.of("java.no-field-di"),
+            List.of("java.method-length")
+        ),
         java.util.Map.of(),
-        List.of());
+        List.of()
+    );
   }
 
   private static RuleDefinition rule(
@@ -94,7 +107,8 @@ final class RuleFixtures {
       final AnalysisLanguage language,
       final String category,
       final Set<RulePreset> presets,
-      final List<RuleOption> options) {
+      final List<RuleOption> options
+  ) {
     return new RuleDefinition(
         id,
         Set.of(language),
@@ -104,6 +118,7 @@ final class RuleFixtures {
         category,
         presets,
         options,
-        0);
+        0
+    );
   }
 }

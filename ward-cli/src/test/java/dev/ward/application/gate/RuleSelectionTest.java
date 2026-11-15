@@ -24,8 +24,14 @@ class RuleSelectionTest {
     final RuleSelection.Result result =
         RuleSelection.selected(
             new RuleConfigFile.Select(
-                "strict", List.of(), List.of(), List.of(), List.of("java.standard-rule")),
-            catalog);
+                "strict",
+                List.of(),
+                List.of(),
+                List.of(),
+                List.of("java.standard-rule")
+            ),
+            catalog
+        );
 
     assertThat(result.ids()).containsExactly(STRICT_RULE);
     assertThat(result.problems()).isEmpty();
@@ -36,8 +42,14 @@ class RuleSelectionTest {
     final RuleSelection.Result result =
         RuleSelection.selected(
             new RuleConfigFile.Select(
-                null, List.of(), List.of(), List.of("java.missing"), List.of()),
-            List.of(rule(STANDARD_RULE, RulePreset.STANDARD)));
+                null,
+                List.of(),
+                List.of(),
+                List.of("java.missing"),
+                List.of()
+            ),
+            List.of(rule(STANDARD_RULE, RulePreset.STANDARD))
+        );
 
     assertThat(result.ids()).containsExactly(STANDARD_RULE);
     assertThat(result.problems())
@@ -49,8 +61,14 @@ class RuleSelectionTest {
     final RuleSelection.Result result =
         RuleSelection.selected(
             new RuleConfigFile.Select(
-                null, List.of(), List.of(), List.of(), List.of(STANDARD_RULE)),
-            List.of(rule(STANDARD_RULE, RulePreset.STANDARD)));
+                null,
+                List.of(),
+                List.of(),
+                List.of(),
+                List.of(STANDARD_RULE)
+            ),
+            List.of(rule(STANDARD_RULE, RulePreset.STANDARD))
+        );
 
     assertThat(result.ids()).containsExactly(STANDARD_RULE);
     assertThat(result.problems())
@@ -58,7 +76,8 @@ class RuleSelectionTest {
         .asString()
         .endsWith(
             "[select] exclude: \"ward:java/standard-rule\": name the rule"
-                + " <language>.<rule-name>; write \"java.standard-rule\"");
+                + " <language>.<rule-name>; write \"java.standard-rule\""
+        );
   }
 
   @Test
@@ -70,8 +89,10 @@ class RuleSelectionTest {
                 List.of(),
                 List.of(),
                 List.of("build.no-dynamic-version"),
-                List.of("build.plugin-version-pinned")),
-            List.of(rule(STANDARD_RULE, RulePreset.STANDARD)));
+                List.of("build.plugin-version-pinned")
+            ),
+            List.of(rule(STANDARD_RULE, RulePreset.STANDARD))
+        );
 
     assertThat(result.ids()).containsExactly(STANDARD_RULE);
     assertThat(result.problems()).isEmpty();
@@ -87,6 +108,7 @@ class RuleSelectionTest {
         "sizes",
         Set.of(preset),
         List.of(),
-        0);
+        0
+    );
   }
 }

@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /** The validation of the catalog model, independent of the file format. */
 class CatalogModelTest {
-
   private static final int TOOL_COUNT = 23;
 
   @Test
@@ -51,14 +50,18 @@ class CatalogModelTest {
             "sizes",
             Set.of(),
             Map.of(
-                AnalysisLanguage.JAVA, LanguageStatus.implemented(),
-                AnalysisLanguage.KOTLIN, LanguageStatus.planned("#294")),
+                AnalysisLanguage.JAVA,
+                LanguageStatus.implemented(),
+                AnalysisLanguage.KOTLIN,
+                LanguageStatus.planned("#294")
+            ),
             Map.of(AnalysisLanguage.JAVA, "ward:java/parameter-count"),
             Map.of("checkstyle", List.of("ParameterNumber")),
             "catalog/x.toml",
             Optional.empty(),
             List.of(),
-            List.of());
+            List.of()
+        );
 
     assertThat(row.idFor(AnalysisLanguage.JAVA)).isEqualTo("ward:java/parameter-count");
     assertThat(row.idFor(AnalysisLanguage.KOTLIN)).isEqualTo("ward:kotlin/parameter-number");
@@ -70,24 +73,27 @@ class CatalogModelTest {
             AnalysisLanguage.PYTHON,
             AnalysisLanguage.SWIFT,
             AnalysisLanguage.OPENAPI,
-            AnalysisLanguage.ANDROID);
+            AnalysisLanguage.ANDROID
+        );
   }
 
   @Test
   void aCounterpartOfAnUnknownToolIsRejected() {
     assertThatThrownBy(
-            () ->
-                new CatalogRow(
-                    "x",
-                    "",
-                    Set.of(),
-                    Map.of(),
-                    Map.of(),
-                    Map.of("sonar", List.of("S1")),
-                    "f",
-                    Optional.empty(),
-                    List.of(),
-                    List.of()))
+        () ->
+            new CatalogRow(
+                "x",
+                "",
+                Set.of(),
+                Map.of(),
+                Map.of(),
+                Map.of("sonar", List.of("S1")),
+                "f",
+                Optional.empty(),
+                List.of(),
+                List.of()
+            )
+    )
         .hasMessageContaining("'sonar' is not a tool of the catalog");
   }
 

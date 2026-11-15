@@ -54,14 +54,16 @@ class EqualsOnUnrelatedTypesNativeTest {
               .orElseThrow();
       final TypeFactsRun run =
           new TypeFactsRun(
-              Map.of(AnalysisLanguage.JAVA, types.facts(Optional.empty()).orElseThrow()));
+              Map.of(AnalysisLanguage.JAVA, types.facts(Optional.empty()).orElseThrow())
+          );
 
       final RuleRunResult result =
           new RuleEngine(BundledRuleMatchers.create())
               .run(
                   List.of(new SourceUnit("A.java", AnalysisLanguage.JAVA, SOURCE)),
                   run.withTypes(GateFrontends.create(new AntlrLanguageFrontend())),
-                  List.of(rule));
+                  List.of(rule)
+              );
 
       assertThat(result.notRun()).isEmpty();
       assertThat(result.executionErrors()).isEmpty();
@@ -86,7 +88,8 @@ class EqualsOnUnrelatedTypesNativeTest {
             .run(
                 List.of(new SourceUnit("A.java", AnalysisLanguage.JAVA, SOURCE)),
                 GateFrontends.create(new AntlrLanguageFrontend()),
-                List.of(rule));
+                List.of(rule)
+            );
 
     assertThat(result.notRun()).extracting(RuleNotRun::ruleId).containsExactly(RULE_ID);
     assertThat(result.findings()).isEmpty();

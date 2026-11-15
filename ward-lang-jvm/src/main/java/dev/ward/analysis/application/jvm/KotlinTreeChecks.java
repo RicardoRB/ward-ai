@@ -12,7 +12,6 @@ import java.util.Map;
 
 /** Builds the Kotlin checks of detekt's style set that need the place of a node in the tree. */
 final class KotlinTreeChecks {
-
   private static final String MESSAGE = "message";
   private static final String MAX = "max";
   private static final int DEFAULT_MAX = 1;
@@ -24,18 +23,24 @@ final class KotlinTreeChecks {
     return Map.ofEntries(
         entry(
             "kotlin-may-be-const",
-            toml -> new KotlinMayBeConstCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new KotlinMayBeConstCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "kotlin-unnecessary-apply",
-            toml -> new KotlinUnnecessaryApplyCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new KotlinUnnecessaryApplyCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "kotlin-utility-class",
-            toml -> new KotlinUtilityClassCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new KotlinUtilityClassCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "kotlin-loop-jumps",
             toml ->
                 new KotlinLoopJumpCheck(
                     TomlValues.required(toml, MESSAGE),
-                    TomlValues.optionalInteger(toml, MAX, DEFAULT_MAX))));
+                    TomlValues.optionalInteger(toml, MAX, DEFAULT_MAX)
+                )
+        )
+    );
   }
 }

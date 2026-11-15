@@ -62,7 +62,9 @@ class FocusEquivalenceTest {
     Files.createDirectories(root.resolve("src/main/java/acme"));
     Files.createDirectories(root.resolve("src/main/kotlin"));
     Files.writeString(
-        root.resolve(JAVA_ORDER), "package acme;\n\nclass order {\n  void Run() {}\n}\n");
+        root.resolve(JAVA_ORDER),
+        "package acme;\n\nclass order {\n  void Run() {}\n}\n"
+    );
     Files.writeString(root.resolve(JAVA_CUSTOMER), "package acme;\n\nclass customer {}\n");
     Files.writeString(root.resolve(KOTLIN_APP), "package app\n\nclass userService\n");
   }
@@ -101,7 +103,8 @@ class FocusEquivalenceTest {
             null,
             null,
             null,
-            null);
+            null
+        );
     return AnalysisGates.create(check, ports(), focus);
   }
 
@@ -113,12 +116,14 @@ class FocusEquivalenceTest {
         new FileSystemSourceUnits(new ProcessCommandExecutor()),
         List.of(
             new FrontendSupport(AnalysisLanguage.JAVA, frontend, Set.of(RuleCapability.SYNTAX)),
-            new FrontendSupport(AnalysisLanguage.KOTLIN, frontend, Set.of(RuleCapability.SYNTAX))),
+            new FrontendSupport(AnalysisLanguage.KOTLIN, frontend, Set.of(RuleCapability.SYNTAX))
+        ),
         root -> AnalysisCacheFixtures.NO_CACHE,
         AnalysisCacheFixtures.codec(),
         "test",
         DependencyAdapters.none(),
-        (unused, classpath) -> Map.of());
+        (unused, classpath) -> Map.of()
+    );
   }
 
   private Project project() {
@@ -132,6 +137,7 @@ class FocusEquivalenceTest {
         Set.of(),
         null,
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 }

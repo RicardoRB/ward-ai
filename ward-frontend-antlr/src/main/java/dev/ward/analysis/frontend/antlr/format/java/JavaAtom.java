@@ -15,7 +15,6 @@ import org.antlr.v4.runtime.Token;
  * @param gapSpace whether any whitespace came before the token
  */
 record JavaAtom(int index, String text, int type, int newlines, boolean gapSpace) {
-
   private static final char NEWLINE = '\n';
 
   /**
@@ -38,7 +37,13 @@ record JavaAtom(int index, String text, int type, int newlines, boolean gapSpace
       } else {
         atoms.add(
             new JavaAtom(
-                token.getTokenIndex(), token.getText(), type, countNewlines(gap), !gap.isEmpty()));
+                token.getTokenIndex(),
+                token.getText(),
+                type,
+                countNewlines(gap),
+                !gap.isEmpty()
+            )
+        );
         gap.setLength(0);
       }
     }

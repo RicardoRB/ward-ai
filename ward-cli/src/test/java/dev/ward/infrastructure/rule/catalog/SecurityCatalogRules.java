@@ -15,7 +15,6 @@ import java.util.Set;
  * row.
  */
 final class SecurityCatalogRules {
-
   /** The catalog file that holds the security rows. */
   static final String FILE = "catalog/security.toml";
 
@@ -31,7 +30,7 @@ final class SecurityCatalogRules {
       new String(stream.readAllBytes(), StandardCharsets.UTF_8)
           .lines()
           .filter(line -> !line.startsWith("#") && !line.isBlank())
-          .forEach(line -> ids.add(line.split("\t", 2)[0]));
+          .forEach(line -> ids.add(line.split("\t", 2) [0]));
       return ids;
     } catch (final IOException exception) {
       throw new IllegalStateException("the pinned CWE list cannot be read", exception);
@@ -40,7 +39,10 @@ final class SecurityCatalogRules {
 
   /** Returns what is wrong with the security rows and with the rules of category security. */
   static List<String> problems(
-      final List<CatalogRow> rows, final Set<String> cweIds, final List<RuleDefinition> rules) {
+      final List<CatalogRow> rows,
+      final Set<String> cweIds,
+      final List<RuleDefinition> rules
+  ) {
     final List<String> problems = new ArrayList<>();
     for (final CatalogRow row : rows) {
       if (FILE.equals(row.source())) {

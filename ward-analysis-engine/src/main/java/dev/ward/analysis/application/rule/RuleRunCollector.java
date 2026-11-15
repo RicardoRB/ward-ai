@@ -38,6 +38,7 @@ final class RuleRunCollector {
     return new RuleRunResult(
         findings.stream().sorted(AnalysisFindingOrder.ORDER).toList(),
         errors.stream().sorted(ERROR_ORDER).toList(),
-        notRun.stream().sorted(Comparator.comparing(RuleNotRun::ruleId)).toList());
+        notRun.stream().sorted(Comparator.comparing(RuleNotRun::ruleId)).toList()
+    );
   }
 }

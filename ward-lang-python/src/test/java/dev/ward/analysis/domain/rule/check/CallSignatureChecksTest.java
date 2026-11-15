@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /** The same-module call checks, parsed from real Python source. */
 final class CallSignatureChecksTest {
-
   private static final String MESSAGE = "m";
 
   @Test
@@ -32,42 +31,51 @@ final class CallSignatureChecksTest {
   @Test
   void unexpectedKeywordIsReportedUnlessTheSignatureHasKwargs() {
     assertThat(
-            run(
-                CallSignatureCheck.Problem.UNEXPECTED_KEYWORD,
-                "def f(a):\n    return a\n\n\nf(c=1)\n"))
+        run(CallSignatureCheck.Problem.UNEXPECTED_KEYWORD, "def f(a):\n    return a\n\n\nf(c=1)\n")
+    )
         .hasSize(1);
     assertThat(
-            run(
-                CallSignatureCheck.Problem.UNEXPECTED_KEYWORD,
-                "def f(a, **kw):\n    return a\n\n\nf(c=1)\n"))
+        run(
+            CallSignatureCheck.Problem.UNEXPECTED_KEYWORD,
+            "def f(a, **kw):\n    return a\n\n\nf(c=1)\n"
+        )
+    )
         .isEmpty();
   }
 
   @Test
   void redundantKeywordIsReportedForAParameterAPositionalArgumentFills() {
     assertThat(
-            run(
-                CallSignatureCheck.Problem.REDUNDANT_KEYWORD,
-                "def f(a, b):\n    return a\n\n\nf(1, a=2)\n"))
+        run(
+            CallSignatureCheck.Problem.REDUNDANT_KEYWORD,
+            "def f(a, b):\n    return a\n\n\nf(1, a=2)\n"
+        )
+    )
         .hasSize(1);
     assertThat(
-            run(
-                CallSignatureCheck.Problem.REDUNDANT_KEYWORD,
-                "def f(a, b):\n    return a\n\n\nf(1, b=2)\n"))
+        run(
+            CallSignatureCheck.Problem.REDUNDANT_KEYWORD,
+            "def f(a, b):\n    return a\n\n\nf(1, b=2)\n"
+        )
+    )
         .isEmpty();
   }
 
   @Test
   void unpackedArgumentsAndRepeatedNamesAreLeftAlone() {
     assertThat(
-            run(
-                CallSignatureCheck.Problem.TOO_MANY_POSITIONAL,
-                "def f(a):\n    return a\n\n\nf(*[1, 2])\n"))
+        run(
+            CallSignatureCheck.Problem.TOO_MANY_POSITIONAL,
+            "def f(a):\n    return a\n\n\nf(*[1, 2])\n"
+        )
+    )
         .isEmpty();
     assertThat(
-            run(
-                CallSignatureCheck.Problem.TOO_MANY_POSITIONAL,
-                "def f(a):\n    return a\n\n\ndef f(a, b):\n    return a\n\n\nf(1, 2)\n"))
+        run(
+            CallSignatureCheck.Problem.TOO_MANY_POSITIONAL,
+            "def f(a):\n    return a\n\n\ndef f(a, b):\n    return a\n\n\nf(1, 2)\n"
+        )
+    )
         .isEmpty();
   }
 
@@ -90,17 +98,21 @@ final class CallSignatureChecksTest {
   @Test
   void repeatedKeywordReportsAKeywordAlsoKeyOfAnUnpackedLiteralDict() {
     assertThat(
-            new RepeatedKeywordCheck(MESSAGE)
-                .matches(tree("def f(name):\n    return name\n\n\nf(name=1, **{\"name\": 2})\n")))
+        new RepeatedKeywordCheck(MESSAGE)
+            .matches(tree("def f(name):\n    return name\n\n\nf(name=1, **{\"name\": 2})\n"))
+    )
         .hasSize(1);
     assertThat(
-            new RepeatedKeywordCheck(MESSAGE)
-                .matches(tree("def f(name):\n    return name\n\n\nf(name=1, **{\"other\": 2})\n")))
+        new RepeatedKeywordCheck(MESSAGE)
+            .matches(tree("def f(name):\n    return name\n\n\nf(name=1, **{\"other\": 2})\n"))
+    )
         .isEmpty();
   }
 
   private static List<RuleMatch> run(
-      final CallSignatureCheck.Problem problem, final String source) {
+      final CallSignatureCheck.Problem problem,
+      final String source
+  ) {
     return new CallSignatureCheck(problem, MESSAGE).matches(tree(source));
   }
 

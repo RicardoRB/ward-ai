@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * holding the source, and asks for {@value #MANY} of them.
  */
 final class NullTestWindow {
-
   private static final int WINDOW = 4;
   private static final int MANY = 3;
   private static final String BLOCK = "block";
@@ -39,7 +38,8 @@ final class NullTestWindow {
       return new NullAnalysis.Finding(
           NullAnalysis.Pattern.NULL_ON_SOME_PATH_MIGHT_BE_INFEASIBLE,
           finding.at(),
-          finding.sources());
+          finding.sources()
+      );
     }
     return finding;
   }
@@ -78,7 +78,7 @@ final class NullTestWindow {
     }
     int tests = 0;
     for (int index = Math.max(0, holder - WINDOW); index < holder; index++) {
-      tests += (int) NULL_TEST.matcher(SyntaxWalk.text(statements.get(index))).results().count();
+      tests += (int)NULL_TEST.matcher(SyntaxWalk.text(statements.get(index))).results().count();
     }
     return tests;
   }

@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /** Reports a returned value in a constructor, in JavaScript and TypeScript sources. */
 class NodeConstructorReturnCheckTest {
-
   private static final int LINE = 3;
   private static final int COLUMN = 5;
   private static final String MESSAGE = "unexpected return value from constructor";

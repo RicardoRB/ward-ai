@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * keyword attributes are clearer. Classes whose match arguments are unknown are not reported.
  */
 public final class MatchPositionalCheck implements RuleCheck {
-
   private static final Set<String> PATTERNS = Set.of("class_pattern");
   private static final Set<String> CLASSES = Set.of("classdef");
   private static final Pattern CLASS_NAME = Pattern.compile("^(?:async\\s*)?class\\s*(\\w+)");
@@ -35,7 +34,8 @@ public final class MatchPositionalCheck implements RuleCheck {
           "list",
           "set",
           "str",
-          "tuple");
+          "tuple"
+      );
 
   private final String message;
 

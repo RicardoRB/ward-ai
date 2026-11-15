@@ -6,7 +6,6 @@ import java.util.List;
 /** Finds where one nullness rule reports in a file. */
 @FunctionalInterface
 public interface NullFinder {
-
   /**
    * The file as the finders read it.
    *
@@ -14,7 +13,6 @@ public interface NullFinder {
    * @param types the types of the file
    */
   record Unit(SyntaxNode root, List<NullModel.Type> types) {
-
     /** Copies the types. */
     public Unit {
       types = List.copyOf(types);

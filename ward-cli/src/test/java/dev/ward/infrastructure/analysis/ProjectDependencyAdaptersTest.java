@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks that every toolchain is classified, so a new one fails the build until it is. */
 class ProjectDependencyAdaptersTest {
-
   @Test
   void everyToolchainHasLayoutReaderOrNoSupport() {
     final Set<Toolchain> classified = EnumSet.copyOf(ToolchainSupport.WITH_LAYOUT_READER);

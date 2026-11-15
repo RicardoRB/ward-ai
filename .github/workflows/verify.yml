@@ -79,7 +79,7 @@ jobs:
           java-version: '25'
 
       # Its own key: the shorter matrix jobs finish first and would save setup-java's shared key
-      # without the gate plugins (PMD, SpotBugs, PIT, ...). Saved separately so a failing gate keeps it.
+      # without the gate plugins (JaCoCo, PIT, ...). Saved separately so a failing gate keeps it.
       - name: Restore Maven cache
         id: maven-cache
         uses: actions/cache/restore@v5
@@ -130,6 +130,24 @@ jobs:
           ./install.sh
           echo "$WARD_INSTALL_DIR" >> "$GITHUB_PATH"
 
+      # Ward keeps its analysis and format results in .ward, keyed by file content, so a restored
+      # folder only saves work: a changed file is analyzed again. The key starts with the installed
+      # Ward version and the rule configuration, because a result is only valid for those. Each run
+      # saves under its own commit and restores the newest one of the same version and configuration.
+      - name: Read the installed Ward version
+        id: ward-version
+        env:
+          WARD_INSTALL_DIR: ${{ runner.temp }}/ward/bin
+        run: echo "version=$("$WARD_INSTALL_DIR/ward" --version | awk '{print $NF}')" >> "$GITHUB_OUTPUT"
+
+      - name: Restore the Ward analysis cache
+        uses: actions/cache/restore@v5
+        with:
+          path: .ward
+          key: ward-analysis-${{ runner.os }}-${{ steps.ward-version.outputs.version }}-${{ hashFiles('ward.toml', 'ward-rules.toml', '.editorconfig') }}-${{ github.sha }}
+          restore-keys: |
+            ward-analysis-${{ runner.os }}-${{ steps.ward-version.outputs.version }}-${{ hashFiles('ward.toml', 'ward-rules.toml', '.editorconfig') }}-
+
       # Pull requests mutate only the domain and application classes they change, or whose test
       # changed; releases mutate everything. The pom.xml profile reads PIT_TARGET_CLASSES.
       - name: Limit mutation testing to changed classes
@@ -163,6 +181,13 @@ jobs:
         with:
           sarif_file: target/ward.sarif
           category: ward
+
+      - name: Save the Ward analysis cache
+        if: always() && hashFiles('.ward/**') != ''
+        uses: actions/cache/save@v5
+        with:
+          path: .ward
+          key: ward-analysis-${{ runner.os }}-${{ steps.ward-version.outputs.version }}-${{ hashFiles('ward.toml', 'ward-rules.toml', '.editorconfig') }}-${{ github.sha }}
 
       - name: Generate coverage report
         if: always()

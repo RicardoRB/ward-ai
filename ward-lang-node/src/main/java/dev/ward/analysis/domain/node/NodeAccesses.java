@@ -15,7 +15,6 @@ import java.util.Set;
  * property, a name of another body) is not recorded.
  */
 final class NodeAccesses implements VariableAccesses {
-
   /** Nodes that bind a name of their own, so the body is walked for captures of outer names. */
   static final Set<String> CAPTURERS =
       Set.of(
@@ -25,7 +24,8 @@ final class NodeAccesses implements VariableAccesses {
           "methodDefinition",
           "propertyMemberDeclaration",
           "classDeclaration",
-          "classExpression");
+          "classExpression"
+      );
 
   private static final String VARIABLE_STATEMENT = "variableStatement";
   private static final String VARIABLE_LIST = "variableDeclarationList";

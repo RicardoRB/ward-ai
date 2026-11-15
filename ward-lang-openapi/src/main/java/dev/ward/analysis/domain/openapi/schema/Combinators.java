@@ -8,7 +8,6 @@ import java.util.Set;
 
 /** The keywords that need no type of data: const, enum, not, anyOf, oneOf, allOf and if. */
 final class Combinators {
-
   private static final int EXACTLY_ONE = 1;
 
   private Combinators() {}
@@ -19,7 +18,8 @@ final class Combinators {
       final DocNode schema,
       final DocNode data,
       final String path,
-      final Set<String> evaluated) {
+      final Set<String> evaluated
+  ) {
     return Chain.run(
         validator,
         () -> constant(validator, schema, data, path),
@@ -28,7 +28,8 @@ final class Combinators {
         () -> anyOf(validator, schema, data, path, evaluated),
         () -> oneOf(validator, schema, data, path, evaluated),
         () -> allOf(validator, schema, data, path, evaluated),
-        () -> conditional(validator, schema, data, path, evaluated));
+        () -> conditional(validator, schema, data, path, evaluated)
+    );
   }
 
   private static boolean stop(final JsonSchemaValidator validator, final boolean valid) {
@@ -39,7 +40,8 @@ final class Combinators {
       final JsonSchemaValidator validator,
       final DocNode schema,
       final DocNode data,
-      final String path) {
+      final String path
+  ) {
     final Optional<DocNode> expected = schema.get("const");
     if (expected.isEmpty() || JsonValues.equal(expected.get(), data)) {
       return true;
@@ -52,7 +54,8 @@ final class Combinators {
       final JsonSchemaValidator validator,
       final DocNode schema,
       final DocNode data,
-      final String path) {
+      final String path
+  ) {
     final Optional<DocNode> allowed = schema.get("enum");
     if (allowed.isEmpty()
         || allowed.get().kind() != DocNode.Kind.ARRAY
@@ -68,7 +71,9 @@ final class Combinators {
                 "must be equal to one of the allowed values",
                 "",
                 allowed.get().items(),
-                false));
+                false
+            )
+        );
     return false;
   }
 
@@ -76,7 +81,8 @@ final class Combinators {
       final JsonSchemaValidator validator,
       final DocNode schema,
       final DocNode data,
-      final String path) {
+      final String path
+  ) {
     final Optional<DocNode> inner = schema.get("not");
     if (inner.isEmpty()) {
       return true;
@@ -105,7 +111,8 @@ final class Combinators {
       final DocNode schema,
       final DocNode data,
       final String path,
-      final Set<String> evaluated) {
+      final Set<String> evaluated
+  ) {
     final Optional<DocNode> branches = schema.get("anyOf");
     if (branches.isEmpty() || branches.get().kind() != DocNode.Kind.ARRAY) {
       return true;
@@ -137,7 +144,8 @@ final class Combinators {
       final DocNode schema,
       final DocNode data,
       final String path,
-      final Set<String> evaluated) {
+      final Set<String> evaluated
+  ) {
     final Optional<DocNode> branches = schema.get("oneOf");
     if (branches.isEmpty() || branches.get().kind() != DocNode.Kind.ARRAY) {
       return true;
@@ -164,7 +172,9 @@ final class Combinators {
                 "must match exactly one schema in oneOf",
                 "",
                 List.of(),
-                passing.isEmpty()));
+                passing.isEmpty()
+            )
+        );
     return false;
   }
 
@@ -173,7 +183,8 @@ final class Combinators {
       final DocNode schema,
       final DocNode data,
       final String path,
-      final Set<String> evaluated) {
+      final Set<String> evaluated
+  ) {
     final Optional<DocNode> branches = schema.get("allOf");
     if (branches.isEmpty() || branches.get().kind() != DocNode.Kind.ARRAY) {
       return true;
@@ -193,7 +204,8 @@ final class Combinators {
       final DocNode schema,
       final DocNode data,
       final String path,
-      final Set<String> evaluated) {
+      final Set<String> evaluated
+  ) {
     final Optional<DocNode> condition = schema.get("if");
     if (condition.isEmpty()) {
       return true;

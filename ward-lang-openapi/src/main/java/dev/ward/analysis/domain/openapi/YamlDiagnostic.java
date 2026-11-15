@@ -10,7 +10,6 @@ import java.util.Objects;
  * @param column 1-based column of the problem
  */
 public record YamlDiagnostic(String message, int line, int column) {
-
   /**
    * Validates the message and the position.
    *

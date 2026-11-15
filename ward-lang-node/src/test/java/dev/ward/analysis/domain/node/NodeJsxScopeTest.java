@@ -10,12 +10,12 @@ import org.junit.jupiter.api.Test;
 
 /** JSX tags and expression containers as scope references. */
 class NodeJsxScopeTest {
-
   @Test
   void componentUsedOnlyAsTagIsAReference() {
     final UnitScopes scopes =
         NodeScopeFixtures.tsx(
-            "import { Button } from \"./button\";\nexport const view = <Button />;\n");
+            "import { Button } from \"./button\";\nexport const view = <Button />;\n"
+        );
 
     assertThat(readNames(scopes)).contains("Button");
   }

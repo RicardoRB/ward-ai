@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the Kotlin empty-when, empty-constructor and complex-condition checks over hand trees. */
 class KotlinConstructorAndConditionChecksTest {
-
   private static final String MESSAGE = "m";
   private static final String LINE_TEXT = "token";
   private static final int LINE = 1;
@@ -27,7 +26,8 @@ class KotlinConstructorAndConditionChecksTest {
         "classDeclaration",
         leaf("'class'", "class"),
         leaf("simpleIdentifier", "A"),
-        group("primaryConstructor", constructorParts));
+        group("primaryConstructor", constructorParts)
+    );
   }
 
   @Test
@@ -46,17 +46,19 @@ class KotlinConstructorAndConditionChecksTest {
 
     assertThat(unitMatches(check, bareClass(leaf("'('", "("), leaf("')'", ")")))).hasSize(1);
     assertThat(
-            unitMatches(
-                check,
-                bareClass(
-                    group("modifierList", leaf("annotation", "@Inject")), leaf(LINE_TEXT, "()"))))
+        unitMatches(
+            check,
+            bareClass(group("modifierList", leaf("annotation", "@Inject")), leaf(LINE_TEXT, "()"))
+        )
+    )
         .isEmpty();
     final SyntaxNode expect =
         group(
             "classDeclaration",
             group("modifierList", leaf(LINE_TEXT, "expect")),
             leaf("'class'", "class"),
-            group("primaryConstructor", leaf("'('", "("), leaf("')'", ")")));
+            group("primaryConstructor", leaf("'('", "("), leaf("')'", ")"))
+        );
     assertThat(unitMatches(check, expect)).isEmpty();
   }
 
@@ -67,14 +69,16 @@ class KotlinConstructorAndConditionChecksTest {
             "constructorDelegationCall",
             leaf("'this'", "this"),
             leaf("'('", "("),
-            leaf("')'", ")"));
+            leaf("')'", ")")
+        );
     final SyntaxNode secondary = group("secondaryConstructor", delegation);
     final SyntaxNode withThis =
         group(
             "classDeclaration",
             leaf("'class'", "class"),
             group("primaryConstructor", leaf("'('", "("), leaf("')'", ")")),
-            group("classBody", group("classMemberDeclaration", secondary)));
+            group("classBody", group("classMemberDeclaration", secondary))
+        );
 
     assertThat(unitMatches(new KotlinEmptyConstructorCheck(MESSAGE), withThis)).isEmpty();
   }
@@ -88,15 +92,18 @@ class KotlinConstructorAndConditionChecksTest {
             leaf("'&&'", "&&"),
             leaf(LINE_TEXT, "b"),
             leaf("'&&'", "&&"),
-            leaf(LINE_TEXT, "c"));
+            leaf(LINE_TEXT, "c")
+        );
     final SyntaxNode condition =
         group("expression", lambda, leaf("'&&'", "&&"), leaf(LINE_TEXT, "y"));
     final SyntaxNode statement = group("ifExpression", leaf("'if'", "if"), condition);
 
     assertThat(
-            unitMatches(
-                new KotlinComplexConditionCheck(Set.of("ifExpression"), THRESHOLD, MESSAGE),
-                statement))
+        unitMatches(
+            new KotlinComplexConditionCheck(Set.of("ifExpression"), THRESHOLD, MESSAGE),
+            statement
+        )
+    )
         .isEmpty();
   }
 }

@@ -60,15 +60,19 @@ class JavaResolutionGateTest {
             MAIN + "shop/service/Checkout.java",
             MAIN + "shop/service/Pricing.java",
             MAIN + "shop/domain/Order.java",
-            MAIN + "shop/domain/Prices.java");
+            MAIN + "shop/domain/Prices.java"
+        );
     assertThat(dependents.get(MAIN + "shop/domain/Discount.java"))
         .containsExactlyInAnyOrder(
-            MAIN + "shop/service/Pricing.java", MAIN + "shop/legacy/Coupon.java");
+            MAIN + "shop/service/Pricing.java",
+            MAIN + "shop/legacy/Coupon.java"
+        );
     assertThat(dependents.get(MAIN + "shop/domain/Order.java"))
         .contains(
             MAIN + "shop/service/Cart.java",
             MAIN + "shop/service/Checkout.java",
-            TEST + "shop/service/CheckoutTest.java");
+            TEST + "shop/service/CheckoutTest.java"
+        );
     assertThat(dependents.get(MAIN + "shop/domain/Prices.java"))
         .containsExactly(MAIN + "shop/service/Checkout.java");
     assertThat(dependents).doesNotContainKey(MAIN + "shop/legacy/Discount.java");
@@ -102,9 +106,10 @@ class JavaResolutionGateTest {
     copyFixture("java-resolution-inferred");
 
     assertThatThrownBy(
-            () ->
-                gate("missing/classpath.txt")
-                    .execute(new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE)))
+        () ->
+            gate("missing/classpath.txt")
+                .execute(new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE))
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("java-classpath")
         .hasMessageContaining("missing/classpath.txt");
@@ -126,13 +131,17 @@ class JavaResolutionGateTest {
                 new FrontendSupport(
                     AnalysisLanguage.JAVA,
                     new AntlrLanguageFrontend(),
-                    Set.of(RuleCapability.SYNTAX))),
+                    Set.of(RuleCapability.SYNTAX)
+                )
+            ),
             projectRoot -> new FileAnalysisCache(projectRoot.resolve(".ward/cache/analysis")),
             AnalysisCacheFixtures.codec(),
             "test",
             new JvmDependencyAdapters(),
-            (unused, classpath) -> Map.of()),
-        javaClasspath);
+            (unused, classpath) -> Map.of()
+        ),
+        javaClasspath
+    );
   }
 
   /** Maps each depended-on file to the files that depend on it, as the gate stored them. */

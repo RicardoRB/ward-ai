@@ -14,7 +14,6 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
 class ClasspathRuleSourceTest {
-
   private static final List<String> SCOPE_CHECKS =
       List.of(
           "node-no-label-var",
@@ -31,13 +30,15 @@ class ClasspathRuleSourceTest {
           "node-variable-distance",
           "reassigned-binding",
           "undefined-name",
-          "unused-binding");
+          "unused-binding"
+      );
 
   @Test
   void malformedFileIsReportedAndOtherFilesStillLoad() {
     final AnalysisRuleLoad load =
         new ClasspathRuleSource(
-                List.of("fixtures/rules/malformed.toml", "fixtures/rules/valid.toml"))
+            List.of("fixtures/rules/malformed.toml", "fixtures/rules/valid.toml")
+        )
             .load();
 
     assertThat(load.configurationErrors())
@@ -92,9 +93,11 @@ class ClasspathRuleSourceTest {
                       hardening
                           ? List.of(AnalysisSeverity.ERROR, AnalysisSeverity.WARNING)
                           : lowPriority
-                              ? List.of(AnalysisSeverity.NOTE)
-                              : List.of(AnalysisSeverity.ERROR));
-            });
+                          ? List.of(AnalysisSeverity.NOTE)
+                          : List.of(AnalysisSeverity.ERROR)
+                  );
+            }
+        );
   }
 
   @Test
@@ -107,7 +110,8 @@ class ClasspathRuleSourceTest {
             .filter(
                 rule ->
                     rule.covers(AnalysisLanguage.TYPESCRIPT)
-                        || rule.covers(AnalysisLanguage.JAVASCRIPT))
+                        || rule.covers(AnalysisLanguage.JAVASCRIPT)
+            )
             .toList();
     assertThat(node).isNotEmpty();
     assertThat(node)
@@ -115,7 +119,8 @@ class ClasspathRuleSourceTest {
             rule -> {
               assertThat(rule.capability()).isEqualTo(capabilityOf(rule));
               assertThat(rule.body().isEmpty() || rule.body().contains("check = ")).isTrue();
-            });
+            }
+        );
     assertThat(node).extracting(RuleDefinition::id).doesNotHaveDuplicates();
     assertThat(node).anyMatch(rule -> rule.covers(AnalysisLanguage.TYPESCRIPT));
     assertThat(node).anyMatch(rule -> rule.covers(AnalysisLanguage.JAVASCRIPT));

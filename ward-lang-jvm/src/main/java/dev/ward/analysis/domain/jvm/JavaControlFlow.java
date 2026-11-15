@@ -18,7 +18,6 @@ import java.util.Set;
  * the other bodies are still lowered.
  */
 public final class JavaControlFlow implements ControlFlowLowering {
-
   private static final String RULE_ID = "control-flow";
   private static final String BLOCK = "block";
   private static final String IDENTIFIER = "identifier";
@@ -43,7 +42,6 @@ public final class JavaControlFlow implements ControlFlowLowering {
 
   /** Walks the tree once, lowering each body and keeping the owning type's name in scope. */
   private static final class Collector {
-
     private final SourceUnit unit;
     private final JavaTypeNames types;
     private final List<ControlFlowGraph> graphs = new ArrayList<>();
@@ -66,7 +64,10 @@ public final class JavaControlFlow implements ControlFlowLowering {
     }
 
     private void lowerBody(
-        final SyntaxNode node, final String scope, final List<JavaClassFields.Field> fields) {
+        final SyntaxNode node,
+        final String scope,
+        final List<JavaClassFields.Field> fields
+    ) {
       switch (node.kind()) {
         case "methodDeclaration" -> lowerMethod(node, scope, fields);
         case "constructorDeclaration" -> lowerConstructor(node, scope, fields);
@@ -79,7 +80,10 @@ public final class JavaControlFlow implements ControlFlowLowering {
     }
 
     private void lowerMethod(
-        final SyntaxNode node, final String scope, final List<JavaClassFields.Field> fields) {
+        final SyntaxNode node,
+        final String scope,
+        final List<JavaClassFields.Field> fields
+    ) {
       final SyntaxNode methodBody =
           JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(node), "methodBody");
       final SyntaxNode block =
@@ -94,24 +98,32 @@ public final class JavaControlFlow implements ControlFlowLowering {
             scope + "#" + name + "(" + params + ")",
             JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(node), "formalParameters"),
             block,
-            fields);
+            fields
+        );
       }
     }
 
     private void lowerConstructor(
-        final SyntaxNode node, final String scope, final List<JavaClassFields.Field> fields) {
+        final SyntaxNode node,
+        final String scope,
+        final List<JavaClassFields.Field> fields
+    ) {
       final SyntaxNode block = JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(node), BLOCK);
       if (block != null) {
         lower(
             scope + "#<init>(" + parameters(node) + ")",
             JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(node), "formalParameters"),
             block,
-            fields);
+            fields
+        );
       }
     }
 
     private void lowerInitializer(
-        final SyntaxNode node, final String scope, final List<JavaClassFields.Field> fields) {
+        final SyntaxNode node,
+        final String scope,
+        final List<JavaClassFields.Field> fields
+    ) {
       final SyntaxNode block = JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(node), BLOCK);
       if (block != null) {
         final boolean isStatic =
@@ -137,7 +149,8 @@ public final class JavaControlFlow implements ControlFlowLowering {
         final String name,
         final SyntaxNode parameters,
         final SyntaxNode node,
-        final List<JavaClassFields.Field> fields) {
+        final List<JavaClassFields.Field> fields
+    ) {
       try {
         graphs.add(new JavaBodyLowering(types, fields).lower(name, parameters, node, node.span()));
       } catch (IllegalStateException failure) {
@@ -150,7 +163,9 @@ public final class JavaControlFlow implements ControlFlowLowering {
                 node.span().startLine(),
                 node.span().startColumn(),
                 null,
-                List.of()));
+                List.of()
+            )
+        );
       }
     }
 

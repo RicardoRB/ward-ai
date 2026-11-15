@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
  * approved narrow query: written types, smart casts, inferred types, Java members and vars.
  */
 class KotlinNullnessTest {
-
   /** The typer walks the members of classes, so every source sits in one. */
   private static Probe kt(final String members) {
     return Probe.kotlin("class App {\n" + members + "}\n");
@@ -46,7 +45,8 @@ class KotlinNullnessTest {
                 + "    val useLit = lit\n"
                 + "    val useAlias = alias\n"
                 + "    val useNothing = nothing\n"
-                + "  }\n");
+                + "  }\n"
+        );
 
     assertThat(probe.nullness("lit")).isEqualTo(Nullness.NON_NULL);
     assertThat(probe.nullness("alias")).isEqualTo(Nullness.UNKNOWN);
@@ -69,7 +69,8 @@ class KotlinNullnessTest {
                 + "    val useVar = vNul\n"
                 + "    var vOk = \"x\"\n"
                 + "    val useOk = vOk\n"
-                + "  }\n");
+                + "  }\n"
+        );
 
     assertThat(probe.nullness("vNul")).isEqualTo(Nullness.UNKNOWN);
     assertThat(probe.nullness("vOk")).isEqualTo(Nullness.NON_NULL);

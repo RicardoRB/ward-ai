@@ -26,7 +26,11 @@ final class TypeRefs {
 
   /** Returns the call target for a signature declared by {@code owner}. */
   static CallTarget target(
-      final String owner, final String name, final Sig sig, final boolean isStatic) {
+      final String owner,
+      final String name,
+      final Sig sig,
+      final boolean isStatic
+  ) {
     final List<TypeRef> params = new ArrayList<>();
     for (final Param param : sig.params()) {
       final TypeRef ref = of(param.type());
@@ -52,7 +56,8 @@ final class TypeRefs {
         null,
         Map.of(),
         Map.of(),
-        null);
+        null
+    );
   }
 
   private static boolean needsParentheses(final TsType element) {

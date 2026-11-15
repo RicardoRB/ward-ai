@@ -20,7 +20,6 @@ import java.util.Set;
  * one, it reports nothing, and so does a call whose facts are unknown.
  */
 public final class JavaJdk8ApiCheck implements RuleCheck {
-
   private static final int RELEASE = 8;
   private static final Map<String, Set<String>> ADDED =
       Map.ofEntries(
@@ -29,15 +28,19 @@ public final class JavaJdk8ApiCheck implements RuleCheck {
           Map.entry("java.util.Map", Set.of("of", "ofEntries", "entry", "copyOf")),
           Map.entry(
               "java.util.Optional",
-              Set.of("isEmpty", "ifPresentOrElse", "or", "stream", "orElseThrow")),
+              Set.of("isEmpty", "ifPresentOrElse", "or", "stream", "orElseThrow")
+          ),
           Map.entry(
               "java.lang.String",
-              Set.of("isBlank", "strip", "stripLeading", "stripTrailing", "lines", "repeat")),
+              Set.of("isBlank", "strip", "stripLeading", "stripTrailing", "lines", "repeat")
+          ),
           Map.entry("java.util.Objects", Set.of("requireNonNullElse", "requireNonNullElseGet")),
           Map.entry("java.nio.file.Files", Set.of("readString", "writeString")),
           Map.entry("java.io.InputStream", Set.of("readAllBytes", "readNBytes", "transferTo")),
           Map.entry(
-              "java.util.stream.Stream", Set.of("takeWhile", "dropWhile", "ofNullable", "toList")),
+              "java.util.stream.Stream",
+              Set.of("takeWhile", "dropWhile", "ofNullable", "toList")
+          ),
           Map.entry(
               "java.util.stream.Collectors",
               Set.of(
@@ -45,7 +48,10 @@ public final class JavaJdk8ApiCheck implements RuleCheck {
                   "toUnmodifiableSet",
                   "toUnmodifiableMap",
                   "filtering",
-                  "flatMapping")));
+                  "flatMapping"
+              )
+          )
+      );
 
   private final int release;
   private final String message;
@@ -77,7 +83,8 @@ public final class JavaJdk8ApiCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     if (release == RELEASE) {
       for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("expression"))) {
@@ -88,7 +95,11 @@ public final class JavaJdk8ApiCheck implements RuleCheck {
                 target ->
                     matches.add(
                         CheckSupport.at(
-                            visit.node().span(), CheckSupport.fill(message, label(target), ""))));
+                            visit.node().span(),
+                            CheckSupport.fill(message, label(target), "")
+                        )
+                    )
+            );
       }
     }
     return List.copyOf(matches);

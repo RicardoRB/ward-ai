@@ -10,7 +10,6 @@ import java.util.Set;
 
 /** Reports a function that binds more distinct local names than {@code max}, like Pylint R0914. */
 public final class TooManyLocalsCheck implements RuleCheck {
-
   private static final Set<String> FUNCTIONS = Set.of("funcdef");
 
   private final int max;

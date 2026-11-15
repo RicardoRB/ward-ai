@@ -38,7 +38,10 @@ class GateLinesTest {
                     List.of(
                         new GateSection("naming", 0, 0),
                         new GateSection("style", ERRORS, 0),
-                        new GateSection("docs", 0, WARNINGS))));
+                        new GateSection("docs", 0, WARNINGS)
+                    )
+                )
+        );
 
     assertThat(new TextReportRenderer().render(report))
         .contains("✓ ward · naming", "✗ ward · style — 3 errors", "✓ ward · docs — 7 warnings")
@@ -55,7 +58,8 @@ class GateLinesTest {
         report(
             GateResult.builder(GATE, GateStatus.EXECUTION_ERROR)
                 .build()
-                .withSections(List.of(new GateSection("style", 0, 0))));
+                .withSections(List.of(new GateSection("style", 0, 0)))
+        );
 
     assertThat(new TextReportRenderer().render(report))
         .contains("✗ ward — error")
@@ -67,7 +71,8 @@ class GateLinesTest {
     final GateResult plain = GateResult.builder(GATE, GateStatus.FAILED).errors(ERRORS).build();
     final GateResult sectioned =
         plain.withSections(
-            List.of(new GateSection("naming", 0, 0), new GateSection("style", ERRORS, 0)));
+            List.of(new GateSection("naming", 0, 0), new GateSection("style", ERRORS, 0))
+        );
 
     assertThat(new JsonReportRenderer(new ForyJsonCodec()).render(report(sectioned)))
         .isEqualTo(new JsonReportRenderer(new ForyJsonCodec()).render(report(plain)));
@@ -108,7 +113,8 @@ class GateLinesTest {
     renderer.gateFinished(
         GateResult.builder(GATE, GateStatus.PASSED)
             .build()
-            .withSections(List.of(new GateSection("style", 0, 0))));
+            .withSections(List.of(new GateSection("style", 0, 0)))
+    );
 
     assertThat(out.toString())
         .contains("… ward\r\033[2K… ward: loading rules\r\033[2K✓ ward · style");
@@ -125,7 +131,8 @@ class GateLinesTest {
     renderer.gateFinished(
         GateResult.builder(GATE, GateStatus.PASSED)
             .build()
-            .withSections(List.of(new GateSection("style", 0, 0))));
+            .withSections(List.of(new GateSection("style", 0, 0)))
+    );
 
     assertThat(out.toString()).contains("✓ ward · style").doesNotContain("…", "\033");
   }

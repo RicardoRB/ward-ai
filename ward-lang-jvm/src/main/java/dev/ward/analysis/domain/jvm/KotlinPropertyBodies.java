@@ -11,7 +11,6 @@ import java.util.Map;
  * analysed like one in a function.
  */
 final class KotlinPropertyBodies {
-
   private static final String EQUALS = "=";
   private static final String DELEGATE = "by";
   private static final String BLOCK = "block";
@@ -96,6 +95,7 @@ final class KotlinPropertyBodies {
         BODY,
         KotlinFlowSyntax.between(token.span(), value.span()),
         Map.of(),
-        List.of(token, value));
+        List.of(token, value)
+    );
   }
 }

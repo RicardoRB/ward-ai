@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
  * names, or the entries of {@code __all__} when that is a literal list of strings.
  */
 final class PythonExports {
-
   private static final Pattern IDENTIFIER = Pattern.compile("[A-Za-z_]\\w*");
   private static final String ALL = "__all__";
   private static final String ASSIGN = "=";

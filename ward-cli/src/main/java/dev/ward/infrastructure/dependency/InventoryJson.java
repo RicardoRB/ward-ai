@@ -57,15 +57,23 @@ final class InventoryJson {
             .sorted(
                 Comparator.comparing(RequestedVersion::requester)
                     .thenComparing(RequestedVersion::version)
-                    .thenComparing(RequestedVersion::premanaged))
+                    .thenComparing(RequestedVersion::premanaged)
+            )
             .map(InventoryJson::request)
-            .toList());
+            .toList()
+    );
     return map;
   }
 
   private static Map<String, Object> request(final RequestedVersion request) {
     return Map.of(
-        "by", request.requester(), VERSION, request.version(), "premanaged", request.premanaged());
+        "by",
+        request.requester(),
+        VERSION,
+        request.version(),
+        "premanaged",
+        request.premanaged()
+    );
   }
 
   private static Map<String, Object> id(final PackageId id) {

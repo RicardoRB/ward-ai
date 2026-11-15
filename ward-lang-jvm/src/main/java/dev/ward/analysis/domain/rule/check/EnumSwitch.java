@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
  * as the switch, so an enum declared elsewhere is not read.
  */
 final class EnumSwitch {
-
   private static final String SWITCH = "'switch'";
   private static final String DEFAULT = "'default'";
   private static final String GROUP = "switchBlockStatementGroup";
@@ -30,7 +29,10 @@ final class EnumSwitch {
   private final Set<String> constants;
 
   private EnumSwitch(
-      final SyntaxNode switchNode, final List<SyntaxNode> labels, final Set<String> constants) {
+      final SyntaxNode switchNode,
+      final List<SyntaxNode> labels,
+      final Set<String> constants
+  ) {
     this.switchNode = switchNode;
     this.labels = labels;
     this.constants = constants;
@@ -39,8 +41,10 @@ final class EnumSwitch {
   /** Reads {@code switchNode} when it is a switch over an enum whose declaration is in the unit. */
   static Optional<EnumSwitch> of(
       final SyntaxNode switchNode,
-      final Map<String, Set<String>> declared,
-      final UnitTypeFacts types) {
+      final Map<String,
+      Set<String>> declared,
+      final UnitTypeFacts types
+  ) {
     if (!switchNode.children().stream().anyMatch(child -> SWITCH.equals(child.kind()))) {
       return Optional.empty();
     }
@@ -57,8 +61,8 @@ final class EnumSwitch {
     return SyntaxWalk.descendants(root).stream()
         .filter(node -> ENUM_DECLARATION.equals(node.kind()))
         .collect(
-            Collectors.toUnmodifiableMap(
-                EnumSwitch::enumName, EnumSwitch::constantsOf, (a, b) -> a));
+            Collectors.toUnmodifiableMap(EnumSwitch::enumName, EnumSwitch::constantsOf, (a, b) -> a)
+        );
   }
 
   /** Returns the switch node. */
@@ -123,7 +127,9 @@ final class EnumSwitch {
                     node.children().stream()
                         .filter(c -> IDENTIFIER.equals(c.kind()))
                         .findFirst()
-                        .orElseThrow()))
+                        .orElseThrow()
+                )
+        )
         .collect(Collectors.toUnmodifiableSet());
   }
 }

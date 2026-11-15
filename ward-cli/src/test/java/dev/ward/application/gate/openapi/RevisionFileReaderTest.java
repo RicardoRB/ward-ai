@@ -74,9 +74,11 @@ class RevisionFileReaderTest {
     final RevisionFileReader reader =
         new RevisionFileReader(
             committed(
-                Map.of("openapi.yml", SPEC, "schemas/pet.yml", "type: object\nrequired: [name]\n")),
+                Map.of("openapi.yml", SPEC, "schemas/pet.yml", "type: object\nrequired: [name]\n")
+            ),
             ROOT,
-            COMMIT);
+            COMMIT
+        );
 
     final LoadResult result = OpenApiDocuments.load("openapi.yml", reader);
 

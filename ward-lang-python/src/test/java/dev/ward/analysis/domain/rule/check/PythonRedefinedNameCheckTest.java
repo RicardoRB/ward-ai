@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 /** The redefined-name check reports a function's local or parameter that hides a module name. */
 final class PythonRedefinedNameCheckTest {
-
   private static final PythonRedefinedNameCheck CHECK = new PythonRedefinedNameCheck("hides");
 
   @Test

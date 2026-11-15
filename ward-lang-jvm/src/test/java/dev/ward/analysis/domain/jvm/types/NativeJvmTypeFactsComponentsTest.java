@@ -8,7 +8,6 @@ import dev.ward.analysis.domain.types.TypeRef;
 import org.junit.jupiter.api.Test;
 
 class NativeJvmTypeFactsComponentsTest {
-
   private static String body(final String statements) {
     return "package app;\nimport java.util.*;\npublic class App {\n  void go() {\n"
         + statements
@@ -47,7 +46,8 @@ class NativeJvmTypeFactsComponentsTest {
               assertThat(element.members().ancestors())
                   .extracting(TypeRef::name)
                   .contains("java.lang.Number");
-            });
+            }
+        );
   }
 
   @Test

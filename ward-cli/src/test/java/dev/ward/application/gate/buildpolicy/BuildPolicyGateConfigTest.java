@@ -17,10 +17,17 @@ class BuildPolicyGateConfigTest {
             GateFixtures.file(
                 GateFixtures.select("none", "build.plugin-version-pinned", "build.nope"),
                 Map.of(
-                    "ward:build/plugin-version-pinned", Map.of("ignore", List.of("x")),
-                    "ward:build/no-dynamic-version", Map.of("exclude-paths", List.of("legacy/**")),
-                    "ward:build/minimum-build-tool-version", Map.of("maven", 3L),
-                    "ward:build/bogus", Map.of())));
+                    "ward:build/plugin-version-pinned",
+                    Map.of("ignore", List.of("x")),
+                    "ward:build/no-dynamic-version",
+                    Map.of("exclude-paths", List.of("legacy/**")),
+                    "ward:build/minimum-build-tool-version",
+                    Map.of("maven", 3L),
+                    "ward:build/bogus",
+                    Map.of()
+                )
+            )
+        );
     assertThat(result.status()).isEqualTo(GateStatus.EXECUTION_ERROR);
     assertThat(result.stderr())
         .contains("[rules.build.plugin-version-pinned] ignore")
@@ -38,7 +45,10 @@ class BuildPolicyGateConfigTest {
                 GateFixtures.select("none", "build.no-dynamic-version"),
                 Map.of(
                     "ward:build/no-dynamic-version",
-                    Map.of("exclude-paths", List.of("legacy/**")))));
+                    Map.of("exclude-paths", List.of("legacy/**"))
+                )
+            )
+        );
     assertThat(result.status()).isEqualTo(GateStatus.EXECUTION_ERROR);
     assertThat(result.stderr()).contains("exclude-paths").contains("no suppression");
   }
@@ -50,7 +60,9 @@ class BuildPolicyGateConfigTest {
             GateFixtures.model(),
             GateFixtures.file(
                 GateFixtures.select("none", "build.no-dynamic-version", "java.method-length"),
-                Map.of()));
+                Map.of()
+            )
+        );
     assertThat(result.status()).isEqualTo(GateStatus.FAILED);
   }
 
@@ -61,7 +73,9 @@ class BuildPolicyGateConfigTest {
             GateFixtures.model(),
             GateFixtures.file(
                 GateFixtures.select("none", "build.no-dynamic-version"),
-                Map.of("ward:build/no-dynamic-version", Map.of("severity", "warning"))));
+                Map.of("ward:build/no-dynamic-version", Map.of("severity", "warning"))
+            )
+        );
     assertThat(result.status()).isEqualTo(GateStatus.PASSED);
     assertThat(result.warnings()).isEqualTo(1);
   }

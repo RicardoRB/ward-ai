@@ -14,7 +14,6 @@ import java.util.Set;
  * parameter's type is recorded for the receiver types of later calls.
  */
 final class NodeParameterSites {
-
   /**
    * The annotation of a destructured Express request member, such as {@code params} in {@code ({
    * params }: Request)}.
@@ -87,7 +86,9 @@ final class NodeParameterSites {
               Optional.empty(),
               decorators,
               List.of(),
-              formal.span()));
+              formal.span()
+          )
+      );
     }
   }
 
@@ -106,7 +107,8 @@ final class NodeParameterSites {
         Optional.empty(),
         List.of(EXPRESS_REQUEST),
         List.of(),
-        formal.span());
+        formal.span()
+    );
   }
 
   private static List<SyntaxNode> formalsIn(final SyntaxNode node, final List<SyntaxNode> found) {

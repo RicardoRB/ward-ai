@@ -7,7 +7,6 @@ package dev.ward.analysis.domain.android;
  * and {@link #TEXT} nodes in source order.
  */
 public final class AndroidSyntax {
-
   /** An XML element; the {@link #NAME} field is its name as written, such as {@code service}. */
   public static final String ELEMENT = "element";
 

@@ -34,7 +34,8 @@ public final class JvmInitSupport implements ToolchainInitSupport {
       List.of(
           SupportedQualityGates.ANDROID_LINT,
           SupportedQualityGates.ANDROID_UNIT_TEST,
-          SupportedQualityGates.ANDROID_COVERAGE);
+          SupportedQualityGates.ANDROID_COVERAGE
+      );
   private static final Map<Language, SourceLanguageGates<BuildToolGates>> LANGUAGES =
       Map.of(Language.JAVA, JAVA, Language.KOTLIN, JAVA);
 
@@ -47,12 +48,16 @@ public final class JvmInitSupport implements ToolchainInitSupport {
         buildTool.policyGates().stream()
             .map(gate -> apiCompat(gate, inputs, project))
             .flatMap(Optional::stream)
-            .toList());
+            .toList()
+    );
   }
 
   /** The native source comparison is offered when a release tag exists to compare with. */
   private static Optional<InitGateOption> apiCompat(
-      final InitGateOption gate, final InitInputs inputs, final Project project) {
+      final InitGateOption gate,
+      final InitInputs inputs,
+      final Project project
+  ) {
     if (!SupportedQualityGates.API_COMPAT.equals(gate.id())) {
       return Optional.of(gate);
     }
@@ -63,7 +68,9 @@ public final class JvmInitSupport implements ToolchainInitSupport {
                 "Compares the public API with the latest release tag, from sources.",
                 List.of(),
                 true,
-                "compares sources with the latest release tag; needs full Git history and tags"))
+                "compares sources with the latest release tag; needs full Git history and tags"
+            )
+        )
         : Optional.empty();
   }
 
@@ -72,7 +79,10 @@ public final class JvmInitSupport implements ToolchainInitSupport {
    * an Android project, whose root build has no JaCoCo verification task.
    */
   private static List<InitGateOption> analysisGates(
-      final Project project, final BuildToolGates buildTool, final boolean android) {
+      final Project project,
+      final BuildToolGates buildTool,
+      final boolean android
+  ) {
     final List<InitGateOption> gates =
         SourceLanguages.of(LANGUAGES, project).analysisGates(buildTool).stream()
             .filter(gate -> !(android && COVERAGE.equals(gate.id())))
@@ -85,7 +95,10 @@ public final class JvmInitSupport implements ToolchainInitSupport {
 
   @Override
   public List<String> presetGates(
-      final Project project, final QualityPreset preset, final InitInputs inputs) {
+      final Project project,
+      final QualityPreset preset,
+      final InitInputs inputs
+  ) {
     final boolean android = project.framework() == Framework.ANDROID;
     final List<String> gates =
         SourceLanguages.of(LANGUAGES, project).presetGates(preset).stream()
@@ -123,13 +136,19 @@ public final class JvmInitSupport implements ToolchainInitSupport {
 
   @Override
   public List<GateOmission> omissions(
-      final Project project, final List<String> gateIds, final InitInputs inputs) {
+      final Project project,
+      final List<String> gateIds,
+      final InitInputs inputs
+  ) {
     return new JdkGates(inputs).omissions(project, gateIds);
   }
 
   @Override
   public List<String> notes(
-      final Project project, final QualityPreset preset, final InitInputs inputs) {
+      final Project project,
+      final QualityPreset preset,
+      final InitInputs inputs
+  ) {
     final List<String> notes = new ArrayList<>();
     final EnvironmentInspection environment = inputs.environment();
     final List<String> skipped = environment.skippedJvmModules(project.root());

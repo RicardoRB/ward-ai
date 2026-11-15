@@ -6,7 +6,6 @@ import java.util.Map;
 
 /** Counts the identifier tokens of a file, so a check can tell whether a name appears in it. */
 public final class NodeIdentifiers {
-
   private static final String IDENTIFIER = "Identifier";
 
   private NodeIdentifiers() {}

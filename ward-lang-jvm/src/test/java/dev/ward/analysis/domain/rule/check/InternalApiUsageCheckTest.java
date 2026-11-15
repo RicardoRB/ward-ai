@@ -13,7 +13,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class InternalApiUsageCheckTest extends ClassTreeNodes {
-
   private static final String MESSAGE = "{value}";
   private static final String HELPER = "com.sun.tools.Helper";
   private static final String VOID = "void";
@@ -25,7 +24,8 @@ class InternalApiUsageCheckTest extends ClassTreeNodes {
         compilationUnit(
             importOf("importsun.misc.Unsafe;"),
             importOf("importstaticjdk.internal.misc.Unsafe.getUnsafe;"),
-            importOf("importjava.util.List;"));
+            importOf("importjava.util.List;")
+        );
 
     assertThat(internalApi(root, UnitTypeFacts.none()))
         .containsExactly("sun.misc.Unsafe", "jdk.internal.misc.Unsafe.getUnsafe");
@@ -37,7 +37,8 @@ class InternalApiUsageCheckTest extends ClassTreeNodes {
         compilationUnit(
             importOf("importcom.sun.net.httpserver.HttpServer;"),
             importOf("importcom.sun.management.OperatingSystemMXBean;"),
-            importOf("importcom.sun.netx.Other;"));
+            importOf("importcom.sun.netx.Other;")
+        );
 
     assertThat(internalApi(root, UnitTypeFacts.none())).containsExactly("com.sun.netx.Other");
   }
@@ -63,11 +64,13 @@ class InternalApiUsageCheckTest extends ClassTreeNodes {
             null,
             Map.of(),
             Map.of(),
-            null);
+            null
+        );
     final Map<String, SpanFacts> facts = new HashMap<>();
     facts.put(
         LINE + ":" + COLUMN,
-        new SpanFacts(null, null, target, List.of(), List.of(), List.of(), List.of(), null, null));
+        new SpanFacts(null, null, target, List.of(), List.of(), List.of(), List.of(), null, null)
+    );
 
     assertThat(internalApi(root, new UnitTypeFacts(facts))).containsExactly(HELPER);
     assertThat(internalApi(root, UnitTypeFacts.none())).isEmpty();
@@ -75,6 +78,7 @@ class InternalApiUsageCheckTest extends ClassTreeNodes {
 
   private static List<String> internalApi(final SyntaxNode root, final UnitTypeFacts types) {
     return Trees.messages(
-        new InternalApiUsageCheck(MESSAGE).matches(root, null, null, types, null));
+        new InternalApiUsageCheck(MESSAGE).matches(root, null, null, types, null)
+    );
   }
 }

@@ -8,7 +8,6 @@ import javax.inject.Inject;
 
 /** The Swift architecture tables: the source directories of the project's targets. */
 public final class SwiftArchitectureTables implements ArchitectureTables {
-
   /** Creates the stateless adapter that Dagger injects. */
   @Inject
   public SwiftArchitectureTables() {}

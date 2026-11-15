@@ -67,7 +67,8 @@ final class ApiIndex {
         .anyMatch(
             supertype ->
                 supertype.members().stream()
-                    .anyMatch(member -> member.id().equals(id) && supertype.exposes(member)));
+                    .anyMatch(member -> member.id().equals(id) && supertype.exposes(member))
+        );
   }
 
   static Optional<ApiMember> member(final ApiType type, final String id) {

@@ -47,7 +47,11 @@ final class SymMembers {
   }
 
   private static List<Member> declared(
-      final Sym.Located located, final Map<String, TsType> subst, final String name) {
+      final Sym.Located located,
+      final Map<String,
+      TsType> subst,
+      final String name
+  ) {
     return located.decl().members().stream()
         .filter(member -> member.name().equals(name) && !member.has(Member.STATIC))
         .map(member -> Instantiate.member(member, subst, located.scope()))
@@ -55,7 +59,11 @@ final class SymMembers {
   }
 
   private Members.Found heritage(
-      final Sym sym, final List<TsType> args, final String name, final int depth) {
+      final Sym sym,
+      final List<TsType> args,
+      final String name,
+      final int depth
+  ) {
     for (final Sym.Located located : sym.types()) {
       final Decl decl = located.decl();
       final Map<String, TsType> subst = MemberValues.substitution(decl.header().typeParams(), args);
@@ -89,7 +97,11 @@ final class SymMembers {
     if (namespaced != null) {
       final TsType value = MemberValues.valueOf(namespaced, name);
       return new Members.Found(
-          new Member(name, value, List.of(), 0, List.of()), List.of(), value, typeOf.name());
+          new Member(name, value, List.of(), 0, List.of()),
+          List.of(),
+          value,
+          typeOf.name()
+      );
     }
     return sym.of(Decl.Kind.CLASS).isEmpty()
         ? null

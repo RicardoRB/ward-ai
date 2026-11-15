@@ -77,24 +77,28 @@ class DependencyAnalysisTest {
     final SourceUnit broken = new SourceUnit("Broken.java", AnalysisLanguage.JAVA, "broken");
     final LanguageFrontend frontend =
         unit ->
-            new ParseResult(
-                root(),
-                List.of(
-                    new AnalysisFinding(
-                        "ward:java/syntax",
-                        AnalysisSeverity.ERROR,
-                        "bad",
-                        null,
-                        null,
-                        null,
-                        null,
-                        List.of())));
+        new ParseResult(
+            root(),
+            List.of(
+                new AnalysisFinding(
+                    "ward:java/syntax",
+                    AnalysisSeverity.ERROR,
+                    "bad",
+                    null,
+                    null,
+                    null,
+                    null,
+                    List.of()
+                )
+            )
+        );
     final DependencySnapshot snapshot =
         new DependencyAnalysis(
-                List.of(
-                    new FrontendSupport(
-                        AnalysisLanguage.JAVA, frontend, Set.of(RuleCapability.SYNTAX))),
-                List.of(support(AnalysisLanguage.JAVA, edgeFromB())))
+            List.of(
+                new FrontendSupport(AnalysisLanguage.JAVA, frontend, Set.of(RuleCapability.SYNTAX))
+            ),
+            List.of(support(AnalysisLanguage.JAVA, edgeFromB()))
+        )
             .analyze(List.of(broken), new MemoryCache());
 
     assertThat(snapshot.summaries()).isEmpty();
@@ -103,11 +107,14 @@ class DependencyAnalysisTest {
   private List<FrontendSupport> frontends() {
     final LanguageFrontend frontend = unit -> new ParseResult(root(), List.of());
     return List.of(
-        new FrontendSupport(AnalysisLanguage.JAVA, frontend, Set.of(RuleCapability.SYNTAX)));
+        new FrontendSupport(AnalysisLanguage.JAVA, frontend, Set.of(RuleCapability.SYNTAX))
+    );
   }
 
   private DependencySupport support(
-      final AnalysisLanguage language, final DependencyResolver resolver) {
+      final AnalysisLanguage language,
+      final DependencyResolver resolver
+  ) {
     final FileSummarizer summarizer =
         (unit, tree) -> {
           summarized.add(unit.path());
@@ -115,7 +122,8 @@ class DependencyAnalysisTest {
               unit.path(),
               List.of(new Symbol(unit.text(), AT_1)),
               "B".equals(unit.text()) ? List.of(new Reference("A", AT_1)) : List.of(),
-              List.of());
+              List.of()
+          );
         };
     return new DependencySupport(language, summarizer, resolver);
   }

@@ -30,7 +30,8 @@ public final class NodeAgentRules {
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final Set<String> owned) {
+      final Set<String> owned
+  ) {
     final boolean bun = gates.stream().anyMatch(gate -> NodeTools.BUN_TEST.equals(gate.id()));
     final String coverage = nodeCoverage(preset, !bun);
     final String tests = ". New code needs tests that assert behavior.";
@@ -51,23 +52,27 @@ public final class NodeAgentRules {
             "stryker",
             "- Mutation testing (Stryker): `{command}` in `ci`"
                 + strykerMinimum(preset, owned)
-                + ".");
+                + "."
+        );
     final List<String> lines =
         Stream.concat(
-                Stream.of(wardRule(preset)),
-                gates.stream()
-                    .filter(gate -> rows.containsKey(gate.id()))
-                    .map(
-                        gate ->
-                            rows.get(gate.id())
-                                .replace("{command}", String.join(" ", gate.command()))))
+            Stream.of(wardRule(preset)),
+            gates.stream()
+                .filter(gate -> rows.containsKey(gate.id()))
+                .map(
+                    gate ->
+                        rows.get(gate.id())
+                            .replace("{command}", String.join(" ", gate.command()))
+                )
+        )
             .toList();
     if (!project.taskRunner().isRootRunner()) {
       return lines;
     }
     return Stream.concat(
-            Stream.of(workspaceRule(project.taskRunner().displayName().orElseThrow())),
-            lines.stream())
+        Stream.of(workspaceRule(project.taskRunner().displayName().orElseThrow())),
+        lines.stream()
+    )
         .toList();
   }
 

@@ -24,7 +24,6 @@ import org.tomlj.TomlTable;
 
 /** Loads the Python rule file and runs rules over source text through the engine. */
 final class PythonRuleRuns {
-
   static final String RULE_FILE = "rules/python-structural.toml";
   static final String PREFIX = "ward:python/";
 
@@ -40,7 +39,10 @@ final class PythonRuleRuns {
     final SourceUnit unit = new SourceUnit("module.py", AnalysisLanguage.PYTHON, source);
     final FrontendSupport support =
         new FrontendSupport(
-            AnalysisLanguage.PYTHON, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX));
+            AnalysisLanguage.PYTHON,
+            new AntlrLanguageFrontend(),
+            Set.of(RuleCapability.SYNTAX)
+        );
     return new RuleEngine(new MetricMatcher())
         .run(List.of(unit), List.of(support), List.of(definition));
   }
@@ -66,7 +68,8 @@ final class PythonRuleRuns {
         AnalysisLanguage.PYTHON,
         RuleCapability.valueOf(row.getString("capability")),
         AnalysisSeverity.valueOf(row.getString("severity").toUpperCase(Locale.ROOT)),
-        row.getString("body"));
+        row.getString("body")
+    );
   }
 
   static String read(final String resource) throws IOException {

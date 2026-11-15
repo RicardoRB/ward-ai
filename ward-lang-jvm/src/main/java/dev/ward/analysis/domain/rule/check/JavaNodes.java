@@ -7,7 +7,6 @@ import java.util.Set;
 
 /** Small readers of the Java syntax tree shared by the code style checks. */
 final class JavaNodes {
-
   static final String IDENTIFIER = "identifier";
   static final String BLOCK_STATEMENT = "blockStatement";
   static final String LOCAL_VARIABLE = "localVariableDeclaration";
@@ -74,7 +73,8 @@ final class JavaNodes {
                 kid(holder, MEMBER_DECLARATION)
                     .flatMap(m -> m.children().stream().findFirst())
                     .map(node -> new Member(holder, node))
-                    .stream())
+                    .stream()
+        )
         .toList();
   }
 
@@ -85,7 +85,6 @@ final class JavaNodes {
    * @param node the method, constructor or field node
    */
   record Member(SyntaxNode holder, SyntaxNode node) {
-
     /** Tells whether the member has the modifier. */
     boolean has(final String modifier) {
       return holder.children().stream()

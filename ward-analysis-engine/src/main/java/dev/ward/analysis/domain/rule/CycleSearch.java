@@ -24,7 +24,6 @@ import java.util.function.Function;
  * shortest cycle through its alphabetically first group.
  */
 public final class CycleSearch {
-
   private static final int MIN_CYCLE_SLICES = 2;
 
   private CycleSearch() {}
@@ -37,7 +36,6 @@ public final class CycleSearch {
    * @param edges one witness edge per step, from each group to the next
    */
   public record Cycle(List<String> slices, List<DependencyEdge> edges) {
-
     /** Copies the lists. */
     public Cycle {
       slices = List.copyOf(slices);
@@ -50,7 +48,10 @@ public final class CycleSearch {
    * edges}, with the files that belong to no group left out.
    */
   public static List<Cycle> find(
-      final List<DependencyEdge> edges, final Function<String, Optional<String>> sliceOf) {
+      final List<DependencyEdge> edges,
+      final Function<String,
+      Optional<String>> sliceOf
+  ) {
     final Map<String, SortedMap<String, DependencyEdge>> witnesses = witnesses(edges, sliceOf);
     final Map<String, SortedSet<String>> successors = successors(witnesses);
     final List<Cycle> cycles = new ArrayList<>();
@@ -64,7 +65,10 @@ public final class CycleSearch {
 
   /** The first edge, in graph order, for each pair of groups with a dependency between them. */
   private static Map<String, SortedMap<String, DependencyEdge>> witnesses(
-      final List<DependencyEdge> edges, final Function<String, Optional<String>> sliceOf) {
+      final List<DependencyEdge> edges,
+      final Function<String,
+      Optional<String>> sliceOf
+  ) {
     final Map<String, SortedMap<String, DependencyEdge>> witnesses = new TreeMap<>();
     for (final DependencyEdge edge : edges) {
       final Optional<String> from = sliceOf.apply(edge.from());
@@ -78,29 +82,40 @@ public final class CycleSearch {
 
   /** Keeps {@code edge} as the witness of {@code from} to {@code to} unless one is kept already. */
   private static void record(
-      final Map<String, SortedMap<String, DependencyEdge>> witnesses,
+      final Map<String,
+      SortedMap<String,
+      DependencyEdge>> witnesses,
       final String from,
       final String to,
-      final DependencyEdge edge) {
+      final DependencyEdge edge
+  ) {
     witnesses.computeIfAbsent(from, slice -> new TreeMap<>()).putIfAbsent(to, edge);
   }
 
   /** The group graph: every group is a key, with the groups it depends on. */
   private static Map<String, SortedSet<String>> successors(
-      final Map<String, SortedMap<String, DependencyEdge>> witnesses) {
+      final Map<String,
+      SortedMap<String,
+      DependencyEdge>> witnesses
+  ) {
     final Map<String, SortedSet<String>> successors = new TreeMap<>();
     witnesses.forEach(
         (from, targets) -> {
           successors.computeIfAbsent(from, slice -> new TreeSet<>()).addAll(targets.keySet());
           targets.keySet().forEach(to -> successors.computeIfAbsent(to, slice -> new TreeSet<>()));
-        });
+        }
+    );
     return successors;
   }
 
   private static Cycle cycle(
       final String start,
-      final Map<String, SortedSet<String>> successors,
-      final Map<String, SortedMap<String, DependencyEdge>> witnesses) {
+      final Map<String,
+      SortedSet<String>> successors,
+      final Map<String,
+      SortedMap<String,
+      DependencyEdge>> witnesses
+  ) {
     final List<String> ring = new ArrayList<>(shortestCycle(start, successors));
     ring.add(start);
     final List<DependencyEdge> edges = new ArrayList<>();
@@ -115,7 +130,10 @@ public final class CycleSearch {
    * start}, found by a breadth-first search that visits groups in alphabetical order.
    */
   private static List<String> shortestCycle(
-      final String start, final Map<String, SortedSet<String>> successors) {
+      final String start,
+      final Map<String,
+      SortedSet<String>> successors
+  ) {
     final Map<String, String> parent = new HashMap<>();
     final Set<String> seen = new HashSet<>(Set.of(start));
     final Deque<String> queue = new ArrayDeque<>(List.of(start));
@@ -135,12 +153,20 @@ public final class CycleSearch {
   }
 
   private static boolean inComponent(
-      final String node, final String start, final Map<String, SortedSet<String>> successors) {
+      final String node,
+      final String start,
+      final Map<String,
+      SortedSet<String>> successors
+  ) {
     return reaches(node, start, successors) && reaches(start, node, successors);
   }
 
   private static List<String> pathTo(
-      final String node, final String start, final Map<String, String> parent) {
+      final String node,
+      final String start,
+      final Map<String,
+      String> parent
+  ) {
     final List<String> path = new ArrayList<>();
     String current = node;
     path.add(current);
@@ -154,7 +180,11 @@ public final class CycleSearch {
 
   /** Whether {@code target} can be reached from {@code from}; a plain search, as groups are few. */
   private static boolean reaches(
-      final String from, final String target, final Map<String, SortedSet<String>> successors) {
+      final String from,
+      final String target,
+      final Map<String,
+      SortedSet<String>> successors
+  ) {
     final Set<String> seen = new HashSet<>(Set.of(from));
     final Deque<String> queue = new ArrayDeque<>(List.of(from));
     while (!queue.isEmpty()) {

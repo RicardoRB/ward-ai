@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
  * top-level functions are judged, and a call with a star argument is not judged.
  */
 public final class SameModuleCallCheck implements RuleCheck {
-
   /** The mistakes the check tells apart, one per rule. */
   public enum Problem {
     /** A required positional parameter the call does not supply. */
@@ -87,7 +86,9 @@ public final class SameModuleCallCheck implements RuleCheck {
   }
 
   private boolean violates(
-      final FunctionSignatures.Signature signature, final List<String> arguments) {
+      final FunctionSignatures.Signature signature,
+      final List<String> arguments
+  ) {
     final List<String> keywords = new ArrayList<>();
     int positional = 0;
     for (final String argument : arguments) {
@@ -112,7 +113,8 @@ public final class SameModuleCallCheck implements RuleCheck {
   private static boolean missingPositional(
       final FunctionSignatures.Signature signature,
       final int positional,
-      final List<String> keywords) {
+      final List<String> keywords
+  ) {
     for (int index = positional; index < signature.positional().size(); index++) {
       final FunctionSignatures.Param param = signature.positional().get(index);
       if (!param.hasDefault() && !keywords.contains(param.name())) {
@@ -123,7 +125,9 @@ public final class SameModuleCallCheck implements RuleCheck {
   }
 
   private static boolean missingKeywordOnly(
-      final FunctionSignatures.Signature signature, final List<String> keywords) {
+      final FunctionSignatures.Signature signature,
+      final List<String> keywords
+  ) {
     return signature.keywordOnly().stream()
         .anyMatch(param -> !param.hasDefault() && !keywords.contains(param.name()));
   }
@@ -131,7 +135,8 @@ public final class SameModuleCallCheck implements RuleCheck {
   private static boolean superseded(
       final FunctionSignatures.Signature signature,
       final int positional,
-      final List<String> keywords) {
+      final List<String> keywords
+  ) {
     for (int index = 0; index < Math.min(positional, signature.positional().size()); index++) {
       if (keywords.contains(signature.positional().get(index).name())) {
         return true;
@@ -141,7 +146,9 @@ public final class SameModuleCallCheck implements RuleCheck {
   }
 
   private static boolean positionalOnlyByKeyword(
-      final FunctionSignatures.Signature signature, final List<String> keywords) {
+      final FunctionSignatures.Signature signature,
+      final List<String> keywords
+  ) {
     return !signature.hasKwargs()
         && signature.positionalOnly().stream().anyMatch(keywords::contains);
   }

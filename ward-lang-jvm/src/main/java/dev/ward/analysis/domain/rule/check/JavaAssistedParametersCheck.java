@@ -14,7 +14,6 @@ import java.util.Set;
  * GuiceAssistedParameters does.
  */
 public final class JavaAssistedParametersCheck implements RuleCheck {
-
   private final String message;
 
   /**
@@ -35,7 +34,11 @@ public final class JavaAssistedParametersCheck implements RuleCheck {
               parameter ->
                   matches.add(
                       CheckSupport.at(
-                          parameter.span(), CheckSupport.fill(message, typeOf(parameter), ""))));
+                          parameter.span(),
+                          CheckSupport.fill(message, typeOf(parameter), "")
+                      )
+                  )
+          );
     }
     return List.copyOf(matches);
   }

@@ -43,7 +43,8 @@ final class KotlinNameChain {
           "val",
           "var",
           "when",
-          "while");
+          "while"
+      );
   private static final String DOT = ".";
   private static final String AT = "@";
 

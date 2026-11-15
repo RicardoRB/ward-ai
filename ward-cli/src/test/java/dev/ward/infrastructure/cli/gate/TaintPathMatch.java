@@ -17,17 +17,29 @@ import java.util.Optional;
 
 /** Runs the taint check on the Java fixture of the report tests, through lowering. */
 final class TaintPathMatch {
-
   private static final TaintSpec SPEC =
       new TaintSpec(
           List.of(
               new TaintEntry(
-                  FlowSiteKind.CALL, "source", Optional.empty(), Optional.empty(), List.of())),
+                  FlowSiteKind.CALL,
+                  "source",
+                  Optional.empty(),
+                  Optional.empty(),
+                  List.of()
+              )
+          ),
           List.of(
               new TaintEntry(
-                  FlowSiteKind.CALL, "sink", Optional.empty(), Optional.empty(), List.of(0))),
+                  FlowSiteKind.CALL,
+                  "sink",
+                  Optional.empty(),
+                  Optional.empty(),
+                  List.of(0)
+              )
+          ),
           List.of(),
-          List.of());
+          List.of()
+      );
 
   private TaintPathMatch() {}
 

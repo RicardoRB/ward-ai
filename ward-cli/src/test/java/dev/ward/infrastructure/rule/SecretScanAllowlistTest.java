@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 /** The {@code secret-scan} check: SecretScanAllowlistTest. */
 final class SecretScanAllowlistTest extends SecretScanSupport {
-
   @Test
   void aStopwordInTheSecretAllowsIt() {
     final String body = RULE + "allowlists = [{ stopwords = ['aB3d'] }]\n";

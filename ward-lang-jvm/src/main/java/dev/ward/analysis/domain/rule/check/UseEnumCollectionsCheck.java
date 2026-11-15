@@ -15,7 +15,6 @@ import java.util.Set;
  * diamond is not inferred.
  */
 public final class UseEnumCollectionsCheck implements RuleCheck {
-
   private static final String CREATOR = "creator";
   private static final String TYPE = "typeType";
   private static final String IDENTIFIER = "identifier";
@@ -48,7 +47,8 @@ public final class UseEnumCollectionsCheck implements RuleCheck {
       final dev.ward.analysis.domain.rule.FlowView flow,
       final dev.ward.analysis.domain.rule.ScopeView scopes,
       final UnitTypeFacts types,
-      final dev.ward.analysis.domain.ir.SourceUnit unit) {
+      final dev.ward.analysis.domain.ir.SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxNode creator : SyntaxWalk.descendants(root)) {
       if (CREATOR.equals(creator.kind())

@@ -8,7 +8,6 @@ import java.util.Set;
 
 /** Handles the expressions of Java: assignments, patterns and names. */
 final class JavaScopeExpressions {
-
   private static final int PATTERN_NAMES = 1;
 
   private static final String EXPRESSION_LIST = "expressionList";

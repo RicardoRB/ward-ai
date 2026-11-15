@@ -12,7 +12,6 @@ import java.util.Optional;
  * @param direction which way a change hurts
  */
 record SchemaSides(OpenApiDocument base, OpenApiDocument revision, Direction direction) {
-
   /** The child of a base schema at {@code key}, with references followed. */
   Optional<DocNode> before(final DocNode schema, final String key) {
     return schema.get(key).map(base::resolve);

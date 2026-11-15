@@ -26,8 +26,7 @@ class PackageJsonEditTest {
         """;
 
     assertThat(PackageJsonEdit.addDevDependencies(original, ESLINT))
-        .isEqualTo(
-            """
+        .isEqualTo("""
             {
               "name": "shop",
               "devDependencies": {
@@ -47,7 +46,8 @@ class PackageJsonEditTest {
     assertThat(PackageJsonEdit.addDevDependencies(original, ordered("prettier", "3.9.10")))
         .isEqualTo(
             "{\n\t\"name\": \"shop\",\n\t\"devDependencies\": {\n\t\t\"tsx\": \"4.0.0\",\n"
-                + "\t\t\"prettier\": \"3.9.10\"\n\t}\n}\n");
+                + "\t\t\"prettier\": \"3.9.10\"\n\t}\n}\n"
+        );
   }
 
   @Test
@@ -63,8 +63,7 @@ class PackageJsonEditTest {
         """;
 
     assertThat(PackageJsonEdit.addDevDependencies(original, ordered("prettier", "3.9.10")))
-        .isEqualTo(
-            """
+        .isEqualTo("""
             {
               "name": "shop",
               "dependencies": {
@@ -84,7 +83,8 @@ class PackageJsonEditTest {
     assertThat(PackageJsonEdit.addDevDependencies(original, ordered("prettier", "3.9.10")))
         .isEqualTo(
             "{\n  \"name\": \"shop\",\n  \"devDependencies\": {\n    \"prettier\": \"3.9.10\"\n"
-                + "  }\n}\n");
+                + "  }\n}\n"
+        );
   }
 
   @Test
@@ -98,8 +98,7 @@ class PackageJsonEditTest {
         """;
 
     assertThat(PackageJsonEdit.addDevDependencies(original, ordered("prettier", "3.9.10")))
-        .endsWith(
-            """
+        .endsWith("""
               "name": "shop",
               "devDependencies": {
                 "prettier": "3.9.10"
@@ -111,9 +110,12 @@ class PackageJsonEditTest {
   @Test
   void minifiedFileFailsWithoutGuessing() {
     assertThatThrownBy(
-            () ->
-                PackageJsonEdit.addDevDependencies(
-                    "{\"name\":\"shop\",\"devDependencies\":{}}", ordered("prettier", "3.9.10")))
+        () ->
+            PackageJsonEdit.addDevDependencies(
+                "{\"name\":\"shop\",\"devDependencies\":{}}",
+                ordered("prettier", "3.9.10")
+            )
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("layout");
   }

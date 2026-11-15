@@ -9,7 +9,6 @@ import java.util.Optional;
 
 /** Resolves calls and constructions to the signature they use. */
 final class CallTyper {
-
   private final ExprTyper typer;
   private final UnitModel model;
   private final Members members;
@@ -31,7 +30,8 @@ final class CallTyper {
       final ExprTyper typer,
       final UnitModel model,
       final Members members,
-      final ArgumentTyper arguments) {
+      final ArgumentTyper arguments
+  ) {
     this.typer = typer;
     this.model = model;
     this.members = members;
@@ -71,7 +71,10 @@ final class CallTyper {
   }
 
   private Optional<Call> viaMember(
-      final List<SyntaxNode> parts, final String name, final List<TsType> args) {
+      final List<SyntaxNode> parts,
+      final String name,
+      final List<TsType> args
+  ) {
     final TsType receiver = Operators.nonNull(typer.typeOf(parts.get(0)));
     final Members.Found found = members.find(receiver, name);
     if (found == null) {
@@ -89,7 +92,8 @@ final class CallTyper {
     if (call.isPresent() && !call.get().returns().isKnown()) {
       final TsType inferred = typer.returnOf(declaration(name));
       return Optional.of(
-          new Call(call.get().owner(), call.get().name(), call.get().sig(), inferred, true));
+          new Call(call.get().owner(), call.get().name(), call.get().sig(), inferred, true)
+      );
     }
     return call;
   }

@@ -26,7 +26,8 @@ class GradleCoverageDataTest {
         .contains(
             "tasks.register('wardCoverageData') {\n    dependsOn 'test'",
             "throw new org.gradle.api.GradleException(",
-            "tasks.named('jacocoTestReport') { dependsOn 'wardCoverageData' }");
+            "tasks.named('jacocoTestReport') { dependsOn 'wardCoverageData' }"
+        );
   }
 
   @Test
@@ -37,7 +38,8 @@ class GradleCoverageDataTest {
         .contains(
             "tasks.register(\"wardCoverageData\") {\n    dependsOn(\"test\")",
             "check(exec != null && exec.exists())",
-            "tasks.named(\"jacocoTestReport\") { dependsOn(\"wardCoverageData\") }");
+            "tasks.named(\"jacocoTestReport\") { dependsOn(\"wardCoverageData\") }"
+        );
   }
 
   private String configure(final String name, final String content) throws IOException {
@@ -48,9 +50,16 @@ class GradleCoverageDataTest {
             project,
             List.of(
                 new InitGateOption(
-                    "coverage", "coverage", List.of("./gradlew", "coverage"), true, "available")),
+                    "coverage",
+                    "coverage",
+                    List.of("./gradlew", "coverage"),
+                    true,
+                    "available"
+                )
+            ),
             null,
-            finding -> false);
+            finding -> false
+        );
     return Files.readString(root.resolve(name));
   }
 }

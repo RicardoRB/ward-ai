@@ -24,7 +24,9 @@ final class PluginVersionPinned implements BuildPolicyRule {
             BuildRule.PLUGIN_VERSION_PINNED,
             "Plugin " + plugin.name() + " " + problem,
             plugin.file(),
-            plugin.line()));
+            plugin.line()
+        )
+    );
   }
 
   private static String problem(final Declaration plugin) {

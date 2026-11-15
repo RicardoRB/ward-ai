@@ -15,7 +15,6 @@ import java.util.Set;
  * Names are compared as written; a spread between the attributes does not change that.
  */
 public final class BiomeDuplicatePropsCheck implements RuleCheck {
-
   private final String message;
 
   /**
@@ -35,7 +34,10 @@ public final class BiomeDuplicatePropsCheck implements RuleCheck {
         .map(
             attribute ->
                 CheckSupport.at(
-                    attribute.span(), CheckSupport.fill(message, SyntaxWalk.text(attribute), "")))
+                    attribute.span(),
+                    CheckSupport.fill(message, SyntaxWalk.text(attribute), "")
+                )
+        )
         .toList();
   }
 

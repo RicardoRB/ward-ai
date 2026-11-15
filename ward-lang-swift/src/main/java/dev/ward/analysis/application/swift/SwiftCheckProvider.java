@@ -21,7 +21,6 @@ import java.util.Map;
  * is summarized.
  */
 public final class SwiftCheckProvider implements CheckProvider {
-
   private static final String MESSAGE = "message";
 
   @Override
@@ -34,27 +33,40 @@ public final class SwiftCheckProvider implements CheckProvider {
   private static void declarationChecks(final Map<String, CheckFactory> checks) {
     checks.put(
         "swift-constructor-group",
-        toml -> new ConstructorGroupCheck(TomlValues.required(toml, MESSAGE)));
+        toml -> new ConstructorGroupCheck(TomlValues.required(toml, MESSAGE))
+    );
     checks.put(
         "swift-hidden-field",
-        toml -> new SwiftHiddenFieldCheck(TomlValues.required(toml, MESSAGE)));
+        toml -> new SwiftHiddenFieldCheck(TomlValues.required(toml, MESSAGE))
+    );
     checks.put(
-        "swift-import-sort", toml -> new ImportSortCheck(TomlValues.required(toml, MESSAGE)));
+        "swift-import-sort",
+        toml -> new ImportSortCheck(TomlValues.required(toml, MESSAGE))
+    );
     checks.put(
-        "swift-javadoc-method", toml -> new JavadocMethodCheck(TomlValues.required(toml, MESSAGE)));
+        "swift-javadoc-method",
+        toml -> new JavadocMethodCheck(TomlValues.required(toml, MESSAGE))
+    );
     checks.put(
         "swift-parameter-alignment",
-        toml -> new SwiftParameterAlignmentCheck(TomlValues.required(toml, MESSAGE)));
+        toml -> new SwiftParameterAlignmentCheck(TomlValues.required(toml, MESSAGE))
+    );
     checks.put(
-        "swift-unused-import", toml -> new UnusedImportCheck(TomlValues.required(toml, MESSAGE)));
+        "swift-unused-import",
+        toml -> new UnusedImportCheck(TomlValues.required(toml, MESSAGE))
+    );
     checks.put("swift-unused-definition", toml -> root -> List.of());
     checks.put(
         "swift-unused-parameter",
-        toml -> new SwiftUnusedParameterCheck(TomlValues.required(toml, MESSAGE)));
+        toml -> new SwiftUnusedParameterCheck(TomlValues.required(toml, MESSAGE))
+    );
     checks.put(
         "swift-variable-distance",
         toml ->
             new VariableDistanceCheck(
-                TomlValues.integer(toml, "max"), TomlValues.required(toml, MESSAGE)));
+                TomlValues.integer(toml, "max"),
+                TomlValues.required(toml, MESSAGE)
+            )
+    );
   }
 }

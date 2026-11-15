@@ -12,7 +12,6 @@ import java.util.Objects;
  * @param annotations the qualified names of the annotations of the field
  */
 public record FieldRef(String name, TypeRef type, boolean isStatic, List<String> annotations) {
-
   /**
    * Copies the annotations.
    *

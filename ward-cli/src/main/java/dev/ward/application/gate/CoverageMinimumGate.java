@@ -48,21 +48,27 @@ final class CoverageMinimumGate implements QualityGate {
                 + " executable="
                 + coverage.executable()
                 + " minimum="
-                + minimum);
+                + minimum
+    );
     if (coverage.below(minimum)) {
       return with(
           result,
           GateStatus.FAILED,
-          "Line coverage " + coverage.percent() + "% is below the minimum of " + minimum + "%.");
+          "Line coverage " + coverage.percent() + "% is below the minimum of " + minimum + "%."
+      );
     }
     return with(
         result,
         GateStatus.PASSED,
-        "Line coverage " + coverage.percent() + "% meets the minimum of " + minimum + "%.");
+        "Line coverage " + coverage.percent() + "% meets the minimum of " + minimum + "%."
+    );
   }
 
   private static GateResult with(
-      final GateResult result, final GateStatus status, final String summary) {
+      final GateResult result,
+      final GateStatus status,
+      final String summary
+  ) {
     return GateResult.builder(result.name(), status)
         .command(result.command())
         .exitCode(result.exitCode())

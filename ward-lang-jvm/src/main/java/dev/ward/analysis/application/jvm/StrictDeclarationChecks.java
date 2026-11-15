@@ -19,7 +19,6 @@ import org.tomlj.TomlParseResult;
  * the Checkstyle property in kebab-case.
  */
 final class StrictDeclarationChecks {
-
   private static final String MESSAGE = "message";
 
   /** Checkstyle's default class names of IllegalType, simple and qualified. */
@@ -36,7 +35,8 @@ final class StrictDeclarationChecks {
           "java.util.LinkedHashMap",
           "java.util.LinkedHashSet",
           "java.util.TreeMap",
-          "java.util.TreeSet");
+          "java.util.TreeSet"
+      );
 
   private StrictDeclarationChecks() {}
 
@@ -45,26 +45,33 @@ final class StrictDeclarationChecks {
     return Map.ofEntries(
         entry(
             "declaration-order",
-            toml -> new DeclarationOrderCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new DeclarationOrderCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry("illegal-type", StrictDeclarationChecks::illegalType),
         entry(
             "illegal-instantiation",
             toml ->
                 new IllegalInstantiationCheck(
                     TomlValues.optionalStrings(toml, "classes"),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "final-local-variable",
-            toml -> new FinalLocalVariableCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new FinalLocalVariableCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "pattern-variable-assignment",
-            toml -> new PatternVariableAssignmentCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new PatternVariableAssignmentCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 
   private static IllegalTypeCheck illegalType(final TomlParseResult toml) {
     final Set<String> configured = TomlValues.optionalStrings(toml, "illegal-class-names");
     return new IllegalTypeCheck(
         configured.isEmpty() ? ILLEGAL_TYPE_DEFAULTS : configured,
-        TomlValues.required(toml, MESSAGE));
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 }

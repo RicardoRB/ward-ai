@@ -46,7 +46,12 @@ final class SkillFrontmatter {
   }
 
   private static void putNested(
-      final Map<String, String> values, final String parent, final String key, final String value) {
+      final Map<String,
+      String> values,
+      final String parent,
+      final String key,
+      final String value
+  ) {
     if (!parent.isEmpty()) {
       values.put(parent + "." + key, value);
     }

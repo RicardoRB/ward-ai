@@ -13,7 +13,6 @@ import java.util.Set;
  * do. The grammar of each language names its literal, identifier and annotation kinds.
  */
 public final class DuplicateTokens {
-
   private static final String LITERAL = "<literal>";
   private static final String IDENTIFIER = "<identifier>";
   private static final String SEPARATOR = "\u0000";
@@ -29,7 +28,10 @@ public final class DuplicateTokens {
 
   /** The tokens of {@code root}, a tree of {@code language}, in source order. */
   public static List<Token> of(
-      final SyntaxNode root, final AnalysisLanguage language, final DuplicateCodeOptions options) {
+      final SyntaxNode root,
+      final AnalysisLanguage language,
+      final DuplicateCodeOptions options
+  ) {
     final Vocabulary vocabulary = Vocabulary.of(language);
     final List<Token> tokens = new ArrayList<>();
     collect(root, vocabulary, options, tokens);
@@ -40,7 +42,8 @@ public final class DuplicateTokens {
       final SyntaxNode node,
       final Vocabulary vocabulary,
       final DuplicateCodeOptions options,
-      final List<Token> tokens) {
+      final List<Token> tokens
+  ) {
     if (skipped(node, vocabulary, options)) {
       return;
     }
@@ -54,13 +57,19 @@ public final class DuplicateTokens {
   }
 
   private static boolean skipped(
-      final SyntaxNode node, final Vocabulary vocabulary, final DuplicateCodeOptions options) {
+      final SyntaxNode node,
+      final Vocabulary vocabulary,
+      final DuplicateCodeOptions options
+  ) {
     return SKIPPED.contains(node.kind())
         || options.ignoreAnnotations() && vocabulary.annotations().contains(node.kind());
   }
 
   private static String value(
-      final SyntaxNode leaf, final Vocabulary vocabulary, final DuplicateCodeOptions options) {
+      final SyntaxNode leaf,
+      final Vocabulary vocabulary,
+      final DuplicateCodeOptions options
+  ) {
     final String abstracted = abstracted(leaf, vocabulary, options);
     if (abstracted != null) {
       return abstracted;
@@ -71,7 +80,10 @@ public final class DuplicateTokens {
   }
 
   private static String abstracted(
-      final SyntaxNode leaf, final Vocabulary vocabulary, final DuplicateCodeOptions options) {
+      final SyntaxNode leaf,
+      final Vocabulary vocabulary,
+      final DuplicateCodeOptions options
+  ) {
     if (options.ignoreLiterals() && vocabulary.literals().contains(leaf.kind())) {
       return LITERAL;
     }
@@ -83,8 +95,10 @@ public final class DuplicateTokens {
 
   /** The token kinds and annotation rules of one grammar that the options act on. */
   private record Vocabulary(
-      Set<String> literals, Set<String> identifiers, Set<String> annotations) {
-
+      Set<String> literals,
+      Set<String> identifiers,
+      Set<String> annotations
+  ) {
     static Vocabulary of(final AnalysisLanguage language) {
       return switch (language) {
         case JAVA -> java();
@@ -109,9 +123,11 @@ public final class DuplicateTokens {
               "CHAR_LITERAL",
               "STRING_LITERAL",
               "TEXT_BLOCK",
-              "NULL_LITERAL"),
+              "NULL_LITERAL"
+          ),
           Set.of("IDENTIFIER"),
-          Set.of("annotation"));
+          Set.of("annotation")
+      );
     }
 
     private static Vocabulary kotlin() {
@@ -128,9 +144,11 @@ public final class DuplicateTokens {
               "NullLiteral",
               "CharacterLiteral",
               "LineStrText",
-              "MultiLineStrText"),
+              "MultiLineStrText"
+          ),
           Set.of("Identifier"),
-          Set.of("annotation", "fileAnnotation", "annotations"));
+          Set.of("annotation", "fileAnnotation", "annotations")
+      );
     }
 
     private static Vocabulary ecma() {
@@ -147,9 +165,11 @@ public final class DuplicateTokens {
               "BigBinaryIntegerLiteral",
               "BigDecimalIntegerLiteral",
               "RegularExpressionLiteral",
-              "StringLiteral"),
+              "StringLiteral"
+          ),
           Set.of("Identifier"),
-          Set.of("decorator", "decoratorList"));
+          Set.of("decorator", "decoratorList")
+      );
     }
 
     private static Vocabulary python() {
@@ -166,9 +186,11 @@ public final class DuplicateTokens {
               "Floating_point_literal",
               "Static_string_literal",
               "Multiline_string_literal",
-              "Interpolated_string_literal"),
+              "Interpolated_string_literal"
+          ),
           Set.of("Identifier"),
-          Set.of("attribute"));
+          Set.of("attribute")
+      );
     }
   }
 }

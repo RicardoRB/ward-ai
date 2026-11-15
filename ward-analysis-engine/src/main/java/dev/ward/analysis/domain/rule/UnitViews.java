@@ -12,7 +12,6 @@ import java.util.Objects;
  * @param types the type facts; unknown facts yield no findings
  */
 public record UnitViews(FlowView flow, ScopeView scopes, UnitTypeFacts types) {
-
   /**
    * Checks the views.
    *

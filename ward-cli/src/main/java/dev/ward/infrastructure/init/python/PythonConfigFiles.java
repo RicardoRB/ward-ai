@@ -79,7 +79,8 @@ public final class PythonConfigFiles {
       final Project project,
       final PythonToolConfigs configs,
       final QualityPreset preset,
-      final List<InitGateOption> gates) {
+      final List<InitGateOption> gates
+  ) {
     final List<String> ids = gates.stream().map(InitGateOption::id).toList();
     final List<ConfigTarget> targets = new ArrayList<>();
     final Path root = project.root();
@@ -96,8 +97,8 @@ public final class PythonConfigFiles {
           targets,
           root,
           configs,
-          new Own(
-              COVERAGE, ".coveragerc", marker + (strict ? COVERAGE_STRICT : COVERAGE_STANDARD)));
+          new Own(COVERAGE, ".coveragerc", marker + (strict ? COVERAGE_STRICT : COVERAGE_STANDARD))
+      );
     }
     return targets;
   }
@@ -111,7 +112,8 @@ public final class PythonConfigFiles {
       final Project project,
       final PythonToolConfigs configs,
       final String marker,
-      final boolean strict) {
+      final boolean strict
+  ) {
     final Optional<Path> userConfig = configs.userConfig(project.root(), MYPY);
     if (project.framework() == Framework.DJANGO
         && userConfig.isPresent()
@@ -123,14 +125,17 @@ public final class PythonConfigFiles {
               null,
               "mypy has no Django plugin, so it reports false errors on models. Add `plugins ="
                   + " mypy_django_plugin.main` and a [mypy.plugins.django-stubs] section with"
-                  + " django_settings_module set to the settings module."));
+                  + " django_settings_module set to the settings module."
+          )
+      );
       return;
     }
     target(
         targets,
         project.root(),
         configs,
-        new Own(MYPY, "mypy.ini", mypyContent(project, marker, strict)));
+        new Own(MYPY, "mypy.ini", mypyContent(project, marker, strict))
+    );
   }
 
   /** Returns whether the config file names the Django mypy plugin. */
@@ -144,7 +149,10 @@ public final class PythonConfigFiles {
 
   /** Returns mypy's config, with the plugin of the project's framework: Django's or pydantic's. */
   private static String mypyContent(
-      final Project project, final String marker, final boolean strict) {
+      final Project project,
+      final String marker,
+      final boolean strict
+  ) {
     final String mypy = marker + (strict ? MYPY_STRICT : MYPY_STANDARD);
     if (project.framework() == Framework.FASTAPI) {
       return mypy + PYDANTIC_MYPY;
@@ -159,7 +167,10 @@ public final class PythonConfigFiles {
    * config.
    */
   private static Optional<ConfigTarget> pytestTarget(
-      final Project project, final PythonToolConfigs configs, final String marker) {
+      final Project project,
+      final PythonToolConfigs configs,
+      final String marker
+  ) {
     return PythonFrameworks.djangoSettings(project.root(), project.framework())
         .filter(settings -> configs.userConfig(project.root(), PYTEST).isEmpty())
         .map(
@@ -168,7 +179,9 @@ public final class PythonConfigFiles {
                     project.root().resolve("pytest.ini"),
                     ConfigTarget.Disposition.WRITE,
                     marker + "[pytest]\nDJANGO_SETTINGS_MODULE = " + settings + "\n",
-                    null));
+                    null
+                )
+        );
   }
 
   /** The mypy plugin section that makes django-stubs read the project's settings module. */
@@ -187,16 +200,27 @@ public final class PythonConfigFiles {
       final List<ConfigTarget> targets,
       final Path root,
       final PythonToolConfigs configs,
-      final Own own) {
+      final Own own
+  ) {
     final Optional<Path> userConfig = configs.userConfig(root, own.tool());
     if (userConfig.isEmpty()) {
       targets.add(
           new ConfigTarget(
-              root.resolve(own.file()), ConfigTarget.Disposition.WRITE, own.content(), null));
+              root.resolve(own.file()),
+              ConfigTarget.Disposition.WRITE,
+              own.content(),
+              null
+          )
+      );
     } else if (!isShared(root, userConfig.get())) {
       targets.add(
           new ConfigTarget(
-              userConfig.get(), ConfigTarget.Disposition.KEEP, null, keptDetail(own.tool())));
+              userConfig.get(),
+              ConfigTarget.Disposition.KEEP,
+              null,
+              keptDetail(own.tool())
+          )
+      );
     }
   }
 

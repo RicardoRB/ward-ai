@@ -29,7 +29,8 @@ final class TypeDeclReader {
             implemented,
             List.of(),
             members.constructs(),
-            MemberSink.decorators(TreeKit.child(node, "decoratorList")));
+            MemberSink.decorators(TreeKit.child(node, "decoratorList"))
+        );
     final int abstractFlag = TreeKit.hasToken(node, "abstract") ? Decl.ABSTRACT : 0;
     final SyntaxNode name = TreeKit.child(node, "identifier");
     return new Decl(
@@ -39,14 +40,16 @@ final class TypeDeclReader {
         members.members(),
         TsType.UNKNOWN,
         List.of(),
-        flags | abstractFlag);
+        flags | abstractFlag
+    );
   }
 
   private static void heritage(
       final SyntaxNode node,
       final SyntaxNode tail,
       final List<TsType> extended,
-      final List<TsType> implemented) {
+      final List<TsType> implemented
+  ) {
     if (tail != null && TreeKit.hasToken(tail, EXTENDS)) {
       final SyntaxNode base = TreeKit.child(tail, SINGLE);
       extended.add(base == null ? TsType.UNKNOWN : TyParser.parse(TreeText.leaves(base)));
@@ -86,7 +89,8 @@ final class TypeDeclReader {
             List.of(),
             members.calls(),
             members.constructs(),
-            List.of());
+            List.of()
+        );
     return new Decl(
         Decl.Kind.INTERFACE,
         TreeText.text(ValueDeclReader.identifier(node)),
@@ -94,7 +98,8 @@ final class TypeDeclReader {
         members.members(),
         TsType.UNKNOWN,
         List.of(),
-        flags);
+        flags
+    );
   }
 
   /** Returns the alias that a type alias declaration declares. */
@@ -107,7 +112,8 @@ final class TypeDeclReader {
             List.of(),
             List.of(),
             List.of(),
-            List.of());
+            List.of()
+        );
     return new Decl(
         Decl.Kind.ALIAS,
         TreeText.text(ValueDeclReader.identifier(node)),
@@ -115,7 +121,8 @@ final class TypeDeclReader {
         List.of(),
         type == null ? TsType.UNKNOWN : TyParser.parse(TreeText.leaves(type)),
         List.of(),
-        flags);
+        flags
+    );
   }
 
   /** Returns the enum that an enum declaration declares. */
@@ -124,6 +131,13 @@ final class TypeDeclReader {
     final MemberSink sink = new MemberSink();
     sink.enumBody(TreeKit.child(node, "enumBody"), name);
     return new Decl(
-        Decl.Kind.ENUM, name, Decl.Header.NONE, sink.members(), TsType.UNKNOWN, List.of(), flags);
+        Decl.Kind.ENUM,
+        name,
+        Decl.Header.NONE,
+        sink.members(),
+        TsType.UNKNOWN,
+        List.of(),
+        flags
+    );
   }
 }

@@ -11,7 +11,6 @@ import java.util.List;
 
 /** Lowers the {@code while}, {@code do} and {@code for} loops of a Java body. */
 final class JavaLoops {
-
   private static final int DO_BODY_INDEX = 1;
   private static final int CONDITION_INDEX = 2;
   private static final int BODY_INDEX = 4;
@@ -22,7 +21,10 @@ final class JavaLoops {
   private final JavaStatements statements;
 
   JavaLoops(
-      final ControlFlowBuilder flow, final JavaBranches branches, final JavaStatements statements) {
+      final ControlFlowBuilder flow,
+      final JavaBranches branches,
+      final JavaStatements statements
+  ) {
     this.flow = flow;
     this.branches = branches;
     this.statements = statements;
@@ -117,7 +119,8 @@ final class JavaLoops {
       final SyntaxNode body,
       final int bodyBlock,
       final int after,
-      final int continueBlock) {
+      final int continueBlock
+  ) {
     flow.jumps().pushLoop(label, after, continueBlock);
     flow.moveTo(bodyBlock);
     statements.statement(body, null);

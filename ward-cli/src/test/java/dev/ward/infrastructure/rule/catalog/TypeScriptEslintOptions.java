@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 /** Writes the rule options of a typescript-eslint parity case as JavaScript literals. */
 final class TypeScriptEslintOptions {
-
   private static final String DESCRIPTION_FORMAT = "description-format";
   private static final String DIRECTIVE = "ts-expect-error";
   private static final char DASH = '-';

@@ -44,7 +44,9 @@ final class VersionCatalog {
     }
     if (toml.hasErrors()) {
       throw new BuildFileException(
-          file, "not valid TOML: " + toml.errors().getFirst().getMessage());
+          file,
+          "not valid TOML: " + toml.errors().getFirst().getMessage()
+      );
     }
     final VersionCatalog catalog = new VersionCatalog(toml, file, locked);
     catalog.entries(toml.getTable("libraries"), DeclarationKind.DEPENDENCY);
@@ -74,7 +76,9 @@ final class VersionCatalog {
               "",
               file,
               line,
-              flag(version, kind == DeclarationKind.DEPENDENCY && locked)));
+              flag(version, kind == DeclarationKind.DEPENDENCY && locked)
+          )
+      );
     }
   }
 
@@ -89,7 +93,11 @@ final class VersionCatalog {
   private record Version(String text, boolean undeterminable) {}
 
   private static String coordinate(
-      final TomlTable table, final String key, final Object entry, final DeclarationKind kind) {
+      final TomlTable table,
+      final String key,
+      final Object entry,
+      final DeclarationKind kind
+  ) {
     if (entry instanceof String text) {
       final List<String> parts = List.of(text.split(":", -1));
       return kind == DeclarationKind.PLUGIN || parts.size() < 2
@@ -114,7 +122,7 @@ final class VersionCatalog {
       final String[] parts = text.split(":", -1);
       return parts.length > 2 ? literal(parts[2]) : new Version(null, false);
     }
-    final TomlTable details = (TomlTable) entry;
+    final TomlTable details = (TomlTable)entry;
     if (details.isString(VERSION)) {
       return literal(details.getString(VERSION));
     }

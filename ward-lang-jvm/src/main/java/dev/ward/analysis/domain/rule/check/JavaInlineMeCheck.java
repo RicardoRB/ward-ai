@@ -13,7 +13,6 @@ import java.util.Set;
  * when the body is one statement.
  */
 public final class JavaInlineMeCheck implements RuleCheck {
-
   private final String message;
 
   /**
@@ -30,7 +29,9 @@ public final class JavaInlineMeCheck implements RuleCheck {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit :
         SyntaxWalk.visits(
-            root, Set.of("classDeclaration", "enumDeclaration", "recordDeclaration"))) {
+            root,
+            Set.of("classDeclaration", "enumDeclaration", "recordDeclaration")
+        )) {
       JavaNodes.members(visit.node()).stream()
           .filter(member -> "methodDeclaration".equals(member.node().kind()))
           .filter(JavaInlineMeCheck::inlineMe)
@@ -40,7 +41,10 @@ public final class JavaInlineMeCheck implements RuleCheck {
                   matches.add(
                       CheckSupport.at(
                           member.node().span(),
-                          CheckSupport.fill(message, JavaNodes.name(member.node()), ""))));
+                          CheckSupport.fill(message, JavaNodes.name(member.node()), "")
+                      )
+                  )
+          );
     }
     return List.copyOf(matches);
   }

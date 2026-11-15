@@ -40,7 +40,8 @@ public final class SecretGate implements QualityGate {
       final RuleSetup setup,
       final AnalysisPorts ports,
       final GitHistory history,
-      final List<String> focus) {
+      final List<String> focus
+  ) {
     this.name = check.name();
     this.setup = setup;
     this.ports = ports;
@@ -79,7 +80,9 @@ public final class SecretGate implements QualityGate {
                       project.root(),
                       options.historySince(),
                       new TextRules(ports.matcher(), rules),
-                      excluded));
+                      excluded
+                  )
+          );
     }
     run = ExcludedFindings.drop(run, set);
     if (LOGGER.isLoggable(Level.FINE)) {
@@ -91,7 +94,8 @@ public final class SecretGate implements QualityGate {
               + " findings="
               + run.findings().size()
               + " errors="
-              + run.executionErrors().size());
+              + run.executionErrors().size()
+      );
     }
     return AnalysisGateResults.result(name, TOOL, run, rules);
   }
@@ -103,7 +107,8 @@ public final class SecretGate implements QualityGate {
         patterns.add(ExcludeGlob.compile(glob));
       } catch (final IllegalArgumentException exception) {
         problems.add(
-            "ward.toml: [checks." + name + "] exclude-paths: invalid glob \"" + glob + "\"");
+            "ward.toml: [checks." + name + "] exclude-paths: invalid glob \"" + glob + "\""
+        );
       }
     }
     return patterns;

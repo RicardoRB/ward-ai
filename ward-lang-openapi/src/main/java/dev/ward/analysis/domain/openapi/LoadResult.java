@@ -12,7 +12,6 @@ import java.util.Optional;
  * @param errors the problems found, in the order they were met; empty when the document loaded
  */
 public record LoadResult(Optional<OpenApiDocument> document, List<LoadError> errors) {
-
   /**
    * Copies the errors.
    *

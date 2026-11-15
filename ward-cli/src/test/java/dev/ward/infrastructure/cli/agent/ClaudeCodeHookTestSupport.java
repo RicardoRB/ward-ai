@@ -46,7 +46,11 @@ class ClaudeCodeHookTestSupport {
       (command, directory) -> {
         commands.add(command);
         return new CommandResult(
-            testsPass ? 0 : 1, "", testsPass ? "" : "1 test failed", Duration.ZERO);
+            testsPass ? 0 : 1,
+            "",
+            testsPass ? "" : "1 test failed",
+            Duration.ZERO
+        );
       };
 
   @BeforeEach
@@ -64,7 +68,8 @@ class ClaudeCodeHookTestSupport {
         "1",
         "--event-stdin",
         "-C",
-        root.toString());
+        root.toString()
+    );
   }
 
   int run(final InputStream input, final boolean interactive, final String... args) {
@@ -75,7 +80,8 @@ class ClaudeCodeHookTestSupport {
             new HookChecks(checks),
             new LearningService(new JsonLearningStore(codec)),
             codec,
-            new HookStdin(input, () -> interactive));
+            new HookStdin(input, () -> interactive)
+        );
     final CommandLine cli = new CommandLine(command);
     cli.setOut(new PrintWriter(out, true));
     cli.setErr(new PrintWriter(err, true));

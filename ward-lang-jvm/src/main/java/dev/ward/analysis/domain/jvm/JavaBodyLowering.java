@@ -19,7 +19,6 @@ import java.util.Set;
  * opaque node; its own body is lowered separately.
  */
 final class JavaBodyLowering implements JavaStatements {
-
   private static final String BLOCK = "block";
   private static final String STATEMENT = "statement";
   private static final String EXPRESSION = "expression";
@@ -72,9 +71,15 @@ final class JavaBodyLowering implements JavaStatements {
    * @throws IllegalStateException if the body holds a construct this lowering does not handle
    */
   ControlFlowGraph lower(
-      final String body, final SyntaxNode parameters, final SyntaxNode node, final Span span) {
+      final String body,
+      final SyntaxNode parameters,
+      final SyntaxNode node,
+      final Span span
+  ) {
     flow.record(
-        accesses.parameters(parameters), parameters == null ? List.of() : sites.of(parameters));
+        accesses.parameters(parameters),
+        parameters == null ? List.of() : sites.of(parameters)
+    );
     if (BLOCK.equals(node.kind())) {
       blockStatements(node);
     } else {

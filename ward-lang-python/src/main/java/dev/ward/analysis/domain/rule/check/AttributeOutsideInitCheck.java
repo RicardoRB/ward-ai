@@ -74,7 +74,10 @@ public final class AttributeOutsideInitCheck implements RuleCheck {
       if (!accountedFor(assignment, defined)) {
         found.add(
             new RuleMatch(
-                assignment.node().span(), message.replace(MESSAGE_NAME, assignment.attribute())));
+                assignment.node().span(),
+                message.replace(MESSAGE_NAME, assignment.attribute())
+            )
+        );
       }
     }
     return found;
@@ -88,7 +91,8 @@ public final class AttributeOutsideInitCheck implements RuleCheck {
       final SyntaxNode method,
       final boolean accessor,
       final Defined defined,
-      final List<Assignment> assignments) {
+      final List<Assignment> assignments
+  ) {
     final String name = methodName(method);
     final boolean defining = DEFINING.contains(name) || accessor;
     if (defining) {
@@ -119,7 +123,8 @@ public final class AttributeOutsideInitCheck implements RuleCheck {
       final SyntaxNode block,
       final List<SyntaxNode> methods,
       final List<SyntaxNode> accessors,
-      final Set<String> classLevel) {
+      final Set<String> classLevel
+  ) {
     for (final SyntaxWalk.Visit visit :
         SyntaxWalk.visits(block, Set.of("funcdef", "classdef", "expr_stmt"))) {
       final boolean nested = visit.ancestors().stream().anyMatch(a -> SCOPES.contains(a.kind()));
@@ -164,7 +169,10 @@ public final class AttributeOutsideInitCheck implements RuleCheck {
   private record Assignment(String attribute, SyntaxNode node, String method, boolean defining) {}
 
   private static Assignment assignmentOf(
-      final SyntaxNode statement, final String method, final boolean defining) {
+      final SyntaxNode statement,
+      final String method,
+      final boolean defining
+  ) {
     final List<SyntaxNode> children = statement.children();
     if (children.size() < ASSIGNMENT_PARTS || !"=".equals(SyntaxWalk.text(children.get(1)))) {
       return null;

@@ -6,14 +6,14 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class StringRangeCheckTest {
-
   private static final StringRangeCheck CHECK = new StringRangeCheck("message");
 
   /** Runs the check; {@code indexes} are the texts of the constant integer arguments. */
   private static List<String> run(final String call, final String... indexes) {
     final ParsedFacts facts =
         new ParsedFacts(
-                "final class C {\n  Object t(String s) {\n    return " + call + ";\n  }\n}\n")
+            "final class C {\n  Object t(String s) {\n    return " + call + ";\n  }\n}\n"
+        )
             .at("expression", "\"abc\"", ExtraFacts.constant("abc"));
     for (final String index : indexes) {
       facts.at("expression", index, ExtraFacts.constant(Long.parseLong(index)));

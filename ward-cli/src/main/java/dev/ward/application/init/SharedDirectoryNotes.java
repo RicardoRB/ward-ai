@@ -27,7 +27,8 @@ final class SharedDirectoryNotes {
             .map(DiscoveredProject::project)
             .anyMatch(
                 other ->
-                    other.toolchain() == Toolchain.PYTHON && other.root().equals(project.root()));
+                    other.toolchain() == Toolchain.PYTHON && other.root().equals(project.root())
+            );
     return pythonHere ? List.of(NOTE) : List.of();
   }
 }

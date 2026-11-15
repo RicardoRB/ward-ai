@@ -16,7 +16,6 @@ import java.util.Set;
  * exempt, and so is an {@code li} with the {@code treeitem} role; a dynamic role is silent.
  */
 public final class BiomeNoninteractiveToInteractiveRoleCheck implements RuleCheck {
-
   private static final String ROLE = "role";
   private static final Set<String> EXEMPT = Set.of("div", "span");
   private static final String LIST_ITEM = "li";
@@ -32,7 +31,9 @@ public final class BiomeNoninteractiveToInteractiveRoleCheck implements RuleChec
    * @param message the message of each finding
    */
   public BiomeNoninteractiveToInteractiveRoleCheck(
-      final AriaRoleTable table, final String message) {
+      final AriaRoleTable table,
+      final String message
+  ) {
     this.table = Objects.requireNonNull(table, "table");
     this.message = Objects.requireNonNull(message, "message");
   }
@@ -45,7 +46,10 @@ public final class BiomeNoninteractiveToInteractiveRoleCheck implements RuleChec
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(JsxAttributes.OPENING, JsxAttributes.SELF_CLOSING))
         .stream()
         .flatMap(visit -> reported(visit.node(), unit.text()).stream())

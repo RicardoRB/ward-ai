@@ -23,7 +23,6 @@ import java.util.Set;
  * is only decided where its own name settles it.
  */
 public final class JavaBundleCastCheck implements RuleCheck {
-
   private static final String STRING = "java.lang.String";
   private static final String MAP = "java.util.Map";
   private static final String LIST = "java.util.List";
@@ -60,7 +59,8 @@ public final class JavaBundleCastCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("expression"))) {
       final SyntaxNode cast = visit.node();
@@ -73,8 +73,10 @@ public final class JavaBundleCastCheck implements RuleCheck {
                     matches.add(
                         CheckSupport.at(
                             cast.span(),
-                            CheckSupport.fill(
-                                message, types.typeOf(cast.span()).get().name(), base))));
+                            CheckSupport.fill(message, types.typeOf(cast.span()).get().name(), base)
+                        )
+                    )
+            );
       }
     }
     return List.copyOf(matches);
@@ -98,7 +100,8 @@ public final class JavaBundleCastCheck implements RuleCheck {
               final Set<String> names = new HashSet<>();
               members.ancestors().forEach(ancestor -> names.add(ancestor.name()));
               return names;
-            });
+            }
+        );
   }
 
   /** Returns the base type to cast to, when the cast target is one of the flattened subtypes. */
@@ -143,7 +146,10 @@ public final class JavaBundleCastCheck implements RuleCheck {
   }
 
   private static Optional<String> exact(
-      final String name, final Set<String> allowed, final String base) {
+      final String name,
+      final Set<String> allowed,
+      final String base
+  ) {
     return allowed.contains(name) ? Optional.empty() : Optional.of(base);
   }
 }

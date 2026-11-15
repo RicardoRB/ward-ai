@@ -52,7 +52,8 @@ final class TomlGateParser {
         TomlVulnerabilitiesParser.parse(where, type, gate),
         TomlLicenseParser.parse(where, type, gate, command),
         TomlApiCompatParser.parse(where, type, gate),
-        TomlArchitectureParser.architectureFile(where, type, gate));
+        TomlArchitectureParser.architectureFile(where, type, gate)
+    );
   }
 
   private static void rejectLegacyPartial(final String where, final TomlTable gate) {
@@ -65,7 +66,8 @@ final class TomlGateParser {
               + "' is no longer supported; use '"
               + where
               + ".paths' with"
-              + " 'match' and 'full' instead");
+              + " 'match' and 'full' instead"
+      );
     }
   }
 
@@ -77,7 +79,8 @@ final class TomlGateParser {
               + "."
               + ROOT
               + "' is no longer supported: it only located a directory that Ward no longer reads;"
-              + " delete the key");
+              + " delete the key"
+      );
     }
   }
 
@@ -94,7 +97,8 @@ final class TomlGateParser {
               + "' must be one of the supported types: "
               + QualityGateDefinitions.all().stream()
                   .map(QualityGateDefinitions.Definition::id)
-                  .toList());
+                  .toList()
+      );
     }
     return uses;
   }

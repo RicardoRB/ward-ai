@@ -21,12 +21,12 @@ import java.util.stream.IntStream;
  * box is another type. Unknown facts report nothing.
  */
 public final class IncompatibleArgumentTypeCheck extends FactsCheck {
-
   private static final String EXPRESSION = "expression";
   private static final FactNeed NEED =
       new FactNeed(
           Set.of(EXPRESSION),
-          Set.of(FactKind.CALL, FactKind.TYPE, FactKind.SHAPE, FactKind.MEMBERS));
+          Set.of(FactKind.CALL, FactKind.TYPE, FactKind.SHAPE, FactKind.MEMBERS)
+      );
 
   private final String message;
 
@@ -61,7 +61,8 @@ public final class IncompatibleArgumentTypeCheck extends FactsCheck {
     }
     return IntStream.range(0, arguments.size())
         .mapToObj(
-            index -> reportOf(index, arguments.get(index), target.get(), receiver.get(), types))
+            index -> reportOf(index, arguments.get(index), target.get(), receiver.get(), types)
+        )
         .flatMap(Optional::stream)
         .toList();
   }
@@ -71,7 +72,8 @@ public final class IncompatibleArgumentTypeCheck extends FactsCheck {
       final SyntaxNode argument,
       final CallTarget target,
       final TypeRef receiver,
-      final UnitTypeFacts types) {
+      final UnitTypeFacts types
+  ) {
     if (index >= target.compatibleWith().size() || target.compatibleWith().get(index).isEmpty()) {
       return Optional.empty();
     }
@@ -82,7 +84,8 @@ public final class IncompatibleArgumentTypeCheck extends FactsCheck {
     final TypeRef expected = receiver.arguments().get(slot);
     return UnrelatedArgumentCheck.excludes(expected, argument, types)
         ? Optional.of(
-            CheckSupport.at(argument.span(), CheckSupport.fill(message, expected.name(), "")))
+            CheckSupport.at(argument.span(), CheckSupport.fill(message, expected.name(), ""))
+        )
         : Optional.empty();
   }
 }

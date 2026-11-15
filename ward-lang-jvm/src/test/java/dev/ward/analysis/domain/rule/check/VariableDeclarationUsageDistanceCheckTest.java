@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 /** The usage-distance check on small blocks: distance, finals, and uses inside nested blocks. */
 class VariableDeclarationUsageDistanceCheckTest extends TreeBuilders {
-
   private static final String FIRST = "first";
   private static final String MESSAGE = "{value} is {max} away";
   private static final String BLOCK_STATEMENT = "blockStatement";
@@ -45,7 +44,9 @@ class VariableDeclarationUsageDistanceCheckTest extends TreeBuilders {
   }
 
   private static VariableDeclarationUsageDistanceCheck check(
-      final int allowed, final boolean ignoreFinals) {
+      final int allowed,
+      final boolean ignoreFinals
+  ) {
     return new VariableDeclarationUsageDistanceCheck(allowed, ignoreFinals, MESSAGE);
   }
 
@@ -63,7 +64,8 @@ class VariableDeclarationUsageDistanceCheckTest extends TreeBuilders {
             LOCAL,
             n(FINAL_MODIFIER, t("'final'", "final")),
             t("int", "int"),
-            n("variableDeclarator", t(TOKEN_IDENTIFIER, name)))
+            n("variableDeclarator", t(TOKEN_IDENTIFIER, name))
+        )
         : n(LOCAL, t("int", "int"), n("variableDeclarator", t(TOKEN_IDENTIFIER, name)));
   }
 

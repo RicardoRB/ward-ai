@@ -17,7 +17,6 @@ import java.util.Set;
  * receiver differently, or sits in a comment-free string, is not told apart.
  */
 public final class ObjectMethodCheck implements UnitCheck {
-
   private static final Set<String> NAME_SKIPPED =
       Set.of("typeTypeOrVoid", "typeType", "typeParameters", "formalParameters", "annotation");
   private static final String METHOD = "methodDeclaration";
@@ -36,7 +35,10 @@ public final class ObjectMethodCheck implements UnitCheck {
    * @param message the message of each finding
    */
   public ObjectMethodCheck(
-      final String methodName, final boolean requireSuperCall, final String message) {
+      final String methodName,
+      final boolean requireSuperCall,
+      final String message
+  ) {
     this.methodName = Objects.requireNonNull(methodName, "methodName");
     this.requireSuperCall = requireSuperCall;
     this.message = Objects.requireNonNull(message, "message");

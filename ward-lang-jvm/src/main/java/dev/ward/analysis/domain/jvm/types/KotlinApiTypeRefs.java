@@ -28,6 +28,10 @@ final class KotlinApiTypeRefs {
   /** Returns the array of {@code element}, the type of a {@code vararg} parameter. */
   static ApiTypeRef array(final ApiTypeRef element) {
     return new ApiTypeRef(
-        element.text() + ARRAY, element.key() + ARRAY, element.erasure() + ARRAY, false);
+        element.text() + ARRAY,
+        element.key() + ARRAY,
+        element.erasure() + ARRAY,
+        false
+    );
   }
 }

@@ -11,7 +11,6 @@ import java.util.Set;
  * {@code noVoidElementsWithChildren} does. Any child counts, blank text included.
  */
 public final class BiomeVoidElementChildrenCheck implements RuleCheck {
-
   private static final String ELEMENT = "jsxElement";
   private static final String OPENING = JsxAttributes.OPENING;
   private static final String CLOSING = "jsxClosingElement";
@@ -41,9 +40,9 @@ public final class BiomeVoidElementChildrenCheck implements RuleCheck {
   private boolean reported(final SyntaxNode element) {
     final List<SyntaxNode> children = element.children();
     return children.stream()
-            .filter(child -> OPENING.equals(child.kind()))
-            .anyMatch(opening -> elements.stream().anyMatch(spec -> spec.selects(opening)))
+        .filter(child -> OPENING.equals(child.kind()))
+        .anyMatch(opening -> elements.stream().anyMatch(spec -> spec.selects(opening)))
         && children.stream()
-            .anyMatch(child -> !OPENING.equals(child.kind()) && !CLOSING.equals(child.kind()));
+        .anyMatch(child -> !OPENING.equals(child.kind()) && !CLOSING.equals(child.kind()));
   }
 }

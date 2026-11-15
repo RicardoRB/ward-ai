@@ -59,16 +59,22 @@ class KotlinResolutionGateTest {
         new FileSystemSourceUnits(new ProcessCommandExecutor()),
         List.of(
             new FrontendSupport(
-                AnalysisLanguage.JAVA, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX)),
+                AnalysisLanguage.JAVA,
+                new AntlrLanguageFrontend(),
+                Set.of(RuleCapability.SYNTAX)
+            ),
             new FrontendSupport(
                 AnalysisLanguage.KOTLIN,
                 new AntlrLanguageFrontend(),
-                Set.of(RuleCapability.SYNTAX))),
+                Set.of(RuleCapability.SYNTAX)
+            )
+        ),
         projectRoot -> new FileAnalysisCache(projectRoot.resolve(".ward/cache/analysis")),
         AnalysisCacheFixtures.codec(),
         "test",
         new JvmDependencyAdapters(),
-        (unused, classpath) -> Map.of());
+        (unused, classpath) -> Map.of()
+    );
   }
 
   /** Maps each depended-on file to the files that depend on it, as the gate stored them. */

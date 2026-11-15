@@ -18,7 +18,8 @@ class HookSectionTest {
         .contains(
             "set -- \"$@\" \"--path=$ward_path\"",
             "git -c core.quotePath=false diff --cached --name-only --diff-filter=ACMR --relative",
-            "  ward check --profile pre-commit --format json \"$@\"\n)")
+            "  ward check --profile pre-commit --format json \"$@\"\n)"
+        )
         .endsWith("); then\n  exit 1\nfi\n# ward-owned: quality-hooks v1 end\n");
   }
 
@@ -29,7 +30,8 @@ class HookSectionTest {
         .contains(
             "git -c core.quotePath=false diff --name-only --diff-filter=ACMR --relative"
                 + " '@{upstream}...HEAD' 2>/dev/null)",
-            "  ward check --profile pre-push --format json \"$@\"\n)")
+            "  ward check --profile pre-push --format json \"$@\"\n)"
+        )
         .endsWith("); then\n  exit 1\nfi\n# ward-owned: quality-hooks v1 end\n");
   }
 
@@ -39,14 +41,16 @@ class HookSectionTest {
         .startsWith(
             "# ward-owned: quality-hooks v1 begin apps/api\n"
                 + "if ! git diff --cached --quiet -- 'apps/api'; then\n"
-                + "  if ! (cd \"$(git rev-parse --show-toplevel)\"/'apps/api' && (\n")
+                + "  if ! (cd \"$(git rev-parse --show-toplevel)\"/'apps/api' && (\n"
+        )
         .contains("ward check --profile pre-commit --format json \"$@\"")
         .endsWith(
             ")); then\n"
                 + "    exit 1\n"
                 + "  fi\n"
                 + "fi\n"
-                + "# ward-owned: quality-hooks v1 end apps/api\n");
+                + "# ward-owned: quality-hooks v1 end apps/api\n"
+        );
   }
 
   @Test
@@ -57,7 +61,8 @@ class HookSectionTest {
         .contains(
             "if ! git rev-parse --verify --quiet '@{upstream}' >/dev/null"
                 + " || ! git diff --quiet '@{upstream}...HEAD' -- 'apps/api'; then",
-            "ward check --profile pre-push --format json")
+            "ward check --profile pre-push --format json"
+        )
         .doesNotContain("cat ");
   }
 

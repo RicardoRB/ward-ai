@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 /** The {@code .editorconfig} body that the ward format engine writes for the detected languages. */
 class EditorConfigTemplateTest {
-
   @Test
   void javaAndKotlinGetFourSpacesAndTheContinuationIndent() {
     final String body = EditorConfigTemplate.body(Set.of(Language.JAVA, Language.KOTLIN));

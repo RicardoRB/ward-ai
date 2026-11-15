@@ -38,7 +38,14 @@ class PythonStubbedCliTest {
 
     final PythonStubbedRun.Result init =
         PythonStubbedRun.ward(
-            project, "init", "--preset", "standard", "--integration", "none", "--yes");
+            project,
+            "init",
+            "--preset",
+            "standard",
+            "--integration",
+            "none",
+            "--yes"
+        );
     assertThat(init.exit()).as(init.stdout() + init.stderr()).isZero();
     assertThat(Files.readString(project.resolve("pyproject.toml"))).contains("mypy==2.4.0");
     assertThat(Files.isRegularFile(project.resolve(".coveragerc"))).isTrue();

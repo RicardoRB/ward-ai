@@ -7,7 +7,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class CorpusManifestTest {
-
   private static final String SHA = "0123456789abcdef0123456789abcdef01234567";
   private static final String HEADER = "language,name,url,commit";
 
@@ -23,7 +22,8 @@ class CorpusManifestTest {
   @Test
   void rejectsAMissingHeader() {
     assertThatThrownBy(
-            () -> CorpusManifest.parse(List.of("java,petclinic,https://example.com/p.git," + SHA)))
+        () -> CorpusManifest.parse(List.of("java,petclinic,https://example.com/p.git," + SHA))
+    )
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("header");
   }

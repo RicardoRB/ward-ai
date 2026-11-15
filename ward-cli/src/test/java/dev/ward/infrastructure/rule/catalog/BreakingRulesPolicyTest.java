@@ -45,7 +45,8 @@ class BreakingRulesPolicyTest {
         String.join(
             "\n",
             RuleReference.pages(CATALOG, CatalogRuleDefinitions.all(), UpstreamLists.outOfScope())
-                .values());
+                .values()
+        );
 
     assertThat(implemented().map(row -> "`" + row.idFor(AnalysisLanguage.OPENAPI) + "`"))
         .allSatisfy(id -> assertThat(reference).contains(id));

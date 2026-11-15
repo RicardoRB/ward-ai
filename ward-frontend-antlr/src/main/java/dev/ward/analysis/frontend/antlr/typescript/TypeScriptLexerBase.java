@@ -30,13 +30,15 @@ public abstract class TypeScriptLexerBase extends WardLexerBase {
           TypeScriptLexer.HexIntegerLiteral,
           TypeScriptLexer.StringLiteral,
           TypeScriptLexer.PlusPlus,
-          TypeScriptLexer.MinusMinus);
+          TypeScriptLexer.MinusMinus
+      );
 
   /** Token types after which a less-than sign is an operator, so no JSX element can start. */
   private static final Set<Integer> NO_JSX_AFTER =
       Stream.concat(
-              NO_REGEX_AFTER.stream(),
-              Stream.of(TypeScriptLexer.JsxSelfCloseEnd, TypeScriptLexer.JsxClosingTagEnd))
+          NO_REGEX_AFTER.stream(),
+          Stream.of(TypeScriptLexer.JsxSelfCloseEnd, TypeScriptLexer.JsxClosingTagEnd)
+      )
           .collect(Collectors.toUnmodifiableSet());
 
   /** The template literals the lexer is inside, and the braces inside their substitutions. */

@@ -12,7 +12,6 @@ import java.util.Map;
 
 /** The TypeScript type checks of the Biome lint rules, which read declarations and void types. */
 final class BiomeTypeChecks {
-
   private static final String MESSAGE = "message";
 
   private BiomeTypeChecks() {}
@@ -22,15 +21,20 @@ final class BiomeTypeChecks {
     return Map.ofEntries(
         entry(
             "node-implicit-any-let",
-            toml -> new BiomeImplicitAnyLetCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new BiomeImplicitAnyLetCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "node-misleading-instantiator",
-            toml -> new BiomeMisleadingInstantiatorCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new BiomeMisleadingInstantiatorCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "node-confusing-void-type",
-            toml -> new BiomeConfusingVoidTypeCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new BiomeConfusingVoidTypeCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "node-void-type-return",
-            toml -> new BiomeVoidTypeReturnCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new BiomeVoidTypeReturnCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 }

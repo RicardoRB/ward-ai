@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 /** Limits reached exactly, end-of-file lines, underscores, compound assignments and nesting. */
 final class MeasurementBoundaryTest {
-
   private static final String FUNCTION = "funcdef";
   private static final int NESTED_PARAMETERS = 5;
   private static final int EMPTY_END = 3;
@@ -61,7 +60,8 @@ final class MeasurementBoundaryTest {
             3,
             Trees.node(FUNCTION, 1, 1, Trees.named(NAME, "__", 1)),
             Trees.node(FUNCTION, 2, 2, Trees.named(NAME, "_load_config", 2)),
-            Trees.node(FUNCTION, 3, 3, Trees.named(NAME, "_loadConfig", 3)));
+            Trees.node(FUNCTION, 3, 3, Trees.named(NAME, "_loadConfig", 3))
+        );
 
     assertThat(Trees.messages(IDENTIFIERS, module)).containsExactly("_loadConfig snake_case");
   }
@@ -74,7 +74,8 @@ final class MeasurementBoundaryTest {
             1,
             1,
             Trees.node("testlist_star_expr", 1, 1, Trees.token(TOKEN_NAME, "camelCase", 1, 1)),
-            Trees.token("'+='", "+=", 1, 11));
+            Trees.token("'+='", "+=", 1, 11)
+        );
 
     assertThat(Trees.messages(IDENTIFIERS, statement)).isEmpty();
   }
@@ -84,7 +85,9 @@ final class MeasurementBoundaryTest {
     final SyntaxNode inner = Trees.function("inner", 3, "self", "a", "b", "c", "d");
     final SyntaxNode method =
         Trees.withBody(
-            Trees.function("m", 2, "self", "a", "b", "c"), Trees.node("block", 3, 3, inner));
+            Trees.function("m", 2, "self", "a", "b", "c"),
+            Trees.node("block", 3, 3, inner)
+        );
     final SyntaxNode classBody =
         Trees.node("classdef", 1, 3, Trees.named(NAME, "A", 1), Trees.node("block", 2, 3, method));
 
@@ -101,7 +104,8 @@ final class MeasurementBoundaryTest {
             1,
             Trees.node(TFPDEF, 1, 1, Trees.named(NAME, "a", 1)),
             Trees.node("test", 1, 1, Trees.token(TOKEN_NAME, "1", 1, 5)),
-            Trees.node(TFPDEF, 1, 1, Trees.named(NAME, "b", 1)));
+            Trees.node(TFPDEF, 1, 1, Trees.named(NAME, "b", 1))
+        );
 
     assertThat(Trees.messages(TWO_PARAMETERS, Trees.withParameters(list, "f"))).isEmpty();
   }

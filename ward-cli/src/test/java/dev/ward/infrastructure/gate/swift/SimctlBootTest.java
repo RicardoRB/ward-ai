@@ -20,7 +20,8 @@ class SimctlBootTest {
             SimctlSimulatorsTest.ok(SimctlSimulatorsTest.RUNTIMES),
             SimctlSimulatorsTest.ok(SimctlSimulatorsTest.devices("Shutdown")),
             new CommandResult(1, "", "Invalid device", Duration.ZERO),
-            new CommandResult(1, "", "Invalid device", Duration.ZERO));
+            new CommandResult(1, "", "Invalid device", Duration.ZERO)
+        );
 
     assertThat(SimctlSimulatorsTest.ready(commands).problem())
         .contains("did not boot", SimctlSimulatorsTest.NEW_BASE);
@@ -34,7 +35,8 @@ class SimctlBootTest {
             SimctlSimulatorsTest.ok(SimctlSimulatorsTest.devices("Shutdown")),
             new CommandResult(1, "", "runtime path not found", Duration.ZERO),
             SimctlSimulatorsTest.ok(""),
-            SimctlSimulatorsTest.ok(""));
+            SimctlSimulatorsTest.ok("")
+        );
 
     final Simulator simulator = SimctlSimulatorsTest.ready(commands);
 
@@ -49,15 +51,21 @@ class SimctlBootTest {
             SimctlSimulatorsTest.ok(SimctlSimulatorsTest.RUNTIMES),
             SimctlSimulatorsTest.ok(SimctlSimulatorsTest.devices("Shutdown")),
             new CommandResult(
-                149, "", "Unable to boot device in current state: Booted", Duration.ZERO),
-            SimctlSimulatorsTest.ok(""));
+                149,
+                "",
+                "Unable to boot device in current state: Booted",
+                Duration.ZERO
+            ),
+            SimctlSimulatorsTest.ok("")
+        );
 
     assertThat(SimctlSimulatorsTest.ready(meanwhile).isReady()).isTrue();
     final FakeCommandExecutor unfinished =
         new FakeCommandExecutor(
             SimctlSimulatorsTest.ok(SimctlSimulatorsTest.RUNTIMES),
             SimctlSimulatorsTest.ok(SimctlSimulatorsTest.devices("Booted")),
-            new CommandResult(-1, "", "", Duration.ZERO, "timed out"));
+            new CommandResult(-1, "", "", Duration.ZERO, "timed out")
+        );
 
     assertThat(SimctlSimulatorsTest.ready(unfinished).problem()).contains("did not finish booting");
   }

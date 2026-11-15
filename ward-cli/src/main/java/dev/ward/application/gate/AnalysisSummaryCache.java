@@ -17,7 +17,10 @@ final class AnalysisSummaryCache implements FileSummaryCache {
 
   /** Creates the summary cache over {@code cache}. */
   AnalysisSummaryCache(
-      final AnalysisCache cache, final AnalysisResultCodec codec, final String engineVersion) {
+      final AnalysisCache cache,
+      final AnalysisResultCodec codec,
+      final String engineVersion
+  ) {
     this.cache = cache;
     this.codec = codec;
     this.engineVersion = engineVersion;

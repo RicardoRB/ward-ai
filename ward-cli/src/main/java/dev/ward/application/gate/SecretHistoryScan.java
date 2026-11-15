@@ -36,7 +36,8 @@ final class SecretHistoryScan {
       final Path root,
       final Optional<LocalDate> since,
       final TextRules rules,
-      final Predicate<String> excluded) {
+      final Predicate<String> excluded
+  ) {
     final List<AnalysisFinding> findings = new ArrayList<>();
     final List<RuleExecutionError> errors = new ArrayList<>();
     final int[] patches = {0};
@@ -51,7 +52,9 @@ final class SecretHistoryScan {
                       patch -> {
                         patches[0]++;
                         scanPatch(patch, rules, findings, errors);
-                      }));
+                      }
+                  )
+      );
     } catch (final HistoryUnavailableException exception) {
       errors.add(new RuleExecutionError(null, null, exception.getMessage()));
     }
@@ -62,7 +65,8 @@ final class SecretHistoryScan {
               + " findings="
               + findings.size()
               + " errors="
-              + errors.size());
+              + errors.size()
+      );
     }
     return new RuleRunResult(findings, errors, List.of());
   }
@@ -71,7 +75,8 @@ final class SecretHistoryScan {
       final HistoryPatch patch,
       final TextRules rules,
       final List<AnalysisFinding> findings,
-      final List<RuleExecutionError> errors) {
+      final List<RuleExecutionError> errors
+  ) {
     final String text =
         String.join("\n", patch.lines().stream().map(HistoryPatch.AddedLine::text).toList()) + "\n";
     final RuleRunResult result = rules.run(List.of(new TextFile(patch.path(), text)));
@@ -84,7 +89,10 @@ final class SecretHistoryScan {
                     new RuleExecutionError(
                         error.ruleId(),
                         error.path(),
-                        error.reason() + " in commit " + patch.commit())));
+                        error.reason() + " in commit " + patch.commit()
+                    )
+                )
+        );
   }
 
   /** The finding at the post-image line of the commit, with the commit in its message. */
@@ -99,7 +107,8 @@ final class SecretHistoryScan {
         line,
         finding.column(),
         finding.helpUri(),
-        finding.path());
+        finding.path()
+    );
   }
 
   /** Whether a glob list leaves {@code path} out. */

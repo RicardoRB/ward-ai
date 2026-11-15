@@ -14,7 +14,6 @@ import java.util.Optional;
  * blank line. Consecutive end-of-line comments are allowed.
  */
 public final class KotlinConsecutiveCommentsCheck implements RuleCheck {
-
   private static final char NEWLINE = '\n';
   private static final int BLANK_LINE_NEWLINES = 2;
   private static final String KDOC = "kdoc";
@@ -55,7 +54,10 @@ public final class KotlinConsecutiveCommentsCheck implements RuleCheck {
   }
 
   private static boolean isDisallowed(
-      final SyntaxNode previous, final SyntaxNode current, final int newlines) {
+      final SyntaxNode previous,
+      final SyntaxNode current,
+      final int newlines
+  ) {
     final String before = KotlinLeaves.commentType(previous);
     final String after = KotlinLeaves.commentType(current);
     if (KDOC.equals(before) || BLOCK.equals(before) && BLOCK.equals(after)) {

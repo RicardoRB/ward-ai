@@ -23,7 +23,6 @@ import org.junit.jupiter.api.io.TempDir;
  * reported, while manifest entries (main and exports) and files matching an entry glob are not.
  */
 class NodeUnusedFileGateTest {
-
   private static final Path WORKSPACE =
       Path.of("src/test/resources/fixtures/node-unused-file/workspace");
 
@@ -52,7 +51,8 @@ class NodeUnusedFileGateTest {
         new Project(root, Language.TYPESCRIPT, BuildTool.NPM, Framework.NONE),
         List.of(ArchitectureGraphRules.unusedFiles(entries)),
         new ProjectDependencyAdapters(List.of(new NodeDependencyAdapters())),
-        UnusedFileRule.ID);
+        UnusedFileRule.ID
+    );
   }
 
   /** Copies the workspace fixture into the temporary project root. */

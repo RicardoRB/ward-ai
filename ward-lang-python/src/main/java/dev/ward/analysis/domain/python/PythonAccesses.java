@@ -18,7 +18,6 @@ import java.util.Set;
  * a {@link dev.ward.analysis.domain.ir.AccessKind#DECLARE}, which unbinds the name.
  */
 final class PythonAccesses implements VariableAccesses {
-
   private static final Set<String> NOTHING = Set.of("global_stmt", "nonlocal_stmt", "pass_stmt");
 
   private final boolean tracked;

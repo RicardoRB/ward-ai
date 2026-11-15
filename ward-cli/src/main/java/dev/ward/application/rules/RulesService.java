@@ -31,7 +31,10 @@ public final class RulesService {
   /** Creates the service over the rule source, the body reader and the selection file. */
   @Inject
   public RulesService(
-      final AnalysisRuleSource source, final RuleBodyReader bodies, final RuleSelectionFile file) {
+      final AnalysisRuleSource source,
+      final RuleBodyReader bodies,
+      final RuleSelectionFile file
+  ) {
     this.source = source;
     this.bodies = bodies;
     this.file = file;

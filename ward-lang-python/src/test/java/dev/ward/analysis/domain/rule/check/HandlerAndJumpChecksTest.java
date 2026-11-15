@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** The checks on comparisons, handlers, raises and finally blocks, on hand-made trees. */
 final class HandlerAndJumpChecksTest {
-
   private static final String VALUE_ERROR = "ValueError";
 
   @Test
@@ -25,18 +24,20 @@ final class HandlerAndJumpChecksTest {
   @Test
   void comparisonOperatorReportsAnIdentityTestAgainstALiteral() {
     assertThat(
-            comparisonOp(ComparisonOperatorCheck.Problem.IS_LITERAL, Nodes.comparison("is", "1")))
+        comparisonOp(ComparisonOperatorCheck.Problem.IS_LITERAL, Nodes.comparison("is", "1"))
+    )
         .hasSize(1);
     assertThat(
-            comparisonOp(
-                ComparisonOperatorCheck.Problem.IS_LITERAL, Nodes.comparison("isnot", "\"a\"")))
+        comparisonOp(ComparisonOperatorCheck.Problem.IS_LITERAL, Nodes.comparison("isnot", "\"a\""))
+    )
         .hasSize(1);
     assertThat(
-            comparisonOp(
-                ComparisonOperatorCheck.Problem.IS_LITERAL, Nodes.comparison("is", "None")))
+        comparisonOp(ComparisonOperatorCheck.Problem.IS_LITERAL, Nodes.comparison("is", "None"))
+    )
         .isEmpty();
     assertThat(
-            comparisonOp(ComparisonOperatorCheck.Problem.IS_LITERAL, Nodes.comparison("==", "1")))
+        comparisonOp(ComparisonOperatorCheck.Problem.IS_LITERAL, Nodes.comparison("==", "1"))
+    )
         .isEmpty();
   }
 
@@ -44,7 +45,10 @@ final class HandlerAndJumpChecksTest {
   void comparisonOperatorUnwrapsNestedNotTests() {
     final SyntaxNode nested =
         Nodes.node(
-            "not_test", Nodes.leaf("not"), Nodes.node("not_test", Nodes.comparison("in", "x")));
+            "not_test",
+            Nodes.leaf("not"),
+            Nodes.node("not_test", Nodes.comparison("in", "x"))
+        );
 
     assertThat(comparisonOp(ComparisonOperatorCheck.Problem.NOT_IN, nested)).hasSize(1);
   }
@@ -52,12 +56,14 @@ final class HandlerAndJumpChecksTest {
   @Test
   void exceptOrderReportsABareHandlerBeforeAnother() {
     assertThat(
-            new ExceptOrderCheck("m")
-                .matches(Nodes.tryWith(Nodes.clause(), Nodes.clause(VALUE_ERROR))))
+        new ExceptOrderCheck("m")
+            .matches(Nodes.tryWith(Nodes.clause(), Nodes.clause(VALUE_ERROR)))
+    )
         .hasSize(1);
     assertThat(
-            new ExceptOrderCheck("m")
-                .matches(Nodes.tryWith(Nodes.clause(VALUE_ERROR), Nodes.clause())))
+        new ExceptOrderCheck("m")
+            .matches(Nodes.tryWith(Nodes.clause(VALUE_ERROR), Nodes.clause()))
+    )
         .isEmpty();
   }
 
@@ -78,17 +84,19 @@ final class HandlerAndJumpChecksTest {
   @Test
   void duplicateHandlerReportsARepeatedTypeAndIgnoresAnAlias() {
     assertThat(
-            new DuplicateHandlerCheck("m")
-                .matches(Nodes.tryWith(Nodes.clause(VALUE_ERROR), Nodes.clause(VALUE_ERROR))))
+        new DuplicateHandlerCheck("m")
+            .matches(Nodes.tryWith(Nodes.clause(VALUE_ERROR), Nodes.clause(VALUE_ERROR)))
+    )
         .hasSize(1);
     assertThat(
-            new DuplicateHandlerCheck("m")
-                .matches(Nodes.tryWith(Nodes.clause(VALUE_ERROR), Nodes.clause("TypeError"))))
+        new DuplicateHandlerCheck("m")
+            .matches(Nodes.tryWith(Nodes.clause(VALUE_ERROR), Nodes.clause("TypeError")))
+    )
         .isEmpty();
     assertThat(
-            new DuplicateHandlerCheck("m")
-                .matches(
-                    Nodes.tryWith(Nodes.clause(VALUE_ERROR, "as", "e"), Nodes.clause(VALUE_ERROR))))
+        new DuplicateHandlerCheck("m")
+            .matches(Nodes.tryWith(Nodes.clause(VALUE_ERROR, "as", "e"), Nodes.clause(VALUE_ERROR)))
+    )
         .hasSize(1);
   }
 
@@ -107,21 +115,25 @@ final class HandlerAndJumpChecksTest {
         Nodes.node(
             "try_stmt",
             Nodes.leaf("finally"),
-            Nodes.block(Nodes.node("return_stmt", Nodes.leaf("return"))));
+            Nodes.block(Nodes.node("return_stmt", Nodes.leaf("return")))
+        );
     final SyntaxNode nestedLoop =
         Nodes.node(
             "try_stmt",
             Nodes.leaf("finally"),
             Nodes.block(
-                Nodes.node(
-                    "for_stmt", Nodes.block(Nodes.node("break_stmt", Nodes.leaf("break"))))));
+                Nodes.node("for_stmt", Nodes.block(Nodes.node("break_stmt", Nodes.leaf("break"))))
+            )
+        );
 
     assertThat(new FinallyJumpCheck("m").matches(returning)).hasSize(1);
     assertThat(new FinallyJumpCheck("m").matches(nestedLoop)).isEmpty();
   }
 
   private static List<RuleMatch> comparisonOp(
-      final ComparisonOperatorCheck.Problem problem, final SyntaxNode root) {
+      final ComparisonOperatorCheck.Problem problem,
+      final SyntaxNode root
+  ) {
     return new ComparisonOperatorCheck(problem, "m").matches(root);
   }
 }

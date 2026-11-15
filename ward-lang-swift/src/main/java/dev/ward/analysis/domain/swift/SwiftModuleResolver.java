@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
  * other file of the same module that declares a type with that name.
  */
 public final class SwiftModuleResolver implements DependencyResolver {
-
   private final SwiftProjectLayout layout;
 
   /**
@@ -47,7 +46,9 @@ public final class SwiftModuleResolver implements DependencyResolver {
                 Collectors.groupingBy(
                     summary -> layout.moduleOf(summary.path()),
                     TreeMap::new,
-                    Collectors.mapping(FileSummary::path, Collectors.toList())));
+                    Collectors.mapping(FileSummary::path, Collectors.toList())
+                )
+            );
     final Map<String, Map<String, List<String>>> typesByModule = typesByModule(summaries);
     final List<DependencyEdge> edges = new ArrayList<>();
     for (final FileSummary summary : summaries) {
@@ -72,9 +73,12 @@ public final class SwiftModuleResolver implements DependencyResolver {
   }
 
   private static void addDeclarations(
-      final Map<String, Map<String, List<String>>> index,
+      final Map<String,
+      Map<String,
+      List<String>>> index,
       final String module,
-      final FileSummary summary) {
+      final FileSummary summary
+  ) {
     final Map<String, List<String>> types = index.computeIfAbsent(module, key -> new TreeMap<>());
     summary
         .declared()
@@ -82,15 +86,21 @@ public final class SwiftModuleResolver implements DependencyResolver {
             symbol ->
                 types
                     .computeIfAbsent(
-                        SwiftFileSummarizer.lastComponent(symbol.name()), name -> new ArrayList<>())
-                    .add(summary.path()));
+                        SwiftFileSummarizer.lastComponent(symbol.name()),
+                        name -> new ArrayList<>()
+                    )
+                    .add(summary.path())
+        );
   }
 
   private void addNameEdges(
       final String from,
       final Reference reference,
-      final Map<String, Map<String, List<String>>> typesByModule,
-      final List<DependencyEdge> edges) {
+      final Map<String,
+      Map<String,
+      List<String>>> typesByModule,
+      final List<DependencyEdge> edges
+  ) {
     final String name = reference.specifier().substring(SwiftFileSummarizer.NAME_PREFIX.length());
     final Map<String, List<String>> types =
         typesByModule.getOrDefault(layout.moduleOf(from), Map.of());
@@ -104,8 +114,10 @@ public final class SwiftModuleResolver implements DependencyResolver {
   private void addEdges(
       final String from,
       final Reference reference,
-      final Map<String, List<String>> filesByModule,
-      final List<DependencyEdge> edges) {
+      final Map<String,
+      List<String>> filesByModule,
+      final List<DependencyEdge> edges
+  ) {
     final String module = importedModule(reference.specifier());
     if (module.isEmpty() || !layout.declares(module)) {
       return;

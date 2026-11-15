@@ -13,7 +13,6 @@ import java.util.Set;
  * RegexSyntax}.
  */
 public final class NodeInvalidRegexpCheck implements RuleCheck {
-
   private static final String ESCAPE_KEYS = "ntrbfv0";
   private static final String ESCAPE_VALUES = "\n\t\r\b\f\u000B\0";
   private static final String ARGUMENTS = "arguments";

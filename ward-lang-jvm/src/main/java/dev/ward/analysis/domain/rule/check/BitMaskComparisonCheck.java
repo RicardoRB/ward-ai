@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * so the test can never be true. Only literal masks and values are compared.
  */
 public final class BitMaskComparisonCheck implements UnitCheck {
-
   private static final String EXPRESSION = "expression";
   private static final int MASK = 1;
   private static final int VALUE = 3;
@@ -24,7 +23,8 @@ public final class BitMaskComparisonCheck implements UnitCheck {
   private static final Pattern COMPARISON =
       Pattern.compile(
           "^\\(\\s*[^()]*&\\s*(0[xX][0-9a-fA-F]+|\\d+)[lL]?\\s*\\)\\s*(==|!=)\\s*"
-              + "(0[xX][0-9a-fA-F]+|\\d+)[lL]?$");
+              + "(0[xX][0-9a-fA-F]+|\\d+)[lL]?$"
+      );
 
   private final String message;
 

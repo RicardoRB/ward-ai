@@ -74,7 +74,8 @@ final class PyprojectEdit {
             "The "
                 + GROUP
                 + " dependency group in pyproject.toml has an entry that is not a requirement"
-                + " string, so init cannot add to it. Add the tools by hand.");
+                + " string, so init cannot add to it. Add the tools by hand."
+        );
       }
       entries.add(text);
     }
@@ -90,7 +91,8 @@ final class PyprojectEdit {
           "init could not write the "
               + GROUP
               + " dependency group to pyproject.toml; add the"
-              + " tools by hand.");
+              + " tools by hand."
+      );
     }
   }
 

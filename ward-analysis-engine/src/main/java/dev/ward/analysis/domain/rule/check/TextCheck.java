@@ -8,7 +8,6 @@ import java.util.List;
 /** A check that reads the text of a file, with no syntax tree. */
 @FunctionalInterface
 public interface TextCheck extends RuleCheck {
-
   /**
    * Returns the places in {@code file} where the check fails, in source order.
    *

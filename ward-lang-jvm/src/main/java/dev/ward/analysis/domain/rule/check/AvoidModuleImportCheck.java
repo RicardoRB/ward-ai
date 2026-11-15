@@ -12,7 +12,6 @@ import java.util.Set;
  * excludes} is allowed and does not count. The default allows none.
  */
 public final class AvoidModuleImportCheck implements RuleCheck {
-
   private final Set<String> excludes;
   private final int maxAllowed;
   private final String message;
@@ -25,7 +24,10 @@ public final class AvoidModuleImportCheck implements RuleCheck {
    * @param message the message; {@code {value}} is the module name
    */
   public AvoidModuleImportCheck(
-      final Set<String> excludes, final int maxAllowed, final String message) {
+      final Set<String> excludes,
+      final int maxAllowed,
+      final String message
+  ) {
     this.excludes = Set.copyOf(excludes);
     this.maxAllowed = maxAllowed;
     this.message = Objects.requireNonNull(message, "message");
@@ -41,7 +43,10 @@ public final class AvoidModuleImportCheck implements RuleCheck {
         if (counted > maxAllowed) {
           matches.add(
               CheckSupport.at(
-                  declaration.span(), CheckSupport.fill(message, declaration.name(), "")));
+                  declaration.span(),
+                  CheckSupport.fill(message, declaration.name(), "")
+              )
+          );
         }
       }
     }

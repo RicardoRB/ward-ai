@@ -17,7 +17,10 @@ class ArchitectureModelTest {
   void bothListsOfASelectorMustMatch() {
     final ArchitectureSelector both =
         new ArchitectureSelector(
-            List.of("src/main/**"), List.of(ArchitectureFixtures.DOMAIN_DIR), List.of());
+            List.of("src/main/**"),
+            List.of(ArchitectureFixtures.DOMAIN_DIR),
+            List.of()
+        );
 
     assertThat(both.matcher().test(DOMAIN)).isTrue();
     assertThat(both.matcher().test(TEST_DOMAIN)).isFalse();
@@ -27,14 +30,16 @@ class ArchitectureModelTest {
   @Test
   void aSwiftDirectoryNameIgnoresCase() {
     assertThat(
-            ArchitectureFixtures.dirs(ArchitectureFixtures.DOMAIN_DIR)
-                .matcher()
-                .test("App/Domain/Order.swift"))
+        ArchitectureFixtures.dirs(ArchitectureFixtures.DOMAIN_DIR)
+            .matcher()
+            .test("App/Domain/Order.swift")
+    )
         .isTrue();
     assertThat(
-            ArchitectureFixtures.dirs(ArchitectureFixtures.DOMAIN_DIR)
-                .matcher()
-                .test("App/Domain/order.py"))
+        ArchitectureFixtures.dirs(ArchitectureFixtures.DOMAIN_DIR)
+            .matcher()
+            .test("App/Domain/order.py")
+    )
         .isFalse();
   }
 
@@ -46,13 +51,15 @@ class ArchitectureModelTest {
             new ArchitectureSelector(List.of("src/{a,b}/**"), List.of("a;b"), List.of("-")),
             new ArchitectureConstraint(Kind.FILE_NAME, null, "*.{ts,js}"),
             "because; reason, with \t tab",
-            true);
+            true
+        );
     final ArchitectureRule other =
         ArchitectureFixtures.rule(
             "second",
             ArchitectureFixtures.dirs("x"),
             Kind.ONLY_ACCESSED_BY,
-            ArchitectureFixtures.paths("y/**"));
+            ArchitectureFixtures.paths("y/**")
+        );
 
     assertThat(ArchitectureRuleBody.decode(ArchitectureRuleBody.encode(List.of(rule, other))))
         .containsExactly(rule, other);
@@ -78,7 +85,8 @@ class ArchitectureModelTest {
   @Test
   void aConstraintHasTheValueItsKindNeeds() {
     assertThatThrownBy(
-            () -> new ArchitectureConstraint(Kind.FILE_NAME, ArchitectureFixtures.dirs("a"), null))
+        () -> new ArchitectureConstraint(Kind.FILE_NAME, ArchitectureFixtures.dirs("a"), null)
+    )
         .isInstanceOf(IllegalArgumentException.class);
     assertThatThrownBy(() -> new ArchitectureConstraint(Kind.MUST_BE_IN, null, "x"))
         .isInstanceOf(IllegalArgumentException.class);

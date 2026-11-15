@@ -27,7 +27,8 @@ class GitHooksDirectoryTest {
           Set.of(),
           "",
           TaskRunner.NONE,
-          null);
+          null
+      );
 
   @Test
   void relativeAnswerResolvesAgainstTheProjectRoot() {

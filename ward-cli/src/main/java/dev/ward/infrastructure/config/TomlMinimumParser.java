@@ -19,12 +19,14 @@ final class TomlMinimumParser {
           SupportedQualityGates.MUTMUT,
           SupportedQualityGates.COVERAGE,
           SupportedQualityGates.SWIFT_COVERAGE,
-          SupportedQualityGates.ANDROID_COVERAGE);
+          SupportedQualityGates.ANDROID_COVERAGE
+      );
   private static final Set<String> REQUIRED_MINIMUM =
       Set.of(
           SupportedQualityGates.COVERAGE,
           SupportedQualityGates.SWIFT_COVERAGE,
-          SupportedQualityGates.ANDROID_COVERAGE);
+          SupportedQualityGates.ANDROID_COVERAGE
+      );
 
   private TomlMinimumParser() {}
 
@@ -38,7 +40,8 @@ final class TomlMinimumParser {
           "'"
               + key
               + "' is only supported for the stryker, mutation, mutmut, coverage, swift-coverage and"
-              + " android-coverage checks");
+              + " android-coverage checks"
+      );
     }
     final Long value = gate.isLong(MINIMUM) ? gate.getLong(MINIMUM) : null;
     if (value == null || value < 0 || value > MAXIMUM_SCORE) {

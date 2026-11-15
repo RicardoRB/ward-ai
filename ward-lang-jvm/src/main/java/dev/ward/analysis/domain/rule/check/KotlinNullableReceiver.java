@@ -32,7 +32,10 @@ final class KotlinNullableReceiver {
    * operation's text satisfies {@code operation}; empty for any other shape.
    */
   static Optional<Nullness> nullnessOf(
-      final SyntaxNode postfix, final UnitTypeFacts types, final Predicate<String> operation) {
+      final SyntaxNode postfix,
+      final UnitTypeFacts types,
+      final Predicate<String> operation
+  ) {
     final List<SyntaxNode> parts = postfix.children();
     if (parts.size() != PARTS
         || !ATOMIC.equals(parts.get(NAME).kind())

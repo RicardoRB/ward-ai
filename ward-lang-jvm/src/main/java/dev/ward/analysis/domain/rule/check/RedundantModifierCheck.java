@@ -13,7 +13,6 @@ import java.util.Set;
  * static} on nested interfaces, enums and records.
  */
 public final class RedundantModifierCheck implements RuleCheck {
-
   private static final String INTERFACE_BODY = "interfaceBodyDeclaration";
   private static final String CLASS_BODY = "classBodyDeclaration";
   private static final Set<String> MODIFIER_KINDS =
@@ -76,7 +75,10 @@ public final class RedundantModifierCheck implements RuleCheck {
   }
 
   private void report(
-      final List<SyntaxNode> items, final Set<String> redundant, final List<RuleMatch> matches) {
+      final List<SyntaxNode> items,
+      final Set<String> redundant,
+      final List<RuleMatch> matches
+  ) {
     items.stream()
         .filter(item -> redundant.contains(SyntaxWalk.text(item).trim()))
         .forEach(item -> matches.add(CheckSupport.at(item.span(), message)));

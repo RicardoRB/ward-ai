@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * variable is a statement that calls a mutating method on it. The collection is built for nothing.
  */
 public final class UnusedCollectionModifiedCheck implements RuleCheck {
-
   private static final String LOCAL = "localVariableDeclaration";
   private static final String BLOCK_OWNER = "methodDeclaration";
   private static final String IDENTIFIER = "identifier";
@@ -26,7 +25,8 @@ public final class UnusedCollectionModifiedCheck implements RuleCheck {
       Pattern.compile(
           "^(?:final)?(?:java\\.util\\.)?(?:List|ArrayList|LinkedList|Set|HashSet|LinkedHashSet|"
               + "TreeSet|Map|HashMap|LinkedHashMap|TreeMap|Collection|Deque|ArrayDeque|Queue)"
-              + "(?:<.*>)?\\w+=new");
+              + "(?:<.*>)?\\w+=new"
+      );
   private static final int NAME_AND_CALL = 2;
   private static final String MUTATORS =
       "add|addAll|put|putAll|remove|removeAll|clear|sort|removeIf|push|offer|addFirst|addLast";

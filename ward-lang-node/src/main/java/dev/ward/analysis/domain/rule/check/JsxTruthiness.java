@@ -13,7 +13,6 @@ import java.util.Set;
  * {@code null}, {@code undefined} and {@code 0}); any other expression counts as truthy.
  */
 final class JsxTruthiness {
-
   private static final String SPREAD = "jsxSpreadAttribute";
   private static final Set<String> FALSY_EXPRESSIONS = Set.of("false", "null", "undefined", "0");
 
@@ -21,7 +20,10 @@ final class JsxTruthiness {
 
   /** The first attribute with this name when it is truthy, empty otherwise. */
   static Optional<SyntaxNode> truthyAttribute(
-      final SyntaxNode element, final String name, final String source) {
+      final SyntaxNode element,
+      final String name,
+      final String source
+  ) {
     final List<SyntaxNode> attributes = JsxAttributes.of(element);
     for (int index = 0; index < attributes.size(); index++) {
       final SyntaxNode attribute = attributes.get(index);

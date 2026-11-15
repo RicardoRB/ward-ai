@@ -15,7 +15,6 @@ import java.util.Set;
  * an enclosing {@code if}, since the tree does not read the guard's condition.
  */
 public final class GuardLogStatementCheck implements RuleCheck {
-
   private static final String EXPRESSION = "expression";
   private static final String ARGUMENTS = "arguments";
   private static final String IF = "'if'";
@@ -50,7 +49,8 @@ public final class GuardLogStatementCheck implements RuleCheck {
       final dev.ward.analysis.domain.rule.FlowView flow,
       final dev.ward.analysis.domain.rule.ScopeView scopes,
       final UnitTypeFacts types,
-      final dev.ward.analysis.domain.ir.SourceUnit unit) {
+      final dev.ward.analysis.domain.ir.SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(EXPRESSION))) {
       final SyntaxNode call = visit.node();
@@ -62,7 +62,10 @@ public final class GuardLogStatementCheck implements RuleCheck {
   }
 
   private static boolean isUnguardedConcatenation(
-      final SyntaxNode call, final List<SyntaxNode> ancestors, final UnitTypeFacts types) {
+      final SyntaxNode call,
+      final List<SyntaxNode> ancestors,
+      final UnitTypeFacts types
+  ) {
     final boolean logsDebug =
         TypedChecks.calledName(call, types).filter(LEVELS::contains).isPresent()
             && TypedChecks.declaringType(call, types).filter(LOGGERS::contains).isPresent();

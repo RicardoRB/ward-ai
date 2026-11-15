@@ -19,14 +19,19 @@ import java.util.regex.Pattern;
  * the check stays silent.
  */
 public final class AnnotationStructureCheck implements RuleCheck {
-
   private static final Map<String, String> KEYWORDS =
       Map.of(
-          "classDeclaration", "class",
-          "interfaceDeclaration", "interface",
-          "enumDeclaration", "enum",
-          "recordDeclaration", "record",
-          "annotationTypeDeclaration", "@interface");
+          "classDeclaration",
+          "class",
+          "interfaceDeclaration",
+          "interface",
+          "enumDeclaration",
+          "enum",
+          "recordDeclaration",
+          "record",
+          "annotationTypeDeclaration",
+          "@interface"
+      );
   private static final Set<String> BODIES =
       Set.of("classBody", "interfaceBody", "recordBody", "enumBodyDeclarations");
   private static final Set<String> MEMBERS =
@@ -60,8 +65,8 @@ public final class AnnotationStructureCheck implements RuleCheck {
       String memberKind,
       int least,
       int most,
-      boolean reportMembers) {
-
+      boolean reportMembers
+  ) {
     /** Copies the collections. */
     public Criteria {
       types = Set.copyOf(types);
@@ -152,12 +157,16 @@ public final class AnnotationStructureCheck implements RuleCheck {
                     declaration
                         .kind()
                         .toLowerCase(java.util.Locale.ROOT)
-                        .contains(criteria.memberKind()))
+                        .contains(criteria.memberKind())
+            )
             .isPresent();
   }
 
   private void report(
-      final SyntaxNode type, final List<SyntaxNode> members, final List<RuleMatch> out) {
+      final SyntaxNode type,
+      final List<SyntaxNode> members,
+      final List<RuleMatch> out
+  ) {
     final boolean withinBounds =
         members.size() >= criteria.least()
             && (criteria.most() < 0 || members.size() <= criteria.most());

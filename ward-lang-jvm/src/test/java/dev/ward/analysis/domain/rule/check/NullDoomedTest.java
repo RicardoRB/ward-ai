@@ -7,7 +7,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 class NullDoomedTest {
-
   @Test
   void aNullThatIsCertainToBeDereferencedAfterAMergeIsReported() {
     final String body =
@@ -44,8 +43,9 @@ class NullDoomedTest {
     assertThat(run(NullDataflowCheck.Mode.NULL_ON_SOME_PATH, body)).isEmpty();
     final String two =
         body.replace(
-                "s.length();",
-                "if (flag()) {\n        s.trim();\n      } else {\n        s.strip();\n      }")
+            "s.length();",
+            "if (flag()) {\n        s.trim();\n      } else {\n        s.strip();\n      }"
+        )
             + "  boolean flag() { return true; }\n";
     assertThat(run(NullDataflowCheck.Mode.GUARANTEED_DEREF_ON_EXCEPTION_PATH, two))
         .containsExactly("10:9");
@@ -61,11 +61,13 @@ class NullDoomedTest {
     final String passed =
         "  void t(Api api, boolean b) {\n    String s = null;\n    if (b) {\n      s = \"x\";\n    }\n    api.take(s);\n  }\n";
     assertThat(
-            run(
-                NullDataflowCheck.Mode.NULL_PARAM_DEREF,
-                passed,
-                "api.take(s)",
-                target("Api", "take", 1, "javax.annotation.Nonnull")))
+        run(
+            NullDataflowCheck.Mode.NULL_PARAM_DEREF,
+            passed,
+            "api.take(s)",
+            target("Api", "take", 1, "javax.annotation.Nonnull")
+        )
+    )
         .containsExactly("7:14");
   }
 }

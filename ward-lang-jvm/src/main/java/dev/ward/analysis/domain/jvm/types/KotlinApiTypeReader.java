@@ -40,8 +40,9 @@ final class KotlinApiTypeReader {
   /** Returns the declarations in the body of a class, object or enum, in source order. */
   static List<SyntaxNode> declarations(final SyntaxNode type) {
     return Stream.concat(
-            Syntax.children(type, "classBody").stream(),
-            Syntax.children(type, "enumClassBody").stream())
+        Syntax.children(type, "classBody").stream(),
+        Syntax.children(type, "enumClassBody").stream()
+    )
         .flatMap(body -> Syntax.children(body, "classMemberDeclaration").stream())
         .map(member -> member.children().getFirst())
         .toList();
@@ -57,7 +58,8 @@ final class KotlinApiTypeReader {
       final SyntaxNode node,
       final String binary,
       final KotlinApiRefs outer,
-      final List<ApiType> found) {
+      final List<ApiType> found
+  ) {
     final KotlinApiModifiers modifiers = KotlinApiModifiers.of(node);
     final ApiType.Kind kind = kind(node, modifiers);
     final KotlinApiRefs scoped =
@@ -78,7 +80,9 @@ final class KotlinApiTypeReader {
             declared.parameters(),
             supertypes(node, declared.refs()),
             members(node, binary, kind, body, declared.refs()),
-            location(node)));
+            location(node)
+        )
+    );
     body.stream()
         .filter(KotlinApiTypeReader::isType)
         .forEach(nested -> read(nested, binary + '$' + nameOf(nested), declared.refs(), found));
@@ -121,7 +125,8 @@ final class KotlinApiTypeReader {
       final String binary,
       final ApiType.Kind kind,
       final List<SyntaxNode> body,
-      final KotlinApiRefs refs) {
+      final KotlinApiRefs refs
+  ) {
     final KotlinApiMembers reader =
         new KotlinApiMembers(path, refs, kind == ApiType.Kind.INTERFACE);
     final KotlinApiConstructors generated = new KotlinApiConstructors(path, refs);

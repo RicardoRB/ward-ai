@@ -11,7 +11,6 @@ import org.antlr.v4.runtime.TokenStream;
  * at the top level of the arguments is read as a comparison.
  */
 final class TypeArgumentsLookahead {
-
   /** The most tokens scanned, so a stray {@code <} costs little. */
   private static final int MAX_TOKENS = 256;
 
@@ -34,7 +33,8 @@ final class TypeArgumentsLookahead {
           TypeScriptParser.Power,
           TypeScriptParser.NullCoalesce,
           TypeScriptParser.LessThanEquals,
-          TypeScriptParser.GreaterThanEquals);
+          TypeScriptParser.GreaterThanEquals
+      );
 
   /** Tokens that end a type argument list at the top level of a comparison. */
   private static final Set<Integer> NOT_AT_TOP_LEVEL =

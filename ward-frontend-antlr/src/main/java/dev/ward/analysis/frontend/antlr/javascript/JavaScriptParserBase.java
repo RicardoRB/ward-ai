@@ -76,7 +76,6 @@ public abstract class JavaScriptParserBase extends Parser {
    *     that contains a line terminator.
    */
   protected boolean lineTerminatorAhead() {
-
     // Get the token ahead of the current index.
     int possibleIndexEosToken = this.getCurrentToken().getTokenIndex() - 1;
     if (possibleIndexEosToken < 0) {
@@ -109,7 +108,7 @@ public abstract class JavaScriptParserBase extends Parser {
 
     // Check if the token is, or contains a line terminator.
     return (type == JavaScriptParser.MultiLineComment
-            && (text.contains("\r") || text.contains("\n")))
+        && (text.contains("\r") || text.contains("\n")))
         || (type == JavaScriptParser.LineTerminator);
   }
 }

@@ -71,7 +71,8 @@ public final class ProjectDeclarationFiles implements DeclarationFiles {
                 LOGGER.log(Level.FINE, "event=declaration-file-unreadable");
                 return Optional.empty();
               }
-            });
+            }
+        );
   }
 
   @Override
@@ -91,9 +92,10 @@ public final class ProjectDeclarationFiles implements DeclarationFiles {
                     .sorted()
                     .toList();
               } catch (IOException unreadable) {
-                return List.<String>of();
+                return List.<String> of();
               }
-            })
+            }
+        )
         .orElse(List.of());
   }
 
@@ -112,9 +114,9 @@ public final class ProjectDeclarationFiles implements DeclarationFiles {
       final MessageDigest digest = MessageDigest.getInstance("SHA-256");
       for (final Path file : files) {
         digest.update(dir.get().relativize(file).toString().getBytes(StandardCharsets.UTF_8));
-        digest.update((byte) 0);
+        digest.update((byte)0);
         digest.update(Files.readAllBytes(file));
-        digest.update((byte) 0);
+        digest.update((byte)0);
       }
       return Optional.of(HexFormat.of().formatHex(digest.digest()));
     } catch (IOException | NoSuchAlgorithmException unreadable) {
@@ -130,7 +132,9 @@ public final class ProjectDeclarationFiles implements DeclarationFiles {
         new SimpleFileVisitor<>() {
           @Override
           public FileVisitResult preVisitDirectory(
-              final Path dir, final BasicFileAttributes attrs) {
+              final Path dir,
+              final BasicFileAttributes attrs
+          ) {
             final boolean nested =
                 !dir.equals(directory)
                     && NODE_MODULES.equals(Objects.toString(dir.getFileName(), ""));
@@ -149,7 +153,8 @@ public final class ProjectDeclarationFiles implements DeclarationFiles {
             }
             return FileVisitResult.CONTINUE;
           }
-        });
+        }
+    );
     found.sort(null);
     return found;
   }

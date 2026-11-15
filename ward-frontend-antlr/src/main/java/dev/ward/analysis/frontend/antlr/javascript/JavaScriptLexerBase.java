@@ -18,7 +18,6 @@ import org.antlr.v4.runtime.Token;
  * by these names. Adapted from the grammars-v4 JavaScript base class (MIT).
  */
 public abstract class JavaScriptLexerBase extends WardLexerBase {
-
   /** Token types after which a slash starts a division, so no regex literal can follow. */
   private static final Set<Integer> NO_REGEX_AFTER =
       Set.of(
@@ -33,13 +32,15 @@ public abstract class JavaScriptLexerBase extends WardLexerBase {
           JavaScriptLexer.HexIntegerLiteral,
           JavaScriptLexer.StringLiteral,
           JavaScriptLexer.PlusPlus,
-          JavaScriptLexer.MinusMinus);
+          JavaScriptLexer.MinusMinus
+      );
 
   /** Token types after which a less-than sign is an operator, so no JSX element can start. */
   private static final Set<Integer> NO_JSX_AFTER =
       Stream.concat(
-              NO_REGEX_AFTER.stream(),
-              Stream.of(JavaScriptLexer.JsxSelfCloseEnd, JavaScriptLexer.JsxClosingTagEnd))
+          NO_REGEX_AFTER.stream(),
+          Stream.of(JavaScriptLexer.JsxSelfCloseEnd, JavaScriptLexer.JsxClosingTagEnd)
+      )
           .collect(Collectors.toUnmodifiableSet());
 
   /** Stores values of nested modes. By default mode is strict or defined externally. */

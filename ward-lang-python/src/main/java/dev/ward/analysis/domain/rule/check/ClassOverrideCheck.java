@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
  * and {@code overridden-final-method}. Bases that are not classes of this module are unknown.
  */
 public final class ClassOverrideCheck implements RuleCheck {
-
   /** The mistakes the check tells apart, one per rule. */
   public enum Problem {
     /** A method overrides a property of a base class, or a property overrides a method. */
@@ -72,8 +71,11 @@ public final class ClassOverrideCheck implements RuleCheck {
 
   private List<RuleMatch> overrides(
       final SyntaxNode root,
-      final Map<String, List<String>> bases,
-      final Map<String, PythonClassMembers.Members> members) {
+      final Map<String,
+      List<String>> bases,
+      final Map<String,
+      PythonClassMembers.Members> members
+  ) {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, FUNCTIONS)) {
       final String owner = PythonClassMembers.owner(visit.ancestors());
@@ -95,7 +97,10 @@ public final class ClassOverrideCheck implements RuleCheck {
   }
 
   private List<RuleMatch> hidden(
-      final SyntaxNode root, final Map<String, PythonClassMembers.Members> members) {
+      final SyntaxNode root,
+      final Map<String,
+      PythonClassMembers.Members> members
+  ) {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, FUNCTIONS)) {
       final String owner = PythonClassMembers.owner(visit.ancestors());
@@ -126,8 +131,11 @@ public final class ClassOverrideCheck implements RuleCheck {
 
   private List<RuleMatch> finals(
       final SyntaxNode root,
-      final Map<String, List<String>> bases,
-      final Map<String, PythonClassMembers.Members> members) {
+      final Map<String,
+      List<String>> bases,
+      final Map<String,
+      PythonClassMembers.Members> members
+  ) {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, FUNCTIONS)) {
       final String owner = PythonClassMembers.owner(visit.ancestors());

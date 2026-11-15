@@ -3,6 +3,7 @@ package dev.ward.analysis.application.jvm;
 import static java.util.Map.entry;
 
 import dev.ward.analysis.application.rule.CheckFactory;
+import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.KotlinClassLinesCheck;
 import dev.ward.analysis.domain.rule.check.KotlinComplexConditionCheck;
@@ -15,13 +16,13 @@ import dev.ward.analysis.domain.rule.check.KotlinMemberNameCheck;
 import dev.ward.analysis.domain.rule.check.KotlinNameShadowingCheck;
 import dev.ward.analysis.domain.rule.check.KotlinObjectPropertyCheck;
 import dev.ward.analysis.domain.rule.check.KotlinPackageDirectoryCheck;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.tomlj.TomlParseResult;
 
 /** Builds the Kotlin checks of detekt's empty-blocks, complexity and naming sets. */
 final class KotlinDeclarationChecks {
-
   private static final String MESSAGE = "message";
   private static final String KINDS = "kinds";
   private static final String AFTER = "after";
@@ -46,6 +47,10 @@ final class KotlinDeclarationChecks {
 
   /** The checks this class provides, by name. */
   static Map<String, CheckFactory> checks() {
+    return CheckRegistry.union(List.of(nameChecks(), structureChecks()));
+  }
+
+  private static Map<String, CheckFactory> nameChecks() {
     return Map.ofEntries(
         entry("kotlin-empty-block", KotlinDeclarationChecks::emptyBlock),
         entry(
@@ -54,48 +59,70 @@ final class KotlinDeclarationChecks {
                 new KotlinComplexConditionCheck(
                     TomlValues.strings(toml, KINDS),
                     TomlValues.integer(toml, THRESHOLD),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "kotlin-package-directory",
             toml ->
                 new KotlinPackageDirectoryCheck(
                     Optional.ofNullable(toml.getString(ROOT_PACKAGE)).orElse(""),
-                    bool(toml, REQUIRE_ROOT, false))),
+                    bool(toml, REQUIRE_ROOT, false)
+                )
+        ),
         entry(
             "kotlin-file-name",
             toml ->
                 new KotlinMatchingDeclarationNameCheck(
-                    bool(toml, MUST_BE_FIRST, true), TomlValues.required(toml, MESSAGE))),
+                    bool(toml, MUST_BE_FIRST, true),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "kotlin-member-name",
             toml ->
                 new KotlinMemberNameCheck(
-                    bool(toml, IGNORE_OVERRIDDEN, true), TomlValues.required(toml, MESSAGE))),
+                    bool(toml, IGNORE_OVERRIDDEN, true),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        )
+    );
+  }
+
+  private static Map<String, CheckFactory> structureChecks() {
+    return Map.ofEntries(
         entry(
             "kotlin-name-shadowing",
-            toml -> new KotlinNameShadowingCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new KotlinNameShadowingCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "kotlin-class-lines",
             toml ->
                 new KotlinClassLinesCheck(
                     TomlValues.strings(toml, KINDS),
                     TomlValues.integer(toml, MAX),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry("kotlin-function-count", KotlinDeclarationChecks::functionCount),
         entry(
             "kotlin-empty-when",
-            toml -> new KotlinEmptyWhenCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new KotlinEmptyWhenCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "kotlin-empty-constructor",
-            toml -> new KotlinEmptyConstructorCheck(TomlValues.required(toml, MESSAGE))),
-        entry("kotlin-object-property", KotlinDeclarationChecks::objectProperty));
+            toml -> new KotlinEmptyConstructorCheck(TomlValues.required(toml, MESSAGE))
+        ),
+        entry("kotlin-object-property", KotlinDeclarationChecks::objectProperty)
+    );
   }
 
   private static KotlinEmptyBlockCheck emptyBlock(final TomlParseResult toml) {
     return new KotlinEmptyBlockCheck(
         TomlValues.strings(toml, KINDS),
         Optional.ofNullable(toml.getString(AFTER)).orElse(""),
-        TomlValues.required(toml, MESSAGE));
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static KotlinFunctionCountCheck functionCount(final TomlParseResult toml) {
@@ -108,8 +135,10 @@ final class KotlinDeclarationChecks {
             TomlValues.integer(toml, THRESHOLD_ENUMS),
             bool(toml, IGNORE_PRIVATE, false),
             bool(toml, IGNORE_OVERRIDDEN, false),
-            bool(toml, IGNORE_DEPRECATED, false)),
-        TomlValues.required(toml, MESSAGE));
+            bool(toml, IGNORE_DEPRECATED, false)
+        ),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static KotlinObjectPropertyCheck objectProperty(final TomlParseResult toml) {
@@ -117,11 +146,15 @@ final class KotlinDeclarationChecks {
         TomlValues.required(toml, CONSTANT_PATTERN),
         TomlValues.required(toml, PROPERTY_PATTERN),
         TomlValues.required(toml, PRIVATE_PATTERN),
-        TomlValues.required(toml, MESSAGE));
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static boolean bool(
-      final TomlParseResult toml, final String key, final boolean fallback) {
+      final TomlParseResult toml,
+      final String key,
+      final boolean fallback
+  ) {
     return Optional.ofNullable(toml.getBoolean(key)).orElse(fallback);
   }
 }

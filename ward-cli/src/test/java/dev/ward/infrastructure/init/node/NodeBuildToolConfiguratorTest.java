@@ -86,17 +86,21 @@ class NodeBuildToolConfiguratorTest {
             new FakeCommandExecutor(1, "", "") {
               @Override
               public dev.ward.domain.process.CommandResult execute(
-                  final List<String> command, final Path workingDirectory) {
+                  final List<String> command,
+                  final Path workingDirectory
+              ) {
                 try {
                   Files.writeString(
                       workingDirectory.resolve("package-lock.json"),
-                      "{\"lockfileVersion\": 3, \"changed\": true}\n");
+                      "{\"lockfileVersion\": 3, \"changed\": true}\n"
+                  );
                 } catch (IOException e) {
                   throw new IllegalStateException(e);
                 }
                 return super.execute(command, workingDirectory);
               }
-            });
+            }
+        );
 
     assertThatThrownBy(() -> failing.apply(project(BuildTool.NPM, "24"), gates("vitest")))
         .isInstanceOf(WardException.class)
@@ -141,7 +145,8 @@ class NodeBuildToolConfiguratorTest {
             Set.of(),
             "24",
             TaskRunner.NONE,
-            null);
+            null
+        );
     final Throwable thrown =
         catchThrowable(() -> configurator.apply(angular, gates("ng-test", "tsc")));
 
@@ -161,7 +166,8 @@ class NodeBuildToolConfiguratorTest {
     assertThat(plan.details())
         .containsExactly(
             "add devDependency @stryker-mutator/core 10.1.1",
-            "run pnpm install, which updates pnpm-lock.yaml");
+            "run pnpm install, which updates pnpm-lock.yaml"
+        );
     assertThat(executor.commands).isEmpty();
   }
 
@@ -176,7 +182,8 @@ class NodeBuildToolConfiguratorTest {
         Set.of(),
         node,
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 
   private static List<InitGateOption> gates(final String... ids) {

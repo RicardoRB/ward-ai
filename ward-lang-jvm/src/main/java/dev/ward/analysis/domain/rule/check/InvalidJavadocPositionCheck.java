@@ -13,7 +13,6 @@ import java.util.Set;
  * import.
  */
 public final class InvalidJavadocPositionCheck implements UnitCheck {
-
   private static final Set<String> DECLARATIONS =
       Set.of(
           "classBodyDeclaration",
@@ -22,7 +21,8 @@ public final class InvalidJavadocPositionCheck implements UnitCheck {
           "packageDeclaration",
           "enumConstant",
           "annotationTypeElementDeclaration",
-          "compactConstructorDeclaration");
+          "compactConstructorDeclaration"
+      );
 
   private final String message;
 

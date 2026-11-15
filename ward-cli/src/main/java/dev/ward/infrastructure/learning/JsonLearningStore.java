@@ -59,7 +59,11 @@ public final class JsonLearningStore implements LearningStore {
       Files.writeString(temporary, codec.toJson(fromDomain(ledger)));
       try {
         Files.move(
-            temporary, target, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+            temporary,
+            target,
+            StandardCopyOption.ATOMIC_MOVE,
+            StandardCopyOption.REPLACE_EXISTING
+        );
       } catch (AtomicMoveNotSupportedException exception) {
         Files.move(temporary, target, StandardCopyOption.REPLACE_EXISTING);
       }
@@ -95,7 +99,8 @@ public final class JsonLearningStore implements LearningStore {
               throw new LearningStoreException("Learning record key does not match its value");
             }
             records.put(key, record);
-          });
+          }
+      );
     }
     try {
       return new LearningLedger(file.formatVersion, records);
@@ -109,13 +114,14 @@ public final class JsonLearningStore implements LearningStore {
       throw new LearningStoreException("Learning record must not be null");
     }
     if (Stream.of(
-            value.key,
-            value.gate,
-            value.rule,
-            value.summary,
-            value.state,
-            value.firstSeen,
-            value.lastSeen)
+        value.key,
+        value.gate,
+        value.rule,
+        value.summary,
+        value.state,
+        value.firstSeen,
+        value.lastSeen
+    )
         .anyMatch(Objects::isNull)) {
       throw new LearningStoreException("Invalid learning record: missing field");
     }
@@ -129,7 +135,8 @@ public final class JsonLearningStore implements LearningStore {
           LearningState.valueOf(value.state),
           Instant.parse(value.firstSeen),
           Instant.parse(value.lastSeen),
-          value.prompted);
+          value.prompted
+      );
     } catch (IllegalArgumentException | DateTimeParseException exception) {
       throw new LearningStoreException("Invalid learning record", exception);
     }

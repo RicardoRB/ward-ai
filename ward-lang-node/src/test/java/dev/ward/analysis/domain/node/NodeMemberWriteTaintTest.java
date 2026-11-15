@@ -15,27 +15,33 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 /** Runs the taint analysis with a member-write sink, which guards argument 0 of the write. */
 class NodeMemberWriteTaintTest {
-
   private static final TaintSpec SPEC =
       new TaintSpec(
           List.of(
               new TaintEntry(
-                  FlowSiteKind.CALL, "source", Optional.empty(), Optional.empty(), List.of())),
+                  FlowSiteKind.CALL,
+                  "source",
+                  Optional.empty(),
+                  Optional.empty(),
+                  List.of()
+              )
+          ),
           List.of(
               new TaintEntry(
                   FlowSiteKind.MEMBER_WRITE,
                   "innerHTML",
                   Optional.empty(),
                   Optional.empty(),
-                  List.of(0))),
+                  List.of(0)
+              )
+          ),
           List.of(),
-          List.of());
+          List.of()
+      );
 
   /** Scenario: Tainted value written to a sink property. The path ends at the write. */
   @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
+  @EnumSource(value = AnalysisLanguage.class, names = {"TYPESCRIPT", "JAVASCRIPT"})
   void taintedValueWrittenToSinkPropertyIsReported(final AnalysisLanguage language) {
     final List<TaintFinding> found =
         run(language, "function run(el) { const q = source(); el.innerHTML = q; }");
@@ -46,9 +52,7 @@ class NodeMemberWriteTaintTest {
 
   /** Scenario: Other property. A write to a property that is not a sink reports nothing. */
   @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
+  @EnumSource(value = AnalysisLanguage.class, names = {"TYPESCRIPT", "JAVASCRIPT"})
   void writeToAnotherPropertyIsNotReported(final AnalysisLanguage language) {
     assertThat(run(language, "function run(el) { const q = source(); el.title = q; }")).isEmpty();
   }

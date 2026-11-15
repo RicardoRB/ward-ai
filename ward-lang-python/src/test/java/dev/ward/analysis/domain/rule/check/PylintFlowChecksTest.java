@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** Edge cases of the Pylint checks of assignments, comparisons, call arguments and globals. */
 final class PylintFlowChecksTest {
-
   private static final String MESSAGE = "message";
 
   private static SyntaxNode root(final String source) {

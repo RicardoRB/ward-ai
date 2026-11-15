@@ -13,7 +13,6 @@ import java.util.Set;
  * method of that name, so an instance method named getInstance is also counted.
  */
 public final class SingleMethodSingletonCheck implements UnitCheck {
-
   private static final String GET_INSTANCE = "getInstance";
 
   private final String message;

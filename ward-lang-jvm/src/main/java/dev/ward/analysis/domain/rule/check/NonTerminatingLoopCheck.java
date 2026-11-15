@@ -79,7 +79,10 @@ public final class NonTerminatingLoopCheck implements RuleCheck {
   }
 
   private static boolean onCycle(
-      final ControlFlowGraph graph, final int block, final Set<Integer> within) {
+      final ControlFlowGraph graph,
+      final int block,
+      final Set<Integer> within
+  ) {
     final Set<Integer> seen = new HashSet<>();
     final Deque<Integer> pending = new ArrayDeque<>();
     neighbours(graph, block, false).stream().filter(within::contains).forEach(pending::push);
@@ -96,7 +99,10 @@ public final class NonTerminatingLoopCheck implements RuleCheck {
   }
 
   private static Set<Integer> reach(
-      final ControlFlowGraph graph, final int start, final boolean backwards) {
+      final ControlFlowGraph graph,
+      final int start,
+      final boolean backwards
+  ) {
     final Set<Integer> seen = new HashSet<>(Set.of(start));
     final Deque<Integer> pending = new ArrayDeque<>(List.of(start));
     while (!pending.isEmpty()) {
@@ -111,13 +117,18 @@ public final class NonTerminatingLoopCheck implements RuleCheck {
   }
 
   private static Set<Integer> connected(
-      final ControlFlowGraph graph, final int start, final Set<Integer> allowed) {
+      final ControlFlowGraph graph,
+      final int start,
+      final Set<Integer> allowed
+  ) {
     final Set<Integer> seen = new TreeSet<>(Set.of(start));
     final Deque<Integer> pending = new ArrayDeque<>(List.of(start));
     while (!pending.isEmpty()) {
       final int block = pending.pop();
       Stream.concat(
-              neighbours(graph, block, false).stream(), neighbours(graph, block, true).stream())
+          neighbours(graph, block, false).stream(),
+          neighbours(graph, block, true).stream()
+      )
           .filter(allowed::contains)
           .filter(seen::add)
           .forEach(pending::push);
@@ -126,7 +137,10 @@ public final class NonTerminatingLoopCheck implements RuleCheck {
   }
 
   private static List<Integer> neighbours(
-      final ControlFlowGraph graph, final int block, final boolean backwards) {
+      final ControlFlowGraph graph,
+      final int block,
+      final boolean backwards
+  ) {
     if (!backwards) {
       return targets(graph.blocks().get(block));
     }
@@ -149,13 +163,16 @@ public final class NonTerminatingLoopCheck implements RuleCheck {
 
   /** Returns the first node of the loop head, the block a back edge returns to. */
   private static Optional<SyntaxNode> position(
-      final ControlFlowGraph graph, final Set<Integer> loop) {
+      final ControlFlowGraph graph,
+      final Set<Integer> loop
+  ) {
     final Optional<Integer> head =
         loop.stream()
             .filter(
                 block ->
                     neighbours(graph, block, true).stream()
-                        .anyMatch(from -> loop.contains(from) && from >= block))
+                        .anyMatch(from -> loop.contains(from) && from >= block)
+            )
             .findFirst();
     return Stream.concat(head.stream(), loop.stream())
         .flatMap(block -> graph.blocks().get(block).nodes().stream())

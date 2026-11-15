@@ -7,7 +7,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import org.junit.jupiter.api.Test;
 
 class YamlPositionsTest {
-
   private static final int LONG_LINE = 200_000;
 
   @Test

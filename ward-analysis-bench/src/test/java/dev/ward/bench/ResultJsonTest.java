@@ -7,7 +7,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class ResultJsonTest {
-
   private static final String SHA = "0123456789abcdef0123456789abcdef01234567";
   private static final int BINARY_SIZE = 42;
   private static final int FULL_REPEATS = 5;
@@ -25,17 +24,21 @@ class ResultJsonTest {
             stats,
             stats,
             stats,
-            stats);
+            stats
+        );
     final BenchmarkResult result =
         new BenchmarkResult(
             List.of(
                 new BenchmarkResult.EntryResult(
                     new CorpusEntry("java", "petclinic", "https://example.com/p.git", SHA),
-                    List.of(job))),
+                    List.of(job)
+                )
+            ),
             new NativeExecutable(BINARY_SIZE, "b".repeat(64)),
             FULL_REPEATS,
             EDIT_REPEATS,
-            true);
+            true
+        );
 
     final String json = ResultJson.render(result, Instant.parse("2026-11-02T00:00:00Z"));
 

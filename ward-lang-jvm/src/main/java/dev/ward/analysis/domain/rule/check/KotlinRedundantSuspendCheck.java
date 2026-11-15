@@ -58,7 +58,8 @@ public final class KotlinRedundantSuspendCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(FUNCTION)).stream()
         .map(SyntaxWalk.Visit::node)
         .flatMap(function -> redundant(function, types).stream())
@@ -68,7 +69,9 @@ public final class KotlinRedundantSuspendCheck implements RuleCheck {
 
   /** Returns the {@code suspend} modifier of {@code function} when its body cannot suspend. */
   private static Optional<SyntaxNode> redundant(
-      final SyntaxNode function, final UnitTypeFacts types) {
+      final SyntaxNode function,
+      final UnitTypeFacts types
+  ) {
     final Optional<SyntaxNode> body =
         function.children().stream().filter(child -> BODY.equals(child.kind())).findFirst();
     return suspendModifier(function)
@@ -93,7 +96,8 @@ public final class KotlinRedundantSuspendCheck implements RuleCheck {
     return postfix.children().stream()
         .filter(child -> OPERATION.equals(child.kind()))
         .anyMatch(
-            child -> child.children().stream().anyMatch(part -> CALL_SUFFIX.equals(part.kind())));
+            child -> child.children().stream().anyMatch(part -> CALL_SUFFIX.equals(part.kind()))
+        );
   }
 
   private static boolean mayBeSuspending(final SyntaxNode call, final UnitTypeFacts types) {

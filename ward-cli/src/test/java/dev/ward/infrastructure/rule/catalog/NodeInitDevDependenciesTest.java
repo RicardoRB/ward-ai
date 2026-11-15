@@ -31,7 +31,6 @@ import org.junit.jupiter.params.provider.MethodSource;
  * files are the ones init writes for that preset, as its catalog and config templates name them.
  */
 final class NodeInitDevDependenciesTest {
-
   private static final Path FIXTURES = Path.of("src/test/resources/fixtures/node-matrix");
   private static final String TYPESCRIPT_RULE = "ward:typescript/knip-dev-dependencies";
   private static final String JAVASCRIPT_RULE = "ward:javascript/knip-dev-dependencies";
@@ -54,7 +53,9 @@ final class NodeInitDevDependenciesTest {
       String fixture,
       AnalysisLanguage language,
       List<String> devDependencies,
-      Map<String, String> configs) {}
+      Map<String,
+      String> configs
+  ) {}
 
   static Stream<InitCase> initCases() {
     return Stream.of(
@@ -62,12 +63,14 @@ final class NodeInitDevDependenciesTest {
             TYPESCRIPT_FIXTURE,
             AnalysisLanguage.TYPESCRIPT,
             List.of("typescript", "vitest", "@vitest/coverage-v8"),
-            Map.of(VITEST_MJS, vitest())),
+            Map.of(VITEST_MJS, vitest())
+        ),
         new InitCase(
             "javascript-esm",
             AnalysisLanguage.JAVASCRIPT,
             List.of("@vitest/coverage-v8"),
-            Map.of(VITEST_MJS, vitest())),
+            Map.of(VITEST_MJS, vitest())
+        ),
         new InitCase(
             TYPESCRIPT_FIXTURE,
             AnalysisLanguage.TYPESCRIPT,
@@ -76,15 +79,17 @@ final class NodeInitDevDependenciesTest {
                 "vitest",
                 "@vitest/coverage-v8",
                 "@stryker-mutator/core",
-                "@stryker-mutator/vitest-runner"),
-            Map.of(
-                VITEST_MJS, vitest(),
-                STRYKER_MJS, stryker("vitest"))),
+                "@stryker-mutator/vitest-runner"
+            ),
+            Map.of(VITEST_MJS, vitest(), STRYKER_MJS, stryker("vitest"))
+        ),
         new InitCase(
             "javascript-esm",
             AnalysisLanguage.JAVASCRIPT,
             List.of("jest", "@stryker-mutator/core", "@stryker-mutator/jest-runner"),
-            Map.of(STRYKER_MJS, stryker("jest"))));
+            Map.of(STRYKER_MJS, stryker("jest"))
+        )
+    );
   }
 
   @ParameterizedTest
@@ -103,17 +108,21 @@ final class NodeInitDevDependenciesTest {
   }
 
   private static List<AnalysisFinding> findings(
-      final InitCase test, final List<String> devDependencies) throws IOException {
+      final InitCase test,
+      final List<String> devDependencies
+  ) throws IOException {
     final RuleDefinition rule =
         RULES.get(
-            test.language() == AnalysisLanguage.TYPESCRIPT ? TYPESCRIPT_RULE : JAVASCRIPT_RULE);
+            test.language() == AnalysisLanguage.TYPESCRIPT ? TYPESCRIPT_RULE : JAVASCRIPT_RULE
+        );
     return new RuleFixtureRunner()
         .run(
             rule,
             CASE + extension(test.language()),
             CASE_TEXT,
             null,
-            project(test, devDependencies));
+            project(test, devDependencies)
+        );
   }
 
   /** The project init made: the fixture's sources, the preset's config files, and its manifest. */

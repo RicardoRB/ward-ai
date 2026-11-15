@@ -15,7 +15,6 @@ import java.util.Set;
  * it fills.
  */
 final class WildcardTypes {
-
   private static final String TYPE_PARAMETER = "typeParameter";
   private static final String TYPE_TYPE = "typeType";
   private static final int BOUNDED = 3;
@@ -48,7 +47,8 @@ final class WildcardTypes {
             list ->
                 list.children().stream()
                     .filter(child -> TYPE_PARAMETER.equals(child.kind()))
-                    .forEach(parameter -> out.add(bound(parameter))));
+                    .forEach(parameter -> out.add(bound(parameter)))
+        );
     return out;
   }
 
@@ -66,7 +66,9 @@ final class WildcardTypes {
   private boolean unsafeArguments(final SyntaxNode type) {
     final List<String> declared =
         bounds.getOrDefault(
-            NullSyntax.first(type, "typeIdentifier").map(SyntaxWalk::text).orElse(""), List.of());
+            NullSyntax.first(type, "typeIdentifier").map(SyntaxWalk::text).orElse(""),
+            List.of()
+        );
     final List<SyntaxNode> arguments =
         NullSyntax.first(type, "typeArguments").stream()
             .flatMap(list -> list.children().stream())

@@ -34,8 +34,11 @@ public record AnalysisPorts(
     AnalysisResultCodec codec,
     String engineVersion,
     DependencyAdapters dependencies,
-    BiFunction<Path, Optional<Path>, Map<AnalysisLanguage, TypeFacts>> nativeTypeFacts) {
-
+    BiFunction<Path,
+    Optional<Path>,
+    Map<AnalysisLanguage,
+    TypeFacts>> nativeTypeFacts
+) {
   /** Copies the frontends. */
   public AnalysisPorts {
     frontends = List.copyOf(frontends);

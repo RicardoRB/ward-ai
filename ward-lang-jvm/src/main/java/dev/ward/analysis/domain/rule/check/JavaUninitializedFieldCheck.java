@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR does.
  */
 public final class JavaUninitializedFieldCheck implements RuleCheck {
-
   private final String message;
 
   /**
@@ -38,7 +37,9 @@ public final class JavaUninitializedFieldCheck implements RuleCheck {
               .forEach(
                   name ->
                       matches.add(
-                          CheckSupport.at(field.span(), CheckSupport.fill(message, name, ""))));
+                          CheckSupport.at(field.span(), CheckSupport.fill(message, name, ""))
+                      )
+              );
         }
       }
     }
@@ -54,7 +55,8 @@ public final class JavaUninitializedFieldCheck implements RuleCheck {
         && JavaNodes.kids(field, "annotation").isEmpty()
         && field.children().stream()
             .noneMatch(
-                child -> "modifier".equals(child.kind()) && SyntaxWalk.text(child).startsWith("@"))
+                child -> "modifier".equals(child.kind()) && SyntaxWalk.text(child).startsWith("@")
+            )
         && !SyntaxWalk.text(declaration).contains("=")
         && SyntaxWalk.descendants(declaration).stream()
             .noneMatch(node -> "primitiveType".equals(node.kind()));
@@ -64,7 +66,8 @@ public final class JavaUninitializedFieldCheck implements RuleCheck {
     final String text = SyntaxWalk.text(clazz);
     final Pattern nullTest =
         Pattern.compile(
-            "(?:\\b|\\.)" + name + "[!=]=null|null[!=]=" + name + "\\b|requireNonNull\\(" + name);
+            "(?:\\b|\\.)" + name + "[!=]=null|null[!=]=" + name + "\\b|requireNonNull\\(" + name
+        );
     final List<SyntaxNode> methods = ClassShapes.methods(clazz);
     final List<SyntaxNode> setUp = new ArrayList<>(ClassShapes.constructors(clazz));
     setUp.addAll(ClassShapes.initializers(clazz));
@@ -80,7 +83,8 @@ public final class JavaUninitializedFieldCheck implements RuleCheck {
         .anyMatch(
             node ->
                 "'.'".equals(node.children().get(1).kind())
-                    && ClassShapes.writes(SyntaxWalk.text(node.children().get(0)), name));
+                    && ClassShapes.writes(SyntaxWalk.text(node.children().get(0)), name)
+        );
   }
 
   private static boolean assigns(final SyntaxNode member, final String name) {

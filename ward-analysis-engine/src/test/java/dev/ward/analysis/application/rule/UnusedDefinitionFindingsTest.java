@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks which definitions the whole-run unused rules report across files. */
 final class UnusedDefinitionFindingsTest {
-
   private static final Span SPAN = new Span(3, 1, 4, 1, 10, 20);
   private static final String LIB_PY = "a/lib.py";
   private static final RuleDefinition FUNCTION = rule(UnusedDefinitionFindings.FUNCTION_ID);
@@ -30,7 +29,8 @@ final class UnusedDefinitionFindingsTest {
             LIB_PY,
             summary(LIB_PY, Set.of(), symbol("shared"), symbol("lonely")),
             "a/app.py",
-            summary("a/app.py", Set.of("shared")));
+            summary("a/app.py", Set.of("shared"))
+        );
 
     final List<AnalysisFinding> findings =
         UnusedDefinitionFindings.findings(List.of(FUNCTION), files);
@@ -52,7 +52,8 @@ final class UnusedDefinitionFindingsTest {
             "a/conftest.py",
             summary("a/conftest.py", Set.of(), symbol("fixture")),
             "a/test_lib.py",
-            summary("a/test_lib.py", Set.of(), symbol("helper")));
+            summary("a/test_lib.py", Set.of(), symbol("helper"))
+        );
 
     assertThat(UnusedDefinitionFindings.findings(List.of(FUNCTION), files)).isEmpty();
   }
@@ -73,12 +74,15 @@ final class UnusedDefinitionFindingsTest {
     final Map<String, FileSummary> files =
         Map.of(
             "a/model.py",
-                summary(
-                    "a/model.py",
-                    Set.of(),
-                    new Symbol("save", SPAN, "method"),
-                    new Symbol("drop", SPAN, "method")),
-            "a/service.py", summary("a/service.py", Set.of("save")));
+            summary(
+                "a/model.py",
+                Set.of(),
+                new Symbol("save", SPAN, "method"),
+                new Symbol("drop", SPAN, "method")
+            ),
+            "a/service.py",
+            summary("a/service.py", Set.of("save"))
+        );
 
     assertThat(UnusedDefinitionFindings.findings(List.of(method), files))
         .extracting(AnalysisFinding::message)
@@ -92,7 +96,10 @@ final class UnusedDefinitionFindingsTest {
   }
 
   private static FileSummary summary(
-      final String path, final Set<String> used, final Symbol... declared) {
+      final String path,
+      final Set<String> used,
+      final Symbol... declared
+  ) {
     return new FileSummary(path, List.of(), List.of(), List.of(declared), used);
   }
 
@@ -102,6 +109,7 @@ final class UnusedDefinitionFindingsTest {
         Set.of(AnalysisLanguage.PYTHON),
         RuleCapability.SYMBOLS,
         AnalysisSeverity.ERROR,
-        "check = \"unused-definition\"");
+        "check = \"unused-definition\""
+    );
   }
 }

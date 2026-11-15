@@ -29,13 +29,17 @@ public final class UpdateNoticePrinter {
   /** Creates a printer that asks {@code service} for a notice when a console is attached. */
   @Inject
   public UpdateNoticePrinter(
-      final UpdateNoticeService service, final TerminalCapabilities terminal) {
+      final UpdateNoticeService service,
+      final TerminalCapabilities terminal
+  ) {
     this(service::automaticNotice, terminal::consoleAttached);
   }
 
   /** Creates a printer from a {@code notice} source and a console check. */
   public UpdateNoticePrinter(
-      final Supplier<Optional<String>> notice, final BooleanSupplier consoleAttached) {
+      final Supplier<Optional<String>> notice,
+      final BooleanSupplier consoleAttached
+  ) {
     this.notice = notice;
     this.consoleAttached = consoleAttached;
   }

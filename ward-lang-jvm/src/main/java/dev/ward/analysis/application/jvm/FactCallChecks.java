@@ -29,7 +29,6 @@ import org.tomlj.TomlParseResult;
  * method declarations, and the checks of the annotations of one file.
  */
 final class FactCallChecks {
-
   private static final String MESSAGE = "message";
 
   private static final Set<String> CLASSES =
@@ -40,7 +39,10 @@ final class FactCallChecks {
       Map.of(
           "compatible-with-misuse",
           new Declared(
-              Set.of("methodDeclaration"), Set.of(FactKind.CALL), new CompatibleWithMisuse()),
+              Set.of("methodDeclaration"),
+              Set.of(FactKind.CALL),
+              new CompatibleWithMisuse()
+          ),
           "comparable-type-mismatch",
           new Declared(CLASSES, CLASS_FACTS, new ComparableTypeMismatch()),
           "annotation-implementation",
@@ -48,7 +50,8 @@ final class FactCallChecks {
           "auto-factory-injected",
           new Declared(Set.of("classDeclaration"), CLASS_FACTS, new AutoFactoryInjected()),
           "auto-value-builder-constructor",
-          new Declared(Set.of("classDeclaration"), CLASS_FACTS, new AutoValueBuilderConstructor()));
+          new Declared(Set.of("classDeclaration"), CLASS_FACTS, new AutoValueBuilderConstructor())
+      );
 
   /** A declaration test with the node kinds it reads and the facts it needs. */
   private record Declared(Set<String> kinds, Set<FactKind> facts, DeclarationFactTest test) {}
@@ -62,19 +65,26 @@ final class FactCallChecks {
         entry("method-override", FactCallChecks::methodOverride),
         entry("declaration-facts", FactCallChecks::declarationFacts),
         entry(
-            "compare-to-zero", toml -> new CompareToZeroCheck(TomlValues.required(toml, MESSAGE))),
+            "compare-to-zero",
+            toml -> new CompareToZeroCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "compile-time-constant",
-            toml -> new CompileTimeConstantCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new CompileTimeConstantCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "thread-safe-fields",
-            toml -> new ThreadSafeFieldsCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new ThreadSafeFieldsCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "proto-string-equality",
-            toml -> new ProtoStringEqualityCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new ProtoStringEqualityCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "required-modifiers",
-            toml -> new RequiredModifiersCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new RequiredModifiersCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 
   private static CallFactsCheck callFacts(final TomlParseResult toml) {
@@ -87,8 +97,10 @@ final class FactCallChecks {
             TomlValues.optionalStrings(toml, "receiver-ancestors"),
             Pattern.compile(toml.getString("text", () -> "")),
             toml.getBoolean("ignored", () -> false),
-            toml.getBoolean("outside-resource", () -> false)),
-        TomlValues.required(toml, MESSAGE));
+            toml.getBoolean("outside-resource", () -> false)
+        ),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static DeclarationFactsCheck declarationFacts(final TomlParseResult toml) {
@@ -97,7 +109,11 @@ final class FactCallChecks {
       throw new IllegalArgumentException("unknown declaration test");
     }
     return new DeclarationFactsCheck(
-        declared.kinds(), declared.facts(), declared.test(), TomlValues.required(toml, MESSAGE));
+        declared.kinds(),
+        declared.facts(),
+        declared.test(),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static MethodOverrideCheck methodOverride(final TomlParseResult toml) {
@@ -105,7 +121,9 @@ final class FactCallChecks {
         new MethodOverrideCheck.Criteria(
             TomlValues.strings(toml, "overridden-annotations"),
             TomlValues.optionalStrings(toml, "required-annotations"),
-            toml.getBoolean("require-super-call", () -> false)),
-        TomlValues.required(toml, MESSAGE));
+            toml.getBoolean("require-super-call", () -> false)
+        ),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 }

@@ -32,6 +32,8 @@ final class NoDynamicVersion implements BuildPolicyRule {
                 + "; use an exact version"
                 + (dynamism == Dynamism.RANGE ? " or commit a lockfile." : "."),
             declaration.file(),
-            declaration.line()));
+            declaration.line()
+        )
+    );
   }
 }

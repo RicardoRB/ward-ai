@@ -13,7 +13,6 @@ import java.util.Set;
  * and an identity test against a literal (pyflakes {@code F632}).
  */
 public final class ComparisonOperatorCheck implements RuleCheck {
-
   /** The mistakes the check tells apart, one per rule. */
   public enum Problem {
     /** {@code not x in y} instead of {@code x not in y}. */

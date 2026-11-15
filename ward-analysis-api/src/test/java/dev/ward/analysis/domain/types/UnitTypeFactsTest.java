@@ -19,7 +19,8 @@ class UnitTypeFactsTest {
     final SpanFacts start = withType(TypeRef.of("other"));
     final UnitTypeFacts facts =
         new UnitTypeFacts(
-            Map.of(UnitTypeFacts.key(CALL), exact, UnitTypeFacts.startKey(CALL), start));
+            Map.of(UnitTypeFacts.key(CALL), exact, UnitTypeFacts.startKey(CALL), start)
+        );
 
     assertThat(facts.typeOf(CALL)).contains(STRING);
   }
@@ -58,7 +59,8 @@ class UnitTypeFactsTest {
             List.of(),
             List.of(),
             null,
-            null);
+            null
+        );
 
     assertThat(new UnitTypeFacts(Map.of("3:5", parameter)).nullness(CALL))
         .isEqualTo(Nullness.NON_NULL);
@@ -83,7 +85,8 @@ class UnitTypeFactsTest {
             null,
             Map.of(),
             Map.of(),
-            null);
+            null
+        );
 
     assertThat(target.parameters()).containsExactly(TypeRef.of("java.lang.Object"));
     assertThatThrownBy(() -> target.parameters().add(STRING))

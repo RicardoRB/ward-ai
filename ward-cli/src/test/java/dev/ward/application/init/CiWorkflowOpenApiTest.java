@@ -9,10 +9,11 @@ class CiWorkflowOpenApiTest {
   void openApiGatesInstallNoTool() {
     final String body =
         CiWorkflowTemplate.render(
-                "github",
-                CiWorkflowTemplateTest.MAVEN,
-                CiWorkflowTemplateTest.gates("openapi-lint", "openapi-diff", "openapi-compat"),
-                "0.0.12")
+            "github",
+            CiWorkflowTemplateTest.MAVEN,
+            CiWorkflowTemplateTest.gates("openapi-lint", "openapi-diff", "openapi-compat"),
+            "0.0.12"
+        )
             .body();
 
     assertThat(body)

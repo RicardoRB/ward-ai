@@ -44,13 +44,15 @@ final class InventoryDecoder {
       throw new IllegalArgumentException("not a stored graph");
     }
     return new DependencyInventory(
-        list(root.get("modules")).stream().map(item -> decodeModule(map(item))).toList());
+        list(root.get("modules")).stream().map(item -> decodeModule(map(item))).toList()
+    );
   }
 
   private static ModuleDependencies decodeModule(final Map<?, ?> module) {
     return new ModuleDependencies(
         text(module, PATH),
-        list(module.get(DEPENDENCIES)).stream().map(item -> decodeEntry(map(item))).toList());
+        list(module.get(DEPENDENCIES)).stream().map(item -> decodeEntry(map(item))).toList()
+    );
   }
 
   private static Dependency decodeEntry(final Map<?, ?> map) {
@@ -70,7 +72,8 @@ final class InventoryDecoder {
         text(map, "source"),
         text(map, "declaredIn"),
         requiredBy,
-        requested);
+        requested
+    );
   }
 
   private static RequestedVersion decodeRequest(final Map<?, ?> map) {
@@ -79,7 +82,10 @@ final class InventoryDecoder {
 
   private static PackageId packageId(final Map<?, ?> map) {
     return new PackageId(
-        Ecosystem.valueOf(text(map, "ecosystem")), text(map, NAME), text(map, VERSION));
+        Ecosystem.valueOf(text(map, "ecosystem")),
+        text(map, NAME),
+        text(map, VERSION)
+    );
   }
 
   private static Map<?, ?> map(final Object value) {

@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** The statement-per-line and trailing-comma checks on small trees with explicit lines. */
 class StatementAndCommaChecksTest extends TreeBuilders {
-
   private static final String SEMICOLON = "';'";
   private static final String COMMA = "','";
   private static final String OPEN = "'{'";
@@ -31,7 +30,8 @@ class StatementAndCommaChecksTest extends TreeBuilders {
         n(
             "block",
             n("forControl", token(SEMICOLON, ";", 1), token(SEMICOLON, ";", 1)),
-            token(SEMICOLON, ";", 1));
+            token(SEMICOLON, ";", 1)
+        );
     assertThat(new OneStatementPerLineCheck(false, MESSAGE).check(unit(loop), FILE)).isEmpty();
     final SyntaxNode members =
         n("classBodyDeclaration", token(SEMICOLON, ";", 1), token(SEMICOLON, ";", 1));
@@ -45,7 +45,8 @@ class StatementAndCommaChecksTest extends TreeBuilders {
             "resourceSpecification",
             n(RESOURCE, token(RESOURCE, "a", 1)),
             token(SEMICOLON, ";", 1),
-            n(RESOURCE, token(RESOURCE, "b", 1)));
+            n(RESOURCE, token(RESOURCE, "b", 1))
+        );
     assertThat(new OneStatementPerLineCheck(true, MESSAGE).check(unit(resources), FILE)).hasSize(1);
     assertThat(new OneStatementPerLineCheck(false, MESSAGE).check(unit(resources), FILE)).isEmpty();
   }

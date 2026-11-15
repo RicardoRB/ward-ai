@@ -4,7 +4,6 @@ import dev.ward.analysis.domain.types.ConstantValue;
 
 /** Helpers split out of {@link FactBuilder}. */
 final class ConstantFacts {
-
   private ConstantFacts() {}
 
   /** Returns the constant a literal type stands for, or null when the type is not a literal. */

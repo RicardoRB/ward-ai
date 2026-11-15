@@ -26,7 +26,9 @@ public final class FactoryDroidIntegration implements NativeHarnessAdapter {
           Set.of(
               IntegrationCapability.POST_EDIT,
               IntegrationCapability.TURN_END,
-              IntegrationCapability.FEEDBACK));
+              IntegrationCapability.FEEDBACK
+          )
+      );
 
   @Override
   public NativeAgentIntegration.Definition definition() {
@@ -124,7 +126,8 @@ public final class FactoryDroidIntegration implements NativeHarnessAdapter {
           arguments.input,
           null,
           false,
-          Boolean.TRUE.equals(stopHookActive));
+          Boolean.TRUE.equals(stopHookActive)
+      );
     }
   }
 

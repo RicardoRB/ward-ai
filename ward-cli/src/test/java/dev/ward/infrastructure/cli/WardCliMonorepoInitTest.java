@@ -46,7 +46,9 @@ class WardCliMonorepoInitTest extends WardCliIntegrationSupport {
         Files.readString(pom)
             .replace(
                 "</project>",
-                "    <modules><module>core</module><module>web</module></modules>\n</project>"));
+                "    <modules><module>core</module><module>web</module></modules>\n</project>"
+            )
+    );
     write(API + "/core/pom.xml", "<project><artifactId>core</artifactId></project>");
     write(API + "/web/pom.xml", "<project><artifactId>web</artifactId></project>");
     write(BILLING + "/settings.gradle.kts", "include(\":domain\")\n");
@@ -71,12 +73,14 @@ class WardCliMonorepoInitTest extends WardCliIntegrationSupport {
         .contains(
             "pnpm format",
             "# ward-owned: quality-hooks v1 begin apps/api",
-            "# ward-owned: quality-hooks v1 begin services/billing");
+            "# ward-owned: quality-hooks v1 begin services/billing"
+        );
     assertThat(read(".claude/settings.json"))
         .contains(
             "./scripts/verify-edit.sh",
             "ward-edit-write-apps-api",
-            "ward-edit-write-services-billing");
+            "ward-edit-write-services-billing"
+        );
     assertThat(repository.resolve(".github/workflows/ward-apps-api.yml")).exists();
     assertThat(repository.resolve(".github/workflows/ward-services-billing.yml")).exists();
     assertThat(repository.resolve(".opencode/plugins/ward-edit-write-apps-api.js")).exists();
@@ -108,7 +112,9 @@ class WardCliMonorepoInitTest extends WardCliIntegrationSupport {
                 "--quality-hooks",
                 "--ci",
                 "github",
-                "--yes"));
+                "--yes"
+            )
+        );
     if (dryRun) {
       args.add("--dry-run");
     }

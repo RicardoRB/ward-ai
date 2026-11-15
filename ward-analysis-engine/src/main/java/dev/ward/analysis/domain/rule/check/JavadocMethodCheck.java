@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * Throws:}. A function without a documentation comment is left to {@code missing-javadoc-method}.
  */
 public final class JavadocMethodCheck implements RuleCheck {
-
   private static final String FUNCTION = "function_declaration";
   private static final String SIGNATURE = "function_signature";
   private static final String RESULT = "function_result";
@@ -75,7 +74,11 @@ public final class JavadocMethodCheck implements RuleCheck {
   }
 
   private static List<String> missingTag(
-      final SyntaxNode signature, final String comment, final String kind, final String tag) {
+      final SyntaxNode signature,
+      final String comment,
+      final String kind,
+      final String tag
+  ) {
     final boolean missing = hasNode(signature, kind) && !hasTag(comment, tag);
     return missing ? List.of("- " + tag + ":") : List.of();
   }

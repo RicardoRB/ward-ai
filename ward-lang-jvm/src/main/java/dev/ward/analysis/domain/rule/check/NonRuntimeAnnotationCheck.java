@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * nothing. An annotation declared elsewhere is not known, so it is not checked.
  */
 public final class NonRuntimeAnnotationCheck implements RuleCheck {
-
   private static final String ANNOTATION_TYPE = "annotationTypeDeclaration";
   private static final String IDENTIFIER = "identifier";
   private static final String EXPRESSION = "expression";
@@ -24,7 +23,8 @@ public final class NonRuntimeAnnotationCheck implements RuleCheck {
   private static final Pattern LOOKUP =
       Pattern.compile(
           "\\.(?:isAnnotationPresent|getAnnotation|getDeclaredAnnotation|getAnnotationsByType|"
-              + "getDeclaredAnnotationsByType)\\((?:[\\w.]*\\.)?(\\w+)\\.class\\)$");
+              + "getDeclaredAnnotationsByType)\\((?:[\\w.]*\\.)?(\\w+)\\.class\\)$"
+      );
 
   private final String message;
 
@@ -65,7 +65,8 @@ public final class NonRuntimeAnnotationCheck implements RuleCheck {
               .anyMatch(
                   text ->
                       RETENTION.equals(AnnotationTexts.simpleName(text))
-                          && RUNTIME.matcher(text).find());
+                          && RUNTIME.matcher(text).find()
+              );
       if (!runtime) {
         visit.node().children().stream()
             .filter(child -> IDENTIFIER.equals(child.kind()))

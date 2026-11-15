@@ -26,11 +26,13 @@ public class CheckReportExport {
       sink.persist(target, content);
       LOGGER.log(
           Level.INFO,
-          () -> "event=report-written file=" + target.getFileName() + " bytes=" + content.length());
+          () -> "event=report-written file=" + target.getFileName() + " bytes=" + content.length()
+      );
     } catch (ReportWriteException exception) {
       LOGGER.log(
           Level.WARNING,
-          () -> "event=report-write-failed error=" + exception.getClass().getSimpleName());
+          () -> "event=report-write-failed error=" + exception.getClass().getSimpleName()
+      );
       throw new WardException("Cannot write report to " + target + ".", exception);
     }
   }

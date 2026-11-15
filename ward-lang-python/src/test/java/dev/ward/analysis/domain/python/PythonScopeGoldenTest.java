@@ -16,7 +16,6 @@ import org.junit.jupiter.params.provider.MethodSource;
  * with {@code -Dward.scopes.update=true} to rewrite the goldens for review.
  */
 class PythonScopeGoldenTest {
-
   private static final Path FIXTURES = Path.of("src/test/resources/scopes/python");
   private static final String UPDATE_PROPERTY = "ward.scopes.update";
 

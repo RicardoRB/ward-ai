@@ -12,7 +12,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** --dry-run previews without writing, and compatibility approval shows in the plan. */
 class InitDryRunTest {
-
   @TempDir Path root;
 
   @Test
@@ -29,7 +28,8 @@ class InitDryRunTest {
             "--integration",
             "none",
             "--architecture",
-            "layered");
+            "layered"
+        );
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(init.output())

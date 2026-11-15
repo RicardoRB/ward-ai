@@ -24,7 +24,6 @@ import org.antlr.v4.runtime.tree.ParseTree;
  * time.
  */
 final class EcmaParsing {
-
   private EcmaParsing() {}
 
   /**
@@ -65,13 +64,17 @@ final class EcmaParsing {
   }
 
   private static <P extends Parser> EcmaParse parse(
-      final Lexer lexer, final P parser, final Function<P, ParserRuleContext> start) {
+      final Lexer lexer,
+      final P parser,
+      final Function<P,
+      ParserRuleContext> start
+  ) {
     final FirstErrorLine errors = new FirstErrorLine();
     lexer.removeErrorListeners();
     parser.removeErrorListeners();
     parser.setErrorHandler(errors);
     final ParserRuleContext tree = start.apply(parser);
-    final CommonTokenStream stream = (CommonTokenStream) parser.getTokenStream();
+    final CommonTokenStream stream = (CommonTokenStream)parser.getTokenStream();
     stream.fill();
     final EcmaTokenCollector collector = new EcmaTokenCollector(lexer.getVocabulary());
     for (final Token token : stream.getTokens()) {
@@ -83,7 +86,10 @@ final class EcmaParsing {
   }
 
   private static void collectRules(
-      final ParseTree node, final String[] ruleNames, final List<FormatRule> out) {
+      final ParseTree node,
+      final String[] ruleNames,
+      final List<FormatRule> out
+  ) {
     if (!(node instanceof ParserRuleContext rule)) {
       return;
     }
@@ -99,7 +105,6 @@ final class EcmaParsing {
    * strategy, so the listener interface, whose callback takes six parameters, is not needed.
    */
   private static final class FirstErrorLine extends DefaultErrorStrategy {
-
     private int line = Integer.MAX_VALUE;
 
     @Override

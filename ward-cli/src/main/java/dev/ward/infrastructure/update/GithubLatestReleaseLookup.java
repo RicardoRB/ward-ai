@@ -52,7 +52,8 @@ public final class GithubLatestReleaseLookup implements LatestReleaseLookup {
                   .method("HEAD", HttpRequest.BodyPublishers.noBody())
                   .timeout(timeout)
                   .build(),
-              HttpResponse.BodyHandlers.discarding());
+              HttpResponse.BodyHandlers.discarding()
+          );
       return releaseFrom(response);
     } catch (HttpTimeoutException e) {
       return unknown("timeout");

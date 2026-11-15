@@ -4,7 +4,6 @@ import java.util.List;
 
 /** Builds the graph rule that a definition names, for the rule ids the graph rules own. */
 public final class GraphRules {
-
   /** The ids of the graph rules, which the per-unit engine never runs. */
   public static final List<String> IDS =
       List.of(
@@ -14,7 +13,8 @@ public final class GraphRules {
           CyclicImportRule.ID,
           DependencyArchitectureRule.ID,
           NamingArchitectureRule.ID,
-          LocationArchitectureRule.ID);
+          LocationArchitectureRule.ID
+      );
 
   private GraphRules() {}
 

@@ -4,7 +4,6 @@ import java.util.Set;
 
 /** The node kinds that open a body of their own, so a walk over one body stops at them. */
 final class NodeKinds {
-
   /** Nested functions, accessors, methods and classes: their returns belong to them. */
   static final Set<String> NESTED_BODIES =
       Set.of(
@@ -17,7 +16,8 @@ final class NodeKinds {
           "constructorDeclaration",
           "getAccessor",
           "setAccessor",
-          "classDeclaration");
+          "classDeclaration"
+      );
 
   private NodeKinds() {}
 }

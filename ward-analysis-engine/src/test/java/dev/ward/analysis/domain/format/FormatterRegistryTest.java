@@ -8,7 +8,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class FormatterRegistryTest {
-
   private static final StubFormatter JAVA_FORMATTER =
       new StubFormatter(AnalysisLanguage.JAVA, s -> new FormatResult.Unchanged());
   private static final FormatSyntax SYNTAX =

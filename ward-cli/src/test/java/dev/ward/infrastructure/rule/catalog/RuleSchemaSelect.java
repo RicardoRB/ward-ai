@@ -15,7 +15,6 @@ import java.util.stream.Stream;
 
 /** Builds the schema of the {@code [select]} table, with the enums the selector accepts. */
 final class RuleSchemaSelect {
-
   private static final String TYPE = "type";
   private static final String STRING = "string";
   private static final String ENUM = "enum";

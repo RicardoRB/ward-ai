@@ -21,7 +21,10 @@ public final class OpenApiGates {
   /** Creates the builder from the ports the OpenAPI gates use. */
   @Inject
   public OpenApiGates(
-      final RevisionFiles revisions, final ProjectFiles files, final AnalysisPorts analysis) {
+      final RevisionFiles revisions,
+      final ProjectFiles files,
+      final AnalysisPorts analysis
+  ) {
     this(revisions, files, analysis, Clock.systemUTC());
   }
 
@@ -30,7 +33,8 @@ public final class OpenApiGates {
       final RevisionFiles revisions,
       final ProjectFiles files,
       final AnalysisPorts analysis,
-      final Clock clock) {
+      final Clock clock
+  ) {
     this.ports = new Ports(revisions, files);
     this.analysis = analysis;
     this.clock = clock;
@@ -43,7 +47,10 @@ public final class OpenApiGates {
    * @throws WardException if the command or options are invalid
    */
   public QualityGate create(
-      final String id, final GateConfiguration configuration, final Project project) {
+      final String id,
+      final GateConfiguration configuration,
+      final Project project
+  ) {
     final String type = configuration.type();
     final OpenApiGateOptions options = configuration.openApi();
     if (options == null) {
@@ -54,7 +61,12 @@ public final class OpenApiGates {
         throw new WardException(noCommand(id, "runs Ward's own rules"));
       }
       return new OpenApiNativeLintGate(
-          id, options.spec(), configuration.rulesFile(), analysis, ports.files());
+          id,
+          options.spec(),
+          configuration.rulesFile(),
+          analysis,
+          ports.files()
+      );
     }
     return comparison(id, configuration, options, project);
   }
@@ -63,13 +75,19 @@ public final class OpenApiGates {
       final String id,
       final GateConfiguration configuration,
       final OpenApiGateOptions options,
-      final Project project) {
+      final Project project
+  ) {
     if (!configuration.command().isEmpty()) {
       throw new WardException(noCommand(id, "compares the spec natively"));
     }
     if (SupportedQualityGates.OPENAPI_DIFF.equals(configuration.type())) {
       return new OpenApiDiffGate(
-          id, ports, options.spec(), OpenApiBaselines.lastCommit(ports.revisions()), clock);
+          id,
+          ports,
+          options.spec(),
+          OpenApiBaselines.lastCommit(ports.revisions()),
+          clock
+      );
     }
     if (project != null && ports.revisions().resolve(project.root(), options.base()).isEmpty()) {
       throw new WardException(
@@ -77,14 +95,16 @@ public final class OpenApiGates {
               + id
               + "' cannot resolve base ref '"
               + options.base()
-              + "'; set 'base' in ward.toml or fetch it.");
+              + "'; set 'base' in ward.toml or fetch it."
+      );
     }
     return new OpenApiDiffGate(
         id,
         ports,
         options.spec(),
         OpenApiBaselines.baseBranch(ports.revisions(), options.base()),
-        clock);
+        clock
+    );
   }
 
   /** The ports shared by the OpenAPI gates. */

@@ -27,7 +27,8 @@ class InitUnsupportedToolchainTest {
     assertThat(init.output())
         .contains("Go")
         .contains(
-            "Ward init supports Maven, Gradle, TypeScript, JavaScript, Python (uv, Poetry, pip) and Swift (SwiftPM, Xcode) projects");
+            "Ward init supports Maven, Gradle, TypeScript, JavaScript, Python (uv, Poetry, pip) and Swift (SwiftPM, Xcode) projects"
+        );
     assertThat(ProjectSnapshot.of(root)).isEqualTo(before);
   }
 

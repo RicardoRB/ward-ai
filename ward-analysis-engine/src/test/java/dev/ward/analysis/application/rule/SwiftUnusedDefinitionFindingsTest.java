@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks the Swift whole-run unused rules: declarations, assigned-only properties. */
 final class SwiftUnusedDefinitionFindingsTest {
-
   private static final Span SPAN = new Span(3, 1, 4, 1, 10, 20);
   private static final String LIB_SWIFT = "Sources/Lib.swift";
   private static final String APP_SWIFT = "Sources/App.swift";
@@ -34,7 +33,8 @@ final class SwiftUnusedDefinitionFindingsTest {
             LIB_SWIFT,
             summary(LIB_SWIFT, Set.of(), symbol("shared"), symbol("lonely")),
             APP_SWIFT,
-            summary(APP_SWIFT, Set.of("shared")));
+            summary(APP_SWIFT, Set.of("shared"))
+        );
 
     assertThat(UnusedDefinitionFindings.findings(List.of(SWIFT_DECLARATION), files))
         .extracting(AnalysisFinding::message)
@@ -61,12 +61,15 @@ final class SwiftUnusedDefinitionFindingsTest {
             List.of(
                 new Symbol("count", SPAN, "property"),
                 new Symbol("label", SPAN, "property"),
-                new Symbol("idle", SPAN, "property")),
+                new Symbol("idle", SPAN, "property")
+            ),
             Set.of("label"),
-            Set.of("count", "label"));
+            Set.of("count", "label")
+        );
 
     assertThat(
-            UnusedDefinitionFindings.findings(List.of(SWIFT_ASSIGN_ONLY), Map.of(LIB_SWIFT, lib)))
+        UnusedDefinitionFindings.findings(List.of(SWIFT_ASSIGN_ONLY), Map.of(LIB_SWIFT, lib))
+    )
         .extracting(AnalysisFinding::message)
         .singleElement()
         .asString()
@@ -78,7 +81,10 @@ final class SwiftUnusedDefinitionFindingsTest {
   }
 
   private static FileSummary summary(
-      final String path, final Set<String> used, final Symbol... declared) {
+      final String path,
+      final Set<String> used,
+      final Symbol... declared
+  ) {
     return new FileSummary(path, List.of(), List.of(), List.of(declared), used);
   }
 
@@ -88,7 +94,8 @@ final class SwiftUnusedDefinitionFindingsTest {
         Set.of(language),
         RuleCapability.SYMBOLS,
         AnalysisSeverity.ERROR,
-        "check = \"unused-definition\"");
+        "check = \"unused-definition\""
+    );
   }
 
   @Test
@@ -102,9 +109,11 @@ final class SwiftUnusedDefinitionFindingsTest {
                 List.of(),
                 List.of(),
                 List.of(new Symbol("Drawable", SPAN, "protocol")),
-                Set.of()),
+                Set.of()
+            ),
             APP_SWIFT,
-            summary(APP_SWIFT, Set.of("conformance:Drawable")));
+            summary(APP_SWIFT, Set.of("conformance:Drawable"))
+        );
 
     assertThat(UnusedDefinitionFindings.findings(List.of(redundant), files))
         .extracting(AnalysisFinding::message)
@@ -124,9 +133,11 @@ final class SwiftUnusedDefinitionFindingsTest {
                 List.of(),
                 List.of(),
                 List.of(new Symbol("Drawable", SPAN, "protocol")),
-                Set.of()),
+                Set.of()
+            ),
             APP_SWIFT,
-            summary(APP_SWIFT, Set.of("conformance:Drawable", "Drawable")));
+            summary(APP_SWIFT, Set.of("conformance:Drawable", "Drawable"))
+        );
 
     assertThat(UnusedDefinitionFindings.findings(List.of(redundant), files)).isEmpty();
   }

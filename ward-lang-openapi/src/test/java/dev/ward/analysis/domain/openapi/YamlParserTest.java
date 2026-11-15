@@ -6,7 +6,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import org.junit.jupiter.api.Test;
 
 class YamlParserTest {
-
   @Test
   void readsBlockMappingsAndSequences() {
     assertThat(YamlTrees.dump("a: 1\nb:\n  c: x\n  d: [1, two]\ne:\n- p\n- q: r\n  s: t\n"))
@@ -36,8 +35,8 @@ class YamlParserTest {
   @Test
   void readsBlockScalars() {
     assertThat(
-            YamlTrees.dump(
-                "a: |\n  one\n  two\nb: >\n  fold\n  ed\n\n  para\nc: |-\n  x\n\nd: 1\n"))
+        YamlTrees.dump("a: |\n  one\n  two\nb: >\n  fold\n  ed\n\n  para\nc: |-\n  x\n\nd: 1\n")
+    )
         .isEqualTo("{a=\"one\ntwo\n\",b=\"fold ed\npara\n\",c=\"x\",d=1}");
   }
 

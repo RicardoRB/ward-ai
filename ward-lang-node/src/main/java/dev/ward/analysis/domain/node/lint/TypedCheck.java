@@ -19,7 +19,6 @@ import java.util.Set;
  * answer is unknown, so the check reports nothing that depends on it.
  */
 public abstract class TypedCheck implements RuleCheck {
-
   /** The expression nodes whose types the checks read. */
   static final String EXPRESSION = "singleExpression";
 
@@ -52,7 +51,8 @@ public abstract class TypedCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return find(root, types);
   }
 

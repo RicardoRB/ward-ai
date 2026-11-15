@@ -45,24 +45,29 @@ final class Probe {
         };
     final JvmSources sources =
         name ->
-            Optional.ofNullable(this.others.get(name))
-                .map(
-                    source ->
-                        new SourceUnit(
-                            name.replace('.', '/') + ".java", AnalysisLanguage.JAVA, source));
+        Optional.ofNullable(this.others.get(name))
+            .map(
+                source ->
+                    new SourceUnit(name.replace('.', '/') + ".java", AnalysisLanguage.JAVA, source)
+            );
     final NativeJvmTypeFacts native1 =
         new NativeJvmTypeFacts(
             new JvmClasses(library, sources, frontend),
             frontend,
             Map.of(
-                AnalysisLanguage.JAVA, new JavaScopeAnalysis(environments -> Set.of()),
+                AnalysisLanguage.JAVA,
+                new JavaScopeAnalysis(environments -> Set.of()),
                 AnalysisLanguage.KOTLIN,
-                    new dev.ward.analysis.domain.jvm.KotlinScopeAnalysis(
-                        environments -> Set.of())));
+                new dev.ward.analysis.domain.jvm.KotlinScopeAnalysis(environments -> Set.of())
+            )
+        );
     this.nativeFacts = native1;
     this.unit =
         new SourceUnit(
-            "src/App." + (language == AnalysisLanguage.KOTLIN ? "kt" : "java"), language, text);
+            "src/App." + (language == AnalysisLanguage.KOTLIN ? "kt" : "java"),
+            language,
+            text
+        );
   }
 
   UnitTypeFacts at(final Span span) {

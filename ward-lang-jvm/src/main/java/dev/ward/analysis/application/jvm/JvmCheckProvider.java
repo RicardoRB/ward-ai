@@ -11,7 +11,6 @@ import java.util.Map;
  * families here, or a new family to {@link #checks()}.
  */
 public final class JvmCheckProvider implements CheckProvider {
-
   @Override
   public Map<String, CheckFactory> checks() {
     return CheckRegistry.union(
@@ -68,6 +67,8 @@ public final class JvmCheckProvider implements CheckProvider {
             StrictDeclarationChecks.checks(),
             StringBuilderChecks.checks(),
             ThreadChecks.checks(),
-            TypeAwareChecks.checks()));
+            TypeAwareChecks.checks()
+        )
+    );
   }
 }

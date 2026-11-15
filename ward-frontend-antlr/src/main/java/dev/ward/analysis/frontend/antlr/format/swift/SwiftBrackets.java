@@ -9,7 +9,6 @@ import org.antlr.v4.runtime.Token;
 
 /** Matches the brackets of a token list and answers the layout questions about them. */
 final class SwiftBrackets {
-
   private static final String OPEN_PAREN = "(";
   private static final String OPEN_BRACKET = "[";
   private static final String OPEN_BRACE = "{";

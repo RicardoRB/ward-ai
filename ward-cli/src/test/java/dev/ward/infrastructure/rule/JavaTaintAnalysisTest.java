@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the taint analysis on lowered Java methods with a fake specification. */
 class JavaTaintAnalysisTest {
-
   /** Scenario: Direct flow. The source call's value reaches the sink in two steps. */
   @Test
   void directFlowIsOneFindingWithTwoSteps() {

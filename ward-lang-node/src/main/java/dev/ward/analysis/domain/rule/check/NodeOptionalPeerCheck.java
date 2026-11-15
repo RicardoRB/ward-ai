@@ -22,7 +22,6 @@ import java.util.SortedMap;
  * peerDependencies}.
  */
 public final class NodeOptionalPeerCheck implements RuleCheck, ProjectCheck {
-
   private static final String VALUE = "{value}";
 
   private final String message;
@@ -48,7 +47,10 @@ public final class NodeOptionalPeerCheck implements RuleCheck, ProjectCheck {
 
   @Override
   public List<ProjectMatch> project(
-      final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
+      final SortedMap<String,
+      SyntaxNode> trees,
+      final ProjectFiles files
+  ) {
     final Map<String, NodeManifests.Manifest> manifests = NodeManifests.byDirectory(files);
     final Map<String, Set<String>> imports = NodeImportUsage.importsByDirectory(trees, manifests);
     final List<ProjectMatch> found = new ArrayList<>();
@@ -74,7 +76,8 @@ public final class NodeOptionalPeerCheck implements RuleCheck, ProjectCheck {
                   setting ->
                       "optional".equals(setting.key())
                           && setting.value() instanceof Value.Bool flag
-                          && flag.value())) {
+                          && flag.value()
+              )) {
         optional.add(meta.key());
       }
     }

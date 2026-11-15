@@ -22,7 +22,7 @@ final class JavaTypes {
             .flatMap(Optional::stream)
             .findFirst();
     final int dimensions =
-        (int) node.children().stream().filter(child -> BRACKET.equals(Syntax.token(child))).count();
+        (int)node.children().stream().filter(child -> BRACKET.equals(Syntax.token(child))).count();
     return base.map(found -> arrayOf(found, dimensions));
   }
 

@@ -24,7 +24,6 @@ import java.util.Set;
  * edges are not followed.
  */
 public final class NodeConstructorSuperCheck implements RuleCheck {
-
   private static final String CALL = "singleExpression";
   private static final String CLASS_DECLARATION = "classDeclaration";
   private static final String CLASS_HERITAGE = "classHeritage";
@@ -66,7 +65,8 @@ public final class NodeConstructorSuperCheck implements RuleCheck {
       final SyntaxNode node,
       final FlowView flow,
       final boolean derived,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     final boolean inDerived = isClass(node) ? extendsSomething(node) : derived;
     if (inDerived && isConstructor(node)) {
       checkConstructor(node, flow, matches);
@@ -88,21 +88,26 @@ public final class NodeConstructorSuperCheck implements RuleCheck {
         .anyMatch(
             child ->
                 (CLASS_HERITAGE.equals(child.kind())
-                        && child.children().stream().anyMatch(c -> CLASS_EXTENDS.equals(c.kind())))
+                    && child.children().stream().anyMatch(c -> CLASS_EXTENDS.equals(c.kind())))
                     || (CLASS_TAIL.equals(child.kind())
-                        && child.children().stream().anyMatch(c -> EXTENDS.equals(c.kind()))));
+                        && child.children().stream().anyMatch(c -> EXTENDS.equals(c.kind())))
+        );
   }
 
   private static boolean isConstructor(final SyntaxNode node) {
     return CONSTRUCTOR_DECLARATION.equals(node.kind())
         || METHOD.equals(node.kind())
-            && node.children().stream()
-                .anyMatch(
-                    c -> CLASS_NAME.equals(c.kind()) && CONSTRUCTOR_NAME.equals(firstLeafText(c)));
+        && node.children().stream()
+            .anyMatch(
+                c -> CLASS_NAME.equals(c.kind()) && CONSTRUCTOR_NAME.equals(firstLeafText(c))
+            );
   }
 
   private void checkConstructor(
-      final SyntaxNode constructor, final FlowView flow, final List<RuleMatch> matches) {
+      final SyntaxNode constructor,
+      final FlowView flow,
+      final List<RuleMatch> matches
+  ) {
     final Optional<ControlFlowGraph> graph = NodeFlow.graphOf(flow, constructor);
     if (graph.isEmpty()) {
       if (SuperCalls.in(constructor.children()).isEmpty()) {
@@ -147,7 +152,10 @@ public final class NodeConstructorSuperCheck implements RuleCheck {
 
   /** Runs the super calls of a block; returns whether a call has run after the block. */
   private static boolean callBlock(
-      final BasicBlock block, final boolean startCalled, final Set<SyntaxNode> duplicates) {
+      final BasicBlock block,
+      final boolean startCalled,
+      final Set<SyntaxNode> duplicates
+  ) {
     boolean called = startCalled;
     for (final SyntaxNode node : block.nodes()) {
       for (final SyntaxNode call : SuperCalls.in(List.of(node))) {
@@ -168,7 +176,8 @@ public final class NodeConstructorSuperCheck implements RuleCheck {
       final ControlFlowGraph graph,
       final BasicBlock block,
       final boolean called,
-      final Deque<int[]> work) {
+      final Deque<int[]> work
+  ) {
     boolean missing = false;
     for (final FlowEdge edge : block.successors()) {
       if (edge.kind() == FlowEdgeKind.EXCEPTION) {

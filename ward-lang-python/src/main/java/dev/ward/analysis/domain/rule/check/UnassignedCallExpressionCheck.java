@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * sole statement of a {@code try} body are not reported.
  */
 public final class UnassignedCallExpressionCheck implements RuleCheck {
-
   private static final String STATEMENT = "expr_stmt";
   private static final String ATOM = "atom_expr";
   private static final String TRAILER = "trailer";
@@ -55,7 +54,9 @@ public final class UnassignedCallExpressionCheck implements RuleCheck {
   }
 
   private static boolean reported(
-      final SyntaxNode statementChild, final List<SyntaxNode> ancestors) {
+      final SyntaxNode statementChild,
+      final List<SyntaxNode> ancestors
+  ) {
     final SyntaxNode expression = unwrap(statementChild);
     final String text = SyntaxWalk.text(expression);
     if (isPlainString(text)
@@ -102,7 +103,8 @@ public final class UnassignedCallExpressionCheck implements RuleCheck {
             && node.children().stream()
                 .anyMatch(
                     child ->
-                        TRAILER.equals(child.kind()) && SyntaxWalk.text(child).startsWith("("));
+                        TRAILER.equals(child.kind()) && SyntaxWalk.text(child).startsWith("(")
+                );
     return atomCall
         || node.children().stream().anyMatch(UnassignedCallExpressionCheck::containsCall);
   }

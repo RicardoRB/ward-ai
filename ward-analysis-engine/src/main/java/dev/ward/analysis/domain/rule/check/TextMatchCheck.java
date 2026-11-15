@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * pattern}, {@code limit} and {@code header-lines}.
  */
 public final class TextMatchCheck implements UnitCheck {
-
   private static final Span FILE_START = new Span(1, 1, 1, 1, 0, 0);
 
   private final NodeFilter filter;
@@ -48,7 +47,9 @@ public final class TextMatchCheck implements UnitCheck {
 
   private RuleMatch report(final Item hit) {
     return CheckSupport.at(
-        hit.span(), CheckSupport.fill(message, hit.text().strip(), String.valueOf(rule.limit())));
+        hit.span(),
+        CheckSupport.fill(message, hit.text().strip(), String.valueOf(rule.limit()))
+    );
   }
 
   private boolean matches(final Item item) {
@@ -101,7 +102,9 @@ public final class TextMatchCheck implements UnitCheck {
 
   private static Item lineItem(final String line, final int number, final int offset) {
     return new Item(
-        line, new Span(number, 1, number, line.length() + 1, offset, offset + line.length()));
+        line,
+        new Span(number, 1, number, line.length() + 1, offset, offset + line.length())
+    );
   }
 
   private record Item(String text, Span span) {}
@@ -130,7 +133,6 @@ public final class TextMatchCheck implements UnitCheck {
    * @param headerLines how many lines the header has, for {@link Target#HEADER}
    */
   public record Rule(Target target, Pattern pattern, boolean required, int limit, int headerLines) {
-
     /**
      * Validates the fields.
      *

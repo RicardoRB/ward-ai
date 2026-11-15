@@ -16,8 +16,11 @@ class TurboOutputTest {
     assertThat(TurboOutput.parse(output))
         .containsExactly(
             new TurboOutput.Block(
-                "web", "src/page.tsx(3,7): error TS2322: Type 'string' is not assignable.\n"),
-            new TurboOutput.Block("ui", "src/Button.tsx(1,1): error TS1005: ';' expected.\n"));
+                "web",
+                "src/page.tsx(3,7): error TS2322: Type 'string' is not assignable.\n"
+            ),
+            new TurboOutput.Block("ui", "src/Button.tsx(1,1): error TS1005: ';' expected.\n")
+        );
   }
 
   @Test
@@ -33,7 +36,10 @@ class TurboOutputTest {
     assertThat(TurboOutput.parse(output))
         .containsExactly(
             new TurboOutput.Block(
-                "web", "src/page.tsx(3,7): error TS2322: Type 'string' is not assignable.\n"));
+                "web",
+                "src/page.tsx(3,7): error TS2322: Type 'string' is not assignable.\n"
+            )
+        );
   }
 
   @Test
@@ -55,6 +61,9 @@ class TurboOutputTest {
     assertThat(TurboOutput.parse(output))
         .containsExactly(
             new TurboOutput.Block(
-                "web", "[\n  {\"filePath\":\"/repo/apps/web/src/a.ts\",\"messages\":[]}\n]\n"));
+                "web",
+                "[\n  {\"filePath\":\"/repo/apps/web/src/a.ts\",\"messages\":[]}\n]\n"
+            )
+        );
   }
 }

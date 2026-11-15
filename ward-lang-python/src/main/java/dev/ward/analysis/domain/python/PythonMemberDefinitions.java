@@ -17,7 +17,6 @@ import java.util.Set;
  * no attribute. Upgrade by reading each decorator's target and every target element.
  */
 final class PythonMemberDefinitions {
-
   /** The kind of a method declared in a class body. */
   static final String METHOD = "method";
 

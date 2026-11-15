@@ -39,7 +39,9 @@ class ReleaseTagInspectionTest {
                 "-c",
                 "commit.gpgsign=false",
                 "-c",
-                "tag.gpgsign=false"));
+                "tag.gpgsign=false"
+            )
+        );
     command.addAll(List.of(arguments));
     executor.execute(command, root);
   }

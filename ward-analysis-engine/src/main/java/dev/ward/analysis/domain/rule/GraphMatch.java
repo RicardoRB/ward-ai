@@ -9,7 +9,6 @@ import java.util.Objects;
  * @param match the match, with its span and path
  */
 public record GraphMatch(String file, RuleMatch match) {
-
   /**
    * Validates the fields.
    *

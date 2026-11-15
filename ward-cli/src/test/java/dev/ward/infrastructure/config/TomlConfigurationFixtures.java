@@ -9,7 +9,10 @@ final class TomlConfigurationFixtures {
   private TomlConfigurationFixtures() {}
 
   static WardConfiguration read(
-      final TomlConfigurationReader reader, final Path directory, final String toml)
+      final TomlConfigurationReader reader,
+      final Path directory,
+      final String toml
+  )
       throws IOException {
     final Path file = directory.resolve("ward.toml");
     Files.writeString(file, toml);

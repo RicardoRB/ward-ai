@@ -11,7 +11,6 @@ import java.util.Objects;
  * @param sections the sections in file order, copied on construction
  */
 record EditorConfigFile(String directory, boolean root, List<EditorConfigSection> sections) {
-
   /** The file name Ward reads. */
   static final String FILE_NAME = ".editorconfig";
 

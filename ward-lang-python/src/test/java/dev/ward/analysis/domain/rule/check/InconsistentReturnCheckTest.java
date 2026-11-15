@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 /** The functions that return a value on some path and nothing on another, like Pylint R1710. */
 final class InconsistentReturnCheckTest {
-
   private static final InconsistentReturnCheck CHECK = new InconsistentReturnCheck("m");
 
   @Test
@@ -18,25 +17,28 @@ final class InconsistentReturnCheckTest {
   @Test
   void aBareReturnNextToAValueReturnIsReported() {
     assertThat(
-            CHECK.matches(
-                ParsedPython.tree(
-                    "def f(c):\n    if c:\n        return 1\n    else:\n        return\n")))
+        CHECK.matches(
+            ParsedPython.tree("def f(c):\n    if c:\n        return 1\n    else:\n        return\n")
+        )
+    )
         .hasSize(1);
   }
 
   @Test
   void aBodyThatEndsInAValueReturnIsConsistent() {
     assertThat(
-            CHECK.matches(
-                ParsedPython.tree("def f(c):\n    if c:\n        return 1\n    return 2\n")))
+        CHECK.matches(ParsedPython.tree("def f(c):\n    if c:\n        return 1\n    return 2\n"))
+    )
         .isEmpty();
   }
 
   @Test
   void returnNoneCountsAsAValue() {
     assertThat(
-            CHECK.matches(
-                ParsedPython.tree("def f(c):\n    if c:\n        return None\n    return None\n")))
+        CHECK.matches(
+            ParsedPython.tree("def f(c):\n    if c:\n        return None\n    return None\n")
+        )
+    )
         .isEmpty();
   }
 
@@ -54,8 +56,8 @@ final class InconsistentReturnCheckTest {
   @Test
   void aNestedFunctionReturnsForItself() {
     assertThat(
-            CHECK.matches(
-                ParsedPython.tree("def f():\n    def g():\n        return 1\n    return g\n")))
+        CHECK.matches(ParsedPython.tree("def f():\n    def g():\n        return 1\n    return g\n"))
+    )
         .isEmpty();
   }
 }

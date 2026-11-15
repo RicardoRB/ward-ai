@@ -34,7 +34,8 @@ class InitSetupCatalogTest {
           "svelte-check",
           "astro-check",
           "ngc",
-          "ng-test");
+          "ng-test"
+      );
 
   /** Python gates are offered by init only for Python projects (#136). */
   private static final Set<String> PYTHON_GATES =
@@ -44,7 +45,8 @@ class InitSetupCatalogTest {
       Set.of(
           SupportedQualityGates.ANDROID_LINT,
           SupportedQualityGates.ANDROID_UNIT_TEST,
-          SupportedQualityGates.ANDROID_COVERAGE);
+          SupportedQualityGates.ANDROID_COVERAGE
+      );
   private static final Set<String> SWIFT_GATES =
       Set.of("harmonize", "swift-build", "swift-test", "xcodebuild-test", "swift-coverage");
 
@@ -73,11 +75,14 @@ class InitSetupCatalogTest {
             "cline",
             "factory-droid",
             "amp",
-            "junie");
+            "junie"
+        );
     assertThat(
-            catalog.gates(
-                new ProjectDetector(new FileSystemProjectInspection()).detect(dir).orElseThrow(),
-                null))
+        catalog.gates(
+            new ProjectDetector(new FileSystemProjectInspection()).detect(dir).orElseThrow(),
+            null
+        )
+    )
         .allSatisfy(gate -> assertThat(gate.description()).isNotBlank());
   }
 
@@ -107,7 +112,8 @@ class InitSetupCatalogTest {
         new InitSetupCatalog(new FakeEnvironmentInspection())
             .gate(
                 new ProjectDetector(new FileSystemProjectInspection()).detect(dir).orElseThrow(),
-                TESTS);
+                TESTS
+            );
 
     assertThat(option.command()).containsExactly("./mvnw", "test");
     assertThat(option.available()).isTrue();
@@ -157,7 +163,9 @@ class InitSetupCatalogTest {
     Files.writeString(dir.resolve("build.gradle"), "plugins { id 'java' }\n");
     Files.writeString(dir.resolve("gradlew"), "#!/bin/sh\nexit 0\n");
     Files.setPosixFilePermissions(
-        dir.resolve("gradlew"), PosixFilePermissions.fromString("rwxr-xr-x"));
+        dir.resolve("gradlew"),
+        PosixFilePermissions.fromString("rwxr-xr-x")
+    );
     final Project project =
         new ProjectDetector(new FileSystemProjectInspection()).detect(dir).orElseThrow();
 
@@ -193,12 +201,12 @@ class InitSetupCatalogTest {
         .extracting(InitGateOption::id)
         .containsExactlyInAnyOrderElementsOf(
             QualityGateFactory.SUPPORTED_GATES.stream()
-                // OpenAPI gates are offered only when the project commits a spec.
-                .filter(id -> !id.startsWith("openapi-"))
-                // The analysis gate is written by hand in ward.toml; init does not offer it.
-                .filter(id -> !SupportedQualityGates.ANALYSIS.equals(id))
-                // Node gates are run by check only; init does not offer them for JVM projects.
-                .filter(id -> !NODE_GATES.contains(id))
+            // OpenAPI gates are offered only when the project commits a spec.
+            .filter(id -> !id.startsWith("openapi-"))
+            // The analysis gate is written by hand in ward.toml; init does not offer it.
+            .filter(id -> !SupportedQualityGates.ANALYSIS.equals(id))
+            // Node gates are run by check only; init does not offer them for JVM projects.
+            .filter(id -> !NODE_GATES.contains(id))
                 .filter(id -> !PYTHON_GATES.contains(id))
                 // Swift init arrives later; check runs Swift gates only.
                 .filter(id -> !SWIFT_GATES.contains(id))
@@ -206,7 +214,8 @@ class InitSetupCatalogTest {
                 .filter(id -> !SupportedQualityGates.FORMAT.equals(id))
                 // Android gates are offered only for Android projects.
                 .filter(id -> !ANDROID_GATES.contains(id))
-                .toList());
+                .toList()
+        );
     assertThat(catalog.gate(project, "coverage").command())
         .containsExactly("gradle", "jacocoTestReport");
     assertThat(catalog.gate(project, "secrets").command()).isEmpty();

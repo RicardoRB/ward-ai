@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * reference). The three sets are unioned.
  */
 final class NodeTestGlobals {
-
   /** The {@code jest} set of the {@code globals} package. */
   private static final Set<String> JEST =
       Set.of(
@@ -35,7 +34,8 @@ final class NodeTestGlobals {
           "test",
           "xdescribe",
           "xit",
-          "xtest");
+          "xtest"
+      );
 
   /** The {@code mocha} set of the {@code globals} package. */
   private static final Set<String> MOCHA =
@@ -59,7 +59,8 @@ final class NodeTestGlobals {
           "xcontext",
           "xdescribe",
           "xit",
-          "xspecify");
+          "xspecify"
+      );
 
   /** The globals Vitest documents for its {@code globals} option. */
   private static final Set<String> VITEST =
@@ -76,7 +77,8 @@ final class NodeTestGlobals {
           "it",
           "suite",
           "test",
-          "vi");
+          "vi"
+      );
 
   /** A file whose name ends in {@code .test} or {@code .spec} before a script extension. */
   private static final Pattern TEST_FILE =

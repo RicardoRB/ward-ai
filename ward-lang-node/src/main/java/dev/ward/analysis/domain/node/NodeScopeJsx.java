@@ -6,7 +6,6 @@ import java.util.Set;
 
 /** Reads the names that JSX tags refer to in scope analysis. */
 final class NodeScopeJsx {
-
   private static final Set<String> MEMBER_OPERATORS = Set.of(".", "?.");
 
   private final NodeScopeExpressions expressions;

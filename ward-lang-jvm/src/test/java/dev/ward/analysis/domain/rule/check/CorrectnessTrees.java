@@ -12,7 +12,6 @@ import java.util.Map;
 
 /** Builds the small syntax trees and type facts of the correctness check tests. */
 final class CorrectnessTrees {
-
   private CorrectnessTrees() {}
 
   /** A one-character span at {@code column} of line 1. */
@@ -47,7 +46,8 @@ final class CorrectnessTrees {
         List.of(),
         List.of(),
         null,
-        null);
+        null
+    );
   }
 
   static SpanFacts call(final String declaring, final String returned) {
@@ -70,20 +70,22 @@ final class CorrectnessTrees {
             null,
             Map.of(),
             Map.of(),
-            null),
+            null
+        ),
         List.of(),
         List.of(),
         List.of(),
         List.of(),
         null,
-        null);
+        null
+    );
   }
 
   /** Facts keyed by the one-character spans at the given columns. */
   static UnitTypeFacts table(final Object... pairs) {
     final Map<String, SpanFacts> map = new HashMap<>();
     for (int i = 0; i < pairs.length; i += 2) {
-      map.put(UnitTypeFacts.key(span((Integer) pairs[i])), (SpanFacts) pairs[i + 1]);
+      map.put(UnitTypeFacts.key(span((Integer)pairs[i])), (SpanFacts)pairs[i + 1]);
     }
     return new UnitTypeFacts(map);
   }

@@ -27,7 +27,8 @@ class JvmClassesMembersTest {
         List.of(),
         false,
         false,
-        Map.of());
+        Map.of()
+    );
   }
 
   private static TypeMembers empty() {
@@ -53,14 +54,16 @@ class JvmClassesMembersTest {
             type -> {
               reads.incrementAndGet();
               return empty();
-            });
+            }
+        );
     final TypeMembers two =
         second.membersOf(
             classNamed("lib.Foo"),
             type -> {
               reads.incrementAndGet();
               return empty();
-            });
+            }
+        );
 
     assertThat(two).isSameAs(one);
     assertThat(reads).hasValue(1);
@@ -78,21 +81,24 @@ class JvmClassesMembersTest {
             type -> {
               reads.incrementAndGet();
               return empty();
-            });
+            }
+        );
     final TypeMembers two =
         unit.membersOf(
             classNamed("own.A"),
             type -> {
               reads.incrementAndGet();
               return empty();
-            });
+            }
+        );
     final TypeMembers other =
         project.membersOf(
             classNamed("own.A"),
             type -> {
               reads.incrementAndGet();
               return empty();
-            });
+            }
+        );
 
     assertThat(two).isNotSameAs(one);
     assertThat(other).isNotSameAs(one).isNotSameAs(two);

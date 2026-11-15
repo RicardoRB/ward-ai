@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
  * ==} or {@code !=}. It reports nothing when a type, shape or its ancestors are unknown.
  */
 public final class RelatedTypesCheck implements RuleCheck {
-
   /** How the two values are compared. */
   public enum Comparison {
     /** {@code a.equals(b)}. */
@@ -80,7 +79,8 @@ public final class RelatedTypesCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(EXPRESSION)).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(node -> unrelated(node, types))
@@ -127,7 +127,6 @@ public final class RelatedTypesCheck implements RuleCheck {
 
   /** The declared type of an operand with its shape and, when known, the names above it. */
   private record Operand(TypeRef type, TypeShape shape, Optional<Set<String>> above) {
-
     boolean isInterface() {
       return shape.kind() == TypeShape.Kind.INTERFACE;
     }
@@ -145,7 +144,10 @@ public final class RelatedTypesCheck implements RuleCheck {
   }
 
   private boolean unrelated(
-      final SyntaxNode left, final SyntaxNode right, final UnitTypeFacts types) {
+      final SyntaxNode left,
+      final SyntaxNode right,
+      final UnitTypeFacts types
+  ) {
     final Optional<Operand> first = operand(left, types);
     final Optional<Operand> second = operand(right, types);
     if (first.isEmpty()
@@ -171,7 +173,8 @@ public final class RelatedTypesCheck implements RuleCheck {
             .membersOf(node.span())
             .map(
                 members ->
-                    members.ancestors().stream().map(TypeRef::name).collect(Collectors.toSet()));
+                    members.ancestors().stream().map(TypeRef::name).collect(Collectors.toSet())
+            );
     return Optional.of(new Operand(type.get(), shape.get(), above));
   }
 

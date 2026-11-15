@@ -4,7 +4,6 @@ import dev.ward.analysis.domain.ir.Span;
 
 /** Computes spans inside a token. */
 final class PythonSpans {
-
   private static final char NEWLINE = '\n';
 
   private PythonSpans() {}
@@ -14,7 +13,13 @@ final class PythonSpans {
     final int[] start = position(token, text, from);
     final int[] end = position(token, text, to);
     return new Span(
-        start[0], start[1], end[0], end[1], token.startOffset() + from, token.startOffset() + to);
+        start[0],
+        start[1],
+        end[0],
+        end[1],
+        token.startOffset() + from,
+        token.startOffset() + to
+    );
   }
 
   /** The line and column of the character at {@code index} of the token text. */

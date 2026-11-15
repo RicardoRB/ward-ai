@@ -13,7 +13,6 @@ import java.util.List;
  * {@code /**}; {@code ////} and {@code /***} are plain comments, as in SwiftLint.
  */
 public final class SwiftOrphanedDocCommentCheck implements RuleCheck {
-
   private static final String COMMENT = "comment";
   private static final String DOC_LINE = "///";
   private static final String DOC_BLOCK = "/**";

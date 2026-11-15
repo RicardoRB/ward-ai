@@ -45,7 +45,9 @@ class DoctorXcodeVersionTest {
             new Finding(
                 XCODE,
                 Status.ERROR,
-                "Xcode 16.2 is INCOMPATIBLE; Ward needs Xcode 26.0 or newer."));
+                "Xcode 16.2 is INCOMPATIBLE; Ward needs Xcode 26.0 or newer."
+            )
+        );
   }
 
   @Test
@@ -64,7 +66,8 @@ class DoctorXcodeVersionTest {
 
     assertThat(findings)
         .contains(
-            new Finding("platform", Status.WARNING, "Ward verifies Swift projects on macOS only."));
+            new Finding("platform", Status.WARNING, "Ward verifies Swift projects on macOS only.")
+        );
     assertThat(findings).extracting(Finding::name).doesNotContain(XCODE);
   }
 
@@ -72,13 +75,15 @@ class DoctorXcodeVersionTest {
       final BuildTool tool,
       final boolean podfile,
       final SwiftToolchainInspection swift,
-      final String... executables) {
+      final String... executables
+  ) {
     final Project project = new Project(ROOT, Language.SWIFT, tool, Framework.NONE, podfile);
     return new DoctorService(
-            new ProjectDetector(new FixedProjectInspection(project)),
-            new FakeEnvironmentInspection(executables),
-            new DoctorPorts(null, null, swift, null),
-            Set.of())
+        new ProjectDetector(new FixedProjectInspection(project)),
+        new FakeEnvironmentInspection(executables),
+        new DoctorPorts(null, null, swift, null),
+        Set.of()
+    )
         .diagnose(ROOT);
   }
 

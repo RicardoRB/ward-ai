@@ -12,15 +12,19 @@ import java.util.stream.Stream;
 
 /** Picks the source file that edit-latency runs touch, and appends to it. */
 final class SourceEdits {
-
   private static final Set<String> IGNORED_SEGMENTS =
       Set.of(".git", ".ward", "target", "build", "node_modules");
   private static final Map<String, Set<String>> SOURCE_EXTENSIONS =
       Map.of(
-          "java", Set.of(".java"),
-          "node", Set.of(".ts", ".js"),
-          "python", Set.of(".py"),
-          "swift", Set.of(".swift"));
+          "java",
+          Set.of(".java"),
+          "node",
+          Set.of(".ts", ".js"),
+          "python",
+          Set.of(".py"),
+          "swift",
+          Set.of(".swift")
+      );
 
   private SourceEdits() {}
 
@@ -33,7 +37,8 @@ final class SourceEdits {
           .filter(file -> !isIgnored(copy.relativize(file)))
           .filter(
               file ->
-                  extensions.stream().anyMatch(extension -> file.toString().endsWith(extension)))
+                  extensions.stream().anyMatch(extension -> file.toString().endsWith(extension))
+          )
           .min(Comparator.comparing(file -> copy.relativize(file).toString()))
           .orElseThrow(() -> new IllegalStateException("No source file for language " + language));
     } catch (IOException e) {

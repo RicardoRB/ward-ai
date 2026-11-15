@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 /** The argument-list helpers that the call checks share: thread calls and super arguments. */
 final class SyntaxArgumentHelpersTest {
-
   @Test
   void threadCallNeedsTargetOrTwoPositionalArguments() {
     assertThat(ThreadInstantiationCheck.isThreadCall(Nodes.leaf("Thread()"))).isTrue();

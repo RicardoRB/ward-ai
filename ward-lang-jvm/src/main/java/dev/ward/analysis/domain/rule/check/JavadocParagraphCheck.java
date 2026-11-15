@@ -12,7 +12,6 @@ import java.util.Objects;
  * start with a {@code <p>} tag, unless it starts with another HTML tag.
  */
 public final class JavadocParagraphCheck implements UnitCheck {
-
   private static final String PARAGRAPH = "<p>";
   private static final String TAG = "@";
   private static final String INLINE = "{@";
@@ -56,7 +55,8 @@ public final class JavadocParagraphCheck implements UnitCheck {
       final List<JavadocRows.Row> rows,
       final int index,
       final boolean content,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     final JavadocRows.Row row = rows.get(index);
     final String text = row.content();
     final boolean previousEmpty = rows.get(index - 1).content().isEmpty();
@@ -70,7 +70,10 @@ public final class JavadocParagraphCheck implements UnitCheck {
   }
 
   private static boolean startsParagraph(
-      final String text, final boolean previousEmpty, final boolean content) {
+      final String text,
+      final boolean previousEmpty,
+      final boolean content
+  ) {
     return !text.isEmpty() && !text.startsWith(HTML) && previousEmpty && content;
   }
 
@@ -78,8 +81,10 @@ public final class JavadocParagraphCheck implements UnitCheck {
       final JavadocRows.Row row,
       final String text,
       final String problem,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     matches.add(
-        CheckSupport.at(row.at(row.text().indexOf(text)), CheckSupport.fill(message, problem, "")));
+        CheckSupport.at(row.at(row.text().indexOf(text)), CheckSupport.fill(message, problem, ""))
+    );
   }
 }

@@ -18,7 +18,6 @@ import java.util.Set;
  * other repetition is reported at the name of the later member.
  */
 public final class NodeDupeClassMembersCheck implements RuleCheck {
-
   private static final String CLASS_ELEMENT = "classElement";
   private static final String METHOD = "methodDefinition";
   private static final String PROPERTY_MEMBER = "propertyMemberDeclaration";
@@ -83,10 +82,12 @@ public final class NodeDupeClassMembersCheck implements RuleCheck {
                 final Set<Kind> kinds = seen.computeIfAbsent(key, k -> EnumSet.noneOf(Kind.class));
                 if (repeats(kinds, member.kind())) {
                   matches.add(
-                      new RuleMatch(member.nameSpan(), message.replace("{value}", member.name())));
+                      new RuleMatch(member.nameSpan(), message.replace("{value}", member.name()))
+                  );
                 }
                 kinds.add(member.kind());
-              });
+              }
+          );
     }
   }
 
@@ -114,7 +115,12 @@ public final class NodeDupeClassMembersCheck implements RuleCheck {
     }
     return Optional.of(
         new Member(
-            unquote(LeafText.of(name.get())), name.get().span(), isStatic, kindOf(method.get())));
+            unquote(LeafText.of(name.get())),
+            name.get().span(),
+            isStatic,
+            kindOf(method.get())
+        )
+    );
   }
 
   /**
@@ -123,7 +129,7 @@ public final class NodeDupeClassMembersCheck implements RuleCheck {
   private static boolean isMember(final SyntaxNode child) {
     return METHOD.equals(child.kind())
         || PROPERTY_MEMBER.equals(child.kind())
-            && child.children().stream().anyMatch(NodeDupeClassMembersCheck::isSignatureOrAccessor);
+        && child.children().stream().anyMatch(NodeDupeClassMembersCheck::isSignatureOrAccessor);
   }
 
   private static boolean isSignatureOrAccessor(final SyntaxNode grand) {
@@ -166,8 +172,8 @@ public final class NodeDupeClassMembersCheck implements RuleCheck {
 
   private static String unquote(final String text) {
     return text.length() >= 2
-            && QUOTES.indexOf(text.charAt(0)) >= 0
-            && text.charAt(text.length() - 1) == text.charAt(0)
+        && QUOTES.indexOf(text.charAt(0)) >= 0
+        && text.charAt(text.length() - 1) == text.charAt(0)
         ? text.substring(1, text.length() - 1)
         : text;
   }

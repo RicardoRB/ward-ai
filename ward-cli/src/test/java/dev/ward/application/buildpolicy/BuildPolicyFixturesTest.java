@@ -35,7 +35,8 @@ class BuildPolicyFixturesTest {
       final List<String> failures,
       final Path folder,
       final List<String> expected,
-      final BuildRule rule)
+      final BuildRule rule
+  )
       throws IOException {
     final List<String> actual =
         BuildPolicyFixtures.findings(folder, rule, BuildPolicyFixtures.options(folder));
@@ -56,7 +57,8 @@ class BuildPolicyFixturesTest {
             BuildRule.MINIMUM_BUILD_TOOL_VERSION,
             TOOLS,
             BuildRule.DUPLICATE_DEPENDENCY_DECLARATION,
-            List.of("maven"));
+            List.of("maven")
+        );
     supported.forEach(
         (rule, tools) ->
             tools.forEach(
@@ -71,7 +73,9 @@ class BuildPolicyFixturesTest {
                       missing.add(folder.toString());
                     }
                   }
-                }));
+                }
+            )
+    );
     assertThat(missing).isEmpty();
   }
 }

@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 
 /** Init choices for npm, pnpm, Yarn and Bun projects. */
 public final class NodeInitSupport implements ToolchainInitSupport {
-
   /** The test gates whose coverage report is written to {@code coverage/}. */
   private static final Set<String> COVERAGE_GATES = Set.of("vitest", "jest", "bun-test");
 
@@ -35,13 +34,16 @@ public final class NodeInitSupport implements ToolchainInitSupport {
    */
   @Override
   public Optional<String> gitignoreEntries(
-      final Project project, final List<InitGateOption> gates) {
+      final Project project,
+      final List<InitGateOption> gates
+  ) {
     final Set<String> ids = gates.stream().map(InitGateOption::id).collect(Collectors.toSet());
     final String coverage = ids.stream().anyMatch(COVERAGE_GATES::contains) ? "coverage/\n" : "";
     final String stryker =
         ids.contains(SupportedQualityGates.STRYKER) ? ".stryker-tmp/\nreports/mutation/\n" : "";
     return Optional.of(
-        ".ward/reports/\n" + coverage + project.taskRunner().gitignoreEntry() + stryker);
+        ".ward/reports/\n" + coverage + project.taskRunner().gitignoreEntry() + stryker
+    );
   }
 
   @Override
@@ -55,13 +57,17 @@ public final class NodeInitSupport implements ToolchainInitSupport {
       final List<InitGateOption> gates,
       final QualityPreset preset,
       final boolean approved,
-      final MemberPlanning planning) {
+      final MemberPlanning planning
+  ) {
     return TurborepoMembers.planChanges(project, gates, preset, approved, planning);
   }
 
   @Override
   public List<ScriptReplacement> scriptReplacements(
-      final Project project, final QualityPreset preset, final InitInputs inputs) {
+      final Project project,
+      final QualityPreset preset,
+      final InitInputs inputs
+  ) {
     return TurborepoMembers.replacements(TurborepoMembers.plan(project, preset, inputs));
   }
 
@@ -73,12 +79,17 @@ public final class NodeInitSupport implements ToolchainInitSupport {
     final NodeTools tools =
         NodeTools.of(project, inputs.manifests().read(project.root()), inputs, preset);
     return new Gates(
-        NodeGates.languages(project, tools.testGate()).analysisGates(tools), List.of());
+        NodeGates.languages(project, tools.testGate()).analysisGates(tools),
+        List.of()
+    );
   }
 
   @Override
   public List<String> presetGates(
-      final Project project, final QualityPreset preset, final InitInputs inputs) {
+      final Project project,
+      final QualityPreset preset,
+      final InitInputs inputs
+  ) {
     if (project.taskRunner().isRootRunner()) {
       return NodeGates.languages(project, TurborepoPlan.testGate(project, inputs))
           .presetGates(preset);
@@ -104,7 +115,8 @@ public final class NodeInitSupport implements ToolchainInitSupport {
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final Set<String> owned) {
+      final Set<String> owned
+  ) {
     return project.toolchain() == Toolchain.NODE
         ? NodeAgentRules.lines(project, gates, preset, owned)
         : List.of();

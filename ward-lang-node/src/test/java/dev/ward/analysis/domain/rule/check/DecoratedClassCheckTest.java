@@ -22,7 +22,6 @@ import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
 
 class DecoratedClassCheckTest {
-
   private static final String COMPONENT =
       """
       @Component({ selector: 'a' })
@@ -48,11 +47,15 @@ class DecoratedClassCheckTest {
     final Filters filters =
         new Filters(
             new ClassCondition(
-                Optional.of(Pattern.compile("^@Component\\b")), Map.of(), Optional.empty()),
+                Optional.of(Pattern.compile("^@Component\\b")),
+                Map.of(),
+                Optional.empty()
+            ),
             NO_MEMBER,
             NO_NODE,
             new ScopeCondition(Set.of(), Set.of("propertyMemberDeclaration"), Set.of()),
-            NO_NAME);
+            NO_NAME
+        );
 
     assertThat(matched(filters, Set.of("propertyName"), COMPONENT))
         .containsExactly("title", "ngOnInit", "ngDoBootstrap");
@@ -66,10 +69,14 @@ class DecoratedClassCheckTest {
         new Filters(
             NO_CLASS,
             new MemberCondition(
-                Optional.of(Pattern.compile("^@Input\\b")), Set.of(), Optional.empty()),
+                Optional.of(Pattern.compile("^@Input\\b")),
+                Set.of(),
+                Optional.empty()
+            ),
             NO_NODE,
             NO_SCOPE,
-            NO_NAME);
+            NO_NAME
+        );
 
     assertThat(matched(filters, Set.of("propertyMemberDeclaration"), COMPONENT))
         .singleElement()
@@ -83,11 +90,13 @@ class DecoratedClassCheckTest {
             new ClassCondition(
                 Optional.empty(),
                 Map.of(Pattern.compile("^@Component\\b"), Pattern.compile("^ngDoBootstrap$")),
-                Optional.empty()),
+                Optional.empty()
+            ),
             NO_MEMBER,
             NO_NODE,
             NO_SCOPE,
-            NO_NAME);
+            NO_NAME
+        );
 
     assertThat(matched(filters, Set.of("propertyName"), COMPONENT))
         .containsExactly("ngDoBootstrap");
@@ -102,7 +111,8 @@ class DecoratedClassCheckTest {
             NO_MEMBER,
             NO_NODE,
             NO_SCOPE,
-            new NameCondition(Map.of(), Optional.of(alias), Set.of("title"), true));
+            new NameCondition(Map.of(), Optional.of(alias), Set.of("title"), true)
+        );
     final String source =
         """
         class A {
@@ -123,7 +133,8 @@ class DecoratedClassCheckTest {
             NO_MEMBER,
             NO_NODE,
             NO_SCOPE,
-            new NameCondition(Map.of("ngOnInit", "OnInit"), Optional.empty(), Set.of(), false));
+            new NameCondition(Map.of("ngOnInit", "OnInit"), Optional.empty(), Set.of(), false)
+        );
     final String source =
         """
         class A implements OnInit {
@@ -147,9 +158,11 @@ class DecoratedClassCheckTest {
                 Optional.of(Pattern.compile("^inputs:")),
                 Optional.empty(),
                 true,
-                Optional.of(Pattern.compile("^hostDirectives:"))),
+                Optional.of(Pattern.compile("^hostDirectives:"))
+            ),
             NO_SCOPE,
-            NO_NAME);
+            NO_NAME
+        );
     final String source =
         """
         @Component({
@@ -174,7 +187,8 @@ class DecoratedClassCheckTest {
             NO_MEMBER,
             NO_NODE,
             new ScopeCondition(Set.of(), Set.of("propertyMemberDeclaration"), Set.of()),
-            NO_NAME);
+            NO_NAME
+        );
 
     assertThat(matched(filters, Set.of("propertyName"), COMPONENT))
         .containsExactly("title", "ngOnInit", "ngDoBootstrap");
@@ -185,11 +199,15 @@ class DecoratedClassCheckTest {
     final Filters filters =
         new Filters(
             new ClassCondition(
-                Optional.of(Pattern.compile("^@Pipe\\b")), Map.of(), Optional.of("PipeTransform")),
+                Optional.of(Pattern.compile("^@Pipe\\b")),
+                Map.of(),
+                Optional.of("PipeTransform")
+            ),
             NO_MEMBER,
             NO_NODE,
             new ScopeCondition(Set.of(), Set.of("classDeclaration"), Set.of()),
-            NO_NAME);
+            NO_NAME
+        );
     final String source =
         """
         @Pipe({ name: 'shout' })
@@ -200,13 +218,16 @@ class DecoratedClassCheckTest {
   }
 
   private static List<String> matched(
-      final Filters filters, final Set<String> kinds, final String source) {
+      final Filters filters,
+      final Set<String> kinds,
+      final String source
+  ) {
     final SyntaxNode root = parse(source);
     return new DecoratedClassCheck(kinds, filters, "message")
         .matches(root).stream()
-            .map(RuleMatch::span)
-            .map(span -> source.substring(span.startOffset(), span.endOffset()))
-            .toList();
+        .map(RuleMatch::span)
+        .map(span -> source.substring(span.startOffset(), span.endOffset()))
+        .toList();
   }
 
   private static SyntaxNode parse(final String source) {

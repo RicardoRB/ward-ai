@@ -14,10 +14,10 @@ import java.util.regex.Pattern;
  * static and its class is not final.
  */
 public final class JavaOverridableSecurityCheck implements RuleCheck {
-
   private static final Pattern CHECK =
       Pattern.compile(
-          "System\\.getSecurityManager\\(\\)\\.check\\w+\\(|AccessController\\.checkPermission\\(");
+          "System\\.getSecurityManager\\(\\)\\.check\\w+\\(|AccessController\\.checkPermission\\("
+      );
   private static final Set<String> FIXED = Set.of("private", "final", "static");
 
   private final String message;
@@ -47,7 +47,11 @@ public final class JavaOverridableSecurityCheck implements RuleCheck {
                             CheckSupport.fill(
                                 message,
                                 MemberDeclarations.name(ClassMembers.declarationOf(member)),
-                                ""))));
+                                ""
+                            )
+                        )
+                    )
+            );
       }
     }
     return List.copyOf(matches);

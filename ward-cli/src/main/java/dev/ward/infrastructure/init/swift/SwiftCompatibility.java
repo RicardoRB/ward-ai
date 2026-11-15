@@ -24,7 +24,8 @@ final class SwiftCompatibility {
     if (!toolchain.macOs()) {
       problems.add(
           "Ward sets up Swift projects on macOS only; run ward init on a Mac with Xcode 26.0 or"
-              + " newer.");
+              + " newer."
+      );
       return List.copyOf(problems);
     }
     xcodeProblem(toolchain).ifPresent(problems::add);
@@ -32,7 +33,8 @@ final class SwiftCompatibility {
         && Files.isRegularFile(project.root().resolve(PODFILE))) {
       problems.add(
           "Ward does not set up CocoaPods projects; move the dependencies to Swift Package Manager"
-              + " to use Ward with this project.");
+              + " to use Ward with this project."
+      );
     }
     return List.copyOf(problems);
   }
@@ -45,7 +47,8 @@ final class SwiftCompatibility {
               + SwiftSupport.MINIMUM_XCODE_MAJOR
               + "."
               + SwiftSupport.MINIMUM_XCODE_MINOR
-              + " or newer with xcode-select.");
+              + " or newer with xcode-select."
+      );
     }
     return SwiftSupport.xcodeIncompatibility(version.get());
   }

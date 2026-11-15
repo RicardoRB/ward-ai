@@ -16,11 +16,13 @@ enum GenericKind {
   IDENTIFIER_PATTERN(
       "identifier-pattern",
       List.of("name", "skip", "pattern"),
-      List.of(option("pattern", RuleOptionType.REGEX))),
+      List.of(option("pattern", RuleOptionType.REGEX))
+  ),
   FORBIDDEN_NODE(
       "forbidden-node",
       List.of("text", "with-child", "parent", "parent-path"),
-      List.of(option("text", RuleOptionType.REGEX))),
+      List.of(option("text", RuleOptionType.REGEX))
+  ),
   REQUIRED_NODE("required-node", List.of("child", "descendant", "skip", "sibling"), List.of()),
   COMPANION_NODE("companion-node", List.of("node", "match", "companion"), List.of()),
   COUNT("count", List.of("counted", "skip", "max"), List.of(option("max", RuleOptionType.INTEGER))),
@@ -28,11 +30,13 @@ enum GenericKind {
   TEXT_PATTERN(
       "text-pattern",
       List.of("target", "pattern", "required", "limit", "header-lines"),
-      List.of(option("pattern", RuleOptionType.REGEX), option("limit", RuleOptionType.INTEGER))),
+      List.of(option("pattern", RuleOptionType.REGEX), option("limit", RuleOptionType.INTEGER))
+  ),
   ORDER(
       "order",
       List.of("order", "group-by", "group-skip"),
-      List.of(option("order", RuleOptionType.STRING_LIST))),
+      List.of(option("order", RuleOptionType.STRING_LIST))
+  ),
   LITERAL(
       "literal",
       List.of("ignore", "ignore-contexts", "max-repeats", "min-length"),
@@ -40,7 +44,9 @@ enum GenericKind {
           option("ignore", RuleOptionType.STRING_LIST),
           option("ignore-contexts", RuleOptionType.STRING_LIST),
           option("max-repeats", RuleOptionType.INTEGER),
-          option("min-length", RuleOptionType.INTEGER))),
+          option("min-length", RuleOptionType.INTEGER)
+      )
+  ),
   DUPLICATE("duplicate", List.of("items", "key"), List.of());
 
   /** The keys every generic kind accepts: the node kinds, the shared filters and the message. */
@@ -53,7 +59,8 @@ enum GenericKind {
           "not-modifiers",
           "inside",
           "not-inside",
-          "sources");
+          "sources"
+      );
 
   private final String id;
   private final List<String> parameters;

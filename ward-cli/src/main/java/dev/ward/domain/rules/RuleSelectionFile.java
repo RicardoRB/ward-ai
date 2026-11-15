@@ -5,7 +5,6 @@ import java.util.Optional;
 
 /** Port that reads and writes {@code ward-rules.toml} at the root of a project. */
 public interface RuleSelectionFile {
-
   /** Returns the file text, or empty when the file does not exist. */
   Optional<String> read(Path root);
 

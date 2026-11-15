@@ -36,8 +36,8 @@ public record GateExtensions(
     VulnerabilityGates vulnerabilities,
     LicenseService license,
     BuildPolicyGates buildPolicy,
-    ApiCompatGates apiCompat) {
-
+    ApiCompatGates apiCompat
+) {
   /** No optional dependencies: every extension gate is reported as unavailable. */
   public static final GateExtensions NONE =
       new GateExtensions(null, null, null, null, null, null, null, null, null);
@@ -52,7 +52,10 @@ public record GateExtensions(
    * {@code license}, {@code build-policy} and {@code api-compat} gates.
    */
   public GateExtensions(
-      final OpenApiGates openApi, final AnalysisPorts analysis, final FormatGates format) {
+      final OpenApiGates openApi,
+      final AnalysisPorts analysis,
+      final FormatGates format
+  ) {
     this(openApi, analysis, format, null, null, null, null, null, null);
   }
 
@@ -69,6 +72,7 @@ public record GateExtensions(
     return new LicenseGate(
         check.name(),
         license,
-        check.license() == null ? LicenseSettings.defaults() : check.license());
+        check.license() == null ? LicenseSettings.defaults() : check.license()
+    );
   }
 }

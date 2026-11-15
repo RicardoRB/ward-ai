@@ -5,7 +5,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 /** Reads the node that starts at the cursor; the block collections call back into the parser. */
 @FunctionalInterface
 interface YamlNodeReader {
-
   /**
    * Reads a node.
    *

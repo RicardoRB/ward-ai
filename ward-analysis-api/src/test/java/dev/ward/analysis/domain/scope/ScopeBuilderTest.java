@@ -8,7 +8,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class ScopeBuilderTest {
-
   private static final int OFFSET_0 = 0;
   private static final int OFFSET_1 = 1;
   private static final int OFFSET_2 = 2;

@@ -21,7 +21,8 @@ import picocli.CommandLine.Spec;
     name = "list",
     description = "List analysis rules, with their presets and categories.",
     mixinStandardHelpOptions = true,
-    footer = {"", "Exit codes: 0 = listed, 2 = error (unknown filter or invalid configuration)"})
+    footer = {"", "Exit codes: 0 = listed, 2 = error (unknown filter or invalid configuration)"}
+)
 public final class RulesListCommand implements Callable<Integer> {
   private static final String TEXT = "text";
   private static final String JSON = "json";
@@ -34,19 +35,22 @@ public final class RulesListCommand implements Callable<Integer> {
   @Option(
       names = "--preset",
       paramLabel = "<preset>",
-      description = "Keep the rules that the preset selects: none, standard or strict.")
+      description = "Keep the rules that the preset selects: none, standard or strict."
+  )
   private String preset;
 
   @Option(
       names = "--language",
       paramLabel = "<language>",
-      description = "Keep the rules that cover this language.")
+      description = "Keep the rules that cover this language."
+  )
   private String language;
 
   @Option(
       names = "--category",
       paramLabel = "<category>",
-      description = "Keep the rules of this category.")
+      description = "Keep the rules of this category."
+  )
   private String category;
 
   @Option(names = "--selected", description = "Keep only the rules that ward-rules.toml selects.")
@@ -56,7 +60,8 @@ public final class RulesListCommand implements Callable<Integer> {
       names = "--format",
       paramLabel = "<format>",
       defaultValue = TEXT,
-      description = "Output format: text or json (default: ${DEFAULT-VALUE}).")
+      description = "Output format: text or json (default: ${DEFAULT-VALUE})."
+  )
   private String format;
 
   private final RulesService service;
@@ -90,7 +95,9 @@ public final class RulesListCommand implements Callable<Integer> {
       RulesReport.out(spec)
           .println(
               codec.toJson(
-                  new RulesReport.RuleListDto(views.stream().map(RulesReport::rule).toList())));
+                  new RulesReport.RuleListDto(views.stream().map(RulesReport::rule).toList())
+              )
+          );
     } else {
       views.forEach(view -> RulesReport.out(spec).println(RulesReport.line(view)));
     }

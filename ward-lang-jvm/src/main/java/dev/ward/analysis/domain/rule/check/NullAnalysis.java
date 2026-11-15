@@ -20,7 +20,6 @@ import java.util.Set;
  * already dereferenced, and a null that is dereferenced on every path after it.
  */
 final class NullAnalysis {
-
   /** The patterns the analysis reports. */
   enum Pattern {
     /** A variable that is null on every path is dereferenced. */
@@ -65,7 +64,6 @@ final class NullAnalysis {
    * @param sources where the null comes from, when known: the first place that holds it
    */
   record Finding(Pattern pattern, Span at, List<Span> sources) {
-
     /** Copies the sources. */
     Finding {
       sources = List.copyOf(sources);
@@ -103,7 +101,8 @@ final class NullAnalysis {
   private static boolean within(final Set<Span> caught, final Span at) {
     return caught.stream()
         .anyMatch(
-            span -> at.startOffset() >= span.startOffset() && at.endOffset() <= span.endOffset());
+            span -> at.startOffset() >= span.startOffset() && at.endOffset() <= span.endOffset()
+        );
   }
 
   /** Returns the parameters that each method dereferences on every path, by method key. */

@@ -21,7 +21,6 @@ import java.util.Set;
  * type whose facts are unknown, or a user type, is never reported.
  */
 public final class JavaIncomparableCheck implements RuleCheck {
-
   private static final Set<String> SORTED =
       Set.of("TreeSet", "TreeMap", "ConcurrentSkipListSet", "ConcurrentSkipListMap");
   private static final Set<String> NOT_COMPARABLE =
@@ -38,7 +37,8 @@ public final class JavaIncomparableCheck implements RuleCheck {
           "java.util.Map",
           "java.util.HashMap",
           "java.util.Set",
-          "java.util.HashSet");
+          "java.util.HashSet"
+      );
   private static final FactNeed NEED = new FactNeed(Set.of("typeType"), Set.of(FactKind.TYPE));
 
   private final String message;
@@ -68,7 +68,8 @@ public final class JavaIncomparableCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("creator"))) {
       elementType(visit.node(), types)
@@ -76,13 +77,19 @@ public final class JavaIncomparableCheck implements RuleCheck {
               type ->
                   matches.add(
                       CheckSupport.at(
-                          visit.node().span(), CheckSupport.fill(message, type.name(), ""))));
+                          visit.node().span(),
+                          CheckSupport.fill(message, type.name(), "")
+                      )
+                  )
+          );
     }
     return List.copyOf(matches);
   }
 
   private static Optional<TypeRef> elementType(
-      final SyntaxNode creator, final UnitTypeFacts types) {
+      final SyntaxNode creator,
+      final UnitTypeFacts types
+  ) {
     final String name =
         JavaNodes.kid(creator, "createdName")
             .flatMap(created -> JavaNodes.kid(created, "identifier"))

@@ -23,7 +23,13 @@ class GitRevisionFilesTest {
     assertThat(new GitRevisionFiles(executor).resolve(ROOT, "origin/main")).contains(SHA);
     assertThat(executor.commands.getFirst())
         .containsExactly(
-            "git", "rev-parse", "--verify", "--quiet", "--end-of-options", "origin/main^{commit}");
+            "git",
+            "rev-parse",
+            "--verify",
+            "--quiet",
+            "--end-of-options",
+            "origin/main^{commit}"
+        );
     assertThat(executor.workingDirectories).containsExactly(ROOT);
   }
 

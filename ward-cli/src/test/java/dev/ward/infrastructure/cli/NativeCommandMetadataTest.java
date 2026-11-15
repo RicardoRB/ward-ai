@@ -60,12 +60,12 @@ class NativeCommandMetadataTest {
 
   private static Set<String> commandClasses() {
     return new ClassFileImporter()
-            .withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_TESTS)
-            .importPackages("dev.ward.infrastructure.cli")
-            .stream()
-            .filter(javaClass -> javaClass.isAnnotatedWith(Command.class))
-            .map(JavaClass::getName)
-            .collect(Collectors.toSet());
+        .withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_TESTS)
+        .importPackages("dev.ward.infrastructure.cli")
+        .stream()
+        .filter(javaClass -> javaClass.isAnnotatedWith(Command.class))
+        .map(JavaClass::getName)
+        .collect(Collectors.toSet());
   }
 
   private String readResource(final String path) throws IOException {

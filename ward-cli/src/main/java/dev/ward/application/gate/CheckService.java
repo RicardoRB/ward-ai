@@ -35,7 +35,8 @@ public class CheckService {
       final WardConfigurationReader configurationReader,
       final QualityGateFactory gateFactory,
       final QualityGateRunner runner,
-      final PartialPorts partialPorts) {
+      final PartialPorts partialPorts
+  ) {
     this.detector = detector;
     this.configurationReader = configurationReader;
     this.gateFactory = gateFactory;
@@ -57,7 +58,8 @@ public class CheckService {
   public CheckReport check(
       final Path start,
       final List<String> requestedProfiles,
-      final CheckProgressListener listener) {
+      final CheckProgressListener listener
+  ) {
     return check(start, requestedProfiles, listener, false);
   }
 
@@ -68,11 +70,15 @@ public class CheckService {
 
   /** Runs a partial check of the {@code edit} profile, without progress output. */
   public CheckReport checkPartial(
-      final Path start, final List<Path> paths, final Set<String> excludedGates) {
+      final Path start,
+      final List<Path> paths,
+      final Set<String> excludedGates
+  ) {
     return checkPartial(
         start,
         paths,
-        new CheckRunOptions(List.of(), CheckProgressListener.NO_OP, false, excludedGates));
+        new CheckRunOptions(List.of(), CheckProgressListener.NO_OP, false, excludedGates)
+    );
   }
 
   /**
@@ -82,7 +88,10 @@ public class CheckService {
    * others run in full.
    */
   public CheckReport checkPartial(
-      final Path start, final List<Path> paths, final CheckRunOptions options) {
+      final Path start,
+      final List<Path> paths,
+      final CheckRunOptions options
+  ) {
     final Project project = detector.detect(start).orElseThrow(ProjectNotFoundException::new);
     final List<Path> directories =
         OwnLanguageMemberChecks.directories(project, partialPorts.members());
@@ -101,11 +110,15 @@ public class CheckService {
         own,
         directories,
         paths,
-        (directory, memberPaths) -> checkPartial(directory, memberPaths, options));
+        (directory, memberPaths) -> checkPartial(directory, memberPaths, options)
+    );
   }
 
   private CheckReport partialOf(
-      final Project project, final List<Path> paths, final CheckRunOptions options) {
+      final Project project,
+      final List<Path> paths,
+      final CheckRunOptions options
+  ) {
     final List<String> profiles =
         options.profiles().isEmpty() ? List.of(EditProfile.NAME) : options.profiles();
     final Optional<WardConfiguration> selected =
@@ -117,10 +130,13 @@ public class CheckService {
       LOGGER.log(Level.INFO, "event=partial-plan scope=outside-project");
       final List<QualityGate> skipped =
           selected.get().checks().values().stream()
-              .<QualityGate>map(
+              .<QualityGate> map(
                   check ->
                       new TypedQualityGate(
-                          check.type(), new SkippedQualityGate(check.name(), OUTSIDE_PROJECT)))
+                          check.type(),
+                          new SkippedQualityGate(check.name(), OUTSIDE_PROJECT)
+                      )
+              )
               .toList();
       return runner.run(project, skipped, options.listener(), options.failFast());
     }
@@ -132,7 +148,8 @@ public class CheckService {
                 selected.get().checks(),
                 paths,
                 partialPorts.existence(),
-                path -> partialPorts.members().packageOf(project.root(), path));
+                path -> partialPorts.members().packageOf(project.root(), path)
+            );
     LOGGER.log(
         Level.INFO,
         () ->
@@ -143,10 +160,14 @@ public class CheckService {
                 + " narrowed="
                 + plan.count(PartialCheckPlan.Scope.NARROW)
                 + " full="
-                + plan.count(PartialCheckPlan.Scope.FULL));
+                + plan.count(PartialCheckPlan.Scope.FULL)
+    );
     final List<QualityGate> gates = PartialGates.create(selected.get(), plan, gateFactory, project);
     return PartialGates.scoped(
-        runner.run(project, gates, options.listener(), options.failFast()), plan, paths);
+        runner.run(project, gates, options.listener(), options.failFast()),
+        plan,
+        paths
+    );
   }
 
   /**
@@ -154,7 +175,10 @@ public class CheckService {
    * Unlike a full check, having none of them enabled is not an error: the report is empty.
    */
   public CheckReport check(
-      final Path start, final List<String> requestedProfiles, final Set<String> types) {
+      final Path start,
+      final List<String> requestedProfiles,
+      final Set<String> types
+  ) {
     final Project project = detector.detect(start).orElseThrow(ProjectNotFoundException::new);
     final WardConfiguration selected =
         configurationReader
@@ -162,12 +186,18 @@ public class CheckService {
             .forProfiles(requestedProfiles)
             .onlyTypes(types);
     LOGGER.log(
-        Level.INFO, () -> "event=gate-subset-selected gates=" + selected.enabledGates().size());
+        Level.INFO,
+        () -> "event=gate-subset-selected gates=" + selected.enabledGates().size()
+    );
     if (selected.enabledGates().isEmpty()) {
       return new CheckReport(project, List.of());
     }
     return runner.run(
-        project, gateFactory.create(selected, project), CheckProgressListener.NO_OP, false);
+        project,
+        gateFactory.create(selected, project),
+        CheckProgressListener.NO_OP,
+        false
+    );
   }
 
   /**
@@ -178,7 +208,8 @@ public class CheckService {
       final Path start,
       final List<String> requestedProfiles,
       final CheckProgressListener listener,
-      final boolean failFast) {
+      final boolean failFast
+  ) {
     return check(start, requestedProfiles, listener, failFast, Set.of());
   }
 
@@ -191,12 +222,14 @@ public class CheckService {
       final List<String> requestedProfiles,
       final CheckProgressListener listener,
       final boolean failFast,
-      final Set<String> excludedGates) {
+      final Set<String> excludedGates
+  ) {
     if (requestedProfiles != null && requestedProfiles.contains(EditProfile.NAME)) {
       return checkPartial(
           start,
           List.of(),
-          new CheckRunOptions(requestedProfiles, listener, failFast, excludedGates));
+          new CheckRunOptions(requestedProfiles, listener, failFast, excludedGates)
+      );
     }
     final Project project = detector.detect(start).orElseThrow(ProjectNotFoundException::new);
     final Optional<WardConfiguration> selected =
@@ -212,13 +245,15 @@ public class CheckService {
               "event=configuration-selected profiles="
                   + selected.get().profileNames().size()
                   + " gates="
-                  + gates.size());
+                  + gates.size()
+      );
       own = runner.run(project, gates, listener, failFast);
     }
     return OwnLanguageMemberChecks.checkAll(
         own,
         OwnLanguageMemberChecks.directories(project, partialPorts.members()),
         failFast,
-        directory -> check(directory, requestedProfiles, listener, failFast, excludedGates));
+        directory -> check(directory, requestedProfiles, listener, failFast, excludedGates)
+    );
   }
 }

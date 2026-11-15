@@ -12,7 +12,6 @@ import java.util.Optional;
  * lost: a call, a member access, a returned value, an argument, a declaration or a negation.
  */
 public final class UnsafeAnyCheck extends TypedCheck {
-
   /** The places where an {@code any} value is unsafe. */
   public enum Site {
     /** The callee of a call. */
@@ -50,7 +49,10 @@ public final class UnsafeAnyCheck extends TypedCheck {
   }
 
   private void collect(
-      final SyntaxNode root, final UnitTypeFacts types, final List<RuleMatch> out) {
+      final SyntaxNode root,
+      final UnitTypeFacts types,
+      final List<RuleMatch> out
+  ) {
     if (site == Site.RETURN) {
       collectReturns(root, types, out);
     } else if (site == Site.ARGUMENT) {
@@ -63,7 +65,10 @@ public final class UnsafeAnyCheck extends TypedCheck {
   }
 
   private void collectExpressions(
-      final SyntaxNode root, final UnitTypeFacts types, final List<RuleMatch> out) {
+      final SyntaxNode root,
+      final UnitTypeFacts types,
+      final List<RuleMatch> out
+  ) {
     for (final SyntaxNode node : SyntaxText.nodesOf(root, EXPRESSION)) {
       final List<SyntaxNode> parts = node.children();
       final SyntaxNode subject = subjectOf(parts);
@@ -95,7 +100,10 @@ public final class UnsafeAnyCheck extends TypedCheck {
   }
 
   private void collectReturns(
-      final SyntaxNode root, final UnitTypeFacts types, final List<RuleMatch> out) {
+      final SyntaxNode root,
+      final UnitTypeFacts types,
+      final List<RuleMatch> out
+  ) {
     for (final SyntaxNode statement : SyntaxText.nodesOf(root, RETURN_STATEMENT)) {
       for (final SyntaxNode value : SyntaxText.childrenOf(statement, SEQUENCE)) {
         if (isAny(types, value)) {
@@ -106,7 +114,10 @@ public final class UnsafeAnyCheck extends TypedCheck {
   }
 
   private void collectArguments(
-      final SyntaxNode root, final UnitTypeFacts types, final List<RuleMatch> out) {
+      final SyntaxNode root,
+      final UnitTypeFacts types,
+      final List<RuleMatch> out
+  ) {
     for (final SyntaxNode argument : SyntaxText.nodesOf(root, ARGUMENTS)) {
       final Optional<SyntaxNode> value =
           argument.children().stream().filter(child -> EXPRESSION.equals(child.kind())).findFirst();
@@ -117,7 +128,10 @@ public final class UnsafeAnyCheck extends TypedCheck {
   }
 
   private void collectDeclarations(
-      final SyntaxNode root, final UnitTypeFacts types, final List<RuleMatch> out) {
+      final SyntaxNode root,
+      final UnitTypeFacts types,
+      final List<RuleMatch> out
+  ) {
     for (final SyntaxNode declaration : SyntaxText.nodesOf(root, DECLARATION)) {
       final List<SyntaxNode> annotations = SyntaxText.childrenOf(declaration, ANNOTATION);
       final SyntaxNode init = SyntaxText.last(declaration);

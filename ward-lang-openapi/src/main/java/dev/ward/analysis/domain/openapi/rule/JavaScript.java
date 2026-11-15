@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 
 /** The few JavaScript conversions the Spectral rules depend on. */
 final class JavaScript {
-
   private static final Pattern DECIMAL =
       Pattern.compile("[+-]?(\\d+\\.?\\d*|\\.\\d+)([eE][+-]?\\d+)?");
 

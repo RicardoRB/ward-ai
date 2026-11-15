@@ -26,7 +26,6 @@ import org.junit.jupiter.params.provider.MethodSource;
  * syntax error, format to a result, and format to itself again.
  */
 class SwiftSyntaxFixturesTest {
-
   private static final int MIN_FIXTURES = 16;
   private static final String FIXTURE_ROOT = "/syntax/swift";
   private static final SwiftFormatter FORMATTER = new SwiftFormatter();

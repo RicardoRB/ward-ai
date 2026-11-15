@@ -20,10 +20,7 @@ class TomlParsingTest {
   @Test
   void parsesDefaultConfiguration() throws Exception {
     final WardConfiguration config =
-        read(
-            reader,
-            dir,
-            """
+        read(reader, dir, """
                 version = 2
 
                 [checks.tests]
@@ -40,10 +37,7 @@ class TomlParsingTest {
   @Test
   void parsesMultipleGatesAndOnlyReturnsEnabledOnes() throws Exception {
     final WardConfiguration config =
-        read(
-            reader,
-            dir,
-            """
+        read(reader, dir, """
                 version = 2
 
                 [checks.tests]
@@ -68,10 +62,7 @@ class TomlParsingTest {
   @Test
   void acceptsCommandAsArray() throws Exception {
     final WardConfiguration config =
-        read(
-            reader,
-            dir,
-            """
+        read(reader, dir, """
                 version = 2
                 [checks.tests]
                 command = ["./mvnw", "test", "-Dtest=A, B"]
@@ -85,10 +76,7 @@ class TomlParsingTest {
   @Test
   void parsesPartialConfiguration() throws Exception {
     final WardConfiguration config =
-        read(
-            reader,
-            dir,
-            """
+        read(reader, dir, """
                 version = 2
                 [checks.checkstyle]
                 command = ["./mvnw", "checkstyle:check"]
@@ -109,17 +97,15 @@ class TomlParsingTest {
   @Test
   void rejectsPartialArgumentsWithoutInputs() {
     assertThatThrownBy(
-            () ->
-                read(
-                    reader,
-                    dir,
-                    """
+        () ->
+            read(reader, dir, """
                         version = 2
                         [checks.tests]
                         command = "echo test"
                         [checks.tests.paths]
                         args = ["{paths}"]
-                        """))
+                        """)
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("tests.paths.args")
         .hasMessageContaining("match");
@@ -128,17 +114,15 @@ class TomlParsingTest {
   @Test
   void rejectsInvalidPartialValues() {
     assertThatThrownBy(
-            () ->
-                read(
-                    reader,
-                    dir,
-                    """
+        () ->
+            read(reader, dir, """
                         version = 2
                         [checks.tests]
                         command = "echo test"
                         [checks.tests.paths]
                         inputs = "src/**/*.java"
-                        """))
+                        """)
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("tests.paths.inputs");
   }
@@ -146,18 +130,16 @@ class TomlParsingTest {
   @Test
   void rejectsPartialItemWithoutPlaceholder() {
     assertThatThrownBy(
-            () ->
-                read(
-                    reader,
-                    dir,
-                    """
+        () ->
+            read(reader, dir, """
                         version = 2
                         [checks.tests]
                         command = "echo test"
                         [checks.tests.paths]
                         match = ["**"]
                         item = "**/Order.java"
-                        """))
+                        """)
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("tests.paths.item");
   }

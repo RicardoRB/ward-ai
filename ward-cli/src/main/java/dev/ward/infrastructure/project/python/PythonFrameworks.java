@@ -82,7 +82,8 @@ public final class PythonFrameworks {
             file ->
                 read(file)
                     .lines()
-                    .forEach(line -> PyprojectDependencies.nameOf(line).ifPresent(names::add)));
+                    .forEach(line -> PyprojectDependencies.nameOf(line).ifPresent(names::add))
+        );
     return names;
   }
 

@@ -15,7 +15,6 @@ import java.util.Set;
  * never} nor {@code any}, which the minus cannot negate.
  */
 public final class UnaryMinusCheck extends TypedCheck {
-
   private static final String MINUS = "-";
   private static final Set<ValueKind> NEGATABLE =
       Set.of(ValueKind.ANY, ValueKind.NUMBER, ValueKind.BIGINT, ValueKind.NEVER);

@@ -35,18 +35,30 @@ class SwiftInitFilesTest {
             new NodeInputs(
                 directory -> PackageManifest.EMPTY,
                 directory -> false,
-                (directory, gate) -> Optional.empty()),
+                (directory, gate) -> Optional.empty()
+            ),
             null,
             null,
-            "dev");
+            "dev"
+        );
     final InitSelection selection =
         new InitSelection(
-            List.of("none"), List.of(), null, null, List.of(), false, null, false, null);
+            List.of("none"),
+            List.of(),
+            null,
+            null,
+            List.of(),
+            false,
+            null,
+            false,
+            null
+        );
 
     assertThat(
-            OwnedSections.of(catalog, SWIFT_PM, selection, swiftGates(), List.of()).stream()
-                .map(OwnedSection::body)
-                .toList())
+        OwnedSections.of(catalog, SWIFT_PM, selection, swiftGates(), List.of()).stream()
+            .map(OwnedSection::body)
+            .toList()
+    )
         .allMatch(content -> !content.contains(".ward/swift-tools"));
   }
 
@@ -69,6 +81,8 @@ class SwiftInitFilesTest {
             List.of("swift", "test", "--show-codecov-path"),
             true,
             "ok",
-            Map.of("minimum", "80")));
+            Map.of("minimum", "80")
+        )
+    );
   }
 }

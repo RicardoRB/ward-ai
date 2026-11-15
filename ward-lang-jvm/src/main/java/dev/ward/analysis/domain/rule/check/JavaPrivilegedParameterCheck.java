@@ -20,7 +20,6 @@ import java.util.Set;
  * be non-final and to return a value; a call whose target is unknown is never reported.
  */
 public final class JavaPrivilegedParameterCheck implements RuleCheck {
-
   private final String message;
 
   /**
@@ -48,7 +47,8 @@ public final class JavaPrivilegedParameterCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(MemberDeclarations.CLASS))) {
       if (JavaNodes.modifiers(visit).contains("public")) {

@@ -24,7 +24,6 @@ import org.junit.jupiter.api.Test;
  * differences are listed with their reason; any other difference fails.
  */
 class CheckstyleNamingParityTest {
-
   private static final String CLASSPATH = System.getProperty("ward.checkstyle.classpath");
   private static final String GOOGLE_TYPE_PARAMETER =
       "(^[A-Z][0-9]?$)|(^[A-Z]T$)|(^([A-Z][a-z0-9]+)+T$)";
@@ -44,13 +43,15 @@ class CheckstyleNamingParityTest {
           new Mirror(
               "abbreviation-as-word-in-name",
               "AbbreviationAsWordInName",
-              Map.of("ignoreFinal", "false", "allowedAbbreviationLength", "0")),
+              Map.of("ignoreFinal", "false", "allowedAbbreviationLength", "0")
+          ),
           new Mirror("abstract-class-name", "AbstractClassName", Map.of()),
           new Mirror("catch-parameter-name", "CatchParameterName", Map.of(FORMAT, GOOGLE_NAME)),
           new Mirror(
               "class-type-parameter-name",
               "ClassTypeParameterName",
-              Map.of(FORMAT, GOOGLE_TYPE_PARAMETER)),
+              Map.of(FORMAT, GOOGLE_TYPE_PARAMETER)
+          ),
           new Mirror("constant-name", "ConstantName", Map.of()),
           new Mirror("google-method-name", "GoogleMethodName", Map.of()),
           new Mirror("google-non-constant-field-name", "GoogleNonConstantFieldName", Map.of()),
@@ -58,7 +59,8 @@ class CheckstyleNamingParityTest {
           new Mirror(
               "interface-type-parameter-name",
               "InterfaceTypeParameterName",
-              Map.of(FORMAT, GOOGLE_TYPE_PARAMETER)),
+              Map.of(FORMAT, GOOGLE_TYPE_PARAMETER)
+          ),
           new Mirror("lambda-parameter-name", "LambdaParameterName", Map.of(FORMAT, GOOGLE_NAME)),
           new Mirror(
               "local-final-variable-name",
@@ -67,22 +69,28 @@ class CheckstyleNamingParityTest {
                   "tokens",
                   "VARIABLE_DEF, PARAMETER_DEF, RESOURCE",
                   FORMAT,
-                  "^(_|[a-z](?=[a-z0-9]|$)(?:[a-zA-Z]|[0-9]+(?:_[0-9]+)*)*)$")),
+                  "^(_|[a-z](?=[a-z0-9]|$)(?:[a-zA-Z]|[0-9]+(?:_[0-9]+)*)*)$"
+              )
+          ),
           new Mirror(
               "method-type-parameter-name",
               "MethodTypeParameterName",
-              Map.of(FORMAT, GOOGLE_TYPE_PARAMETER)),
+              Map.of(FORMAT, GOOGLE_TYPE_PARAMETER)
+          ),
           new Mirror("package-name", "PackageName", Map.of(FORMAT, "^[a-z]+(\\.[a-z][a-z0-9]*)*$")),
           new Mirror("pattern-variable-name", "PatternVariableName", Map.of(FORMAT, GOOGLE_NAME)),
           new Mirror(
               "record-component-name",
               "RecordComponentName",
-              Map.of(FORMAT, "^[a-z]([a-z0-9][a-zA-Z0-9]*)?$")),
+              Map.of(FORMAT, "^[a-z]([a-z0-9][a-zA-Z0-9]*)?$")
+          ),
           new Mirror(
               "record-type-parameter-name",
               "RecordTypeParameterName",
-              Map.of(FORMAT, GOOGLE_TYPE_PARAMETER)),
-          new Mirror("static-variable-name", "StaticVariableName", Map.of()));
+              Map.of(FORMAT, GOOGLE_TYPE_PARAMETER)
+          ),
+          new Mirror("static-variable-name", "StaticVariableName", Map.of())
+      );
 
   @Test
   void checkstyleReportsTheSamePositionsAsEveryNamingFixture()
@@ -103,9 +111,9 @@ class CheckstyleNamingParityTest {
               .filter(p -> !WARD_ONLY.getOrDefault(mirror.rule(), Set.of()).contains(p))
               .collect(Collectors.toSet());
       if (LINE_ONLY.contains(mirror.rule())) {
-        assertThat(found.stream().map(p -> p.split(":")[0]).toList())
+        assertThat(found.stream().map(p -> p.split(":") [0]).toList())
             .as(mirror.rule())
-            .containsExactlyElementsOf(wanted.stream().map(p -> p.split(":")[0]).toList());
+            .containsExactlyElementsOf(wanted.stream().map(p -> p.split(":") [0]).toList());
       } else if (!found.equals(wanted)) {
         problems.add(mirror.rule() + " checkstyle=" + found + " ward=" + wanted);
       }
@@ -123,7 +131,9 @@ class CheckstyleNamingParityTest {
         .forEach(
             (key, value) ->
                 properties.append(
-                    "<property name=\"%s\" value=\"%s\"/>".formatted(key, escape(value))));
+                    "<property name=\"%s\" value=\"%s\"/>".formatted(key, escape(value))
+                )
+        );
     return "<?xml version=\"1.0\"?>"
         + "<!DOCTYPE module PUBLIC \"-//Checkstyle//DTD Checkstyle Configuration 1.3//EN\""
         + " \"https://checkstyle.org/dtds/configuration_1_3.dtd\">"
@@ -145,13 +155,14 @@ class CheckstyleNamingParityTest {
     final String java = Path.of(System.getProperty("java.home"), "bin", "java").toString();
     final Process process =
         new ProcessBuilder(
-                java,
-                "-cp",
-                CLASSPATH,
-                "com.puppycrawl.tools.checkstyle.Main",
-                "-c",
-                config.toString(),
-                file.toString())
+            java,
+            "-cp",
+            CLASSPATH,
+            "com.puppycrawl.tools.checkstyle.Main",
+            "-c",
+            config.toString(),
+            file.toString()
+        )
             .redirectErrorStream(true)
             .start();
     final String output =

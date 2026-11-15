@@ -24,7 +24,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** The unused-function rule through the ward gate on two files: another file's use keeps it. */
 class PythonUnusedDefinitionGateTest {
-
   @TempDir Path root;
 
   @Test
@@ -45,12 +44,14 @@ class PythonUnusedDefinitionGateTest {
             Set.of(AnalysisLanguage.PYTHON),
             RuleCapability.SYMBOLS,
             AnalysisSeverity.ERROR,
-            "check = \"unused-definition\"");
+            "check = \"unused-definition\""
+        );
     return LayerPorts.ruleFindings(
         new Project(root, Language.PYTHON, BuildTool.PIP, Framework.NONE),
         List.of(rule),
         new ProjectDependencyAdapters(List.of(new PythonDependencyAdapters())),
-        UnusedDefinitionFindings.FUNCTION_ID);
+        UnusedDefinitionFindings.FUNCTION_ID
+    );
   }
 
   private void write(final String path, final String text) throws IOException {

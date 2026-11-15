@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the Kotlin tree checks over small hand-made syntax trees. */
 class KotlinTreeChecksTest {
-
   private static final String MESSAGE = "m";
   private static final Span SPAN = new Span(1, 1, 1, 2, 0, 1);
 
@@ -37,7 +36,6 @@ class KotlinTreeChecksTest {
 
   @Nested
   class MayBeConst {
-
     @Test
     void reportsATopLevelLiteralProperty() {
       assertThat(new KotlinMayBeConstCheck(MESSAGE).matches(file(topLevel(valLimit())))).hasSize(1);
@@ -49,7 +47,8 @@ class KotlinTreeChecksTest {
           node(
               "objectDeclaration",
               leaf("object"),
-              node("classBody", leaf("{"), node("classMemberDeclaration", valLimit()), leaf("}")));
+              node("classBody", leaf("{"), node("classMemberDeclaration", valLimit()), leaf("}"))
+          );
 
       assertThat(new KotlinMayBeConstCheck(MESSAGE).matches(file(topLevel(object)))).hasSize(1);
     }
@@ -67,7 +66,8 @@ class KotlinTreeChecksTest {
           node(
               "classDeclaration",
               leaf("class"),
-              node("classBody", leaf("{"), node("classMemberDeclaration", valLimit()), leaf("}")));
+              node("classBody", leaf("{"), node("classMemberDeclaration", valLimit()), leaf("}"))
+          );
 
       assertThat(new KotlinMayBeConstCheck(MESSAGE).matches(file(topLevel(clazz)))).isEmpty();
     }
@@ -83,7 +83,6 @@ class KotlinTreeChecksTest {
 
   @Nested
   class UnnecessaryApply {
-
     private static SyntaxNode applyCall(final String receiver, final String lambda) {
       return node(
           "postfixUnaryExpression",
@@ -91,7 +90,8 @@ class KotlinTreeChecksTest {
           leaf(".apply"),
           leaf("{"),
           leaf(lambda),
-          leaf("}"));
+          leaf("}")
+      );
     }
 
     @Test
@@ -121,10 +121,11 @@ class KotlinTreeChecksTest {
 
   @Nested
   class UtilityClass {
-
     private static SyntaxNode companionMember() {
       return node(
-          "classMemberDeclaration", node("companionObject", leaf("companion"), leaf("object")));
+          "classMemberDeclaration",
+          node("companionObject", leaf("companion"), leaf("object"))
+      );
     }
 
     @Test
@@ -134,7 +135,8 @@ class KotlinTreeChecksTest {
               "classDeclaration",
               leaf("class"),
               leaf("Strings"),
-              node("classBody", leaf("{"), companionMember(), leaf("}")));
+              node("classBody", leaf("{"), companionMember(), leaf("}"))
+          );
 
       assertThat(new KotlinUtilityClassCheck(MESSAGE).matches(file(clazz))).hasSize(1);
     }
@@ -151,7 +153,9 @@ class KotlinTreeChecksTest {
                   leaf("{"),
                   companionMember(),
                   node("classMemberDeclaration", node("functionDeclaration", leaf("fun"))),
-                  leaf("}")));
+                  leaf("}")
+              )
+          );
 
       assertThat(new KotlinUtilityClassCheck(MESSAGE).matches(file(clazz))).isEmpty();
     }
@@ -164,7 +168,8 @@ class KotlinTreeChecksTest {
               leaf("open"),
               leaf("class"),
               leaf("Strings"),
-              node("classBody", leaf("{"), companionMember(), leaf("}")));
+              node("classBody", leaf("{"), companionMember(), leaf("}"))
+          );
 
       assertThat(new KotlinUtilityClassCheck(MESSAGE).matches(file(clazz))).isEmpty();
     }
@@ -172,7 +177,6 @@ class KotlinTreeChecksTest {
 
   @Nested
   class LoopJumps {
-
     private static SyntaxNode jump(final String text) {
       return node("jumpExpression", leaf(text));
     }

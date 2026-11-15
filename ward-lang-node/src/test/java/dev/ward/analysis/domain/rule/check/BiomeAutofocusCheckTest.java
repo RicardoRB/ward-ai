@@ -12,7 +12,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class BiomeAutofocusCheckTest {
-
   private static final BiomeAutofocusCheck CHECK = new BiomeAutofocusCheck("message");
 
   @Test

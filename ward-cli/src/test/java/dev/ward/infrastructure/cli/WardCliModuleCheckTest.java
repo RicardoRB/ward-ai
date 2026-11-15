@@ -18,7 +18,8 @@ class WardCliModuleCheckTest extends WardCliIntegrationSupport {
     Files.writeString(
         pom,
         Files.readString(pom)
-            .replace("</project>", "    <modules><module>core</module></modules>\n</project>"));
+            .replace("</project>", "    <modules><module>core</module></modules>\n</project>")
+    );
     final Path core = Files.createDirectories(project.resolve("core"));
     Files.writeString(core.resolve("pom.xml"), "<project><artifactId>core</artifactId></project>");
     run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "tests", "-C", project.toString());

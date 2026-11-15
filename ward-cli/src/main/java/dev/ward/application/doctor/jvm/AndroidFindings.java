@@ -25,7 +25,10 @@ final class AndroidFindings {
 
   /** Returns the SDK finding and the plugin finding for {@code detected}. */
   static List<Finding> findings(
-      final Project detected, final EnvironmentFacts facts, final ToolchainContext context) {
+      final Project detected,
+      final EnvironmentFacts facts,
+      final ToolchainContext context
+  ) {
     final List<Finding> findings = new ArrayList<>();
     findings.add(sdk(facts));
     final String plugin = facts.values().getOrDefault(PLUGIN_VERSION, "");
@@ -45,12 +48,16 @@ final class AndroidFindings {
     return new Finding(
         SDK,
         Status.WARNING,
-        "No Android SDK found: set ANDROID_HOME or ANDROID_SDK_ROOT to an existing directory.");
+        "No Android SDK found: set ANDROID_HOME or ANDROID_SDK_ROOT to an existing directory."
+    );
   }
 
   /** Names the JDK or Gradle the plugin needs when the build's Gradle or JDK is older. */
   private static Finding pluginFinding(
-      final String plugin, final EnvironmentFacts facts, final Optional<Integer> jdk) {
+      final String plugin,
+      final EnvironmentFacts facts,
+      final Optional<Integer> jdk
+  ) {
     final Optional<Integer> needJdk = AndroidGradlePluginRequirements.minimumJdk(plugin);
     if (needJdk.isPresent() && jdk.isPresent() && jdk.get() < needJdk.get()) {
       return new Finding(
@@ -62,7 +69,8 @@ final class AndroidFindings {
               + needJdk.get()
               + " or newer, and the build runs on JDK "
               + jdk.get()
-              + ".");
+              + "."
+      );
     }
     final String gradle = facts.values().getOrDefault(GRADLE_VERSION, "");
     final Optional<String> needGradle = AndroidGradlePluginRequirements.minimumGradle(plugin);
@@ -78,10 +86,14 @@ final class AndroidFindings {
               + needGradle.get()
               + " or newer, and the wrapper pins Gradle "
               + gradle
-              + ".");
+              + "."
+      );
     }
     return new Finding(
-        PLUGIN, Status.OK, "Android Gradle Plugin " + plugin + " runs on this Gradle and JDK.");
+        PLUGIN,
+        Status.OK,
+        "Android Gradle Plugin " + plugin + " runs on this Gradle and JDK."
+    );
   }
 
   private static Optional<Integer> jdk(final Project detected, final ToolchainContext context) {

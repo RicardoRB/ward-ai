@@ -24,7 +24,9 @@ class QualityHookInstallerTest {
     assertThat(result.status()).isEqualTo(IntegrationResult.Status.CHANGED);
     assertThat(Files.readString(root.resolve(".git/hooks/pre-commit")))
         .contains(
-            QualityHookInstaller.START_MARKER, "ward check --profile pre-commit --format json");
+            QualityHookInstaller.START_MARKER,
+            "ward check --profile pre-commit --format json"
+        );
     assertThat(Files.readString(root.resolve(PRE_PUSH)))
         .contains(QualityHookInstaller.START_MARKER, "ward check --profile pre-push --format json");
     assertThat(root.resolve(".git/hooks/pre-commit").toFile().canExecute()).isTrue();
@@ -58,7 +60,9 @@ class QualityHookInstallerTest {
         .isEqualTo(content.lastIndexOf(QualityHookInstaller.START_MARKER));
 
     Files.writeString(
-        root.resolve(PRE_PUSH), "#!/bin/sh\n" + QualityHookInstaller.START_MARKER + "\n");
+        root.resolve(PRE_PUSH),
+        "#!/bin/sh\n" + QualityHookInstaller.START_MARKER + "\n"
+    );
     assertThatThrownBy(() -> installer.apply(ProjectFixtures.maven(root)))
         .hasMessageContaining("Malformed");
   }
@@ -105,7 +109,8 @@ class QualityHookInstallerTest {
     final Path preCommit = root.resolve(".git/hooks/pre-commit");
     Files.writeString(
         preCommit,
-        "#!/bin/sh\n" + "# ward-owned: spec-enforce-pre-commit v1\n" + "echo openspec\n");
+        "#!/bin/sh\n" + "# ward-owned: spec-enforce-pre-commit v1\n" + "echo openspec\n"
+    );
 
     final QualityHookInstaller installer = new QualityHookInstaller();
     installer.apply(ProjectFixtures.maven(root));

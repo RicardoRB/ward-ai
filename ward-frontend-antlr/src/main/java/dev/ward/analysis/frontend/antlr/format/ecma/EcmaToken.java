@@ -10,7 +10,6 @@ package dev.ward.analysis.frontend.antlr.format.ecma;
  * @param spaceBefore whether whitespace separated it from the token before
  */
 record EcmaToken(String text, int line, Kind kind, boolean spaceBefore) {
-
   /** The kinds of token the formatter sees. */
   enum Kind {
     /** A token of the program. */
@@ -27,7 +26,7 @@ record EcmaToken(String text, int line, Kind kind, boolean spaceBefore) {
    * @return the last line the token touches
    */
   int endLine() {
-    return line + (int) text.chars().filter(c -> c == '\n').count();
+    return line + (int)text.chars().filter(c -> c == '\n').count();
   }
 
   /**

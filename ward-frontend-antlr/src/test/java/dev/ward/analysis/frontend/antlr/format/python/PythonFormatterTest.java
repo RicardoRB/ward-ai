@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks the option contract of the Python formatter: width, indent style and blank lines. */
 class PythonFormatterTest {
-
   private static final FormatOptions SPACES =
       new FormatOptions(
           Map.of(
@@ -20,7 +19,9 @@ class PythonFormatterTest {
               "line-width",
               "100",
               "max-blank-lines",
-              "1"));
+              "1"
+          )
+      );
   private static final FormatOptions TABS =
       new FormatOptions(
           Map.of(
@@ -31,7 +32,9 @@ class PythonFormatterTest {
               "line-width",
               "100",
               "max-blank-lines",
-              "1"));
+              "1"
+          )
+      );
 
   @Test
   void tabStyleIndentsBlocksWithTabs() {

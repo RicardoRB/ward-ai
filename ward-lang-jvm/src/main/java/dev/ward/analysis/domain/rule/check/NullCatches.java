@@ -10,7 +10,6 @@ import java.util.Set;
  * null dereference is expected and handled.
  */
 final class NullCatches {
-
   private NullCatches() {}
 
   /** Returns the spans of the try blocks of {@code root} that catch NullPointerException. */

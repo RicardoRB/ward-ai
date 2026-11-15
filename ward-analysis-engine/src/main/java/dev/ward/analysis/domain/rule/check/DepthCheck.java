@@ -11,7 +11,6 @@ import java.util.Set;
  * kinds, counting up to the nearest ancestor in {@code reset}. The user option is {@code max}.
  */
 public final class DepthCheck implements UnitCheck {
-
   private final NodeFilter filter;
   private final Set<String> reset;
   private final int max;
@@ -27,7 +26,11 @@ public final class DepthCheck implements UnitCheck {
    * @throws IllegalArgumentException if {@code max} is negative
    */
   public DepthCheck(
-      final NodeFilter filter, final Set<String> reset, final int max, final String message) {
+      final NodeFilter filter,
+      final Set<String> reset,
+      final int max,
+      final String message
+  ) {
     this.filter = Objects.requireNonNull(filter, "filter");
     this.reset = Set.copyOf(reset);
     this.max = CheckSupport.nonNegative(max, "max");
@@ -43,7 +46,12 @@ public final class DepthCheck implements UnitCheck {
                 CheckSupport.at(
                     visit.node().span(),
                     CheckSupport.fill(
-                        message, String.valueOf(depth(visit.ancestors())), String.valueOf(max))))
+                        message,
+                        String.valueOf(depth(visit.ancestors())),
+                        String.valueOf(max)
+                    )
+                )
+        )
         .toList();
   }
 

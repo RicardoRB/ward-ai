@@ -7,7 +7,6 @@ import java.util.Set;
 
 /** Finds the names that binding patterns bind, and the names a body refers to. */
 final class NodeBindings {
-
   private static final String LEAF = "Identifier";
   private static final String PROPERTY_ASSIGNMENT = "propertyAssignment";
   private static final String PROPERTY_NAME = "propertyName";

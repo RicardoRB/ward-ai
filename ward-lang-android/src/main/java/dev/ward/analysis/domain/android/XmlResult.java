@@ -11,7 +11,6 @@ import java.util.List;
  * @param diagnostics at most one problem; empty when the text is well formed
  */
 public record XmlResult(SyntaxNode tree, List<XmlDiagnostic> diagnostics) {
-
   /** Copies the diagnostics. */
   public XmlResult {
     diagnostics = List.copyOf(diagnostics);

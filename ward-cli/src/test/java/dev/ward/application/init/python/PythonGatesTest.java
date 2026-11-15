@@ -25,10 +25,27 @@ class PythonGatesTest {
         .containsExactly("uv", RUN, "--group", "ward", MYPY, ".", "-O", "json");
     assertThat(command(gates, "pytest"))
         .containsExactly(
-            "uv", RUN, "--group", "ward", COVERAGE, "run", "-m", "pytest", "--ignore=mutants");
+            "uv",
+            RUN,
+            "--group",
+            "ward",
+            COVERAGE,
+            "run",
+            "-m",
+            "pytest",
+            "--ignore=mutants"
+        );
     assertThat(command(gates, COVERAGE))
         .containsExactly(
-            "uv", RUN, "--group", "ward", COVERAGE, "lcov", "-o", ".ward/reports/coverage.lcov");
+            "uv",
+            RUN,
+            "--group",
+            "ward",
+            COVERAGE,
+            "lcov",
+            "-o",
+            ".ward/reports/coverage.lcov"
+        );
   }
 
   @Test
@@ -78,10 +95,14 @@ class PythonGatesTest {
   }
 
   private static List<InitGateOption> gates(
-      final BuildTool manager, final QualityPreset preset, final boolean owned) {
+      final BuildTool manager,
+      final QualityPreset preset,
+      final boolean owned
+  ) {
     return new PythonGates()
         .analysisGates(
-            new PythonTools(manager, true, preset, Framework.NONE, owned, owned, Optional.empty()));
+            new PythonTools(manager, true, preset, Framework.NONE, owned, owned, Optional.empty())
+        );
   }
 
   private static List<String> command(final List<InitGateOption> gates, final String id) {
@@ -89,7 +110,10 @@ class PythonGatesTest {
   }
 
   private static String setting(
-      final List<InitGateOption> gates, final String id, final String key) {
+      final List<InitGateOption> gates,
+      final String id,
+      final String key
+  ) {
     final Map<String, String> settings =
         gates.stream().filter(gate -> gate.id().equals(id)).findFirst().orElseThrow().settings();
     return settings.get(key);

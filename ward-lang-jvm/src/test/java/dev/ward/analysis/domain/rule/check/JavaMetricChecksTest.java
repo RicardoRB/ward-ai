@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the Java size and metric checks over small hand-made syntax trees. */
 class JavaMetricChecksTest {
-
   private static final String MESSAGE = "{value} over {max}";
   private static final String BLOCK = "block";
   private static final String CREATED_NAME = "createdName";
@@ -54,11 +53,13 @@ class JavaMetricChecksTest {
     final SyntaxNode root = MetricTrees.tree("compilationUnit", 1, 1);
 
     assertThat(
-            new LineLengthCheck(TAB_LIMIT_LOW, NARROW_TAB, PATTERN_NONE, MESSAGE).check(root, file))
+        new LineLengthCheck(TAB_LIMIT_LOW, NARROW_TAB, PATTERN_NONE, MESSAGE).check(root, file)
+    )
         .hasSize(LOW_LIMIT);
     assertThat(
-            new LineLengthCheck(TAB_LIMIT_HIGH, NARROW_TAB, PATTERN_NONE, MESSAGE)
-                .check(root, file))
+        new LineLengthCheck(TAB_LIMIT_HIGH, NARROW_TAB, PATTERN_NONE, MESSAGE)
+            .check(root, file)
+    )
         .isEmpty();
   }
 
@@ -70,14 +71,17 @@ class JavaMetricChecksTest {
             1,
             BODY_LAST_LINE,
             MetricTrees.token("'{'", 1),
-            MetricTrees.token("'}'", BODY_LAST_LINE));
+            MetricTrees.token("'}'", BODY_LAST_LINE)
+        );
 
     assertThat(
-            new LinesCheck(Set.of(MetricTrees.METHOD_BODY), MID_LIMIT, MESSAGE, false)
-                .matches(body))
+        new LinesCheck(Set.of(MetricTrees.METHOD_BODY), MID_LIMIT, MESSAGE, false)
+            .matches(body)
+    )
         .isEmpty();
     assertThat(
-            new LinesCheck(Set.of(MetricTrees.METHOD_BODY), MID_LIMIT, MESSAGE, true).matches(body))
+        new LinesCheck(Set.of(MetricTrees.METHOD_BODY), MID_LIMIT, MESSAGE, true).matches(body)
+    )
         .hasSize(LOW_LIMIT);
   }
 
@@ -96,7 +100,9 @@ class JavaMetricChecksTest {
                 1,
                 MetricTrees.tree(MetricTrees.EXPRESSION, 1, 1),
                 MetricTrees.token("'||'", 1),
-                MetricTrees.tree(MetricTrees.EXPRESSION, 1, 1)));
+                MetricTrees.tree(MetricTrees.EXPRESSION, 1, 1)
+            )
+        );
 
     assertThat(new BooleanOperatorCheck(LOW_LIMIT, MESSAGE).matches(chain)).hasSize(LOW_LIMIT);
     assertThat(new BooleanOperatorCheck(MID_LIMIT, MESSAGE).matches(chain)).isEmpty();
@@ -114,7 +120,14 @@ class JavaMetricChecksTest {
                 1,
                 NPATH_TWO_IFS,
                 MetricTrees.tree(
-                    BLOCK, 1, NPATH_TWO_IFS, MetricTrees.ifBlock(), MetricTrees.ifBlock())));
+                    BLOCK,
+                    1,
+                    NPATH_TWO_IFS,
+                    MetricTrees.ifBlock(),
+                    MetricTrees.ifBlock()
+                )
+            )
+        );
 
     assertThat(new NPathCheck(NPATH_TWO_IFS, MESSAGE).matches(method)).hasSize(LOW_LIMIT);
     assertThat(new NPathCheck(NPATH_FOUR, MESSAGE).matches(method)).isEmpty();
@@ -128,7 +141,8 @@ class JavaMetricChecksTest {
             1,
             NCSS_LAST_LINE,
             MetricTrees.statement(),
-            MetricTrees.statement());
+            MetricTrees.statement()
+        );
 
     assertThat(new NcssCheck(NCSS_TWO, NCSS_WIDE, NCSS_WIDE, MESSAGE).matches(method))
         .hasSize(LOW_LIMIT);
@@ -143,7 +157,8 @@ class JavaMetricChecksTest {
             1,
             MEMBER_LAST_LINE,
             MetricTrees.member(MetricTrees.token("private", 1)),
-            MetricTrees.member(MetricTrees.token("public", 2)));
+            MetricTrees.member(MetricTrees.token("public", 2))
+        );
 
     final MethodCountCheck.Limits strict =
         new MethodCountCheck.Limits(LOW_LIMIT, 0, NCSS_THREE, NCSS_THREE, NCSS_THREE);
@@ -162,15 +177,18 @@ class JavaMetricChecksTest {
             1,
             MetricTrees.created("ArrayList<String>"),
             MetricTrees.created("java.util.Map"),
-            MetricTrees.created("Foo"));
+            MetricTrees.created("Foo")
+        );
 
     assertThat(
-            new ClassCouplingCheck(Set.of(CREATED_NAME), Set.of("Map"), LOW_LIMIT, MESSAGE)
-                .matches(klass))
+        new ClassCouplingCheck(Set.of(CREATED_NAME), Set.of("Map"), LOW_LIMIT, MESSAGE)
+            .matches(klass)
+    )
         .hasSize(LOW_LIMIT);
     assertThat(
-            new ClassCouplingCheck(Set.of(CREATED_NAME), Set.of("Map"), COUPLING_HIGH, MESSAGE)
-                .matches(klass))
+        new ClassCouplingCheck(Set.of(CREATED_NAME), Set.of("Map"), COUPLING_HIGH, MESSAGE)
+            .matches(klass)
+    )
         .isEmpty();
   }
 
@@ -181,7 +199,8 @@ class JavaMetricChecksTest {
             "classCreatorRest",
             1,
             CREATION_LAST_LINE,
-            MetricTrees.tree("classBody", 1, BODY_LINES));
+            MetricTrees.tree("classBody", 1, BODY_LINES)
+        );
 
     assertThat(new AnonymousLinesCheck(ANON_LIMIT, MESSAGE).matches(creation)).hasSize(LOW_LIMIT);
     assertThat(new AnonymousLinesCheck(BODY_LINES, MESSAGE).matches(creation)).isEmpty();

@@ -38,16 +38,19 @@ final class JavaLambdas {
   void deferredAll(
       final JavaCalls.Prepared prepared,
       final Optional<Hierarchy.Found<JvmMethod>> chosen,
-      final Map<String, JType> bound,
+      final Map<String,
+      JType> bound,
       final Set<String> variables,
-      final Ctx ctx) {
+      final Ctx ctx
+  ) {
     final List<JType> parameters =
         chosen
             .map(
                 found ->
                     found.member().parameters().stream()
                         .map(parameter -> Types.substitute(parameter, found.bindings()))
-                        .toList())
+                        .toList()
+            )
             .orElse(List.of());
     for (int index = 0; index < prepared.nodes().size(); index++) {
       if (prepared.arguments().get(index).deferred()) {
@@ -65,8 +68,10 @@ final class JavaLambdas {
       final SyntaxNode node,
       final Optional<JType> declared,
       final Set<String> variables,
-      final Map<String, JType> bound,
-      final Ctx ctx) {
+      final Map<String,
+      JType> bound,
+      final Ctx ctx
+  ) {
     final Optional<SyntaxNode> lambda = lambdaOf(node);
     if (lambda.isEmpty()) {
       expressions.expression(node, ctx, declared);
@@ -80,14 +85,16 @@ final class JavaLambdas {
     final Optional<JType> body = body(lambda.get(), parameters, ctx);
     shape.ifPresent(
         found ->
-            body.ifPresent(
-                type -> session.inference.unify(found.returns(), type, variables, bound)));
+            body.ifPresent(type -> session.inference.unify(found.returns(), type, variables, bound))
+    );
     session.record(node, Typed.of(declared));
     session.record(lambda.get(), Typed.of(declared));
   }
 
   private List<Optional<JType>> parameterTypes(
-      final SyntaxNode lambda, final Optional<Inference.Shape> shape) {
+      final SyntaxNode lambda,
+      final Optional<Inference.Shape> shape
+  ) {
     final int count = parameters(lambda).size();
     final List<Optional<JType>> types = new ArrayList<>();
     for (int index = 0; index < count; index++) {
@@ -95,7 +102,8 @@ final class JavaLambdas {
       types.add(
           shape
               .filter(found -> at < found.parameters().size())
-              .map(found -> found.parameters().get(at)));
+              .map(found -> found.parameters().get(at))
+      );
     }
     return types;
   }
@@ -110,7 +118,8 @@ final class JavaLambdas {
       return Optional.of(
           arguments.stream().allMatch(Optional::isPresent)
               ? new JType.ClassType(named.name(), arguments.stream().map(Optional::get).toList())
-              : JType.ClassType.of(named.name()));
+              : JType.ClassType.of(named.name())
+      );
     }
     if (type instanceof JType.ArrayType array) {
       return cleanup(array.component(), variables).map(JType.ArrayType::new);
@@ -141,12 +150,16 @@ final class JavaLambdas {
                   .forEach(list -> found.addAll(Syntax.children(list, "formalParameter")));
               Syntax.children(parameters, "lambdaLVTIList")
                   .forEach(list -> found.addAll(Syntax.children(list, "lambdaLVTIParameter")));
-            });
+            }
+        );
     return found;
   }
 
   private Optional<JType> body(
-      final SyntaxNode lambda, final List<Optional<JType>> parameterTypes, final Ctx ctx) {
+      final SyntaxNode lambda,
+      final List<Optional<JType>> parameterTypes,
+      final Ctx ctx
+  ) {
     final List<SyntaxNode> parameters = parameters(lambda);
     for (int index = 0; index < parameters.size(); index++) {
       final SyntaxNode parameter = parameters.get(index);

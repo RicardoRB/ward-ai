@@ -51,7 +51,8 @@ final class PresetPluginSnippets {
       final String pom,
       final Set<String> gates,
       final QualityPreset preset,
-      final List<String> details) {
+      final List<String> details
+  ) {
     if (preset != QualityPreset.STRICT || !gates.contains("build-policy")) {
       return pom;
     }

@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 /** Renders a parsed tree as compact text so that tests compare its shape in one line. */
 final class YamlTrees {
-
   /** The offset of {@code 12} in {@code "a:\n b: 12\n"}. */
   static final int OFFSET_OF_TWELVE = 8;
 

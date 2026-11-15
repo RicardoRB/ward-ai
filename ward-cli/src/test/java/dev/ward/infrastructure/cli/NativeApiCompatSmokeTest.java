@@ -37,14 +37,19 @@ class NativeApiCompatSmokeTest {
     write(
         "pom.xml",
         "<project><modelVersion>4.0.0</modelVersion><groupId>shop</groupId>"
-            + "<artifactId>shop</artifactId><version>1</version></project>\n");
+            + "<artifactId>shop</artifactId><version>1</version></project>\n"
+    );
     write(
         CLIENT,
-        "package shop;\n\npublic class Client {\n  public void open() {}\n  public void close() {}\n}\n");
+        "package shop;\n\npublic class Client {\n  public void open() {}\n  public void close() {}\n}\n"
+    );
 
     assertThat(
-            removeSinceTheTag(
-                CLIENT, "package shop;\n\npublic class Client {\n  public void open() {}\n}\n"))
+        removeSinceTheTag(
+            CLIENT,
+            "package shop;\n\npublic class Client {\n  public void open() {}\n}\n"
+        )
+    )
         .contains("api-compat:member-removed")
         .contains("shop.Client#close");
   }
@@ -56,8 +61,8 @@ class NativeApiCompatSmokeTest {
     write(KOTLIN_CLIENT, "package shop\n\nclass Client {\n  fun open() {}\n  fun close() {}\n}\n");
 
     assertThat(
-            removeSinceTheTag(
-                KOTLIN_CLIENT, "package shop\n\nclass Client {\n  fun open() {}\n}\n"))
+        removeSinceTheTag(KOTLIN_CLIENT, "package shop\n\nclass Client {\n  fun open() {}\n}\n")
+    )
         .contains("api-compat:member-removed")
         .contains("shop.Client#close");
   }
@@ -112,7 +117,9 @@ class NativeApiCompatSmokeTest {
                 "-c",
                 "commit.gpgsign=false",
                 "-c",
-                "tag.gpgsign=false"));
+                "tag.gpgsign=false"
+            )
+        );
     command.addAll(List.of(arguments));
     final Process process = new ProcessBuilder(command).directory(project.toFile()).start();
     assertThat(process.waitFor(RUN_TIMEOUT.toSeconds(), TimeUnit.SECONDS)).isTrue();

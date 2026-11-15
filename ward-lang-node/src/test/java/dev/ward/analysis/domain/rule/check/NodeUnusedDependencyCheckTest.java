@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** The unused-dependency check: imports, scripts, typed packages and the root manifest. */
 final class NodeUnusedDependencyCheckTest {
-
   private static final String MESSAGE = "unused {value}";
   private static final String DEPENDENCIES = "dependencies";
 
@@ -19,11 +18,15 @@ final class NodeUnusedDependencyCheckTest {
         new NodeUnusedDependencyCheck(MESSAGE, DEPENDENCIES)
             .project(
                 ProjectFixtures.trees(
-                    Map.of("index.ts", "import _ from 'lodash';\nexport const a = _;")),
+                    Map.of("index.ts", "import _ from 'lodash';\nexport const a = _;")
+                ),
                 ProjectFixtures.manifests(
                     Map.of(
                         "package.json",
-                        "{\n  \"dependencies\": {\n    \"lodash\": \"^4\",\n    \"unused-lib\": \"^1\"\n  }\n}")));
+                        "{\n  \"dependencies\": {\n    \"lodash\": \"^4\",\n    \"unused-lib\": \"^1\"\n  }\n}"
+                    )
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).containsExactly("package.json:4:5");
   }
@@ -37,7 +40,10 @@ final class NodeUnusedDependencyCheckTest {
                 ProjectFixtures.manifests(
                     Map.of(
                         "package.json",
-                        "{\"scripts\":{\"lint\":\"eslint .\"},\"dependencies\":{\"eslint\":\"^9\"}}")));
+                        "{\"scripts\":{\"lint\":\"eslint .\"},\"dependencies\":{\"eslint\":\"^9\"}}"
+                    )
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }
@@ -48,11 +54,15 @@ final class NodeUnusedDependencyCheckTest {
         new NodeUnusedDependencyCheck(MESSAGE, "devDependencies")
             .project(
                 ProjectFixtures.trees(
-                    Map.of("index.ts", "import _ from 'lodash';\nexport const a = _;")),
+                    Map.of("index.ts", "import _ from 'lodash';\nexport const a = _;")
+                ),
                 ProjectFixtures.manifests(
                     Map.of(
                         "package.json",
-                        "{\"dependencies\":{\"lodash\":\"^4\"},\"devDependencies\":{\"@types/lodash\":\"^4\"}}")));
+                        "{\"dependencies\":{\"lodash\":\"^4\"},\"devDependencies\":{\"@types/lodash\":\"^4\"}}"
+                    )
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }
@@ -63,10 +73,12 @@ final class NodeUnusedDependencyCheckTest {
         new NodeUnusedDependencyCheck(MESSAGE, "devDependencies")
             .project(
                 ProjectFixtures.trees(
-                    Map.of(
-                        "packages/app/index.ts", "import v from 'vitest';\nexport const a = v;")),
+                    Map.of("packages/app/index.ts", "import v from 'vitest';\nexport const a = v;")
+                ),
                 ProjectFixtures.manifests(
-                    Map.of("package.json", "{\"devDependencies\":{\"vitest\":\"^3\"}}")));
+                    Map.of("package.json", "{\"devDependencies\":{\"vitest\":\"^3\"}}")
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }
@@ -77,11 +89,12 @@ final class NodeUnusedDependencyCheckTest {
         new NodeUnusedDependencyCheck(MESSAGE, DEPENDENCIES)
             .project(
                 ProjectFixtures.trees(
-                    Map.of(
-                        "root.ts", "export const a = 1;",
-                        "pkg/index.ts", "export const b = 2;")),
+                    Map.of("root.ts", "export const a = 1;", "pkg/index.ts", "export const b = 2;")
+                ),
                 ProjectFixtures.manifests(
-                    Map.of("pkg/package.json", "{\"dependencies\":{\"lodash\":\"^4\"}}")));
+                    Map.of("pkg/package.json", "{\"dependencies\":{\"lodash\":\"^4\"}}")
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).containsExactly("pkg/package.json:1:18");
   }

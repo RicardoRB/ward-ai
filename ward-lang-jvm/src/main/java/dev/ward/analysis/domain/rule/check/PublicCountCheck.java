@@ -11,7 +11,6 @@ import java.util.Set;
  * PMD's excessive public count does.
  */
 public final class PublicCountCheck implements UnitCheck {
-
   private final int minimum;
   private final String message;
 
@@ -46,7 +45,9 @@ public final class PublicCountCheck implements UnitCheck {
     return List.of(
         CheckSupport.at(
             clazz.span(),
-            CheckSupport.fill(message, String.valueOf(count), String.valueOf(minimum))));
+            CheckSupport.fill(message, String.valueOf(count), String.valueOf(minimum))
+        )
+    );
   }
 
   private static boolean isPublicMethodOrField(final SyntaxNode member) {

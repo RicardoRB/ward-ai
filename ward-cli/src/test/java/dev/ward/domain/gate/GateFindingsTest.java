@@ -24,7 +24,8 @@ class GateFindingsTest {
         line,
         null,
         null,
-        List.of());
+        List.of()
+    );
   }
 
   @Test
@@ -56,10 +57,11 @@ class GateFindingsTest {
   void filtersBeforeApplyingTheCap() {
     final List<Finding> all =
         Stream.concat(
-                IntStream.rangeClosed(1, WARNINGS)
-                    .mapToObj(i -> findingWithSeverity(i, FindingSeverity.WARNING)),
-                IntStream.rangeClosed(WARNINGS + 1, WARNINGS + ERRORS)
-                    .mapToObj(i -> findingWithSeverity(i, FindingSeverity.ERROR)))
+            IntStream.rangeClosed(1, WARNINGS)
+                .mapToObj(i -> findingWithSeverity(i, FindingSeverity.WARNING)),
+            IntStream.rangeClosed(WARNINGS + 1, WARNINGS + ERRORS)
+                .mapToObj(i -> findingWithSeverity(i, FindingSeverity.ERROR))
+        )
             .toList();
 
     final GateFindings.Visible visible = GateFindings.of(all).visible(SeverityThreshold.ERROR);
@@ -97,7 +99,8 @@ class GateFindingsTest {
         line,
         null,
         null,
-        List.of());
+        List.of()
+    );
   }
 
   @Test
@@ -113,7 +116,8 @@ class GateFindingsTest {
             null,
             null,
             null,
-            List.of());
+            List.of()
+        );
 
     assertThat(finding.located()).isTrue();
     assertThat(finding.line()).isNull();
@@ -124,46 +128,52 @@ class GateFindingsTest {
   @Test
   void locationIsOneBased() {
     assertThatThrownBy(
-            () ->
-                new Finding(
-                    "pmd",
-                    "pmd",
-                    "X",
-                    FindingSeverity.NOTE,
-                    "m",
-                    "Foo.java",
-                    0,
-                    null,
-                    null,
-                    List.of()))
+        () ->
+            new Finding(
+                "pmd",
+                "pmd",
+                "X",
+                FindingSeverity.NOTE,
+                "m",
+                "Foo.java",
+                0,
+                null,
+                null,
+                List.of()
+            )
+    )
         .isInstanceOf(IllegalArgumentException.class);
     assertThatThrownBy(
-            () ->
-                new Finding(
-                    "pmd",
-                    "pmd",
-                    "X",
-                    FindingSeverity.NOTE,
-                    "m",
-                    "Foo.java",
-                    1,
-                    0,
-                    null,
-                    List.of()))
+        () ->
+            new Finding(
+                "pmd",
+                "pmd",
+                "X",
+                FindingSeverity.NOTE,
+                "m",
+                "Foo.java",
+                1,
+                0,
+                null,
+                List.of()
+            )
+    )
         .isInstanceOf(IllegalArgumentException.class);
     assertThat(
-            new Finding(
-                    "tests",
-                    "tests",
-                    "tests",
-                    FindingSeverity.WARNING,
-                    "m",
-                    null,
-                    null,
-                    null,
-                    null,
-                    List.of())
-                .located())
+        new Finding(
+            "tests",
+            "tests",
+            "tests",
+            FindingSeverity.WARNING,
+            "m",
+            null,
+            null,
+            null,
+            null,
+            List.of()
+        )
+            .located()
+    )
         .isFalse();
   }
 }

@@ -57,7 +57,8 @@ public final class ArrayReceiverCallCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(EXPRESSION)).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(call -> callsOnArray(call, types))

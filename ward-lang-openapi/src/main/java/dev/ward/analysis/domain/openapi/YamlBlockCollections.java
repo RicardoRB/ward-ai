@@ -6,7 +6,6 @@ import java.util.List;
 
 /** Reads block mappings and block sequences, which nest by indentation. */
 final class YamlBlockCollections {
-
   private static final String MERGE = "<<";
   private static final char SINGLE = '\'';
   private static final char DOUBLE = '"';
@@ -23,7 +22,8 @@ final class YamlBlockCollections {
       final YamlLines lines,
       final YamlScalars scalars,
       final YamlKeys keys,
-      final YamlNodeReader nodes) {
+      final YamlNodeReader nodes
+  ) {
     this.cursor = cursor;
     this.lines = lines;
     this.scalars = scalars;
@@ -42,7 +42,9 @@ final class YamlBlockCollections {
       items.add(item(indent));
     } while (nextAt(indent) && keys.sequenceEntryAt(cursor.pos()));
     return YamlNodes.array(
-        items, YamlNodes.cover(lines.span(start, start + 1), items.getLast().span()));
+        items,
+        YamlNodes.cover(lines.span(start, start + 1), items.getLast().span())
+    );
   }
 
   /** Reads the block mapping whose first key is at the cursor, at indentation {@code indent}. */

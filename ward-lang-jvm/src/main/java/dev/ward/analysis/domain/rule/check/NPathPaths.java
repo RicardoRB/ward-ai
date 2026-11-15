@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 /** Counts the NPath of a method body: the acyclic execution paths through its statements. */
 final class NPathPaths {
-
   private static final long CAP = 1_000_000_000L;
   private static final String BLOCK = "block";
   private static final String STATEMENT = "statement";

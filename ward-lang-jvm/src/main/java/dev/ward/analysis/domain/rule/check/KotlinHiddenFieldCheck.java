@@ -12,10 +12,9 @@ import java.util.Set;
 /**
  * Reports each parameter and local property of a function that has the name of a property of its
  * class, as Checkstyle's HiddenField does. Constructor parameters and setter parameters are not
- * checked, as {@code config/checkstyle.xml} configures the rule.
+ * checked, as {@code ward-cli/src/test/resources/repository-rules/checkstyle.xml} configures the rule.
  */
 public final class KotlinHiddenFieldCheck implements UnitCheck {
-
   private static final String CLASS_BODY = "classBody";
   private static final String MEMBER = "classMemberDeclaration";
   private static final String FUNCTION = "functionDeclaration";
@@ -56,7 +55,8 @@ public final class KotlinHiddenFieldCheck implements UnitCheck {
         for (final SyntaxNode name : namesDeclaredIn(function)) {
           if (properties.contains(KotlinDocs.text(name))) {
             matches.add(
-                CheckSupport.at(name.span(), message.replace(VALUE, KotlinDocs.text(name))));
+                CheckSupport.at(name.span(), message.replace(VALUE, KotlinDocs.text(name)))
+            );
           }
         }
       }

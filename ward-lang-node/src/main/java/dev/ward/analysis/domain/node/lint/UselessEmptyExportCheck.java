@@ -9,7 +9,6 @@ import java.util.Set;
 
 /** Reports an empty {@code export {}} in a module that has another import or export. */
 public final class UselessEmptyExportCheck implements RuleCheck {
-
   private static final String EXPORT = "exportStatement";
   private static final String IMPORT = "importStatement";
   private static final String DECLARED_EXPORT = "sourceElement";

@@ -5,7 +5,6 @@ import java.util.List;
 
 /** Compares two nodes by what they say, not by where they are written. */
 final class SameNodes {
-
   private SameNodes() {}
 
   /** Tells whether both nodes have the same kind, text, entries and items. */

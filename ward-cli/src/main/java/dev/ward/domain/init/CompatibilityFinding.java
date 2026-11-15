@@ -6,7 +6,8 @@ public record CompatibilityFinding(
     String currentVersion,
     String selectedVersion,
     CompatibilityOutcome outcome,
-    String message) {
+    String message
+) {
   /**
    * Validates the finding.
    *

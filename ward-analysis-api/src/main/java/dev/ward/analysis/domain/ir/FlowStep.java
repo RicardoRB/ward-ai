@@ -12,7 +12,6 @@ import java.util.Objects;
  *     file of the finding it belongs to
  */
 public record FlowStep(Span span, String message, String file) {
-
   /**
    * Creates a step in the file of the finding it belongs to.
    *

@@ -15,7 +15,6 @@ import java.util.Set;
  * with each other, which is a simplification of SwiftLint's rule.
  */
 public final class SwiftDuplicateImportsCheck implements RuleCheck {
-
   private static final String IMPORT = "import_declaration";
   private static final String PATH = "import_path";
   private static final String CONDITIONAL = "conditional_compilation_block";
@@ -54,7 +53,8 @@ public final class SwiftDuplicateImportsCheck implements RuleCheck {
       final SyntaxNode node,
       final boolean inConditional,
       final List<SyntaxNode> imports,
-      final List<Boolean> conditional) {
+      final List<Boolean> conditional
+  ) {
     final boolean nested = inConditional || CONDITIONAL.equals(node.kind());
     if (IMPORT.equals(node.kind())) {
       imports.add(node);
@@ -72,7 +72,10 @@ public final class SwiftDuplicateImportsCheck implements RuleCheck {
   }
 
   private static boolean isSubmoduleOfOther(
-      final SyntaxNode node, final String path, final List<SyntaxNode> imports) {
+      final SyntaxNode node,
+      final String path,
+      final List<SyntaxNode> imports
+  ) {
     return imports.stream()
         .filter(other -> !other.equals(node))
         .map(SwiftDuplicateImportsCheck::pathOf)

@@ -5,7 +5,6 @@ import java.util.List;
 
 /** Reads children of Java syntax nodes by kind. */
 final class JavaSyntaxNodes {
-
   private JavaSyntaxNodes() {}
 
   /** The direct children of {@code node} whose kind is {@code kind}, in source order. */

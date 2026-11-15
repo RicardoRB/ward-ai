@@ -46,7 +46,8 @@ public final class LoggingScope {
                   }
                 }
               }
-            });
+            }
+        );
     final Level threshold = verbose ? Level.FINE : Level.WARNING;
     handler = new StderrLogHandler(writer, threshold);
     root.setLevel(threshold);
@@ -89,6 +90,7 @@ public final class LoggingScope {
           for (final Handler existing : handlers) {
             logger.addHandler(existing);
           }
-        });
+        }
+    );
   }
 }

@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
  * tag; a comment that is {@code {@inheritDoc}} or starts with {@code {@return} needs no period.
  */
 public final class JavadocSummaryCheck implements UnitCheck {
-
   private static final String INHERIT = "{@inheritDoc}";
   private static final String RETURN = "{@return";
   private static final String TAG = "@";

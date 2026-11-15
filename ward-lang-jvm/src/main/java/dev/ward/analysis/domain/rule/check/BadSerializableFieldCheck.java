@@ -16,7 +16,6 @@ import java.util.Set;
  * reported.
  */
 public final class BadSerializableFieldCheck implements RuleCheck {
-
   private static final Set<String> NOT_SERIALIZABLE =
       Set.of(
           "Thread",
@@ -50,7 +49,8 @@ public final class BadSerializableFieldCheck implements RuleCheck {
           "Lock",
           "ReentrantLock",
           "Timer",
-          "Logger");
+          "Logger"
+      );
   private static final Set<String> CUSTOM = Set.of("readObject", "writeObject");
   private static final String TRANSIENT = "transient";
   private static final String EXTERNALIZABLE = "Externalizable";

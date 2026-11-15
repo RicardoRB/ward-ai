@@ -18,7 +18,10 @@ public interface BuildToolConfiguration {
    * the preset.
    */
   default BuildFileChange apply(
-      final Project project, final List<InitGateOption> gates, final QualityPreset preset) {
+      final Project project,
+      final List<InitGateOption> gates,
+      final QualityPreset preset
+  ) {
     return apply(project, gates);
   }
 
@@ -30,7 +33,8 @@ public interface BuildToolConfiguration {
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final Predicate<? super CompatibilityFinding> approval) {
+      final Predicate<? super CompatibilityFinding> approval
+  ) {
     return apply(project, gates, preset);
   }
 
@@ -39,7 +43,11 @@ public interface BuildToolConfiguration {
    * that need approval are listed as pending unless {@code approved} is true.
    */
   PlannedFileChange plan(
-      Project project, List<InitGateOption> gates, QualityPreset preset, boolean approved);
+      Project project,
+      List<InitGateOption> gates,
+      QualityPreset preset,
+      boolean approved
+  );
 
   /**
    * Returns the gates of {@code gateIds} whose tool has no version for the project's runtime JDK.
@@ -62,7 +70,9 @@ public interface BuildToolConfiguration {
    * A script that differs from the plan is replaced only when {@code replaceScripts} is set.
    */
   default TurboWorkspaceChange applyWorkspace(
-      final TurboWorkspace workspace, final boolean replaceScripts) {
+      final TurboWorkspace workspace,
+      final boolean replaceScripts
+  ) {
     return new TurboWorkspaceChange(List.of(), List.of());
   }
 

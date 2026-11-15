@@ -15,7 +15,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 class GenericChecksTest {
-
   private static final String MESSAGE = "\nmessage = \"m\"";
 
   /** The smallest valid body of each kind; a kind without an entry fails the test below. */
@@ -42,7 +41,8 @@ class GenericChecksTest {
           GenericKind.LITERAL,
           "check = \"literal\"\nkinds = [\"a\"]\nignore = [\"0\"]" + MESSAGE,
           GenericKind.DUPLICATE,
-          "check = \"duplicate\"\nkinds = [\"a\"]\nitems = [\"b\"]" + MESSAGE);
+          "check = \"duplicate\"\nkinds = [\"a\"]\nitems = [\"b\"]" + MESSAGE
+      );
 
   @ParameterizedTest
   @EnumSource(GenericKind.class)
@@ -62,7 +62,8 @@ class GenericChecksTest {
   @Test
   void anUnknownKindNamesTheKind() {
     assertThatThrownBy(
-            () -> DeclarativeChecks.bundled().build("check = \"forbidden-thing\"" + MESSAGE))
+        () -> DeclarativeChecks.bundled().build("check = \"forbidden-thing\"" + MESSAGE)
+    )
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("unknown check 'forbidden-thing'");
   }
@@ -83,9 +84,10 @@ class GenericChecksTest {
   @Test
   void aBadSourcesValueIsAConfigurationError() {
     assertThatThrownBy(
-            () ->
-                DeclarativeChecks.bundled()
-                    .build(MINIMAL.get(GenericKind.FORBIDDEN_NODE) + "\nsources = \"some\""))
+        () ->
+            DeclarativeChecks.bundled()
+                .build(MINIMAL.get(GenericKind.FORBIDDEN_NODE) + "\nsources = \"some\"")
+    )
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("sources must be all, main, test or app");
   }
@@ -93,9 +95,10 @@ class GenericChecksTest {
   @Test
   void anUnknownTextTargetIsAConfigurationError() {
     assertThatThrownBy(
-            () ->
-                DeclarativeChecks.bundled()
-                    .build(MINIMAL.get(GenericKind.TEXT_PATTERN).replace("lines", "words")))
+        () ->
+            DeclarativeChecks.bundled()
+                .build(MINIMAL.get(GenericKind.TEXT_PATTERN).replace("lines", "words"))
+    )
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("target must be");
   }
@@ -123,14 +126,16 @@ class GenericChecksTest {
             new CheckOption("ignore", RuleOptionType.STRING_LIST, "0"),
             new CheckOption("ignore-contexts", RuleOptionType.STRING_LIST, ""),
             new CheckOption("max-repeats", RuleOptionType.INTEGER, ""),
-            new CheckOption("min-length", RuleOptionType.INTEGER, ""));
+            new CheckOption("min-length", RuleOptionType.INTEGER, "")
+        );
     assertThat(CheckOptions.of(MINIMAL.get(GenericKind.DUPLICATE))).isEmpty();
   }
 
   @ParameterizedTest
   @EnumSource(
       value = AnalysisLanguage.class,
-      names = {"JAVA", "KOTLIN", "PYTHON", "SWIFT", "TYPESCRIPT", "JAVASCRIPT"})
+      names = {"JAVA", "KOTLIN", "PYTHON", "SWIFT", "TYPESCRIPT", "JAVASCRIPT"}
+  )
   void everyEngineLanguageShipsAModifierTable(final AnalysisLanguage language) {
     final ModifierTable table = ModifierTables.forLanguage(language);
 

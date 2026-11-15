@@ -12,7 +12,6 @@ import java.util.Set;
  * last child is the labeled statement itself.
  */
 public final class UnusedLabelCheck implements UnitCheck {
-
   private static final String STATEMENT = "statement";
   private static final String IDENTIFIER = "identifier";
   private static final Set<String> JUMPS = Set.of("'break'", "'continue'");
@@ -36,7 +35,8 @@ public final class UnusedLabelCheck implements UnitCheck {
         .filter(labeled -> !jumpsTo(labeled, label(labeled)))
         .map(
             labeled ->
-                CheckSupport.at(labeled.span(), CheckSupport.fill(message, label(labeled), "")))
+                CheckSupport.at(labeled.span(), CheckSupport.fill(message, label(labeled), ""))
+        )
         .toList();
   }
 

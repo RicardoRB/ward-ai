@@ -9,7 +9,6 @@ import java.util.Set;
  * reported.
  */
 final class EscapeRules {
-
   private static final String LINE_TERMINATORS = "\n\r  ";
   private static final String ESCAPE_CHARS = "bfnrtvxu0";
   private static final String REGEX_LETTERS = "bBdDfnrsStvwWcxukpP";
@@ -78,7 +77,11 @@ final class EscapeRules {
    * moves it.
    */
   static boolean classState(
-      final boolean regex, final boolean escape, final boolean inClass, final char c) {
+      final boolean regex,
+      final boolean escape,
+      final boolean inClass,
+      final char c
+  ) {
     return regex && !escape ? nextInClass(inClass, c) : inClass;
   }
 }

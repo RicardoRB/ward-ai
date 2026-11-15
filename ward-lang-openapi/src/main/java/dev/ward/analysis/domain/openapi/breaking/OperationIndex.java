@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * parameters are the same path, as in oasdiff.
  */
 final class OperationIndex {
-
   private static final Pattern PARAMETER = Pattern.compile("\\{[^}]*}");
 
   private final Map<String, Operation> operations = new LinkedHashMap<>();

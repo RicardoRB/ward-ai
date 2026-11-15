@@ -12,7 +12,6 @@ import java.util.List;
  * backtracking regex fast on a minified file.
  */
 final class SecretRegions {
-
   /** A line longer than this is matched in windows. */
   static final int LONG_LINE = 4096;
 
@@ -47,7 +46,10 @@ final class SecretRegions {
   }
 
   private static List<int[]> textWindows(
-      final int length, final int[] hits, final boolean hasKeywords) {
+      final int length,
+      final int[] hits,
+      final boolean hasKeywords
+  ) {
     if (!hasKeywords) {
       return slide(0, length, TEXT_WINDOW);
     }
@@ -75,7 +77,12 @@ final class SecretRegions {
   }
 
   private static List<int[]> longLine(
-      final int start, final int end, final int[] hits, final int from, final boolean keywords) {
+      final int start,
+      final int end,
+      final int[] hits,
+      final int from,
+      final boolean keywords
+  ) {
     if (!keywords) {
       return slide(start, end, LONG_LINE);
     }

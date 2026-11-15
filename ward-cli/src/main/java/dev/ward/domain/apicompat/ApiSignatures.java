@@ -30,7 +30,8 @@ final class ApiSignatures {
       text.append(
           type.typeParameters().stream()
               .map(ApiSignatures::parameter)
-              .collect(Collectors.joining(", ", "<", ">")));
+              .collect(Collectors.joining(", ", "<", ">"))
+      );
     }
     return text.toString();
   }
@@ -49,7 +50,9 @@ final class ApiSignatures {
 
   /** Returns whether the type parameter lists differ in count, bounds or variance. */
   static boolean typeParametersDiffer(
-      final List<ApiTypeParameter> before, final List<ApiTypeParameter> after) {
+      final List<ApiTypeParameter> before,
+      final List<ApiTypeParameter> after
+  ) {
     return !shape(before).equals(shape(after));
   }
 
@@ -61,7 +64,8 @@ final class ApiSignatures {
                     + ":"
                     + parameter.bounds().stream()
                         .map(ApiTypeRef::key)
-                        .collect(Collectors.joining("&")))
+                        .collect(Collectors.joining("&"))
+        )
         .toList();
   }
 

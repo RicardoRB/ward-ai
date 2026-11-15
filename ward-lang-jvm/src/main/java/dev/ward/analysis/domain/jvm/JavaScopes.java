@@ -12,7 +12,6 @@ import java.util.Map;
 
 /** The block scopes of one Java body, each mapping the names it declares to their declarations. */
 final class JavaScopes {
-
   private final Deque<Map<String, Span>> scopes = new ArrayDeque<>();
 
   /** Creates the scope of the body's parameters and outermost locals. */
@@ -53,7 +52,8 @@ final class JavaScopes {
       final AccessKind kind,
       final SyntaxNode name,
       final Span span,
-      final List<VariableAccess> found) {
+      final List<VariableAccess> found
+  ) {
     final String text = JavaFlowSyntax.text(name);
     final Span declaration = resolve(text);
     if (declaration != null) {

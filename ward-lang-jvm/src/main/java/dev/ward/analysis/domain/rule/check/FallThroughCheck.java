@@ -17,7 +17,6 @@ import java.util.Set;
  * branches all leave is still reported.
  */
 public final class FallThroughCheck implements UnitCheck {
-
   private static final String SWITCH = "'switch'";
   private static final String GROUP = "switchBlockStatementGroup";
   private static final String LABEL = "switchLabel";

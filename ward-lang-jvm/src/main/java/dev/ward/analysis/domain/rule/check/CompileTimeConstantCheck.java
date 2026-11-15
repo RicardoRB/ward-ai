@@ -21,7 +21,6 @@ import java.util.Set;
  * such as a name, is never reported.
  */
 public final class CompileTimeConstantCheck implements RuleCheck {
-
   private static final String EXPRESSION = "expression";
   private static final String CONSTANT = "com.google.errorprone.annotations.CompileTimeConstant";
   private static final Set<String> NON_CONSTANT = Set.of("methodCall", "creator");
@@ -54,7 +53,8 @@ public final class CompileTimeConstantCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(EXPRESSION))) {
       final Optional<CallTarget> target = types.callTarget(visit.node().span());

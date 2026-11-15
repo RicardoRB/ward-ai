@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 
 /** The OWASP rules about responses: rate limits, error responses and CORS. */
 final class OwaspResponseRules {
-
   private static final String RESPONSES = "responses";
   private static final String HEADERS = "headers";
   private static final String CONTENT = "content";
@@ -20,7 +19,8 @@ final class OwaspResponseRules {
           List.of("RateLimit"),
           List.of("RateLimit-Limit", "RateLimit-Reset"),
           List.of("X-RateLimit-Limit"),
-          List.of("X-Rate-Limit-Limit"));
+          List.of("X-Rate-Limit-Limit")
+      );
   private static final List<String> VALIDATION = List.of("400", "422", "4XX");
 
   private OwaspResponseRules() {}
@@ -49,9 +49,9 @@ final class OwaspResponseRules {
   private static boolean oneSet(final DocNode headers) {
     return headers.kind() == DocNode.Kind.OBJECT
         && RATE_LIMITS.stream()
-                .filter(set -> set.stream().allMatch(name -> headers.get(name).isPresent()))
-                .count()
-            == 1;
+            .filter(set -> set.stream().allMatch(name -> headers.get(name).isPresent()))
+            .count()
+        == 1;
   }
 
   /** {@code owasp-api4-2023-rate-limit-retry-after}: a 429 with headers has Retry-After. */
@@ -69,7 +69,11 @@ final class OwaspResponseRules {
                 headers ->
                     findings.add(
                         Findings.atValue(
-                            headers, "A 429 response should define a Retry-After header.")));
+                            headers,
+                            "A 429 response should define a Retry-After header."
+                        )
+                    )
+            );
       }
     }
     return findings;
@@ -91,15 +95,20 @@ final class OwaspResponseRules {
   }
 
   private static List<OpenApiFinding> withContent(
-      final OpenApiDocument document, final String code, final String lead) {
+      final OpenApiDocument document,
+      final String code,
+      final String lead
+  ) {
     final List<OpenApiFinding> findings = new ArrayList<>();
     for (final DocNode responses : responses(document)) {
       findings.addAll(
-          Fields.requireTruthy(document, responses, lead + "responses[" + code + "].", code));
+          Fields.requireTruthy(document, responses, lead + "responses[" + code + "].", code)
+      );
       final String property =
           responses.get(code).isPresent() ? "[" + code + "]" : "responses[" + code + "]";
       findings.addAll(
-          Fields.requireTruthy(document, responses, lead + property + ".content.", code, CONTENT));
+          Fields.requireTruthy(document, responses, lead + property + ".content.", code, CONTENT)
+      );
     }
     return findings;
   }
@@ -111,7 +120,8 @@ final class OwaspResponseRules {
       if (responses.kind() != DocNode.Kind.OBJECT
           || VALIDATION.stream().noneMatch(code -> responses.get(code).isPresent())) {
         findings.add(
-            Findings.atValue(responses, "Missing error response of either 400, 422 or 4XX."));
+            Findings.atValue(responses, "Missing error response of either 400, 422 or 4XX.")
+        );
       }
     }
     return findings;
@@ -127,7 +137,9 @@ final class OwaspResponseRules {
                 document,
                 located.node(),
                 "Header `headers.Access-Control-Allow-Origin` should be defined on all responses.",
-                "Access-Control-Allow-Origin"));
+                "Access-Control-Allow-Origin"
+            )
+        );
       }
     }
     return findings;

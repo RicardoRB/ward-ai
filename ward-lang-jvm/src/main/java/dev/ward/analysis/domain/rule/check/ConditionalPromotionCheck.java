@@ -22,7 +22,6 @@ import java.util.Set;
  * is unknown.
  */
 public final class ConditionalPromotionCheck implements RuleCheck {
-
   private static final String EXPRESSION = "expression";
   private static final String QUESTION = "?";
   private static final String COLON = ":";
@@ -37,7 +36,8 @@ public final class ConditionalPromotionCheck implements RuleCheck {
           "java.lang.Integer",
           "java.lang.Long",
           "java.lang.Float",
-          "java.lang.Double");
+          "java.lang.Double"
+      );
   private static final FactNeed NEED = new FactNeed(Set.of(EXPRESSION), Set.of(FactKind.TYPE));
 
   private final String message;
@@ -67,7 +67,8 @@ public final class ConditionalPromotionCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(EXPRESSION))) {
       if (promotes(visit.node(), types)) {

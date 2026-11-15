@@ -10,7 +10,6 @@ import java.util.Set;
  * ancestors of the declaration.
  */
 final class DeclaredModifiers {
-
   private static final Set<String> WRAPPERS = Set.of("typeDeclaration", "classBodyDeclaration");
 
   private DeclaredModifiers() {}

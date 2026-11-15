@@ -36,7 +36,11 @@ class NativeAdapterUpgradeTest {
       final String text = Files.readString(CAPTURED.resolve(id + ".txt"));
       final String[] definition = section(text, "definition").split(" ");
       return new Captured(
-          definition[1], definition[2], section(text, "config"), section(text, "hook ENABLE"));
+          definition[1],
+          definition[2],
+          section(text, "config"),
+          section(text, "hook ENABLE")
+      );
     }
 
     private static String section(final String text, final String name) {
@@ -54,7 +58,9 @@ class NativeAdapterUpgradeTest {
   @ParameterizedTest
   @MethodSource("upgradableAdapters")
   void refreshUpgradesTheCapturedArtifactsAndDropsTheGuard(
-      final NativeHarnessAdapter adapter, @TempDir final Path root) throws IOException {
+      final NativeHarnessAdapter adapter,
+      @TempDir final Path root
+  ) throws IOException {
     final Captured old = Captured.of(adapter.id());
     write(root.resolve(old.configFile()), old.config());
     write(root.resolve(old.hookFile()), old.hook());

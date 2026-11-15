@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * annotation matching {@code annotation}.
  */
 public final class EnclosingMethodCheck implements RuleCheck {
-
   private static final String METHOD = "methodDeclaration";
   private static final String IDENTIFIER = "identifier";
   private static final String EXPRESSION = "expression";
@@ -36,8 +35,12 @@ public final class EnclosingMethodCheck implements RuleCheck {
    * @param child the kind of a direct child the node must have, or {@code null} for no condition
    */
   public record Criteria(
-      Set<String> kinds, Pattern text, Set<String> methods, Pattern annotation, String child) {
-
+      Set<String> kinds,
+      Pattern text,
+      Set<String> methods,
+      Pattern annotation,
+      String child
+  ) {
     /** Copies the sets. */
     public Criteria {
       kinds = kinds.isEmpty() ? Set.of(EXPRESSION) : Set.copyOf(kinds);
@@ -108,7 +111,8 @@ public final class EnclosingMethodCheck implements RuleCheck {
         .filter(
             member ->
                 MemberDeclarations.modifiers(member).stream()
-                    .anyMatch(text -> criteria.annotation().matcher(text).find()))
+                    .anyMatch(text -> criteria.annotation().matcher(text).find())
+        )
         .isPresent();
   }
 }

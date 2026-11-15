@@ -7,7 +7,6 @@ import java.util.Map;
 
 /** Builders for the small syntax trees the Java metric check tests run over. */
 final class MetricTrees {
-
   static final String METHOD_BODY = "methodBody";
   static final String STATEMENT = "statement";
   static final String EXPRESSION = "expression";
@@ -17,7 +16,11 @@ final class MetricTrees {
 
   /** A tree of {@code kind} from {@code startLine} to {@code endLine} with the given children. */
   static SyntaxNode tree(
-      final String kind, final int startLine, final int endLine, final SyntaxNode... children) {
+      final String kind,
+      final int startLine,
+      final int endLine,
+      final SyntaxNode... children
+  ) {
     return new SyntaxNode(kind, span(startLine, endLine), Map.of(), List.of(children));
   }
 
@@ -38,13 +41,18 @@ final class MetricTrees {
         1,
         1,
         tree(MODIFIER, 1, 1, modifier),
-        tree("memberDeclaration", 1, 1, tree("methodDeclaration", 1, 1)));
+        tree("memberDeclaration", 1, 1, tree("methodDeclaration", 1, 1))
+    );
   }
 
   /** A class creation of a type named {@code text}. */
   static SyntaxNode created(final String text) {
     return new SyntaxNode(
-        "createdName", span(1, 1), Map.of(), List.of(token("identifier", text, 1)));
+        "createdName",
+        span(1, 1),
+        Map.of(),
+        List.of(token("identifier", text, 1))
+    );
   }
 
   /** A statement that is one expression. */
@@ -64,7 +72,9 @@ final class MetricTrees {
             1,
             token("'if'", 1),
             tree(EXPRESSION, 1, 1),
-            tree(STATEMENT, 1, 1, tree(EXPRESSION, 1, 1))));
+            tree(STATEMENT, 1, 1, tree(EXPRESSION, 1, 1))
+        )
+    );
   }
 
   private static Span span(final int startLine, final int endLine) {

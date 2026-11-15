@@ -20,7 +20,6 @@ import java.util.regex.Pattern;
  * when lines are separated.
  */
 public final class CustomImportOrderCheck implements RuleCheck {
-
   private static final String GROUP_SEPARATOR = "(?<!#)###(?!#)";
   private static final String MEMBER_SEPARATOR = "####";
   private static final String STATIC = "STATIC";
@@ -46,7 +45,6 @@ public final class CustomImportOrderCheck implements RuleCheck {
    * @param thirdParty the pattern of {@code THIRD_PARTY_PACKAGE}
    */
   public record Rules(String order, String special, String standard, String thirdParty) {
-
     /**
      * Compiles the patterns.
      *
@@ -77,7 +75,8 @@ public final class CustomImportOrderCheck implements RuleCheck {
       final Rules rules,
       final boolean sortAlphabetically,
       final boolean separateLines,
-      final String message) {
+      final String message
+  ) {
     Objects.requireNonNull(rules, "rules");
     this.special = Pattern.compile(rules.special());
     this.standard = Pattern.compile(rules.standard());
@@ -95,7 +94,10 @@ public final class CustomImportOrderCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return check(root, ImportLines.of(unit));
   }
 
@@ -123,12 +125,16 @@ public final class CustomImportOrderCheck implements RuleCheck {
       final int previousGroup,
       final ImportDeclaration current,
       final int group,
-      final List<String> lines) {
+      final List<String> lines
+  ) {
     final int blank =
         lines.isEmpty()
             ? -1
             : ImportLines.blankBetween(
-                lines, previous.span().endLine(), current.span().startLine());
+                lines,
+                previous.span().endLine(),
+                current.span().startLine()
+            );
     if (group != previousGroup) {
       return group < previousGroup || (separateLines && blank == 0);
     }
@@ -138,7 +144,9 @@ public final class CustomImportOrderCheck implements RuleCheck {
 
   private RuleMatch at(final ImportDeclaration declaration) {
     return CheckSupport.at(
-        declaration.span(), CheckSupport.fill(message, declaration.fullName(), ""));
+        declaration.span(),
+        CheckSupport.fill(message, declaration.fullName(), "")
+    );
   }
 
   /** Returns the index of the first group holding a matching token, or -1 for none. */

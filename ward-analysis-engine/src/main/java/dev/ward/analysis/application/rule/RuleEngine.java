@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
  * continues. Findings come back sorted, so the same input gives the same output.
  */
 public final class RuleEngine {
-
   private final RuleMatcher matcher;
 
   /** Creates an engine that builds its rules with {@code matcher}. */
@@ -41,7 +40,8 @@ public final class RuleEngine {
   public RuleRunResult run(
       final List<SourceUnit> units,
       final List<FrontendSupport> frontends,
-      final List<RuleDefinition> rules) {
+      final List<RuleDefinition> rules
+  ) {
     return run(units, frontends, rules, DependencySnapshot.EMPTY);
   }
 
@@ -53,7 +53,8 @@ public final class RuleEngine {
       final List<SourceUnit> units,
       final List<FrontendSupport> frontends,
       final List<RuleDefinition> rules,
-      final DependencySnapshot snapshot) {
+      final DependencySnapshot snapshot
+  ) {
     final Map<AnalysisLanguage, FrontendSupport> support = supportByLanguage(frontends);
     final RuleRunCollector collector = new RuleRunCollector();
     final List<PreparedRule> prepared = PreparedRule.all(rules, support, matcher, collector);
@@ -63,7 +64,8 @@ public final class RuleEngine {
             new UnitTrees(support, PreparedRule.needs(prepared)),
             collector,
             snapshot,
-            new RelatedFlows(support, snapshot));
+            new RelatedFlows(support, snapshot)
+        );
     for (final PreparedRule rule : prepared) {
       runRule(rule, units, state);
     }
@@ -77,7 +79,8 @@ public final class RuleEngine {
   public List<AnalysisFinding> runProject(
       final List<SourceUnit> units,
       final List<FrontendSupport> frontends,
-      final List<RuleDefinition> rules) {
+      final List<RuleDefinition> rules
+  ) {
     return runProject(units, frontends, rules, ProjectFiles.empty());
   }
 
@@ -89,7 +92,8 @@ public final class RuleEngine {
       final List<SourceUnit> units,
       final List<FrontendSupport> frontends,
       final List<RuleDefinition> rules,
-      final ProjectFiles files) {
+      final ProjectFiles files
+  ) {
     final Map<AnalysisLanguage, FrontendSupport> support = supportByLanguage(frontends);
     final RuleRunCollector collector = new RuleRunCollector();
     final UnitTrees trees = new UnitTrees(support, Map.of());
@@ -100,7 +104,8 @@ public final class RuleEngine {
           .filter(CompiledRule::isProject)
           .filter(
               compiled ->
-                  !ProjectCheckScope.coveredByAnother(compiled.definition(), prepared, support))
+                  !ProjectCheckScope.coveredByAnother(compiled.definition(), prepared, support)
+          )
           .ifPresent(
               compiled ->
                   findings.addAll(
@@ -110,16 +115,22 @@ public final class RuleEngine {
                               ProjectCheckScope.reads(rule, compiled.definition(), support),
                               units,
                               trees,
-                              collector),
-                          files)));
+                              collector
+                          ),
+                          files
+                      )
+                  )
+          );
     }
     return List.copyOf(findings);
   }
 
   private static List<AnalysisFinding> projectFindings(
       final CompiledRule rule,
-      final SortedMap<String, SyntaxNode> parsed,
-      final ProjectFiles files) {
+      final SortedMap<String,
+      SyntaxNode> parsed,
+      final ProjectFiles files
+  ) {
     return rule.project(parsed, files).stream()
         .map(match -> RuleFindings.at(rule.definition(), match.path(), match.match()))
         .toList();
@@ -127,20 +138,26 @@ public final class RuleEngine {
 
   /** What one run shares between its rules. */
   private record RunState(
-      Map<AnalysisLanguage, FrontendSupport> support,
+      Map<AnalysisLanguage,
+      FrontendSupport> support,
       UnitTrees trees,
       RuleRunCollector collector,
       DependencySnapshot snapshot,
-      RelatedFlows related) {}
+      RelatedFlows related
+  ) {}
 
   private static Map<AnalysisLanguage, FrontendSupport> supportByLanguage(
-      final List<FrontendSupport> frontends) {
+      final List<FrontendSupport> frontends
+  ) {
     return frontends.stream()
         .collect(Collectors.toMap(FrontendSupport::language, frontend -> frontend));
   }
 
   private void runRule(
-      final PreparedRule prepared, final List<SourceUnit> units, final RunState state) {
+      final PreparedRule prepared,
+      final List<SourceUnit> units,
+      final RunState state
+  ) {
     if (prepared.rule().isEmpty()) {
       return;
     }
@@ -152,7 +169,10 @@ public final class RuleEngine {
   }
 
   private static void runOnUnit(
-      final CompiledRule rule, final SourceUnit unit, final RunState state) {
+      final CompiledRule rule,
+      final SourceUnit unit,
+      final RunState state
+  ) {
     final RuleRunCollector collector = state.collector();
     final Optional<SyntaxNode> root = state.trees().parse(unit, collector);
     if (root.isEmpty()) {
@@ -166,18 +186,23 @@ public final class RuleEngine {
                   .related()
                   .with(rule, unit, state.trees().flows(rule, unit, root.get(), collector)),
               state.trees().scopes(rule, unit, root.get(), dependencies, collector),
-              state.trees().types(rule, unit, root.get(), collector));
+              state.trees().types(rule, unit, root.get(), collector)
+          );
       rule.matches(root.get(), dependencies, views, unit)
           .forEach(match -> collector.finding(RuleFindings.of(rule.definition(), unit, match)));
     } catch (final AnalysisFailedException exception) {
       collector.recordError(
-          new RuleExecutionError(rule.definition().id(), unit.path(), "the rule could not run"));
+          new RuleExecutionError(rule.definition().id(), unit.path(), "the rule could not run")
+      );
     }
   }
 
   /** Only a rule that reads {@code SYMBOLS} or {@code SCOPES} sees the files around the unit. */
   private static DependencyView view(
-      final CompiledRule rule, final SourceUnit unit, final RunState state) {
+      final CompiledRule rule,
+      final SourceUnit unit,
+      final RunState state
+  ) {
     if (!rule.definition().capability().readsDependencies()) {
       return DependencyView.NONE;
     }

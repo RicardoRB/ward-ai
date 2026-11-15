@@ -18,7 +18,6 @@ import java.util.Set;
  * never reported. It lowers the control flow itself, since a rule reads either types or flow.
  */
 public final class NullDataflowCheck implements RuleCheck {
-
   /** The patterns the check can report. */
   public enum Mode {
     /** A variable that is null on every path is dereferenced. */
@@ -37,7 +36,8 @@ public final class NullDataflowCheck implements RuleCheck {
     NULL_PARAM_DEREF_NONVIRTUAL(NullAnalysis.Pattern.NULL_PARAM_DEREF_NONVIRTUAL),
     /** Null is passed to a parameter that every possible callee dereferences. */
     NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS(
-        NullAnalysis.Pattern.NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS),
+        NullAnalysis.Pattern.NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS
+    ),
     /** Null is stored into a field annotated never to be null. */
     STORE_INTO_NONNULL_FIELD(NullAnalysis.Pattern.STORE_INTO_NONNULL_FIELD),
     /** Null is returned from a method annotated never to return null. */
@@ -56,7 +56,8 @@ public final class NullDataflowCheck implements RuleCheck {
      * A null on some path is certain to be dereferenced, after many null tests before its source.
      */
     NULL_ON_SOME_PATH_MIGHT_BE_INFEASIBLE(
-        NullAnalysis.Pattern.NULL_ON_SOME_PATH_MIGHT_BE_INFEASIBLE);
+        NullAnalysis.Pattern.NULL_ON_SOME_PATH_MIGHT_BE_INFEASIBLE
+    );
 
     private final NullAnalysis.Pattern pattern;
 
@@ -97,7 +98,8 @@ public final class NullDataflowCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return NullAnalysis.of(root, unit, types).stream()
         .filter(finding -> finding.pattern() == mode.pattern)
         .map(finding -> CheckSupport.at(finding.at(), message))

@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
  * assigns the lock is reported, because it guards the very field it replaces.
  */
 public final class SynchronizedOnUpdatedFieldCheck implements UnitCheck {
-
   private static final String SYNCHRONIZED = "'synchronized'";
   private static final String THIS = "this.";
 
@@ -48,7 +47,9 @@ public final class SynchronizedOnUpdatedFieldCheck implements UnitCheck {
   }
 
   private java.util.Optional<RuleMatch> match(
-      final SyntaxNode statement, final FieldAccesses accesses) {
+      final SyntaxNode statement,
+      final FieldAccesses accesses
+  ) {
     final String lock = lockOf(statement);
     final boolean field = accesses.fields().stream().anyMatch(f -> f.name().equals(lock));
     final boolean updated =
@@ -60,7 +61,8 @@ public final class SynchronizedOnUpdatedFieldCheck implements UnitCheck {
     final boolean flagged = updated && (!guardingOnly || assignsInside(statement, lock));
     return flagged
         ? java.util.Optional.of(
-            CheckSupport.at(statement.span(), CheckSupport.fill(message, lock, "")))
+            CheckSupport.at(statement.span(), CheckSupport.fill(message, lock, ""))
+        )
         : java.util.Optional.empty();
   }
 

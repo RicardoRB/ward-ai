@@ -15,7 +15,6 @@ import java.util.Set;
  * compound one and an increment read first.
  */
 final class JavaReferences {
-
   private static final String ASSIGN = "=";
   private static final int BINARY_PARTS = 3;
 
@@ -95,7 +94,12 @@ final class JavaReferences {
       if (declaration != null && captured.add(declaration)) {
         found.add(
             new VariableAccess(
-                JavaFlowSyntax.text(name), AccessKind.CAPTURE, node.span(), declaration));
+                JavaFlowSyntax.text(name),
+                AccessKind.CAPTURE,
+                node.span(),
+                declaration
+            )
+        );
       }
     }
   }

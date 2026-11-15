@@ -8,7 +8,6 @@ import org.antlr.v4.runtime.Token;
 import org.junit.jupiter.api.Test;
 
 class SwiftSupportStatementTest {
-
   private static CommonTokenStream stream(final String text) {
     final CommonTokenStream tokens =
         new CommonTokenStream(new SwiftLexer(CharStreams.fromString(text)));

@@ -14,7 +14,6 @@ import java.util.Set;
  * the file's directory path. A file without a path is not checked.
  */
 public final class KotlinPackageDirectoryCheck implements UnitCheck {
-
   private static final String PACKAGE = "packageHeader";
   private static final String IDENTIFIER = "identifier";
   private static final String DOT = ".";
@@ -61,7 +60,11 @@ public final class KotlinPackageDirectoryCheck implements UnitCheck {
   }
 
   private void checkPackage(
-      final SyntaxNode header, final String pkg, final String path, final List<RuleMatch> out) {
+      final SyntaxNode header,
+      final String pkg,
+      final String path,
+      final List<RuleMatch> out
+  ) {
     if (requireRoot && !pkg.startsWith(rootPackage)) {
       out.add(CheckSupport.at(header.span(), MISSING_ROOT));
       return;

@@ -25,7 +25,6 @@ import java.util.Set;
  * reported.
  */
 public final class ValueClassIdentityCheck implements RuleCheck {
-
   private static final String EXPRESSION = "expression";
   private static final String STATEMENT = "statement";
   private static final int MEMBER_PARTS = 3;
@@ -34,7 +33,8 @@ public final class ValueClassIdentityCheck implements RuleCheck {
       Set.of(
           "java.lang.ref.WeakReference",
           "java.lang.ref.SoftReference",
-          "java.lang.ref.PhantomReference");
+          "java.lang.ref.PhantomReference"
+      );
   private static final Set<String> WAITING = Set.of("wait", "notify", "notifyAll");
   private static final Set<String> BUILDERS =
       Set.of("com.google.common.cache.CacheBuilder", "com.github.benmanes.caffeine.cache.Caffeine");
@@ -68,7 +68,8 @@ public final class ValueClassIdentityCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(EXPRESSION, STATEMENT))) {
       if (relies(visit.node(), types)) {
@@ -114,12 +115,15 @@ public final class ValueClassIdentityCheck implements RuleCheck {
     return "java.util.IdentityHashMap".equals(type.name())
         && (first
             || args.size() > 1
-                && ValueClasses.is(args.get(1))
-                && !BOOLEAN.equals(args.get(1).name()));
+            && ValueClasses.is(args.get(1))
+            && !BOOLEAN.equals(args.get(1).name()));
   }
 
   private static boolean call(
-      final SyntaxNode node, final CallTarget target, final UnitTypeFacts types) {
+      final SyntaxNode node,
+      final CallTarget target,
+      final UnitTypeFacts types
+  ) {
     final String owner = target.declaringType().name();
     if ("java.lang.System".equals(owner) && "identityHashCode".equals(target.name())) {
       return CallArgumentNodes.first(node)
@@ -145,12 +149,15 @@ public final class ValueClassIdentityCheck implements RuleCheck {
 
   /** A cache or map built with weak keys or weak or soft values of a value class. */
   private static boolean cache(
-      final SyntaxNode node, final CallTarget target, final UnitTypeFacts types) {
+      final SyntaxNode node,
+      final CallTarget target,
+      final UnitTypeFacts types
+  ) {
     final boolean builds =
         BUILDERS.contains(target.declaringType().name())
-                && Set.of("build", "buildAsync").contains(target.name())
+            && Set.of("build", "buildAsync").contains(target.name())
             || "com.google.common.collect.MapMaker".equals(target.declaringType().name())
-                && "makeMap".equals(target.name());
+            && "makeMap".equals(target.name());
     final Optional<List<TypeRef>> args =
         types.typeOf(node.span()).map(TypeRef::arguments).filter(a -> a.size() >= 2);
     if (!builds || args.isEmpty()) {
@@ -159,7 +166,7 @@ public final class ValueClassIdentityCheck implements RuleCheck {
     final List<String> chain = chain(node);
     return chain.contains("weakKeys") && ValueClasses.is(args.get().get(0))
         || (chain.contains("weakValues") || chain.contains("softValues"))
-            && ValueClasses.is(args.get().get(1));
+        && ValueClasses.is(args.get().get(1));
   }
 
   /** The names of the methods called along the receivers of a call. */

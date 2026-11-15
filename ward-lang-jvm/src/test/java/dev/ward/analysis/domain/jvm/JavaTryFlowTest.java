@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
  * Checks that the code after a try statement is reached from the try's finally and catch blocks.
  */
 class JavaTryFlowTest {
-
   @Test
   void statementAfterTryFinallyIsReachableFromTheFinallyBlock() {
     final String source =
@@ -21,12 +20,20 @@ class JavaTryFlowTest {
 
     final int after = JavaFlowFixtures.blockWith(graph, source, "done()");
     assertThat(
-            JavaFlowFixtures.reachable(
-                graph, JavaFlowFixtures.blockWith(graph, source, "cleanup()"), after))
+        JavaFlowFixtures.reachable(
+            graph,
+            JavaFlowFixtures.blockWith(graph, source, "cleanup()"),
+            after
+        )
+    )
         .isTrue();
     assertThat(
-            JavaFlowFixtures.reachable(
-                graph, JavaFlowFixtures.blockWith(graph, source, "work()"), after))
+        JavaFlowFixtures.reachable(
+            graph,
+            JavaFlowFixtures.blockWith(graph, source, "work()"),
+            after
+        )
+    )
         .isTrue();
   }
 
@@ -39,12 +46,20 @@ class JavaTryFlowTest {
 
     final int after = JavaFlowFixtures.blockWith(graph, source, "done()");
     assertThat(
-            JavaFlowFixtures.reachable(
-                graph, JavaFlowFixtures.blockWith(graph, source, "recover()"), after))
+        JavaFlowFixtures.reachable(
+            graph,
+            JavaFlowFixtures.blockWith(graph, source, "recover()"),
+            after
+        )
+    )
         .isTrue();
     assertThat(
-            JavaFlowFixtures.reachable(
-                graph, JavaFlowFixtures.blockWith(graph, source, "cleanup()"), after))
+        JavaFlowFixtures.reachable(
+            graph,
+            JavaFlowFixtures.blockWith(graph, source, "cleanup()"),
+            after
+        )
+    )
         .isTrue();
   }
 
@@ -56,10 +71,12 @@ class JavaTryFlowTest {
     final ControlFlowGraph graph = lowerNamed(source, "C#run(1)");
 
     assertThat(
-            JavaFlowFixtures.reachable(
-                graph,
-                JavaFlowFixtures.blockWith(graph, source, "work()"),
-                JavaFlowFixtures.blockWith(graph, source, "return 2")))
+        JavaFlowFixtures.reachable(
+            graph,
+            JavaFlowFixtures.blockWith(graph, source, "work()"),
+            JavaFlowFixtures.blockWith(graph, source, "return 2")
+        )
+    )
         .isTrue();
   }
 

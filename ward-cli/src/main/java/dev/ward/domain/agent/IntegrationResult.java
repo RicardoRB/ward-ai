@@ -12,7 +12,11 @@ import java.util.Set;
  * @param capabilities what the installed integration enforces
  */
 public record IntegrationResult(
-    Status status, List<String> changed, String message, Set<IntegrationCapability> capabilities) {
+    Status status,
+    List<String> changed,
+    String message,
+    Set<IntegrationCapability> capabilities
+) {
   /** What an integration run did. */
   public enum Status {
     CHANGED,

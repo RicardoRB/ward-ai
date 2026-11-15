@@ -7,7 +7,6 @@ import dev.ward.analysis.domain.format.FormatResult;
 
 /** Lays out one parsed TypeScript or JavaScript source with the shared document builder. */
 final class EcmaFormatting {
-
   private EcmaFormatting() {}
 
   /**
@@ -19,7 +18,10 @@ final class EcmaFormatting {
    * @return the formatted text, {@code Unchanged} or {@code Refused}
    */
   static FormatResult format(
-      final String source, final FormatOptions options, final EcmaParse parse) {
+      final String source,
+      final FormatOptions options,
+      final EcmaParse parse
+  ) {
     if (parse.errorLine().isPresent()) {
       return new FormatResult.Refused("input has a syntax error", parse.errorLine().getAsInt());
     }

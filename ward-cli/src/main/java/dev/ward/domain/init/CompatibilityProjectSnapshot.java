@@ -6,7 +6,11 @@ import java.util.Optional;
 
 /** Sanitized Maven project metadata supplied to the compatibility resolver. */
 public record CompatibilityProjectSnapshot(
-    Project project, ToolchainSnapshot toolchain, Map<String, String> pluginVersions) {
+    Project project,
+    ToolchainSnapshot toolchain,
+    Map<String,
+    String> pluginVersions
+) {
   /**
    * Validates the snapshot and copies the plugin versions.
    *

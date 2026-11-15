@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 
 /** The Pylint checks that read the tree's shape: init generators, unassigned calls, ternaries. */
 final class StructuralPylintChecksTest {
-
   private static final String MESSAGE = "m";
 
   private static SyntaxNode name(final String text) {
@@ -27,7 +26,10 @@ final class StructuralPylintChecksTest {
 
   private static SyntaxNode call(final String callee) {
     return Nodes.node(
-        "atom_expr", Nodes.leaf(callee), Nodes.node("trailer", Nodes.leaf("("), Nodes.leaf(")")));
+        "atom_expr",
+        Nodes.leaf(callee),
+        Nodes.node("trailer", Nodes.leaf("("), Nodes.leaf(")"))
+    );
   }
 
   @Test
@@ -52,14 +54,16 @@ final class StructuralPylintChecksTest {
     final SyntaxNode comparison =
         Nodes.node("comparison", Nodes.leaf("x"), Nodes.leaf("=="), call("f"));
     assertThat(
-            new UnassignedCallExpressionCheck(MESSAGE).matches(Nodes.node("expr_stmt", comparison)))
+        new UnassignedCallExpressionCheck(MESSAGE).matches(Nodes.node("expr_stmt", comparison))
+    )
         .hasSize(1);
   }
 
   @Test
   void unassignedCallIgnoresABareCallAndAnAssignment() {
     assertThat(
-            new UnassignedCallExpressionCheck(MESSAGE).matches(Nodes.node("expr_stmt", call("f"))))
+        new UnassignedCallExpressionCheck(MESSAGE).matches(Nodes.node("expr_stmt", call("f")))
+    )
         .isEmpty();
     final SyntaxNode assignment =
         Nodes.node("expr_stmt", Nodes.leaf("x"), Nodes.leaf("="), call("f"));
@@ -73,10 +77,12 @@ final class StructuralPylintChecksTest {
             "or_test",
             Nodes.node("and_test", Nodes.leaf("a"), Nodes.leaf("and"), Nodes.leaf("1")),
             Nodes.leaf("or"),
-            Nodes.leaf("c"));
+            Nodes.leaf("c")
+        );
     assertThat(
-            new AndOrTernaryCheck(MESSAGE)
-                .matches(Nodes.node("return_stmt", Nodes.leaf("return"), value)))
+        new AndOrTernaryCheck(MESSAGE)
+            .matches(Nodes.node("return_stmt", Nodes.leaf("return"), value))
+    )
         .hasSize(1);
   }
 
@@ -87,10 +93,12 @@ final class StructuralPylintChecksTest {
             "or_test",
             Nodes.node("and_test", Nodes.leaf("a"), Nodes.leaf("and"), Nodes.leaf("0")),
             Nodes.leaf("or"),
-            Nodes.leaf("c"));
+            Nodes.leaf("c")
+        );
     assertThat(
-            new AndOrTernaryCheck(MESSAGE)
-                .matches(Nodes.node("return_stmt", Nodes.leaf("return"), value)))
+        new AndOrTernaryCheck(MESSAGE)
+            .matches(Nodes.node("return_stmt", Nodes.leaf("return"), value))
+    )
         .isEmpty();
   }
 
@@ -103,7 +111,8 @@ final class StructuralPylintChecksTest {
             Nodes.at(0, 4),
             Set.of(),
             0,
-            Optional.of(new ImportOrigin("sys", "exit", Nodes.at(0, 4))));
+            Optional.of(new ImportOrigin("sys", "exit", Nodes.at(0, 4)))
+        );
     final Binding otherModule =
         new Binding(
             "exit",
@@ -111,7 +120,8 @@ final class StructuralPylintChecksTest {
             Nodes.at(0, 4),
             Set.of(),
             0,
-            Optional.of(new ImportOrigin("os", "exit", Nodes.at(0, 4))));
+            Optional.of(new ImportOrigin("os", "exit", Nodes.at(0, 4)))
+        );
     assertThat(SysExitCallCheck.importsExit(List.of(fromSys))).isTrue();
     assertThat(SysExitCallCheck.importsExit(List.of(otherModule))).isFalse();
     assertThat(SysExitCallCheck.importsExit(List.of())).isFalse();

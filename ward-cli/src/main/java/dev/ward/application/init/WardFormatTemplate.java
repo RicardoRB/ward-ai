@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 /** Writes the {@code ward-format} gate, which Ward runs in-process, so it has no command. */
 final class WardFormatTemplate {
-
   private WardFormatTemplate() {}
 
   /**
@@ -20,7 +19,8 @@ final class WardFormatTemplate {
         .append(
             profiles.stream()
                 .map(profile -> "\"" + profile + "\"")
-                .collect(Collectors.joining(", ")))
+                .collect(Collectors.joining(", "))
+        )
         .append("]\nuses = \"")
         .append(FormatGates.WARD_FORMAT)
         .append("\"\n");

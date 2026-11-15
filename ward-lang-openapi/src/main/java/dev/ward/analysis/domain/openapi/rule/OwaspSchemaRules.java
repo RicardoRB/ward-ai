@@ -8,7 +8,6 @@ import java.util.function.Predicate;
 
 /** The OWASP rules about the limits of arrays, strings and integers, and about open objects. */
 final class OwaspSchemaRules {
-
   private static final String TYPE = "type";
 
   private OwaspSchemaRules() {}
@@ -19,7 +18,8 @@ final class OwaspSchemaRules {
         document,
         "array",
         schema -> schema.get("maxItems").isPresent(),
-        "Schema of type array must specify maxItems.");
+        "Schema of type array must specify maxItems."
+    );
   }
 
   /** {@code owasp-api4-2023-string-limit}: a string schema has a maximum length, enum or const. */
@@ -28,7 +28,8 @@ final class OwaspSchemaRules {
         document,
         "string",
         schema -> hasAny(schema, "maxLength", "enum", "const"),
-        "Schema of type string must specify maxLength, enum, or const.");
+        "Schema of type string must specify maxLength, enum, or const."
+    );
   }
 
   /** {@code owasp-api4-2023-string-restricted}: a string schema has a format, pattern or enum. */
@@ -37,7 +38,8 @@ final class OwaspSchemaRules {
         document,
         "string",
         schema -> hasAny(schema, "format", "pattern", "enum", "const"),
-        "Schema of type string should specify a format, pattern, enum, or const.");
+        "Schema of type string should specify a format, pattern, enum, or const."
+    );
   }
 
   /** {@code owasp-api4-2023-integer-limit}: in 3.1 an integer has exactly one bound each way. */
@@ -49,7 +51,8 @@ final class OwaspSchemaRules {
             schema ->
                 exactlyOne(schema, "minimum", "exclusiveMinimum")
                     && exactlyOne(schema, "maximum", "exclusiveMaximum"),
-            "Schema of type integer must specify minimum and maximum.")
+            "Schema of type integer must specify minimum and maximum."
+        )
         : List.of();
   }
 
@@ -61,7 +64,8 @@ final class OwaspSchemaRules {
             document,
             "integer",
             schema -> schema.get("minimum").isPresent() && schema.get("maximum").isPresent(),
-            "Schema of type integer must specify minimum and maximum.");
+            "Schema of type integer must specify minimum and maximum."
+        );
   }
 
   /** {@code owasp-api4-2023-integer-format}: an integer schema has a {@code format}. */
@@ -70,14 +74,16 @@ final class OwaspSchemaRules {
         document,
         "integer",
         schema -> schema.get("format").isPresent(),
-        "Schema of type integer must specify format (int32 or int64).");
+        "Schema of type integer must specify format (int32 or int64)."
+    );
   }
 
   private static List<OpenApiFinding> require(
       final OpenApiDocument document,
       final String type,
       final Predicate<DocNode> satisfied,
-      final String message) {
+      final String message
+  ) {
     final List<OpenApiFinding> findings = new ArrayList<>();
     for (final Nodes.Located located : Nodes.resolved(document, document.root())) {
       final DocNode node = located.node();
@@ -89,7 +95,10 @@ final class OwaspSchemaRules {
   }
 
   private static boolean hasType(
-      final OpenApiDocument document, final DocNode node, final String type) {
+      final OpenApiDocument document,
+      final DocNode node,
+      final String type
+  ) {
     final DocNode declared =
         node.kind() == DocNode.Kind.OBJECT ? node.get(TYPE).orElse(null) : null;
     if (declared == null) {

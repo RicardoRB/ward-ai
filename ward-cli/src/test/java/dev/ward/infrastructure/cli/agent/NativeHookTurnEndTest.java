@@ -39,7 +39,8 @@ class NativeHookTurnEndTest {
     withPom(root, PLAIN_POM);
     Files.writeString(
         root.resolve("ward.toml"),
-        "version = 2\n[checks.tests]\nuses = \"tests\"\nprofiles = [\"default\", \"edit\"]\ncommand = \"mvn test\"\n");
+        "version = 2\n[checks.tests]\nuses = \"tests\"\nprofiles = [\"default\", \"edit\"]\ncommand = \"mvn test\"\n"
+    );
   }
 
   private int run(final int gateExit, final String payload, final String... flags) {
@@ -50,7 +51,8 @@ class NativeHookTurnEndTest {
             new HookChecks(HookCheckFixtures.checks(executor)),
             new ForyJsonCodec(),
             Set.of(new CodexIntegration()),
-            new ByteArrayInputStream(payload.getBytes(StandardCharsets.UTF_8)));
+            new ByteArrayInputStream(payload.getBytes(StandardCharsets.UTF_8))
+        );
     final CommandLine cli = new CommandLine(command);
     cli.setOut(new PrintWriter(out, true));
     cli.setErr(new PrintWriter(err, true));
@@ -86,10 +88,12 @@ class NativeHookTurnEndTest {
   @Test
   void failingChecksAfterAToolCallExitTwoWithFeedbackOnStderr() {
     assertThat(
-            run(
-                1,
-                "{\"hook_event_name\":\"PostToolUse\",\"tool_name\":\"apply_patch\","
-                    + "\"tool_input\":{\"command\":\"*** Begin Patch\"}}"))
+        run(
+            1,
+            "{\"hook_event_name\":\"PostToolUse\",\"tool_name\":\"apply_patch\","
+                + "\"tool_input\":{\"command\":\"*** Begin Patch\"}}"
+        )
+    )
         .isEqualTo(2);
     assertThat(err.toString()).contains("Ward quality findings");
   }

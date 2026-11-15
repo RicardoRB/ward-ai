@@ -12,7 +12,6 @@ import java.util.Objects;
  * Object.equals}. Only the methods declared directly in the type's body count.
  */
 public final class CovariantEqualsCheck implements UnitCheck {
-
   private static final String EQUALS = "equals";
 
   private final String message;
@@ -40,7 +39,11 @@ public final class CovariantEqualsCheck implements UnitCheck {
             m ->
                 matches.add(
                     CheckSupport.at(
-                        TypeMethods.identifier(m.method()).orElse(m.method()).span(), message)));
+                        TypeMethods.identifier(m.method()).orElse(m.method()).span(),
+                        message
+                    )
+                )
+        );
       }
     }
     return List.copyOf(matches);

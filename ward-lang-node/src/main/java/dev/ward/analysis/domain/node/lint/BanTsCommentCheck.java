@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 
 /** Reports a {@code @ts-<directive>} comment that the options ban, or that lacks a description. */
 public final class BanTsCommentCheck implements RuleCheck {
-
   private static final String COMMENT = "comment";
   private static final int BLOCK_MARKERS = 4;
   private static final String BANNED = "true";
@@ -35,10 +34,12 @@ public final class BanTsCommentCheck implements RuleCheck {
    * An empty {@code descriptionFormat} leaves the description to the minimum length alone.
    */
   public BanTsCommentCheck(
-      final Map<String, String> options,
+      final Map<String,
+      String> options,
       final int minimumDescriptionLength,
       final String descriptionFormat,
-      final String message) {
+      final String message
+  ) {
     this.options = Map.copyOf(options);
     this.minimumDescriptionLength = minimumDescriptionLength;
     this.descriptionFormat =
@@ -63,7 +64,10 @@ public final class BanTsCommentCheck implements RuleCheck {
   }
 
   private Matcher directiveOf(
-      final String text, final SyntaxNode comment, final int firstCodeLine) {
+      final String text,
+      final SyntaxNode comment,
+      final int firstCodeLine
+  ) {
     if (text.startsWith("//")) {
       final Matcher pragma = PRAGMA.matcher(text);
       if (pragma.matches()) {
@@ -84,7 +88,11 @@ public final class BanTsCommentCheck implements RuleCheck {
   }
 
   private void check(
-      final List<RuleMatch> out, final SyntaxNode comment, final String name, final String text) {
+      final List<RuleMatch> out,
+      final SyntaxNode comment,
+      final String name,
+      final String text
+  ) {
     final String directive = "ts-" + name;
     final String option = options.getOrDefault(directive, "false");
     if (BANNED.equals(option)) {

@@ -19,7 +19,8 @@ public final class MultiSelectMenu {
       final String title,
       final List<String> labels,
       final IntSupplier keys,
-      final PrintWriter out) {
+      final PrintWriter out
+  ) {
     return select(title, labels, "Select at least one item.", keys, out);
   }
 
@@ -29,7 +30,8 @@ public final class MultiSelectMenu {
       final List<String> labels,
       final String emptySelectionMessage,
       final IntSupplier keys,
-      final PrintWriter out) {
+      final PrintWriter out
+  ) {
     return select(new MenuSpec(title, labels, emptySelectionMessage, Set.of(), false), keys, out);
   }
 
@@ -62,7 +64,8 @@ public final class MultiSelectMenu {
       final List<String> labels,
       final MenuState menu,
       final PrintWriter out,
-      final String message) {
+      final String message
+  ) {
     if (menu.renderedLines > 0) {
       // Move back to the menu's first line and clear only what the menu printed.
       out.print("\033[" + menu.renderedLines + "F\033[J");
@@ -71,7 +74,11 @@ public final class MultiSelectMenu {
     for (int i = 0; i < labels.size(); i++) {
       out.printf(
           "%s %s %d) %s%n",
-          i == menu.cursor ? ">" : " ", menu.selected[i] ? "[x]" : "[ ]", i + 1, labels.get(i));
+          i == menu.cursor ? ">" : " ",
+          menu.selected[i] ? "[x]" : "[ ]",
+          i + 1,
+          labels.get(i)
+      );
     }
     if (!message.isEmpty()) {
       out.println(message);
@@ -98,7 +105,8 @@ public final class MultiSelectMenu {
         case ' ' -> toggle(cursor);
         case '\n', '\r' -> {
           return Optional.of(
-              IntStream.range(0, selected.length).filter(i -> selected[i]).boxed().toList());
+              IntStream.range(0, selected.length).filter(i -> selected[i]).boxed().toList()
+          );
         }
         case ESCAPE -> move(keys);
         default -> {

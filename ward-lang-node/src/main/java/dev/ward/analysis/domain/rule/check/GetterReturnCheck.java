@@ -19,7 +19,6 @@ import java.util.Set;
  * all is reported instead.
  */
 public final class GetterReturnCheck implements RuleCheck {
-
   private static final String GETTER = "getter";
   private static final String RETURN = "returnStatement";
   private static final String ARGUMENT = "expressionSequence";
@@ -65,7 +64,10 @@ public final class GetterReturnCheck implements RuleCheck {
   }
 
   private void checkGetter(
-      final SyntaxNode getter, final FlowView flow, final List<RuleMatch> matches) {
+      final SyntaxNode getter,
+      final FlowView flow,
+      final List<RuleMatch> matches
+  ) {
     final List<SyntaxNode> returns = new ArrayList<>();
     returnsIn(getter.children(), returns);
     if (endReachable(getter, flow, returns)) {
@@ -74,14 +76,18 @@ public final class GetterReturnCheck implements RuleCheck {
     if (!allowImplicit) {
       returns.stream()
           .filter(
-              statement -> statement.children().stream().noneMatch(c -> ARGUMENT.equals(c.kind())))
+              statement -> statement.children().stream().noneMatch(c -> ARGUMENT.equals(c.kind()))
+          )
           .forEach(statement -> matches.add(new RuleMatch(statement.span(), message)));
     }
   }
 
   /** Reachability decides when the body has a graph; a getter with no return is the fallback. */
   private static boolean endReachable(
-      final SyntaxNode getter, final FlowView flow, final List<SyntaxNode> returns) {
+      final SyntaxNode getter,
+      final FlowView flow,
+      final List<SyntaxNode> returns
+  ) {
     final Optional<dev.ward.analysis.domain.ir.ControlFlowGraph> graph =
         NodeFlow.graphOf(flow, getter);
     return graph.map(NodeFlow::fallsOffEnd).orElseGet(returns::isEmpty);

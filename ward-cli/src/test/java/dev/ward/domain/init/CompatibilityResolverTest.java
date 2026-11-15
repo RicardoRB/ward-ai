@@ -32,8 +32,11 @@ class CompatibilityResolverTest {
                 ARTIFACT,
                 List.of(
                     candidate(ARTIFACT, "1.0.0", JAVA_8, "3.6"),
-                    candidate(ARTIFACT, "2.0.0", 11, "3.8"))),
-            List.of(ARTIFACT));
+                    candidate(ARTIFACT, "2.0.0", 11, "3.8")
+                )
+            ),
+            List.of(ARTIFACT)
+        );
 
     assertThat(plan.findings())
         .singleElement()
@@ -41,7 +44,8 @@ class CompatibilityResolverTest {
             finding -> {
               assertThat(finding.selectedVersion()).isEqualTo("2.0.0");
               assertThat(finding.outcome()).isEqualTo(CompatibilityOutcome.COMPATIBLE);
-            });
+            }
+        );
   }
 
   @Test
@@ -50,7 +54,8 @@ class CompatibilityResolverTest {
         RESOLVER.resolve(
             snapshot(JAVA_17, Optional.of("3.8.8"), Optional.empty(), Map.of(ARTIFACT, "0.1.0")),
             Map.of(ARTIFACT, List.of(candidate(ARTIFACT, "2.0.0", 11, "3.8"))),
-            List.of(ARTIFACT));
+            List.of(ARTIFACT)
+        );
 
     assertThat(plan.changes())
         .singleElement()
@@ -68,7 +73,8 @@ class CompatibilityResolverTest {
         RESOLVER.resolve(
             snapshot(JAVA_17, Optional.empty(), Optional.empty(), Map.of()),
             Map.of(ARTIFACT, List.of(candidate(ARTIFACT, "1.0.0", JAVA_8, "3.6"))),
-            List.of(ARTIFACT));
+            List.of(ARTIFACT)
+        );
 
     assertThat(plan.hasUnresolvableFindings()).isTrue();
     assertThat(plan.findings())
@@ -87,12 +93,14 @@ class CompatibilityResolverTest {
         RESOLVER.resolve(
             snapshot(NEWEST_JAVA, Optional.of(MAVEN), Optional.empty(), Map.of()),
             catalog,
-            List.of(pit));
+            List.of(pit)
+        );
     final CompatibilityPlan stale =
         RESOLVER.resolve(
             snapshot(NEWEST_JAVA, Optional.of(MAVEN), Optional.empty(), Map.of(pit, "1.17.4")),
             catalog,
-            List.of(pit));
+            List.of(pit)
+        );
 
     assertThat(missing.findings())
         .singleElement()
@@ -108,19 +116,29 @@ class CompatibilityResolverTest {
       final int java,
       final Optional<String> buildTool,
       final Optional<Integer> release,
-      final Map<String, String> plugins) {
+      final Map<String,
+      String> plugins
+  ) {
     return new CompatibilityProjectSnapshot(
         PROJECT,
         new ToolchainSnapshot(Optional.of(java), release, buildTool, Framework.NONE),
-        plugins);
+        plugins
+    );
   }
 
   static ManagedPluginCandidate candidate(
       final String artifact,
       final String version,
       final int minimumJava,
-      final String minimumBuildTool) {
+      final String minimumBuildTool
+  ) {
     return new ManagedPluginCandidate(
-        artifact, version, minimumJava, NEWEST_JAVA, minimumBuildTool, "plugin");
+        artifact,
+        version,
+        minimumJava,
+        NEWEST_JAVA,
+        minimumBuildTool,
+        "plugin"
+    );
   }
 }

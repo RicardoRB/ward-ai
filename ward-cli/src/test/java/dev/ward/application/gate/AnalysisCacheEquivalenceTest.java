@@ -40,17 +40,23 @@ class AnalysisCacheEquivalenceTest {
       List.of("class A {}", "long body", "short", "BROKEN", "a much longer text", "x");
   private static final UnitResultCache RESULTS =
       new UnitResultCache(
-          new RuleEngine(matcher()), AnalysisCacheFixtures.codec(), "0.6.0", List.of());
+          new RuleEngine(matcher()),
+          AnalysisCacheFixtures.codec(),
+          "0.6.0",
+          List.of()
+      );
   private static final List<FrontendSupport> FRONTENDS =
       List.of(
-          new FrontendSupport(AnalysisLanguage.JAVA, frontend(), Set.of(RuleCapability.SYNTAX)));
+          new FrontendSupport(AnalysisLanguage.JAVA, frontend(), Set.of(RuleCapability.SYNTAX))
+      );
   private static final RuleDefinition RULE =
       new RuleDefinition(
           "ward:java/long-body",
           AnalysisLanguage.JAVA,
           RuleCapability.SYNTAX,
           AnalysisSeverity.WARNING,
-          "flag");
+          "flag"
+      );
 
   @TempDir Path directory;
 
@@ -113,7 +119,8 @@ class AnalysisCacheEquivalenceTest {
     return List.of(
         new SourceUnit("src/A.java", AnalysisLanguage.JAVA, texts[0]),
         new SourceUnit("src/B.java", AnalysisLanguage.JAVA, texts[1]),
-        new SourceUnit("src/C.java", AnalysisLanguage.JAVA, texts[2]));
+        new SourceUnit("src/C.java", AnalysisLanguage.JAVA, texts[2])
+    );
   }
 
   private static LanguageFrontend frontend() {
@@ -125,7 +132,8 @@ class AnalysisCacheEquivalenceTest {
       final int line = 1 + unit.text().length() % LINE_COUNT;
       return new ParseResult(
           new SyntaxNode("unit", new Span(line, 1, line, 2, 0, 1), Map.of("flag", flag), List.of()),
-          List.of());
+          List.of()
+      );
     };
   }
 

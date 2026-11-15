@@ -24,7 +24,8 @@ final class NativeHookTurnEnd {
       final NativeHookInput event,
       final Optional<String> results,
       final PrintWriter output,
-      final PrintWriter error) {
+      final PrintWriter error
+  ) {
     if (results.isEmpty()) {
       return ExitCodes.OK;
     }

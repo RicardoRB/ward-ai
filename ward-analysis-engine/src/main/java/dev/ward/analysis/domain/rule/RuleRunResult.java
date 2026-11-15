@@ -13,8 +13,8 @@ import java.util.List;
 public record RuleRunResult(
     List<AnalysisFinding> findings,
     List<RuleExecutionError> executionErrors,
-    List<RuleNotRun> notRun) {
-
+    List<RuleNotRun> notRun
+) {
   /** Copies the lists. */
   public RuleRunResult {
     findings = List.copyOf(findings);

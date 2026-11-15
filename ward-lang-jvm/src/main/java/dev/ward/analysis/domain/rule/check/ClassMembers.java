@@ -7,7 +7,6 @@ import java.util.Set;
 
 /** Lists the members of a class and the types and names its declarations carry. */
 final class ClassMembers {
-
   private static final String IDENTIFIER = "identifier";
   private static final String TYPE_TYPE = "typeType";
   private static final String TYPE_TYPE_OR_VOID = "typeTypeOrVoid";
@@ -35,7 +34,8 @@ final class ClassMembers {
   static List<SyntaxNode> fieldMembers(final SyntaxNode clazz) {
     return members(clazz).stream()
         .filter(
-            member -> declarationKind(member).filter(MemberDeclarations.FIELD::equals).isPresent())
+            member -> declarationKind(member).filter(MemberDeclarations.FIELD::equals).isPresent()
+        )
         .toList();
   }
 

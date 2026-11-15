@@ -8,7 +8,6 @@ import java.util.Optional;
 
 /** Reads the request body of an operation and its media types as the resolved document shows. */
 final class Bodies {
-
   private Bodies() {}
 
   /** The request body of {@code operation}, with its references followed. */
@@ -28,7 +27,10 @@ final class Bodies {
 
   /** The media type entry named {@code name}, if any. */
   static Optional<DocNode> mediaType(
-      final OpenApiDocument document, final DocNode body, final String name) {
+      final OpenApiDocument document,
+      final DocNode body,
+      final String name
+  ) {
     return mediaTypes(document, body).stream()
         .filter(entry -> entry.key().equals(name))
         .map(entry -> document.resolve(entry.value()))

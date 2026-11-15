@@ -40,7 +40,9 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
   /** Creates the adapter; {@code executor} runs the package manager's install. */
   @Inject
   public NodeBuildToolConfigurator(
-      final PackageManifests manifests, final CommandExecutor executor) {
+      final PackageManifests manifests,
+      final CommandExecutor executor
+  ) {
     this.manifests = manifests;
     this.executor = executor;
   }
@@ -62,7 +64,8 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
             project,
             manifest,
             missing,
-            gates.stream().map(InitGateOption::id).collect(Collectors.toSet()));
+            gates.stream().map(InitGateOption::id).collect(Collectors.toSet())
+        );
     if (compatibility.incompatible()) {
       throw new WardException(compatibility.message());
     }
@@ -83,7 +86,8 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
             warnings,
             lock,
             Files.isRegularFile(lock) ? NodeManifestFiles.read(lock) : null,
-            List.of());
+            List.of()
+        );
     NodeManifestFiles.writeText(file, edited);
     LOGGER.log(
         Level.INFO,
@@ -91,7 +95,8 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
             "event=node-dependencies-added count="
                 + missing.size()
                 + " manager="
-                + project.buildExecutable());
+                + project.buildExecutable()
+    );
     if (installs(project)) {
       install(project, change);
     }
@@ -103,7 +108,8 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final boolean approved) {
+      final boolean approved
+  ) {
     return describe(project, gates);
   }
 
@@ -118,14 +124,16 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
             project,
             manifest,
             missing,
-            gates.stream().map(InitGateOption::id).collect(Collectors.toSet()));
+            gates.stream().map(InitGateOption::id).collect(Collectors.toSet())
+        );
     if (compatibility.incompatible()) {
       final List<String> details = new ArrayList<>(nodeWarning);
       compatibility
           .findings()
           .forEach(
               finding ->
-                  details.add("INCOMPATIBLE " + finding.artifactId() + ": " + finding.message()));
+                  details.add("INCOMPATIBLE " + finding.artifactId() + ": " + finding.message())
+          );
       return new PlannedFileChange(file, PlannedFileChange.Action.CONFLICT, details);
     }
     if (missing.isEmpty()) {
@@ -142,7 +150,8 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
           "run "
               + String.join(" ", NodeInstall.installCommand(project))
               + ", which updates "
-              + project.root().relativize(NodeInstall.lockFile(project)));
+              + project.root().relativize(NodeInstall.lockFile(project))
+      );
     }
     return new PlannedFileChange(file, PlannedFileChange.Action.MODIFY, details);
   }
@@ -171,14 +180,18 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
 
   @Override
   public TurboWorkspaceChange applyWorkspace(
-      final TurboWorkspace workspace, final boolean replaceScripts) {
+      final TurboWorkspace workspace,
+      final boolean replaceScripts
+  ) {
     final TurborepoWriter.Result result = TurborepoWriter.apply(workspace, replaceScripts);
     return new TurboWorkspaceChange(
         result.written().stream()
             .map(
-                written -> new TurboWorkspaceChange.WrittenFile(written.file(), written.original()))
+                written -> new TurboWorkspaceChange.WrittenFile(written.file(), written.original())
+            )
             .toList(),
-        result.kept());
+        result.kept()
+    );
   }
 
   @Override
@@ -186,7 +199,8 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
     TurborepoWriter.rollback(
         change.written().stream()
             .map(written -> new TurborepoWriter.Written(written.file(), written.original()))
-            .toList());
+            .toList()
+    );
   }
 
   /** A Turborepo member's dependencies are installed by its workspace root, once. */
@@ -208,7 +222,8 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
               + result.exitCode()
               + "; package.json and "
               + change.lockFile().getFileName()
-              + " were restored.");
+              + " were restored."
+      );
     }
   }
 }

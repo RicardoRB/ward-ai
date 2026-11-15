@@ -12,7 +12,9 @@ public final class PresetGateOrder {
    * other selected gates in their given order. Unselected preset gates are not added.
    */
   public static List<String> orderSelected(
-      final List<String> presetGates, final List<String> selected) {
+      final List<String> presetGates,
+      final List<String> selected
+  ) {
     return Stream.concat(presetGates.stream().filter(selected::contains), selected.stream())
         .distinct()
         .toList();
@@ -23,7 +25,9 @@ public final class PresetGateOrder {
    * order. Explicit gates never remove preset gates.
    */
   public static List<String> withExplicitGates(
-      final List<String> presetGates, final List<String> explicit) {
+      final List<String> presetGates,
+      final List<String> explicit
+  ) {
     return Stream.concat(presetGates.stream(), explicit.stream()).distinct().toList();
   }
 }

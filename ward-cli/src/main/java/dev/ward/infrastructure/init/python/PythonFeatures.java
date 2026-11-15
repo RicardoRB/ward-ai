@@ -23,7 +23,10 @@ final class PythonFeatures {
    * feature packages, excluding the layers of the style.
    */
   static List<String> modules(
-      final Project project, final List<String> roots, final Set<String> layers) {
+      final Project project,
+      final List<String> roots,
+      final Set<String> layers
+  ) {
     return switch (project.framework()) {
       case DJANGO -> PythonPackages.djangoApps(project);
       case FLASK ->

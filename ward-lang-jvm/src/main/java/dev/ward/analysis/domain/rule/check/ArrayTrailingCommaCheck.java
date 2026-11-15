@@ -13,7 +13,6 @@ import java.util.Set;
  * initializer with elements must end with a comma.
  */
 public final class ArrayTrailingCommaCheck implements UnitCheck {
-
   private static final String COMMA = "','";
   private static final String CLOSE = "'}'";
   private static final String OPEN = "'{'";

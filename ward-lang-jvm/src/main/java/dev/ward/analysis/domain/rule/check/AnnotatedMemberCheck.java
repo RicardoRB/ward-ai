@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
  * {@code @javax.inject.Inject} is {@code Inject}.
  */
 public final class AnnotatedMemberCheck implements RuleCheck {
-
   private static final String MEMBER = "classBodyDeclaration";
   private static final String MEMBER_DECLARATION = "memberDeclaration";
   private static final String MODIFIER = "modifier";
@@ -41,8 +40,8 @@ public final class AnnotatedMemberCheck implements RuleCheck {
       Set<String> modifiers,
       Set<String> absentModifiers,
       Set<String> absentAnnotations,
-      Pattern text) {
-
+      Pattern text
+  ) {
     /** Copies the sets. */
     public Criteria {
       Objects.requireNonNull(declaration, "declaration");

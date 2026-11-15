@@ -34,7 +34,8 @@ class TurborepoMixedInitTest {
             "--ci",
             "github",
             "--agent-rules",
-            "--yes");
+            "--yes"
+        );
 
     assertThat(init.exit()).as(init.output()).isZero();
     assertThat(fixture.read(WEB_PACKAGE))

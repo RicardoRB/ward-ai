@@ -49,7 +49,10 @@ public final class PythonLicenseMetadata implements LicenseMetadata {
 
   @Override
   public LicenseLookup lookup(
-      final Project project, final String modulePath, final Dependency dependency) {
+      final Project project,
+      final String modulePath,
+      final Dependency dependency
+  ) {
     final String wanted = normalize(dependency.id().name());
     final String version = dependency.id().version();
     boolean found = false;
@@ -64,10 +67,13 @@ public final class PythonLicenseMetadata implements LicenseMetadata {
     }
     return found
         ? LicenseLookup.missing(
-            LicenseLookup.Reason.VERSION_MISMATCH, "the installed version differs from " + version)
+            LicenseLookup.Reason.VERSION_MISMATCH,
+            "the installed version differs from " + version
+        )
         : LicenseLookup.missing(
             LicenseLookup.Reason.NOT_INSTALLED,
-            dependency.id().name() + " is not installed in a virtual environment");
+            dependency.id().name() + " is not installed in a virtual environment"
+        );
   }
 
   private LicenseLookup declared(final Fields fields) {
@@ -89,7 +95,8 @@ public final class PythonLicenseMetadata implements LicenseMetadata {
     return classified.isEmpty()
         ? LicenseLookup.missing(
             LicenseLookup.Reason.NO_LICENSE_DECLARED,
-            "the metadata names no license Ward recognizes")
+            "the metadata names no license Ward recognizes"
+        )
         : LicenseLookup.found(new DeclaredLicense(classified), "metadata");
   }
 

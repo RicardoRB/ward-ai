@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the Kotlin statement and range checks over hand-made token trees. */
 class KotlinStatementChecksTest {
-
   private static final String STATEMENTS = "statements";
   private static final String STATEMENT = "statement";
   private static final String PREFIX = "prefixUnaryExpression";
@@ -29,22 +28,31 @@ class KotlinStatementChecksTest {
 
   private static SyntaxNode call(final int line, final int offset) {
     return group(
-        STATEMENT, tok(TOKEN, "run", line, offset), tok(TOKEN, "()", line, offset + NAME_LENGTH));
+        STATEMENT,
+        tok(TOKEN, "run", line, offset),
+        tok(TOKEN, "()", line, offset + NAME_LENGTH)
+    );
   }
 
   private static SyntaxNode signed(final String sign, final int line, final int offset) {
     return group(
         STATEMENT,
-        group(PREFIX, tok(TOKEN, sign, line, offset), tok(TOKEN, "3", line, offset + 2)));
+        group(PREFIX, tok(TOKEN, sign, line, offset), tok(TOKEN, "3", line, offset + 2))
+    );
   }
 
   private static SyntaxNode range(
-      final String kind, final String from, final String operator, final String to) {
+      final String kind,
+      final String from,
+      final String operator,
+      final String to
+  ) {
     return group(
         kind,
         tok(TOKEN, from, 1, 0),
         tok(TOKEN, operator, 1, OFFSET),
-        tok(TOKEN, to, 1, LATER_OFFSET));
+        tok(TOKEN, to, 1, LATER_OFFSET)
+    );
   }
 
   @Test
@@ -70,9 +78,11 @@ class KotlinStatementChecksTest {
 
     assertThat(unitMatches(new UnusedUnaryOperatorCheck(MESSAGE), list)).hasSize(1);
     assertThat(
-            unitMatches(
-                new UnusedUnaryOperatorCheck(MESSAGE),
-                group(STATEMENTS, signed("-", 1, 0), call(SECOND_LINE, OFFSET))))
+        unitMatches(
+            new UnusedUnaryOperatorCheck(MESSAGE),
+            group(STATEMENTS, signed("-", 1, 0), call(SECOND_LINE, OFFSET))
+        )
+    )
         .hasSize(1);
   }
 

@@ -22,7 +22,6 @@ import java.util.Set;
  * reported.
  */
 public final class CallArgumentsCheck implements RuleCheck {
-
   private static final String EXPRESSION = "expression";
   private static final int PAIR = 2;
   private static final FactNeed NEED =
@@ -52,8 +51,8 @@ public final class CallArgumentsCheck implements RuleCheck {
       boolean oddArguments,
       boolean nullVarargs,
       boolean nullToNonNull,
-      Set<String> varargElementTypes) {
-
+      Set<String> varargElementTypes
+  ) {
     /** Copies the sets. */
     public Criteria {
       declaringTypes = Set.copyOf(declaringTypes);
@@ -90,7 +89,8 @@ public final class CallArgumentsCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(EXPRESSION))) {
       final SyntaxNode call = visit.node();
@@ -104,13 +104,16 @@ public final class CallArgumentsCheck implements RuleCheck {
 
   private boolean meets(final SyntaxNode call, final CallTarget target, final UnitTypeFacts types) {
     return (criteria.declaringTypes().isEmpty()
-            || criteria.declaringTypes().contains(target.declaringType().name()))
+        || criteria.declaringTypes().contains(target.declaringType().name()))
         && (criteria.names().isEmpty() || criteria.names().contains(target.name()))
         && argumentsMeet(CallArgumentShapes.arguments(call), target, types);
   }
 
   private boolean argumentsMeet(
-      final List<SyntaxNode> arguments, final CallTarget target, final UnitTypeFacts types) {
+      final List<SyntaxNode> arguments,
+      final CallTarget target,
+      final UnitTypeFacts types
+  ) {
     return (!criteria.oddArguments() || arguments.size() % PAIR == 1)
         && (!criteria.nullVarargs() || CallArgumentShapes.passesNullForVarargs(arguments, target))
         && (criteria.argumentTypes().isEmpty()
@@ -118,6 +121,10 @@ public final class CallArgumentsCheck implements RuleCheck {
         && (!criteria.nullToNonNull() || CallArgumentShapes.passesNullToNonNull(arguments, target))
         && (criteria.varargElementTypes().isEmpty()
             || CallArgumentShapes.fewVarargElements(
-                criteria.varargElementTypes(), arguments, target, types));
+                criteria.varargElementTypes(),
+                arguments,
+                target,
+                types
+            ));
   }
 }

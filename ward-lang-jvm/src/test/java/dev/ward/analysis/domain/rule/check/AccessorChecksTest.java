@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the accessor checks over a tree with a private nested class and its outside uses. */
 class AccessorChecksTest extends TreeBuilders {
-
   private static final String PRIVATE = "private";
   private static final String MESSAGE = "message {value}";
   private static final int EIGHT = 8;
@@ -30,7 +29,8 @@ class AccessorChecksTest extends TreeBuilders {
     assertThat(new AccessorMethodGenerationCheck(EIGHT, MESSAGE).check(outside, SourceFile.UNKNOWN))
         .hasSize(1);
     assertThat(
-            new AccessorMethodGenerationCheck(ELEVEN, MESSAGE).check(outside, SourceFile.UNKNOWN))
+        new AccessorMethodGenerationCheck(ELEVEN, MESSAGE).check(outside, SourceFile.UNKNOWN)
+    )
         .isEmpty();
   }
 
@@ -39,7 +39,8 @@ class AccessorChecksTest extends TreeBuilders {
         "classDeclaration",
         t("'class'", "class"),
         id("Outer"),
-        n(CLASS_BODY, nestedWithPrivateConstructor(), member(use)));
+        n(CLASS_BODY, nestedWithPrivateConstructor(), member(use))
+    );
   }
 
   private static SyntaxNode outerWithMethodUse(final SyntaxNode use) {
@@ -47,7 +48,8 @@ class AccessorChecksTest extends TreeBuilders {
         "classDeclaration",
         t("'class'", "class"),
         id("Outer"),
-        n(CLASS_BODY, nestedWithPrivateMethod(), member(use)));
+        n(CLASS_BODY, nestedWithPrivateMethod(), member(use))
+    );
   }
 
   private static SyntaxNode nestedWithPrivateConstructor() {
@@ -55,7 +57,8 @@ class AccessorChecksTest extends TreeBuilders {
         n(
             "classBodyDeclaration",
             n("modifier", t("'private'", PRIVATE)),
-            n("memberDeclaration", n("constructorDeclaration", id("Inner"))));
+            n("memberDeclaration", n("constructorDeclaration", id("Inner")))
+        );
     return nested(constructor);
   }
 
@@ -64,7 +67,8 @@ class AccessorChecksTest extends TreeBuilders {
         n(
             "classBodyDeclaration",
             n("modifier", t("'private'", PRIVATE)),
-            n("memberDeclaration", n("methodDeclaration", t("'int'", "int"), id("value"))));
+            n("memberDeclaration", n("methodDeclaration", t("'int'", "int"), id("value")))
+        );
     return nested(method);
   }
 
@@ -73,7 +77,9 @@ class AccessorChecksTest extends TreeBuilders {
         "classBodyDeclaration",
         n(
             "memberDeclaration",
-            n("classDeclaration", t("'class'", "class"), id("Inner"), n(CLASS_BODY, member))));
+            n("classDeclaration", t("'class'", "class"), id("Inner"), n(CLASS_BODY, member))
+        )
+    );
   }
 
   private static SyntaxNode member(final SyntaxNode use) {
@@ -81,6 +87,8 @@ class AccessorChecksTest extends TreeBuilders {
         "classBodyDeclaration",
         n(
             "memberDeclaration",
-            n("methodDeclaration", t("'void'", "void"), id("run"), n("methodBody", use))));
+            n("methodDeclaration", t("'void'", "void"), id("run"), n("methodBody", use))
+        )
+    );
   }
 }

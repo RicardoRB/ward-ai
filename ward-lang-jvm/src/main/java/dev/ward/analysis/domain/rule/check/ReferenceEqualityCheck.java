@@ -23,7 +23,6 @@ import java.util.Set;
  * is unknown, or inside a method named {@code equals}.
  */
 public final class ReferenceEqualityCheck implements RuleCheck {
-
   private static final String EXPRESSION = "expression";
   private static final Set<String> OPERATORS = Set.of("'=='", "'!='");
   private static final int OPERANDS = 3;
@@ -67,7 +66,8 @@ public final class ReferenceEqualityCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts facts,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(EXPRESSION))) {
       final List<SyntaxNode> parts = visit.node().children();
@@ -92,7 +92,9 @@ public final class ReferenceEqualityCheck implements RuleCheck {
                         .anyMatch(
                             part ->
                                 IDENTIFIER.equals(part.kind())
-                                    && EQUALS.equals(SyntaxWalk.text(part))));
+                                    && EQUALS.equals(SyntaxWalk.text(part))
+                        )
+        );
   }
 
   private boolean listed(final SyntaxNode operand, final UnitTypeFacts facts) {
@@ -106,7 +108,10 @@ public final class ReferenceEqualityCheck implements RuleCheck {
   }
 
   private static boolean anyReference(
-      final SyntaxNode operand, final TypeRef type, final UnitTypeFacts facts) {
+      final SyntaxNode operand,
+      final TypeRef type,
+      final UnitTypeFacts facts
+  ) {
     return !CLASS.equals(type.name())
         && facts
             .membersOf(operand.span())

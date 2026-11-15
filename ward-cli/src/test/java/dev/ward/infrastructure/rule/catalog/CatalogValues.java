@@ -12,7 +12,6 @@ import org.tomlj.TomlTable;
  * Small readers for the values of a catalog row; a problem is an {@link IllegalArgumentException}.
  */
 final class CatalogValues {
-
   private CatalogValues() {}
 
   /** Returns {@code value}, or fails when it is missing or blank. */

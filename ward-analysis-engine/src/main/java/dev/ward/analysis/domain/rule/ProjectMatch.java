@@ -9,7 +9,6 @@ import java.util.Objects;
  * @param match where in that file and what the finding says
  */
 public record ProjectMatch(String path, RuleMatch match) {
-
   /**
    * Validates the parts.
    *

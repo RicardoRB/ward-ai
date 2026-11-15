@@ -11,20 +11,28 @@ import java.util.Optional;
  * ported.
  */
 final class NodeFrameworks {
-
   /**
    * Package names whose workspace is silent for unused files, mapped to the knip plugin they need.
    */
   private static final Map<String, String> PACKAGES =
       Map.of(
-          "next", "knip next plugin: pages, app routes and middleware",
-          "nuxt", "knip nuxt plugin: pages, layouts and server routes",
-          "astro", "knip astro plugin: pages and content collections",
-          "@sveltejs/kit", "knip sveltekit plugin: routes and hooks",
-          "@angular/core", "knip angular plugin: modules, components and routes",
-          "gatsby", "knip gatsby plugin: pages and gatsby-* files",
-          "@nestjs/core", "knip nestjs plugin: modules and controllers",
-          "vite", "knip vite plugin: index.html entries and the config file");
+          "next",
+          "knip next plugin: pages, app routes and middleware",
+          "nuxt",
+          "knip nuxt plugin: pages, layouts and server routes",
+          "astro",
+          "knip astro plugin: pages and content collections",
+          "@sveltejs/kit",
+          "knip sveltekit plugin: routes and hooks",
+          "@angular/core",
+          "knip angular plugin: modules, components and routes",
+          "gatsby",
+          "knip gatsby plugin: pages and gatsby-* files",
+          "@nestjs/core",
+          "knip nestjs plugin: modules and controllers",
+          "vite",
+          "knip vite plugin: index.html entries and the config file"
+      );
 
   /**
    * Package name prefixes whose workspace is silent, with the same meaning as {@link #PACKAGES}.
@@ -51,6 +59,7 @@ final class NodeFrameworks {
                 PREFIXES.entrySet().stream()
                     .filter(prefix -> name.startsWith(prefix.getKey()))
                     .map(Map.Entry::getValue)
-                    .findFirst());
+                    .findFirst()
+        );
   }
 }

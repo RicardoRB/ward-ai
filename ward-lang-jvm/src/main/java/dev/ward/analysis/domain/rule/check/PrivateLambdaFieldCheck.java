@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * there. A field that is read more often, or that is not private, is left alone.
  */
 public final class PrivateLambdaFieldCheck implements RuleCheck {
-
   private static final String FIELD = "fieldDeclaration";
   private static final String MEMBER = "classBodyDeclaration";
   private static final String IDENTIFIER = "identifier";

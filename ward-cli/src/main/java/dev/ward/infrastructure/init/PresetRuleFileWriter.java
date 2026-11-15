@@ -39,7 +39,10 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
 
   @Override
   public RuleFileChange apply(
-      final Project project, final QualityPreset preset, final List<InitGateOption> gates) {
+      final Project project,
+      final QualityPreset preset,
+      final List<InitGateOption> gates
+  ) {
     final Path config = project.root().resolve("config");
     final Map<Path, String> originals = new LinkedHashMap<>();
     final List<Path> preserved = new ArrayList<>();
@@ -66,7 +69,10 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
 
   @Override
   public List<PlannedFileChange> plan(
-      final Project project, final QualityPreset preset, final List<InitGateOption> gates) {
+      final Project project,
+      final QualityPreset preset,
+      final List<InitGateOption> gates
+  ) {
     final List<PlannedFileChange> plan = new ArrayList<>();
     try {
       for (final RuleFileActions.Decision decision :
@@ -86,7 +92,10 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
    * project writes each preset rule file as Ward's content.
    */
   private List<ConfigTarget> targets(
-      final Project project, final QualityPreset preset, final List<InitGateOption> gates)
+      final Project project,
+      final QualityPreset preset,
+      final List<InitGateOption> gates
+  )
       throws IOException {
     final List<ConfigTarget> targets = new ArrayList<>();
     final RuleFileTargets toolchain = toolchains.get(project.toolchain());
@@ -103,7 +112,10 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
                     preset,
                     wardLanguages(project),
                     gates.stream().anyMatch(gate -> "build-policy".equals(gate.id())),
-                    project.buildTool() == BuildTool.MAVEN)));
+                    project.buildTool() == BuildTool.MAVEN
+                )
+        )
+    );
     return targets;
   }
 
@@ -163,18 +175,23 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
               file,
               ConfigTarget.Disposition.REMOVE,
               null,
-              "removed: Ward's earlier config/enforcer-rules.xml" + rest));
+              "removed: Ward's earlier config/enforcer-rules.xml" + rest
+          )
+      );
     }
     return List.of(
-        ConfigTarget.keep(file, "kept: your config/enforcer-rules.xml is no longer used" + rest));
+        ConfigTarget.keep(file, "kept: your config/enforcer-rules.xml is no longer used" + rest)
+    );
   }
 
   /** Applies one decision, and records what a rollback or the init output needs from it. */
   private static void write(
       final RuleFileActions.Decision decision,
-      final Map<Path, String> originals,
+      final Map<Path,
+      String> originals,
       final List<Path> preserved,
-      final List<String> warnings)
+      final List<String> warnings
+  )
       throws IOException {
     final ConfigTarget target = decision.target();
     final Path file = target.file();

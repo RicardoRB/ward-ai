@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
  * name.
  */
 final class NodeImports {
-
   private static final String IMPORT_STATEMENT = "importStatement";
   private static final String VARIABLE_DECLARATION = "variableDeclaration";
   private static final String NODE_PREFIX = "node:";
@@ -29,7 +28,8 @@ final class NodeImports {
       Pattern.compile("import\\s*(?:type\\s*)?\\{([^}]*)}\\s*from\\s*['\"]([^'\"]+)['\"]");
   private static final Pattern DEFAULT =
       Pattern.compile(
-          "import\\s*(?:type\\s*)?(\\w+)\\s*(?:,\\s*\\{[^}]*}\\s*)?from\\s*['\"]([^'\"]+)['\"]");
+          "import\\s*(?:type\\s*)?(\\w+)\\s*(?:,\\s*\\{[^}]*}\\s*)?from\\s*['\"]([^'\"]+)['\"]"
+      );
   private static final Pattern NAMESPACE =
       Pattern.compile("import\\s*(?:type\\s*)?\\*\\s*as\\s*(\\w+)\\s*from\\s*['\"]([^'\"]+)['\"]");
   private static final Pattern REQUIRE =
@@ -129,7 +129,11 @@ final class NodeImports {
    * Binds each specifier of a brace list: {@code exec}, {@code exec as run} or {@code exec: run}.
    */
   private void bindNamed(
-      final String specifiers, final String module, final String separator, final String alias) {
+      final String specifiers,
+      final String module,
+      final String separator,
+      final String alias
+  ) {
     for (final String specifier : specifiers.split(separator)) {
       final String[] parts = specifier.trim().replaceFirst(TYPE_ONLY, "").split(alias);
       final String name = parts[0].trim();

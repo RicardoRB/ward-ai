@@ -9,7 +9,6 @@ import java.util.List;
 
 /** Builds hand-made file summaries and runs the Python resolver on them, for resolver tests. */
 final class ResolverFixtures {
-
   static final Span SPAN = new Span(1, 1, 1, 1, 0, 0);
 
   private ResolverFixtures() {}
@@ -24,7 +23,9 @@ final class ResolverFixtures {
   }
 
   static List<DependencyEdge> resolve(
-      final PythonProjectLayout layout, final FileSummary... summaries) {
+      final PythonProjectLayout layout,
+      final FileSummary... summaries
+  ) {
     return new PythonDependencyResolver(layout).resolve(List.of(summaries));
   }
 

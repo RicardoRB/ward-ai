@@ -14,7 +14,6 @@ import java.util.Set;
  * a reference, so a name used only in Javadoc is not reported. A star import is not checked.
  */
 public final class UnreferencedNameCheck implements RuleCheck {
-
   private static final String IMPORT_KIND = "importDeclaration";
   private static final String NAME_KIND = "identifier";
   private static final String STAR = "*";

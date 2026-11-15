@@ -12,7 +12,6 @@ import java.util.Objects;
  * allows marker interfaces.
  */
 public final class InterfaceIsTypeCheck implements RuleCheck {
-
   private static final String INTERFACE = "interfaceDeclaration";
   private static final String FIELD = "constDeclaration";
   private static final String METHOD_SUFFIX = "MethodDeclaration";
@@ -38,7 +37,8 @@ public final class InterfaceIsTypeCheck implements RuleCheck {
       final SyntaxNode type = visit.node();
       if (INTERFACE.equals(type.kind()) && isNotType(type)) {
         matches.add(
-            CheckSupport.at(type.span(), CheckSupport.fill(message, JUnitMembers.name(type), "")));
+            CheckSupport.at(type.span(), CheckSupport.fill(message, JUnitMembers.name(type), ""))
+        );
       }
     }
     return List.copyOf(matches);

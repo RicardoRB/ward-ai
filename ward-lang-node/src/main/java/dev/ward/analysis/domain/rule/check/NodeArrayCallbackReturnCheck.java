@@ -19,10 +19,10 @@ import java.util.regex.Pattern;
  * {@code forEach} is checked only with {@code checkForEach}; then a returned value is reported.
  */
 public final class NodeArrayCallbackReturnCheck implements RuleCheck {
-
   private static final Pattern TARGET_METHODS =
       Pattern.compile(
-          "every|filter|find(Last)?(Index)?|flatMap|forEach|map|reduce(Right)?|some|sort|toSorted");
+          "every|filter|find(Last)?(Index)?|flatMap|forEach|map|reduce(Right)?|some|sort|toSorted"
+      );
   private static final String FOR_EACH = "forEach";
   private static final String ARGUMENTS = "arguments";
   private static final String ARGUMENT = "argument";
@@ -105,7 +105,8 @@ public final class NodeArrayCallbackReturnCheck implements RuleCheck {
                 argument.children().stream()
                     .filter(c -> SINGLE.equals(c.kind()))
                     .findFirst()
-                    .flatMap(NodeArrayCallbackReturnCheck::functionOf));
+                    .flatMap(NodeArrayCallbackReturnCheck::functionOf)
+        );
   }
 
   /** The arrow or function of an expression; a function expression may wrap an arrow. */
@@ -127,7 +128,8 @@ public final class NodeArrayCallbackReturnCheck implements RuleCheck {
       final SyntaxNode function,
       final String method,
       final FlowView flow,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     final boolean forEach = FOR_EACH.equals(method);
     if (forEach && !options.checkForEach()) {
       return;
@@ -141,7 +143,10 @@ public final class NodeArrayCallbackReturnCheck implements RuleCheck {
 
   /** An arrow with an expression body returns its value; forEach must not, unless it is void. */
   private void checkExpressionBody(
-      final SyntaxNode function, final boolean forEach, final List<RuleMatch> matches) {
+      final SyntaxNode function,
+      final boolean forEach,
+      final List<RuleMatch> matches
+  ) {
     if (forEach && !Voids.voidedArrow(function, options.allowVoid())) {
       matches.add(new RuleMatch(Arrows.reportSpan(function), message));
     }
@@ -151,7 +156,8 @@ public final class NodeArrayCallbackReturnCheck implements RuleCheck {
       final SyntaxNode function,
       final boolean forEach,
       final FlowView flow,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     final List<SyntaxNode> returns = new ArrayList<>();
     Bodies.returnsIn(function.children(), returns);
     if (!forEach && Bodies.endReachable(function, flow, returns)) {
@@ -176,11 +182,13 @@ public final class NodeArrayCallbackReturnCheck implements RuleCheck {
 
   /** The reachability of the end of a body, and the returns in it. */
   private static final class Bodies {
-
     private static final String RETURN = "returnStatement";
 
     static boolean endReachable(
-        final SyntaxNode function, final FlowView flow, final List<SyntaxNode> returns) {
+        final SyntaxNode function,
+        final FlowView flow,
+        final List<SyntaxNode> returns
+    ) {
       final Optional<ControlFlowGraph> graph = NodeFlow.graphOf(flow, function);
       return graph.map(NodeFlow::fallsOffEnd).orElseGet(returns::isEmpty);
     }
@@ -199,7 +207,6 @@ public final class NodeArrayCallbackReturnCheck implements RuleCheck {
 
   /** The parts of an arrow function: its arrow token, its body and where ESLint reports it. */
   private static final class Arrows {
-
     private static final String ARROW_TOKEN = "=>";
     private static final String FUNCTION_BODY = "functionBody";
 
@@ -224,13 +231,13 @@ public final class NodeArrayCallbackReturnCheck implements RuleCheck {
           .anyMatch(
               c ->
                   FUNCTION_BODY.equals(c.kind())
-                      || c.children().stream().anyMatch(d -> FUNCTION_BODY.equals(d.kind())));
+                      || c.children().stream().anyMatch(d -> FUNCTION_BODY.equals(d.kind()))
+          );
     }
   }
 
   /** The {@code void} operator at the start of an expression, which an option may allow. */
   private static final class Voids {
-
     private static final String VOID = "void";
     private static final String ARROW_BODY = "arrowFunctionBody";
 

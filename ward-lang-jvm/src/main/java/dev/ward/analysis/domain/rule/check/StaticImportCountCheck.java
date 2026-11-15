@@ -9,7 +9,6 @@ import java.util.Objects;
  * Reports a file that has more than {@code max} static imports, as PMD's TooManyStaticImports does.
  */
 public final class StaticImportCountCheck implements RuleCheck {
-
   private static final String IMPORT = "importDeclaration";
   private static final String STATIC = "'static'";
 
@@ -37,7 +36,9 @@ public final class StaticImportCountCheck implements RuleCheck {
         ? List.of(
             CheckSupport.at(
                 root.span(),
-                CheckSupport.fill(message, String.valueOf(count), String.valueOf(max))))
+                CheckSupport.fill(message, String.valueOf(count), String.valueOf(max))
+            )
+        )
         : List.of();
   }
 }

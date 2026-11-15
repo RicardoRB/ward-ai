@@ -9,7 +9,6 @@ import java.util.Objects;
  *     strings and every integral value is a {@code Long}
  */
 public record ConstantValue(Object value) {
-
   /**
    * Checks the kind of value.
    *

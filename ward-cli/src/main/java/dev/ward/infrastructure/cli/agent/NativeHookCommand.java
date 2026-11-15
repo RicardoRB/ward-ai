@@ -25,7 +25,6 @@ import picocli.CommandLine.Spec;
 /** Agent-neutral native hook adapter with harness-specific response translation. */
 @Command(name = "native", description = "Run a native coding-harness hook adapter.")
 public final class NativeHookCommand implements Callable<Integer> {
-
   @Spec private CommandSpec spec;
   @Mixin private final ProjectOptions options = new ProjectOptions();
 
@@ -48,7 +47,8 @@ public final class NativeHookCommand implements Callable<Integer> {
   public NativeHookCommand(
       final HookChecks hookChecks,
       final JsonCodec codec,
-      final Set<AgentIntegration> integrations) {
+      final Set<AgentIntegration> integrations
+  ) {
     this(hookChecks, codec, integrations, System.in);
   }
 
@@ -56,7 +56,8 @@ public final class NativeHookCommand implements Callable<Integer> {
       final HookChecks hookChecks,
       final JsonCodec codec,
       final Set<AgentIntegration> integrations,
-      final InputStream input) {
+      final InputStream input
+  ) {
     this.hookChecks = hookChecks;
     this.codec = codec;
     this.integrations = Set.copyOf(integrations);
@@ -75,7 +76,8 @@ public final class NativeHookCommand implements Callable<Integer> {
             event,
             NativeHookChecks.turnEnd(hookChecks, options.directory()),
             output(),
-            error());
+            error()
+        );
       }
       final Optional<String> found =
           NativeHookChecks.afterEdit(hookChecks, event, options.directory());
@@ -94,7 +96,8 @@ public final class NativeHookCommand implements Callable<Integer> {
       error()
           .println(
               "Ward native hook could not complete validation: "
-                  + NativeHookMessages.safeMessage(exception));
+                  + NativeHookMessages.safeMessage(exception)
+          );
       return ExitCodes.ERROR;
     }
   }

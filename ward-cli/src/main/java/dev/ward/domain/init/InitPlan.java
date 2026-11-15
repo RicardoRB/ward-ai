@@ -7,7 +7,8 @@ import java.util.List;
 public record InitPlan(
     List<PlannedFileChange> files,
     List<PlannedGateInstallation> gateInstallations,
-    List<ScriptReplacement> replacements) {
+    List<ScriptReplacement> replacements
+) {
   /** Creates a plan that installs no gate executables and replaces no scripts. */
   public InitPlan(final List<PlannedFileChange> files) {
     this(files, List.of(), List.of());
@@ -15,7 +16,9 @@ public record InitPlan(
 
   /** Creates a plan that replaces no scripts. */
   public InitPlan(
-      final List<PlannedFileChange> files, final List<PlannedGateInstallation> gateInstallations) {
+      final List<PlannedFileChange> files,
+      final List<PlannedGateInstallation> gateInstallations
+  ) {
     this(files, gateInstallations, List.of());
   }
 

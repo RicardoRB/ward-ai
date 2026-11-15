@@ -45,7 +45,8 @@ class GradleToolConfiguratorTest {
             project,
             ids.stream().map(GradleToolConfiguratorTest::gate).toList(),
             null,
-            finding -> false);
+            finding -> false
+        );
 
     assertThat(Files.readString(build))
         .contains("info.solidsoft.pitest")

@@ -33,7 +33,6 @@ import org.junit.jupiter.api.Test;
  * another target or from a file in no target keeps it.
  */
 class SwiftRedundantAccessibilityTest {
-
   private static final Path FIXTURE =
       Path.of("src/test/resources/fixtures/swift-redundant-accessibility");
   private static final String RULE_ID = "ward:swift/redundant-public-accessibility";
@@ -74,13 +73,18 @@ class SwiftRedundantAccessibilityTest {
             Set.of(AnalysisLanguage.SWIFT),
             RuleCapability.SYMBOLS,
             AnalysisSeverity.WARNING,
-            "check = \"swift-unused-definition\"");
+            "check = \"swift-unused-definition\""
+        );
     return UnusedDefinitionFindings.findings(
-        List.of(rule), snapshot.summaries(), moduleOf(supports));
+        List.of(rule),
+        snapshot.summaries(),
+        moduleOf(supports)
+    );
   }
 
   private static Function<String, Optional<String>> moduleOf(
-      final List<DependencySupport> supports) {
+      final List<DependencySupport> supports
+  ) {
     return path ->
         supports.stream()
             .map(support -> support.resolver().moduleOf(path))
@@ -91,7 +95,11 @@ class SwiftRedundantAccessibilityTest {
   private static List<FrontendSupport> frontends() {
     return List.of(
         new FrontendSupport(
-            AnalysisLanguage.SWIFT, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX)));
+            AnalysisLanguage.SWIFT,
+            new AntlrLanguageFrontend(),
+            Set.of(RuleCapability.SYNTAX)
+        )
+    );
   }
 
   private static List<SourceUnit> units(final Path root) throws IOException {

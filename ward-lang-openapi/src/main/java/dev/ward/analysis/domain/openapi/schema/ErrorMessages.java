@@ -6,7 +6,6 @@ import java.util.Optional;
 
 /** The {@code errorMessage} keyword of ajv-errors, in its form that maps keywords to messages. */
 final class ErrorMessages {
-
   private ErrorMessages() {}
 
   /**
@@ -19,7 +18,8 @@ final class ErrorMessages {
       final JsonSchemaValidator validator,
       final DocNode schema,
       final String path,
-      final int before) {
+      final int before
+  ) {
     final Optional<DocNode> messages = schema.get("errorMessage");
     if (messages.isEmpty()) {
       return;
@@ -39,7 +39,8 @@ final class ErrorMessages {
       final List<SchemaError> errors,
       final DocNode.Entry entry,
       final String path,
-      final int before) {
+      final int before
+  ) {
     boolean matched = false;
     for (int index = errors.size() - 1; index >= before; index--) {
       final SchemaError error = errors.get(index);

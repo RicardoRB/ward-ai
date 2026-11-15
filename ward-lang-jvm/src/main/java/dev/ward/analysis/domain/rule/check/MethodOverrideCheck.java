@@ -22,7 +22,6 @@ import java.util.Set;
  * the same name. A method whose overridden method is unknown is never reported.
  */
 public final class MethodOverrideCheck implements RuleCheck {
-
   private static final String METHOD = "methodDeclaration";
   private static final FactNeed NEED =
       new FactNeed(Set.of(METHOD), Set.of(FactKind.OVERRIDES, FactKind.ANNOTATIONS));
@@ -42,8 +41,8 @@ public final class MethodOverrideCheck implements RuleCheck {
   public record Criteria(
       Set<String> overriddenAnnotations,
       Set<String> requiredAnnotations,
-      boolean requireSuperCall) {
-
+      boolean requireSuperCall
+  ) {
     /** Copies the sets. */
     public Criteria {
       overriddenAnnotations = Set.copyOf(overriddenAnnotations);
@@ -78,7 +77,8 @@ public final class MethodOverrideCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(METHOD))) {
       final SyntaxNode method = visit.node();

@@ -47,7 +47,8 @@ class NestedQualityHooksGitTest {
         .extracting(PlannedFileChange::file, PlannedFileChange::action)
         .containsExactly(
             tuple(preCommit, PlannedFileChange.Action.MODIFY),
-            tuple(repository.resolve(".git/hooks/pre-push"), PlannedFileChange.Action.CREATE));
+            tuple(repository.resolve(".git/hooks/pre-push"), PlannedFileChange.Action.CREATE)
+        );
     installer.apply(api);
 
     assertThat(Files.readString(preCommit))
@@ -88,7 +89,8 @@ class NestedQualityHooksGitTest {
     assertThat(Files.readString(calls).strip())
         .isEqualTo(
             GitHookRepository.real(repository.resolve("apps/api"))
-                + " check --profile pre-commit --format json --path=pom.xml");
+                + " check --profile pre-commit --format json --path=pom.xml"
+        );
   }
 
   @Test
@@ -112,7 +114,8 @@ class NestedQualityHooksGitTest {
             "--format",
             "json",
             "--path=pom.xml",
-            "--path=src/Más datos.java");
+            "--path=src/Más datos.java"
+        );
   }
 
   @Test
@@ -129,7 +132,8 @@ class NestedQualityHooksGitTest {
     assertThat(Files.readString(calls).strip())
         .isEqualTo(
             GitHookRepository.real(repository.resolve("apps/api"))
-                + " check --profile pre-push --format json --path=src/Más datos.java");
+                + " check --profile pre-push --format json --path=src/Más datos.java"
+        );
   }
 
   @Test
@@ -145,7 +149,8 @@ class NestedQualityHooksGitTest {
     assertThat(Files.readString(calls).strip())
         .isEqualTo(
             GitHookRepository.real(repository.resolve("apps/api"))
-                + " check --profile pre-push --format json");
+                + " check --profile pre-push --format json"
+        );
   }
 
   /** Commits the project, and makes that commit the upstream of the current {@code main} branch. */

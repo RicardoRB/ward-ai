@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
  * that introduced the feature for the other rules.
  */
 class MinJavaReleaseTest {
-
   private static final int JAVA_8 = 8;
   private static final int JAVA_10 = 10;
   private static final int JAVA_11 = 11;
@@ -41,15 +40,16 @@ class MinJavaReleaseTest {
           Map.entry("ward:java/record-component-number", 16),
           Map.entry("ward:java/sealed-should-have-permits-list", 17),
           Map.entry("ward:java/text-block-google-style-formatting", 15),
-          Map.entry("ward:java/switch-expression-nullable", 14));
+          Map.entry("ward:java/switch-expression-nullable", 14)
+      );
 
   @Test
   void theBundledRulesDeclareExactlyTheSeededReleases() {
     final Map<String, Integer> declared =
         new ClasspathRuleSource()
             .load().rules().stream()
-                .filter(rule -> rule.minJavaRelease() > 0)
-                .collect(Collectors.toMap(RuleDefinition::id, RuleDefinition::minJavaRelease));
+            .filter(rule -> rule.minJavaRelease() > 0)
+            .collect(Collectors.toMap(RuleDefinition::id, RuleDefinition::minJavaRelease));
 
     assertThat(declared).containsExactlyInAnyOrderEntriesOf(SEEDED);
   }
@@ -73,8 +73,10 @@ class MinJavaReleaseTest {
                 List.of(rule(USE_EXPLICIT_TYPES)),
                 false,
                 List.of(rule(USE_EXPLICIT_TYPES)),
-                List.of()),
-            new ClasspathRuleSource());
+                List.of()
+            ),
+            new ClasspathRuleSource()
+        );
 
     assertThat(setup.resolve(java.nio.file.Path.of("."), JAVA_8).rules()).isEmpty();
     assertThat(setup.resolve(java.nio.file.Path.of("."), JAVA_11).rules()).hasSize(1);
@@ -87,9 +89,15 @@ class MinJavaReleaseTest {
         new RuleConfigFile(
             "ward-rules.toml",
             new RuleConfigFile.Select(
-                null, List.of(), List.of(), List.of("java.use-explicit-types"), List.of()),
+                null,
+                List.of(),
+                List.of(),
+                List.of("java.use-explicit-types"),
+                List.of()
+            ),
             Map.of(USE_EXPLICIT_TYPES, Map.of("severity", "warning")),
-            List.of());
+            List.of()
+        );
     final List<RuleDefinition> catalog = List.of(rule(USE_EXPLICIT_TYPES));
 
     assertThat(RuleConfigResolver.resolve(file, catalog, JAVA_8).rules()).isEmpty();

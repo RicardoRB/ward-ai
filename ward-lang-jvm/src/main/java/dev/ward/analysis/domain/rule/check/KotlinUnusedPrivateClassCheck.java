@@ -19,7 +19,6 @@ import java.util.Objects;
  * are left alone.
  */
 public final class KotlinUnusedPrivateClassCheck implements RuleCheck {
-
   private static final String NAME = "{value}";
   private static final String PRIVATE = "private";
 
@@ -42,7 +41,11 @@ public final class KotlinUnusedPrivateClassCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> found = new ArrayList<>();
     for (final Scope scope : view.scopes().scopes()) {
       scope.bindings().stream()
@@ -60,7 +63,9 @@ public final class KotlinUnusedPrivateClassCheck implements RuleCheck {
   private static boolean unused(final Binding binding, final String text) {
     return binding.kind() == BindingKind.CLASS
         && KotlinDeclarations.hasWord(
-            KotlinDeclarations.prefixOnLine(text, binding.declaration()), PRIVATE)
+            KotlinDeclarations.prefixOnLine(text, binding.declaration()),
+            PRIVATE
+        )
         && !KotlinDeclarations.annotated(text, binding.declaration())
         && !KotlinDeclarations.usedElsewhere(text, binding.name(), binding.declaration());
   }

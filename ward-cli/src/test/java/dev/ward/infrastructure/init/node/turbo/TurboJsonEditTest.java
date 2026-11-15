@@ -33,8 +33,7 @@ class TurboJsonEditTest {
   @Test
   void insertsAMissingTaskAndKeepsTheExistingOnes() {
     assertThat(TurboJsonEdit.addTasks(CREATE_TURBO, CHECK_TYPES))
-        .isEqualTo(
-            """
+        .isEqualTo("""
             {
               "$schema": "https://turborepo.com/schema.json",
               "ui": "tui",

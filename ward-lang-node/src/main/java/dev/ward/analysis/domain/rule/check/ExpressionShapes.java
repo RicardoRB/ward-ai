@@ -8,7 +8,6 @@ import java.util.Set;
 
 /** The shapes of the expression tree that the unused-expression check reads. */
 final class ExpressionShapes {
-
   static final String EXPRESSION_STATEMENT = "expressionStatement";
   static final String STATEMENT = "statement";
   static final String SEQUENCE = "expressionSequence";

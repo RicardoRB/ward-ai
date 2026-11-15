@@ -6,7 +6,6 @@ import java.util.List;
 
 /** Reads the shape of a Kotlin call: its name, its arguments, and whether it makes an object. */
 final class KotlinCalls {
-
   private static final String CALL_SUFFIX = "callSuffix";
   private static final String SIMPLE = "simpleIdentifier";
   private static final String VALUE_ARGUMENTS = "valueArguments";
@@ -29,8 +28,8 @@ final class KotlinCalls {
   static String nameOf(final SyntaxNode atom) {
     final List<SyntaxNode> parts = KotlinFlowSyntax.parts(atom);
     return "atomicExpression".equals(atom.kind())
-            && parts.size() == SINGLE
-            && SIMPLE.equals(parts.get(0).kind())
+        && parts.size() == SINGLE
+        && SIMPLE.equals(parts.get(0).kind())
         ? KotlinFlowSyntax.text(parts.get(0))
         : "";
   }

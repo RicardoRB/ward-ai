@@ -6,7 +6,6 @@ import dev.ward.domain.gate.QualityGate;
 
 /** Builds the {@code crap} gate from its check and the optional gate dependencies. */
 final class CrapGates {
-
   private CrapGates() {}
 
   /**

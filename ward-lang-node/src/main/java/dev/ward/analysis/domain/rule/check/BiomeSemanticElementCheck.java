@@ -16,7 +16,6 @@ import java.util.Set;
  * already is one of the role's elements, and the roles Biome excludes are silent.
  */
 public final class BiomeSemanticElementCheck implements RuleCheck {
-
   private static final String ROLE = "role";
   private static final Set<String> EXCLUDED_ROLES =
       Set.of("img", "combobox", "listbox", "option", "status", "alert");
@@ -43,7 +42,10 @@ public final class BiomeSemanticElementCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(JsxAttributes.OPENING, JsxAttributes.SELF_CLOSING))
         .stream()
         .filter(visit -> reported(visit.node(), unit.text()))
@@ -69,11 +71,14 @@ public final class BiomeSemanticElementCheck implements RuleCheck {
     final String elementName = JsxAttributes.elementName(element);
     return table.semanticElements(name.get()).stream()
         .noneMatch(
-            concept -> concept.element().equals(elementName) && attributesMatch(element, concept));
+            concept -> concept.element().equals(elementName) && attributesMatch(element, concept)
+        );
   }
 
   private static boolean attributesMatch(
-      final SyntaxNode element, final AriaRoleTable.ElementConcept concept) {
+      final SyntaxNode element,
+      final AriaRoleTable.ElementConcept concept
+  ) {
     return concept.attributes().entrySet().stream()
         .allMatch(
             required ->
@@ -83,7 +88,9 @@ public final class BiomeSemanticElementCheck implements RuleCheck {
                         attribute ->
                             JsxAttributes.literal(attribute)
                                 .filter(required.getValue()::equals)
-                                .isPresent()));
+                                .isPresent()
+                    )
+        );
   }
 
   private static Optional<SyntaxNode> roleAttribute(final SyntaxNode element) {

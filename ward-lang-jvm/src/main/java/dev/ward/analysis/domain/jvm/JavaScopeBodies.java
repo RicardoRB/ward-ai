@@ -7,7 +7,6 @@ import java.util.List;
 
 /** Handles the statements, parameters and lambdas of Java bodies. */
 final class JavaScopeBodies {
-
   private static final String LAMBDA_LVTIPARAMETER = "lambdaLVTIParameter";
 
   private static final String LAMBDA_PARAMETERS = "lambdaParameters";
@@ -50,7 +49,12 @@ final class JavaScopeBodies {
             .orElse(null);
     if (id != null) {
       walk.types.declare(
-          JavaScopeWalk.identifierOf(id), BindingKind.PARAMETER, false, false, false);
+          JavaScopeWalk.identifierOf(id),
+          BindingKind.PARAMETER,
+          false,
+          false,
+          false
+      );
     }
   }
 
@@ -58,10 +62,11 @@ final class JavaScopeBodies {
     final List<SyntaxNode> parts = node.children();
     final boolean scoped =
         parts.stream()
-                .anyMatch(
-                    part ->
-                        "forControl".equals(part.kind())
-                            || "resourceSpecification".equals(part.kind()))
+            .anyMatch(
+                part ->
+                    "forControl".equals(part.kind())
+                        || "resourceSpecification".equals(part.kind())
+            )
             || !parts.isEmpty() && "switch".equals(JavaScopeWalk.text(parts.get(0)));
     if (scoped) {
       walk.scoped(node, ScopeKind.BLOCK);
@@ -125,10 +130,20 @@ final class JavaScopeBodies {
   void collectLambdaTyped(final SyntaxNode node) {
     if (DECLARATOR_ID.equals(node.kind())) {
       walk.types.declare(
-          JavaScopeWalk.identifierOf(node), BindingKind.PARAMETER, false, false, false);
+          JavaScopeWalk.identifierOf(node),
+          BindingKind.PARAMETER,
+          false,
+          false,
+          false
+      );
     } else if (LAMBDA_LVTIPARAMETER.equals(node.kind())) {
       walk.types.declare(
-          JavaScopeWalk.identifierOf(node), BindingKind.PARAMETER, false, false, false);
+          JavaScopeWalk.identifierOf(node),
+          BindingKind.PARAMETER,
+          false,
+          false,
+          false
+      );
     } else {
       node.children().forEach(this::collectLambdaTyped);
     }

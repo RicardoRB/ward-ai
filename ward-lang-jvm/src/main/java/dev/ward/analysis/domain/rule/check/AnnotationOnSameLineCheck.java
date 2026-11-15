@@ -9,7 +9,6 @@ import java.util.Set;
 
 /** Reports a declaration annotation that is not on the line of the token after it. */
 public final class AnnotationOnSameLineCheck implements RuleCheck {
-
   private static final String ANNOTATION = "annotation";
   private static final Set<String> DECLARATION_HOLDERS =
       Set.of("modifier", "classOrInterfaceModifier");

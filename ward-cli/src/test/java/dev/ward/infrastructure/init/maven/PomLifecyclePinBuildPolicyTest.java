@@ -36,7 +36,8 @@ class PomLifecyclePinBuildPolicyTest {
         .apply(
             project(),
             List.of(new InitGateOption("build-policy", "build-policy", List.of(), true, "ok")),
-            QualityPreset.STRICT);
+            QualityPreset.STRICT
+        );
 
     final BuildModel model = new MavenBuildReader().read(root, "");
     final BuildPolicyInput input = new BuildPolicyInput(model, () -> null, Map.of());

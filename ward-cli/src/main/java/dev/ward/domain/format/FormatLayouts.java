@@ -24,7 +24,10 @@ public final class FormatLayouts {
    * @return the text with the layout applied
    */
   public static String apply(
-      final String formatted, final FormatLayout layout, final LineEnding original) {
+      final String formatted,
+      final FormatLayout layout,
+      final LineEnding original
+  ) {
     final String body = finalNewline(formatted, layout.insertFinalNewline());
     final LineEnding ending = layout.lineEnding().orElse(original);
     return ending == LineEnding.CRLF ? body.replace(LF, CRLF) : body;

@@ -4,7 +4,6 @@ import dev.ward.analysis.domain.rule.RuleConfigurationException;
 
 /** Builds the configuration errors that name the rule file they come from. */
 public final class RuleFileProblems {
-
   private RuleFileProblems() {}
 
   /** Returns the error for a rule file that cannot be used, naming the file. */
@@ -14,7 +13,10 @@ public final class RuleFileProblems {
 
   /** Returns the error for a rule file that cannot be used, with its cause. */
   public static RuleConfigurationException problem(
-      final String resource, final String detail, final Throwable cause) {
+      final String resource,
+      final String detail,
+      final Throwable cause
+  ) {
     return new RuleConfigurationException(message(resource, detail), cause);
   }
 

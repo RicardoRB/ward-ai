@@ -12,13 +12,13 @@ import picocli.CommandLine.Spec;
     name = "rules",
     description = "List, show, enable and disable analysis rules.",
     subcommands = {
-      RulesListCommand.class,
-      RulesShowCommand.class,
-      RulesEnableCommand.class,
-      RulesDisableCommand.class
-    })
+        RulesListCommand.class,
+        RulesShowCommand.class,
+        RulesEnableCommand.class,
+        RulesDisableCommand.class
+    }
+)
 public final class RulesCommand implements Callable<Integer> {
-
   @Spec private CommandSpec spec;
 
   /** Creates the command group. */

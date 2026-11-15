@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * like SwiftLint's {@code nsobject_prefer_isequal}.
  */
 public final class SwiftNsobjectPreferIsEqualCheck implements RuleCheck {
-
   private static final String FUNCTION = "function_declaration";
   private static final String CLASS = "class_declaration";
   private static final Set<String> NOT_OBJC_TYPES =
@@ -23,7 +22,8 @@ public final class SwiftNsobjectPreferIsEqualCheck implements RuleCheck {
           "enum_declaration",
           "protocol_declaration",
           "actor_declaration",
-          "extension_declaration");
+          "extension_declaration"
+      );
   private static final String HEAD = "function_head";
   private static final String NAME = "function_name";
   private static final String SIGNATURE = "function_signature";
@@ -52,7 +52,10 @@ public final class SwiftNsobjectPreferIsEqualCheck implements RuleCheck {
   }
 
   private void collect(
-      final SyntaxNode node, final List<SyntaxNode> ancestors, final List<RuleMatch> matches) {
+      final SyntaxNode node,
+      final List<SyntaxNode> ancestors,
+      final List<RuleMatch> matches
+  ) {
     if (FUNCTION.equals(node.kind()) && isSelfEqual(node) && isInObjcClass(ancestors)) {
       matches.add(SwiftTrees.at(node, message));
     }

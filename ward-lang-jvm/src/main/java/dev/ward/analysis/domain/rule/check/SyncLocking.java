@@ -9,7 +9,6 @@ import java.util.Set;
 
 /** Finds which methods of a class are only ever called with the lock on {@code this} held. */
 final class SyncLocking {
-
   private static final String EXPRESSION = "expression";
   private static final String STATEMENT = "statement";
   private static final String SYNCHRONIZED = "'synchronized'";
@@ -39,7 +38,9 @@ final class SyncLocking {
   private record Site(Optional<SyncMethod> caller, SyncMethod target, boolean lockHeld) {}
 
   static Set<SyncMethod> lockedMethods(
-      final List<JavaNodes.Member> members, final List<SyncMethod> methods) {
+      final List<JavaNodes.Member> members,
+      final List<SyncMethod> methods
+  ) {
     final List<Site> sites = new ArrayList<>();
     for (final SyncMethod method : methods) {
       sites.addAll(sitesIn(method.node(), Optional.of(method), method.locksThis(), methods));
@@ -54,7 +55,9 @@ final class SyncLocking {
 
   /** The methods that no call site outside a held lock or a constructor-like method reaches. */
   private static Set<SyncMethod> notUnlocked(
-      final List<Site> sites, final List<SyncMethod> methods) {
+      final List<Site> sites,
+      final List<SyncMethod> methods
+  ) {
     final Set<SyncMethod> notUnlocked = new HashSet<>();
     methods.stream()
         .filter(m -> !m.isPublic() || SyncMethod.special(m.name()))
@@ -74,7 +77,9 @@ final class SyncLocking {
 
   /** The synchronized methods and every method that a held lock reaches. */
   private static Set<SyncMethod> heldMethods(
-      final List<Site> sites, final List<SyncMethod> methods) {
+      final List<Site> sites,
+      final List<SyncMethod> methods
+  ) {
     final Set<SyncMethod> held = new HashSet<>();
     methods.stream().filter(SyncMethod::locksThis).forEach(held::add);
     boolean changed = true;
@@ -94,7 +99,8 @@ final class SyncLocking {
       final SyntaxNode body,
       final Optional<SyncMethod> caller,
       final boolean wholeBodyLocked,
-      final List<SyncMethod> methods) {
+      final List<SyncMethod> methods
+  ) {
     final List<Site> sites = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(body, Set.of(EXPRESSION))) {
       callOn(visit.node())
@@ -104,7 +110,8 @@ final class SyncLocking {
                       .filter(
                           m ->
                               m.name().equals(JavaNodes.name(call))
-                                  && m.arity() == argumentCount(call))
+                                  && m.arity() == argumentCount(call)
+                      )
                       .findFirst()
                       .ifPresent(
                           target ->
@@ -112,7 +119,11 @@ final class SyncLocking {
                                   new Site(
                                       caller,
                                       target,
-                                      wholeBodyLocked || insideLockOnThis(visit.ancestors())))));
+                                      wholeBodyLocked || insideLockOnThis(visit.ancestors())
+                                  )
+                              )
+                      )
+          );
     }
     return sites;
   }

@@ -19,10 +19,10 @@ class CoverageModuleReportsTest {
     final String conventional = ConventionalCoverageReports.of(tool).orElseThrow();
     return new FileSystemCoverageFiles()
         .moduleDirectories(root).stream()
-            .map(directory -> directory.resolve(conventional))
-            .filter(Files::isRegularFile)
-            .map(root::relativize)
-            .toList();
+        .map(directory -> directory.resolve(conventional))
+        .filter(Files::isRegularFile)
+        .map(root::relativize)
+        .toList();
   }
 
   private void write(final String directory, final String report) throws IOException {
@@ -48,6 +48,8 @@ class CoverageModuleReportsTest {
 
     assertThat(found(BuildTool.NPM))
         .containsExactlyInAnyOrder(
-            Path.of("packages/ui/coverage/lcov.info"), Path.of("apps/web/coverage/lcov.info"));
+            Path.of("packages/ui/coverage/lcov.info"),
+            Path.of("apps/web/coverage/lcov.info")
+        );
   }
 }

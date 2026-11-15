@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.tomlj.Toml;
 
 class TomlCrapCheckTest {
-
   private static final int CUSTOM = 15;
 
   private static GateConfiguration crap(final String body) {
@@ -35,9 +34,10 @@ class TomlCrapCheckTest {
     assertThat(crap("max = 15\nreport = \"reports/lcov.info\"").crap())
         .isEqualTo(new CrapOptions(java.util.List.of("reports/lcov.info"), CUSTOM));
     assertThat(
-            crap("report = [\"api/./coverage/lcov.info\", \"web/coverage/lcov.info\"]")
-                .crap()
-                .reports())
+        crap("report = [\"api/./coverage/lcov.info\", \"web/coverage/lcov.info\"]")
+            .crap()
+            .reports()
+    )
         .containsExactly("api/coverage/lcov.info", "web/coverage/lcov.info");
   }
 

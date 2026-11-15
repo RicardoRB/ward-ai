@@ -13,7 +13,6 @@ import java.util.function.Consumer;
  * reference. Member names and property keys are never references.
  */
 final class NodeScopeExpressions {
-
   private static final int TRIPLE = 3;
   private static final String TYPE_ANNOTATION = "typeAnnotation";
   private static final int PAIR = 2;
@@ -30,7 +29,10 @@ final class NodeScopeExpressions {
   private final Consumer<SyntaxNode> visit;
 
   NodeScopeExpressions(
-      final ScopeBuilder builder, final NodeScopeNames names, final Consumer<SyntaxNode> visit) {
+      final ScopeBuilder builder,
+      final NodeScopeNames names,
+      final Consumer<SyntaxNode> visit
+  ) {
     this.typeRefs = new NodeScopeTypeRefs(this);
     this.builder = builder;
     this.names = names;
@@ -108,7 +110,7 @@ final class NodeScopeExpressions {
     final SyntaxNode list = NodeFlowSyntax.firstOf(parts, "variableDeclarationList");
     for (final SyntaxNode declaration :
         list == null
-            ? List.<SyntaxNode>of()
+            ? List.<SyntaxNode> of()
             : NodeFlowSyntax.allOf(NodeFlowSyntax.parts(list), "variableDeclaration")) {
       final List<SyntaxNode> inner = NodeFlowSyntax.parts(declaration);
       if (isAssignment(inner)) {

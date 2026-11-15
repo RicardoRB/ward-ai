@@ -13,7 +13,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class NonTerminatingLoopCheckTest {
-
   private static final NonTerminatingLoopCheck CHECK = new NonTerminatingLoopCheck("message");
 
   /** Returns each finding of the check on the body {@code statements} as {@code line:column}. */
@@ -53,10 +52,12 @@ class NonTerminatingLoopCheckTest {
   @Test
   void withoutGraphsOrWithoutFlowNothingIsReported() {
     assertThat(
-            CHECK.matches(
-                new AntlrLanguageFrontend()
-                    .parse(new SourceUnit("C.java", AnalysisLanguage.JAVA, "class C {}\n"))
-                    .tree()))
+        CHECK.matches(
+            new AntlrLanguageFrontend()
+                .parse(new SourceUnit("C.java", AnalysisLanguage.JAVA, "class C {}\n"))
+                .tree()
+        )
+    )
         .isEmpty();
     assertThat(run("    int x = 1;\n")).isEmpty();
   }

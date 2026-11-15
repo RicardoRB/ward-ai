@@ -12,7 +12,6 @@ import java.util.Set;
  * switch are read in order: the labels of each case group, then the trailing labels.
  */
 public final class DefaultLabelNotLastCheck implements UnitCheck {
-
   private static final String SWITCH = "'switch'";
   private static final String DEFAULT = "'default'";
   private static final String GROUP = "switchBlockStatementGroup";

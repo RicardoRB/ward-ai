@@ -10,7 +10,6 @@ import java.util.Set;
 
 /** Handles the expressions of Kotlin: assignments, member access and names. */
 final class KotlinScopeExpressions {
-
   private static final int TRIPLE = 3;
   private static final Set<String> CHAIN =
       Set.of(
@@ -28,7 +27,8 @@ final class KotlinScopeExpressions {
           "typeRHS",
           "prefixUnaryExpression",
           "postfixUnaryExpression",
-          "atomicExpression");
+          "atomicExpression"
+      );
   private static final String SIMPLE = "simpleIdentifier";
   private static final String EXPRESSION = "expression";
 
@@ -114,7 +114,10 @@ final class KotlinScopeExpressions {
     final List<SyntaxNode> parts = node.children();
     if (parts.size() == 1 && SIMPLE.equals(parts.get(0).kind())) {
       walk.builder.reference(
-          KotlinScopeWalk.text(parts.get(0)), parts.get(0).span(), ReferenceAccess.READ);
+          KotlinScopeWalk.text(parts.get(0)),
+          parts.get(0).span(),
+          ReferenceAccess.READ
+      );
     } else if (parts.size() == 2 && "val".equals(KotlinScopeWalk.text(parts.get(0)))) {
       walk.declare(parts.get(1), BindingKind.CONSTANT, true, EnumSet.noneOf(BindingFlag.class));
     } else {

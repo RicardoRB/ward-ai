@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 /** The type-fact checks that read operands, templates, assertions and members. */
 class TypedOperandChecksTest {
-
   private static final String MESSAGE = "message";
 
   private static final OperandPolicy ALL_ALLOWED =
@@ -23,10 +22,12 @@ class TypedOperandChecksTest {
   @Test
   void unsafeAssignmentOfAnAnyValueIsReported() {
     assertThat(
-            positions(
-                new UnsafeAnyCheck(UnsafeAnyCheck.Site.ASSIGNMENT, MESSAGE),
-                "declare const a: any;\nconst b: string = a;\n",
-                new LintFixtures.Facts().typed("2:19", LintFixtures.named("any")).build()))
+        positions(
+            new UnsafeAnyCheck(UnsafeAnyCheck.Site.ASSIGNMENT, MESSAGE),
+            "declare const a: any;\nconst b: string = a;\n",
+            new LintFixtures.Facts().typed("2:19", LintFixtures.named("any")).build()
+        )
+    )
         .containsExactly("2:19");
   }
 
@@ -42,28 +43,36 @@ class TypedOperandChecksTest {
         new LintFixtures.Facts().typed("2:10", LintFixtures.named("any")).build();
 
     assertThat(
-            positions(
-                new UnsafeAnyCheck(UnsafeAnyCheck.Site.CALL, MESSAGE),
-                "declare const f: any;\nf();\n",
-                call))
+        positions(
+            new UnsafeAnyCheck(UnsafeAnyCheck.Site.CALL, MESSAGE),
+            "declare const f: any;\nf();\n",
+            call
+        )
+    )
         .containsExactly("2:1");
     assertThat(
-            positions(
-                new UnsafeAnyCheck(UnsafeAnyCheck.Site.MEMBER, MESSAGE),
-                "declare const o: any;\nconst x = o.name;\n",
-                member))
+        positions(
+            new UnsafeAnyCheck(UnsafeAnyCheck.Site.MEMBER, MESSAGE),
+            "declare const o: any;\nconst x = o.name;\n",
+            member
+        )
+    )
         .containsExactly("2:11");
     assertThat(
-            positions(
-                new UnsafeAnyCheck(UnsafeAnyCheck.Site.RETURN, MESSAGE),
-                "declare const v: any;\nfunction f(): string {\n  return v;\n}\n",
-                ret))
+        positions(
+            new UnsafeAnyCheck(UnsafeAnyCheck.Site.RETURN, MESSAGE),
+            "declare const v: any;\nfunction f(): string {\n  return v;\n}\n",
+            ret
+        )
+    )
         .containsExactly("3:10");
     assertThat(
-            positions(
-                new UnsafeAnyCheck(UnsafeAnyCheck.Site.ARGUMENT, MESSAGE),
-                "declare const a: any;\nMath.abs(a);\n",
-                argument))
+        positions(
+            new UnsafeAnyCheck(UnsafeAnyCheck.Site.ARGUMENT, MESSAGE),
+            "declare const a: any;\nMath.abs(a);\n",
+            argument
+        )
+    )
         .containsExactly("2:10");
   }
 
@@ -79,22 +88,26 @@ class TypedOperandChecksTest {
     assertThat(positions(new UnaryMinusCheck(MESSAGE), text, facts))
         .containsExactly("2:11", "3:11");
     assertThat(
-            positions(
-                new UnaryMinusCheck(MESSAGE),
-                "declare const a: any;\nconst b = -a;\n",
-                new LintFixtures.Facts().typed("2:12", LintFixtures.named("any")).build()))
+        positions(
+            new UnaryMinusCheck(MESSAGE),
+            "declare const a: any;\nconst b = -a;\n",
+            new LintFixtures.Facts().typed("2:12", LintFixtures.named("any")).build()
+        )
+    )
         .isEmpty();
   }
 
   @Test
   void anAddOfAnObjectOperandIsAlwaysReported() {
     assertThat(
-            positions(
-                new RestrictOperandsCheck(ALL_ALLOWED, MESSAGE),
-                "declare const o: { a: number };\nconst s = (o) + 1;\n",
-                new LintFixtures.Facts()
-                    .typed("2:11", LintFixtures.named("{ a: number; }"))
-                    .build()))
+        positions(
+            new RestrictOperandsCheck(ALL_ALLOWED, MESSAGE),
+            "declare const o: { a: number };\nconst s = (o) + 1;\n",
+            new LintFixtures.Facts()
+                .typed("2:11", LintFixtures.named("{ a: number; }"))
+                .build()
+        )
+    )
         .containsExactly("2:11");
   }
 
@@ -106,11 +119,15 @@ class TypedOperandChecksTest {
 
     assertThat(positions(new RestrictOperandsCheck(ALL_ALLOWED, MESSAGE), text, facts)).isEmpty();
     assertThat(
-            positions(
-                new RestrictOperandsCheck(
-                    new OperandPolicy(true, false, true, true, true, false), MESSAGE),
-                text,
-                facts))
+        positions(
+            new RestrictOperandsCheck(
+                new OperandPolicy(true, false, true, true, true, false),
+                MESSAGE
+            ),
+            text,
+            facts
+        )
+    )
         .containsExactly("2:15");
   }
 
@@ -127,11 +144,15 @@ class TypedOperandChecksTest {
 
     assertThat(positions(new RestrictOperandsCheck(ALL_ALLOWED, MESSAGE), text, facts)).isEmpty();
     assertThat(
-            positions(
-                new RestrictOperandsCheck(
-                    new OperandPolicy(true, true, true, false, true, false), MESSAGE),
-                text,
-                facts))
+        positions(
+            new RestrictOperandsCheck(
+                new OperandPolicy(true, true, true, false, true, false),
+                MESSAGE
+            ),
+            text,
+            facts
+        )
+    )
         .containsExactly("3:14");
   }
 
@@ -145,18 +166,26 @@ class TypedOperandChecksTest {
             .build();
 
     assertThat(
-            positions(
-                new RestrictOperandsCheck(
-                    new OperandPolicy(true, true, true, false, true, false), MESSAGE),
-                text,
-                facts))
+        positions(
+            new RestrictOperandsCheck(
+                new OperandPolicy(true, true, true, false, true, false),
+                MESSAGE
+            ),
+            text,
+            facts
+        )
+    )
         .containsExactly("3:1");
     assertThat(
-            positions(
-                new RestrictOperandsCheck(
-                    new OperandPolicy(true, true, true, false, true, true), MESSAGE),
-                text,
-                facts))
+        positions(
+            new RestrictOperandsCheck(
+                new OperandPolicy(true, true, true, false, true, true),
+                MESSAGE
+            ),
+            text,
+            facts
+        )
+    )
         .isEmpty();
   }
 
@@ -174,12 +203,15 @@ class TypedOperandChecksTest {
     assertThat(positions(new RestrictTemplateCheck(TEMPLATE_DEFAULTS, MESSAGE), text, facts))
         .containsExactly("3:17", "3:25");
     assertThat(
-            positions(
-                new RestrictTemplateCheck(
-                    new TemplatePolicy(true, true, true, true, true, true, false, Set.of("Error")),
-                    MESSAGE),
-                text,
-                facts))
+        positions(
+            new RestrictTemplateCheck(
+                new TemplatePolicy(true, true, true, true, true, true, false, Set.of("Error")),
+                MESSAGE
+            ),
+            text,
+            facts
+        )
+    )
         .containsExactly("3:25");
   }
 
@@ -192,12 +224,15 @@ class TypedOperandChecksTest {
     assertThat(positions(new RestrictTemplateCheck(TEMPLATE_DEFAULTS, MESSAGE), text, facts))
         .isEmpty();
     assertThat(
-            positions(
-                new RestrictTemplateCheck(
-                    new TemplatePolicy(true, false, true, true, true, true, false, Set.of()),
-                    MESSAGE),
-                text,
-                facts))
+        positions(
+            new RestrictTemplateCheck(
+                new TemplatePolicy(true, false, true, true, true, true, false, Set.of()),
+                MESSAGE
+            ),
+            text,
+            facts
+        )
+    )
         .containsExactly("2:14");
   }
 }

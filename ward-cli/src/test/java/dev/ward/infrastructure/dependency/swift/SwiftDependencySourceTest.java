@@ -41,12 +41,13 @@ class SwiftDependencySourceTest {
   @CsvSource(
       delimiter = '|',
       value = {
-        "https://github.com/apple/swift-nio.git|github.com/apple/swift-nio",
-        "https://user@GitHub.com/Apple/Swift-NIO.git/|github.com/apple/swift-nio",
-        "git@github.com:apple/swift-nio.git|github.com/apple/swift-nio",
-        "ssh://git@github.com/apple/swift-nio|github.com/apple/swift-nio",
-        "https://github.com/vapor/vapor|github.com/vapor/vapor"
-      })
+          "https://github.com/apple/swift-nio.git|github.com/apple/swift-nio",
+          "https://user@GitHub.com/Apple/Swift-NIO.git/|github.com/apple/swift-nio",
+          "git@github.com:apple/swift-nio.git|github.com/apple/swift-nio",
+          "ssh://git@github.com/apple/swift-nio|github.com/apple/swift-nio",
+          "https://github.com/vapor/vapor|github.com/vapor/vapor"
+      }
+  )
   void locationsAreReducedToTheOsvName(final String location, final String name) {
     assertThat(SwiftLocations.normalize(location)).isEqualTo(name);
   }
@@ -58,7 +59,8 @@ class SwiftDependencySourceTest {
         dir.resolve("Package.resolved"),
         "{\"object\":{\"pins\":[{\"package\":\"swift-log\",\"repositoryURL\":"
             + "\"https://github.com/apple/swift-log.git\",\"state\":{\"branch\":null,"
-            + "\"revision\":\"r\",\"version\":\"1.6.1\"}}]},\"version\":1}");
+            + "\"revision\":\"r\",\"version\":\"1.6.1\"}}]},\"version\":1}"
+    );
 
     final Dependency entry =
         read(dir, BuildTool.SWIFTPM).modules().getFirst().dependencies().getFirst();
@@ -73,7 +75,8 @@ class SwiftDependencySourceTest {
   void aNonLiteralPackageArgumentIsAnError(@TempDir final Path dir) throws IOException {
     Files.writeString(
         dir.resolve("Package.swift"),
-        "let p = Package(dependencies: [.package(url: base, from: \"1\")])");
+        "let p = Package(dependencies: [.package(url: base, from: \"1\")])"
+    );
     Files.writeString(dir.resolve("Package.resolved"), "{\"pins\":[],\"version\":2}");
 
     assertThatThrownBy(() -> read(dir, BuildTool.SWIFTPM))

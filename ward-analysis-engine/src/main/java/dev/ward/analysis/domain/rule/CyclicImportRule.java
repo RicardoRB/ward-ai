@@ -19,7 +19,6 @@ import java.util.Optional;
  * upgrade by naming modules from the project's source roots.
  */
 public final class CyclicImportRule implements GraphRule {
-
   /** The id of the rule. */
   public static final String ID = "ward:python/cyclic-import";
 
@@ -80,7 +79,10 @@ public final class CyclicImportRule implements GraphRule {
     return new GraphMatch(
         first.from(),
         new RuleMatch(
-            first.reference().span(), "Cyclic import (" + String.join(SEPARATOR, modules) + ")"));
+            first.reference().span(),
+            "Cyclic import (" + String.join(SEPARATOR, modules) + ")"
+        )
+    );
   }
 
   private static String label(final String path) {

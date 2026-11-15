@@ -43,8 +43,10 @@ public final class LicenseService {
   @Inject
   public LicenseService(
       final DependencyInventoryService inventory,
-      final Map<Ecosystem, LicenseMetadata> readers,
-      final LicenseCatalog catalog) {
+      final Map<Ecosystem,
+      LicenseMetadata> readers,
+      final LicenseCatalog catalog
+  ) {
     this.inventory = inventory;
     this.readers = Map.copyOf(readers);
     this.normalizer = new LicenseNormalizer(catalog);
@@ -77,7 +79,10 @@ public final class LicenseService {
   }
 
   private PackageLicense resolve(
-      final Project project, final String modulePath, final Dependency dependency) {
+      final Project project,
+      final String modulePath,
+      final Dependency dependency
+  ) {
     final LicenseMetadata reader = readers.get(dependency.id().ecosystem());
     final LicenseLookup lookup =
         reader == null
@@ -92,7 +97,8 @@ public final class LicenseService {
               "event=license-resolved ecosystem="
                   + dependency.id().ecosystem().purlType()
                   + " source="
-                  + lookup.detail());
+                  + lookup.detail()
+      );
     } else {
       LOGGER.log(
           Level.FINE,
@@ -100,7 +106,8 @@ public final class LicenseService {
               "event=license-unknown ecosystem="
                   + dependency.id().ecosystem().purlType()
                   + " reason="
-                  + (lookup.present() ? "unrecognized" : lookup.reason()));
+                  + (lookup.present() ? "unrecognized" : lookup.reason())
+      );
     }
     return new PackageLicense(dependency, lookup, expression);
   }

@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
  * {@code F822}. A module with a star import is left alone, since the import may bind the name.
  */
 public final class UndefinedExportCheck implements RuleCheck {
-
   private static final String ASSIGNMENT = "__all__=";
   private static final String NAME = "{value}";
 
@@ -41,7 +40,11 @@ public final class UndefinedExportCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes(Set.of());
     if (scopes.module().open()) {
       return List.of();
@@ -78,6 +81,7 @@ public final class UndefinedExportCheck implements RuleCheck {
     return SyntaxWalk.descendants(statement).stream()
         .anyMatch(
             node ->
-                "expr_stmt".equals(node.kind()) && SyntaxWalk.text(node).startsWith(ASSIGNMENT));
+                "expr_stmt".equals(node.kind()) && SyntaxWalk.text(node).startsWith(ASSIGNMENT)
+        );
   }
 }

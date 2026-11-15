@@ -82,14 +82,16 @@ class AndroidGatesTest {
       final String type,
       final List<String> command,
       final Integer minimum,
-      final CoverageReport report) {
+      final CoverageReport report
+  ) {
     final GateReportPorts ports =
         new GateReportPorts(
             ReportDirectories.NONE,
             null,
             null,
             null,
-            new PlatformGatePorts(null, null, null, report));
+            new PlatformGatePorts(null, null, null, report)
+        );
     final GateConfiguration check =
         new GateConfiguration(
             "check",
@@ -113,7 +115,8 @@ class AndroidGatesTest {
             null,
             null,
             null,
-            null);
+            null
+        );
     return new QualityGateFactory(executor, ports, null)
         .create(new WardConfiguration(1, Map.of("check", check)))
         .getFirst()

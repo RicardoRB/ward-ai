@@ -18,7 +18,8 @@ final class FunctionTypes {
           "functionDeclaration",
           "anonymousFunction",
           "arrowFunctionDeclaration",
-          "propertyMemberDeclaration");
+          "propertyMemberDeclaration"
+      );
 
   private final ExprTyper typer;
   private final UnitModel model;

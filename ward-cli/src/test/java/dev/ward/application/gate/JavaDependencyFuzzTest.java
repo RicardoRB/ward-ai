@@ -45,7 +45,8 @@ class JavaDependencyFuzzTest {
           "Cart cart;",
           "shop.domain.Discount discount;",
           "// Order.Line is only a comment",
-          "");
+          ""
+      );
 
   @Test
   void incrementalGraphEqualsTheColdBuildAfterEveryEdit() throws IOException {
@@ -96,7 +97,11 @@ class JavaDependencyFuzzTest {
         .analyze(
             units,
             new AnalysisSummaryCache(
-                AnalysisCacheFixtures.NO_CACHE, AnalysisCacheFixtures.codec(), VERSION))
+                AnalysisCacheFixtures.NO_CACHE,
+                AnalysisCacheFixtures.codec(),
+                VERSION
+            )
+        )
         .graph();
   }
 
@@ -104,10 +109,14 @@ class JavaDependencyFuzzTest {
   private static DependencyAnalysis analysis(final List<SourceUnit> units) {
     final FrontendSupport frontend =
         new FrontendSupport(
-            AnalysisLanguage.JAVA, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX));
+            AnalysisLanguage.JAVA,
+            new AntlrLanguageFrontend(),
+            Set.of(RuleCapability.SYNTAX)
+        );
     return new DependencyAnalysis(
         List.of(frontend),
-        new JvmDependencyAdapters().forProject(FIXTURE.toAbsolutePath(), units, Optional.empty()));
+        new JvmDependencyAdapters().forProject(FIXTURE.toAbsolutePath(), units, Optional.empty())
+    );
   }
 
   private static List<SourceUnit> units(final Map<String, String> texts) {

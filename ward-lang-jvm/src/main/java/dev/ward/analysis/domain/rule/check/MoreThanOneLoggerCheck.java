@@ -11,7 +11,6 @@ import java.util.Set;
  * named {@code Logger} or {@code Log}. A logger in a local variable does not count.
  */
 public final class MoreThanOneLoggerCheck implements RuleCheck {
-
   private static final Set<String> LOGGER_TYPES = Set.of("Logger", "Log");
   private static final int ONE = 1;
 

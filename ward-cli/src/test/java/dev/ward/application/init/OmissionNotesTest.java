@@ -55,7 +55,8 @@ class OmissionNotesTest {
             Set.of(),
             "25",
             TaskRunner.NONE,
-            null);
+            null
+        );
     final FakeEnvironmentInspection environment =
         new FakeEnvironmentInspection("mvn") {
           @Override
@@ -69,7 +70,9 @@ class OmissionNotesTest {
                 environment,
                 directory -> PackageManifest.EMPTY,
                 directory -> false,
-                new ThresholdConfigs(false)));
+                new ThresholdConfigs(false)
+            )
+        );
 
     assertThat(OmissionNotes.of(catalog, project, QualityPreset.STANDARD))
         .singleElement()
@@ -87,7 +90,8 @@ class OmissionNotesTest {
       final Language language,
       final Framework framework,
       final QualityPreset preset,
-      final boolean thresholdsSet) {
+      final boolean thresholdsSet
+  ) {
     final Project project =
         new Project(
             ROOT,
@@ -99,14 +103,17 @@ class OmissionNotesTest {
             Set.of(),
             "24",
             TaskRunner.NONE,
-            null);
+            null
+        );
     final InitGeneralCatalog catalog =
         new InitGeneralCatalog(
             new InitInputs(
                 new FakeEnvironmentInspection("npm"),
                 directory -> PackageManifest.EMPTY,
                 directory -> false,
-                new ThresholdConfigs(thresholdsSet)));
+                new ThresholdConfigs(thresholdsSet)
+            )
+        );
     return OmissionNotes.of(catalog, project, preset);
   }
 

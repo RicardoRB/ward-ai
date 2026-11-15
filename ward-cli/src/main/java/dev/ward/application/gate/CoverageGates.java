@@ -15,15 +15,18 @@ public final class CoverageGates {
       final GateConfiguration check,
       final CommandExecutor executor,
       final GateReportPorts reports,
-      final CoverageReport report) {
+      final CoverageReport report
+  ) {
     if (check.minimum() == null || report == null) {
       throw new WardException(
-          "The '" + check.name() + "' check needs a minimum line coverage to check.");
+          "The '" + check.name() + "' check needs a minimum line coverage to check."
+      );
     }
     return new CoverageMinimumGate(
         new CommandQualityGate(check.name(), executor, check.command(), reports.directories()),
         report,
-        check.minimum());
+        check.minimum()
+    );
   }
 
   /**
@@ -34,7 +37,8 @@ public final class CoverageGates {
       final GateConfiguration check,
       final CommandExecutor executor,
       final GateReportPorts reports,
-      final GateExtensions extensions) {
+      final GateExtensions extensions
+  ) {
     if (extensions.crap() == null || extensions.analysis() == null || check.coverage() == null) {
       throw new WardException("Coverage gate dependencies are unavailable.");
     }
@@ -42,7 +46,11 @@ public final class CoverageGates {
         check.command().isEmpty()
             ? null
             : new CommandQualityGate(
-                check.name(), executor, check.command(), reports.directories());
+                check.name(),
+                executor,
+                check.command(),
+                reports.directories()
+            );
     return new CoverageReportGate(check, command, extensions.crap(), extensions.analysis());
   }
 }

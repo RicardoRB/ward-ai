@@ -20,7 +20,6 @@ import java.util.regex.Pattern;
  * fit it. Only integer literals are compared.
  */
 public final class ArrayRangeCheck implements UnitCheck {
-
   /** What the check looks for. */
   public enum Mode {
     /** {@code a[i]} with a literal index outside the array. */
@@ -93,7 +92,9 @@ public final class ArrayRangeCheck implements UnitCheck {
                           if (!reassigned.contains(name)) {
                             lengths.put(name, length);
                           }
-                        }));
+                        }
+                    )
+        );
     return lengths;
   }
 
@@ -112,7 +113,8 @@ public final class ArrayRangeCheck implements UnitCheck {
         .findFirst()
         .map(
             array ->
-                (int) array.children().stream().filter(c -> INITIALIZER.equals(c.kind())).count());
+                (int)array.children().stream().filter(c -> INITIALIZER.equals(c.kind())).count()
+        );
   }
 
   private static boolean badIndex(final SyntaxNode node, final Map<String, Integer> lengths) {
@@ -141,7 +143,7 @@ public final class ArrayRangeCheck implements UnitCheck {
     final boolean offsetBad = offset.get() < 0 || offset.get() > length;
     return mode == Mode.OFFSET
         ? offsetBad
-        : !offsetBad && (count.get() < 0 || offset.get() + (long) count.get() > length);
+        : !offsetBad && (count.get() < 0 || offset.get() + (long)count.get() > length);
   }
 
   /** Returns the arguments of a call of {@code write} or {@code read}, or none for another node. */
@@ -150,7 +152,8 @@ public final class ArrayRangeCheck implements UnitCheck {
         "methodCall".equals(node.kind())
             && node.children().stream()
                 .anyMatch(
-                    c -> "identifier".equals(c.kind()) && TRANSFERS.contains(SyntaxWalk.text(c)));
+                    c -> "identifier".equals(c.kind()) && TRANSFERS.contains(SyntaxWalk.text(c))
+                );
     if (!transfer) {
       return List.of();
     }

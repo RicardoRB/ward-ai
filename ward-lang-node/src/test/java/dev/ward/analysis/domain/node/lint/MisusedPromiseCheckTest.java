@@ -10,7 +10,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class MisusedPromiseCheckTest {
-
   private static final String MESSAGE = "promise";
 
   private static final String CONDITION =
@@ -31,15 +30,16 @@ class MisusedPromiseCheckTest {
   @Test
   void reportsAPromiseCondition() {
     assertThat(
-            positions(
-                new MisusedPromiseCheck(true, false, false, MESSAGE), CONDITION, conditionFacts()))
+        positions(new MisusedPromiseCheck(true, false, false, MESSAGE), CONDITION, conditionFacts())
+    )
         .containsExactly("4:5");
   }
 
   @Test
   void reportsAPromiseSpreadInAnObjectLiteral() {
     assertThat(
-            positions(new MisusedPromiseCheck(false, true, false, MESSAGE), SPREAD, spreadFacts()))
+        positions(new MisusedPromiseCheck(false, true, false, MESSAGE), SPREAD, spreadFacts())
+    )
         .containsExactly("1:18");
   }
 
@@ -58,21 +58,24 @@ class MisusedPromiseCheckTest {
   @Test
   void skipsEachCheckWhenItsOptionIsOff() {
     assertThat(
-            positions(
-                new MisusedPromiseCheck(false, true, false, MESSAGE), CONDITION, conditionFacts()))
+        positions(new MisusedPromiseCheck(false, true, false, MESSAGE), CONDITION, conditionFacts())
+    )
         .isEmpty();
     assertThat(
-            positions(new MisusedPromiseCheck(true, false, false, MESSAGE), SPREAD, spreadFacts()))
+        positions(new MisusedPromiseCheck(true, false, false, MESSAGE), SPREAD, spreadFacts())
+    )
         .isEmpty();
   }
 
   @Test
   void leavesUnknownTypesAlone() {
     assertThat(
-            positions(
-                new MisusedPromiseCheck(true, true, true, MESSAGE),
-                CONDITION + SPREAD,
-                UnitTypeFacts.none()))
+        positions(
+            new MisusedPromiseCheck(true, true, true, MESSAGE),
+            CONDITION + SPREAD,
+            UnitTypeFacts.none()
+        )
+    )
         .isEqualTo(List.of());
   }
 

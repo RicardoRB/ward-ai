@@ -14,8 +14,7 @@ class KotlinFileReferencesTest {
   @Test
   void readsThePackageAndEveryImportForm() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             package shop.service
 
             import shop.domain.Price
@@ -32,14 +31,14 @@ class KotlinFileReferencesTest {
             "import:shop.domain.Price",
             "alias:Money=shop.domain.Price",
             "on-demand:shop.domain",
-            "import:shop.util.formatPrice");
+            "import:shop.util.formatPrice"
+        );
   }
 
   @Test
   void readsTypeNamesCallChainsMemberCallsAndAnnotations() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             package shop.service
 
             @Audited
@@ -63,14 +62,14 @@ class KotlinFileReferencesTest {
             "name:Prices.ZERO.plus",
             "name:shop.util.formatPrice",
             "name:total.toMoney",
-            "member:toMoney");
+            "member:toMoney"
+        );
   }
 
   @Test
   void readsCallableReferencesAndSkipsKotlinFunctionTypes() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             package shop.service
 
             val format = ::formatPrice
@@ -83,8 +82,7 @@ class KotlinFileReferencesTest {
   @Test
   void readsNamesUsedInStringTemplates() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             package shop.util
 
             val label = "$CURRENCY ${amount.describe()}"

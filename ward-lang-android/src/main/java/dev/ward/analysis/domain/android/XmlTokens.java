@@ -2,7 +2,6 @@ package dev.ward.analysis.domain.android;
 
 /** The small reads of XML text that move an {@link XmlCursor}: names, white space, terminators. */
 final class XmlTokens {
-
   private XmlTokens() {}
 
   /** Reads a name, such as {@code android:name} or {@code service}. */

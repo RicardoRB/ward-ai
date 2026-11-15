@@ -50,7 +50,10 @@ public class ProcessCommandExecutor implements CommandExecutor {
   }
 
   private CommandResult run(
-      final List<String> command, final Path workingDirectory, final Duration limit) {
+      final List<String> command,
+      final Path workingDirectory,
+      final Duration limit
+  ) {
     final long start = System.nanoTime();
     final String executable = command.isEmpty() ? "empty" : command.getFirst();
     LOGGER.log(Level.FINE, () -> "event=process-start executable=" + executable);
@@ -72,69 +75,99 @@ public class ProcessCommandExecutor implements CommandExecutor {
               new CommandResult(exitCode, stdout.get(), stderr.get(), since(start));
           LOGGER.log(
               Level.FINE,
-              () -> "event=process-complete executable=" + executable + " status=" + exitCode);
+              () -> "event=process-complete executable=" + executable + " status=" + exitCode
+          );
           return result;
         } catch (InterruptedException e) {
-          process.destroyForcibly();
-          Thread.currentThread().interrupt();
-          return failure(
-              executable,
-              "interrupted",
-              new CommandResult(
-                  EXIT_INTERRUPTED, "", "Interrupted", since(start), "PROCESS_INTERRUPTED"));
+          return interrupted(process, executable, start);
         } catch (ExecutionException e) {
-          process.destroyForcibly();
-          return failure(
-              executable,
-              "read-failure",
-              new CommandResult(
-                  EXIT_OUTPUT_CAPTURE_FAILED,
-                  "",
-                  "Failed to read process output",
-                  since(start),
-                  "OUTPUT_CAPTURE_FAILURE"));
+          return outputFailure(process, executable, start);
         }
       }
     } catch (IOException e) {
-      if (LOGGER.isLoggable(Level.WARNING)) {
-        LOGGER.log(
-            Level.WARNING,
-            "event=process-failure executable=" + executable + " category=start-failure");
-      }
-      return new CommandResult(
-          EXIT_COULD_NOT_START,
-          "",
-          "Could not start " + executable + ": " + e.getMessage(),
-          since(start),
-          "PROCESS_START_FAILURE");
+      return failure(
+          executable,
+          "start-failure",
+          new CommandResult(
+              EXIT_COULD_NOT_START,
+              "",
+              "Could not start " + executable + ": " + e.getMessage(),
+              since(start),
+              "PROCESS_START_FAILURE"
+          )
+      );
     }
   }
 
+  private static CommandResult interrupted(
+      final Process process,
+      final String executable,
+      final long start
+  ) {
+    process.destroyForcibly();
+    Thread.currentThread().interrupt();
+    return failure(
+        executable,
+        "interrupted",
+        new CommandResult(EXIT_INTERRUPTED, "", "Interrupted", since(start), "PROCESS_INTERRUPTED")
+    );
+  }
+
+  private static CommandResult outputFailure(
+      final Process process,
+      final String executable,
+      final long start
+  ) {
+    process.destroyForcibly();
+    return failure(
+        executable,
+        "read-failure",
+        new CommandResult(
+            EXIT_OUTPUT_CAPTURE_FAILED,
+            "",
+            "Failed to read process output",
+            since(start),
+            "OUTPUT_CAPTURE_FAILURE"
+        )
+    );
+  }
+
   private static CommandResult failure(
-      final String executable, final String category, final CommandResult result) {
+      final String executable,
+      final String category,
+      final CommandResult result
+  ) {
     if (LOGGER.isLoggable(Level.WARNING)) {
       LOGGER.log(
           Level.WARNING,
-          "event=process-failure executable=" + executable + " category=" + category);
+          "event=process-failure executable=" + executable + " category=" + category
+      );
     }
     return result;
   }
 
   /** Destroys the process and its children, so their output streams close and the readers end. */
   private static CommandResult timedOut(
-      final Process process, final String executable, final Duration limit, final long start) {
+      final Process process,
+      final String executable,
+      final Duration limit,
+      final long start
+  ) {
     process.descendants().forEach(ProcessHandle::destroyForcibly);
     process.destroyForcibly();
     if (LOGGER.isLoggable(Level.WARNING)) {
       LOGGER.log(
-          Level.WARNING, "event=process-failure executable=" + executable + " category=timeout");
+          Level.WARNING,
+          "event=process-failure executable=" + executable + " category=timeout"
+      );
     }
     return new CommandResult(
         EXIT_TIMED_OUT,
         "",
         "Timed out after " + limit.toSeconds() + " seconds",
         since(start),
-        "PROCESS_TIMEOUT");
+        "PROCESS_TIMEOUT"
+    );
   }
 
   /**
@@ -142,7 +175,9 @@ public class ProcessCommandExecutor implements CommandExecutor {
    * the working directory, so behaviour does not depend on the JVM's own directory.
    */
   private static List<String> resolveExecutable(
-      final List<String> command, final Path workingDirectory) {
+      final List<String> command,
+      final Path workingDirectory
+  ) {
     final List<String> resolved = new ArrayList<>(command);
     final String executable = resolved.getFirst();
     if (executable.contains("/") && !Path.of(executable).isAbsolute()) {

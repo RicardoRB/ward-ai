@@ -8,7 +8,6 @@ import java.util.Optional;
 
 /** Reads a media type name such as {@code application/json;charset=utf-8}. */
 final class MediaTypeNames {
-
   private MediaTypeNames() {}
 
   /**
@@ -42,7 +41,8 @@ final class MediaTypeNames {
                 changed
                     ? kept.containsKey(parameter.getKey())
                         && !kept.get(parameter.getKey()).equals(parameter.getValue())
-                    : !kept.containsKey(parameter.getKey()));
+                    : !kept.containsKey(parameter.getKey())
+        );
   }
 
   /** The parameters of a media type name, by lower-case name. */
@@ -52,7 +52,9 @@ final class MediaTypeNames {
     for (int index = 1; index < parts.length; index++) {
       final String[] pair = parts[index].split("=", 2);
       parameters.put(
-          pair[0].trim().toLowerCase(Locale.ROOT), pair.length > 1 ? pair[1].trim() : "");
+          pair[0].trim().toLowerCase(Locale.ROOT),
+          pair.length > 1 ? pair[1].trim() : ""
+      );
     }
     return parameters;
   }

@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class PomLicenseInheritanceTest {
-
   @TempDir Path home;
 
   private PomLicenseMetadata reader() {
@@ -27,7 +26,8 @@ class PomLicenseInheritanceTest {
         .lookup(
             project(home.resolve("project"), Language.JAVA, BuildTool.MAVEN),
             "",
-            dependency(Ecosystem.MAVEN, name, version));
+            dependency(Ecosystem.MAVEN, name, version)
+        );
   }
 
   private static String pom(final String body) {
@@ -35,7 +35,11 @@ class PomLicenseInheritanceTest {
   }
 
   private void maven(
-      final String group, final String artifact, final String version, final String body)
+      final String group,
+      final String artifact,
+      final String version,
+      final String body
+  )
       throws IOException {
     write(
         home.resolve("m2"),
@@ -49,7 +53,8 @@ class PomLicenseInheritanceTest {
             + "-"
             + version
             + ".pom",
-        pom(body));
+        pom(body)
+    );
   }
 
   @Test
@@ -58,12 +63,14 @@ class PomLicenseInheritanceTest {
         "com.example",
         "lib",
         "1.0",
-        "<parent><groupId>com.example</groupId><artifactId>parent</artifactId><version>3</version></parent>");
+        "<parent><groupId>com.example</groupId><artifactId>parent</artifactId><version>3</version></parent>"
+    );
     maven(
         "com.example",
         "parent",
         "3",
-        "<licenses><license><name>The Apache Software License, Version 2.0</name></license></licenses>");
+        "<licenses><license><name>The Apache Software License, Version 2.0</name></license></licenses>"
+    );
 
     assertThat(lookup("com.example:lib", "1.0").license().describe())
         .isEqualTo("The Apache Software License, Version 2.0");
@@ -85,12 +92,14 @@ class PomLicenseInheritanceTest {
         "g",
         "a",
         "1",
-        "<parent><groupId>g</groupId><artifactId>b</artifactId><version>1</version></parent>");
+        "<parent><groupId>g</groupId><artifactId>b</artifactId><version>1</version></parent>"
+    );
     maven(
         "g",
         "b",
         "1",
-        "<parent><groupId>g</groupId><artifactId>a</artifactId><version>1</version></parent>");
+        "<parent><groupId>g</groupId><artifactId>a</artifactId><version>1</version></parent>"
+    );
 
     final LicenseLookup result = lookup("g:a", "1");
 
@@ -107,7 +116,8 @@ class PomLicenseInheritanceTest {
           "1",
           "<parent><groupId>g</groupId><artifactId>p"
               + (i + 1)
-              + "</artifactId><version>1</version></parent>");
+              + "</artifactId><version>1</version></parent>"
+      );
     }
 
     assertThat(lookup("g:p0", "1").detail()).contains("too deep");
@@ -119,7 +129,8 @@ class PomLicenseInheritanceTest {
         "g",
         "a",
         "1",
-        "<parent><groupId>g</groupId><artifactId>gone</artifactId><version>1</version></parent>");
+        "<parent><groupId>g</groupId><artifactId>gone</artifactId><version>1</version></parent>"
+    );
 
     assertThat(lookup("g:a", "1").reason()).isEqualTo(LicenseLookup.Reason.NOT_INSTALLED);
   }

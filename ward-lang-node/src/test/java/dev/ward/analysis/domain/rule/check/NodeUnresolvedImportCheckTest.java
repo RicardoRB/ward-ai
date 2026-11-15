@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 /** The unresolved-import check: relative specifiers only, against the project's files. */
 final class NodeUnresolvedImportCheckTest {
-
   private static final String MESSAGE = "unresolved {value}";
 
   @Test
@@ -20,7 +19,9 @@ final class NodeUnresolvedImportCheckTest {
         new NodeUnresolvedImportCheck(MESSAGE)
             .project(
                 ProjectFixtures.trees(
-                    Map.of("index.ts", "import { gone } from './gone';\nexport const a = gone;")));
+                    Map.of("index.ts", "import { gone } from './gone';\nexport const a = gone;")
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).containsExactly("index.ts:1:22");
     assertThat(ProjectFixtures.messages(found)).containsExactly("unresolved ./gone");
@@ -34,9 +35,14 @@ final class NodeUnresolvedImportCheckTest {
                 ProjectFixtures.trees(
                     Map.of(
                         "index.ts",
-                            "import { a } from './lib';\nimport { b } from './util/index';\nexport const c = a;",
-                        "lib.ts", "export const a = 1;",
-                        "util/index.ts", "export const b = 2;")));
+                        "import { a } from './lib';\nimport { b } from './util/index';\nexport const c = a;",
+                        "lib.ts",
+                        "export const a = 1;",
+                        "util/index.ts",
+                        "export const b = 2;"
+                    )
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }
@@ -47,7 +53,9 @@ final class NodeUnresolvedImportCheckTest {
         new NodeUnresolvedImportCheck(MESSAGE)
             .project(
                 ProjectFixtures.trees(
-                    Map.of("index.ts", "import React from 'react';\nexport const a = React;")));
+                    Map.of("index.ts", "import React from 'react';\nexport const a = React;")
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }
@@ -60,8 +68,11 @@ final class NodeUnresolvedImportCheckTest {
                 ProjectFixtures.trees(
                     Map.of(
                         "src/main.ts",
-                        "import App from './App.vue';\nimport './assets/main.css';\nexport const a = App;")),
-                new ProjectFiles(Map.of(), Set.of("src/App.vue", "src/assets/main.css")));
+                        "import App from './App.vue';\nimport './assets/main.css';\nexport const a = App;"
+                    )
+                ),
+                new ProjectFiles(Map.of(), Set.of("src/App.vue", "src/assets/main.css"))
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }
@@ -72,8 +83,10 @@ final class NodeUnresolvedImportCheckTest {
         new NodeUnresolvedImportCheck(MESSAGE)
             .project(
                 ProjectFixtures.trees(
-                    Map.of("src/main.ts", "import App from './Gone.vue';\nexport const a = App;")),
-                new ProjectFiles(Map.of(), Set.of("src/App.vue")));
+                    Map.of("src/main.ts", "import App from './Gone.vue';\nexport const a = App;")
+                ),
+                new ProjectFiles(Map.of(), Set.of("src/App.vue"))
+            );
 
     assertThat(ProjectFixtures.positions(found)).containsExactly("src/main.ts:1:17");
     assertThat(ProjectFixtures.messages(found)).containsExactly("unresolved ./Gone.vue");
@@ -87,8 +100,11 @@ final class NodeUnresolvedImportCheckTest {
                 ProjectFixtures.trees(
                     Map.of(
                         "src/main.ts",
-                        "import a from './.storybook/a';\nimport b from '../dist/b.js';\nexport const c = [a, b];")),
-                new ProjectFiles(Map.of(), Set.of()));
+                        "import a from './.storybook/a';\nimport b from '../dist/b.js';\nexport const c = [a, b];"
+                    )
+                ),
+                new ProjectFiles(Map.of(), Set.of())
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }

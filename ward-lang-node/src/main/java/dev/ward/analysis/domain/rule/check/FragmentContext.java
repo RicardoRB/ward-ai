@@ -10,7 +10,6 @@ import java.util.Set;
  * reads it from the parent of the fragment's wrapper.
  */
 final class FragmentContext {
-
   private static final String FRAGMENT = "jsxFragment";
   private static final String ELEMENT = "jsxElement";
   private static final String EXPRESSION_CHILD = "jsxExpressionContainer";

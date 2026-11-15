@@ -23,8 +23,8 @@ record PercentFormatString(
     boolean star,
     boolean incomplete,
     Optional<Character> unsupported,
-    boolean numeric) {
-
+    boolean numeric
+) {
   /** Copies the names. */
   PercentFormatString {
     named = List.copyOf(named);
@@ -39,7 +39,6 @@ record PercentFormatString(
 
   /** One pass over the text, collecting the conversions. */
   private static final class Scanner {
-
     private static final String CONVERSIONS = "diouxXeEfFgGcrsa";
     private static final String NUMERIC = "diouxXeEfFgG";
     private static final String FLAGS = "#0- +";
@@ -120,8 +119,7 @@ record PercentFormatString(
         positional++;
         index++;
         return;
-      }
-      while (index < text.length() && Character.isDigit(text.charAt(index))) {
+      } while (index < text.length() && Character.isDigit(text.charAt(index))) {
         index++;
       }
     }

@@ -10,7 +10,6 @@ import java.util.List;
  * {@code @}; the non-blank lines after it, up to the next block tag, continue its description.
  */
 public final class JavadocTags {
-
   private static final String OPEN = "/**";
   private static final String EMPTY_OPEN = "/**/";
   private static final String CLOSE = "*/";
@@ -38,7 +37,6 @@ public final class JavadocTags {
    * @param continuation the continuation lines, in source order
    */
   public record Tag(String name, Span span, String description, List<Line> continuation) {
-
     /**
      * Copies the continuation lines.
      *
@@ -73,7 +71,6 @@ public final class JavadocTags {
 
   /** Collects the tag under construction; a tag ends at the next block tag or at the end. */
   private static final class Builder {
-
     private final SyntaxNode comment;
     private final List<Tag> tags;
     private final List<Line> continuation = new ArrayList<>();

@@ -15,7 +15,6 @@ import java.util.Set;
  * increasing order of parameter count.
  */
 public final class ConstructorsDeclarationGroupingCheck implements UnitCheck {
-
   private static final Set<String> BODIES =
       Set.of("classBody", "recordBody", "enumBodyDeclarations");
   private static final Set<String> NOT_ENTERED = Set.of("block", "classBody", "interfaceBody");
@@ -72,8 +71,8 @@ public final class ConstructorsDeclarationGroupingCheck implements UnitCheck {
   private static boolean isEmptyMember(final SyntaxNode member) {
     return SEMICOLON.equals(member.kind())
         || MEMBER.equals(member.kind())
-            && member.children().size() == 1
-            && SEMICOLON.equals(member.children().get(0).kind());
+        && member.children().size() == 1
+        && SEMICOLON.equals(member.children().get(0).kind());
   }
 
   private static Optional<SyntaxNode> constructorOf(final SyntaxNode member) {
@@ -87,9 +86,10 @@ public final class ConstructorsDeclarationGroupingCheck implements UnitCheck {
         .map(
             formals ->
                 (int)
-                    SyntaxWalk.descendants(formals).stream()
-                        .filter(node -> "formalParameter".equals(node.kind()))
-                        .count())
+                SyntaxWalk.descendants(formals).stream()
+                    .filter(node -> "formalParameter".equals(node.kind()))
+                    .count()
+        )
         .orElse(0);
   }
 }

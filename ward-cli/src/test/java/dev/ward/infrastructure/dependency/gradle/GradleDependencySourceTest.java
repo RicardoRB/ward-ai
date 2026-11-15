@@ -34,7 +34,8 @@ class GradleDependencySourceTest {
         executor,
         new dev.ward.infrastructure.dependency.FileGraphCache(),
         new ForyJsonCodec(),
-        false);
+        false
+    );
   }
 
   private static DependencyInventory read(final Path dir, final CommandExecutor executor) {
@@ -64,7 +65,11 @@ class GradleDependencySourceTest {
     assertThat(command.getFirst()).isEqualTo("./gradlew");
     assertThat(command)
         .contains(
-            "-I", "wardDependencies", "--console=plain", "-Dorg.gradle.configuration-cache=false");
+            "-I",
+            "wardDependencies",
+            "--console=plain",
+            "-Dorg.gradle.configuration-cache=false"
+        );
     assertThat(command).anyMatch(a -> a.startsWith("-Dward.dependencies.dir="));
     assertThat(command).noneMatch(a -> a.contains("\n"));
   }
@@ -77,7 +82,8 @@ class GradleDependencySourceTest {
     Files.createDirectories(listing);
     Files.writeString(
         listing.resolve("app.tsv"),
-        "# path=app\nUNRESOLVED\tcompileClasspath\tcom.example:missing:1.0\tCould not find com.example:missing:1.0\n");
+        "# path=app\nUNRESOLVED\tcompileClasspath\tcom.example:missing:1.0\tCould not find com.example:missing:1.0\n"
+    );
     Files.writeString(listing.resolve("root.tsv"), "# path=\n");
 
     assertThatThrownBy(() -> read(work, new FakeGradle(listing)))
@@ -91,12 +97,13 @@ class GradleDependencySourceTest {
     InventoryFixtures.copy(MULTI, work);
     final CommandExecutor missing =
         (command, dir) ->
-            new CommandResult(
-                -1,
-                "",
-                "Could not start gradle: not found",
-                Duration.ZERO,
-                "PROCESS_START_FAILURE");
+        new CommandResult(
+            -1,
+            "",
+            "Could not start gradle: not found",
+            Duration.ZERO,
+            "PROCESS_START_FAILURE"
+        );
 
     assertThatThrownBy(() -> read(work, missing)).hasMessageContaining("gradle was not found");
   }

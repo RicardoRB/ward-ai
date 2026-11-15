@@ -17,7 +17,10 @@ public final class SwiftRuleFileTargets implements RuleFileTargets {
 
   @Override
   public List<ConfigTarget> targets(
-      final Project project, final QualityPreset preset, final List<InitGateOption> gates)
+      final Project project,
+      final QualityPreset preset,
+      final List<InitGateOption> gates
+  )
       throws IOException {
     return SwiftConfigFiles.targets(project);
   }

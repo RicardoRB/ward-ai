@@ -13,7 +13,6 @@ import java.util.Set;
  * B027}: its body only passes or is {@code ...}, so it should be abstract.
  */
 public final class EmptyAbstractMethodCheck implements RuleCheck {
-
   private static final Set<String> METHODS = Set.of("funcdef");
   private static final String CLASS = "classdef";
   private static final String DECORATED = "decorated";

@@ -9,7 +9,6 @@ import java.util.Set;
  * and the unicode-mode rules for escapes are not checked.
  */
 final class RegexSyntax {
-
   private static final String VALID_FLAGS = "dgimsuyv";
   private static final int NONE = -1;
   private static final int LOOKBEHIND_PREFIX = 3;
@@ -208,13 +207,11 @@ final class RegexSyntax {
 
   /** The character class at the cursor: its characters, its ranges and its closing bracket. */
   private final class Classes {
-
     private Optional<String> characterClass() {
       index++;
       if (index < pattern.length() && pattern.charAt(index) == CARET) {
         index++;
-      }
-      while (index < pattern.length() && pattern.charAt(index) != CLOSE_CLASS) {
+      } while (index < pattern.length() && pattern.charAt(index) != CLOSE_CLASS) {
         final int low = classAtom();
         if (low == NONE) {
           return Optional.of(TRAILING_BACKSLASH);
@@ -266,7 +263,6 @@ final class RegexSyntax {
 
   /** The brace quantifiers, read from a pattern without a cursor. */
   private static final class Quantifiers {
-
     /** The index after a brace quantifier at the start, or NONE when there is none. */
     static int end(final String pattern, final int start) {
       int at = digitsEnd(pattern, start + 1);

@@ -10,7 +10,6 @@ import java.util.Optional;
 
 /** Reads the {@code equals} and {@code hashCode} methods a class declares and inherits. */
 final class EqualsMethods {
-
   private static final String TYPE_TYPE = "typeType";
   private static final String EXTENDS = "'extends'";
   private static final String EQUALS = "equals";
@@ -26,13 +25,17 @@ final class EqualsMethods {
             m -> {
               final List<String> params = TypeMethods.parameterTypes(m.method());
               return params.size() == 1 && TypeMethods.isObject(params.get(0)) == object;
-            })
+            }
+        )
         .map(m -> identifier(m.method()))
         .findFirst();
   }
 
   static Optional<SyntaxNode> declared(
-      final List<TypeMethods.Member> own, final String name, final int parameters) {
+      final List<TypeMethods.Member> own,
+      final String name,
+      final int parameters
+  ) {
     return own.stream()
         .filter(m -> name.equals(TypeMethods.name(m.method())))
         .filter(m -> TypeMethods.parameterTypes(m.method()).size() == parameters)
@@ -46,7 +49,10 @@ final class EqualsMethods {
 
   /** Returns the {@code equals} whose only parameter has the type of the class itself. */
   static Optional<SyntaxNode> covariant(
-      final SyntaxNode type, final List<TypeMethods.Member> own, final List<SyntaxNode> ancestors) {
+      final SyntaxNode type,
+      final List<TypeMethods.Member> own,
+      final List<SyntaxNode> ancestors
+  ) {
     final String name = ClassMembers.nameOf(type);
     final boolean isAbstract =
         MemberDeclarations.wrapper(ancestors)
@@ -64,7 +70,11 @@ final class EqualsMethods {
 
   /** Tells whether an inherited method with the name is declared by {@code Object} or elsewhere. */
   static boolean inherits(
-      final TypeMembers members, final String name, final int parameters, final boolean object) {
+      final TypeMembers members,
+      final String name,
+      final int parameters,
+      final boolean object
+  ) {
     return members.inheritedMethods().stream()
         .filter(m -> name.equals(m.name()) && !m.isStatic())
         .filter(m -> m.parameters().size() == parameters)
@@ -76,7 +86,8 @@ final class EqualsMethods {
   static boolean hasInstanceField(final SyntaxNode type) {
     return ClassMembers.fieldMembers(type).stream()
         .anyMatch(
-            field -> !MemberDeclarations.modifiers(field).contains(MemberDeclarations.STATIC));
+            field -> !MemberDeclarations.modifiers(field).contains(MemberDeclarations.STATIC)
+        );
   }
 
   static boolean abstractSuperclass(final SyntaxNode type, final UnitTypeFacts types) {

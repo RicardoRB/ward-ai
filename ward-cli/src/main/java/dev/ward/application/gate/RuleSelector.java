@@ -32,7 +32,8 @@ final class RuleSelector {
   RuleSelector(
       final RuleConfigFile.Select select,
       final List<RuleDefinition> catalog,
-      final RuleProblems problems) {
+      final RuleProblems problems
+  ) {
     this.select = select;
     this.catalog = catalog;
     this.problems = problems;
@@ -72,9 +73,11 @@ final class RuleSelector {
                       + List.of(RulePreset.values()).stream().map(RulePreset::key).toList()
                       + ", got \""
                       + key
-                      + "\"");
+                      + "\""
+              );
               return RulePreset.NONE;
-            });
+            }
+        );
   }
 
   private Set<AnalysisLanguage> languages() {
@@ -91,7 +94,8 @@ final class RuleSelector {
                 + "\"; expected "
                 + List.of(AnalysisLanguage.values()).stream()
                     .map(language -> language.name().toLowerCase(Locale.ROOT))
-                    .toList());
+                    .toList()
+        );
       }
     }
     return languages;
@@ -111,7 +115,8 @@ final class RuleSelector {
             "unknown category \""
                 + category
                 + "\"; expected one of "
-                + known.stream().filter(name -> !name.isEmpty()).sorted().toList());
+                + known.stream().filter(name -> !name.isEmpty()).sorted().toList()
+        );
       }
     }
     return categories;
@@ -132,7 +137,9 @@ final class RuleSelector {
           .filter(rule -> rule.id().equals(id))
           .findFirst()
           .ifPresentOrElse(
-              rules::add, () -> problems.add(SELECT, key, "unknown rule \"" + name + "\""));
+              rules::add,
+              () -> problems.add(SELECT, key, "unknown rule \"" + name + "\"")
+          );
     }
     return rules;
   }

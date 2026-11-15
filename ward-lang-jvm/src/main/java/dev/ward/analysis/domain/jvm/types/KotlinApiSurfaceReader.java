@@ -22,7 +22,6 @@ import java.util.function.Predicate;
  * <package>.<top-level>}, because callers in Kotlin see a package, not the file that declares them.
  */
 public final class KotlinApiSurfaceReader implements ApiSurfaceReader {
-
   @Override
   public AnalysisLanguage language() {
     return AnalysisLanguage.KOTLIN;
@@ -32,7 +31,8 @@ public final class KotlinApiSurfaceReader implements ApiSurfaceReader {
   public List<ApiType> read(
       final List<SourceUnit> units,
       final LanguageFrontend frontend,
-      final Predicate<String> libraryExists) {
+      final Predicate<String> libraryExists
+  ) {
     final List<Parsed> parsed = units.stream().map(unit -> parse(unit, frontend)).toList();
     final Set<String> project = new HashSet<>();
     parsed.forEach(unit -> project.addAll(unit.names()));
@@ -52,7 +52,9 @@ public final class KotlinApiSurfaceReader implements ApiSurfaceReader {
     if (!result.diagnostics().isEmpty()) {
       final AnalysisFinding first = result.diagnostics().getFirst();
       throw new ApiSurfaceException(
-          unit.path(), "syntax error" + (first.line() == null ? "" : " at line " + first.line()));
+          unit.path(),
+          "syntax error" + (first.line() == null ? "" : " at line " + first.line())
+      );
     }
     final String prefix = KotlinTypes.imports(result.tree()).packageName();
     final Set<String> names = new HashSet<>();
@@ -61,7 +63,11 @@ public final class KotlinApiSurfaceReader implements ApiSurfaceReader {
         .forEach(
             node ->
                 collect(
-                    node, BinaryNames.qualified(prefix, KotlinApiTypeReader.nameOf(node)), names));
+                    node,
+                    BinaryNames.qualified(prefix, KotlinApiTypeReader.nameOf(node)),
+                    names
+                )
+        );
     return new Parsed(unit.path(), result.tree(), names);
   }
 
@@ -70,7 +76,8 @@ public final class KotlinApiSurfaceReader implements ApiSurfaceReader {
     KotlinApiTypeReader.declarations(node).stream()
         .filter(KotlinApiTypeReader::isType)
         .forEach(
-            nested -> collect(nested, binary + '$' + KotlinApiTypeReader.nameOf(nested), names));
+            nested -> collect(nested, binary + '$' + KotlinApiTypeReader.nameOf(nested), names)
+        );
   }
 
   /** A parsed file with the binary names of the types it declares. */

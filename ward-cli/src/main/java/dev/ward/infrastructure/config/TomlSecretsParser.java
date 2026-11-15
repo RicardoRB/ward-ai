@@ -52,7 +52,10 @@ final class TomlSecretsParser {
   }
 
   private static Optional<LocalDate> since(
-      final String where, final TomlTable gate, final boolean scan) {
+      final String where,
+      final TomlTable gate,
+      final boolean scan
+  ) {
     if (!gate.contains(HISTORY_SINCE)) {
       return Optional.empty();
     }
@@ -62,7 +65,8 @@ final class TomlSecretsParser {
     }
     try {
       return Optional.of(
-          LocalDate.parse(gate.isString(HISTORY_SINCE) ? gate.getString(HISTORY_SINCE) : ""));
+          LocalDate.parse(gate.isString(HISTORY_SINCE) ? gate.getString(HISTORY_SINCE) : "")
+      );
     } catch (final DateTimeParseException exception) {
       throw new WardException("'" + key + "' must be an ISO date such as 2026-01-01", exception);
     }

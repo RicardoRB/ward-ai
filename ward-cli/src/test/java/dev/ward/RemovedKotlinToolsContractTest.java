@@ -38,7 +38,8 @@ class RemovedKotlinToolsContractTest {
             definition ->
                 assertThat(namesRemovedTool(definition.id() + " " + definition.displayName()))
                     .as("gate %s", definition.id())
-                    .isFalse());
+                    .isFalse()
+        );
   }
 
   @Test

@@ -18,7 +18,6 @@ import java.util.stream.Stream;
  * between the offsets.
  */
 final class GraphRanks {
-
   private final Map<Integer, Integer> ranks = new HashMap<>();
 
   GraphRanks(final ControlFlowGraph graph) {
@@ -38,20 +37,25 @@ final class GraphRanks {
 
   private static Stream<Span> spans(final ControlFlowGraph graph) {
     return Stream.concat(
-        Stream.of(graph.span()), graph.blocks().stream().flatMap(GraphRanks::spans));
+        Stream.of(graph.span()),
+        graph.blocks().stream().flatMap(GraphRanks::spans)
+    );
   }
 
   private static Stream<Span> spans(final BasicBlock block) {
     return Stream.of(
-            block.nodes().stream().flatMap(GraphRanks::spans),
-            block.accesses().stream().flatMap(GraphRanks::spans),
-            block.sites().stream().flatMap(GraphRanks::spans))
+        block.nodes().stream().flatMap(GraphRanks::spans),
+        block.accesses().stream().flatMap(GraphRanks::spans),
+        block.sites().stream().flatMap(GraphRanks::spans)
+    )
         .flatMap(stream -> stream);
   }
 
   private static Stream<Span> spans(final SyntaxNode node) {
     return Stream.concat(
-        Stream.of(node.span()), node.children().stream().flatMap(GraphRanks::spans));
+        Stream.of(node.span()),
+        node.children().stream().flatMap(GraphRanks::spans)
+    );
   }
 
   private static Stream<Span> spans(final VariableAccess access) {

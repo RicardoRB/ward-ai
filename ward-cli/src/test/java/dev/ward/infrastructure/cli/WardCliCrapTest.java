@@ -15,7 +15,6 @@ import org.junit.jupiter.api.condition.OS;
 /** The {@code crap} check through the real command line, on the Maven fixture. */
 @DisabledOnOs(OS.WINDOWS)
 class WardCliCrapTest extends WardCliIntegrationSupport {
-
   private static final String CART =
       """
       package com.shop;
@@ -40,9 +39,7 @@ class WardCliCrapTest extends WardCliIntegrationSupport {
     final Path report = project.resolve("target/site/jacoco/jacoco.xml");
     Files.createDirectories(report.getParent());
     Files.copy(Path.of("src/test/resources/coverage/jacoco-crap.xml"), report);
-    Files.writeString(
-        project.resolve(WARD_TOML),
-        """
+    Files.writeString(project.resolve(WARD_TOML), """
         version = 2
         [checks.crap]
         uses = "crap"

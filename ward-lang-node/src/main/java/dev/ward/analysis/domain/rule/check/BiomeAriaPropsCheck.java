@@ -11,7 +11,6 @@ import java.util.Set;
  * table, at the element, as Biome does. Components are not checked.
  */
 public final class BiomeAriaPropsCheck implements RuleCheck {
-
   private static final String PREFIX = "aria-";
 
   private final AriaRoleTable table;

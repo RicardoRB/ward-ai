@@ -11,7 +11,6 @@ import java.util.Optional;
  * right after the keyword.
  */
 final class TaintReturns {
-
   private static final String RETURN = "return";
   private static final String RETURN_STATEMENT = "returnStatement";
   private static final String TEXT = "text";

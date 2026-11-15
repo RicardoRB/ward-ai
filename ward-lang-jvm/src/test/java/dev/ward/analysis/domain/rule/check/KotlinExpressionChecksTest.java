@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the ktlint checks about declarations and expressions over real Kotlin sources. */
 class KotlinExpressionChecksTest {
-
   private static final String MESSAGE = "m";
 
   private static List<RuleMatch> matchesOf(final RuleCheck check, final String source) {

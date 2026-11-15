@@ -19,7 +19,6 @@ import java.util.function.Consumer;
  * has a companion object.
  */
 final class KotlinScopeWalk {
-
   private static final Set<String> SKIPPED =
       Set.of(
           "type",
@@ -32,7 +31,8 @@ final class KotlinScopeWalk {
           "modifierList",
           "receiverType",
           "labelDefinition",
-          "typeTest");
+          "typeTest"
+      );
   private static final String SIMPLE = "simpleIdentifier";
   private static final String BLOCK = "block";
   private static final String EXPRESSION = "expression";
@@ -124,7 +124,8 @@ final class KotlinScopeWalk {
       final SyntaxNode name,
       final BindingKind kind,
       final boolean written,
-      final Set<BindingFlag> flags) {
+      final Set<BindingFlag> flags
+  ) {
     builder.declare(text(name), kind, name.span(), flags);
     if (written) {
       builder.reference(text(name), name.span(), ReferenceAccess.WRITE);

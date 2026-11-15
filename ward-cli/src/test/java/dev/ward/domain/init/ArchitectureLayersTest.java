@@ -8,7 +8,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class ArchitectureLayersTest {
-
   @Test
   void everyStyleInitOffersMapsToItsBoundary() {
     assertThat(ArchitectureLayers.forStyle("layered", Framework.NONE))
@@ -16,11 +15,17 @@ class ArchitectureLayersTest {
     assertThat(ArchitectureLayers.forStyle("hexagonal", Framework.NONE))
         .isEqualTo(
             new LayerBoundary(
-                List.of("domain", "application"), List.of("adapter", "infrastructure")));
+                List.of("domain", "application"),
+                List.of("adapter", "infrastructure")
+            )
+        );
     assertThat(ArchitectureLayers.forStyle("clean", Framework.NONE))
         .isEqualTo(
             new LayerBoundary(
-                List.of("domain", "core"), List.of("controller", "adapter", "infrastructure")));
+                List.of("domain", "core"),
+                List.of("controller", "adapter", "infrastructure")
+            )
+        );
   }
 
   @Test
@@ -35,7 +40,9 @@ class ArchitectureLayersTest {
         .isEqualTo(
             new LayerBoundary(
                 List.of("controller", "routers", "api", "endpoints"),
-                List.of("repository", "repositories", "crud")));
+                List.of("repository", "repositories", "crud")
+            )
+        );
   }
 
   @Test

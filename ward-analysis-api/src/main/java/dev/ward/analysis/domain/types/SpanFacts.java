@@ -26,8 +26,8 @@ public record SpanFacts(
     List<CallTarget> overrides,
     List<TypeRef> thrown,
     ConstantValue constant,
-    TypeMembers members) {
-
+    TypeMembers members
+) {
   /** The span about which nothing is known. */
   public static final SpanFacts UNKNOWN =
       new SpanFacts(null, null, null, List.of(), List.of(), List.of(), List.of(), null, null);

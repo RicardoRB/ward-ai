@@ -11,7 +11,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class RecordAccessorOverrideCheckTest {
-
   private static final String MESSAGE = "message";
   private static final String IDENTIFIER = "identifier";
   private static final String NO_PARAMETERS = "()";
@@ -49,7 +48,9 @@ class RecordAccessorOverrideCheckTest {
             "recordHeader",
             n(
                 "formalParameterList",
-                n("recordComponent", t(IDENTIFIER, "int"), t(IDENTIFIER, NAME))));
+                n("recordComponent", t(IDENTIFIER, "int"), t(IDENTIFIER, NAME))
+            )
+        );
     assertThat(run(recordWithHeader(header, method))).hasSize(1);
     final SyntaxNode empty = n("recordHeader", n("formalParameterList", n("recordComponent")));
     assertThat(run(recordWithHeader(empty, method))).isEmpty();
@@ -62,7 +63,8 @@ class RecordAccessorOverrideCheckTest {
   private static SyntaxNode record(final SyntaxNode member) {
     return recordWithHeader(
         n("recordHeader", n("formalParameterList", n("recordComponent", t(IDENTIFIER, NAME)))),
-        member);
+        member
+    );
   }
 
   private static SyntaxNode recordWithHeader(final SyntaxNode header, final SyntaxNode member) {
@@ -72,7 +74,10 @@ class RecordAccessorOverrideCheckTest {
   private static SyntaxNode classMember(final SyntaxNode method, final boolean override) {
     final String text = override ? "@Override" : "@Nothing";
     return n(
-        "classBodyDeclaration", n("memberDeclaration", method), n("modifier", t("modifier", text)));
+        "classBodyDeclaration",
+        n("memberDeclaration", method),
+        n("modifier", t("modifier", text))
+    );
   }
 
   private static SyntaxNode method(final String name, final String parameters) {

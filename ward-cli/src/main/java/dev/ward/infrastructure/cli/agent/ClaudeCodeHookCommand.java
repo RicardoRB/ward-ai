@@ -40,7 +40,8 @@ public final class ClaudeCodeHookCommand implements Callable<Integer> {
 
   @Option(
       names = "--event-stdin",
-      description = "Read the Claude Code hook event JSON from stdin (used by generated hooks).")
+      description = "Read the Claude Code hook event JSON from stdin (used by generated hooks)."
+  )
   private boolean eventStdin;
 
   private final HookChecks hookChecks;
@@ -54,7 +55,10 @@ public final class ClaudeCodeHookCommand implements Callable<Integer> {
    */
   @Inject
   public ClaudeCodeHookCommand(
-      final HookChecks hookChecks, final LearningService learningService, final JsonCodec codec) {
+      final HookChecks hookChecks,
+      final LearningService learningService,
+      final JsonCodec codec
+  ) {
     this(hookChecks, learningService, codec, HookStdin.system());
   }
 
@@ -62,7 +66,8 @@ public final class ClaudeCodeHookCommand implements Callable<Integer> {
       final HookChecks hookChecks,
       final LearningService learningService,
       final JsonCodec codec,
-      final HookStdin stdin) {
+      final HookStdin stdin
+  ) {
     this.hookChecks = hookChecks;
     this.learningService = learningService;
     this.codec = codec;
@@ -108,7 +113,8 @@ public final class ClaudeCodeHookCommand implements Callable<Integer> {
                     .editedPath()
                     .map(path -> List.of(options.directory().toAbsolutePath().resolve(path)))
                     .orElseGet(List::of),
-                Set.of());
+                Set.of()
+            );
     final LearningOutcome learning = learningService.learn(report, threshold);
     final boolean failed = !report.passed();
     if (failed) {
@@ -117,7 +123,10 @@ public final class ClaudeCodeHookCommand implements Callable<Integer> {
       output()
           .println(
               ClaudeHookResponses.postToolUseContext(
-                  codec, ClaudeHookFeedback.learningContext(learning)));
+                  codec,
+                  ClaudeHookFeedback.learningContext(learning)
+              )
+          );
     }
     learning.warnings().forEach(warning -> error().println(warning));
     return failed ? ExitCodes.ERROR : ExitCodes.OK;

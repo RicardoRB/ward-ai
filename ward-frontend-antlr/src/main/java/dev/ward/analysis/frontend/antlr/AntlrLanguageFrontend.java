@@ -31,7 +31,6 @@ import org.antlr.v4.runtime.ParserRuleContext;
  * hand it to every pass.
  */
 public final class AntlrLanguageFrontend implements LanguageFrontend {
-
   /**
    * The weight of the parses kept, in characters of source text, so the passes of a run parse a
    * unit once. It is about 8 MB of source: Java trees weigh about 90 bytes per character, so the
@@ -67,7 +66,8 @@ public final class AntlrLanguageFrontend implements LanguageFrontend {
       case OPENAPI, ANDROID ->
           unit -> {
             throw new IllegalArgumentException(
-                "the ANTLR frontend does not parse " + language + ": " + unit.path());
+                "the ANTLR frontend does not parse " + language + ": " + unit.path()
+            );
           };
     };
   }
@@ -75,11 +75,14 @@ public final class AntlrLanguageFrontend implements LanguageFrontend {
   private static LanguageFrontend javaSession() {
     return new JavaSession(
         javaUnitSession(JavaParser::compilationunit),
-        javaUnitSession(JavaParser::compactCompilationUnit));
+        javaUnitSession(JavaParser::compactCompilationUnit)
+    );
   }
 
   private static LanguageFrontend javaUnitSession(
-      final Function<JavaParser, ParserRuleContext> start) {
+      final Function<JavaParser,
+      ParserRuleContext> start
+  ) {
     final JavaLexer lexer = new JavaLexer(empty());
     final JavaParser parser = new JavaParser(new CommonTokenStream(lexer));
     return new GrammarSession<>(lexer, parser, start);

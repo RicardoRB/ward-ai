@@ -17,7 +17,6 @@ import java.util.Optional;
  * of the receiver.
  */
 final class JavaCreationTypes {
-
   /** The prefix of the annotation that gives a call the type its receiver was created as. */
   static final String MARK = "ward:created-as:";
 
@@ -43,7 +42,10 @@ final class JavaCreationTypes {
    */
   void assign(final String name, final SyntaxNode value) {
     created.merge(
-        name, createdBy(value).orElse(UNKNOWN), (old, now) -> old.equals(now) ? old : UNKNOWN);
+        name,
+        createdBy(value).orElse(UNKNOWN),
+        (old, now) -> old.equals(now) ? old : UNKNOWN
+    );
   }
 
   /** Records the creation of a final field, which no other body can assign again. */
@@ -53,7 +55,8 @@ final class JavaCreationTypes {
             type -> {
               created.put(name, type);
               created.put(THIS + name, type);
-            });
+            }
+        );
   }
 
   /** The annotations of a call: the creation type of its receiver, when it is known. */

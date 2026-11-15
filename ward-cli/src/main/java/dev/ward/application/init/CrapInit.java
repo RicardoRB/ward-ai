@@ -33,7 +33,8 @@ public final class CrapInit {
       final ToolchainInitSupport support,
       final Project project,
       final InitInputs inputs,
-      final String id) {
+      final String id
+  ) {
     if (SupportedQualityGates.CRAP.equals(id) && support.crap(project, inputs).isEmpty()) {
       throw new WardException(MANUAL_STEP);
     }
@@ -46,7 +47,8 @@ public final class CrapInit {
         "Fails functions whose CRAP score (complexity and untested lines) is too high (opt-in).",
         List.of(),
         true,
-        "Reads the coverage report that init configures; it runs no command.");
+        "Reads the coverage report that init configures; it runs no command."
+    );
   }
 
   /**
@@ -61,7 +63,9 @@ public final class CrapInit {
       final String needs,
       final List<String> alsoAfter,
       final List<InitGateOption> extra,
-      final Map<String, String> settings) {
+      final Map<String,
+      String> settings
+  ) {
     final Optional<InitGateOption> found =
         gates.stream().filter(gate -> SupportedQualityGates.CRAP.equals(gate.id())).findFirst();
     if (found.isEmpty()) {
@@ -74,13 +78,14 @@ public final class CrapInit {
       throw new WardException(
           "The crap gate needs the '"
               + needs
-              + "' gate, which produces its coverage data. Select both gates.");
+              + "' gate, which produces its coverage data. Select both gates."
+      );
     }
     final int after =
         Stream.concat(Stream.of(needs), alsoAfter.stream())
-                .mapToInt(id -> indexOf(rest, id))
-                .max()
-                .orElseThrow()
+            .mapToInt(id -> indexOf(rest, id))
+            .max()
+            .orElseThrow()
             + 1;
     final List<InitGateOption> placed = new ArrayList<>(rest.subList(0, after));
     placed.addAll(extra);
@@ -91,7 +96,9 @@ public final class CrapInit {
             crap.command(),
             true,
             crap.availabilityMessage(),
-            settings));
+            settings
+        )
+    );
     placed.addAll(rest.subList(after, rest.size()));
     return List.copyOf(placed);
   }

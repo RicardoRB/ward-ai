@@ -8,13 +8,12 @@ import dev.ward.analysis.domain.port.ParseResult;
 import org.junit.jupiter.api.Test;
 
 class ParseCacheTest {
-
   private static final int TEXT_LENGTH = 10_000;
   private static final int UNITS_THAT_FIT = 3;
   private static final int MANY = 100;
 
   /** Three units of {@link #TEXT_LENGTH} plus their entry cost fit; a fourth does not. */
-  private static final long BUDGET = (long) UNITS_THAT_FIT * (TEXT_LENGTH + 1024) + 1;
+  private static final long BUDGET = (long)UNITS_THAT_FIT * (TEXT_LENGTH + 1024) + 1;
 
   private static final ParseResult RESULT =
       new AntlrLanguageFrontend()

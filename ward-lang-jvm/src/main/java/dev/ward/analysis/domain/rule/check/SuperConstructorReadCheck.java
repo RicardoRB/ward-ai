@@ -80,14 +80,18 @@ public final class SuperConstructorReadCheck implements UnitCheck {
   }
 
   private void firstReads(
-      final FieldAccesses.Member method, final Set<String> candidates, final List<RuleMatch> out) {
+      final FieldAccesses.Member method,
+      final Set<String> candidates,
+      final List<RuleMatch> out
+  ) {
     final Set<String> seen = new HashSet<>();
     for (final FieldAccesses.Access access : method.accesses()) {
       if (candidates.contains(access.field())
           && seen.add(access.field())
           && access.use() == FieldAccesses.Use.READ) {
         out.add(
-            CheckSupport.at(access.node().span(), CheckSupport.fill(message, access.field(), "")));
+            CheckSupport.at(access.node().span(), CheckSupport.fill(message, access.field(), ""))
+        );
       }
     }
   }

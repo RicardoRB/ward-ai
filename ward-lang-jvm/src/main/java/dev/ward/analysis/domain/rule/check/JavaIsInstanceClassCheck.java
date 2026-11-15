@@ -21,7 +21,6 @@ import java.util.Set;
  * unknown is never reported.
  */
 public final class JavaIsInstanceClassCheck implements RuleCheck {
-
   private static final String CLASS = "java.lang.Class";
   private static final String METHOD = "isInstance";
 
@@ -52,7 +51,8 @@ public final class JavaIsInstanceClassCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("expression"))) {
       if (flagged(visit.node(), types)) {

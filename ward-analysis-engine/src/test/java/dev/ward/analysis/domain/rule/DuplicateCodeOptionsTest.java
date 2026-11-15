@@ -6,15 +6,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.Test;
 
 class DuplicateCodeOptionsTest {
-
   private static final int CUSTOM_MIN_TOKENS = 12;
   private static final int CUSTOM_SHARE = 5;
 
   @Test
   void readsEveryOptionFromTheBody() {
     final DuplicateCodeOptions options =
-        DuplicateCodeOptions.parse(
-            """
+        DuplicateCodeOptions.parse("""
             check = "duplicate-code"
             min-tokens = 12
             ignore-literals = true
@@ -25,7 +23,13 @@ class DuplicateCodeOptionsTest {
     assertThat(options)
         .isEqualTo(
             new DuplicateCodeOptions(
-                CUSTOM_MIN_TOKENS, true, true, true, DuplicateCodeOptions.NO_SHARE_LIMIT));
+                CUSTOM_MIN_TOKENS,
+                true,
+                true,
+                true,
+                DuplicateCodeOptions.NO_SHARE_LIMIT
+            )
+        );
   }
 
   @Test
@@ -39,7 +43,9 @@ class DuplicateCodeOptionsTest {
                 false,
                 false,
                 false,
-                DuplicateCodeOptions.NO_SHARE_LIMIT));
+                DuplicateCodeOptions.NO_SHARE_LIMIT
+            )
+        );
   }
 
   @Test

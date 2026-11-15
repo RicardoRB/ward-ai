@@ -13,7 +13,6 @@ import java.util.Set;
  * unlocked code, and their lock state is not known here.
  */
 final class FieldAccessScan {
-
   private static final Set<String> SKIPPED = Set.of("readObject", "clone", "close", "finalize");
 
   private final Map<String, Field> fields = new LinkedHashMap<>();
@@ -78,7 +77,8 @@ final class FieldAccessScan {
       boolean arithmetic,
       boolean receiver,
       Lock lock,
-      String method) {}
+      String method
+  ) {}
 
   /** Scans the class declaration {@code clazz}. */
   FieldAccessScan(final SyntaxNode clazz) {
@@ -101,7 +101,11 @@ final class FieldAccessScan {
 
   /** Adds the accesses and calls of a region of code that runs as the method {@code key}. */
   void scanRegion(
-      final SyntaxNode region, final Lock base, final String key, final Set<String> shadow) {
+      final SyntaxNode region,
+      final Lock base,
+      final String key,
+      final Set<String> shadow
+  ) {
     walker.walk(region, new AccessWalker.Site(base, key, shadow), List.of());
   }
 

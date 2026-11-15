@@ -36,7 +36,8 @@ public final class ThrowsExceptionCheck implements UnitCheck {
           "Before",
           "After",
           "BeforeClass",
-          "AfterClass");
+          "AfterClass"
+      );
 
   private final String message;
 

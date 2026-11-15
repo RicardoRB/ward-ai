@@ -26,7 +26,6 @@ import org.junit.jupiter.api.Test;
 
 /** Project checks that read the manifest files of the project, through the rule engine. */
 final class RuleEngineProjectFilesTest {
-
   private static final String RULE = "ward:typescript/project-files";
   private static final int LINE = 3;
   private static final int COLUMN = 4;
@@ -40,7 +39,8 @@ final class RuleEngineProjectFilesTest {
     final List<AnalysisFinding> findings =
         run(
             (trees, files) -> List.of(new ProjectMatch(MANIFEST, new RuleMatch(AT, "manifest"))),
-            new ProjectFiles(Map.of(MANIFEST, TEXT)));
+            new ProjectFiles(Map.of(MANIFEST, TEXT))
+        );
 
     assertThat(findings)
         .containsExactly(
@@ -52,7 +52,9 @@ final class RuleEngineProjectFilesTest {
                 LINE,
                 COLUMN,
                 null,
-                List.of()));
+                List.of()
+            )
+        );
   }
 
   @Test
@@ -63,7 +65,8 @@ final class RuleEngineProjectFilesTest {
           files.text(MANIFEST).ifPresent(seen::add);
           return List.of();
         },
-        new ProjectFiles(Map.of(MANIFEST, TEXT)));
+        new ProjectFiles(Map.of(MANIFEST, TEXT))
+    );
 
     assertThat(seen).containsExactly(TEXT);
   }
@@ -73,20 +76,30 @@ final class RuleEngineProjectFilesTest {
     final List<AnalysisFinding> findings =
         run(
             (trees, files) -> List.of(new ProjectMatch(SOURCE, new RuleMatch(AT, "unit"))),
-            ProjectFiles.empty());
+            ProjectFiles.empty()
+        );
 
     assertThat(findings)
         .containsExactly(
             new AnalysisFinding(
-                RULE, AnalysisSeverity.WARNING, "unit", SOURCE, LINE, COLUMN, null, List.of()));
+                RULE,
+                AnalysisSeverity.WARNING,
+                "unit",
+                SOURCE,
+                LINE,
+                COLUMN,
+                null,
+                List.of()
+            )
+        );
   }
 
   @Test
   void theTreesOnlyRunPassesNoFiles() {
     final List<AnalysisFinding> findings =
         new RuleEngine(
-                matcher(
-                    (trees, files) -> List.of(new ProjectMatch(SOURCE, new RuleMatch(AT, "x")))))
+            matcher((trees, files) -> List.of(new ProjectMatch(SOURCE, new RuleMatch(AT, "x"))))
+        )
             .runProject(List.of(unit()), List.of(frontend()), List.of(definition()));
 
     assertThat(findings).hasSize(1);
@@ -103,7 +116,12 @@ final class RuleEngineProjectFilesTest {
 
   private static RuleDefinition definition() {
     return new RuleDefinition(
-        RULE, AnalysisLanguage.TYPESCRIPT, RuleCapability.SYNTAX, AnalysisSeverity.WARNING, "body");
+        RULE,
+        AnalysisLanguage.TYPESCRIPT,
+        RuleCapability.SYNTAX,
+        AnalysisSeverity.WARNING,
+        "body"
+    );
   }
 
   private static FrontendSupport frontend() {
@@ -138,7 +156,10 @@ final class RuleEngineProjectFilesTest {
 
           @Override
           public List<ProjectMatch> project(
-              final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
+              final SortedMap<String,
+              SyntaxNode> trees,
+              final ProjectFiles files
+          ) {
             return check.run(trees, files);
           }
         };

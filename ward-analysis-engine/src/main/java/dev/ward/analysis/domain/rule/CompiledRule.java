@@ -7,7 +7,6 @@ import java.util.SortedMap;
 
 /** A rule ready to run over syntax trees. A {@link RuleMatcher} builds it from a definition. */
 public interface CompiledRule extends MeasuringRule {
-
   /** Returns the definition this rule was built from. */
   RuleDefinition definition();
 
@@ -40,7 +39,10 @@ public interface CompiledRule extends MeasuringRule {
    *     tree
    */
   default List<RuleMatch> matches(
-      final SyntaxNode root, final DependencyView dependencies, final FlowView flow) {
+      final SyntaxNode root,
+      final DependencyView dependencies,
+      final FlowView flow
+  ) {
     return matches(root, dependencies);
   }
 
@@ -57,7 +59,8 @@ public interface CompiledRule extends MeasuringRule {
       final SyntaxNode root,
       final DependencyView dependencies,
       final FlowView flow,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return matches(root, dependencies, flow);
   }
 
@@ -75,7 +78,8 @@ public interface CompiledRule extends MeasuringRule {
       final DependencyView dependencies,
       final FlowView flow,
       final ScopeView scopes,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return matches(root, dependencies, flow, unit);
   }
 
@@ -96,7 +100,8 @@ public interface CompiledRule extends MeasuringRule {
       final SyntaxNode root,
       final DependencyView dependencies,
       final UnitViews views,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return matches(root, dependencies, views.flow(), views.scopes(), unit);
   }
 
@@ -118,7 +123,10 @@ public interface CompiledRule extends MeasuringRule {
    * the files and returns {@link #project(SortedMap)}.
    */
   default List<ProjectMatch> project(
-      final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
+      final SortedMap<String,
+      SyntaxNode> trees,
+      final ProjectFiles files
+  ) {
     return project(trees);
   }
 }

@@ -25,7 +25,6 @@ import java.util.SortedMap;
  * load runs no rule; the gate reports why.
  */
 final class OpenApiProjectCheck implements RuleCheck, ProjectCheck {
-
   private static final String ENTRY_KEY = "openapi";
 
   private static final Comparator<ProjectMatch> ORDER =
@@ -70,6 +69,7 @@ final class OpenApiProjectCheck implements RuleCheck, ProjectCheck {
         && root.children().stream()
             .anyMatch(
                 entry ->
-                    ENTRY_KEY.equals(entry.children().getFirst().fields().get(YamlSyntax.VALUE)));
+                    ENTRY_KEY.equals(entry.children().getFirst().fields().get(YamlSyntax.VALUE))
+            );
   }
 }

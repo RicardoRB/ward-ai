@@ -8,7 +8,6 @@ import java.util.Map;
 
 /** Builds the nodes of the tree described by {@link YamlSyntax}. */
 final class YamlNodes {
-
   private YamlNodes() {}
 
   static SyntaxNode scalar(final String kind, final Span span, final String value) {
@@ -37,7 +36,11 @@ final class YamlNodes {
 
   static SyntaxNode entry(final SyntaxNode key, final SyntaxNode value) {
     return new SyntaxNode(
-        YamlSyntax.ENTRY, cover(key.span(), value.span()), Map.of(), List.of(key, value));
+        YamlSyntax.ENTRY,
+        cover(key.span(), value.span()),
+        Map.of(),
+        List.of(key, value)
+    );
   }
 
   /** An object of {@code entries} that is written over {@code whole}. */
@@ -57,7 +60,8 @@ final class YamlNodes {
         original.kind(),
         site,
         withAlias(original.fields(), name, at.startLine() + ":" + at.startColumn()),
-        original.children());
+        original.children()
+    );
   }
 
   /** The region from the start of {@code first} to the end of {@code last}. */
@@ -68,11 +72,16 @@ final class YamlNodes {
         last.endLine(),
         last.endColumn(),
         first.startOffset(),
-        last.endOffset());
+        last.endOffset()
+    );
   }
 
   private static Map<String, String> withAlias(
-      final Map<String, String> fields, final String name, final String origin) {
+      final Map<String,
+      String> fields,
+      final String name,
+      final String origin
+  ) {
     final Map<String, String> copy = new HashMap<>(fields);
     copy.put(YamlSyntax.ALIAS, name);
     copy.put(YamlSyntax.ORIGIN, origin);

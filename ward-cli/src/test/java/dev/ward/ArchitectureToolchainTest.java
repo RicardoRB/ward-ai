@@ -33,41 +33,53 @@ final class ArchitectureToolchainTest {
           Map.entry("InitToolchains", "the init registry that maps each toolchain to its support"),
           Map.entry(
               "JvmBuildToolConfigurator",
-              "routes JVM init mutations to the Maven or Gradle adapter"),
+              "routes JVM init mutations to the Maven or Gradle adapter"
+          ),
           Map.entry(
               "CompositeToolInstaller",
-              "routes tool installation to the adapter of each toolchain"),
+              "routes tool installation to the adapter of each toolchain"
+          ),
           Map.entry("ToolchainArchitectureTables", "answers each toolchain's architecture tables"),
           Map.entry(
               "FileSystemProjectInspection",
-              "detects a directory's project with each toolchain's check"),
+              "detects a directory's project with each toolchain's check"
+          ),
           Map.entry(
               "RepositoryProjectScan",
-              "collects the project roots that each toolchain's check finds"),
+              "collects the project roots that each toolchain's check finds"
+          ),
           Map.entry(
               "BuildModules",
-              "tells whether a directory is a module of a Maven, Gradle, Node or uv root"),
+              "tells whether a directory is a module of a Maven, Gradle, Node or uv root"
+          ),
           Map.entry(
               "OwnLanguageMembers",
-              "picks the Python project of a Node workspace member that lists it"),
+              "picks the Python project of a Node workspace member that lists it"
+          ),
           Map.entry("ToolchainFindingSources", "registers the finding source of each toolchain"),
           Map.entry(
               "CompositeFindingExtractor",
-              "routes each gate to its finding source, wrapping Turborepo workspaces"),
+              "routes each gate to its finding source, wrapping Turborepo workspaces"
+          ),
           Map.entry("BuildToolFindings", "routes each toolchain to its doctor findings"),
           Map.entry(
               "ProjectDependencyAdapters",
-              "combines the Node and Swift dependency adapters, each reading its project layout"),
+              "combines the Node and Swift dependency adapters, each reading its project layout"
+          ),
           Map.entry(
               "QualityGateFactory",
-              "maps each gate id to its implementation, including the Maven and Swift gates"),
+              "maps each gate id to its implementation, including the Maven and Swift gates"
+          ),
           Map.entry("DoctorService", "the doctor facade, which runs the Swift toolchain diagnosis"),
           Map.entry(
               "SystemEnvironmentInspection",
-              "reads each toolchain's environment facts for the doctor"),
+              "reads each toolchain's environment facts for the doctor"
+          ),
           Map.entry(
               "JvmDependencyAdapters",
-              "builds the JVM dependency adapters from the Maven and Gradle module layout"));
+              "builds the JVM dependency adapters from the Maven and Gradle module layout"
+          )
+      );
 
   /**
    * The feature roots: each feature's classes outside its subpackages. The CLI adapters under
@@ -75,7 +87,8 @@ final class ArchitectureToolchainTest {
    * instead.
    */
   private static final String[] ROOT_PACKAGES = {
-    "dev.ward.application.*", "dev.ward.infrastructure.*"
+      "dev.ward.application.*",
+      "dev.ward.infrastructure.*"
   };
 
   private ArchitectureToolchainTest() {}
@@ -152,7 +165,8 @@ final class ArchitectureToolchainTest {
         "not in the root allowlist",
         type ->
             !ROOT_ALLOWLIST.containsKey(type.getSimpleName())
-                && !type.getSimpleName().contains("_"));
+                && !type.getSimpleName().contains("_")
+    );
   }
 
   /**
@@ -169,7 +183,9 @@ final class ArchitectureToolchainTest {
             toolchain ->
                 Stream.of(
                     "dev.ward.application.*." + toolchain + "..",
-                    "dev.ward.infrastructure.*." + toolchain + ".."))
+                    "dev.ward.infrastructure.*." + toolchain + ".."
+                )
+        )
         .toArray(String[]::new);
   }
 }

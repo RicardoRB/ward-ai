@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * the file, and a {@code values} file defines one resource per child of its {@code resources} root.
  */
 final class ResourceDefinitions {
-
   private static final String VALUES = "values";
   private static final Pattern RES_FILE =
       Pattern.compile("(?:^|/)res/([a-z]+)(?:-[^/]+)?/([^/]+)\\.xml$");
@@ -33,7 +32,8 @@ final class ResourceDefinitions {
           Map.entry("string-array", "array"),
           Map.entry("integer-array", "array"),
           Map.entry("array", "array"),
-          Map.entry("drawable", "drawable"));
+          Map.entry("drawable", "drawable")
+      );
 
   private ResourceDefinitions() {}
 

@@ -14,12 +14,13 @@ class ArchitectureRuleReaderTest {
   @Test
   void anUnknownPredicateNamesTheRuleAndTheKey() throws IOException {
     assertThat(
-            ArchitectureFiles.problemsOf(
-                root, ArchitectureFiles.rule("annotated-with = \"Entity\"")))
+        ArchitectureFiles.problemsOf(root, ArchitectureFiles.rule("annotated-with = \"Entity\""))
+    )
         .anySatisfy(
             problem ->
                 assertThat(problem)
-                    .contains("rule 'r'", "annotated-with", "unknown key", "must-not-depend-on"));
+                    .contains("rule 'r'", "annotated-with", "unknown key", "must-not-depend-on")
+        );
   }
 
   @Test
@@ -56,9 +57,11 @@ class ArchitectureRuleReaderTest {
   @Test
   void aRepeatedNameIsAProblem() throws IOException {
     assertThat(
-            ArchitectureFiles.problemsOf(
-                root,
-                "version = 1\n" + ArchitectureFiles.VALID_RULE + ArchitectureFiles.VALID_RULE))
+        ArchitectureFiles.problemsOf(
+            root,
+            "version = 1\n" + ArchitectureFiles.VALID_RULE + ArchitectureFiles.VALID_RULE
+        )
+    )
         .singleElement()
         .asString()
         .contains("rule 'domain-is-pure'", "name", "another rule");

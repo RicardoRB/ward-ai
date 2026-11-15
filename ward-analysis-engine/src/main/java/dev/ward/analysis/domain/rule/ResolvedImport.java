@@ -12,7 +12,6 @@ import java.util.Optional;
  *     import names the module itself, or the file declares no such symbol
  */
 public record ResolvedImport(String path, Optional<Symbol> declaration) {
-
   /**
    * Validates the fields.
    *

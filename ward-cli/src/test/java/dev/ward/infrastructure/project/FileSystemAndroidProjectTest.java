@@ -40,7 +40,8 @@ class FileSystemAndroidProjectTest {
     write(
         "build.gradle.kts",
         "plugins {\n    id(\"com.android.application\")\n}\n"
-            + "dependencies { implementation(\"io.ktor:ktor-client-core:3.0.0\") }\n");
+            + "dependencies { implementation(\"io.ktor:ktor-client-core:3.0.0\") }\n"
+    );
 
     assertThat(FileSystemProjectInspection.projectAt(root).orElseThrow().framework())
         .isEqualTo(Framework.ANDROID);

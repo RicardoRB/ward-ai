@@ -7,7 +7,6 @@ import java.util.Set;
 
 /** Reads the names and operators of Java syntax nodes for the access finder. */
 final class JavaSyntaxNames {
-
   private static final String PRIMARY = "primary";
   private static final String IDENTIFIER = "identifier";
   private static final String VARIABLE_DECLARATOR_ID = "variableDeclaratorId";

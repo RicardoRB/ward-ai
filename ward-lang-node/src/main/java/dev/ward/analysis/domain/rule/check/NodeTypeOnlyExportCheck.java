@@ -22,7 +22,6 @@ import java.util.Optional;
  * written {@code type X} are left alone.
  */
 public final class NodeTypeOnlyExportCheck implements RuleCheck {
-
   private static final String STATEMENT = "exportStatement";
   private static final String BLOCK = "exportFromBlock";
   private static final String ITEMS = "exportModuleItems";
@@ -64,7 +63,11 @@ public final class NodeTypeOnlyExportCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes();
     final Map<Integer, NameReference> resolved = new HashMap<>();
     for (final NameReference reference : scopes.references()) {
@@ -79,8 +82,10 @@ public final class NodeTypeOnlyExportCheck implements RuleCheck {
 
   private void collect(
       final SyntaxNode node,
-      final Map<Integer, NameReference> resolved,
-      final List<RuleMatch> out) {
+      final Map<Integer,
+      NameReference> resolved,
+      final List<RuleMatch> out
+  ) {
     if (STATEMENT.equals(node.kind())) {
       clause(node, resolved).ifPresent(out::add);
     }
@@ -89,7 +94,10 @@ public final class NodeTypeOnlyExportCheck implements RuleCheck {
 
   /** The finding of a local export clause that exports types, if the statement is one. */
   private Optional<RuleMatch> clause(
-      final SyntaxNode statement, final Map<Integer, NameReference> resolved) {
+      final SyntaxNode statement,
+      final Map<Integer,
+      NameReference> resolved
+  ) {
     if (!localClause(statement)) {
       return Optional.empty();
     }
@@ -125,12 +133,16 @@ public final class NodeTypeOnlyExportCheck implements RuleCheck {
 
   /** The local name of an alias when the name resolves to a type-only binding. */
   private static Optional<String> typeName(
-      final SyntaxNode alias, final Map<Integer, NameReference> resolved) {
+      final SyntaxNode alias,
+      final Map<Integer,
+      NameReference> resolved
+  ) {
     return child(alias, NAME)
         .map(name -> NodeSyntax.firstLeaf(name).span().startOffset())
         .map(resolved::get)
         .filter(
-            reference -> reference.resolved().orElseThrow().flags().contains(BindingFlag.TYPE_ONLY))
+            reference -> reference.resolved().orElseThrow().flags().contains(BindingFlag.TYPE_ONLY)
+        )
         .map(NameReference::name);
   }
 

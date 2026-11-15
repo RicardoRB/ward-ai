@@ -10,7 +10,6 @@ import java.util.function.BiConsumer;
 
 /** The rules that follow a null value out of a method: returns, assignments, calls and uses. */
 final class NullValueFinders {
-
   private static final String EXPRESSION = "expression";
   private static final String LOCAL = "localVariableDeclaration";
 
@@ -51,7 +50,8 @@ final class NullValueFinders {
               hits.add(NullHit.at(value, SyntaxWalk.text(value)));
             }
           }
-        });
+        }
+    );
   }
 
   /** A null, or a nullable name, assigned to a primitive local or returned as a primitive. */
@@ -74,7 +74,8 @@ final class NullValueFinders {
                   .forEach(value -> hits.add(NullHit.at(value, SyntaxWalk.text(value))));
             }
           }
-        });
+        }
+    );
   }
 
   private static List<SyntaxNode> initializers(final SyntaxNode local) {
@@ -102,11 +103,15 @@ final class NullValueFinders {
               hits.add(NullHit.at(value, SyntaxWalk.text(value)));
             }
           }
-        });
+        }
+    );
   }
 
   private static boolean nonNullField(
-      final NullModel.Type type, final SyntaxNode target, final Set<String> shadowed) {
+      final NullModel.Type type,
+      final SyntaxNode target,
+      final Set<String> shadowed
+  ) {
     final String text = SyntaxWalk.text(target);
     final String name = NullSyntax.name(target);
     final boolean plain = text.equals(name);
@@ -115,7 +120,8 @@ final class NullValueFinders {
             field ->
                 field.name().equals(name)
                     && !(plain && shadowed.contains(name))
-                    && NullFlow.nonNull(field.notes(), type.marked(), field.primitive()));
+                    && NullFlow.nonNull(field.notes(), type.marked(), field.primitive())
+        );
   }
 
   /** The parameter and local names of a method, which hide the fields of the same name. */
@@ -145,9 +151,11 @@ final class NullValueFinders {
                         SyntaxWalk.visits(expression, Set.of("switchRuleOutcome")).stream()
                             .map(SyntaxWalk.Visit::node)
                             .filter(outcome -> "null;".equals(SyntaxWalk.text(outcome)))
-                            .forEach(outcome -> hits.add(NullHit.at(outcome, "null"))));
+                            .forEach(outcome -> hits.add(NullHit.at(outcome, "null")))
+                );
           }
-        });
+        }
+    );
   }
 
   /** Runs {@code action} for each hit finder; kept for the registry in {@link NullnessCheck}. */

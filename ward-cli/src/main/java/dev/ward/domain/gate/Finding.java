@@ -20,8 +20,8 @@ public record Finding(
     Integer line,
     Integer column,
     String helpUri,
-    List<FindingStep> path) {
-
+    List<FindingStep> path
+) {
   /**
    * Validates the required fields and copies the path.
    *

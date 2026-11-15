@@ -18,7 +18,8 @@ class NativeHookPayloadTest {
     final NativeHookInput event =
         parse(
             "{\"session_id\":\"s\",\"turn_id\":\"t\",\"cwd\":\"/p\",\"hook_event_name\":\"PreToolUse\","
-                + "\"tool_name\":\"Bash\",\"tool_use_id\":\"u\",\"tool_input\":{\"command\":\"git status\"}}");
+                + "\"tool_name\":\"Bash\",\"tool_use_id\":\"u\",\"tool_input\":{\"command\":\"git status\"}}"
+        );
 
     assertThat(event.eventName()).isEqualTo("PreToolUse");
     assertThat(event.toolName()).isEqualTo("Bash");
@@ -32,7 +33,8 @@ class NativeHookPayloadTest {
     final NativeHookInput event =
         parse(
             "{\"hook_event_name\":\"PostToolUse\",\"tool_name\":\"apply_patch\","
-                + "\"tool_input\":{\"command\":\"*** Begin Patch\"},\"tool_response\":\"ok\"}");
+                + "\"tool_input\":{\"command\":\"*** Begin Patch\"},\"tool_response\":\"ok\"}"
+        );
 
     assertThat(event.patch()).isEqualTo("*** Begin Patch");
     assertThat(event.command()).isNull();

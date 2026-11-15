@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * name of an environment variable for a secret.
  */
 final class JavaLiteralSites {
-
   /** The literal is a value of its own: an initializer or an assigned value. */
   static final String VALUE = "value";
 
@@ -24,7 +23,8 @@ final class JavaLiteralSites {
 
   private static final Pattern WHOLE_VALUE =
       Pattern.compile(
-          "^\"((?:[^\"\\\\]|\\\\.)*)\"(?:\\.(?:getBytes|toCharArray)\\((?:[^()]|\\([^()]*\\))*\\))?$");
+          "^\"((?:[^\"\\\\]|\\\\.)*)\"(?:\\.(?:getBytes|toCharArray)\\((?:[^()]|\\([^()]*\\))*\\))?$"
+      );
 
   private JavaLiteralSites() {}
 
@@ -53,6 +53,8 @@ final class JavaLiteralSites {
             Optional.empty(),
             List.of(),
             List.of(),
-            value.span()));
+            value.span()
+        )
+    );
   }
 }

@@ -16,7 +16,13 @@ import java.util.regex.Pattern;
  *     ({@code version managed from X}), or an empty text
  */
 record TgfNode(
-    String name, String version, String scope, boolean omitted, boolean cycle, String premanaged) {
+    String name,
+    String version,
+    String scope,
+    boolean omitted,
+    boolean cycle,
+    String premanaged
+) {
   private static final int MIN_COORDINATE_PARTS = 5;
   private static final String REASON_SEPARATOR = " - ";
   private static final Pattern MANAGED = Pattern.compile("version managed from ([^;)\\s]+)");
@@ -41,6 +47,7 @@ record TgfNode(
         hasScope ? parts[parts.length - 1] : "",
         omitted,
         reason.contains("cycle"),
-        managedFrom(text));
+        managedFrom(text)
+    );
   }
 }

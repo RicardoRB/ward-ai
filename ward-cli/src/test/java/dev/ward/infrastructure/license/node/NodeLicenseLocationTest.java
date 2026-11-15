@@ -26,16 +26,22 @@ class NodeLicenseLocationTest {
     return reader.lookup(
         project(root, Language.JAVASCRIPT, BuildTool.NPM),
         module,
-        dependency(Ecosystem.NPM, name, version));
+        dependency(Ecosystem.NPM, name, version)
+    );
   }
 
   private void packageJson(
-      final String where, final String name, final String version, final String extra)
+      final String where,
+      final String name,
+      final String version,
+      final String extra
+  )
       throws IOException {
     write(
         root,
         where + "/package.json",
-        "{\"name\":\"" + name + "\",\"version\":\"" + version + "\"" + extra + "}");
+        "{\"name\":\"" + name + "\",\"version\":\"" + version + "\"" + extra + "}"
+    );
   }
 
   @Test
@@ -60,7 +66,8 @@ class NodeLicenseLocationTest {
         "node_modules/.pnpm/@scope+pkg@1.0.0/node_modules/@scope/pkg",
         "@scope/pkg",
         VERSION,
-        ",\"license\":\"Apache-2.0\"");
+        ",\"license\":\"Apache-2.0\""
+    );
 
     assertThat(lookup("", "@scope/pkg", VERSION).license().describe()).isEqualTo("Apache-2.0");
   }

@@ -8,7 +8,6 @@ import java.util.Set;
 
 /** Reads the methods a class, enum or record declares directly in its body. */
 final class TypeMethods {
-
   /** The kinds of the declarations that have a body of members. */
   static final Set<String> TYPES =
       Set.of("classDeclaration", "enumDeclaration", "recordDeclaration");
@@ -57,7 +56,8 @@ final class TypeMethods {
               for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(list, Set.of(PARAMETER))) {
                 child(visit.node(), TYPE).map(SyntaxWalk::text).ifPresent(types::add);
               }
-            });
+            }
+        );
     return types;
   }
 
@@ -67,7 +67,10 @@ final class TypeMethods {
   }
 
   private static void collect(
-      final SyntaxNode node, final SyntaxNode declaration, final List<Member> members) {
+      final SyntaxNode node,
+      final SyntaxNode declaration,
+      final List<Member> members
+  ) {
     final SyntaxNode scope = DECLARATION.equals(node.kind()) ? node : declaration;
     for (final SyntaxNode child : node.children()) {
       if (METHOD.equals(child.kind())) {

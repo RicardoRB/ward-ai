@@ -15,7 +15,11 @@ final class JavaImplicitMembers {
   private JavaImplicitMembers() {}
 
   static List<SourceModel.Member> enumConstants(
-      final SyntaxNode type, final TypeScope scope, final String owner, final JvmClass.Kind kind) {
+      final SyntaxNode type,
+      final TypeScope scope,
+      final String owner,
+      final JvmClass.Kind kind
+  ) {
     if (kind != JvmClass.Kind.ENUM) {
       return List.of();
     }
@@ -27,7 +31,10 @@ final class JavaImplicitMembers {
   }
 
   private static SourceModel.Member enumConstant(
-      final SyntaxNode constant, final TypeScope scope, final JType self) {
+      final SyntaxNode constant,
+      final TypeScope scope,
+      final JType self
+  ) {
     final SyntaxNode name = Syntax.child(constant, IDENTIFIER).orElse(constant);
     final JvmField field =
         new JvmField(
@@ -35,7 +42,8 @@ final class JavaImplicitMembers {
             Flags.PUBLIC | Flags.STATIC | Flags.FINAL | Flags.ENUM,
             self,
             Optional.empty(),
-            List.of());
+            List.of()
+        );
     return new SourceModel.Member(
         constant,
         constant,
@@ -43,11 +51,15 @@ final class JavaImplicitMembers {
         Optional.empty(),
         List.of(field),
         List.of(new SourceModel.Variable(name, Optional.of(self))),
-        Optional.of(constant));
+        Optional.of(constant)
+    );
   }
 
   static List<SourceModel.Member> recordComponents(
-      final SyntaxNode type, final TypeScope scope, final JvmClass.Kind kind) {
+      final SyntaxNode type,
+      final TypeScope scope,
+      final JvmClass.Kind kind
+  ) {
     if (kind != JvmClass.Kind.RECORD) {
       return List.of();
     }
@@ -60,7 +72,9 @@ final class JavaImplicitMembers {
   }
 
   private static SourceModel.Member recordComponent(
-      final SyntaxNode component, final TypeScope scope) {
+      final SyntaxNode component,
+      final TypeScope scope
+  ) {
     final SyntaxNode name = Syntax.child(component, IDENTIFIER).orElse(component);
     final Optional<JType> written =
         Syntax.child(component, "typeType").flatMap(found -> JavaTypes.type(found, scope));
@@ -73,7 +87,9 @@ final class JavaImplicitMembers {
                         Flags.PRIVATE | Flags.FINAL,
                         found,
                         Optional.empty(),
-                        List.of()))
+                        List.of()
+                    )
+            )
             .toList();
     return new SourceModel.Member(
         component,
@@ -82,7 +98,8 @@ final class JavaImplicitMembers {
         Optional.empty(),
         fields,
         List.of(new SourceModel.Variable(name, written)),
-        Optional.empty());
+        Optional.empty()
+    );
   }
 
   /** Returns the methods of the members, with the implicit ones of the kind of class. */
@@ -90,7 +107,8 @@ final class JavaImplicitMembers {
       final List<SourceModel.Member> members,
       final String owner,
       final JvmClass.Kind kind,
-      final boolean defaultConstructor) {
+      final boolean defaultConstructor
+  ) {
     final List<JvmMethod> methods =
         new ArrayList<>(members.stream().flatMap(member -> member.method().stream()).toList());
     if (defaultConstructor && methods.stream().noneMatch(JvmMethod::isConstructor)) {
@@ -100,7 +118,8 @@ final class JavaImplicitMembers {
       final JType self = JType.ClassType.of(owner);
       methods.add(implicit("values", Flags.STATIC, List.of(), new JType.ArrayType(self)));
       methods.add(
-          implicit("valueOf", Flags.STATIC, List.of(JType.ClassType.of(Types.STRING)), self));
+          implicit("valueOf", Flags.STATIC, List.of(JType.ClassType.of(Types.STRING)), self)
+      );
     }
     if (kind == JvmClass.Kind.RECORD) {
       addRecordMembers(members, methods);
@@ -109,7 +128,11 @@ final class JavaImplicitMembers {
   }
 
   private static JvmMethod implicit(
-      final String name, final int extra, final List<JType> parameters, final JType returns) {
+      final String name,
+      final int extra,
+      final List<JType> parameters,
+      final JType returns
+  ) {
     return new JvmMethod(
         name,
         Flags.PUBLIC | extra,
@@ -120,11 +143,14 @@ final class JavaImplicitMembers {
         List.of(),
         List.of(),
         List.of(),
-        Map.of());
+        Map.of()
+    );
   }
 
   private static void addRecordMembers(
-      final List<SourceModel.Member> members, final List<JvmMethod> methods) {
+      final List<SourceModel.Member> members,
+      final List<JvmMethod> methods
+  ) {
     final List<JvmField> components =
         members.stream()
             .filter(member -> RECORD_COMPONENT.equals(member.node().kind()))

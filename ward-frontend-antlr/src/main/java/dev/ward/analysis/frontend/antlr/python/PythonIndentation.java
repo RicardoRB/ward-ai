@@ -2,7 +2,6 @@ package dev.ward.analysis.frontend.antlr.python;
 
 /** Measures the indentation of a line of Python source. */
 final class PythonIndentation {
-
   /** Tab stops for indentation: a tab advances to the next multiple of this width. */
   private static final int TAB_WIDTH = 8;
 

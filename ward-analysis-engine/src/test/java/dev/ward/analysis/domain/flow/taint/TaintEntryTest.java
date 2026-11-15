@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks the matching rules that design.md gives for taint specification entries. */
 class TaintEntryTest {
-
   private static final Span SPAN = new Span(1, 1, 1, 2, 0, 1);
   private static final String QUERY = "query";
 
@@ -28,8 +27,9 @@ class TaintEntryTest {
   @Test
   void nameMustBeEqual() {
     assertThat(
-            entry("executeQuery", Optional.empty(), Optional.empty())
-                .matches(call("execute", Optional.of("java.sql.Statement"), "st")))
+        entry("executeQuery", Optional.empty(), Optional.empty())
+            .matches(call("execute", Optional.of("java.sql.Statement"), "st"))
+    )
         .isFalse();
   }
 
@@ -58,16 +58,19 @@ class TaintEntryTest {
   @Test
   void entryWithoutReceiverMatchesByNameAndQualifier() {
     assertThat(
-            entry("sink", Optional.empty(), Optional.empty())
-                .matches(call("sink", Optional.empty(), "")))
+        entry("sink", Optional.empty(), Optional.empty())
+            .matches(call("sink", Optional.empty(), ""))
+    )
         .isTrue();
     assertThat(
-            entry("sink", Optional.empty(), Optional.of("db"))
-                .matches(call("sink", Optional.empty(), "db")))
+        entry("sink", Optional.empty(), Optional.of("db"))
+            .matches(call("sink", Optional.empty(), "db"))
+    )
         .isTrue();
     assertThat(
-            entry("sink", Optional.empty(), Optional.of("db"))
-                .matches(call("sink", Optional.empty(), "x")))
+        entry("sink", Optional.empty(), Optional.of("db"))
+            .matches(call("sink", Optional.empty(), "x"))
+    )
         .isFalse();
     final TaintEntry chain = entry("query", Optional.empty(), Optional.of("sequelize"));
     assertThat(chain.matches(call("query", Optional.empty(), "models.sequelize"))).isTrue();
@@ -81,16 +84,25 @@ class TaintEntryTest {
   void kindMustMatch() {
     final FlowSite read =
         new FlowSite(
-            FlowSiteKind.MEMBER_READ, QUERY, "req", Optional.empty(), List.of(), List.of(), SPAN);
+            FlowSiteKind.MEMBER_READ,
+            QUERY,
+            "req",
+            Optional.empty(),
+            List.of(),
+            List.of(),
+            SPAN
+        );
     assertThat(entry(QUERY, Optional.empty(), Optional.empty()).matches(read)).isFalse();
     assertThat(
-            new TaintEntry(
-                    FlowSiteKind.MEMBER_READ,
-                    QUERY,
-                    Optional.empty(),
-                    Optional.of("req"),
-                    List.of())
-                .matches(read))
+        new TaintEntry(
+            FlowSiteKind.MEMBER_READ,
+            QUERY,
+            Optional.empty(),
+            Optional.of("req"),
+            List.of()
+        )
+            .matches(read)
+    )
         .isTrue();
   }
 
@@ -99,7 +111,12 @@ class TaintEntryTest {
   void parameterEntryMatchesAnnotation() {
     final TaintEntry entry =
         new TaintEntry(
-            FlowSiteKind.PARAMETER, "Untrusted", Optional.empty(), Optional.empty(), List.of());
+            FlowSiteKind.PARAMETER,
+            "Untrusted",
+            Optional.empty(),
+            Optional.empty(),
+            List.of()
+        );
     final FlowSite parameter =
         new FlowSite(
             FlowSiteKind.PARAMETER,
@@ -108,7 +125,8 @@ class TaintEntryTest {
             Optional.empty(),
             List.of("Untrusted"),
             List.of(),
-            SPAN);
+            SPAN
+        );
     final FlowSite plain =
         new FlowSite(
             FlowSiteKind.PARAMETER,
@@ -117,7 +135,8 @@ class TaintEntryTest {
             Optional.empty(),
             List.of("Other"),
             List.of(),
-            SPAN);
+            SPAN
+        );
     assertThat(entry.matches(parameter)).isTrue();
     assertThat(entry.matches(plain)).isFalse();
   }
@@ -131,18 +150,33 @@ class TaintEntryTest {
         TaintSpec.combine(
             List.of(
                 new TaintSpec(List.of(first), List.of(), List.of(), List.of()),
-                new TaintSpec(List.of(second), List.of(), List.of(), List.of())));
+                new TaintSpec(List.of(second), List.of(), List.of(), List.of())
+            )
+        );
     assertThat(combined.sources()).containsExactly(first, second);
   }
 
   private static TaintEntry entry(
-      final String name, final Optional<String> receiver, final Optional<String> qualifier) {
+      final String name,
+      final Optional<String> receiver,
+      final Optional<String> qualifier
+  ) {
     return new TaintEntry(FlowSiteKind.CALL, name, receiver, qualifier, List.of());
   }
 
   private static FlowSite call(
-      final String name, final Optional<String> receiverType, final String qualifier) {
+      final String name,
+      final Optional<String> receiverType,
+      final String qualifier
+  ) {
     return new FlowSite(
-        FlowSiteKind.CALL, name, qualifier, receiverType, List.of(), List.of(), SPAN);
+        FlowSiteKind.CALL,
+        name,
+        qualifier,
+        receiverType,
+        List.of(),
+        List.of(),
+        SPAN
+    );
   }
 }

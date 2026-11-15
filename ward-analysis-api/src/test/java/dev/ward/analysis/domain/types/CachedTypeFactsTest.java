@@ -41,15 +41,18 @@ class CachedTypeFactsTest {
     cached.factsOf(
         new SourceUnit("A.java", AnalysisLanguage.JAVA, "class A {}"),
         SPANS,
-        EnumSet.of(FactKind.TYPE));
+        EnumSet.of(FactKind.TYPE)
+    );
     cached.factsOf(
         new SourceUnit("A.java", AnalysisLanguage.JAVA, "class B {}"),
         SPANS,
-        EnumSet.of(FactKind.TYPE));
+        EnumSet.of(FactKind.TYPE)
+    );
     cached.factsOf(
         new SourceUnit("A.java", AnalysisLanguage.JAVA, "class B {}"),
         SPANS,
-        EnumSet.of(FactKind.CALL));
+        EnumSet.of(FactKind.CALL)
+    );
 
     assertThat(requests).hasValue(DISTINCT_REQUESTS);
   }
@@ -68,19 +71,22 @@ class CachedTypeFactsTest {
   void theTypeNameViewReadsTheTypeFacts() {
     final TypeFacts facts =
         (unit, spans, kinds) ->
-            new UnitTypeFacts(
-                java.util.Map.of(
-                    UnitTypeFacts.key(AT),
-                    new SpanFacts(
-                        new TypeRef("java.lang.String", List.of(), 1, false),
-                        null,
-                        null,
-                        List.of(),
-                        List.of(),
-                        List.of(),
-                        List.of(),
-                        null,
-                        null)));
+        new UnitTypeFacts(
+            java.util.Map.of(
+                UnitTypeFacts.key(AT),
+                new SpanFacts(
+                    new TypeRef("java.lang.String", List.of(), 1, false),
+                    null,
+                    null,
+                    List.of(),
+                    List.of(),
+                    List.of(),
+                    List.of(),
+                    null,
+                    null
+                )
+            )
+        );
 
     assertThat(facts.typesOf(new SourceUnit("A.java", AnalysisLanguage.JAVA, "x"), SPANS).types())
         .containsEntry(AT, "java.lang.String[]");

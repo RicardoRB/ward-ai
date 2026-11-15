@@ -7,7 +7,6 @@ import java.util.List;
  * in that folder belong to the target too, so this folder is what places them.
  */
 final class XcodeTargetDirectories {
-
   private static final String SEPARATOR = "/";
   private static final String EMPTY = "";
 

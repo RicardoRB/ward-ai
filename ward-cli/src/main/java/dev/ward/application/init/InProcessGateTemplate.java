@@ -21,7 +21,8 @@ final class InProcessGateTemplate {
           "ISC",
           "EPL-1.0",
           "EPL-2.0",
-          "CC0-1.0");
+          "CC0-1.0"
+      );
   private static final List<String> DENIED_LICENSES = List.of("GPL-*", "AGPL-*");
 
   private InProcessGateTemplate() {}
@@ -39,7 +40,8 @@ final class InProcessGateTemplate {
       final StringBuilder content,
       final String id,
       final List<String> profiles,
-      final QualityPreset preset) {
+      final QualityPreset preset
+  ) {
     if (FormatGates.WARD_FORMAT.equals(id)) {
       WardFormatTemplate.append(content, profiles);
       return;
@@ -51,7 +53,8 @@ final class InProcessGateTemplate {
         .append(
             profiles.stream()
                 .map(profile -> "\"" + profile + "\"")
-                .collect(Collectors.joining(", ")))
+                .collect(Collectors.joining(", "))
+        )
         .append("]\nuses = \"")
         .append(id)
         .append("\"\n")
@@ -59,7 +62,8 @@ final class InProcessGateTemplate {
         .append(
             (preset == QualityPreset.STRICT ? STRICT_LICENSES : DENIED_LICENSES)
                 .stream()
-                    .map(license -> "\"" + license + "\"")
-                    .collect(Collectors.joining(", ", "[", "]\n")));
+                .map(license -> "\"" + license + "\"")
+                .collect(Collectors.joining(", ", "[", "]\n"))
+        );
   }
 }

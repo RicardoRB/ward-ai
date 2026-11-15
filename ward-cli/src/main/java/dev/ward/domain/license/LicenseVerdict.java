@@ -9,7 +9,6 @@ package dev.ward.domain.license;
  * @param license the identifier that failed, or empty when the expression passes
  */
 public record LicenseVerdict(Outcome outcome, String entry, String license) {
-
   /** The decision. */
   public enum Outcome {
     /** The expression can be satisfied under the policy. */

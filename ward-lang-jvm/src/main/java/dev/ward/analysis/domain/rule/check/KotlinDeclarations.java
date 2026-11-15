@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
  * spans but not the modifiers, so a check reads the words written before the name on its line.
  */
 final class KotlinDeclarations {
-
   private static final char LINE_FEED = '\n';
   private static final char AT = '@';
   private static final String FUN_KEYWORD = "(?<![\\w$])fun(?![\\w$])";

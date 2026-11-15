@@ -22,9 +22,10 @@ import picocli.CommandLine.Spec;
     description = "Write the third-party license notice of the project.",
     mixinStandardHelpOptions = true,
     footer = {
-      "",
-      "Exit codes: 0 = written, 2 = error (for example an unusable dependency inventory)"
-    })
+        "",
+        "Exit codes: 0 = written, 2 = error (for example an unusable dependency inventory)"
+    }
+)
 public final class LicensesCommand implements Callable<Integer> {
   private static final Logger LOGGER = Logger.getLogger(LicensesCommand.class.getName());
 

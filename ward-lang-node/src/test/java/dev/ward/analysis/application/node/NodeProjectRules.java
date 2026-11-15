@@ -13,11 +13,13 @@ import org.tomlj.TomlParseResult;
  * and their unit tests in this module cover them.
  */
 final class NodeProjectRules {
-
   private NodeProjectRules() {}
 
   static boolean isProjectRule(
-      final RuleDefinition rule, final Map<String, CheckFactory> factories) {
+      final RuleDefinition rule,
+      final Map<String,
+      CheckFactory> factories
+  ) {
     final TomlParseResult toml = Toml.parse(rule.body());
     return factories.get(toml.getString("check")).create(toml) instanceof ProjectCheck;
   }

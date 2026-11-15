@@ -12,12 +12,14 @@ import java.util.Set;
 
 /** Picks the methods that the calls of a file can reach, so the analysis reads only those. */
 final class CalledMethods {
-
   private CalledMethods() {}
 
   /** Keeps the methods of the file that some call of the file names with the right arity. */
   static Map<String, LocalMethod> local(
-      final List<ControlFlowGraph> graphs, final Map<String, LocalMethod> methods) {
+      final List<ControlFlowGraph> graphs,
+      final Map<String,
+      LocalMethod> methods
+  ) {
     final Map<String, LocalMethod> kept = new HashMap<>(methods);
     kept.keySet().retainAll(callKeys(graphs));
     return kept;
@@ -28,7 +30,10 @@ final class CalledMethods {
    * name and arity.
    */
   static Map<String, LocalMethod> reachable(
-      final List<ControlFlowGraph> graphs, final Map<String, LocalMethod> external) {
+      final List<ControlFlowGraph> graphs,
+      final Map<String,
+      LocalMethod> external
+  ) {
     final Map<String, LocalMethod> kept = new HashMap<>();
     final Set<String> calls = callKeys(graphs);
     boolean grown = !external.isEmpty();

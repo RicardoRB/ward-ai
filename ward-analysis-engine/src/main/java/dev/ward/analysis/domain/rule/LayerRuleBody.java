@@ -24,7 +24,8 @@ public final class LayerRuleBody {
             boundary ->
                 String.join(NAME_SEPARATOR, boundary.from())
                     + ARROW
-                    + String.join(NAME_SEPARATOR, boundary.forbidden()))
+                    + String.join(NAME_SEPARATOR, boundary.forbidden())
+        )
         .collect(Collectors.joining(BOUNDARY_SEPARATOR));
   }
 

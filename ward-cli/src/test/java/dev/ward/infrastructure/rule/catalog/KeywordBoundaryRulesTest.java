@@ -17,7 +17,6 @@ import org.tomlj.Toml;
  * followed by the rest of the name.
  */
 class KeywordBoundaryRulesTest {
-
   private static final int MANY_RULES = 100;
 
   private static final String CALLS =

@@ -8,7 +8,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class SwiftStructureChecksTest {
-
   private static final int VALUE_6 = 6;
   private static final int VALUE_20 = 20;
   private static final int VALUE_30 = 30;
@@ -17,14 +16,23 @@ class SwiftStructureChecksTest {
 
   private static SyntaxNode member(final String text, final int start) {
     return SwiftTestNodes.node(
-        "class_member", start, start + text.length(), SwiftTestNodes.leaf("token", text, start));
+        "class_member",
+        start,
+        start + text.length(),
+        SwiftTestNodes.leaf("token", text, start)
+    );
   }
 
   private static List<RuleMatch> grouping(final SyntaxNode... members) {
     return new ConstructorGroupCheck("{value} misplaced")
         .matches(
             SwiftTestNodes.node(
-                "file", 0, VALUE_100, SwiftTestNodes.node("struct_body", 0, VALUE_100, members)));
+                "file",
+                0,
+                VALUE_100,
+                SwiftTestNodes.node("struct_body", 0, VALUE_100, members)
+            )
+        );
   }
 
   @Test
@@ -33,7 +41,8 @@ class SwiftStructureChecksTest {
         grouping(
             member("init(x:Int){}", 1),
             member("func scale(){}", VALUE_20),
-            member("init(){}", VALUE_40));
+            member("init(){}", VALUE_40)
+        );
 
     assertThat(found).hasSize(1);
     assertThat(found.get(0).span().startOffset()).isEqualTo(VALUE_40);
@@ -42,10 +51,12 @@ class SwiftStructureChecksTest {
   @Test
   void constructorGroupAcceptsGroupedInitializers() {
     assertThat(
-            grouping(
-                member("@objcinit(x:Int){}", 1),
-                member("publicinit(){}", VALUE_20),
-                member("var y=0", VALUE_40)))
+        grouping(
+            member("@objcinit(x:Int){}", 1),
+            member("publicinit(){}", VALUE_20),
+            member("var y=0", VALUE_40)
+        )
+    )
         .isEmpty();
   }
 
@@ -54,7 +65,8 @@ class SwiftStructureChecksTest {
         "import_declaration",
         start,
         start + VALUE_6 + name.length(),
-        SwiftTestNodes.leaf("token", "import" + name, start));
+        SwiftTestNodes.leaf("token", "import" + name, start)
+    );
   }
 
   private static List<RuleMatch> imports(final SyntaxNode... imports) {
@@ -78,7 +90,8 @@ class SwiftStructureChecksTest {
             "import_declaration",
             0,
             VALUE_20,
-            SwiftTestNodes.leaf("token", "@testableimportShop", 0));
+            SwiftTestNodes.leaf("token", "@testableimportShop", 0)
+        );
 
     assertThat(imports(importNode("Combine", VALUE_30), testable)).isEmpty();
   }

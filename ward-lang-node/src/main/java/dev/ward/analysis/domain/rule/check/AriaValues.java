@@ -12,7 +12,6 @@ import java.util.function.BiPredicate;
  * is not listed accepts any value.
  */
 final class AriaValues {
-
   private static final long U32_MAX = 4_294_967_295L;
   private static final int U32_DIGITS = 10;
   private static final String INTEGER = "\\+?\\d+";
@@ -22,19 +21,26 @@ final class AriaValues {
 
   private static final Map<String, BiPredicate<AriaRoleTable.AriaAttributeRow, String>> RULES =
       Map.of(
-          "true/false", (attribute, raw) -> Set.of("false", "true").contains(raw),
+          "true/false",
+          (attribute, raw) -> Set.of("false", "true").contains(raw),
           "true/false/undefined",
-              (attribute, raw) -> Set.of("undefined", "false", "true").contains(raw),
-          "tristate", (attribute, raw) -> Set.of("false", "true", "mixed").contains(raw),
-          "integer", (attribute, raw) -> raw.matches(INTEGER) && withinU32(raw),
-          "number", (attribute, raw) -> raw.matches(NUMBER),
-          "ID reference", (attribute, raw) -> !raw.matches(WHITESPACE_CHAR),
+          (attribute, raw) -> Set.of("undefined", "false", "true").contains(raw),
+          "tristate",
+          (attribute, raw) -> Set.of("false", "true", "mixed").contains(raw),
+          "integer",
+          (attribute, raw) -> raw.matches(INTEGER) && withinU32(raw),
+          "number",
+          (attribute, raw) -> raw.matches(NUMBER),
+          "ID reference",
+          (attribute, raw) -> !raw.matches(WHITESPACE_CHAR),
           "ID reference list",
-              (attribute, raw) ->
-                  tokens(raw).stream().noneMatch(token -> token.matches(WHITESPACE_CHAR)),
-          "token", (attribute, raw) -> attribute.values().contains(raw),
+          (attribute, raw) ->
+              tokens(raw).stream().noneMatch(token -> token.matches(WHITESPACE_CHAR)),
+          "token",
+          (attribute, raw) -> attribute.values().contains(raw),
           "token list",
-              (attribute, raw) -> tokens(raw).stream().allMatch(attribute.values()::contains));
+          (attribute, raw) -> tokens(raw).stream().allMatch(attribute.values()::contains)
+      );
 
   private AriaValues() {}
 

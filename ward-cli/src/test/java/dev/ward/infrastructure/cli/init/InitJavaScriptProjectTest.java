@@ -31,7 +31,8 @@ class InitJavaScriptProjectTest {
             "--ci",
             "github",
             "--agent-rules",
-            "--yes");
+            "--yes"
+        );
 
     assertThat(init.exit()).as(init.output()).isZero();
     assertThat(fixture.read("ward.toml"))
@@ -39,7 +40,8 @@ class InitJavaScriptProjectTest {
             "[checks.vitest]",
             "[checks.ward]",
             "[checks.ward-format]",
-            "command = \"npx vitest run --coverage\"")
+            "command = \"npx vitest run --coverage\""
+        )
         .doesNotContain("[checks.eslint]", "[checks.tsc]", "checkstyle", "mvnw");
     assertThat(fixture.read("ward-rules.toml"))
         .contains("preset = \"standard\"", "languages = [\"javascript\", \"swift\"]");

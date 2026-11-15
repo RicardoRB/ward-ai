@@ -30,7 +30,8 @@ final class SwiftToolSelection {
         xcode
             ? scheme(ports.xcode().schemes(root), Optional.ofNullable(project.xcodeScheme()))
             : null,
-        xcode ? (ports.xcode().macOsOnly(root) ? "macOS" : "iOS Simulator") : null);
+        xcode ? (ports.xcode().macOsOnly(root) ? "macOS" : "iOS Simulator") : null
+    );
   }
 
   /**
@@ -45,19 +46,22 @@ final class SwiftToolSelection {
                 + requested.get()
                 + "; the project's schemes are "
                 + String.join(", ", schemes)
-                + ".");
+                + "."
+        );
       }
       return requested.get();
     }
     if (schemes.isEmpty()) {
       throw new WardException(
-          "No shared Xcode scheme was found; share one in Xcode's scheme settings.");
+          "No shared Xcode scheme was found; share one in Xcode's scheme settings."
+      );
     }
     if (schemes.size() > SINGLE_SCHEME) {
       throw new WardException(
           "The project has several Xcode schemes ("
               + String.join(", ", schemes)
-              + "); choose one with --scheme.");
+              + "); choose one with --scheme."
+      );
     }
     return schemes.getFirst();
   }

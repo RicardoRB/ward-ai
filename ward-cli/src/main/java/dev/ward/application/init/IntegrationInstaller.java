@@ -30,7 +30,8 @@ final class IntegrationInstaller {
     final boolean noIntegration = ids.contains(InitSetupCatalog.NO_INTEGRATION);
     if (noIntegration && ids.size() > 1) {
       throw new WardException(
-          "The no-integration choice cannot be combined with another integration.");
+          "The no-integration choice cannot be combined with another integration."
+      );
     }
     ids.forEach(catalog::integration);
   }
@@ -40,7 +41,10 @@ final class IntegrationInstaller {
    * can be rolled back.
    */
   void install(
-      final Project project, final List<String> ids, final List<IntegrationResult> installed) {
+      final Project project,
+      final List<String> ids,
+      final List<IntegrationResult> installed
+  ) {
     for (final String id : ids) {
       if (InitSetupCatalog.NO_INTEGRATION.equals(id)) {
         continue;
@@ -51,7 +55,8 @@ final class IntegrationInstaller {
         throw new WardException(
             "Cannot initialize "
                 + project.root()
-                + ": selected integration conflicts with user-owned content.");
+                + ": selected integration conflicts with user-owned content."
+        );
       }
     }
   }
@@ -71,15 +76,21 @@ final class IntegrationInstaller {
               final AgentIntegration adapter = integration(id);
               return adapter
                   .plan(
-                      root(project, adapter), request(project, adapter, IntegrationRequest.INSTALL))
+                      root(project, adapter),
+                      request(project, adapter, IntegrationRequest.INSTALL)
+                  )
                   .stream();
-            })
+            }
+        )
         .toList();
   }
 
   // Cleanup is best effort: any failure here must not hide the original setup failure.
   void rollbackNew(
-      final Project project, final List<String> ids, final List<IntegrationResult> results) {
+      final Project project,
+      final List<String> ids,
+      final List<IntegrationResult> results
+  ) {
     for (int i = 0; i < Math.min(ids.size(), results.size()); i++) {
       if (results.get(i).status() != IntegrationResult.Status.CHANGED) {
         continue;
@@ -94,7 +105,10 @@ final class IntegrationInstaller {
         new FutureTask<>(
             () ->
                 adapter.integrate(
-                    root(project, adapter), request(project, adapter, IntegrationRequest.REMOVE)));
+                    root(project, adapter),
+                    request(project, adapter, IntegrationRequest.REMOVE)
+                )
+        );
     rollback.run();
     try {
       rollback.get();
@@ -123,7 +137,10 @@ final class IntegrationInstaller {
   }
 
   private static IntegrationRequest request(
-      final Project project, final AgentIntegration adapter, final IntegrationRequest request) {
+      final Project project,
+      final AgentIntegration adapter,
+      final IntegrationRequest request
+  ) {
     return request.forProject(project.installPath(adapter.installsAtRepositoryRoot()));
   }
 
@@ -134,6 +151,8 @@ final class IntegrationInstaller {
         .orElseThrow(
             () ->
                 new WardException(
-                    "Unknown agent '" + id + "'. Supported agents: " + SupportedAgents.idsText()));
+                    "Unknown agent '" + id + "'. Supported agents: " + SupportedAgents.idsText()
+                )
+        );
   }
 }

@@ -8,7 +8,6 @@ import java.util.function.Function;
 import org.junit.jupiter.api.Test;
 
 class FormatSafetyTest {
-
   private static final FormatOptions NO_OPTIONS = new FormatOptions(Map.of());
   private final FormatSafety safety = new FormatSafety(new StubFormatSyntax());
 
@@ -27,7 +26,8 @@ class FormatSafetyTest {
             s ->
                 "a  b".equals(s)
                     ? new FormatResult.Formatted("a b")
-                    : new FormatResult.Unchanged());
+                    : new FormatResult.Unchanged()
+        );
 
     assertThat(run("a  b", formatter)).isEqualTo(new FormatResult.Formatted("a b"));
   }

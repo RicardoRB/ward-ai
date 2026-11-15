@@ -22,13 +22,13 @@ import java.util.Set;
  * a reference type.
  */
 public final class JavaProtoNullComparisonCheck implements RuleCheck {
-
   private static final Set<String> MESSAGES =
       Set.of(
           "com.google.protobuf.MessageLiteOrBuilder",
           "com.google.protobuf.MessageOrBuilder",
           "com.google.protobuf.MessageLite",
-          "com.google.protobuf.Message");
+          "com.google.protobuf.Message"
+      );
   private static final Set<String> COMPARISONS = Set.of("'=='", "'!='");
   private static final int PARTS = 3;
 
@@ -59,14 +59,17 @@ public final class JavaProtoNullComparisonCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("expression"))) {
       getter(visit.node(), types)
           .ifPresent(
               name ->
                   matches.add(
-                      CheckSupport.at(visit.node().span(), CheckSupport.fill(message, name, ""))));
+                      CheckSupport.at(visit.node().span(), CheckSupport.fill(message, name, ""))
+                  )
+          );
     }
     return List.copyOf(matches);
   }
@@ -101,7 +104,8 @@ public final class JavaProtoNullComparisonCheck implements RuleCheck {
             .flatMap(receiver -> types.membersOf(receiver.span()))
             .map(
                 members ->
-                    members.ancestors().stream().map(TypeRef::name).anyMatch(MESSAGES::contains))
+                    members.ancestors().stream().map(TypeRef::name).anyMatch(MESSAGES::contains)
+            )
             .orElse(false);
     return getter && proto ? target.map(CallTarget::name) : Optional.empty();
   }

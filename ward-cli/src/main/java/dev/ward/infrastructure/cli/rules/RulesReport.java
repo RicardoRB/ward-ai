@@ -41,7 +41,8 @@ final class RulesReport {
       List<String> languages,
       String category,
       List<String> presets,
-      String description) {
+      String description
+  ) {
     /** Copies the lists. */
     RuleDto {
       languages = List.copyOf(languages);
@@ -66,7 +67,8 @@ final class RulesReport {
       String category,
       List<String> presets,
       String description,
-      List<OptionDto> options) {
+      List<OptionDto> options
+  ) {
     /** Copies the lists. */
     RuleDetailDto {
       languages = List.copyOf(languages);
@@ -88,7 +90,13 @@ final class RulesReport {
    */
   @JsonType
   record OptionDto(
-      String name, String type, String defaultValue, Long min, Long max, List<String> values) {
+      String name,
+      String type,
+      String defaultValue,
+      Long min,
+      Long max,
+      List<String> values
+  ) {
     /** Copies the values. */
     OptionDto {
       values = List.copyOf(values);
@@ -112,7 +120,12 @@ final class RulesReport {
   /** Returns the JSON shape of one rule in a list. */
   static RuleDto rule(final RuleView view) {
     return new RuleDto(
-        view.id(), view.languages(), view.category(), view.presets(), view.description());
+        view.id(),
+        view.languages(),
+        view.category(),
+        view.presets(),
+        view.description()
+    );
   }
 
   /** Returns the JSON shape of one rule with its options. */
@@ -123,7 +136,8 @@ final class RulesReport {
         view.category(),
         view.presets(),
         view.description(),
-        view.options().stream().map(RulesReport::option).toList());
+        view.options().stream().map(RulesReport::option).toList()
+    );
   }
 
   /** Returns one tab-separated line per rule: id, languages, category, presets, description. */
@@ -134,7 +148,8 @@ final class RulesReport {
         String.join(LIST_SEPARATOR, view.languages()),
         view.category(),
         String.join(LIST_SEPARATOR, view.presets()),
-        view.description());
+        view.description()
+    );
   }
 
   /** Returns the text block of {@code ward rules show}. */
@@ -145,7 +160,8 @@ final class RulesReport {
             "  description: " + view.description(),
             "  languages: " + String.join(LIST_SEPARATOR, view.languages()),
             "  category: " + view.category(),
-            "  presets: " + presetsText(view));
+            "  presets: " + presetsText(view)
+        );
     if (view.options().isEmpty()) {
       return lines;
     }
@@ -185,7 +201,8 @@ final class RulesReport {
         option.defaultValue() == null ? null : defaultText(option.defaultValue()),
         option.min(),
         option.max(),
-        option.values());
+        option.values()
+    );
   }
 
   private static String defaultText(final Object value) {

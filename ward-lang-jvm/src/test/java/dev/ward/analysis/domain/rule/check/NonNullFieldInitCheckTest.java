@@ -6,14 +6,13 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class NonNullFieldInitCheckTest {
-
   private static final NonNullFieldInitCheck CHECK = new NonNullFieldInitCheck("message");
 
   private static List<String> run(final String body) {
     return new ParsedFacts("class C {\n" + body + "}\n")
         .plain(CHECK).stream()
-            .map(match -> match.span().startLine() + ":" + match.span().startColumn())
-            .toList();
+        .map(match -> match.span().startLine() + ":" + match.span().startColumn())
+        .toList();
   }
 
   @Test
@@ -37,8 +36,10 @@ class NonNullFieldInitCheckTest {
     assertThat(run("  @Nonnull int size;\n  C() {\n  }\n")).isEmpty();
     assertThat(run("  String name;\n  C() {\n  }\n")).isEmpty();
     assertThat(
-            run(
-                "  @Nonnull String name;\n  C() {\n    this(1);\n  }\n  C(int x) {\n    name = \"x\";\n  }\n"))
+        run(
+            "  @Nonnull String name;\n  C() {\n    this(1);\n  }\n  C(int x) {\n    name = \"x\";\n  }\n"
+        )
+    )
         .isEmpty();
     assertThat(run("  @Nonnull String name;\n  C(String name) {\n    name = name;\n  }\n"))
         .containsExactly("3:3");

@@ -15,7 +15,6 @@ import java.util.List;
  * @param limit the largest allowed number of parameters
  */
 public record ParameterCountRule(RuleDefinition definition, int limit) implements CompiledRule {
-
   @Override
   public List<RuleMatch> matches(final SyntaxNode root) {
     final List<RuleMatch> matches = new ArrayList<>();
@@ -24,7 +23,10 @@ public record ParameterCountRule(RuleDefinition definition, int limit) implement
       if (count > limit) {
         matches.add(
             new RuleMatch(
-                function.span(), "Function has " + count + " parameters (limit " + limit + ")"));
+                function.span(),
+                "Function has " + count + " parameters (limit " + limit + ")"
+            )
+        );
       }
     }
     return matches;

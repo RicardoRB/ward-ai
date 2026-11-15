@@ -13,7 +13,6 @@ import java.util.Optional;
  * @param rows the rows in catalog order
  */
 public record RuleCatalog(List<CatalogRow> rows) {
-
   /**
    * Copies the rows after checking that no name and no upstream rule appears twice.
    *
@@ -34,7 +33,10 @@ public record RuleCatalog(List<CatalogRow> rows) {
                               counterparts,
                               tool + "/" + rule,
                               row,
-                              "The " + tool + " rule '" + rule + "'")));
+                              "The " + tool + " rule '" + rule + "'"
+                          )
+                  )
+          );
     }
   }
 
@@ -44,10 +46,12 @@ public record RuleCatalog(List<CatalogRow> rows) {
   }
 
   private static void claim(
-      final Map<String, String> owners,
+      final Map<String,
+      String> owners,
       final String key,
       final CatalogRow row,
-      final String subject) {
+      final String subject
+  ) {
     final String previous = owners.put(key, row.name() + " (" + row.source() + ")");
     if (previous != null) {
       throw new RuleConfigurationException(
@@ -58,7 +62,8 @@ public record RuleCatalog(List<CatalogRow> rows) {
               + row.name()
               + " ("
               + row.source()
-              + "). Keep one row per rule.");
+              + "). Keep one row per rule."
+      );
     }
   }
 }

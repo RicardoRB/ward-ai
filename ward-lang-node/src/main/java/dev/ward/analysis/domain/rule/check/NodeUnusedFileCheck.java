@@ -29,7 +29,6 @@ import java.util.SortedMap;
  * plugins.
  */
 public final class NodeUnusedFileCheck implements RuleCheck, ProjectCheck {
-
   private final String message;
 
   /**
@@ -53,7 +52,10 @@ public final class NodeUnusedFileCheck implements RuleCheck, ProjectCheck {
 
   @Override
   public List<ProjectMatch> project(
-      final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
+      final SortedMap<String,
+      SyntaxNode> trees,
+      final ProjectFiles files
+  ) {
     final NodeModuleResolver resolver =
         new NodeModuleResolver(new NodeProjectLayout(trees.keySet(), List.of(), List.of()));
     final Set<String> reached = new HashSet<>();
@@ -80,7 +82,10 @@ public final class NodeUnusedFileCheck implements RuleCheck, ProjectCheck {
 
   /** A file of a framework workspace is silent: its entries follow the framework's conventions. */
   private static boolean inFrameworkWorkspace(
-      final String path, final Map<String, NodeManifests.Manifest> manifests) {
+      final String path,
+      final Map<String,
+      NodeManifests.Manifest> manifests
+  ) {
     return NodeManifests.nearest(path, manifests)
         .filter(NodeFrameworks::isFrameworkWorkspace)
         .isPresent();

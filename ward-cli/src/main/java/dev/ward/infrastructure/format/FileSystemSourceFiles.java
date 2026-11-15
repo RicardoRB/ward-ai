@@ -25,7 +25,7 @@ import javax.inject.Inject;
  */
 public final class FileSystemSourceFiles implements SourceReader, SourceSink {
   private static final Logger LOGGER = Logger.getLogger(FileSystemSourceFiles.class.getName());
-  private static final byte[] BYTE_ORDER_MARK = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
+  private static final byte[] BYTE_ORDER_MARK = {(byte)0xEF, (byte)0xBB, (byte)0xBF};
   private static final String TEMP_PREFIX = ".ward-format-";
   private static final String TEMP_SUFFIX = ".tmp";
 
@@ -105,7 +105,11 @@ public final class FileSystemSourceFiles implements SourceReader, SourceSink {
   private static void replace(final Path temporary, final Path file) throws IOException {
     try {
       Files.move(
-          temporary, file, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+          temporary,
+          file,
+          StandardCopyOption.REPLACE_EXISTING,
+          StandardCopyOption.ATOMIC_MOVE
+      );
     } catch (final AtomicMoveNotSupportedException exception) {
       LOGGER.fine("event=format-move non-atomic: file system does not support atomic moves");
       Files.move(temporary, file, StandardCopyOption.REPLACE_EXISTING);

@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 /** {@code JSON.stringify} of a node, which two requirements are compared by. */
 final class JsonText {
-
   private JsonText() {}
 
   /** Writes the node without spaces, keys in file order. */

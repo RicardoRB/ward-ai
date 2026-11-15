@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * name should be passed once as a named argument. Keyword and starred arguments are not counted.
  */
 public final class DuplicateFormatArgumentCheck implements RuleCheck {
-
   private static final Set<String> CALLS = Set.of("atom_expr");
   private static final Pattern LITERAL_FORMAT =
       Pattern.compile("^(\"[^\"]*\"|'[^']*')\\.format\\(.*");

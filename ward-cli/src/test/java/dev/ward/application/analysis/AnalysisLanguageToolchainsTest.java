@@ -7,7 +7,6 @@ import dev.ward.domain.project.Toolchain;
 import org.junit.jupiter.api.Test;
 
 class AnalysisLanguageToolchainsTest {
-
   @Test
   void mapsEveryLanguageToItsToolchain() {
     assertThat(AnalysisLanguageToolchains.toolchainOf(AnalysisLanguage.KOTLIN))

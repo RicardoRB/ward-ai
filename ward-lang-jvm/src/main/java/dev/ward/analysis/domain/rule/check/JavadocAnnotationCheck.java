@@ -13,7 +13,6 @@ import java.util.Set;
  * The Javadoc is read from the source text, because comments are not in the tree.
  */
 public final class JavadocAnnotationCheck implements UnitCheck {
-
   private static final String CLASS_BODY = "classBodyDeclaration";
   private static final String INTERFACE_BODY = "interfaceBodyDeclaration";
   private static final Set<String> METHOD_KINDS =
@@ -35,7 +34,11 @@ public final class JavadocAnnotationCheck implements UnitCheck {
    * @param message the message
    */
   public JavadocAnnotationCheck(
-      final String tag, final String annotation, final boolean methodsOnly, final String message) {
+      final String tag,
+      final String annotation,
+      final boolean methodsOnly,
+      final String message
+  ) {
     this.tag = Objects.requireNonNull(tag, "tag");
     this.annotation = Objects.requireNonNull(annotation, "annotation");
     this.methodsOnly = methodsOnly;

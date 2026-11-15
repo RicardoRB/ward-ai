@@ -26,7 +26,6 @@ import java.util.regex.Pattern;
  * alone, since its parameters are fixed by a signature.
  */
 public final class KotlinUnusedParameterCheck implements RuleCheck {
-
   private static final String NAME = "{value}";
   private static final Pattern ALLOWED_NAMES = Pattern.compile("ignored|expected");
   private static final Set<String> SIGNATURE_MODIFIERS =
@@ -51,7 +50,11 @@ public final class KotlinUnusedParameterCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes();
     final List<RuleMatch> found = new ArrayList<>();
     for (final Scope scope : scopes.scopes()) {

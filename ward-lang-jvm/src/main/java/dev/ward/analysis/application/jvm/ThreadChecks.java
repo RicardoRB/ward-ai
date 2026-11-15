@@ -10,7 +10,6 @@ import org.tomlj.TomlParseResult;
 
 /** Builds the checks of the thread rules that read a class's superclass. */
 final class ThreadChecks {
-
   private static final String MESSAGE = "message";
 
   private ThreadChecks() {}

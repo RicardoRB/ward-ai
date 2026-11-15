@@ -5,7 +5,6 @@ import java.util.List;
 
 /** Builders for the method and field trees that the class design check tests run over. */
 class DesignMemberTrees extends ClassDesignTrees {
-
   private static final String VOID = "void";
   private static final String PRIVATE = "private";
 
@@ -22,11 +21,8 @@ class DesignMemberTrees extends ClassDesignTrees {
         "methodDeclaration",
         t("'void'", VOID),
         id(name),
-        n(
-            "methodBody",
-            t("'{'", "{"),
-            n("statement", t(TOKEN_IDENTIFIER, "run();")),
-            t("'}'", "}")));
+        n("methodBody", t("'{'", "{"), n("statement", t(TOKEN_IDENTIFIER, "run();")), t("'}'", "}"))
+    );
   }
 
   static SyntaxNode emptyMethod(final String name) {
@@ -34,7 +30,8 @@ class DesignMemberTrees extends ClassDesignTrees {
         "methodDeclaration",
         t("'void'", VOID),
         id(name),
-        n("methodBody", t("'{'", "{"), t("'}'", "}")));
+        n("methodBody", t("'{'", "{"), t("'}'", "}"))
+    );
   }
 
   static SyntaxNode privateCtor(final String name) {
@@ -49,7 +46,8 @@ class DesignMemberTrees extends ClassDesignTrees {
     return n(
         "fieldDeclaration",
         n("typeType", t(TOKEN_IDENTIFIER, type)),
-        n("variableDeclarators", n("variableDeclarator", n("variableDeclaratorId", id(name)))));
+        n("variableDeclarators", n("variableDeclarator", n("variableDeclaratorId", id(name))))
+    );
   }
 
   static SyntaxNode throwing(final String name, final int count) {

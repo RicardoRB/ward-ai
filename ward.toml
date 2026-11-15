@@ -3,36 +3,24 @@ version = 2
 # Static gates come first: a style finding shows in a minute or two, before the tests run.
 [checks.format]
 enabled = true
+uses = "ward-format"
 profiles = ["default", "pre-commit", "pre-push", "ci"]
-command = "./mvnw spotless:check"
 
 [checks.format.paths]
-match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-python/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java", "ward-lang-openapi/src/**/*.java", "ward-lang-android/src/**/*.java"]
-full = ["pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-python/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml", "ward-lang-openapi/pom.xml", "ward-lang-android/pom.xml"]
-args = ["-DspotlessFiles={paths}"]
-item = ".*/{path}"
-separator = ","
+match = ["**/*.java"]
+full = [".editorconfig", "ward.toml"]
 
-[checks.checkstyle]
+# Ward's own rules replace the Checkstyle, PMD and SpotBugs gates (#347). ward-rules.toml lists the
+# rules that mirror ward-cli/src/test/resources/repository-rules/checkstyle.xml, ward-cli/src/test/resources/repository-rules/pmd-ruleset.xml and the standard SpotBugs rows;
+# RepositoryWardRulesTest fails when one is missing.
+[checks.ward]
 enabled = true
+uses = "ward"
 profiles = ["default", "pre-commit", "pre-push", "ci"]
-command = "./mvnw checkstyle:check"
 
-[checks.checkstyle.paths]
-match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-python/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java", "ward-lang-openapi/src/**/*.java", "ward-lang-android/src/**/*.java"]
-full = ["config/checkstyle.xml", "pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-python/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml", "ward-lang-openapi/pom.xml", "ward-lang-android/pom.xml"]
-args = ["-Dcheckstyle.includes={paths}"]
-item = "**/{name}"
-separator = ","
-
-[checks.pmd]
-enabled = true
-profiles = ["default", "pre-commit", "pre-push", "ci"]
-command = "./mvnw -DskipTests package pmd:check"
-
-[checks.pmd.paths]
-match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-python/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java", "ward-lang-openapi/src/**/*.java", "ward-lang-android/src/**/*.java"]
-full = ["config/pmd-ruleset.xml", "pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-python/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml", "ward-lang-openapi/pom.xml", "ward-lang-android/pom.xml"]
+[checks.ward.paths]
+match = ["**/*.java"]
+full = ["ward-rules.toml", "ward.toml"]
 
 [checks.secrets]
 enabled = true
@@ -75,11 +63,6 @@ enabled = true
 uses = "crap"
 profiles = ["pre-push", "ci"]
 max = 30
-
-[checks.spotbugs]
-enabled = true
-profiles = ["pre-push", "ci"]
-command = "./mvnw -DskipTests package spotbugs:check"
 
 [checks.archunit]
 enabled = true

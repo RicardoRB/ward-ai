@@ -25,7 +25,6 @@ import java.util.Optional;
  * violating pair, as tab-separated check id, method and path).
  */
 final class BreakingFixtures {
-
   /** The base document of every fixture. */
   static final String BASE = "base.yaml";
 
@@ -36,7 +35,10 @@ final class BreakingFixtures {
 
   /** Runs every rule on the pair and keeps the findings of {@code id}, or all when it is empty. */
   static List<BreakingFinding> findings(
-      final Path directory, final String revision, final String id) {
+      final Path directory,
+      final String revision,
+      final String id
+  ) {
     final OpenApiDocument base = load(directory, BASE);
     final OpenApiDocument revised = load(directory, revision);
     return BreakingRules.run(new DocumentPair(base, revised, TODAY)).stream()
@@ -89,11 +91,13 @@ final class BreakingFixtures {
             path -> {
               try {
                 return Optional.of(
-                    Files.readString(directory.resolve(path), StandardCharsets.UTF_8));
+                    Files.readString(directory.resolve(path), StandardCharsets.UTF_8)
+                );
               } catch (final IOException unreadable) {
                 return Optional.empty();
               }
-            });
+            }
+        );
     assertThat(result.errors()).as("load errors of %s/%s", directory.getFileName(), file).isEmpty();
     return result.document().orElseThrow();
   }

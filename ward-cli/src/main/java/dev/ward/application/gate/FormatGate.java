@@ -68,7 +68,8 @@ public final class FormatGate implements QualityGate {
         outcomes.stream()
             .filter(
                 outcome ->
-                    outcome.verdict() == Verdict.REFUSED || outcome.verdict() == Verdict.FAILED)
+                    outcome.verdict() == Verdict.REFUSED || outcome.verdict() == Verdict.FAILED
+            )
             .toList();
     return GateResult.builder(name, status(findings, broken))
         .summary(summary(findings.size(), broken.size()))
@@ -81,7 +82,9 @@ public final class FormatGate implements QualityGate {
 
   /** A refused or unreadable file is never a pass, so it outranks the findings. */
   private static GateStatus status(
-      final List<Finding> findings, final List<FormatFileOutcome> broken) {
+      final List<Finding> findings,
+      final List<FormatFileOutcome> broken
+  ) {
     if (!broken.isEmpty()) {
       return GateStatus.EXECUTION_ERROR;
     }
@@ -99,7 +102,8 @@ public final class FormatGate implements QualityGate {
         outcome.line(),
         null,
         null,
-        List.of());
+        List.of()
+    );
   }
 
   private static String summary(final int unformatted, final int broken) {

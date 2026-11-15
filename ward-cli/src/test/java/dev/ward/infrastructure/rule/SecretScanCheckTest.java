@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test;
 
 /** The {@code secret-scan} check: SecretScanCheckTest. */
 final class SecretScanCheckTest extends SecretScanSupport {
-
   @Test
   void reportsATokenAtTheLineAndColumnWhereTheMatchStarts() {
     final List<RuleMatch> matches = run(RULE, CONFIG, "a: 1\nb:\n  key: " + token() + "\n");
@@ -72,8 +71,10 @@ final class SecretScanCheckTest extends SecretScanSupport {
                 "secrets",
                 Set.of(),
                 List.of(new RuleOption("entropy", RuleOptionType.NUMBER)),
-                0),
-            Map.of("entropy", 4.6));
+                0
+            ),
+            Map.of("entropy", 4.6)
+        );
 
     assertThat(run(strict, CONFIG, token())).isEmpty();
     assertThat(run(RULE, CONFIG, token())).hasSize(1);
@@ -129,10 +130,12 @@ final class SecretScanCheckTest extends SecretScanSupport {
             "regex = 'a'\nallowlists = [{ regex-target = \"file\" }]",
             "regex = 'a'\nallowlists = [{ condition = \"xor\" }]",
             "regex = 'a'\nkeywords = [1]",
-            "keywords = ['a']");
+            "keywords = ['a']"
+        );
     for (final String body : bodies) {
       assertThatThrownBy(
-              () -> definitionCompiled("check = \"secret-scan\"\nmessage = \"m\"\n" + body))
+          () -> definitionCompiled("check = \"secret-scan\"\nmessage = \"m\"\n" + body)
+      )
           .as(body)
           .isInstanceOf(AnalysisFailedException.class);
     }

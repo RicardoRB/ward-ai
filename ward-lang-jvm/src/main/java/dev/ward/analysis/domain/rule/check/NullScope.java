@@ -20,10 +20,12 @@ import java.util.stream.Stream;
  * @param nullableParameters the start offsets of the parameters annotated {@code @CheckForNull}
  */
 record NullScope(
-    Map<String, Method> methods,
-    Map<String, Set<String>> nonNullFields,
-    Set<Integer> nullableParameters) {
-
+    Map<String,
+    Method> methods,
+    Map<String,
+    Set<String>> nonNullFields,
+    Set<Integer> nullableParameters
+) {
   static final Set<String> NON_NULL = Set.of("Nonnull", "NonNull", "NotNull");
 
   private static final Set<String> TYPE_KINDS =
@@ -46,7 +48,8 @@ record NullScope(
       boolean isPrivate,
       boolean isFinal,
       boolean constructor,
-      boolean closedType) {}
+      boolean closedType
+  ) {}
 
   NullScope {
     methods = Map.copyOf(methods);
@@ -83,7 +86,7 @@ record NullScope(
             .filter(part -> "formalParameter".equals(part.kind()))
             .filter(part -> !insideBody(node, part))
             .count();
-    return key(typeOf(visit.ancestors()), name, (int) count);
+    return key(typeOf(visit.ancestors()), name, (int)count);
   }
 
   private static boolean insideBody(final SyntaxNode method, final SyntaxNode part) {
@@ -92,7 +95,8 @@ record NullScope(
         .anyMatch(
             body ->
                 part.span().startOffset() >= body.span().startOffset()
-                    && part.span().endOffset() <= body.span().endOffset());
+                    && part.span().endOffset() <= body.span().endOffset()
+        );
   }
 
   private static String identifier(final SyntaxNode node) {
@@ -123,7 +127,8 @@ record NullScope(
         modifiers.contains("private"),
         modifiers.contains("final"),
         "constructorDeclaration".equals(visit.node().kind()),
-        closed(up));
+        closed(up)
+    );
   }
 
   private static SyntaxNode last(final List<SyntaxNode> up, final String kind) {
@@ -155,7 +160,10 @@ record NullScope(
   }
 
   private static boolean finalHolder(
-      final SyntaxNode wrapper, final List<SyntaxNode> up, final int index) {
+      final SyntaxNode wrapper,
+      final List<SyntaxNode> up,
+      final int index
+  ) {
     if ("memberDeclaration".equals(wrapper.kind()) && index > 1) {
       return modifiers(up.get(index - 2)).contains("final");
     }
@@ -169,7 +177,9 @@ record NullScope(
                 NullModel.Type::name,
                 NullScope::fieldNames,
                 (left, right) ->
-                    Stream.concat(left.stream(), right.stream()).collect(Collectors.toSet())));
+                    Stream.concat(left.stream(), right.stream()).collect(Collectors.toSet())
+            )
+        );
   }
 
   private static Set<String> fieldNames(final NullModel.Type type) {

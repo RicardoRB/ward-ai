@@ -12,10 +12,15 @@ final class OperatorTypes {
   private static final String NUMBER = Literals.NUMBER;
   private static final Map<String, String> PREFIX_TYPES =
       Map.of(
-          "typeof", Literals.STRING,
-          "void", "undefined",
-          "!", Literals.BOOLEAN,
-          "delete", Literals.BOOLEAN);
+          "typeof",
+          Literals.STRING,
+          "void",
+          "undefined",
+          "!",
+          Literals.BOOLEAN,
+          "delete",
+          Literals.BOOLEAN
+      );
   private static final Set<String> UNARY = Set.of("-", "+", "~", "++", "--");
   private static final int BINARY_PARTS = 3;
   private static final int TERNARY_PARTS = 5;
@@ -26,9 +31,11 @@ final class OperatorTypes {
   private final MemberTypes memberTypes;
 
   OperatorTypes(
-      final Function<SyntaxNode, TsType> typer,
+      final Function<SyntaxNode,
+      TsType> typer,
       final UnitModel model,
-      final MemberTypes memberTypes) {
+      final MemberTypes memberTypes
+  ) {
     this.typer = typer;
     this.model = model;
     this.memberTypes = memberTypes;
@@ -70,7 +77,7 @@ final class OperatorTypes {
         type instanceof TsType.Named named
             && named.args().size() == 1
             && ("Promise".equals(named.name()) || "PromiseLike".equals(named.name()));
-    return promise ? ((TsType.Named) type).args().get(0) : type;
+    return promise ? ((TsType.Named)type).args().get(0) : type;
   }
 
   /**

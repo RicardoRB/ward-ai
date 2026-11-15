@@ -75,14 +75,21 @@ final class RuleArrayEdit {
   }
 
   private static void insertLine(
-      final List<String> lines, final int start, final int end, final String token) {
+      final List<String> lines,
+      final int start,
+      final int end,
+      final String token
+  ) {
     ensureTrailingComma(lines, start, end);
     lines.add(end, ELEMENT_INDENT + token + COMMA);
   }
 
   /** Gives the last element before the closing line its comma, so a new element can follow. */
   private static void ensureTrailingComma(
-      final List<String> lines, final int start, final int end) {
+      final List<String> lines,
+      final int start,
+      final int end
+  ) {
     final int last = lastCodeLine(lines, start, end);
     if (last < 0) {
       return;
@@ -104,7 +111,11 @@ final class RuleArrayEdit {
   }
 
   private static boolean contains(
-      final List<String> lines, final int start, final int end, final String token) {
+      final List<String> lines,
+      final int start,
+      final int end,
+      final String token
+  ) {
     for (int i = start; i <= end; i++) {
       if (TomlLines.codeOf(lines.get(i)).contains(token)) {
         return true;

@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** Grammar predicates and actions for JavaScriptPredicate, exercised through the frontend. */
 class JavaScriptPredicateTest {
-
   private static ParseResult parse(final AnalysisLanguage language, final String text) {
     return new AntlrLanguageFrontend().parse(new SourceUnit("sample", language, text));
   }

@@ -13,7 +13,6 @@ import java.util.Set;
  * followed by {@code else}, {@code catch}, {@code finally} or a comma has no line break after it.
  */
 public final class GoogleRightCurlyCheck implements RuleCheck {
-
   private static final String OPEN = "'{'";
   private static final Set<String> CONTINUATIONS = Set.of("'else'", "'catch'", "'finally'", "','");
 

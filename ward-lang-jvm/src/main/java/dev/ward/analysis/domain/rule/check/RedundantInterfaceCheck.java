@@ -17,7 +17,6 @@ import java.util.Set;
  * same file are followed.
  */
 public final class RedundantInterfaceCheck implements RuleCheck {
-
   private static final String TYPE_LIST = "typeList";
   private static final String TYPE = "typeType";
 
@@ -40,7 +39,8 @@ public final class RedundantInterfaceCheck implements RuleCheck {
         visit ->
             supers
                 .computeIfAbsent(JavaNodes.name(visit.node()), key -> new HashSet<>())
-                .addAll(direct(visit.node())));
+                .addAll(direct(visit.node()))
+    );
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : declarations) {
       redundant(visit.node(), supers, matches);
@@ -50,8 +50,10 @@ public final class RedundantInterfaceCheck implements RuleCheck {
 
   private void redundant(
       final SyntaxNode declaration,
-      final Map<String, Set<String>> supers,
-      final List<RuleMatch> matches) {
+      final Map<String,
+      Set<String>> supers,
+      final List<RuleMatch> matches
+  ) {
     final List<SyntaxNode> listed = listed(declaration);
     final Set<String> provided = new HashSet<>();
     superclass(declaration).ifPresent(parent -> provided.addAll(closure(parent, supers)));
@@ -63,8 +65,9 @@ public final class RedundantInterfaceCheck implements RuleCheck {
         .forEach(
             type ->
                 matches.add(
-                    CheckSupport.at(
-                        type.span(), CheckSupport.fill(message, simpleName(type), ""))));
+                    CheckSupport.at(type.span(), CheckSupport.fill(message, simpleName(type), ""))
+                )
+        );
   }
 
   private static Set<String> direct(final SyntaxNode declaration) {

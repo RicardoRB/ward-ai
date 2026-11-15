@@ -13,7 +13,6 @@ import java.util.TreeMap;
 
 /** Builds the syntax trees and manifest files of a small in-memory project for the checks. */
 final class ProjectFixtures {
-
   private static final AntlrLanguageFrontend FRONTEND = new AntlrLanguageFrontend();
 
   private ProjectFixtures() {}
@@ -25,7 +24,9 @@ final class ProjectFixtures {
         (path, text) ->
             trees.put(
                 path,
-                FRONTEND.parse(new SourceUnit(path, AnalysisLanguage.TYPESCRIPT, text)).tree()));
+                FRONTEND.parse(new SourceUnit(path, AnalysisLanguage.TYPESCRIPT, text)).tree()
+            )
+    );
     return trees;
   }
 
@@ -43,7 +44,8 @@ final class ProjectFixtures {
                     + ":"
                     + match.match().span().startLine()
                     + ":"
-                    + match.match().span().startColumn())
+                    + match.match().span().startColumn()
+        )
         .toList();
   }
 

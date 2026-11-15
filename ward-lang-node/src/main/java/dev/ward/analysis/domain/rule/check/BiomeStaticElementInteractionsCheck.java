@@ -15,7 +15,6 @@ import java.util.Set;
  * that are not static are silent.
  */
 public final class BiomeStaticElementInteractionsCheck implements RuleCheck {
-
   private static final List<String> TYPES = List.of("focus", "keyboard", "mouse");
 
   private final AriaRoleTable table;
@@ -40,7 +39,10 @@ public final class BiomeStaticElementInteractionsCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(JsxAttributes.OPENING, JsxAttributes.SELF_CLOSING))
         .stream()
         .filter(visit -> reported(visit.node(), unit.text()))

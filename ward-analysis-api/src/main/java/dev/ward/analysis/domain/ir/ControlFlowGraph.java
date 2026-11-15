@@ -14,8 +14,12 @@ import java.util.Objects;
  * @param exit the index of the exit block
  */
 public record ControlFlowGraph(
-    String body, Span span, List<BasicBlock> blocks, int entry, int exit) {
-
+    String body,
+    Span span,
+    List<BasicBlock> blocks,
+    int entry,
+    int exit
+) {
   /**
    * Copies the blocks and checks that the entry and exit are two blocks of the graph.
    *

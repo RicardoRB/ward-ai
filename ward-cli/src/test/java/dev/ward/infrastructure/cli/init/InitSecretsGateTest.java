@@ -10,7 +10,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** Init offers the native {@code secrets} check, selects it in no preset, and knows no Gitleaks. */
 class InitSecretsGateTest {
-
   @TempDir Path root;
 
   @Test
@@ -28,7 +27,8 @@ class InitSecretsGateTest {
             "profiles = [\"default\", \"pre-commit\", \"pre-push\", \"ci\", \"edit\"]",
             "[checks.secrets.paths]",
             "match = [\"**\"]",
-            "full = [\"ward-rules.toml\"]");
+            "full = [\"ward-rules.toml\"]"
+        );
     final String table = toml.substring(toml.indexOf("[checks.secrets]"));
     assertThat(table.substring(0, table.indexOf("[checks.secrets.paths]")))
         .doesNotContain("command");

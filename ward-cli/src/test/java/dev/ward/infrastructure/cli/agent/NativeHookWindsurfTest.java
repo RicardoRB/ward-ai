@@ -34,9 +34,11 @@ class NativeHookWindsurfTest {
   @Test
   void failingChecksAfterAWriteAreReportedOnStderr() {
     assertThat(
-            hook.run(
-                1,
-                event("post_write_code", "{\"file_path\":\"" + root.resolve("src/A.java") + "\"}")))
+        hook.run(
+            1,
+            event("post_write_code", "{\"file_path\":\"" + root.resolve("src/A.java") + "\"}")
+        )
+    )
         .isEqualTo(2);
     assertThat(hook.err.toString()).contains("Ward quality findings");
   }

@@ -7,7 +7,6 @@ import java.util.Optional;
 
 /** Finds the getter and setter of a bean field, by the JavaBeans naming and the field's type. */
 final class BeanAccessors {
-
   private static final String BOOLEAN = "boolean";
   private static final String GET = "get";
   private static final String IS = "is";
@@ -24,14 +23,16 @@ final class BeanAccessors {
             .anyMatch(
                 method ->
                     isGetter(method, cap, type)
-                        && ClassMembers.typeText(method).equals(Optional.of(type)));
+                        && ClassMembers.typeText(method).equals(Optional.of(type))
+            );
     final boolean setter =
         methods.stream()
             .anyMatch(
                 method ->
                     SET.concat(cap).equals(MemberDeclarations.name(method))
                         && ClassMetrics.parameterCount(method) == 1
-                        && parameterType(method).equals(Optional.of(type)));
+                        && parameterType(method).equals(Optional.of(type))
+            );
     return getter && setter;
   }
 

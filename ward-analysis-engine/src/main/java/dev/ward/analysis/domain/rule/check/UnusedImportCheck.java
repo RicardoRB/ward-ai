@@ -13,7 +13,6 @@ import java.util.Set;
  * a type named after the module.
  */
 public final class UnusedImportCheck implements RuleCheck {
-
   private static final String IMPORT = "import_declaration";
   private static final String SEPARATOR = ".";
 

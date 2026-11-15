@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * cases after it can never run. A wildcard {@code _} is not a capture.
  */
 public final class BareCapturePatternCheck implements RuleCheck {
-
   private static final Set<String> MATCHES = Set.of("match_stmt");
   private static final String CASE_BLOCK = "case_block";
   private static final String GUARD = "guard";

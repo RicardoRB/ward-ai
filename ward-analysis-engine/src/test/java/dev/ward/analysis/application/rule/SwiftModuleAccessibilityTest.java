@@ -11,17 +11,21 @@ import org.junit.jupiter.api.Test;
 
 /** Checks which public declarations the module-scoped Swift accessibility rule reports. */
 final class SwiftModuleAccessibilityTest {
-
   @Test
   void aPublicDeclarationOnlyItsOwnModuleUsesIsReported() {
     final Map<String, FileSummary> files =
         Map.of(
             SwiftAccessibilityFixtures.DECLARING,
             SwiftAccessibilityFixtures.exporting(
-                SwiftAccessibilityFixtures.DECLARING, SwiftAccessibilityFixtures.SHAPE),
+                SwiftAccessibilityFixtures.DECLARING,
+                SwiftAccessibilityFixtures.SHAPE
+            ),
             SwiftAccessibilityFixtures.CORE_USER,
             SwiftAccessibilityFixtures.using(
-                SwiftAccessibilityFixtures.CORE_USER, SwiftAccessibilityFixtures.SHAPE));
+                SwiftAccessibilityFixtures.CORE_USER,
+                SwiftAccessibilityFixtures.SHAPE
+            )
+        );
 
     assertThat(SwiftAccessibilityFixtures.findings(files, SwiftAccessibilityFixtures.CORE))
         .extracting(AnalysisFinding::file)
@@ -33,14 +37,21 @@ final class SwiftModuleAccessibilityTest {
     final Map<String, FileSummary> files =
         Map.of(
             SwiftAccessibilityFixtures.DECLARING,
-                SwiftAccessibilityFixtures.exporting(
-                    SwiftAccessibilityFixtures.DECLARING, SwiftAccessibilityFixtures.SHAPE),
+            SwiftAccessibilityFixtures.exporting(
+                SwiftAccessibilityFixtures.DECLARING,
+                SwiftAccessibilityFixtures.SHAPE
+            ),
             SwiftAccessibilityFixtures.CORE_USER,
-                SwiftAccessibilityFixtures.using(
-                    SwiftAccessibilityFixtures.CORE_USER, SwiftAccessibilityFixtures.SHAPE),
+            SwiftAccessibilityFixtures.using(
+                SwiftAccessibilityFixtures.CORE_USER,
+                SwiftAccessibilityFixtures.SHAPE
+            ),
             SwiftAccessibilityFixtures.APP_USER,
-                SwiftAccessibilityFixtures.using(
-                    SwiftAccessibilityFixtures.APP_USER, SwiftAccessibilityFixtures.SHAPE));
+            SwiftAccessibilityFixtures.using(
+                SwiftAccessibilityFixtures.APP_USER,
+                SwiftAccessibilityFixtures.SHAPE
+            )
+        );
 
     assertThat(SwiftAccessibilityFixtures.findings(files, SwiftAccessibilityFixtures.CORE))
         .isEmpty();
@@ -51,15 +62,21 @@ final class SwiftModuleAccessibilityTest {
     final Map<String, FileSummary> files =
         Map.of(
             SwiftAccessibilityFixtures.DECLARING,
-                SwiftAccessibilityFixtures.exporting(
-                    SwiftAccessibilityFixtures.DECLARING, SwiftAccessibilityFixtures.SHAPE),
+            SwiftAccessibilityFixtures.exporting(
+                SwiftAccessibilityFixtures.DECLARING,
+                SwiftAccessibilityFixtures.SHAPE
+            ),
             SwiftAccessibilityFixtures.CORE_USER,
-                SwiftAccessibilityFixtures.using(
-                    SwiftAccessibilityFixtures.CORE_USER, SwiftAccessibilityFixtures.SHAPE),
+            SwiftAccessibilityFixtures.using(
+                SwiftAccessibilityFixtures.CORE_USER,
+                SwiftAccessibilityFixtures.SHAPE
+            ),
             SwiftAccessibilityFixtures.APP_USER,
-                SwiftAccessibilityFixtures.using(
-                    SwiftAccessibilityFixtures.APP_USER,
-                    SwiftUnusedDefinitions.CONFORMANCE_PREFIX + SwiftAccessibilityFixtures.SHAPE));
+            SwiftAccessibilityFixtures.using(
+                SwiftAccessibilityFixtures.APP_USER,
+                SwiftUnusedDefinitions.CONFORMANCE_PREFIX + SwiftAccessibilityFixtures.SHAPE
+            )
+        );
 
     assertThat(SwiftAccessibilityFixtures.findings(files, SwiftAccessibilityFixtures.CORE))
         .isEmpty();
@@ -70,14 +87,21 @@ final class SwiftModuleAccessibilityTest {
     final Map<String, FileSummary> files =
         Map.of(
             SwiftAccessibilityFixtures.DECLARING,
-                SwiftAccessibilityFixtures.exporting(
-                    SwiftAccessibilityFixtures.DECLARING, SwiftAccessibilityFixtures.SHAPE),
+            SwiftAccessibilityFixtures.exporting(
+                SwiftAccessibilityFixtures.DECLARING,
+                SwiftAccessibilityFixtures.SHAPE
+            ),
             SwiftAccessibilityFixtures.CORE_USER,
-                SwiftAccessibilityFixtures.using(
-                    SwiftAccessibilityFixtures.CORE_USER, SwiftAccessibilityFixtures.SHAPE),
+            SwiftAccessibilityFixtures.using(
+                SwiftAccessibilityFixtures.CORE_USER,
+                SwiftAccessibilityFixtures.SHAPE
+            ),
             SwiftAccessibilityFixtures.LOOSE,
-                SwiftAccessibilityFixtures.using(
-                    SwiftAccessibilityFixtures.LOOSE, SwiftAccessibilityFixtures.SHAPE));
+            SwiftAccessibilityFixtures.using(
+                SwiftAccessibilityFixtures.LOOSE,
+                SwiftAccessibilityFixtures.SHAPE
+            )
+        );
 
     assertThat(SwiftAccessibilityFixtures.findings(files, SwiftAccessibilityFixtures.CORE))
         .isEmpty();
@@ -89,14 +113,22 @@ final class SwiftModuleAccessibilityTest {
         Map.of(
             SwiftAccessibilityFixtures.DECLARING,
             SwiftAccessibilityFixtures.exporting(
-                SwiftAccessibilityFixtures.DECLARING, SwiftAccessibilityFixtures.SHAPE),
+                SwiftAccessibilityFixtures.DECLARING,
+                SwiftAccessibilityFixtures.SHAPE
+            ),
             SwiftAccessibilityFixtures.CORE_USER,
             SwiftAccessibilityFixtures.using(
-                SwiftAccessibilityFixtures.CORE_USER, SwiftAccessibilityFixtures.SHAPE));
+                SwiftAccessibilityFixtures.CORE_USER,
+                SwiftAccessibilityFixtures.SHAPE
+            )
+        );
 
     assertThat(
-            SwiftAccessibilityFixtures.findings(
-                files, Map.of(SwiftAccessibilityFixtures.CORE_USER, "Core")))
+        SwiftAccessibilityFixtures.findings(
+            files,
+            Map.of(SwiftAccessibilityFixtures.CORE_USER, "Core")
+        )
+    )
         .isEmpty();
     assertThat(UnusedDefinitionFindings.findings(List.of(SwiftAccessibilityFixtures.RULE), files))
         .isEmpty();
@@ -108,7 +140,10 @@ final class SwiftModuleAccessibilityTest {
         Map.of(
             SwiftAccessibilityFixtures.DECLARING,
             SwiftAccessibilityFixtures.exporting(
-                SwiftAccessibilityFixtures.DECLARING, SwiftAccessibilityFixtures.SHAPE));
+                SwiftAccessibilityFixtures.DECLARING,
+                SwiftAccessibilityFixtures.SHAPE
+            )
+        );
 
     assertThat(SwiftAccessibilityFixtures.findings(files, SwiftAccessibilityFixtures.CORE))
         .isEmpty();
@@ -121,9 +156,11 @@ final class SwiftModuleAccessibilityTest {
             SwiftAccessibilityFixtures.DECLARING,
             SwiftAccessibilityFixtures.summary(
                 SwiftAccessibilityFixtures.DECLARING,
-                List.of(SwiftAccessibilityFixtures.publicSymbol("Outer.Inner"))),
+                List.of(SwiftAccessibilityFixtures.publicSymbol("Outer.Inner"))
+            ),
             SwiftAccessibilityFixtures.CORE_USER,
-            SwiftAccessibilityFixtures.using(SwiftAccessibilityFixtures.CORE_USER, "Inner"));
+            SwiftAccessibilityFixtures.using(SwiftAccessibilityFixtures.CORE_USER, "Inner")
+        );
 
     assertThat(SwiftAccessibilityFixtures.findings(files, SwiftAccessibilityFixtures.CORE))
         .extracting(AnalysisFinding::message)
@@ -143,10 +180,16 @@ final class SwiftModuleAccessibilityTest {
                     new Symbol(
                         SwiftAccessibilityFixtures.SHAPE,
                         new dev.ward.analysis.domain.ir.Span(1, 1, 1, 1, 0, 1),
-                        ""))),
+                        ""
+                    )
+                )
+            ),
             SwiftAccessibilityFixtures.CORE_USER,
             SwiftAccessibilityFixtures.using(
-                SwiftAccessibilityFixtures.CORE_USER, SwiftAccessibilityFixtures.SHAPE));
+                SwiftAccessibilityFixtures.CORE_USER,
+                SwiftAccessibilityFixtures.SHAPE
+            )
+        );
 
     assertThat(SwiftAccessibilityFixtures.findings(files, SwiftAccessibilityFixtures.CORE))
         .isEmpty();
@@ -158,12 +201,17 @@ final class SwiftModuleAccessibilityTest {
         Map.of(
             SwiftAccessibilityFixtures.DECLARING,
             SwiftAccessibilityFixtures.exporting(
-                SwiftAccessibilityFixtures.DECLARING, SwiftAccessibilityFixtures.SHAPE),
+                SwiftAccessibilityFixtures.DECLARING,
+                SwiftAccessibilityFixtures.SHAPE
+            ),
             SwiftAccessibilityFixtures.CORE_USER,
             SwiftAccessibilityFixtures.using(
-                SwiftAccessibilityFixtures.CORE_USER, SwiftAccessibilityFixtures.SHAPE),
+                SwiftAccessibilityFixtures.CORE_USER,
+                SwiftAccessibilityFixtures.SHAPE
+            ),
             "tools/gen.py",
-            SwiftAccessibilityFixtures.using("tools/gen.py", SwiftAccessibilityFixtures.SHAPE));
+            SwiftAccessibilityFixtures.using("tools/gen.py", SwiftAccessibilityFixtures.SHAPE)
+        );
 
     assertThat(SwiftAccessibilityFixtures.findings(files, SwiftAccessibilityFixtures.CORE))
         .hasSize(1);

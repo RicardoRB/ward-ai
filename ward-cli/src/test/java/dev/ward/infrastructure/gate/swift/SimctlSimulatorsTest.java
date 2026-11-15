@@ -71,7 +71,8 @@ class SimctlSimulatorsTest {
             List.of("xcrun", "simctl", "list", "runtimes", "-j"),
             List.of("xcrun", "simctl", "list", "devices", "available", "-j"),
             List.of("xcrun", "simctl", "boot", NEW_BASE),
-            List.of("xcrun", "simctl", "bootstatus", NEW_BASE, "-b"));
+            List.of("xcrun", "simctl", "bootstatus", NEW_BASE, "-b")
+        );
     assertThat(commands.workingDirectories).containsOnly(ROOT);
   }
 

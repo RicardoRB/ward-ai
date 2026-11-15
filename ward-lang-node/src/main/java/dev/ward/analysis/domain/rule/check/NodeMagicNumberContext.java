@@ -15,7 +15,6 @@ import java.util.Map;
  * field, a default value, an assignment, an array index, a call argument or a JSX expression.
  */
 final class NodeMagicNumberContext {
-
   private static final String PARAMETER_ARGUMENT = "formalParameterArg";
   private static final String PROPERTY_ASSIGNMENT = "propertyAssignment";
   private static final String LITERAL_EXPRESSION = "singleExpression";

@@ -15,7 +15,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** Rule selection through {@code ward-rules.toml}. */
 class RuleConfigurationGateTest {
-
   private static final String METHOD_LENGTH = "ward:java/method-length";
   private static final String TYPE_NAME = "ward:java/type-name";
   private static final String RULES_FILE = "ward-rules.toml";
@@ -61,7 +60,8 @@ class RuleConfigurationGateTest {
     assertThat(result.stderr())
         .contains(
             "ward-rules.toml: [select] exclude: \"ward:java/method-length\": name the rule"
-                + " <language>.<rule-name>; write \"java.method-length\"");
+                + " <language>.<rule-name>; write \"java.method-length\""
+        );
   }
 
   @Test
@@ -108,7 +108,9 @@ class RuleConfigurationGateTest {
     f.source(FixtureProject.SRC_A, "class A", SEVENTY);
     Files.createDirectories(f.root().resolve("config"));
     Files.writeString(
-        f.root().resolve("config/rules.toml"), FixtureProject.VERSION + TABLE + "max = 80\n");
+        f.root().resolve("config/rules.toml"),
+        FixtureProject.VERSION + TABLE + "max = 80\n"
+    );
 
     assertThat(FixtureProject.ids(f.run(List.of(), "config/rules.toml", new HashMap<>())))
         .doesNotContain(METHOD_LENGTH);

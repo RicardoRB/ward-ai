@@ -18,7 +18,6 @@ import java.util.Set;
  * -(5)} is reported as {@code 5}.
  */
 public final class KotlinMagicNumberCheck implements UnitCheck {
-
   private static final Set<String> LITERALS =
       Set.of("IntegerLiteral", "LongLiteral", "HexLiteral", "BinLiteral", "RealLiteral");
   private static final Set<BigDecimal> IGNORED =
@@ -76,7 +75,8 @@ public final class KotlinMagicNumberCheck implements UnitCheck {
       final SyntaxNode literal,
       final String text,
       final boolean exempt,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     if (!exempt && isMagic(text)) {
       matches.add(CheckSupport.at(literal.span(), message.replace(VALUE, text)));
     }

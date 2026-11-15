@@ -69,7 +69,8 @@ final class ApiCompatGate implements QualityGate {
     final ApiSources.Sources before = sources.atBaseline(baseline);
     if (before.units().isEmpty()) {
       throw new ApiCompatException(
-          "The baseline " + baseline.ref() + " has no sources for this project.");
+          "The baseline " + baseline.ref() + " has no sources for this project."
+      );
     }
     final ApiSources.Sources now = sources.inWorkingTree();
     final List<ApiType> baselineApi = surface(root, before.units(), baseline.ref());
@@ -84,12 +85,14 @@ final class ApiCompatGate implements QualityGate {
               + " working="
               + currentApi.size()
               + " modules="
-              + before.modules().size());
+              + before.modules().size()
+      );
     }
     final List<ApiChange> changes =
         new ArrayList<>(ApiComparison.compare(baselineApi, currentApi, scope));
     changes.addAll(
-        ApiModules.moved(baselineApi, currentApi, before.modules(), now.modules(), scope));
+        ApiModules.moved(baselineApi, currentApi, before.modules(), now.modules(), scope)
+    );
     final List<String> modules = new ArrayList<>(before.modules());
     modules.addAll(now.modules());
     logCounts(changes);
@@ -102,7 +105,8 @@ final class ApiCompatGate implements QualityGate {
     } catch (ApiSurfaceException broken) {
       throw new ApiCompatException(
           "Cannot read the API of " + broken.path() + " at " + where + ": " + broken.getMessage(),
-          broken);
+          broken
+      );
     }
   }
 
@@ -119,7 +123,8 @@ final class ApiCompatGate implements QualityGate {
       final List<ApiType> baselineApi,
       final Predicate<String> scope,
       final List<String> modules,
-      final List<ApiChange> changes) {
+      final List<ApiChange> changes
+  ) {
     final List<Finding> findings =
         changes.stream().map(change -> finding(change, modules)).toList();
     final long compared =
@@ -149,6 +154,7 @@ final class ApiCompatGate implements QualityGate {
         change.location().line(),
         change.location().column(),
         null,
-        List.of());
+        List.of()
+    );
   }
 }

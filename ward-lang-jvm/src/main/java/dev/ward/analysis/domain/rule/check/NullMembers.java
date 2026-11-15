@@ -8,13 +8,13 @@ import java.util.Set;
 
 /** Reads the fields, methods and initializer blocks that make up the body of a type. */
 final class NullMembers {
-
   private static final Set<String> MEMBERS =
       Set.of(
           "methodDeclaration",
           "interfaceCommonBodyDeclaration",
           "fieldDeclaration",
-          "constructorDeclaration");
+          "constructorDeclaration"
+      );
   private static final String TYPE_TYPE = "typeType";
   private static final String IDENTIFIER = "identifier";
   private static final String FIELD = "fieldDeclaration";
@@ -27,7 +27,8 @@ final class NullMembers {
       final SyntaxNode entry,
       final List<NullModel.Field> fields,
       final List<NullModel.Method> methods,
-      final List<SyntaxNode> initializers) {
+      final List<SyntaxNode> initializers
+  ) {
     final Optional<SyntaxNode> member = NullSyntax.scan(entry, MEMBERS).stream().findFirst();
     if (member.isPresent()) {
       readMember(
@@ -35,7 +36,8 @@ final class NullMembers {
           NullSyntax.notes(NullSyntax.annotations(entry)),
           modifiers(entry),
           fields,
-          methods);
+          methods
+      );
     } else {
       NullSyntax.first(entry, BLOCK).ifPresent(initializers::add);
     }
@@ -54,7 +56,8 @@ final class NullMembers {
       final NullModel.Notes held,
       final Set<String> modifiers,
       final List<NullModel.Field> fields,
-      final List<NullModel.Method> methods) {
+      final List<NullModel.Method> methods
+  ) {
     if (FIELD.equals(node.kind())) {
       fields.addAll(fieldsOf(node, held, modifiers.contains("static")));
     } else {
@@ -63,7 +66,10 @@ final class NullMembers {
   }
 
   private static List<NullModel.Field> fieldsOf(
-      final SyntaxNode node, final NullModel.Notes held, final boolean isStatic) {
+      final SyntaxNode node,
+      final NullModel.Notes held,
+      final boolean isStatic
+  ) {
     final SyntaxNode type = NullSyntax.first(node, TYPE_TYPE).orElse(node);
     final NullModel.Notes notes = NullSyntax.merge(held, NullSyntax.annotations(type));
     final boolean primitive = NullSyntax.isPrimitive(type);
@@ -88,10 +94,11 @@ final class NullMembers {
         type.map(t -> NullSyntax.merge(notes, NullSyntax.annotations(t))).orElse(notes);
     final NullModel.Returns returns =
         type.map(
-                t ->
-                    NullSyntax.isPrimitive(t)
-                        ? NullModel.Returns.PRIMITIVE
-                        : NullModel.Returns.REFERENCE)
+            t ->
+                NullSyntax.isPrimitive(t)
+                    ? NullModel.Returns.PRIMITIVE
+                    : NullModel.Returns.REFERENCE
+        )
             .orElse(NullModel.Returns.NOTHING);
     final String name = NullSyntax.first(node, IDENTIFIER).map(SyntaxWalk::text).orElse("");
     final SyntaxNode body =
@@ -102,7 +109,8 @@ final class NullMembers {
                 child ->
                     BLOCK.equals(child.kind())
                         ? Optional.of(child)
-                        : NullSyntax.first(child, BLOCK))
+                        : NullSyntax.first(child, BLOCK)
+            )
             .orElse(null);
     return new NullModel.Method(name, node, body, params(node), withType, constructor, returns);
   }
@@ -120,11 +128,13 @@ final class NullMembers {
           node.children().stream().anyMatch(child -> "...".equals(SyntaxWalk.text(child)));
       final NullModel.Notes notes =
           NullSyntax.merge(
-              NullSyntax.notes(NullSyntax.annotations(node)), NullSyntax.annotations(type));
+              NullSyntax.notes(NullSyntax.annotations(node)),
+              NullSyntax.annotations(type)
+          );
       final String name = declaredName(node);
       out.add(
-          new NullModel.Param(
-              name, node, notes, NullSyntax.isPrimitive(type) && !varargs, varargs));
+          new NullModel.Param(name, node, notes, NullSyntax.isPrimitive(type) && !varargs, varargs)
+      );
     }
     return out;
   }

@@ -11,7 +11,6 @@ import java.util.List;
  * are read from them directly.
  */
 final class NodeImportScan {
-
   private static final String IMPORT_STATEMENT = "importStatement";
   private static final String IMPORT_EQUALS = "importEqualsDeclaration";
   private static final String IMPORT_FROM_BLOCK = "importFromBlock";
@@ -91,19 +90,28 @@ final class NodeImportScan {
     final SyntaxNode name = leaves.get(1);
     final Span site = NodeLeaves.site(declaration, literal);
     bindings.add(
-        new Binding(name, STAR, NodeTokens.unquote(NodeLeaves.text(literal)), false, site));
+        new Binding(name, STAR, NodeTokens.unquote(NodeLeaves.text(literal)), false, site)
+    );
     sites.add(declaration.span());
   }
 
   /** A default import, or the default of a namespace-shaped part without a star. */
   private void addDefault(
-      final SyntaxNode part, final boolean typeOnly, final String specifier, final Span site) {
+      final SyntaxNode part,
+      final boolean typeOnly,
+      final String specifier,
+      final Span site
+  ) {
     bindings.add(new Binding(NodeLeaves.of(part).get(0), DEFAULT, specifier, typeOnly, site));
   }
 
   /** {@code * as ns} binds the namespace; a bare name is the default export. */
   private void addNamespace(
-      final SyntaxNode part, final boolean typeOnly, final String specifier, final Span site) {
+      final SyntaxNode part,
+      final boolean typeOnly,
+      final String specifier,
+      final Span site
+  ) {
     final List<SyntaxNode> leaves = NodeLeaves.of(part);
     if (STAR.equals(NodeLeaves.text(leaves.get(0)))) {
       bindings.add(new Binding(leaves.get(leaves.size() - 1), STAR, specifier, false, site));
@@ -114,7 +122,11 @@ final class NodeImportScan {
 
   /** {@code name}, {@code name as local}, {@code type name} or {@code "string" as local}. */
   private void addNamed(
-      final SyntaxNode item, final boolean typeOnly, final String specifier, final Span site) {
+      final SyntaxNode item,
+      final boolean typeOnly,
+      final String specifier,
+      final Span site
+  ) {
     final List<SyntaxNode> exported = NodeLeaves.of(NodeLeaves.child(item, MODULE_EXPORT_NAME));
     final SyntaxNode binding = NodeLeaves.child(item, IMPORTED_BINDING);
     final SyntaxNode local =

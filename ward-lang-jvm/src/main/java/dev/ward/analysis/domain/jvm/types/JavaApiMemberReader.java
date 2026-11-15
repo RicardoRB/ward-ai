@@ -21,7 +21,8 @@ final class JavaApiMemberReader {
       final SourceModel.ClassDecl declaration,
       final ApiTypeRefs refs,
       final ApiVisibility type,
-      final ApiLocation typeLocation) {
+      final ApiLocation typeLocation
+  ) {
     this.path = path;
     this.declaration = declaration;
     this.refs = refs;
@@ -59,7 +60,8 @@ final class JavaApiMemberReader {
         List.of(),
         List.of(),
         refs.of(field.type()),
-        location(member.outer().span()));
+        location(member.outer().span())
+    );
   }
 
   private ApiMember method(final JvmMethod method) {
@@ -79,7 +81,8 @@ final class JavaApiMemberReader {
             .map(parameter -> new ApiParameter(inner.of(parameter), false))
             .toList(),
         inner.of(method.returnType()),
-        memberLocation(method));
+        memberLocation(method)
+    );
   }
 
   private boolean isDefault(final JvmMethod method, final boolean isAbstract) {

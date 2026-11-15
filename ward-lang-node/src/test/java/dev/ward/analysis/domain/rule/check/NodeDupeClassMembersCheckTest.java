@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /** Reports a class member that repeats an earlier name, except a getter and setter pair. */
 class NodeDupeClassMembersCheckTest {
-
   private static final int LINE = 3;
   private static final int COLUMN = 3;
   private static final String MESSAGE = "duplicate name '{value}'";

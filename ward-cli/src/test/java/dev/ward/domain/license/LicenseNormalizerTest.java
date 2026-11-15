@@ -26,12 +26,17 @@ class LicenseNormalizerTest {
         Arguments.of("mit", "", "MIT"),
         Arguments.of("The MIT License", "", "MIT"),
         Arguments.of(
-            "(MIT OR GPL-3.0) AND bsd-3-clause", "", "(MIT OR GPL-3.0-only) AND BSD-3-Clause"),
+            "(MIT OR GPL-3.0) AND bsd-3-clause",
+            "",
+            "(MIT OR GPL-3.0-only) AND BSD-3-Clause"
+        ),
         Arguments.of(
             "GPL-2.0-only WITH classpath-exception-2.0",
             "",
-            "GPL-2.0-only WITH Classpath-exception-2.0"),
-        Arguments.of("LicenseRef-Custom", "", "LicenseRef-Custom"));
+            "GPL-2.0-only WITH Classpath-exception-2.0"
+        ),
+        Arguments.of("LicenseRef-Custom", "", "LicenseRef-Custom")
+    );
   }
 
   @ParameterizedTest
@@ -52,7 +57,13 @@ class LicenseNormalizerTest {
 
   static Stream<String> unknown() {
     return Stream.of(
-        "See LICENSE file", "Proprietary", "UNLICENSED", "Apache-2.0+", "MIT WITH made-up", "");
+        "See LICENSE file",
+        "Proprietary",
+        "UNLICENSED",
+        "Apache-2.0+",
+        "MIT WITH made-up",
+        ""
+    );
   }
 
   @Test
@@ -60,7 +71,10 @@ class LicenseNormalizerTest {
     final DeclaredLicense declared =
         new DeclaredLicense(
             List.of(
-                new DeclaredLicense.Entry("MIT", ""), new DeclaredLicense.Entry("Apache-2.0", "")));
+                new DeclaredLicense.Entry("MIT", ""),
+                new DeclaredLicense.Entry("Apache-2.0", "")
+            )
+        );
 
     assertThat(normalizer.normalize(declared).orElseThrow().render())
         .isEqualTo("MIT OR Apache-2.0");
@@ -70,7 +84,8 @@ class LicenseNormalizerTest {
   void oneUnmappableAlternativeMakesTheWholeLicenseUnknown() {
     final DeclaredLicense declared =
         new DeclaredLicense(
-            List.of(new DeclaredLicense.Entry("MIT", ""), new DeclaredLicense.Entry("???", "")));
+            List.of(new DeclaredLicense.Entry("MIT", ""), new DeclaredLicense.Entry("???", ""))
+        );
 
     assertThat(normalizer.normalize(declared)).isEmpty();
   }

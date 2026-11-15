@@ -111,7 +111,11 @@ public final class MavenBuildReader implements BuildModelReader {
     }
 
     private Declaration pluginDeclaration(
-        final String section, final String name, final String version, final int line) {
+        final String section,
+        final String name,
+        final String version,
+        final int line
+    ) {
       final Declaration.Flag flag =
           version == null && chain.externalParent()
               ? Declaration.Flag.EXTERNAL_PARENT
@@ -125,7 +129,8 @@ public final class MavenBuildReader implements BuildModelReader {
           "",
           file,
           line,
-          flag);
+          flag
+      );
     }
 
     void lifecycle() {
@@ -136,7 +141,12 @@ public final class MavenBuildReader implements BuildModelReader {
         if (!chain.declares(plugin.artifact())) {
           out.add(
               pluginDeclaration(
-                  "default lifecycle", PLUGIN_GROUP + ":" + plugin.artifact(), null, line));
+                  "default lifecycle",
+                  PLUGIN_GROUP + ":" + plugin.artifact(),
+                  null,
+                  line
+              )
+          );
         }
       }
     }
@@ -149,7 +159,9 @@ public final class MavenBuildReader implements BuildModelReader {
         final String id = "profile " + profile.text("id") + " ";
         dependencies(id + DEPENDENCIES, profile.list(DEPENDENCIES));
         dependencies(
-            id + "dependencyManagement", profile.list("dependencyManagement", DEPENDENCIES));
+            id + "dependencyManagement",
+            profile.list("dependencyManagement", DEPENDENCIES)
+        );
       }
     }
 
@@ -168,7 +180,9 @@ public final class MavenBuildReader implements BuildModelReader {
                 name + ":" + type + ":" + node.text("classifier"),
                 file,
                 version == null ? node.line() : version.line(),
-                Declaration.Flag.NONE));
+                Declaration.Flag.NONE
+            )
+        );
       }
     }
   }

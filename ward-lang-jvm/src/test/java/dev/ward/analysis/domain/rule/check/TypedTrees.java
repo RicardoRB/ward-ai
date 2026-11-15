@@ -14,7 +14,6 @@ import java.util.Map;
 
 /** Builds the call, creation and statement trees and the facts that the type-aware checks read. */
 final class TypedTrees {
-
   static final String DEBUG = "debug";
   static final String COMPILATION_UNIT = "compilationUnit";
   private static final String EXPRESSION = "expression";
@@ -51,7 +50,8 @@ final class TypedTrees {
         null,
         Map.of(),
         Map.of(),
-        null);
+        null
+    );
   }
 
   TypeShape shape(final TypeShape.Kind kind) {
@@ -73,7 +73,11 @@ final class TypedTrees {
     parts.add(layout.token("')'", ")"));
     final SyntaxNode arguments = node("arguments", parts.toArray(SyntaxNode[]::new));
     return node(
-        EXPRESSION, receiver, dot, node("methodCall", node(IDENTIFIER, methodName), arguments));
+        EXPRESSION,
+        receiver,
+        dot,
+        node("methodCall", node(IDENTIFIER, methodName), arguments)
+    );
   }
 
   /** {@code color.equals(RED)}. */
@@ -88,7 +92,8 @@ final class TypedTrees {
         EXPRESSION,
         receiver,
         dot,
-        node("methodCall", node(IDENTIFIER, methodName), node("arguments", open, argument, close)));
+        node("methodCall", node(IDENTIFIER, methodName), node("arguments", open, argument, close))
+    );
   }
 
   /** {@code new <name><<key>>}, whose key type is the fourth child's identifier. */
@@ -111,7 +116,8 @@ final class TypedTrees {
         EXPRESSION,
         receiver,
         dot,
-        node("methodCall", node(IDENTIFIER, methodName), node("arguments", open, close)));
+        node("methodCall", node(IDENTIFIER, methodName), node("arguments", open, close))
+    );
   }
 
   /** Facts that name {@code node}'s start. */

@@ -32,6 +32,7 @@ public final class NodeSupport {
     return Optional.of(
         "Ward supports Node 22 and 24; the project uses Node "
             + major
-            + ", and Ward may not work with it.");
+            + ", and Ward may not work with it."
+    );
   }
 }

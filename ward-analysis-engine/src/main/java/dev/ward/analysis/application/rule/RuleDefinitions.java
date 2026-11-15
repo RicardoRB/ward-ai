@@ -32,7 +32,8 @@ public final class RuleDefinitions {
         throw new RuleConfigurationException(
             "Analysis rule id '"
                 + rule.id()
-                + "' is defined more than once. Each rule needs its own id.");
+                + "' is defined more than once. Each rule needs its own id."
+        );
       }
     }
     return List.copyOf(rules);

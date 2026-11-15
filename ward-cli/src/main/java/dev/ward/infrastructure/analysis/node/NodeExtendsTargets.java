@@ -20,7 +20,11 @@ final class NodeExtendsTargets {
    * Resolves an {@code extends} value to a file: a relative path, or a workspace package's file.
    */
   static Optional<Path> resolve(
-      final Path root, final Path dir, final String extended, final List<NodePackage> packages) {
+      final Path root,
+      final Path dir,
+      final String extended,
+      final List<NodePackage> packages
+  ) {
     if (extended.startsWith(DOT) || extended.startsWith(SEPARATOR)) {
       final Path path = dir.resolve(extended).normalize();
       return existing(path).or(() -> existing(Path.of(path + JSON_EXTENSION)));

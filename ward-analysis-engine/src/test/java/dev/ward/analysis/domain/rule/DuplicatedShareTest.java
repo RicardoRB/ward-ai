@@ -11,7 +11,6 @@ import java.util.TreeMap;
 import org.junit.jupiter.api.Test;
 
 class DuplicatedShareTest {
-
   private static final int TOKENS = 10;
   private static final int COPY_LENGTH = 3;
   private static final int DUPLICATED = 7;
@@ -28,7 +27,9 @@ class DuplicatedShareTest {
 
   private static CloneDetector.Copy copy(final int from) {
     return new CloneDetector.Copy(
-        "A", new Span(1, from + 1, 1, from + COPY_LENGTH + 1, from, from + COPY_LENGTH));
+        "A",
+        new Span(1, from + 1, 1, from + COPY_LENGTH + 1, from, from + COPY_LENGTH)
+    );
   }
 
   @Test

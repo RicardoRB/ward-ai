@@ -20,7 +20,6 @@ import java.util.Set;
  * InexactVarargsConditional does. A call or branch whose facts are unknown is never reported.
  */
 public final class JavaVarargsConditionalCheck implements RuleCheck {
-
   private static final String CONDITION_MARK = "'?'";
   private static final int CONDITIONAL_PARTS = 5;
   private static final int THEN = 2;
@@ -53,7 +52,8 @@ public final class JavaVarargsConditionalCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("expression"))) {
       conditional(visit.node(), types)
@@ -63,7 +63,9 @@ public final class JavaVarargsConditionalCheck implements RuleCheck {
   }
 
   private static Optional<SyntaxNode> conditional(
-      final SyntaxNode call, final UnitTypeFacts types) {
+      final SyntaxNode call,
+      final UnitTypeFacts types
+  ) {
     final Optional<CallTarget> target = types.callTarget(call.span()).filter(CallTarget::isVarargs);
     final List<SyntaxNode> arguments = JavaCalls.arguments(call);
     if (target.isEmpty() || arguments.size() != target.get().parameters().size()) {
@@ -79,7 +81,10 @@ public final class JavaVarargsConditionalCheck implements RuleCheck {
   }
 
   private static boolean mixed(
-      final SyntaxNode first, final SyntaxNode second, final UnitTypeFacts types) {
+      final SyntaxNode first,
+      final SyntaxNode second,
+      final UnitTypeFacts types
+  ) {
     final Optional<Boolean> a = types.typeOf(first.span()).map(type -> type.arrayDepth() > 0);
     final Optional<Boolean> b = types.typeOf(second.span()).map(type -> type.arrayDepth() > 0);
     return a.isPresent() && b.isPresent() && !a.get().equals(b.get());

@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the Python example rule of each generic check kind over real sources. */
 class PythonExampleRulesTest {
-
   private static final String PYTHON = "ward:python/example-";
   private static final String PYTHON_SOURCE =
       """

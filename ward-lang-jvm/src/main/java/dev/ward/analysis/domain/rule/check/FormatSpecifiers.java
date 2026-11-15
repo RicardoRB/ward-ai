@@ -12,7 +12,6 @@ import java.util.stream.IntStream;
 
 /** Compares a {@code java.util.Formatter} format string with the arguments given for it. */
 final class FormatSpecifiers {
-
   private static final Pattern SPEC =
       Pattern.compile("%(\\d+\\$)?([-#+ 0,(<]*)(\\d+)?(\\.\\d+)?([tT]?[a-zA-Z%])");
   private static final String VALID = "bhscdoxefgat";
@@ -28,7 +27,8 @@ final class FormatSpecifiers {
           "java.lang.Double",
           "java.lang.Float",
           "char",
-          "java.lang.Character");
+          "java.lang.Character"
+      );
   private static final Set<String> NOT_DECIMAL =
       Set.of(
           "java.lang.String",
@@ -43,7 +43,8 @@ final class FormatSpecifiers {
           "boolean",
           "java.lang.Boolean",
           "char",
-          "java.lang.Character");
+          "java.lang.Character"
+      );
   private static final int INDEX_GROUP = 1;
   private static final int FLAGS_GROUP = 2;
   private static final int CONVERSION_GROUP = 5;
@@ -52,7 +53,6 @@ final class FormatSpecifiers {
 
   /** One conversion of a format; {@code index} is its explicit argument index, 0 for none. */
   private record Spec(String conversion, int index, boolean relative) {
-
     boolean sequential() {
       return index == 0 && !relative;
     }
@@ -93,7 +93,9 @@ final class FormatSpecifiers {
   }
 
   private static Optional<String> mismatches(
-      final List<Spec> specs, final List<Optional<TypeRef>> types) {
+      final List<Spec> specs,
+      final List<Optional<TypeRef>> types
+  ) {
     final List<String> sequential =
         specs.stream().filter(Spec::sequential).map(Spec::conversion).toList();
     return IntStream.range(0, sequential.size())
@@ -112,7 +114,8 @@ final class FormatSpecifiers {
     }
     if (sequential > given) {
       return Optional.of(
-          "the format needs " + sequential + " arguments but " + given + " are given");
+          "the format needs " + sequential + " arguments but " + given + " are given"
+      );
     }
     return sequential < given
         ? Optional.of("the format uses " + sequential + " arguments but " + given + " are given")
@@ -120,7 +123,10 @@ final class FormatSpecifiers {
   }
 
   private static Optional<String> mismatch(
-      final String conversion, final int index, final List<Optional<TypeRef>> types) {
+      final String conversion,
+      final int index,
+      final List<Optional<TypeRef>> types
+  ) {
     if (index >= types.size() || types.get(index).isEmpty()) {
       return Optional.empty();
     }

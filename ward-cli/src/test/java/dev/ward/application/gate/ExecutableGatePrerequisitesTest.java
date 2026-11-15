@@ -14,18 +14,24 @@ import java.util.logging.Logger;
 import org.junit.jupiter.api.Test;
 
 class ExecutableGatePrerequisitesTest {
-
   @Test
   void missingUnknownExecutableGetsPathFallback() {
     final GateResult result =
         GatePrerequisiteFixtures.only(
             GatePrerequisiteFixtures.runner(
-                    GatePrerequisiteFixtures.failing(), GatePrerequisiteFixtures.failing())
+                GatePrerequisiteFixtures.failing(),
+                GatePrerequisiteFixtures.failing()
+            )
                 .run(
                     GatePrerequisiteFixtures.MAVEN,
                     List.of(
                         GatePrerequisiteFixtures.gate(
-                            "custom-lint", GatePrerequisiteFixtures.MISSING))));
+                            "custom-lint",
+                            GatePrerequisiteFixtures.MISSING
+                        )
+                    )
+                )
+        );
 
     assertThat(result.status()).isEqualTo(GateStatus.UNAVAILABLE);
     assertThat(result.prerequisite().remediation())
@@ -38,12 +44,19 @@ class ExecutableGatePrerequisitesTest {
     final GateResult result =
         GatePrerequisiteFixtures.only(
             GatePrerequisiteFixtures.runner(
-                    GatePrerequisiteFixtures.failing(), GatePrerequisiteFixtures.failing())
+                GatePrerequisiteFixtures.failing(),
+                GatePrerequisiteFixtures.failing()
+            )
                 .run(
                     GatePrerequisiteFixtures.MAVEN,
                     List.of(
                         GatePrerequisiteFixtures.gate(
-                            "checkstyle", new FakeCommandExecutor(1, "", "bad")))));
+                            "checkstyle",
+                            new FakeCommandExecutor(1, "", "bad")
+                        )
+                    )
+                )
+        );
 
     assertThat(result.status()).isEqualTo(GateStatus.FAILED);
     assertThat(result.prerequisite()).isNull();
@@ -58,7 +71,12 @@ class ExecutableGatePrerequisitesTest {
                     GatePrerequisiteFixtures.MAVEN,
                     List.of(
                         GatePrerequisiteFixtures.gate(
-                            "custom-lint", GatePrerequisiteFixtures.MISSING))));
+                            "custom-lint",
+                            GatePrerequisiteFixtures.MISSING
+                        )
+                    )
+                )
+        );
 
     assertThat(result.prerequisite().kind()).isEqualTo(GatePrerequisite.Kind.EXECUTABLE);
   }
@@ -83,11 +101,15 @@ class ExecutableGatePrerequisitesTest {
     logger.addHandler(handler);
     try {
       GatePrerequisiteFixtures.runner(
-              GatePrerequisiteFixtures.failing(), GatePrerequisiteFixtures.failing())
+          GatePrerequisiteFixtures.failing(),
+          GatePrerequisiteFixtures.failing()
+      )
           .run(
               GatePrerequisiteFixtures.MAVEN,
               List.of(
-                  GatePrerequisiteFixtures.gate("custom-lint", GatePrerequisiteFixtures.MISSING)));
+                  GatePrerequisiteFixtures.gate("custom-lint", GatePrerequisiteFixtures.MISSING)
+              )
+          );
     } finally {
       logger.removeHandler(handler);
     }

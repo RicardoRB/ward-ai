@@ -21,7 +21,6 @@ import java.util.stream.Stream;
  * is read from the type facts of its target, so a call whose target is unknown reports nothing.
  */
 public final class InternalApiUsageCheck implements RuleCheck {
-
   private static final String IMPORT = "importDeclaration";
   private static final String EXPRESSION = "expression";
   private static final String IMPORT_PREFIX = "import";
@@ -41,7 +40,8 @@ public final class InternalApiUsageCheck implements RuleCheck {
           "com.sun.nio.file.",
           "com.sun.security.auth.",
           "com.sun.security.jgss.",
-          "com.sun.jarsigner.");
+          "com.sun.jarsigner."
+      );
 
   private static final FactNeed NEED = new FactNeed(Set.of(EXPRESSION), Set.of(FactKind.CALL));
 
@@ -72,7 +72,8 @@ public final class InternalApiUsageCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> calls =
         SyntaxWalk.visits(root, Set.of(EXPRESSION)).stream()
             .map(SyntaxWalk.Visit::node)

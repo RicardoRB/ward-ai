@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * reaches the one that introduced {@code strict}.
  */
 public final class StrictCallCheck implements RuleCheck {
-
   private static final Set<String> CALLS = Set.of("atom_expr");
   private static final String STRICT = "strict=";
   private static final String PREFIX = "py3";

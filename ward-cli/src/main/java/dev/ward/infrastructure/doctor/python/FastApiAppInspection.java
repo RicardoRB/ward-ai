@@ -16,7 +16,8 @@ public final class FastApiAppInspection {
           Path.of("main.py"),
           Path.of("app.py"),
           Path.of("app", "main.py"),
-          Path.of("app", "app.py"));
+          Path.of("app", "app.py")
+      );
   private static final Pattern FASTAPI_ASSIGNMENT =
       Pattern.compile("(?m)^(\\w+)\\s*=\\s*FastAPI\\(");
 

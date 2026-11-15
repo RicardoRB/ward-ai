@@ -13,26 +13,34 @@ import java.util.Map;
  * @param check the {@code scripts.check} command, or {@code null} when absent
  */
 public record PackageManifest(
-    Map<String, String> dependencies,
+    Map<String,
+    String> dependencies,
     String type,
     String packageManager,
     String prepare,
-    String check) {
+    String check
+) {
   /** A project without a readable {@code package.json}. */
   public static final PackageManifest EMPTY = new PackageManifest(Map.of(), null, null);
 
   /** Creates a manifest without a {@code prepare} or {@code check} script. */
   public PackageManifest(
-      final Map<String, String> dependencies, final String type, final String packageManager) {
+      final Map<String,
+      String> dependencies,
+      final String type,
+      final String packageManager
+  ) {
     this(dependencies, type, packageManager, null, null);
   }
 
   /** Creates a manifest without a {@code check} script. */
   public PackageManifest(
-      final Map<String, String> dependencies,
+      final Map<String,
+      String> dependencies,
       final String type,
       final String packageManager,
-      final String prepare) {
+      final String prepare
+  ) {
     this(dependencies, type, packageManager, prepare, null);
   }
 

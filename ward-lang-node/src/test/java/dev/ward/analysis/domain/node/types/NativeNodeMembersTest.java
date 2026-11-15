@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks the methods, fields and enum shapes that the native resolver answers for expressions. */
 class NativeNodeMembersTest {
-
   private static final String UNIT = TypeScenarios.UNIT;
 
   @Test

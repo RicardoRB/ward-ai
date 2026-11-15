@@ -9,7 +9,6 @@ import java.util.Optional;
  * for packages and {@code $} for nested classes, such as {@code java.util.Map$Entry}.
  */
 public sealed interface JType {
-
   /** A primitive type or {@code void}. */
   record Primitive(String name) implements JType {
     /**

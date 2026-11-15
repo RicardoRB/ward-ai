@@ -13,7 +13,6 @@ import java.util.Set;
  * {@code if} is checked itself. An empty loop body is reported unless {@code allowEmptyLoopBody}.
  */
 public final class NeedBracesCheck implements RuleCheck {
-
   private static final String STATEMENT = "statement";
   private static final String BLOCK = "block";
   private static final String IF = "'if'";

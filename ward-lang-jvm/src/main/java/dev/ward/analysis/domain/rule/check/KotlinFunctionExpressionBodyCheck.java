@@ -14,7 +14,6 @@ import java.util.Set;
  * reported.
  */
 public final class KotlinFunctionExpressionBodyCheck implements RuleCheck {
-
   private static final String FUN = "functionDeclaration";
   private static final String FUNCTION_BODY = "functionBody";
   private static final String BLOCK = "block";
@@ -64,7 +63,9 @@ public final class KotlinFunctionExpressionBodyCheck implements RuleCheck {
   }
 
   private static Optional<SyntaxNode> childOf(
-      final Optional<SyntaxNode> parent, final String kind) {
+      final Optional<SyntaxNode> parent,
+      final String kind
+  ) {
     return parent.flatMap(node -> childOf(node, kind));
   }
 

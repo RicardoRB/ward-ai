@@ -38,7 +38,10 @@ class NodeTestConfigFilesTest {
   private final PresetRuleFileWriter writer =
       new PresetRuleFileWriter(
           RuleFileTargetsFixtures.of(
-              new FileSystemPackageManifests(), new FileSystemNodeToolConfigs()));
+              new FileSystemPackageManifests(),
+              new FileSystemNodeToolConfigs()
+          )
+      );
 
   @BeforeEach
   void manifest() throws IOException {
@@ -51,8 +54,7 @@ class NodeTestConfigFilesTest {
         writer.apply(project(BuildTool.NPM), QualityPreset.STANDARD, gates(VITEST));
 
     assertThat(Files.readString(root.resolve(VITEST_CONFIG)))
-        .isEqualTo(
-            """
+        .isEqualTo("""
             // managed-by: ward
             import { defineConfig } from "vitest/config";
 
@@ -77,10 +79,13 @@ class NodeTestConfigFilesTest {
 
     assertThat(Files.readString(root.resolve(VITEST_CONFIG))).isEqualTo(strict);
     assertThat(
-            RuleFilePlans.tools(
-                writer.plan(project(BuildTool.NPM), QualityPreset.STANDARD, gates(VITEST))))
+        RuleFilePlans.tools(
+            writer.plan(project(BuildTool.NPM), QualityPreset.STANDARD, gates(VITEST))
+        )
+    )
         .containsExactly(
-            new PlannedFileChange(root.resolve(VITEST_CONFIG), PlannedFileChange.Action.UNCHANGED));
+            new PlannedFileChange(root.resolve(VITEST_CONFIG), PlannedFileChange.Action.UNCHANGED)
+        );
   }
 
   @Test
@@ -89,14 +94,16 @@ class NodeTestConfigFilesTest {
 
     final List<PlannedFileChange> plan =
         RuleFilePlans.tools(
-            writer.plan(project(BuildTool.NPM), QualityPreset.STRICT, gates(VITEST)));
+            writer.plan(project(BuildTool.NPM), QualityPreset.STRICT, gates(VITEST))
+        );
     final RuleFileChange change =
         writer.apply(project(BuildTool.NPM), QualityPreset.STRICT, gates(VITEST));
 
     assertThat(plan)
         .extracting(PlannedFileChange::file, PlannedFileChange::action)
         .containsExactly(
-            tuple(root.resolve("vite.config.ts"), PlannedFileChange.Action.PRESERVE_USER_OWNED));
+            tuple(root.resolve("vite.config.ts"), PlannedFileChange.Action.PRESERVE_USER_OWNED)
+        );
     assertThat(change.preserved()).containsExactly(root.resolve("vite.config.ts"));
     assertThat(root.resolve(VITEST_CONFIG)).doesNotExist();
   }
@@ -106,8 +113,10 @@ class NodeTestConfigFilesTest {
     Files.writeString(root.resolve("package.json"), "{\"jest\": {\"testEnvironment\": \"node\"}}");
 
     assertThat(
-            RuleFilePlans.tools(
-                writer.plan(project(BuildTool.NPM), QualityPreset.STANDARD, gates(JEST))))
+        RuleFilePlans.tools(
+            writer.plan(project(BuildTool.NPM), QualityPreset.STANDARD, gates(JEST))
+        )
+    )
         .isEmpty();
     writer.apply(project(BuildTool.NPM), QualityPreset.STANDARD, gates(JEST));
     assertThat(root.resolve(JEST_CONFIG)).doesNotExist();
@@ -124,7 +133,8 @@ class NodeTestConfigFilesTest {
         Set.of(),
         "24",
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 
   private static List<InitGateOption> gates(final String... ids) {

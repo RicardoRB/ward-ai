@@ -7,15 +7,15 @@ import org.junit.jupiter.api.Test;
 
 /** The checks on class bodies, set displays, loop targets, module order and format operands. */
 final class StructureChecksTest {
-
   private static final String PASS = "pass";
   private static final String ABC = "ABC";
 
   @Test
   void emptyAbstractMethodReportsAPassingMethodOfAnAbcClass() {
     assertThat(
-            new EmptyAbstractMethodCheck("m")
-                .matches(Shapes.classWith(ABC, Shapes.method(Nodes.block(Nodes.leaf(PASS))))))
+        new EmptyAbstractMethodCheck("m")
+            .matches(Shapes.classWith(ABC, Shapes.method(Nodes.block(Nodes.leaf(PASS)))))
+    )
         .hasSize(1);
   }
 
@@ -23,16 +23,20 @@ final class StructureChecksTest {
   void emptyAbstractMethodIgnoresDecoratedMethodsOtherBasesAndNonEmptyBodies() {
     final SyntaxNode decorated =
         Shapes.classWith(
-            ABC, Nodes.node("decorated", Shapes.method(Nodes.block(Nodes.leaf(PASS)))));
+            ABC,
+            Nodes.node("decorated", Shapes.method(Nodes.block(Nodes.leaf(PASS))))
+        );
 
     assertThat(new EmptyAbstractMethodCheck("m").matches(decorated)).isEmpty();
     assertThat(
-            new EmptyAbstractMethodCheck("m")
-                .matches(Shapes.classWith("Base", Shapes.method(Nodes.block(Nodes.leaf(PASS))))))
+        new EmptyAbstractMethodCheck("m")
+            .matches(Shapes.classWith("Base", Shapes.method(Nodes.block(Nodes.leaf(PASS)))))
+    )
         .isEmpty();
     assertThat(
-            new EmptyAbstractMethodCheck("m")
-                .matches(Shapes.classWith(ABC, Shapes.method(Nodes.block(Nodes.leaf("x"))))))
+        new EmptyAbstractMethodCheck("m")
+            .matches(Shapes.classWith(ABC, Shapes.method(Nodes.block(Nodes.leaf("x")))))
+    )
         .isEmpty();
   }
 
@@ -54,8 +58,10 @@ final class StructureChecksTest {
     assertThat(unused.matches(Shapes.forLoop("i", "range", Nodes.block(Nodes.leaf("print")))))
         .hasSize(1);
     assertThat(
-            overrides.matches(
-                Shapes.forLoop("x", "x", Nodes.block(Nodes.leaf("print"), Nodes.leaf("x")))))
+        overrides.matches(
+            Shapes.forLoop("x", "x", Nodes.block(Nodes.leaf("print"), Nodes.leaf("x")))
+        )
+    )
         .hasSize(1);
     assertThat(unused.matches(Shapes.forLoop("_", "range", Nodes.block(Nodes.leaf("1")))))
         .isEmpty();
@@ -68,7 +74,8 @@ final class StructureChecksTest {
     final SyntaxNode module =
         Shapes.file(
             Shapes.importStatement("os"),
-            Nodes.statement(Shapes.forLoop("os", "range", Nodes.block(Nodes.leaf("1")))));
+            Nodes.statement(Shapes.forLoop("os", "range", Nodes.block(Nodes.leaf("1"))))
+        );
 
     assertThat(new LoopVariableCheck(LoopVariableCheck.Problem.SHADOWS_IMPORT, "m").matches(module))
         .hasSize(1);
@@ -81,12 +88,14 @@ final class StructureChecksTest {
     final SyntaxNode lateFuture = Shapes.file(Nodes.statement(Nodes.leaf("x")), Shapes.future());
 
     assertThat(
-            new ModuleOrderCheck(ModuleOrderCheck.Problem.IMPORT_AFTER_CODE, "m")
-                .matches(importAfterCode))
+        new ModuleOrderCheck(ModuleOrderCheck.Problem.IMPORT_AFTER_CODE, "m")
+            .matches(importAfterCode)
+    )
         .hasSize(1);
     assertThat(
-            new ModuleOrderCheck(ModuleOrderCheck.Problem.FUTURE_AFTER_STATEMENT, "m")
-                .matches(lateFuture))
+        new ModuleOrderCheck(ModuleOrderCheck.Problem.FUTURE_AFTER_STATEMENT, "m")
+            .matches(lateFuture)
+    )
         .hasSize(1);
   }
 
@@ -94,12 +103,16 @@ final class StructureChecksTest {
   void moduleOrderAcceptsADocstringBeforeImportsAndFutures() {
     final SyntaxNode ok =
         Shapes.file(
-            Nodes.statement(Nodes.leaf("\"doc\"")), Shapes.future(), Shapes.importStatement("os"));
+            Nodes.statement(Nodes.leaf("\"doc\"")),
+            Shapes.future(),
+            Shapes.importStatement("os")
+        );
 
     assertThat(new ModuleOrderCheck(ModuleOrderCheck.Problem.IMPORT_AFTER_CODE, "m").matches(ok))
         .isEmpty();
     assertThat(
-            new ModuleOrderCheck(ModuleOrderCheck.Problem.FUTURE_AFTER_STATEMENT, "m").matches(ok))
+        new ModuleOrderCheck(ModuleOrderCheck.Problem.FUTURE_AFTER_STATEMENT, "m").matches(ok)
+    )
         .isEmpty();
   }
 
@@ -109,8 +122,9 @@ final class StructureChecksTest {
         Nodes.node("expr", Nodes.leaf("\"%s %s\""), Nodes.leaf("%"), Nodes.leaf("{\"x\":1}"));
 
     assertThat(
-            new PercentFormatCheck(PercentFormatCheck.Problem.EXPECTED_SEQUENCE, "m")
-                .matches(operation))
+        new PercentFormatCheck(PercentFormatCheck.Problem.EXPECTED_SEQUENCE, "m")
+            .matches(operation)
+    )
         .hasSize(1);
   }
 }

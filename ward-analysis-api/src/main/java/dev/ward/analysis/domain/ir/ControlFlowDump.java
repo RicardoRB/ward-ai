@@ -10,15 +10,20 @@ import java.util.Map;
  * {@code entry}, {@code exit} or {@code empty}.
  */
 public final class ControlFlowDump {
-
   private static final String ARROW = " -> ";
   private static final Map<AccessKind, String> ACCESS_CODES =
       Map.of(
-          AccessKind.DECLARE, "d",
-          AccessKind.WRITE, "w",
-          AccessKind.PARAMETER, "p",
-          AccessKind.READ, "r",
-          AccessKind.CAPTURE, "c");
+          AccessKind.DECLARE,
+          "d",
+          AccessKind.WRITE,
+          "w",
+          AccessKind.PARAMETER,
+          "p",
+          AccessKind.READ,
+          "r",
+          AccessKind.CAPTURE,
+          "c"
+      );
 
   private static final Map<FlowSiteKind, String> SITE_CODES =
       Map.of(
@@ -33,7 +38,8 @@ public final class ControlFlowDump {
           FlowSiteKind.STRING_BUILD,
           "string",
           FlowSiteKind.LITERAL,
-          "literal");
+          "literal"
+      );
 
   private ControlFlowDump() {}
 

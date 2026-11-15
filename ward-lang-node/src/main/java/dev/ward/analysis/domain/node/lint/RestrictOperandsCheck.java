@@ -13,7 +13,6 @@ import java.util.Optional;
  * allowed; the other kinds follow the policy, and an unknown operand is never reported.
  */
 public final class RestrictOperandsCheck extends TypedCheck {
-
   private static final String PLUS = "+";
   private static final String PLUS_ASSIGN = "+=";
   private static final String OPERATOR = "assignmentOperator";
@@ -48,8 +47,8 @@ public final class RestrictOperandsCheck extends TypedCheck {
   private boolean isPlus(final List<SyntaxNode> parts) {
     return SyntaxText.isToken(parts.get(1), PLUS)
         || OPERATOR.equals(parts.get(1).kind())
-            && SyntaxText.hasToken(parts.get(1), PLUS_ASSIGN)
-            && !policy.skipCompound();
+        && SyntaxText.hasToken(parts.get(1), PLUS_ASSIGN)
+        && !policy.skipCompound();
   }
 
   private boolean mixesBadly(final ValueKind left, final ValueKind right) {
@@ -82,7 +81,11 @@ public final class RestrictOperandsCheck extends TypedCheck {
 
   /** Reports whether the operands are one of each kind, in either order. */
   private static boolean isMix(
-      final ValueKind left, final ValueKind right, final ValueKind one, final ValueKind other) {
+      final ValueKind left,
+      final ValueKind right,
+      final ValueKind one,
+      final ValueKind other
+  ) {
     return left == one && right == other || left == other && right == one;
   }
 

@@ -8,7 +8,8 @@ import picocli.CommandLine.Command;
 @Command(
     name = "hook",
     description = "Run an agent hook adapter.",
-    subcommands = {ClaudeCodeHookCommand.class, NativeHookCommand.class})
+    subcommands = {ClaudeCodeHookCommand.class, NativeHookCommand.class}
+)
 public final class HookCommand implements Callable<Integer> {
   /** Creates the command group. */
   @Inject

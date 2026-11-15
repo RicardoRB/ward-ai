@@ -36,7 +36,8 @@ public final class NonSerializableWriteCheck implements RuleCheck {
   private static final FactNeed NEED =
       new FactNeed(
           Set.of(EXPRESSION),
-          Set.of(FactKind.CALL, FactKind.TYPE, FactKind.SHAPE, FactKind.MEMBERS));
+          Set.of(FactKind.CALL, FactKind.TYPE, FactKind.SHAPE, FactKind.MEMBERS)
+      );
 
   private final String message;
 
@@ -65,23 +66,25 @@ public final class NonSerializableWriteCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(EXPRESSION)).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(
             call ->
                 isWrite(call, types)
-                    && firstArgument(call).filter(arg -> unserializable(arg, types)).isPresent())
+                    && firstArgument(call).filter(arg -> unserializable(arg, types)).isPresent()
+        )
         .map(call -> CheckSupport.at(call.span(), message))
         .toList();
   }
 
   private static boolean isWrite(final SyntaxNode call, final UnitTypeFacts types) {
     return types
-            .callTarget(call.span())
-            .map(CallTarget::declaringType)
-            .filter(owner -> OUTPUTS.contains(owner.name()))
-            .isPresent()
+        .callTarget(call.span())
+        .map(CallTarget::declaringType)
+        .filter(owner -> OUTPUTS.contains(owner.name()))
+        .isPresent()
         && types.callTarget(call.span()).filter(target -> WRITE.equals(target.name())).isPresent();
   }
 
@@ -92,7 +95,8 @@ public final class NonSerializableWriteCheck implements RuleCheck {
         .filter(node -> EXPRESSION_LIST.equals(node.kind()))
         .findFirst()
         .flatMap(
-            list -> list.children().stream().filter(c -> EXPRESSION.equals(c.kind())).findFirst());
+            list -> list.children().stream().filter(c -> EXPRESSION.equals(c.kind())).findFirst()
+        );
   }
 
   private static boolean unserializable(final SyntaxNode argument, final UnitTypeFacts types) {

@@ -15,7 +15,6 @@ import java.util.Set;
  * child with no rank is ignored. The user option is {@code order}.
  */
 public final class OrderCheck implements UnitCheck {
-
   private final NodeFilter filter;
   private final List<String> order;
   private final Optional<GroupBy> groupBy;
@@ -35,7 +34,8 @@ public final class OrderCheck implements UnitCheck {
       final NodeFilter filter,
       final List<String> order,
       final Optional<GroupBy> groupBy,
-      final String message) {
+      final String message
+  ) {
     this.filter = Objects.requireNonNull(filter, "filter");
     this.order = List.copyOf(order);
     this.groupBy = Objects.requireNonNull(groupBy, "groupBy");
@@ -66,14 +66,18 @@ public final class OrderCheck implements UnitCheck {
       }
       if (rank < highest) {
         matches.add(
-            CheckSupport.at(child.span(), CheckSupport.fill(message, SyntaxWalk.text(child), "")));
+            CheckSupport.at(child.span(), CheckSupport.fill(message, SyntaxWalk.text(child), ""))
+        );
       }
       highest = Math.max(highest, rank);
     }
   }
 
   private void scattered(
-      final SyntaxNode parent, final GroupBy group, final List<RuleMatch> matches) {
+      final SyntaxNode parent,
+      final GroupBy group,
+      final List<RuleMatch> matches
+  ) {
     final Set<String> seen = new HashSet<>();
     String previous = null;
     for (final SyntaxNode child : parent.children()) {
@@ -109,7 +113,6 @@ public final class OrderCheck implements UnitCheck {
    * @param skip the kinds whose subtrees hold no name, such as a return type
    */
   public record GroupBy(String nameKind, Set<String> skip) {
-
     /**
      * Copies the set.
      *

@@ -20,7 +20,10 @@ final class PomToolVersions {
   private final Optional<String> warning;
 
   private PomToolVersions(
-      final Map<String, CompatibilityFinding> findings, final Optional<String> warning) {
+      final Map<String,
+      CompatibilityFinding> findings,
+      final Optional<String> warning
+  ) {
     this.findings = Map.copyOf(findings);
     this.warning = warning;
   }
@@ -32,15 +35,19 @@ final class PomToolVersions {
   static PomToolVersions resolve(
       final Optional<CompatibilityFindings> compatibility,
       final Project project,
-      final Set<String> selected) {
+      final Set<String> selected
+  ) {
     return compatibility
         .map(
             resolver ->
                 new PomToolVersions(
                     resolver.resolve(
                         project,
-                        toolsByGate(selected).values().stream().flatMap(List::stream).toList()),
-                    resolver.runtimeJdk(project).flatMap(JavaSupport::warning)))
+                        toolsByGate(selected).values().stream().flatMap(List::stream).toList()
+                    ),
+                    resolver.runtimeJdk(project).flatMap(JavaSupport::warning)
+                )
+        )
         .orElseGet(() -> new PomToolVersions(Map.of(), Optional.empty()));
   }
 

@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks how jumps and exceptions are routed through the frames of a body. */
 class ControlFlowRoutingTest {
-
   private static final Span SPAN = new Span(1, 1, 1, 2, 0, 1);
   private static final int OUTER_HANDLER = 2;
   private static final int CALL_BLOCK = 3;
@@ -135,7 +134,11 @@ class ControlFlowRoutingTest {
   }
 
   private static boolean hasEdge(
-      final ControlFlowGraph graph, final int from, final int to, final FlowEdgeKind kind) {
+      final ControlFlowGraph graph,
+      final int from,
+      final int to,
+      final FlowEdgeKind kind
+  ) {
     return graph.blocks().get(from).successors().contains(new FlowEdge(to, kind));
   }
 }

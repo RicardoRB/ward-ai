@@ -11,7 +11,6 @@ import java.nio.file.Path;
 
 /** Minimal project files for tests. */
 public final class ProjectFixtures {
-
   public static final String PLAIN_POM =
       """
             <project>

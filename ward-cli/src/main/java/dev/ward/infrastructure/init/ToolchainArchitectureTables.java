@@ -23,7 +23,8 @@ public final class ToolchainArchitectureTables implements ArchitectureTables {
       final JavaArchitectureTables jvm,
       final NodeArchitectureTables node,
       final PythonArchitectureTables python,
-      final SwiftArchitectureTables swift) {
+      final SwiftArchitectureTables swift
+  ) {
     this.jvm = jvm;
     this.node = node;
     this.python = python;

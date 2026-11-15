@@ -15,12 +15,14 @@ import java.util.Map;
  */
 public record FileDecls(
     boolean isModule,
-    Map<String, Import> imports,
+    Map<String,
+    Import> imports,
     List<Decl> decls,
     List<Export> exports,
-    Map<String, List<Decl>> modules,
-    List<String> references) {
-
+    Map<String,
+    List<Decl>> modules,
+    List<String> references
+) {
   /** An empty index. */
   public static final FileDecls EMPTY =
       new FileDecls(false, Map.of(), List.of(), List.of(), Map.of(), List.of());

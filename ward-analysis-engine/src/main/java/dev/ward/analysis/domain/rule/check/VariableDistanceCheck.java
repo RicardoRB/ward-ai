@@ -27,7 +27,6 @@ import java.util.Set;
  * sibling nodes between the declaration and the child that holds the first use.
  */
 public final class VariableDistanceCheck implements RuleCheck {
-
   private static final String NAME = "{value}";
   private static final String COUNT = "{max}";
   private static final Set<ScopeKind> LOCAL_SCOPES = Set.of(ScopeKind.FUNCTION, ScopeKind.BLOCK);
@@ -60,7 +59,11 @@ public final class VariableDistanceCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes();
     final List<RuleMatch> found = new ArrayList<>();
     for (final Scope scope : scopes.scopes()) {
@@ -94,7 +97,8 @@ public final class VariableDistanceCheck implements RuleCheck {
   private RuleMatch match(final Binding binding) {
     return new RuleMatch(
         binding.declaration(),
-        message.replace(NAME, binding.name()).replace(COUNT, String.valueOf(max)));
+        message.replace(NAME, binding.name()).replace(COUNT, String.valueOf(max))
+    );
   }
 
   /**

@@ -5,7 +5,6 @@ import java.util.Map;
 
 /** The implemented OpenAPI rules by their Ward name (the kebab-case of the Spectral rule id). */
 public final class OpenApiRules {
-
   private OpenApiRules() {}
 
   /** Returns every implemented rule by name, in alphabetical order of the names. */
@@ -69,14 +68,20 @@ public final class OpenApiRules {
     rules.put("owasp-api2-2023-write-restricted", OwaspSecurityRules::writeRestricted);
     rules.put(
         "owasp-api3-2023-constrained-additional-properties",
-        OwaspOpenObjectRules::constrainedAdditionalProperties);
+        OwaspOpenObjectRules::constrainedAdditionalProperties
+    );
     rules.put(
         "owasp-api3-2023-constrained-unevaluated-properties",
-        OwaspOpenObjectRules::constrainedUnevaluatedProperties);
+        OwaspOpenObjectRules::constrainedUnevaluatedProperties
+    );
     rules.put(
-        "owasp-api3-2023-no-additional-properties", OwaspOpenObjectRules::noAdditionalProperties);
+        "owasp-api3-2023-no-additional-properties",
+        OwaspOpenObjectRules::noAdditionalProperties
+    );
     rules.put(
-        "owasp-api3-2023-no-unevaluated-properties", OwaspOpenObjectRules::noUnevaluatedProperties);
+        "owasp-api3-2023-no-unevaluated-properties",
+        OwaspOpenObjectRules::noUnevaluatedProperties
+    );
     rules.put("owasp-api4-2023-array-limit", OwaspSchemaRules::arrayLimit);
     rules.put("owasp-api4-2023-integer-format", OwaspSchemaRules::integerFormat);
     rules.put("owasp-api4-2023-integer-limit", OwaspSchemaRules::integerLimit);
@@ -88,7 +93,9 @@ public final class OpenApiRules {
     rules.put("owasp-api4-2023-string-restricted", OwaspSchemaRules::stringRestricted);
     rules.put("owasp-api5-2023-admin-security-unique", OwaspSecurityRules::adminSecurityUnique);
     rules.put(
-        "owasp-api7-2023-concerning-url-parameter", OwaspParameterRules::concerningUrlParameter);
+        "owasp-api7-2023-concerning-url-parameter",
+        OwaspParameterRules::concerningUrlParameter
+    );
     rules.put("owasp-api8-2023-define-cors-origin", OwaspResponseRules::corsOrigin);
     rules.put("owasp-api8-2023-define-error-responses-401", OwaspResponseRules::unauthorized);
     rules.put("owasp-api8-2023-define-error-responses-500", OwaspResponseRules::serverError);

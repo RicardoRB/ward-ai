@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
  * blocks are included.
  */
 final class PythonImportReferences {
-
   private static final String IMPORT_NAME = "import_name";
   private static final String IMPORT_FROM = "import_from";
   private static final String IF_STATEMENT = "if_stmt";
@@ -38,7 +37,10 @@ final class PythonImportReferences {
   }
 
   private static void collect(
-      final SyntaxNode node, final boolean typeChecking, final List<Reference> references) {
+      final SyntaxNode node,
+      final boolean typeChecking,
+      final List<Reference> references
+  ) {
     if (IMPORT_NAME.equals(node.kind())) {
       importName(node, typeChecking, references);
     } else if (IMPORT_FROM.equals(node.kind())) {
@@ -68,7 +70,10 @@ final class PythonImportReferences {
   }
 
   private static void importName(
-      final SyntaxNode node, final boolean typeChecking, final List<Reference> references) {
+      final SyntaxNode node,
+      final boolean typeChecking,
+      final List<Reference> references
+  ) {
     PythonSyntax.children(node, "dotted_as_names").stream()
         .flatMap(names -> PythonSyntax.children(names, "dotted_as_name").stream())
         .flatMap(alias -> PythonSyntax.children(alias, "dotted_name").stream())
@@ -76,11 +81,19 @@ final class PythonImportReferences {
             name ->
                 references.add(
                     new Reference(
-                        ABSOLUTE + PythonSyntax.dottedName(name), node.span(), typeChecking)));
+                        ABSOLUTE + PythonSyntax.dottedName(name),
+                        node.span(),
+                        typeChecking
+                    )
+                )
+        );
   }
 
   private static void importFrom(
-      final SyntaxNode node, final boolean typeChecking, final List<Reference> references) {
+      final SyntaxNode node,
+      final boolean typeChecking,
+      final List<Reference> references
+  ) {
     final String prefix = FROM + level(node) + SEPARATOR + module(node) + SEPARATOR;
     for (final String name : importedNames(node)) {
       references.add(new Reference(prefix + name, node.span(), typeChecking));

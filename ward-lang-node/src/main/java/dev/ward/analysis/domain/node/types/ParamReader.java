@@ -33,11 +33,7 @@ final class ParamReader {
 
   static boolean isParameter(final SyntaxNode node) {
     return switch (node.kind()) {
-      case "requiredParameter",
-          "optionalParameter",
-          "restParameter",
-          "formalParameterArg",
-          "lastFormalParameterArg" ->
+      case "requiredParameter", "optionalParameter", "restParameter", "formalParameterArg", "lastFormalParameterArg" ->
           true;
       default -> false;
     };

@@ -7,7 +7,6 @@ import dev.ward.analysis.domain.rule.RuleConfigurationException;
 import org.junit.jupiter.api.Test;
 
 class DeclarativeChecksTest {
-
   private static final String LINES_CHECK =
       "check = \"lines\"\nkinds = [\"methodBody\"]\nmax = 60\nmessage = \"{value}\"";
 
@@ -35,8 +34,9 @@ class DeclarativeChecksTest {
     assertThat(DeclarativeChecks.bundled().build(COGNITIVE_CHECK)).isNotNull();
     assertThat(DeclarativeChecks.bundled().build(TEXT_PATTERN_CHECK)).isNotNull();
     assertThat(
-            DeclarativeChecks.bundled()
-                .build("check = \"unreferenced-name\"\nmessage = \"{value}\""))
+        DeclarativeChecks.bundled()
+            .build("check = \"unreferenced-name\"\nmessage = \"{value}\"")
+    )
         .isNotNull();
     assertThat(DeclarativeChecks.bundled().build(PRECEDING_COMMENT_CHECK)).isNotNull();
   }
@@ -58,9 +58,10 @@ class DeclarativeChecksTest {
   @Test
   void missingLimitIsAConfigurationError() {
     assertThatThrownBy(
-            () ->
-                DeclarativeChecks.bundled()
-                    .build("check = \"lines\"\nkinds = [\"methodBody\"]\nmessage = \"m\""))
+        () ->
+            DeclarativeChecks.bundled()
+                .build("check = \"lines\"\nkinds = [\"methodBody\"]\nmessage = \"m\"")
+    )
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("'max' must be an integer");
   }
@@ -68,10 +69,10 @@ class DeclarativeChecksTest {
   @Test
   void negativeLimitIsAConfigurationError() {
     assertThatThrownBy(
-            () ->
-                DeclarativeChecks.bundled()
-                    .build(
-                        "check = \"lines\"\nkinds = [\"methodBody\"]\nmax = -1\nmessage = \"m\""))
+        () ->
+            DeclarativeChecks.bundled()
+                .build("check = \"lines\"\nkinds = [\"methodBody\"]\nmax = -1\nmessage = \"m\"")
+    )
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("'max' is out of range");
   }
@@ -79,9 +80,10 @@ class DeclarativeChecksTest {
   @Test
   void malformedRegularExpressionIsAConfigurationError() {
     assertThatThrownBy(
-            () ->
-                DeclarativeChecks.bundled()
-                    .build(TEXT_PATTERN_CHECK.replace("[a-z][a-zA-Z0-9]*", "[unclosed")))
+        () ->
+            DeclarativeChecks.bundled()
+                .build(TEXT_PATTERN_CHECK.replace("[a-z][a-zA-Z0-9]*", "[unclosed"))
+    )
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("check 'text-pattern' cannot be used");
   }
@@ -96,9 +98,10 @@ class DeclarativeChecksTest {
   @Test
   void listedKindsMustBeStrings() {
     assertThatThrownBy(
-            () ->
-                DeclarativeChecks.bundled()
-                    .build("check = \"lines\"\nkinds = [1]\nmax = 1\nmessage = \"m\""))
+        () ->
+            DeclarativeChecks.bundled()
+                .build("check = \"lines\"\nkinds = [1]\nmax = 1\nmessage = \"m\"")
+    )
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("'kinds' must hold only strings");
   }

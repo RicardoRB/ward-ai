@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * to every language.
  */
 public final class NamingArchitectureRule implements GraphRule {
-
   /** The id of the rule, the same in every language. */
   public static final String ID = "ward:architecture/naming";
 
@@ -70,7 +69,12 @@ public final class NamingArchitectureRule implements GraphRule {
                               rule.message(
                                   path
                                       + " does not match the name "
-                                      + rule.constraint().fileName())))));
+                                      + rule.constraint().fileName()
+                              )
+                          )
+                      )
+                  )
+          );
     }
     return List.copyOf(matches);
   }

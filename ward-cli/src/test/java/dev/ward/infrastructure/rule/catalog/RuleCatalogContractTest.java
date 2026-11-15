@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
  * roadmaps.
  */
 class RuleCatalogContractTest {
-
   private static final int FIRST_STYLE_ISSUE = 283;
   private static final int LAST_STYLE_ISSUE = 301;
   private static final int FIRST_TOOL_ISSUE = 308;
@@ -45,7 +44,9 @@ class RuleCatalogContractTest {
             .collect(
                 Collectors.groupingBy(
                     Map.Entry::getKey,
-                    Collectors.mapping(Map.Entry::getValue, Collectors.toList())));
+                    Collectors.mapping(Map.Entry::getValue, Collectors.toList())
+                )
+            );
 
     for (final RuleDefinition rule : definitions) {
       assertThat(owners.get(rule.id())).as("rows of %s", rule.id()).hasSize(1);
@@ -59,7 +60,9 @@ class RuleCatalogContractTest {
   void everyImplementedPairHasACategoryPresetsFixturesAndAReferenceEntry() {
     final String reference =
         String.join(
-            "\n", RuleReference.pages(catalog, definitions, UpstreamLists.outOfScope()).values());
+            "\n",
+            RuleReference.pages(catalog, definitions, UpstreamLists.outOfScope()).values()
+        );
     final Map<String, RuleDefinition> byId = new HashMap<>();
     definitions.forEach(rule -> byId.put(rule.id(), rule));
     for (final CatalogRow row : catalog.rows()) {
@@ -152,7 +155,8 @@ class RuleCatalogContractTest {
               .anyMatch(
                   row ->
                       !row.languages(CatalogStatus.IMPLEMENTED).isEmpty()
-                          && row.languages(CatalogStatus.IMPLEMENTED).contains(language));
+                          && row.languages(CatalogStatus.IMPLEMENTED).contains(language)
+              );
       assertThat(covered).as("an implemented rule in %s", language).isTrue();
     }
   }

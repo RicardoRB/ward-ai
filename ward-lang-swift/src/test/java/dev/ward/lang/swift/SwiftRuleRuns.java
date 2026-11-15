@@ -24,7 +24,6 @@ import org.tomlj.TomlTable;
 
 /** Loads the Swift rule file and runs rules over source text through the engine. */
 final class SwiftRuleRuns {
-
   static final String RULE_FILE = "rules/swift-structural.toml";
   static final String PREFIX = "ward:swift/";
 
@@ -40,7 +39,10 @@ final class SwiftRuleRuns {
     final SourceUnit unit = new SourceUnit("Sample.swift", AnalysisLanguage.SWIFT, source);
     final FrontendSupport support =
         new FrontendSupport(
-            AnalysisLanguage.SWIFT, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX));
+            AnalysisLanguage.SWIFT,
+            new AntlrLanguageFrontend(),
+            Set.of(RuleCapability.SYNTAX)
+        );
     return new RuleEngine(new MetricMatcher())
         .run(List.of(unit), List.of(support), List.of(definition));
   }
@@ -66,7 +68,8 @@ final class SwiftRuleRuns {
         AnalysisLanguage.SWIFT,
         RuleCapability.valueOf(row.getString("capability")),
         AnalysisSeverity.valueOf(row.getString("severity").toUpperCase(Locale.ROOT)),
-        row.getString("body"));
+        row.getString("body")
+    );
   }
 
   static String read(final String resource) throws IOException {

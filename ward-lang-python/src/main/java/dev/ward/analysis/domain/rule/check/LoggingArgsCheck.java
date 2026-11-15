@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
  * not.
  */
 public final class LoggingArgsCheck implements RuleCheck {
-
   /** The mistakes the check tells apart, one per rule. */
   public enum Problem {
     /** More arguments than placeholders. */
@@ -77,7 +76,8 @@ public final class LoggingArgsCheck implements RuleCheck {
     return argumentCount(args)
         .map(
             count ->
-                new Counts(PercentFormatString.parse(text.substring(quote + 1, close)), count));
+                new Counts(PercentFormatString.parse(text.substring(quote + 1, close)), count)
+        );
   }
 
   private static Optional<Integer> argumentCount(final String args) {

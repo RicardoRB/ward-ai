@@ -8,7 +8,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class LicensePolicyTest {
-
   private final LicensePolicy defaults = new LicensePolicy(LicenseSettings.defaults());
 
   private static LicenseExpression expression(final String text) {
@@ -61,7 +60,9 @@ class LicensePolicyTest {
                 LicenseSettings.DEFAULT_DENY,
                 List.of(),
                 Set.of(),
-                true));
+                true
+            )
+        );
 
     assertThat(defaults.check(gpl).ok()).isTrue();
     assertThat(none.check(gpl).ok()).isFalse();

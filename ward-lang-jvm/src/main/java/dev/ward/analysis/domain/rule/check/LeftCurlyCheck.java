@@ -13,7 +13,6 @@ import java.util.Set;
  * when {@code ignoreEnums} holds, as Checkstyle does by default.
  */
 public final class LeftCurlyCheck implements RuleCheck {
-
   private static final String OPEN = "'{'";
   private static final Set<String> NOT_BLOCKS =
       Set.of("arrayInitializer", "elementValueArrayInitializer");

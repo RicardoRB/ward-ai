@@ -6,7 +6,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class ArrayRangeCheckTest {
-
   private static List<String> run(final ArrayRangeCheck.Mode mode, final String body) {
     return new ParsedFacts("final class C {\n  void t(OutputStream out) {\n" + body + "  }\n}\n")
         .run(new ArrayRangeCheck(mode, "message"));
@@ -55,14 +54,12 @@ class ArrayRangeCheckTest {
     assertThat(run(ArrayRangeCheck.Mode.LENGTH, transfer("2, 8"))).isEmpty();
     assertThat(run(ArrayRangeCheck.Mode.LENGTH, transfer("n, 8"))).isEmpty();
     assertThat(
-            run(
-                ArrayRangeCheck.Mode.LENGTH,
-                "    byte[] b = new byte[10];\n    out.close(b, 0, 99);\n"))
+        run(ArrayRangeCheck.Mode.LENGTH, "    byte[] b = new byte[10];\n    out.close(b, 0, 99);\n")
+    )
         .isEmpty();
     assertThat(
-            run(
-                ArrayRangeCheck.Mode.LENGTH,
-                "    byte[] b = new byte[10];\n    out.write(b, 0);\n"))
+        run(ArrayRangeCheck.Mode.LENGTH, "    byte[] b = new byte[10];\n    out.write(b, 0);\n")
+    )
         .isEmpty();
     assertThat(run(ArrayRangeCheck.Mode.LENGTH, "    out.write(c, 0, 99);\n")).isEmpty();
   }

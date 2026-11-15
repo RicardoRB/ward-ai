@@ -18,7 +18,6 @@ import java.util.function.Consumer;
  * property key, a member name and a label are never references.
  */
 final class NodeScopeWalk {
-
   private static final Set<String> FUNCTIONS =
       Set.of(
           "functionDeclaration",
@@ -29,14 +28,16 @@ final class NodeScopeWalk {
           "constructorDeclaration",
           "getAccessor",
           "setAccessor",
-          "propertyMemberDeclaration");
+          "propertyMemberDeclaration"
+      );
   private static final Set<String> PARAMETERS =
       Set.of(
           "formalParameterArg",
           "lastFormalParameterArg",
           "requiredParameter",
           "optionalParameter",
-          "restParameter");
+          "restParameter"
+      );
   private static final Set<String> TYPE_POSITIONS =
       Set.of(
           "typeAnnotation",
@@ -46,7 +47,8 @@ final class NodeScopeWalk {
           "implementsClause",
           "interfaceExtendsClause",
           "objectType",
-          "type_");
+          "type_"
+      );
   private static final String SINGLE = "singleExpression";
 
   final ScopeBuilder builder;

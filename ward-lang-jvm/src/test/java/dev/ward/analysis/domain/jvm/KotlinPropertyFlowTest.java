@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** Property syntax for Java getters, and the initializers and accessors of properties. */
 class KotlinPropertyFlowTest {
-
   private static List<String> bodies(final String source) {
     return KotlinFlowFixtures.lower(source).graphs().stream().map(ControlFlowGraph::body).toList();
   }

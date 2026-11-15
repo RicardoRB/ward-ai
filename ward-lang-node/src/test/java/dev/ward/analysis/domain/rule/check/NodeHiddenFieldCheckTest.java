@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the hidden-field check on parsed sources with the scopes of each unit. */
 class NodeHiddenFieldCheckTest {
-
   @Test
   void parameterNamedAsAFieldIsReported() {
     assertThat(run("class A { count = 0; bump(count) { return count; } }", false, false))
@@ -27,7 +26,8 @@ class NodeHiddenFieldCheckTest {
   @Test
   void localNamedAsAFieldIsReported() {
     assertThat(
-            run("class A { count = 0; bump() { const count = 1; return count; } }", false, false))
+        run("class A { count = 0; bump() { const count = 1; return count; } }", false, false)
+    )
         .hasSize(1);
   }
 
@@ -55,15 +55,20 @@ class NodeHiddenFieldCheckTest {
   @Test
   void constructorParameterPropertyIsAFieldForOtherMethods() {
     assertThat(
-            run(
-                "class A { constructor(private x: number) {} m(x: number) { return x; } }",
-                false,
-                false))
+        run(
+            "class A { constructor(private x: number) {} m(x: number) { return x; } }",
+            false,
+            false
+        )
+    )
         .hasSize(1);
   }
 
   private static List<RuleMatch> run(
-      final String source, final boolean ignoreConstructor, final boolean ignoreSetter) {
+      final String source,
+      final boolean ignoreConstructor,
+      final boolean ignoreSetter
+  ) {
     final SourceUnit unit = new SourceUnit("m", AnalysisLanguage.TYPESCRIPT, source);
     final SyntaxNode root = new AntlrLanguageFrontend().parse(unit).tree();
     final NodeScopeAnalysis analysis = new NodeScopeAnalysis(environments -> Set.of());

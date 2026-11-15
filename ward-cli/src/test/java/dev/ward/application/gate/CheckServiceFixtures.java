@@ -20,6 +20,7 @@ public final class CheckServiceFixtures {
         new TomlConfigurationReader(),
         new QualityGateFactory(executor),
         new QualityGateRunner(),
-        new PartialPorts(new FilePathExistence(), new NodeWorkspaceMembers()));
+        new PartialPorts(new FilePathExistence(), new NodeWorkspaceMembers())
+    );
   }
 }

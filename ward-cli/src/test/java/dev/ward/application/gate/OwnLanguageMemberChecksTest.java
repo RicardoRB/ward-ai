@@ -35,14 +35,17 @@ class OwnLanguageMemberChecksTest {
             1,
             null,
             null,
-            List.of());
+            List.of()
+        );
     final CheckReport member =
         new CheckReport(
             new Project(ROOT.resolve("apps/api"), Language.JAVA, BuildTool.MAVEN, Framework.NONE),
             List.of(
                 GateResult.builder("checkstyle", GateStatus.FAILED)
                     .build()
-                    .withFindings(GateFindings.of(List.of(finding)))));
+                    .withFindings(GateFindings.of(List.of(finding)))
+            )
+        );
 
     final CheckReport merged =
         OwnLanguageMemberChecks.merge(new CheckReport(turboRoot(), List.of()), List.of(member));

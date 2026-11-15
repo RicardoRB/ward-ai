@@ -34,9 +34,7 @@ class WardCliSwiftProjectTest extends WardCliIntegrationSupport {
   @Test
   void jsonReportHasTheLanguageVersionOfASwiftPackage() throws IOException {
     swiftPackage();
-    Files.writeString(
-        swift.resolve(WARD_TOML),
-        """
+    Files.writeString(swift.resolve(WARD_TOML), """
         version = 2
         [checks.format]
         command = ["true"]
@@ -49,7 +47,9 @@ class WardCliSwiftProjectTest extends WardCliIntegrationSupport {
 
   private void swiftPackage() throws IOException {
     Files.writeString(
-        swift.resolve("Package.swift"), "// swift-tools-version: 6.1\nimport PackageDescription\n");
+        swift.resolve("Package.swift"),
+        "// swift-tools-version: 6.1\nimport PackageDescription\n"
+    );
     Files.createDirectories(swift.resolve("Sources/App"));
     Files.writeString(swift.resolve("Sources/App/App.swift"), "print(1)\n");
   }

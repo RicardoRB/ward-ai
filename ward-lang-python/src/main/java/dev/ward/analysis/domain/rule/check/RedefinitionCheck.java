@@ -21,7 +21,6 @@ import java.util.Set;
  * import in the same scope before anything read the earlier one, like pyflakes {@code F811}.
  */
 public final class RedefinitionCheck implements RuleCheck {
-
   private static final String NAME = "{value}";
   private static final Set<BindingKind> DEFINITIONS =
       Set.of(BindingKind.FUNCTION, BindingKind.CLASS, BindingKind.IMPORT);
@@ -50,7 +49,11 @@ public final class RedefinitionCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes();
     final List<RuleMatch> found = new ArrayList<>();
     for (final Scope scope : scopes.scopes()) {
@@ -63,7 +66,10 @@ public final class RedefinitionCheck implements RuleCheck {
   }
 
   private void addRedefinitions(
-      final List<Binding> bindings, final UnitScopes scopes, final List<RuleMatch> found) {
+      final List<Binding> bindings,
+      final UnitScopes scopes,
+      final List<RuleMatch> found
+  ) {
     for (int index = 0; index < bindings.size(); index++) {
       final Binding current = bindings.get(index);
       if (DEFINITIONS.contains(current.kind())) {
@@ -76,7 +82,9 @@ public final class RedefinitionCheck implements RuleCheck {
   }
 
   private static Optional<Binding> previousDefinition(
-      final List<Binding> earlier, final Binding current) {
+      final List<Binding> earlier,
+      final Binding current
+  ) {
     return earlier.stream()
         .filter(binding -> binding.name().equals(current.name()))
         .filter(binding -> DEFINITIONS.contains(binding.kind()))
@@ -84,11 +92,15 @@ public final class RedefinitionCheck implements RuleCheck {
   }
 
   private static boolean unusedBetween(
-      final Binding previous, final Binding current, final UnitScopes scopes) {
+      final Binding previous,
+      final Binding current,
+      final UnitScopes scopes
+  ) {
     return scopes.usesOf(previous).stream()
         .noneMatch(
             use ->
                 use.span().startOffset() >= previous.declaration().endOffset()
-                    && use.span().startOffset() < current.declaration().startOffset());
+                    && use.span().startOffset() < current.declaration().startOffset()
+        );
   }
 }

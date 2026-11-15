@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 /** The parameter-assignment check on small methods: plain-name targets, parameters and scope. */
 class ParameterAssignmentCheckTest extends TreeBuilders {
-
   private static final String MESSAGE = "assigns {value}";
   private static final String BLOCK_STATEMENT = "blockStatement";
   private static final String STATEMENT = "statement";
@@ -41,7 +40,9 @@ class ParameterAssignmentCheckTest extends TreeBuilders {
         t(TOKEN_IDENTIFIER, "run"),
         n(
             FORMAL_PARAMETERS,
-            n(FORMAL_PARAMETER, t("int", "int"), n(PARAMETER_ID, t(TOKEN_IDENTIFIER, parameter)))),
-        n(BLOCK, n(BLOCK_STATEMENT, n(STATEMENT, assignment))));
+            n(FORMAL_PARAMETER, t("int", "int"), n(PARAMETER_ID, t(TOKEN_IDENTIFIER, parameter)))
+        ),
+        n(BLOCK, n(BLOCK_STATEMENT, n(STATEMENT, assignment)))
+    );
   }
 }

@@ -6,7 +6,6 @@ package dev.ward.analysis.domain.format;
  */
 @FunctionalInterface
 public interface FormatSyntax {
-
   /**
    * Parses a source text.
    *

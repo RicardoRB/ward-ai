@@ -6,7 +6,6 @@ import java.util.Set;
 
 /** Reads the label that a Kotlin statement carries before a loop, as in {@code outer@ for}. */
 final class KotlinLabels {
-
   private static final Set<String> PREFIX_MARKS = Set.of("labelDefinition", "annotations");
   private static final String PREFIX = "prefixUnaryExpression";
   private static final String LABEL_DEFINITION = "labelDefinition";

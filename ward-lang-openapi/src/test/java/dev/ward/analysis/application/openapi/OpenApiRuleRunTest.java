@@ -14,7 +14,6 @@ import java.util.TreeMap;
 import org.junit.jupiter.api.Test;
 
 class OpenApiRuleRunTest {
-
   private static final String ENTRY = "api.yaml";
   private static final String MISSING = "openapi: 3.0.0\npaths:\n  /a:\n    get: {}\n";
 
@@ -27,7 +26,7 @@ class OpenApiRuleRunTest {
   private static List<ProjectMatch> run(final SortedMap<String, SyntaxNode> trees) {
     final OpenApiProjectCheck check =
         (OpenApiProjectCheck)
-            new OpenApiCheckProvider().checks().get("openapi-operation-operation-id").create(null);
+        new OpenApiCheckProvider().checks().get("openapi-operation-operation-id").create(null);
     return check.project(trees);
   }
 
@@ -59,7 +58,8 @@ class OpenApiRuleRunTest {
               assertThat(finding.file()).isEqualTo("a.yaml");
               assertThat(finding.line()).isEqualTo(2);
               assertThat(finding.ruleId()).isEqualTo("syntax");
-            });
+            }
+        );
   }
 
   @Test
@@ -72,9 +72,10 @@ class OpenApiRuleRunTest {
     assertThat(matches).hasSize(1);
     assertThat(matches.getFirst().path()).isEqualTo(ENTRY);
     assertThat(
-            matches.getFirst().match().span().startLine()
-                + ":"
-                + matches.getFirst().match().span().startColumn())
+        matches.getFirst().match().span().startLine()
+            + ":"
+            + matches.getFirst().match().span().startColumn()
+    )
         .isEqualTo("4:9");
     assertThat(matches.getFirst().match().message())
         .isEqualTo("Operation must have \"operationId\".");
@@ -86,7 +87,8 @@ class OpenApiRuleRunTest {
     trees.put("part.yaml", tree("paths: {}\n"));
     trees.put(
         "broken.yaml",
-        tree("openapi: 3.0.0\ncomponents:\n  schemas:\n    A:\n      $ref: 'gone.yaml'\n"));
+        tree("openapi: 3.0.0\ncomponents:\n  schemas:\n    A:\n      $ref: 'gone.yaml'\n")
+    );
 
     assertThat(run(trees)).isEmpty();
   }
@@ -95,7 +97,7 @@ class OpenApiRuleRunTest {
   void aSingleFileCheckFindsNothing() {
     final OpenApiProjectCheck check =
         (OpenApiProjectCheck)
-            new OpenApiCheckProvider().checks().get("openapi-operation-operation-id").create(null);
+        new OpenApiCheckProvider().checks().get("openapi-operation-operation-id").create(null);
 
     assertThat(check.matches(tree(MISSING))).isEmpty();
   }

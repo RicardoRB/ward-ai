@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 /** The modules that import their own dotted path, and the files that cannot tell. */
 final class ImportSelfCheckTest {
-
   private static final ImportSelfCheck CHECK = new ImportSelfCheck("m");
 
   @Test
@@ -14,8 +13,8 @@ final class ImportSelfCheckTest {
     assertThat(CHECK.check(ParsedPython.tree("import pkg.mod"), new SourceFile("pkg/mod.py", "")))
         .hasSize(1);
     assertThat(
-            CHECK.check(
-                ParsedPython.tree("from pkg.mod import x"), new SourceFile("pkg/mod.py", "")))
+        CHECK.check(ParsedPython.tree("from pkg.mod import x"), new SourceFile("pkg/mod.py", ""))
+    )
         .hasSize(1);
   }
 

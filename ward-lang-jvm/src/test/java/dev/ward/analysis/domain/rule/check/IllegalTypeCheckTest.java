@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 /** The illegal-type check on declarations: fields, locals, parameters and return types. */
 class IllegalTypeCheckTest extends TreeBuilders {
-
   private static final String MESSAGE = "illegal {value}";
   private static final Set<String> ILLEGAL = Set.of("HashMap", "java.util.TreeSet");
 
@@ -34,7 +33,8 @@ class IllegalTypeCheckTest extends TreeBuilders {
   }
 
   private static java.util.List<dev.ward.analysis.domain.rule.RuleMatch> findings(
-      final SyntaxNode root) {
+      final SyntaxNode root
+  ) {
     return new IllegalTypeCheck(ILLEGAL, MESSAGE).check(root, FILE);
   }
 

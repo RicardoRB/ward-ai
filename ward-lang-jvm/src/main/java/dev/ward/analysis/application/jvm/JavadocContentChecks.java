@@ -15,7 +15,6 @@ import java.util.Map;
  * paragraphs look like, and whether a method's tags match its signature.
  */
 final class JavadocContentChecks {
-
   private static final String MESSAGE = "message";
 
   private JavadocContentChecks() {}
@@ -25,14 +24,20 @@ final class JavadocContentChecks {
     return Map.ofEntries(
         entry(
             "invalid-javadoc-position",
-            toml -> new InvalidJavadocPositionCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new InvalidJavadocPositionCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
-            "summary-javadoc", toml -> new JavadocSummaryCheck(TomlValues.required(toml, MESSAGE))),
+            "summary-javadoc",
+            toml -> new JavadocSummaryCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "javadoc-paragraph",
-            toml -> new JavadocParagraphCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new JavadocParagraphCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "javadoc-method",
-            toml -> new JavadocMethodTagsCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new JavadocMethodTagsCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 }

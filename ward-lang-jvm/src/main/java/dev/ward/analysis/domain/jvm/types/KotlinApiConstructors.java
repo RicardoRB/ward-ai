@@ -59,7 +59,9 @@ final class KotlinApiConstructors {
                   .map(KotlinApiModifiers::of)
                   .map(KotlinApiModifiers::visibility)
                   .orElse(ApiVisibility.PUBLIC),
-              primaryParameters(node)));
+              primaryParameters(node)
+          )
+      );
     }
     secondaries.stream().map(this::secondary).forEach(found::add);
     return found;
@@ -75,11 +77,15 @@ final class KotlinApiConstructors {
     return constructor(
         secondary,
         KotlinApiModifiers.of(secondary).visibility(),
-        KotlinApiParameters.of(secondary, refs));
+        KotlinApiParameters.of(secondary, refs)
+    );
   }
 
   private ApiMember constructor(
-      final SyntaxNode at, final ApiVisibility visibility, final List<ApiParameter> parameters) {
+      final SyntaxNode at,
+      final ApiVisibility visibility,
+      final List<ApiParameter> parameters
+  ) {
     return new ApiMember(
         ApiMember.Kind.CONSTRUCTOR,
         ApiMember.CONSTRUCTOR,
@@ -92,7 +98,8 @@ final class KotlinApiConstructors {
         List.of(),
         parameters,
         KotlinApiTypeRefs.unit(),
-        location(at));
+        location(at)
+    );
   }
 
   /** The {@code componentN} functions and the {@code copy} function of a data class. */
@@ -107,8 +114,14 @@ final class KotlinApiConstructors {
                 .mapToObj(
                     index ->
                         generated(
-                            "component" + (index + 1), List.of(), copied.get(index).type(), node))
-                .toList());
+                            "component" + (index + 1),
+                            List.of(),
+                            copied.get(index).type(),
+                            node
+                        )
+                )
+                .toList()
+        );
     found.add(generated("copy", copied, KotlinApiTypeRefs.named(binary), node));
     return found;
   }
@@ -117,7 +130,8 @@ final class KotlinApiConstructors {
       final String name,
       final List<ApiParameter> parameters,
       final ApiTypeRef type,
-      final SyntaxNode at) {
+      final SyntaxNode at
+  ) {
     return new ApiMember(
         ApiMember.Kind.METHOD,
         name,
@@ -130,7 +144,8 @@ final class KotlinApiConstructors {
         List.of(),
         parameters,
         type,
-        location(at));
+        location(at)
+    );
   }
 
   /** Returns the entries of an enum class as constants of the enum. */
@@ -155,7 +170,8 @@ final class KotlinApiConstructors {
         List.of(),
         List.of(),
         KotlinApiTypeRefs.named(binary),
-        location(entry));
+        location(entry)
+    );
   }
 
   private ApiLocation location(final SyntaxNode node) {

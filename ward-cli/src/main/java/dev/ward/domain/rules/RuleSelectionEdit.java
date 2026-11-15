@@ -47,7 +47,11 @@ public final class RuleSelectionEdit {
   }
 
   private static String change(
-      final String text, final List<String> ids, final String target, final String source) {
+      final String text,
+      final List<String> ids,
+      final String target,
+      final String source
+  ) {
     final String start = text == null || text.isBlank() ? NEW_FILE : text;
     final List<String> lines = new ArrayList<>(List.of(start.split(NEWLINE, -1)));
     SelectTable.ensure(lines);

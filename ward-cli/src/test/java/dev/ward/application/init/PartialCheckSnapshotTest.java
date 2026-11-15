@@ -32,21 +32,32 @@ class PartialCheckSnapshotTest {
           Set.of(),
           "24",
           TaskRunner.NONE,
-          null);
+          null
+      );
 
   @Test
   void neutralGatesKeepTheirTablesForEveryProject() {
     assertThat(table("secrets", PNPM, QualityPreset.STANDARD))
         .isEqualTo(
             new PartialCheckDefaults.Table(
-                WHOLE_PROJECT, List.of("ward-rules.toml"), List.of(), null, null));
+                WHOLE_PROJECT,
+                List.of("ward-rules.toml"),
+                List.of(),
+                null,
+                null
+            )
+        );
     assertThat(PartialCheckDefaults.forOpenApi(SupportedQualityGates.OPENAPI_LINT, "api.yaml"))
         .contains(
-            new PartialCheckDefaults.Table(List.of("api.yaml"), List.of(), List.of(), null, null));
+            new PartialCheckDefaults.Table(List.of("api.yaml"), List.of(), List.of(), null, null)
+        );
   }
 
   private static PartialCheckDefaults.Table table(
-      final String gate, final Project project, final QualityPreset preset) {
+      final String gate,
+      final Project project,
+      final QualityPreset preset
+  ) {
     return PartialCheckDefaults.forGate(gate, project, preset, List.of()).orElseThrow();
   }
 }

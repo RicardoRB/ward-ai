@@ -24,7 +24,6 @@ import java.util.stream.Stream;
  * as a class. Subclasses that override the method of a declared class are not followed.
  */
 final class DispatchedCalls {
-
   /** The prefix of the annotation that gives a call the fully qualified type of its creation. */
   static final String CREATED_AS = "ward:created-as:";
 
@@ -32,27 +31,39 @@ final class DispatchedCalls {
 
   /** Returns the graphs with the qualifier of each decidable call set to the owner's name. */
   static List<ControlFlowGraph> apply(
-      final List<ControlFlowGraph> graphs, final Set<String> known, final TaintSpec spec) {
+      final List<ControlFlowGraph> graphs,
+      final Set<String> known,
+      final TaintSpec spec
+  ) {
     return graphs.stream().map(graph -> apply(graph, known, spec)).toList();
   }
 
   /** Returns the graph with the qualifier of each decidable call set to the owner's name. */
   static ControlFlowGraph apply(
-      final ControlFlowGraph graph, final Set<String> known, final TaintSpec spec) {
+      final ControlFlowGraph graph,
+      final Set<String> known,
+      final TaintSpec spec
+  ) {
     final List<BasicBlock> blocks =
         graph.blocks().stream().map(block -> apply(block, known, spec)).toList();
     return new ControlFlowGraph(graph.body(), graph.span(), blocks, graph.entry(), graph.exit());
   }
 
   private static BasicBlock apply(
-      final BasicBlock block, final Set<String> known, final TaintSpec spec) {
+      final BasicBlock block,
+      final Set<String> known,
+      final TaintSpec spec
+  ) {
     final List<FlowSite> sites =
         block.sites().stream().map(site -> resolved(site, known, spec)).toList();
     return new BasicBlock(block.id(), block.nodes(), block.successors(), block.accesses(), sites);
   }
 
   private static FlowSite resolved(
-      final FlowSite site, final Set<String> known, final TaintSpec spec) {
+      final FlowSite site,
+      final Set<String> known,
+      final TaintSpec spec
+  ) {
     if (site.kind() != FlowSiteKind.CALL || site.qualifier().isEmpty() || matched(site, spec)) {
       return site;
     }
@@ -97,6 +108,7 @@ final class DispatchedCalls {
         site.receiverType(),
         site.annotations(),
         site.arguments(),
-        site.span());
+        site.span()
+    );
   }
 }

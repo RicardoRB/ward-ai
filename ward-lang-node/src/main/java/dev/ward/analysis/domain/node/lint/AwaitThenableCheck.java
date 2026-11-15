@@ -15,7 +15,6 @@ import java.util.Set;
  * aggregator whose array also holds a value that may be a promise is not reported.
  */
 public final class AwaitThenableCheck extends TypedCheck {
-
   private static final String AWAIT = "await";
   private static final String ARGUMENTS = "arguments";
   private static final String ARGUMENT_LIST = "argumentList";
@@ -57,7 +56,10 @@ public final class AwaitThenableCheck extends TypedCheck {
   }
 
   private void aggregators(
-      final SyntaxNode root, final UnitTypeFacts types, final List<RuleMatch> out) {
+      final SyntaxNode root,
+      final UnitTypeFacts types,
+      final List<RuleMatch> out
+  ) {
     for (final SyntaxNode call : SyntaxText.nodesOf(root, EXPRESSION)) {
       final List<SyntaxNode> parts = call.children();
       if (parts.size() == 2
@@ -70,7 +72,10 @@ public final class AwaitThenableCheck extends TypedCheck {
 
   /** Reports the primitive elements of the array literal that an aggregator receives first. */
   private void aggregatorInput(
-      final SyntaxNode arguments, final UnitTypeFacts types, final List<RuleMatch> out) {
+      final SyntaxNode arguments,
+      final UnitTypeFacts types,
+      final List<RuleMatch> out
+  ) {
     final List<SyntaxNode> elements = firstArrayElements(arguments);
     final List<TypeRef> elementTypes = new ArrayList<>();
     for (final SyntaxNode element : elements) {

@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
  * superclass, extension or actor may fix is not.
  */
 final class SwiftMemberDeclarations {
-
   /** A header that carries the {@code public} or {@code open} access modifier. */
   static final Pattern PUBLIC_HEADER = Pattern.compile("(^|\\s)(public|open)\\s");
 
@@ -38,7 +37,8 @@ final class SwiftMemberDeclarations {
    */
   private static final Pattern PLAIN_FUNCTION_HEADER =
       Pattern.compile(
-          "\\s*((private|fileprivate|internal|static|final|mutating|nonmutating)\\s+)*func\\s*");
+          "\\s*((private|fileprivate|internal|static|final|mutating|nonmutating)\\s+)*func\\s*"
+      );
 
   /** A stored property header with plain modifiers and {@code var}, which no attribute fixes. */
   private static final Pattern PLAIN_VARIABLE_HEADER =
@@ -50,7 +50,8 @@ final class SwiftMemberDeclarations {
           "struct_declaration",
           "enum_declaration",
           "protocol_declaration",
-          "typealias_declaration");
+          "typealias_declaration"
+      );
 
   /** The type declarations, whose bodies open a scope of members. */
   private static final Set<String> TYPE_KINDS =
@@ -60,7 +61,8 @@ final class SwiftMemberDeclarations {
           "enum_declaration",
           "protocol_declaration",
           "extension_declaration",
-          "actor_declaration");
+          "actor_declaration"
+      );
 
   /** The nodes whose bodies hold local declarations, which no member rule may declare. */
   private static final Set<String> BLOCK_KINDS =
@@ -70,7 +72,8 @@ final class SwiftMemberDeclarations {
           "closure_expression",
           "initializer_declaration",
           "deinitializer_declaration",
-          "subscript_declaration");
+          "subscript_declaration"
+      );
 
   /** Types whose members a conformance or an extension may fix, whatever their inheritance. */
   private static final Set<String> OPEN_BODIES =
@@ -130,7 +133,7 @@ final class SwiftMemberDeclarations {
   static boolean opensBody(final SyntaxNode node) {
     return OPEN_BODIES.contains(node.kind())
         || TYPE_DECLARATIONS.contains(node.kind())
-            && SwiftSyntax.child(node, INHERITANCE).isPresent();
+        && SwiftSyntax.child(node, INHERITANCE).isPresent();
   }
 
   /**
@@ -139,7 +142,11 @@ final class SwiftMemberDeclarations {
    * may reach it without spelling the name.
    */
   static void declareFunction(
-      final SyntaxNode node, final Context context, final SourceUnit unit, final Collected found) {
+      final SyntaxNode node,
+      final Context context,
+      final SourceUnit unit,
+      final Collected found
+  ) {
     final Optional<SyntaxNode> name = SwiftSyntax.child(node, FUNCTION_NAME);
     if (name.isEmpty()) {
       return;
@@ -154,7 +161,9 @@ final class SwiftMemberDeclarations {
           new Symbol(
               SwiftSyntax.textOf(name.get()),
               name.get().span(),
-              SwiftFileSummarizer.FUNCTION_KIND));
+              SwiftFileSummarizer.FUNCTION_KIND
+          )
+      );
     } else {
       found.fixedNames.add(SwiftSyntax.textOf(name.get()));
     }
@@ -183,7 +192,9 @@ final class SwiftMemberDeclarations {
           new Symbol(
               SwiftSyntax.textOf(name.get()),
               name.get().span(),
-              SwiftFileSummarizer.PROPERTY_KIND));
+              SwiftFileSummarizer.PROPERTY_KIND
+          )
+      );
     }
   }
 
@@ -192,7 +203,10 @@ final class SwiftMemberDeclarations {
    * since its annotation may name a type a reader must check. It is only an export.
    */
   private static void typedPublicProperty(
-      final SyntaxNode node, final SourceUnit unit, final Collected found) {
+      final SyntaxNode node,
+      final SourceUnit unit,
+      final Collected found
+  ) {
     final Optional<SyntaxNode> pattern =
         SwiftSyntax.child(node, PATTERN_INITIALIZER_LIST)
             .flatMap(list -> SwiftSyntax.child(list, PATTERN_INITIALIZER))
@@ -202,7 +216,8 @@ final class SwiftMemberDeclarations {
         name -> {
           found.declaredNames.add(name.span());
           addPublic(node, name, unit, SwiftFileSummarizer.PUBLIC_PROPERTY_KIND, found);
-        });
+        }
+    );
   }
 
   /**
@@ -213,7 +228,8 @@ final class SwiftMemberDeclarations {
       final SyntaxNode name,
       final SourceUnit unit,
       final String kind,
-      final Collected found) {
+      final Collected found
+  ) {
     if (PUBLIC_HEADER.matcher(header(node, name, unit)).find()) {
       found.publics.add(new Symbol(SwiftSyntax.textOf(name), name.span(), kind));
     }
@@ -230,7 +246,8 @@ final class SwiftMemberDeclarations {
                 list ->
                     list.children().stream()
                         .filter(c -> PATTERN_INITIALIZER.equals(c.kind()))
-                        .toList())
+                        .toList()
+            )
             .orElse(List.of());
     if (initializers.size() != SINGLE_INITIALIZER) {
       return Optional.empty();
@@ -239,7 +256,8 @@ final class SwiftMemberDeclarations {
     return pattern
         .flatMap(SwiftMemberDeclarations::firstIdentifier)
         .filter(
-            identifier -> SwiftSyntax.textOf(identifier).equals(SwiftSyntax.textOf(pattern.get())));
+            identifier -> SwiftSyntax.textOf(identifier).equals(SwiftSyntax.textOf(pattern.get()))
+        );
   }
 
   /** The first identifier under {@code node}, in source order, or empty. */

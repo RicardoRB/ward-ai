@@ -24,7 +24,8 @@ public record ModuleDependencies(String modulePath, List<Dependency> dependencie
     for (final Dependency dependency : dependencies) {
       if (!seen.add(dependency.id())) {
         throw new IllegalArgumentException(
-            "Duplicate dependency " + dependency.id() + " in module '" + modulePath + "'");
+            "Duplicate dependency " + dependency.id() + " in module '" + modulePath + "'"
+        );
       }
     }
   }

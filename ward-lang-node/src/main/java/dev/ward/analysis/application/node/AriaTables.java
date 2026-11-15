@@ -10,7 +10,6 @@ import java.util.List;
 
 /** Reads the mirrored ARIA tables of Biome 2.5.15 from the module's resources. */
 final class AriaTables {
-
   private static final String ROLES = "/aria/aria-roles.tsv";
   private static final String IMPLICIT = "/aria/aria-implicit-roles.tsv";
   private static final String ATTRIBUTES = "/aria/aria-attributes.tsv";
@@ -26,7 +25,8 @@ final class AriaTables {
         AriaTableParser.parseImplicit(read(IMPLICIT)),
         AriaTableParser.parseAttributes(read(ATTRIBUTES)),
         AriaTableParser.parseHandlers(read(HANDLERS)),
-        AriaTableParser.parseSemantic(read(SEMANTIC)));
+        AriaTableParser.parseSemantic(read(SEMANTIC))
+    );
   }
 
   private static List<String> read(final String path) {

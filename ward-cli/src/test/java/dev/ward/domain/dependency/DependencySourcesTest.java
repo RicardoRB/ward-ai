@@ -40,7 +40,8 @@ class DependencySourcesTest {
             BuildTool.CARGO,
             BuildTool.DOTNET,
             BuildTool.TUIST,
-            BuildTool.XCODEGEN)) {
+            BuildTool.XCODEGEN
+        )) {
       assertThatThrownBy(() -> DependencySources.forBuildTool(tool, Map.of()).read(project(tool)))
           .isInstanceOf(DependencyInventoryException.class)
           .hasMessageContaining(tool.displayName())
@@ -59,8 +60,9 @@ class DependencySourcesTest {
   @Test
   void aSupportedToolWithoutAReaderFailsInsteadOfBeingEmpty() {
     assertThatThrownBy(
-            () ->
-                DependencySources.forBuildTool(BuildTool.UV, Map.of()).read(project(BuildTool.UV)))
+        () ->
+            DependencySources.forBuildTool(BuildTool.UV, Map.of()).read(project(BuildTool.UV))
+    )
         .isInstanceOf(DependencyInventoryException.class);
   }
 
@@ -68,11 +70,16 @@ class DependencySourcesTest {
   void theMessageNamesProjectSubjectReasonAndFix() {
     final DependencyInventoryException failure =
         new DependencyInventoryException(
-            "/p", "package-lock.json", "left-pad is missing", "npm install");
+            "/p",
+            "package-lock.json",
+            "left-pad is missing",
+            "npm install"
+        );
 
     assertThat(failure)
         .hasMessage(
             "Cannot read the dependencies of /p: package-lock.json: left-pad is missing."
-                + " Fix: npm install");
+                + " Fix: npm install"
+        );
   }
 }

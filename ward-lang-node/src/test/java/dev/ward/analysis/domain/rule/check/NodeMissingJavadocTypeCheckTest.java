@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the missing-javadoc check on parsed TypeScript. */
 class NodeMissingJavadocTypeCheckTest {
-
   @Test
   void exportedClassWithoutJavadocIsReported() {
     assertThat(run(true, "export class A {}\n")).hasSize(1);

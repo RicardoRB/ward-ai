@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * superclass, and an iterator over map entries that hands out one entry object it holds in a field.
  */
 public final class ClassShapeCheck implements RuleCheck {
-
   /** What the check looks for. */
   public enum Mode {
     /** Two methods of a class whose names differ only by case. */

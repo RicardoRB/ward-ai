@@ -22,7 +22,8 @@ class NativeAgentIntegrationTest {
         .containsExactlyInAnyOrder(
             IntegrationCapability.POST_EDIT,
             IntegrationCapability.TURN_END,
-            IntegrationCapability.FEEDBACK);
+            IntegrationCapability.FEEDBACK
+        );
     assertThat(Files.readString(root.resolve(".codex/hooks.json")))
         .contains("ward-owned: codex-native-hooks v1");
     assertThat(Files.readString(root.resolve(".codex/hooks/ward.sh")))

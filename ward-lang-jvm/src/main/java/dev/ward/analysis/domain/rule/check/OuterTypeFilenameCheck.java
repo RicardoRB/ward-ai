@@ -13,7 +13,6 @@ import java.util.Set;
  * outer type, or a public one, must carry the file name. A file with no outer type passes.
  */
 public final class OuterTypeFilenameCheck implements UnitCheck {
-
   private static final String EXTENSION = ".java";
   private static final String DECLARATION = "typeDeclaration";
   private static final String MODIFIER = "classOrInterfaceModifier";
@@ -58,7 +57,9 @@ public final class OuterTypeFilenameCheck implements UnitCheck {
     return List.of(
         CheckSupport.at(
             identifier(wrong).orElseThrow().span(),
-            CheckSupport.fill(message, typeName(wrong), expected)));
+            CheckSupport.fill(message, typeName(wrong), expected)
+        )
+    );
   }
 
   private static boolean named(final SyntaxNode type) {

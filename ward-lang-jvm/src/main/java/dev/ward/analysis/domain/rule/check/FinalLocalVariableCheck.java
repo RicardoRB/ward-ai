@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
  * same name in the same block keeps the local from being reported.
  */
 public final class FinalLocalVariableCheck implements UnitCheck {
-
   private static final Pattern NAME = Pattern.compile("[A-Za-z_$][\\w$]*");
   private static final String FINAL = "final";
   private static final String DECLARATOR = "variableDeclarator";
@@ -57,7 +56,8 @@ public final class FinalLocalVariableCheck implements UnitCheck {
       final SyntaxNode declaration,
       final List<SyntaxNode> statements,
       final int index,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     for (final SyntaxNode declarator : declarators(declaration)) {
       if (declarator.children().stream().noneMatch(c -> "variableInitializer".equals(c.kind()))) {
         continue;
@@ -116,6 +116,7 @@ public final class FinalLocalVariableCheck implements UnitCheck {
         .anyMatch(
             child ->
                 SyntaxWalk.leaves(child).stream()
-                    .anyMatch(leaf -> FINAL.equals(SyntaxWalk.text(leaf))));
+                    .anyMatch(leaf -> FINAL.equals(SyntaxWalk.text(leaf)))
+        );
   }
 }

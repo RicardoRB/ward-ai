@@ -13,7 +13,6 @@ import java.util.Set;
  * may hold a comment instead. Empty catch blocks are checked by the empty-catch-block rule.
  */
 public final class EmptyBlockCheck implements UnitCheck {
-
   private static final String BLOCK = "block";
   private static final String BLOCK_STATEMENT = "blockStatement";
   private static final String STATEMENT = "statement";

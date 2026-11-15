@@ -14,7 +14,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 /** The Python structural rules over one violating and one passing fixture per rule. */
 final class PythonStructuralRulesTest {
-
   private static final String FIXTURES = "fixtures/python-structural/";
 
   @ParameterizedTest
@@ -30,7 +29,8 @@ final class PythonStructuralRulesTest {
 
   @ParameterizedTest
   @ValueSource(
-      strings = {"function-length", "parameter-count", "complexity", "file-length", "naming"})
+      strings = {"function-length", "parameter-count", "complexity", "file-length", "naming"}
+  )
   void passingFixtureReportsNothing(final String rule) throws IOException {
     final RuleRunResult result =
         PythonRuleRuns.run(rule, PythonRuleRuns.read(FIXTURES + rule + "/passing.py"));
@@ -43,7 +43,9 @@ final class PythonStructuralRulesTest {
   void functionLengthFindingPointsAtDefLine() throws IOException {
     final AnalysisFinding finding =
         PythonRuleRuns.run(
-                "function-length", PythonRuleRuns.read(FIXTURES + "function-length/violating.py"))
+            "function-length",
+            PythonRuleRuns.read(FIXTURES + "function-length/violating.py")
+        )
             .findings()
             .get(0);
 
@@ -83,6 +85,7 @@ final class PythonStructuralRulesTest {
             PythonRuleRuns.PREFIX + "parameter-count",
             PythonRuleRuns.PREFIX + "complexity",
             PythonRuleRuns.PREFIX + "file-length",
-            PythonRuleRuns.PREFIX + "naming");
+            PythonRuleRuns.PREFIX + "naming"
+        );
   }
 }

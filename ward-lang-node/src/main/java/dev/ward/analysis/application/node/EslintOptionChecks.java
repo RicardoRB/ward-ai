@@ -14,7 +14,6 @@ import org.tomlj.TomlParseResult;
 
 /** The factories of the ESLint core checks that read options from the rule's table (issue #326). */
 final class EslintOptionChecks {
-
   private static final String MESSAGE = "message";
 
   private EslintOptionChecks() {}
@@ -26,7 +25,8 @@ final class EslintOptionChecks {
             flag(toml, "skip-jsx-text"),
             flag(toml, "skip-reg-exps"),
             flag(toml, "skip-strings"),
-            flag(toml, "skip-templates"));
+            flag(toml, "skip-templates")
+        );
     return new NodeIrregularWhitespaceCheck(skips, TomlValues.required(toml, MESSAGE));
   }
 
@@ -37,20 +37,25 @@ final class EslintOptionChecks {
             flag(toml, "allow-ternary"),
             flag(toml, "allow-tagged-templates"),
             flag(toml, "enforce-for-jsx"),
-            flag(toml, "ignore-directives")),
-        TomlValues.required(toml, MESSAGE));
+            flag(toml, "ignore-directives")
+        ),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   static NodeInnerDeclarationsCheck innerDeclarations(final TomlParseResult toml) {
     return new NodeInnerDeclarationsCheck(
         "both".equals(toml.getString("declarations")),
         "allow".equals(toml.getString("block-scoped-functions")),
-        TomlValues.required(toml, MESSAGE));
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   static NodePromiseRejectCheck promiseReject(final TomlParseResult toml) {
     return new NodePromiseRejectCheck(
-        flag(toml, "allow-empty-reject"), TomlValues.required(toml, MESSAGE));
+        flag(toml, "allow-empty-reject"),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   static boolean flag(final TomlParseResult toml, final String key) {
@@ -61,7 +66,8 @@ final class EslintOptionChecks {
     return new NodeUnsafeOptionalChainingCheck(
         flag(toml, "disallow-arithmetic-operators"),
         TomlValues.required(toml, MESSAGE),
-        TomlValues.required(toml, "arithmetic-message"));
+        TomlValues.required(toml, "arithmetic-message")
+    );
   }
 
   static NodeInvalidRegexpCheck invalidRegexp(final TomlParseResult toml) {
@@ -71,18 +77,29 @@ final class EslintOptionChecks {
   static NodeArrayCallbackReturnCheck arrayCallbackReturn(final TomlParseResult toml) {
     return new NodeArrayCallbackReturnCheck(
         new NodeArrayCallbackReturnCheck.Options(
-            flag(toml, "allow-implicit"), flag(toml, "check-for-each"), flag(toml, "allow-void")),
-        TomlValues.required(toml, MESSAGE));
+            flag(toml, "allow-implicit"),
+            flag(toml, "check-for-each"),
+            flag(toml, "allow-void")
+        ),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   static NodeUseBeforeDefineCheck useBeforeDefine(final TomlParseResult toml) {
     return new NodeUseBeforeDefineCheck(
         new NodeUseBeforeDefineCheck.Kinds(
-            flag(toml, "functions"), flag(toml, "classes"), flag(toml, "variables")),
+            flag(toml, "functions"),
+            flag(toml, "classes"),
+            flag(toml, "variables")
+        ),
         flag(toml, "allow-named-exports"),
         new NodeUseBeforeDefineCheck.Types(
-            flag(toml, "enums"), flag(toml, "typedefs"), flag(toml, "ignore-type-references")),
-        TomlValues.required(toml, MESSAGE));
+            flag(toml, "enums"),
+            flag(toml, "typedefs"),
+            flag(toml, "ignore-type-references")
+        ),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   static NodePreserveCaughtErrorCheck preserveCaughtError(final TomlParseResult toml) {
@@ -91,6 +108,7 @@ final class EslintOptionChecks {
         TomlValues.required(toml, "missing-cause-message"),
         TomlValues.required(toml, "partial-message"),
         TomlValues.required(toml, "missing-parameter-message"),
-        TomlValues.required(toml, "incorrect-cause-message"));
+        TomlValues.required(toml, "incorrect-cause-message")
+    );
   }
 }

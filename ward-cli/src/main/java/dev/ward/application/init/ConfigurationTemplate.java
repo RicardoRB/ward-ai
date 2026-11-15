@@ -21,7 +21,10 @@ public final class ConfigurationTemplate {
 
   /** Renders the configuration of {@code project} with {@code gates} under {@code preset}. */
   public static String render(
-      final List<InitGateOption> gates, final QualityPreset preset, final Project project) {
+      final List<InitGateOption> gates,
+      final QualityPreset preset,
+      final Project project
+  ) {
     return render(gates, preset, project, WardArchitecture.NONE);
   }
 
@@ -33,7 +36,8 @@ public final class ConfigurationTemplate {
       final List<InitGateOption> gates,
       final QualityPreset preset,
       final Project project,
-      final WardArchitecture architecture) {
+      final WardArchitecture architecture
+  ) {
     final StringBuilder content = new StringBuilder(SECTION_CAPACITY * (gates.size() + 1));
     content.append(VERSION);
     for (final InitGateOption gate : gates) {
@@ -49,10 +53,15 @@ public final class ConfigurationTemplate {
       final StringBuilder content,
       final InitGateOption gate,
       final QualityPreset preset,
-      final Project project) {
+      final Project project
+  ) {
     if (InProcessGateTemplate.handles(gate.id())) {
       InProcessGateTemplate.append(
-          content, gate.id(), QualityGatePhasePolicy.profilesFor(gate.id()), preset);
+          content,
+          gate.id(),
+          QualityGatePhasePolicy.profilesFor(gate.id()),
+          preset
+      );
       partial(content, gate, project, preset);
       return;
     }
@@ -65,7 +74,9 @@ public final class ConfigurationTemplate {
                 ", ",
                 QualityGatePhasePolicy.profilesFor(gate.id()).stream()
                     .map(profile -> "\"" + profile + "\"")
-                    .toList()))
+                    .toList()
+            )
+        )
         .append("]\n");
     if (GateCommandTemplate.writesUses(gate)) {
       content.append("uses = \"").append(gate.id()).append("\"\n");
@@ -79,7 +90,8 @@ public final class ConfigurationTemplate {
       final StringBuilder content,
       final InitGateOption gate,
       final Project project,
-      final QualityPreset preset) {
+      final QualityPreset preset
+  ) {
     final String id = gate.id();
     PartialCheckDefaults.forGate(id, project, preset, gate.command())
         .or(() -> PartialCheckDefaults.forOpenApi(id, gate.settings().get("spec")))
@@ -98,11 +110,15 @@ public final class ConfigurationTemplate {
               }
               string(content, "item", table.item());
               string(content, "separator", table.separator());
-            });
+            }
+        );
   }
 
   private static void array(
-      final StringBuilder content, final String key, final List<String> values) {
+      final StringBuilder content,
+      final String key,
+      final List<String> values
+  ) {
     content
         .append(key)
         .append(" = [")
@@ -115,7 +131,10 @@ public final class ConfigurationTemplate {
    * PIT block sets no threshold, so the summed score is checked here.
    */
   private static Map<String, String> gatePreset(
-      final InitGateOption gate, final Project project, final QualityPreset preset) {
+      final InitGateOption gate,
+      final Project project,
+      final QualityPreset preset
+  ) {
     final Integer threshold = preset == null ? null : preset.rules().mutationThreshold();
     if (!SupportedQualityGates.MUTATION.equals(gate.id())
         || project.buildTool() != BuildTool.GRADLE

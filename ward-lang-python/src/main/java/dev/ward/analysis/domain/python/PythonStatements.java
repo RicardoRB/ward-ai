@@ -9,7 +9,6 @@ import java.util.function.Consumer;
 
 /** Handles the Python statements that bind or delete names. */
 final class PythonStatements {
-
   private static final String IN = "in";
   private static final String ANNASSIGN = "annassign";
   private static final String AUGASSIGN = "augassign";
@@ -22,7 +21,10 @@ final class PythonStatements {
   private final Consumer<SyntaxNode> visit;
 
   PythonStatements(
-      final ScopeBuilder builder, final PythonBindings bindings, final Consumer<SyntaxNode> visit) {
+      final ScopeBuilder builder,
+      final PythonBindings bindings,
+      final Consumer<SyntaxNode> visit
+  ) {
     this.builder = builder;
     this.bindings = bindings;
     this.visit = visit;
@@ -99,7 +101,10 @@ final class PythonStatements {
       final Optional<SyntaxNode> name = PythonNames.plainName(element);
       if (name.isPresent()) {
         builder.reference(
-            PythonNames.identifier(name.get()), name.get().span(), ReferenceAccess.DELETE);
+            PythonNames.identifier(name.get()),
+            name.get().span(),
+            ReferenceAccess.DELETE
+        );
       } else {
         visit.accept(element);
       }

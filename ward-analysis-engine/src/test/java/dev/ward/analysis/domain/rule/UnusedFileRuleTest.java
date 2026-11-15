@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /** The unused-file rule: a source file nothing imports is reported unless it is an entry. */
 class UnusedFileRuleTest {
-
   private static final Set<String> FILES =
       Set.of("src/index.ts", "src/util.ts", "src/orphan.ts", "src/util.test.ts", "README.md");
 

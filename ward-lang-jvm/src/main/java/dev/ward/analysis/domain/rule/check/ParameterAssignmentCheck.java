@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * assignment to a shadowing local is reported too. Lambda parameters are not checked.
  */
 public final class ParameterAssignmentCheck implements UnitCheck {
-
   // shortcut: an assignment to a local that shadows a parameter is reported, upgrade by resolving
   // the local's declaration scope before reporting.
   private static final Pattern NAME = Pattern.compile("[A-Za-z_$][\\w$]*");
@@ -51,7 +50,10 @@ public final class ParameterAssignmentCheck implements UnitCheck {
       if (NAME.matcher(target).matches() && isParameter(parameters, target, callable.get())) {
         matches.add(
             CheckSupport.at(
-                assignment.children().get(1).span(), CheckSupport.fill(message, target, "")));
+                assignment.children().get(1).span(),
+                CheckSupport.fill(message, target, "")
+            )
+        );
       }
     }
     return List.copyOf(matches);
@@ -74,11 +76,15 @@ public final class ParameterAssignmentCheck implements UnitCheck {
   }
 
   private static boolean isParameter(
-      final List<Parameter> parameters, final String name, final SyntaxNode callable) {
+      final List<Parameter> parameters,
+      final String name,
+      final SyntaxNode callable
+  ) {
     return parameters.stream()
         .anyMatch(
             parameter ->
                 parameter.name().equals(name)
-                    && parameter.callable().span().equals(callable.span()));
+                    && parameter.callable().span().equals(callable.span())
+        );
   }
 }

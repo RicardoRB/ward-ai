@@ -34,7 +34,12 @@ final class DependencyFixtureLanguage {
   static final String RULE_ID = "ward:kotlin/unexported-import";
   static final RuleDefinition RULE =
       new RuleDefinition(
-          RULE_ID, LANGUAGE, RuleCapability.SYMBOLS, AnalysisSeverity.WARNING, "fixture");
+          RULE_ID,
+          LANGUAGE,
+          RuleCapability.SYMBOLS,
+          AnalysisSeverity.WARNING,
+          "fixture"
+      );
   private static final String SUFFIX = ".kt";
   private static final Pattern LINE = Pattern.compile("(import|export|declare) (\\w+)");
 
@@ -46,7 +51,10 @@ final class DependencyFixtureLanguage {
 
   FrontendSupport frontend() {
     return new FrontendSupport(
-        LANGUAGE, this::parse, Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS));
+        LANGUAGE,
+        this::parse,
+        Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS)
+    );
   }
 
   List<DependencySupport> dependencies() {
@@ -71,12 +79,16 @@ final class DependencyFixtureLanguage {
                 matcher.group(1),
                 span(index + 1, offset, line.length()),
                 Map.of("name", matcher.group(2)),
-                List.of()));
+                List.of()
+            )
+        );
       }
       offset += line.length() + 1;
     }
     return new ParseResult(
-        new SyntaxNode(unit.path(), span(1, 0, 1), Map.of(), children), List.of());
+        new SyntaxNode(unit.path(), span(1, 0, 1), Map.of(), children),
+        List.of()
+    );
   }
 
   private FileSummary summarize(final SourceUnit unit, final SyntaxNode tree) {
@@ -87,7 +99,8 @@ final class DependencyFixtureLanguage {
             .filter(node -> "import".equals(node.kind()))
             .map(node -> new Reference(node.fields().get("name"), node.span()))
             .toList(),
-        symbols(tree, "declare"));
+        symbols(tree, "declare")
+    );
   }
 
   private List<DependencyEdge> resolve(final List<FileSummary> summaries) {
@@ -99,7 +112,9 @@ final class DependencyFixtureLanguage {
                     .filter(reference -> paths.contains(target(reference)))
                     .map(
                         reference ->
-                            new DependencyEdge(summary.path(), target(reference), reference)))
+                            new DependencyEdge(summary.path(), target(reference), reference)
+                    )
+        )
         .toList();
   }
 

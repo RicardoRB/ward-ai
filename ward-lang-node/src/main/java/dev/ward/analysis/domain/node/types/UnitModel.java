@@ -14,7 +14,6 @@ import java.util.Map;
 
 /** A parsed unit with its scopes, its declarations and an index of its nodes by span. */
 final class UnitModel {
-
   private final SourceUnit unit;
   private final SyntaxNode tree;
   private final UnitScopes scopes;
@@ -46,7 +45,11 @@ final class UnitModel {
   record Site(SiteKind kind, SyntaxNode node, boolean isConst) {}
 
   UnitModel(
-      final SourceUnit unit, final SyntaxNode tree, final UnitScopes scopes, final Module module) {
+      final SourceUnit unit,
+      final SyntaxNode tree,
+      final UnitScopes scopes,
+      final Module module
+  ) {
     this.unit = unit;
     this.tree = tree;
     this.scopes = scopes;

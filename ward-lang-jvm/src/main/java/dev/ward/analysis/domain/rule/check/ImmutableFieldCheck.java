@@ -25,7 +25,6 @@ import java.util.regex.Pattern;
  * constructor"; a field assigned conditionally is not reported.
  */
 public final class ImmutableFieldCheck implements UnitCheck {
-
   private static final String IDENTIFIER = "identifier";
   private static final String DECLARATOR_ID = "variableDeclaratorId";
   private static final String DECLARATOR = "variableDeclarator";
@@ -59,7 +58,8 @@ public final class ImmutableFieldCheck implements UnitCheck {
   private static boolean injectedClass(final List<SyntaxNode> ancestors) {
     return MemberDeclarations.wrapper(ancestors)
         .filter(
-            wrapper -> !Collections.disjoint(JUnitMembers.annotations(wrapper), CLASS_ANNOTATIONS))
+            wrapper -> !Collections.disjoint(JUnitMembers.annotations(wrapper), CLASS_ANNOTATIONS)
+        )
         .isPresent();
   }
 
@@ -76,7 +76,8 @@ public final class ImmutableFieldCheck implements UnitCheck {
         .filter(
             field ->
                 declarators(field).stream()
-                    .anyMatch(d -> couldBeFinal(d, body, constructors, root)))
+                    .anyMatch(d -> couldBeFinal(d, body, constructors, root))
+        )
         .map(field -> CheckSupport.at(field.span(), message))
         .toList();
   }
@@ -103,7 +104,8 @@ public final class ImmutableFieldCheck implements UnitCheck {
       final SyntaxNode declarator,
       final SyntaxNode body,
       final List<SyntaxNode> constructors,
-      final SyntaxNode root) {
+      final SyntaxNode root
+  ) {
     final Optional<String> name = name(declarator);
     if (name.isEmpty()) {
       return false;
@@ -124,13 +126,17 @@ public final class ImmutableFieldCheck implements UnitCheck {
   }
 
   private static boolean writtenOutside(
-      final Pattern assignment, final SyntaxNode body, final SyntaxNode root) {
+      final Pattern assignment,
+      final SyntaxNode body,
+      final SyntaxNode root
+  ) {
     return SyntaxWalk.visits(root, Set.of(EXPRESSION)).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(
             node ->
                 node.span().startOffset() < body.span().startOffset()
-                    || node.span().endOffset() > body.span().endOffset())
+                    || node.span().endOffset() > body.span().endOffset()
+        )
         .anyMatch(node -> assignment.matcher(SyntaxWalk.text(node)).find());
   }
 
@@ -145,6 +151,7 @@ public final class ImmutableFieldCheck implements UnitCheck {
 
   private static Pattern assignment(final String name) {
     return Pattern.compile(
-        String.format(ASSIGNMENT_TEMPLATE, Pattern.quote(name), Pattern.quote(name)));
+        String.format(ASSIGNMENT_TEMPLATE, Pattern.quote(name), Pattern.quote(name))
+    );
   }
 }

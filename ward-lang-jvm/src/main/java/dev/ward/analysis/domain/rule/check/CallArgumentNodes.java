@@ -6,7 +6,6 @@ import java.util.Optional;
 
 /** Finds the argument expressions of a Java method call. */
 final class CallArgumentNodes {
-
   private static final String EXPRESSION_LIST = "expressionList";
   private static final String METHOD_CALL = "methodCall";
   private static final String EXPRESSION = "expression";
@@ -21,9 +20,11 @@ final class CallArgumentNodes {
             invoked ->
                 SyntaxWalk.descendants(invoked).stream()
                     .filter(node -> "expressionList".equals(node.kind()))
-                    .findFirst())
+                    .findFirst()
+        )
         .flatMap(
-            list -> list.children().stream().filter(c -> EXPRESSION.equals(c.kind())).findFirst());
+            list -> list.children().stream().filter(c -> EXPRESSION.equals(c.kind())).findFirst()
+        );
   }
 
   /** The argument expressions of the call, in order; none when the call has no method part. */

@@ -26,7 +26,8 @@ class ConfigurationTemplateApiCompatTest {
         ConfigurationTemplate.render(
             List.of(new InitGateOption("api-compat", "api-compat", List.of(), true, "")),
             null,
-            project);
+            project
+        );
 
     assertThat(text)
         .contains("[checks.api-compat]", "uses = \"api-compat\"")

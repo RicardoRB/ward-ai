@@ -18,7 +18,8 @@ final class PomElements {
     return child(pom, new Element("", 0, 0, pom.length(), false), "project")
         .filter(element -> !element.selfClosing())
         .orElseThrow(
-            () -> new WardException("Cannot safely update pom.xml: missing <project> element."));
+            () -> new WardException("Cannot safely update pom.xml: missing <project> element.")
+        );
   }
 
   /** Finds the first direct child of {@code parent} named {@code name}. */
@@ -46,13 +47,17 @@ final class PomElements {
 
   /** Finds the direct child of {@code section} whose {@code <artifactId>} is {@code artifact}. */
   static Optional<Element> declaration(
-      final String xml, final Element section, final String artifact) {
+      final String xml,
+      final Element section,
+      final String artifact
+  ) {
     return children(xml, section).stream()
         .filter(
             child ->
                 child(xml, child, "artifactId")
                     .map(id -> text(xml, id).equals(artifact))
-                    .orElse(false))
+                    .orElse(false)
+        )
         .findFirst();
   }
 

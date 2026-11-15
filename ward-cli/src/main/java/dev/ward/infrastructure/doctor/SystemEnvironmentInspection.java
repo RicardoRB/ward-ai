@@ -52,7 +52,8 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
           "poetry",
           "swift",
           "xcodebuild",
-          "xcrun");
+          "xcrun"
+      );
   private static final List<String> OPENAPI_SPECS =
       List.of(
           "src/main/resources/openapi.yml",
@@ -60,7 +61,8 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
           "src/main/resources/openapi.json",
           "openapi.yml",
           "openapi.yaml",
-          "openapi.json");
+          "openapi.json"
+      );
 
   private final CommandExecutor executor;
 
@@ -81,7 +83,8 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
               directory ->
                   PROBED_EXECUTABLES.stream()
                       .filter(name -> Files.isExecutable(directory.resolve(name)))
-                      .forEach(available::add));
+                      .forEach(available::add)
+          );
     }
     final Map<String, String> values =
         Map.of(
@@ -93,16 +96,21 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
             Boolean.toString(Files.isRegularFile(projectRoot.resolve("ward.toml"))),
             "openCodeCommandPresent",
             Boolean.toString(
-                Files.isRegularFile(projectRoot.resolve(".opencode/commands/ward-check.md"))),
+                Files.isRegularFile(projectRoot.resolve(".opencode/commands/ward-check.md"))
+            ),
             "nativeExecutablePresent",
-            Boolean.toString(NativeExecutableFact.present(Path.of(""))));
+            Boolean.toString(NativeExecutableFact.present(Path.of("")))
+        );
     final Map<String, String> observed = new HashMap<>(values);
     observed.putAll(AndroidEnvironmentFacts.read(projectRoot));
     observed.put(
-        "typescriptResolvable", Boolean.toString(TypeScriptPackages.resolvable(projectRoot)));
+        "typescriptResolvable",
+        Boolean.toString(TypeScriptPackages.resolvable(projectRoot))
+    );
     LOGGER.log(
         Level.INFO,
-        () -> "event=environment-inspection status=complete available=" + available.size());
+        () -> "event=environment-inspection status=complete available=" + available.size()
+    );
     return new EnvironmentFacts(available, observed);
   }
 
@@ -125,7 +133,8 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
         candidate,
         Files.exists(candidate),
         Files.isRegularFile(candidate),
-        Files.isExecutable(candidate));
+        Files.isExecutable(candidate)
+    );
   }
 
   /** Asks Git which candidates are tracked, so an untracked draft spec is never offered. */

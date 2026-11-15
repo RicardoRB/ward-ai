@@ -15,7 +15,6 @@ import java.util.Set;
  * <p>Shortcut: a call that follows a call ending with a lambda is reported as well.
  */
 public final class KotlinTrailingLambdaParenthesesCheck implements RuleCheck {
-
   private static final String CALL_SUFFIX = "callSuffix";
   private static final String ARGUMENTS = "valueArguments";
   private static final String ARGUMENT = "valueArgument";

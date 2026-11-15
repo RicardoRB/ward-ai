@@ -31,7 +31,8 @@ final class GradleScriptPlacement {
       final List<GradlePlugin> plugins,
       final Set<String> rootGates,
       final Set<String> moduleGates,
-      final GradleToolVersions versions) {
+      final GradleToolVersions versions
+  ) {
     final boolean kotlin = root.buildFile().toString().endsWith(".kts");
     final List<String> declarations = new ArrayList<>();
     for (final GradlePlugin plugin : plugins) {
@@ -57,12 +58,14 @@ final class GradleScriptPlacement {
       final List<GradlePlugin> plugins,
       final Set<String> moduleGates,
       final QualityPreset preset,
-      final GradleToolVersions versions) {
+      final GradleToolVersions versions
+  ) {
     final Path script =
         GradleKotlinModules.scriptFile(module)
             .orElseThrow(
                 () ->
-                    new WardException("Could not configure Gradle tools: a module has no script."));
+                    new WardException("Could not configure Gradle tools: a module has no script.")
+            );
     final GradleBuildFileEdit edit = GradleBuildFileEdit.read(script);
     final boolean kotlin = script.toString().endsWith(".kts");
     final List<String> declarations = new ArrayList<>();
@@ -83,7 +86,8 @@ final class GradleScriptPlacement {
         GradleKotlinModules.scriptFile(module)
             .orElseThrow(
                 () ->
-                    new WardException("Could not configure Gradle tools: a module has no script."));
+                    new WardException("Could not configure Gradle tools: a module has no script.")
+            );
     final GradleBuildFileEdit edit = GradleBuildFileEdit.read(script);
     GradleAndroidBlocks.append(edit, selected);
     return edit;
@@ -103,7 +107,10 @@ final class GradleScriptPlacement {
 
   /** Logs the placement decision with counts only: no paths or script content. */
   static void logPlacement(
-      final Project project, final List<Path> kotlinModules, final boolean rootJvm) {
+      final Project project,
+      final List<Path> kotlinModules,
+      final boolean rootJvm
+  ) {
     if (kotlinModules.isEmpty()) {
       if (!rootJvm && GradleKotlinModules.hasKotlinSources(project.root())) {
         LOGGER.log(Level.INFO, "event=gradle-kotlin-module-missing");
@@ -116,7 +123,8 @@ final class GradleScriptPlacement {
             "event=gradle-module-placement modules="
                 + kotlinModules.size()
                 + " root="
-                + (rootJvm ? "yes" : "no"));
+                + (rootJvm ? "yes" : "no")
+    );
   }
 
   private static boolean modulePlaced(final String gate) {

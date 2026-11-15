@@ -14,7 +14,6 @@ import java.util.Set;
  * literal inside the constant's own initializer, and one in an annotation, are not reported.
  */
 public final class DeduplicateConstantsCheck implements UnitCheck {
-
   private static final String EXPRESSION = "expression";
   private static final String ANNOTATION = "annotation";
   private static final String QUOTE = "\"";
@@ -57,7 +56,9 @@ public final class DeduplicateConstantsCheck implements UnitCheck {
             visit ->
                 CheckSupport.at(
                     visit.node().span(),
-                    CheckSupport.fill(message, constants.get(SyntaxWalk.text(visit.node())), "")))
+                    CheckSupport.fill(message, constants.get(SyntaxWalk.text(visit.node())), "")
+                )
+        )
         .toList();
   }
 
@@ -71,8 +72,11 @@ public final class DeduplicateConstantsCheck implements UnitCheck {
 
   private static void recordConstant(
       final SyntaxNode declarator,
-      final Map<String, String> constants,
-      final Map<SyntaxNode, Boolean> initializers) {
+      final Map<String,
+      String> constants,
+      final Map<SyntaxNode,
+      Boolean> initializers
+  ) {
     if (!"variableDeclarator".equals(declarator.kind())) {
       return;
     }
@@ -92,8 +96,11 @@ public final class DeduplicateConstantsCheck implements UnitCheck {
 
   private static boolean literalOf(
       final SyntaxNode node,
-      final Map<String, String> constants,
-      final Map<SyntaxNode, Boolean> initializers) {
+      final Map<String,
+      String> constants,
+      final Map<SyntaxNode,
+      Boolean> initializers
+  ) {
     return constants.containsKey(SyntaxWalk.text(node)) && !initializers.containsKey(node);
   }
 }

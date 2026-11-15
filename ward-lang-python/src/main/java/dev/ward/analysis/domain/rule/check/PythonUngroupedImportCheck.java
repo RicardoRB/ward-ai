@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
  * left alone, and so are relative imports.
  */
 public final class PythonUngroupedImportCheck implements RuleCheck {
-
   private static final Set<String> IMPORTS = Set.of("import_name", "import_from");
   private static final Set<String> SCOPES = Set.of("funcdef", "classdef");
   private static final Pattern FROM = Pattern.compile("^from([\\w.]+)import");

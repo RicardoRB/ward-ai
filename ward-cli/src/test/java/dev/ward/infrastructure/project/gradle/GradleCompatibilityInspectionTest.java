@@ -39,7 +39,8 @@ class GradleCompatibilityInspectionTest {
   void readsTheGradleVersionLauncherJvmAndPlugins(@TempDir final Path root) throws Exception {
     Files.writeString(
         root.resolve(GROOVY),
-        "plugins {\n    id 'java'\n    id 'com.github.spotbugs' version '6.0.26'\n}\n");
+        "plugins {\n    id 'java'\n    id 'com.github.spotbugs' version '6.0.26'\n}\n"
+    );
     final FakeCommandExecutor commands = new FakeCommandExecutor(0, VERSION_OUTPUT, "");
 
     final CompatibilityProjectSnapshot snapshot =
@@ -55,15 +56,16 @@ class GradleCompatibilityInspectionTest {
   @ParameterizedTest
   @ValueSource(
       strings = {
-        "java { toolchain { languageVersion = JavaLanguageVersion.of(17) } }",
-        "java {\n    toolchain {\n        languageVersion.set(JavaLanguageVersion.of(17))\n    }\n}",
-        "sourceCompatibility = JavaVersion.VERSION_17",
-        "java { sourceCompatibility = JavaVersion.toVersion('17') }",
-        "sourceCompatibility = '17'",
-        "sourceCompatibility = 17",
-        "tasks.withType(JavaCompile) { options.release = 17 }",
-        "tasks.withType<JavaCompile> { options.release.set(17) }"
-      })
+          "java { toolchain { languageVersion = JavaLanguageVersion.of(17) } }",
+          "java {\n    toolchain {\n        languageVersion.set(JavaLanguageVersion.of(17))\n    }\n}",
+          "sourceCompatibility = JavaVersion.VERSION_17",
+          "java { sourceCompatibility = JavaVersion.toVersion('17') }",
+          "sourceCompatibility = '17'",
+          "sourceCompatibility = 17",
+          "tasks.withType(JavaCompile) { options.release = 17 }",
+          "tasks.withType<JavaCompile> { options.release.set(17) }"
+      }
+  )
   void readsTheReleaseFromTheBuildScript(final String script) {
     assertThat(GradleCompatibilityInspection.release(script)).contains(JAVA_17);
   }
@@ -71,7 +73,8 @@ class GradleCompatibilityInspectionTest {
   @Test
   void readsALegacySourceCompatibility() {
     assertThat(
-            GradleCompatibilityInspection.release("sourceCompatibility = JavaVersion.VERSION_1_8"))
+        GradleCompatibilityInspection.release("sourceCompatibility = JavaVersion.VERSION_1_8")
+    )
         .contains(JAVA_8);
     assertThat(GradleCompatibilityInspection.release("sourceCompatibility = '1.8'"))
         .contains(JAVA_8);
@@ -81,7 +84,8 @@ class GradleCompatibilityInspectionTest {
   void computedReleaseFallsBackToTheLauncherJvm(@TempDir final Path root) throws Exception {
     Files.writeString(
         root.resolve("build.gradle.kts"),
-        "java { toolchain { languageVersion = JavaLanguageVersion.of(libs.versions.java.get()) } }");
+        "java { toolchain { languageVersion = JavaLanguageVersion.of(libs.versions.java.get()) } }"
+    );
 
     final CompatibilityProjectSnapshot snapshot =
         new GradleCompatibilityInspection(new FakeCommandExecutor(0, VERSION_OUTPUT, ""))
@@ -95,12 +99,17 @@ class GradleCompatibilityInspectionTest {
   void gradleReleaseFromTheBuildFile(@TempDir final Path root) throws Exception {
     Files.writeString(
         root.resolve(GROOVY),
-        "java { toolchain { languageVersion = JavaLanguageVersion.of(17) } }\n");
+        "java { toolchain { languageVersion = JavaLanguageVersion.of(17) } }\n"
+    );
 
     final CompatibilityProjectSnapshot snapshot =
         new GradleCompatibilityInspection(
-                new FakeCommandExecutor(
-                    0, "Gradle 9.8.2\nLauncher JVM:  17.0.15 (Eclipse Adoptium 17.0.15+6)\n", ""))
+            new FakeCommandExecutor(
+                0,
+                "Gradle 9.8.2\nLauncher JVM:  17.0.15 (Eclipse Adoptium 17.0.15+6)\n",
+                ""
+            )
+        )
             .inspect(project(root));
 
     assertThat(snapshot.toolchain().runtimeJdk()).contains(JAVA_17);

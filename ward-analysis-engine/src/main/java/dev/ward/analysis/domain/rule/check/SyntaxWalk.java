@@ -8,7 +8,6 @@ import java.util.Set;
 
 /** Read-only navigation over a {@link SyntaxNode} tree, shared by the checks. */
 final class SyntaxWalk {
-
   /** The kind the frontends give a comment node. */
   static final String COMMENT_KIND = "comment";
 
@@ -33,7 +32,8 @@ final class SyntaxWalk {
       final SyntaxNode node,
       final List<SyntaxNode> ancestors,
       final Set<String> kinds,
-      final List<Visit> visits) {
+      final List<Visit> visits
+  ) {
     if (kinds.contains(node.kind())) {
       visits.add(new Visit(node, List.copyOf(ancestors)));
     }
@@ -95,7 +95,10 @@ final class SyntaxWalk {
    * subtree whose kind is in {@code skip}.
    */
   static Optional<SyntaxNode> firstDescendant(
-      final SyntaxNode node, final String kind, final Set<String> skip) {
+      final SyntaxNode node,
+      final String kind,
+      final Set<String> skip
+  ) {
     for (final SyntaxNode child : node.children()) {
       if (kind.equals(child.kind())) {
         return Optional.of(child);

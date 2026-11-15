@@ -9,7 +9,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class SwiftJavadocMethodCheckTest {
-
   private static final int VALUE_10 = 10;
   private static final int VALUE_15 = 15;
   private static final int VALUE_20 = 20;
@@ -33,7 +32,8 @@ class SwiftJavadocMethodCheckTest {
       final String comment,
       final boolean returns,
       final boolean throwing,
-      final String... parameters) {
+      final String... parameters
+  ) {
     final SyntaxNode[] params = new SyntaxNode[parameters.length];
     for (int index = 0; index < parameters.length; index++) {
       params[index] =
@@ -45,7 +45,9 @@ class SwiftJavadocMethodCheckTest {
                   "local_parameter_name",
                   VALUE_20 + index,
                   VALUE_21 + index,
-                  SwiftTestNodes.leaf("label_identifier", parameters[index], VALUE_20 + index)));
+                  SwiftTestNodes.leaf("label_identifier", parameters[index], VALUE_20 + index)
+              )
+          );
     }
     final SyntaxNode[] signature = new SyntaxNode[params.length + 2];
     System.arraycopy(params, 0, signature, 0, params.length);
@@ -62,10 +64,15 @@ class SwiftJavadocMethodCheckTest {
             "function_declaration",
             VALUE_60,
             VALUE_100,
-            SwiftTestNodes.node("function_signature", VALUE_15, VALUE_90, signature));
+            SwiftTestNodes.node("function_signature", VALUE_15, VALUE_90, signature)
+        );
     final SyntaxNode doc =
         new SyntaxNode(
-            "comment", SwiftTestNodes.span(0, VALUE_10), Map.of("text", comment), List.of());
+            "comment",
+            SwiftTestNodes.span(0, VALUE_10),
+            Map.of("text", comment),
+            List.of()
+        );
     return SwiftTestNodes.node("file", 0, VALUE_100, doc, function);
   }
 
@@ -95,9 +102,15 @@ class SwiftJavadocMethodCheckTest {
   @Test
   void javadocMethodAcceptsAFullyDocumentedFunction() {
     assertThat(
-            javadoc(
-                documentedFunction(
-                    "/** - Parameter a: first - Returns: sum - Throws: never */", true, true, "a")))
+        javadoc(
+            documentedFunction(
+                "/** - Parameter a: first - Returns: sum - Throws: never */",
+                true,
+                true,
+                "a"
+            )
+        )
+    )
         .isEmpty();
   }
 
@@ -124,7 +137,12 @@ class SwiftJavadocMethodCheckTest {
                             "local_parameter_name",
                             VALUE_20,
                             VALUE_21,
-                            SwiftTestNodes.leaf("label_identifier", "a", VALUE_20))))));
+                            SwiftTestNodes.leaf("label_identifier", "a", VALUE_20)
+                        )
+                    )
+                )
+            )
+        );
 
     assertThat(javadoc(undocumented)).isEmpty();
   }

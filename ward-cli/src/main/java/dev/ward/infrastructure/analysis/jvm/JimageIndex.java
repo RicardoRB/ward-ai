@@ -124,12 +124,17 @@ final class JimageIndex {
     }
     return new Entry(
         List.of(
-            (int) attributes[MODULE],
-            (int) attributes[PARENT],
-            (int) attributes[BASE],
-            (int) attributes[EXTENSION]),
+            (int)attributes[MODULE],
+            (int)attributes[PARENT],
+            (int)attributes[BASE],
+            (int)attributes[EXTENSION]
+        ),
         new Location(
-            (int) attributes[OFFSET], attributes[COMPRESSED] != 0, (int) attributes[UNCOMPRESSED]));
+            (int)attributes[OFFSET],
+            attributes[COMPRESSED] != 0,
+            (int)attributes[UNCOMPRESSED]
+        )
+    );
   }
 
   private long bigEndian(final int position, final int length) {

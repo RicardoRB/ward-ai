@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 /** The sentence {@code @stoplight/better-ajv-errors} makes of one ajv error. */
 final class Wording {
-
   private static final Pattern QUOTES = Pattern.compile("['\"]");
 
   private Wording() {}
@@ -32,7 +31,10 @@ final class Wording {
   }
 
   private static String enumeration(
-      final SchemaError error, final DocNode data, final List<String> propertyPath) {
+      final SchemaError error,
+      final DocNode data,
+      final List<String> propertyPath
+  ) {
     final String values =
         error.allowed().stream().map(Wording::allowed).collect(Collectors.joining(", "));
     final String text = pretty(error, data, propertyPath) + " " + error.message() + ": " + values;
@@ -85,7 +87,10 @@ final class Wording {
   }
 
   private static String pretty(
-      final SchemaError error, final DocNode data, final List<String> propertyPath) {
+      final SchemaError error,
+      final DocNode data,
+      final List<String> propertyPath
+  ) {
     return name(error.instancePath(), propertyPath)
         .map(name -> "\"" + name + "\" property")
         .orElseGet(() -> capitalized(Pointers.at(data, error.instancePath())));
@@ -101,7 +106,8 @@ final class Wording {
                       case NUMBER -> "number";
                       case BOOLEAN -> "boolean";
                       default -> "object";
-                    })
+                    }
+            )
             .orElse("undefined");
     return Character.toUpperCase(type.charAt(0)) + type.substring(1);
   }

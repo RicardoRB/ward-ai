@@ -31,6 +31,8 @@ final class CliInitServices {
             new NoRuleFileGeneration(),
             ArchitectureTablesFixtures.create(),
             new FileConfigurationStorage(),
-            new OwnedSectionWriter()));
+            new OwnedSectionWriter()
+        )
+    );
   }
 }

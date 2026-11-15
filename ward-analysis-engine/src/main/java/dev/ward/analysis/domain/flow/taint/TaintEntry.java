@@ -33,8 +33,8 @@ public record TaintEntry(
     Optional<String> receiver,
     Optional<String> qualifier,
     List<Integer> arguments,
-    Optional<Pattern> pattern) {
-
+    Optional<Pattern> pattern
+) {
   private static final String ANY_PREFIX = "*";
   private static final Pattern CHAIN_SEPARATOR = Pattern.compile("\\??\\.");
 
@@ -54,7 +54,8 @@ public record TaintEntry(
       final String name,
       final Optional<String> receiver,
       final Optional<String> qualifier,
-      final List<Integer> arguments) {
+      final List<Integer> arguments
+  ) {
     this(kind, name, receiver, qualifier, arguments, Optional.empty());
   }
 

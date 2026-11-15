@@ -72,7 +72,8 @@ final class NodeFixtureRun {
         .environment()
         .put(
             "PATH",
-            STUBS.toAbsolutePath() + File.pathSeparator + System.getenv().getOrDefault("PATH", ""));
+            STUBS.toAbsolutePath() + File.pathSeparator + System.getenv().getOrDefault("PATH", "")
+        );
     final Process process = builder.start();
     try (OutputStream stdin = process.getOutputStream()) {
       stdin.write(input.getBytes(StandardCharsets.UTF_8));

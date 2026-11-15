@@ -69,7 +69,9 @@ class JavaCompatibilityMatrixTest {
   @ParameterizedTest(name = "jdk {0} {1} {2} {3}")
   @CsvFileSource(resources = "/java-matrix/cells.csv", numLinesToSkip = 1)
   void cellInitsChecksAndCatchesEveryViolation(
-      final ArgumentsAccessor cell, @TempDir final Path project)
+      final ArgumentsAccessor cell,
+      @TempDir final Path project
+  )
       throws IOException, InterruptedException {
     final int jdk = cell.getInteger(0);
     final String buildTool = cell.getString(1);
@@ -77,7 +79,9 @@ class JavaCompatibilityMatrixTest {
     final String preset = cell.getString(3);
     final String fixture = Objects.requireNonNullElse(cell.getString(4), "");
     Assumptions.assumeTrue(
-        String.valueOf(jdk).equals(System.getProperty(JDK_PROPERTY)), "row is for JDK " + jdk);
+        String.valueOf(jdk).equals(System.getProperty(JDK_PROPERTY)),
+        "row is for JDK " + jdk
+    );
 
     final String build = MAVEN.equals(buildTool) ? MAVEN : "gradle-" + dsl;
     JavaMatrixFixtures.copyFixture(project, jdk, build, fixture);
@@ -88,23 +92,15 @@ class JavaCompatibilityMatrixTest {
     assertDetectedJdk(project, jdk);
     final Set<String> configured = configuredGates(project);
     assertOmissionsExplained(preset, configured, init.stdout());
-    JavaMatrixProcesses.git(project, "add", "-A");
-    JavaMatrixProcesses.git(
-        project,
-        "-c",
-        "user.name=ward",
-        "-c",
-        "user.email=ward@example.invalid",
-        "commit",
-        "-qm",
-        "init");
+    JavaMatrixProcesses.commitAll(project);
 
     final String cleanReport = report(project);
     final Map<String, String> clean = statuses(cleanReport);
     assertThat(clean.keySet()).as("checked gates").containsExactlyInAnyOrderElementsOf(configured);
     clean.forEach(
         (gate, status) ->
-            assertThat(status).as("clean gate %s\n%s", gate, cleanReport).isEqualTo(PASSED));
+            assertThat(status).as("clean gate %s\n%s", gate, cleanReport).isEqualTo(PASSED)
+    );
 
     seed(project, buildTool, fixture);
     final Map<String, String> seeded = statuses(report(project));
@@ -113,12 +109,15 @@ class JavaCompatibilityMatrixTest {
             gate ->
                 assertThat(seeded.get(gate))
                     .as("gate that runs nothing is caught: %s", gate)
-                    .isEqualTo(FAILED));
+                    .isEqualTo(FAILED)
+        );
 
     JavaMatrixProcesses.git(project, "checkout", "-q", ".");
     JavaMatrixProcesses.git(project, "clean", "-qfd");
     JavaMatrixProcesses.copyTree(
-        JavaMatrixFixtures.VIOLATIONS.resolve(JavaMatrixFixtures.compileError(fixture)), project);
+        JavaMatrixFixtures.VIOLATIONS.resolve(JavaMatrixFixtures.compileError(fixture)),
+        project
+    );
     assertThat(statuses(report(project)).get("compile"))
         .as("compile with a compile error")
         .isEqualTo(FAILED);
@@ -133,7 +132,8 @@ class JavaCompatibilityMatrixTest {
     JavaMatrixProcesses.git(project, "clean", "-qfd");
     JavaMatrixProcesses.copyTree(
         JavaMatrixFixtures.VIOLATIONS.resolve(JavaMatrixFixtures.coverageViolation(fixture)),
-        project);
+        project
+    );
     final String untested = report(project);
     assertThat(statuses(untested).get("coverage"))
         .as("coverage with an untested class\n%s", untested)
@@ -179,7 +179,10 @@ class JavaCompatibilityMatrixTest {
 
   /** Every preset gate init left out of {@code ward.toml} must be named with the JDK it needs. */
   private static void assertOmissionsExplained(
-      final String preset, final Set<String> configured, final String output) {
+      final String preset,
+      final Set<String> configured,
+      final String output
+  ) {
     final List<String> expected = new ArrayList<>(STANDARD);
     if (STRICT.equals(preset)) {
       expected.addAll(STRICT_EXTRAS);
@@ -190,7 +193,8 @@ class JavaCompatibilityMatrixTest {
             gate ->
                 assertThat(output)
                     .as("unexplained missing gate: %s", gate)
-                    .containsPattern(Pattern.quote(gate + " omitted: ") + ".*needs JDK \\d+\\+"));
+                    .containsPattern(Pattern.quote(gate + " omitted: ") + ".*needs JDK \\d+\\+")
+        );
   }
 
   private static Set<String> configuredGates(final Path project) throws IOException {
@@ -207,7 +211,8 @@ class JavaCompatibilityMatrixTest {
     return LayerPorts.layerFiles(
         new Project(project, Language.JAVA, BuildTool.MAVEN, Framework.NONE),
         "layered",
-        new ProjectDependencyAdapters(List.of(new JvmDependencyAdapters())));
+        new ProjectDependencyAdapters(List.of(new JvmDependencyAdapters()))
+    );
   }
 
   private static String report(final Path project) throws IOException, InterruptedException {

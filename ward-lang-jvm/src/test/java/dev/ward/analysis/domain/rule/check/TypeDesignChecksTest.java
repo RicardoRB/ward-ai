@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 /** The type-level and member-level design checks that are not class or interface shapes. */
 class TypeDesignChecksTest extends DesignInterfaceTrees {
-
   private static final String MESSAGE = "{value}";
   private static final String PUBLIC = "public";
   private static final String PRIVATE = "private";
@@ -31,8 +30,9 @@ class TypeDesignChecksTest extends DesignInterfaceTrees {
   @Test
   void oneTopLevelClassReportsEveryTypeAfterTheFirst() {
     assertThat(
-            new OneTopLevelClassCheck(MESSAGE)
-                .matches(root(classNode("First"), classNode("Second"))))
+        new OneTopLevelClassCheck(MESSAGE)
+            .matches(root(classNode("First"), classNode("Second")))
+    )
         .hasSize(1);
     assertThat(new OneTopLevelClassCheck(MESSAGE).matches(root(classNode("Only")))).isEmpty();
   }
@@ -52,7 +52,8 @@ class TypeDesignChecksTest extends DesignInterfaceTrees {
             "Service",
             member(List.of(), throwing("many", THROWN)),
             member(List.of(), throwing("few", MAX_THROWS)),
-            member(List.of(mod(PRIVATE)), throwing("hidden", THROWN)));
+            member(List.of(mod(PRIVATE)), throwing("hidden", THROWN))
+        );
     final SyntaxNode unit = root(service);
     assertThat(new ThrowsCountCheck(MAX_THROWS, true, MESSAGE).matches(unit)).hasSize(1);
     assertThat(new ThrowsCountCheck(MAX_THROWS, false, MESSAGE).matches(unit)).hasSize(TWO);
@@ -69,7 +70,8 @@ class TypeDesignChecksTest extends DesignInterfaceTrees {
             member(List.of(), field(INT, "e")),
             member(List.of(mod(PUBLIC), mod(STATIC), mod(FINAL)), field(INT, "K")),
             member(List.of(mod("@Inject"), mod(PUBLIC)), field(INT, "h")),
-            member(List.of(mod(PUBLIC)), field(INT, "ID")));
+            member(List.of(mod(PUBLIC)), field(INT, "ID"))
+        );
     final VisibilityModifierCheck strict =
         new VisibilityModifierCheck(visibility(false, false, false, false, Set.of()), MESSAGE);
     assertThat(strict.matches(root(holder))).hasSize(STRICT_FINDINGS);
@@ -82,7 +84,8 @@ class TypeDesignChecksTest extends DesignInterfaceTrees {
             member(List.of(mod(PUBLIC)), field(STRING, "s")),
             member(List.of(mod(PUBLIC)), field(STRING + "[]", "arr")),
             member(List.of(mod(PROTECTED)), field(INT, "d")),
-            member(List.of(), field(INT, "e")));
+            member(List.of(), field(INT, "e"))
+        );
     assertThat(relaxed.matches(root(relaxedHolder))).hasSize(1);
   }
 
@@ -104,7 +107,8 @@ class TypeDesignChecksTest extends DesignInterfaceTrees {
             member(List.of(mod(FINAL)), methodWithBody("fixed")),
             member(List.of(mod(ABSTRACT)), method("abs")),
             member(List.of(mod(PUBLIC)), emptyMethod("nothing")),
-            member(List.of(mod("@Override"), mod(PUBLIC)), methodWithBody("ignored")));
+            member(List.of(mod("@Override"), mod(PUBLIC)), methodWithBody("ignored"))
+        );
     assertThat(check.matches(root(hooks))).hasSize(2);
     final SyntaxNode hidden =
         classNode("Hidden", member(List.of(mod(PUBLIC)), methodWithBody("run")));
@@ -113,14 +117,17 @@ class TypeDesignChecksTest extends DesignInterfaceTrees {
         classNode(
             List.of(mod(PUBLIC), mod(FINAL)),
             "Closed",
-            member(List.of(mod(PUBLIC)), methodWithBody("run")));
+            member(List.of(mod(PUBLIC)), methodWithBody("run"))
+        );
     assertThat(check.matches(root(closed))).isEmpty();
     final SyntaxNode shell =
         classNode(
             "Shell",
             member(
                 List.of(mod(PUBLIC)),
-                classDecl("Inner", member(List.of(mod(PUBLIC)), methodWithBody("run")))));
+                classDecl("Inner", member(List.of(mod(PUBLIC)), methodWithBody("run")))
+            )
+        );
     assertThat(check.matches(root(shell))).isEmpty();
   }
 
@@ -136,7 +143,8 @@ class TypeDesignChecksTest extends DesignInterfaceTrees {
       final boolean immutable,
       final boolean packageAllowed,
       final boolean protectedAllowed,
-      final Set<String> immutableTypes) {
+      final Set<String> immutableTypes
+  ) {
     return new FieldVisibility(
         finalFields,
         immutable,
@@ -144,6 +152,7 @@ class TypeDesignChecksTest extends DesignInterfaceTrees {
         protectedAllowed,
         Pattern.compile(ID_PATTERN),
         Set.of("Inject"),
-        immutableTypes);
+        immutableTypes
+    );
   }
 }

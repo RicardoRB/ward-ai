@@ -21,11 +21,18 @@ final class JavaMethodReader {
 
   /** The parameters of a method: their variables and types, and whether the last is variadic. */
   private record Parameters(
-      List<SourceModel.Variable> variables, List<JType> types, boolean varargs, boolean resolved) {}
+      List<SourceModel.Variable> variables,
+      List<JType> types,
+      boolean varargs,
+      boolean resolved
+  ) {}
 
   /** Reads the method declared by {@code entry}, empty when it is not one. */
   static Optional<SourceModel.Member> method(
-      final JavaClassReader.Entry entry, final TypeScope scope, final boolean inInterface) {
+      final JavaClassReader.Entry entry,
+      final TypeScope scope,
+      final boolean inInterface
+  ) {
     return unwrap(entry.declaration()).map(core -> member(entry, core, scope, inInterface));
   }
 
@@ -54,7 +61,8 @@ final class JavaMethodReader {
       final List<SyntaxNode> modifiers,
       final boolean inInterface,
       final boolean declaredBody,
-      final boolean varargs) {
+      final boolean varargs
+  ) {
     int flags = JavaModifiers.flags(modifiers);
     if (inInterface && !Flags.has(flags, Flags.PRIVATE)) {
       flags |= Flags.PUBLIC;
@@ -69,7 +77,8 @@ final class JavaMethodReader {
       final JavaClassReader.Entry entry,
       final SyntaxNode core,
       final TypeScope scope,
-      final boolean inInterface) {
+      final boolean inInterface
+  ) {
     final SyntaxNode node = entry.declaration();
     final List<TypeParameter> typeParameters =
         node.kind().startsWith(GENERIC) ? JavaTypeParameters.of(node, scope) : List.of();
@@ -94,7 +103,7 @@ final class JavaMethodReader {
             .flatMap(list -> Syntax.children(list, "qualifiedName").stream())
             .map(name -> inner.resolve(List.of(Syntax.text(name).split("\\."))))
             .flatMap(Optional::stream)
-            .map(name -> (JType) JType.ClassType.of(name))
+            .map(name -> (JType)JType.ClassType.of(name))
             .toList();
     final String name =
         constructor
@@ -114,10 +123,19 @@ final class JavaMethodReader {
                     JavaModifiers.annotations(modifiers, inner),
                     List.of(),
                     List.of(),
-                    AnnotationSourceValues.of(modifiers, inner)))
+                    AnnotationSourceValues.of(modifiers, inner)
+                )
+            )
             : Optional.empty();
     return new SourceModel.Member(
-        core, entry.outer(), inner, method, List.of(), parameters.variables(), body);
+        core,
+        entry.outer(),
+        inner,
+        method,
+        List.of(),
+        parameters.variables(),
+        body
+    );
   }
 
   private static Optional<SyntaxNode> unwrap(final SyntaxNode node) {
@@ -141,7 +159,8 @@ final class JavaMethodReader {
               found.addAll(Syntax.children(list, "formalParameter"));
               Syntax.children(list, "formalParameterList")
                   .forEach(more -> found.addAll(Syntax.children(more, "formalParameter")));
-            });
+            }
+        );
     return found;
   }
 }

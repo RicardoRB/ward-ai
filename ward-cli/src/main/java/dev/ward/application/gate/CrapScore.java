@@ -6,7 +6,6 @@ import java.util.OptionalDouble;
 
 /** One function's CRAP score and the numbers it comes from. */
 record CrapScore(int complexity, OptionalDouble coverage, double score) {
-
   private static final int DECIMALS = 1;
   private static final double PERCENT = 100;
 
@@ -19,7 +18,8 @@ record CrapScore(int complexity, OptionalDouble coverage, double score) {
     return new CrapScore(
         complexity,
         coverage,
-        complexity * complexity * uncovered * uncovered * uncovered + complexity);
+        complexity * complexity * uncovered * uncovered * uncovered + complexity
+    );
   }
 
   /** Returns the score for display: one decimal, without a trailing zero. */

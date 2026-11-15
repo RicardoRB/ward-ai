@@ -10,7 +10,6 @@ import java.util.Set;
 
 /** Handles closures and the accessors of computed properties. */
 final class SwiftScopeClosures {
-
   private static final String STATEMENT = "statement";
 
   private static final Set<String> ACCESSORS = Set.of("get", "set", "willSet", "didSet");
@@ -72,7 +71,11 @@ final class SwiftScopeClosures {
     if (!"get".equals(name)) {
       if (explicit == null) {
         walk.builder.declare(
-            implicit, BindingKind.PARAMETER, statement.span(), EnumSet.noneOf(BindingFlag.class));
+            implicit,
+            BindingKind.PARAMETER,
+            statement.span(),
+            EnumSet.noneOf(BindingFlag.class)
+        );
       } else {
         walk.declare(explicit, BindingKind.PARAMETER, false, false);
       }
@@ -89,7 +92,11 @@ final class SwiftScopeClosures {
     final SyntaxNode named = SwiftScopeWalk.child(node, "setter_name");
     if (named == null) {
       walk.builder.declare(
-          implicit, BindingKind.PARAMETER, node.span(), EnumSet.noneOf(BindingFlag.class));
+          implicit,
+          BindingKind.PARAMETER,
+          node.span(),
+          EnumSet.noneOf(BindingFlag.class)
+      );
     } else {
       walk.declare(SwiftScopeWalk.child(named, IDENTIFIER), BindingKind.PARAMETER, false, false);
     }

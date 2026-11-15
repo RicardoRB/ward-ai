@@ -38,7 +38,11 @@ class NodeInitFilesTest {
 
     assertThat(body)
         .contains(
-            "uses: actions/setup-node@v5", "node-version: \"22\"", "cache: npm", "run: npm ci")
+            "uses: actions/setup-node@v5",
+            "node-version: \"22\"",
+            "cache: npm",
+            "run: npm ci"
+        )
         .doesNotContain("setup-java", "pnpm/action-setup");
   }
 
@@ -51,10 +55,9 @@ class NodeInitFilesTest {
   }
 
   @ParameterizedTest
-  @CsvSource({
-    "yarn@4.5.0, yarn install --immutable",
-    "yarn@1.22.22, yarn install --frozen-lockfile"
-  })
+  @CsvSource(
+      {"yarn@4.5.0, yarn install --immutable", "yarn@1.22.22, yarn install --frozen-lockfile"}
+  )
   void yarnInstallDependsOnItsVersion(final String packageManager, final String install) {
     assertThat(workflow(BuildTool.YARN, "24", packageManager)).contains("run: " + install);
   }
@@ -70,14 +73,19 @@ class NodeInitFilesTest {
   void typeScriptAgentRulesNameWardRulesTheNodeToolsAndNoJavaTool() {
     final List<InitGateOption> gates =
         new InitGeneralCatalog(
-                InitInputs.withoutManifests(new dev.ward.domain.FakeEnvironmentInspection("npm")))
+            InitInputs.withoutManifests(new dev.ward.domain.FakeEnvironmentInspection("npm"))
+        )
             .gates(project(BuildTool.NPM, "24"), null).stream()
-                .filter(gate -> Set.of("tsc", "vitest", "coverage").contains(gate.id()))
-                .toList();
+            .filter(gate -> Set.of("tsc", "vitest", "coverage").contains(gate.id()))
+            .toList();
 
     final String body =
         AgentRulesTemplate.render(
-                project(BuildTool.NPM, "24"), gates, QualityPreset.STANDARD, List.of())
+            project(BuildTool.NPM, "24"),
+            gates,
+            QualityPreset.STANDARD,
+            List.of()
+        )
             .body();
 
     assertThat(body)
@@ -85,7 +93,8 @@ class NodeInitFilesTest {
             "ward-rules.toml",
             "`npx tsc --noEmit --pretty false`",
             "Tests (Vitest)",
-            "at least 70% line coverage")
+            "at least 70% line coverage"
+        )
         .doesNotContain("ESLint", "Biome", "Checkstyle", "PMD", "JaCoCo", "SpotBugs");
   }
 
@@ -97,13 +106,20 @@ class NodeInitFilesTest {
             new NodeInputs(
                 directory -> PackageManifest.EMPTY,
                 directory -> false,
-                (directory, gate) -> Optional.empty()),
+                (directory, gate) -> Optional.empty()
+            ),
             null,
             null,
-            "dev");
+            "dev"
+        );
     final List<OwnedSection> sections =
         OwnedSections.of(
-            catalog, project(BuildTool.NPM, "24"), selection(null, false), List.of(), List.of());
+            catalog,
+            project(BuildTool.NPM, "24"),
+            selection(null, false),
+            List.of(),
+            List.of()
+        );
 
     assertThat(sections)
         .singleElement()
@@ -112,23 +128,37 @@ class NodeInitFilesTest {
               assertThat(section.file()).isEqualTo(ROOT.resolve(".gitignore"));
               assertThat(section.body()).isEqualTo(".ward/reports/\n.ward/cache/\n");
               assertThat(section.wholeFile()).isFalse();
-            });
+            }
+        );
   }
 
   private static String workflow(
-      final BuildTool manager, final String node, final String packageManager) {
+      final BuildTool manager,
+      final String node,
+      final String packageManager
+  ) {
     return CiWorkflowTemplate.render(
-            "github",
-            project(manager, node),
-            List.of(new InitGateOption("tsc", "tsc", List.of("npx", "tsc"), true, "ok")),
-            "0.1.3",
-            new PackageManifest(Map.of(), null, packageManager))
+        "github",
+        project(manager, node),
+        List.of(new InitGateOption("tsc", "tsc", List.of("npx", "tsc"), true, "ok")),
+        "0.1.3",
+        new PackageManifest(Map.of(), null, packageManager)
+    )
         .body();
   }
 
   private static InitSelection selection(final String ci, final boolean agentRules) {
     return new InitSelection(
-        List.of("none"), List.of(), null, null, List.of(), false, ci, agentRules, null);
+        List.of("none"),
+        List.of(),
+        null,
+        null,
+        List.of(),
+        false,
+        ci,
+        agentRules,
+        null
+    );
   }
 
   private static Project project(final BuildTool manager, final String node) {
@@ -142,6 +172,7 @@ class NodeInitFilesTest {
         Set.of(),
         node,
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 }

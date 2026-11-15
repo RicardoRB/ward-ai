@@ -15,7 +15,6 @@ import java.util.Set;
  * opening tag, as Biome 2.5.15's {@code useFocusableInteractive} does. A dynamic role is not read.
  */
 public final class BiomeUseFocusableInteractiveCheck implements RuleCheck {
-
   private static final String ROLE = "role";
   private static final String TABINDEX = "tabIndex";
 
@@ -41,7 +40,10 @@ public final class BiomeUseFocusableInteractiveCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(JsxAttributes.OPENING, JsxAttributes.SELF_CLOSING))
         .stream()
         .map(SyntaxWalk.Visit::node)
@@ -53,7 +55,10 @@ public final class BiomeUseFocusableInteractiveCheck implements RuleCheck {
 
   private boolean reported(final SyntaxNode element, final String source) {
     return AriaElements.isNotInteractive(
-            table, JsxAttributes.elementName(element), AriaElements.Attributes.of(element))
+        table,
+        JsxAttributes.elementName(element),
+        AriaElements.Attributes.of(element)
+    )
         && attributeNamed(element, TABINDEX).isEmpty()
         && attributeNamed(element, ROLE)
             .filter(role -> JsxAttributes.rawLiteral(role, source).isPresent())

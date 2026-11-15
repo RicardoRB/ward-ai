@@ -9,7 +9,6 @@ import java.util.Set;
  * jdk.internal.ValueBased} annotation is not known here, so it is not reported.
  */
 final class ValueClasses {
-
   private static final Set<String> NAMES =
       Set.of(
           "java.lang.Boolean",
@@ -43,7 +42,8 @@ final class ValueClasses {
           "java.util.Optional",
           "java.util.OptionalDouble",
           "java.util.OptionalInt",
-          "java.util.OptionalLong");
+          "java.util.OptionalLong"
+      );
 
   private ValueClasses() {}
 

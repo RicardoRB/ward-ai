@@ -32,7 +32,8 @@ class GradleToolCompatibilityTest {
       List.of(
           GradleToolCatalog.JACOCO_ENGINE,
           GradleToolCatalog.PITEST,
-          GradleToolCatalog.PITEST_ENGINE);
+          GradleToolCatalog.PITEST_ENGINE
+      );
 
   @TempDir Path root;
 
@@ -60,7 +61,8 @@ class GradleToolCompatibilityTest {
     assertThat(configured.script()).doesNotContain("pitest {");
     assertThat(configured.change().warnings())
         .contains(
-            "mutation omitted: info.solidsoft.pitest needs JDK 8+; this project builds on JDK 7")
+            "mutation omitted: info.solidsoft.pitest needs JDK 8+; this project builds on JDK 7"
+        )
         .anyMatch(warning -> warning.startsWith("Ward supports Java 8 to 25"));
   }
 
@@ -76,7 +78,8 @@ class GradleToolCompatibilityTest {
                     .map(id -> new InitGateOption(id, id, List.of("gradle", id), true, "ok"))
                     .toList(),
                 QualityPreset.STRICT,
-                finding -> true);
+                finding -> true
+            );
     return new Configured(Files.readString(script), change);
   }
 
@@ -95,8 +98,13 @@ class GradleToolCompatibilityTest {
     return new CompatibilityProjectSnapshot(
         project,
         new ToolchainSnapshot(
-            Optional.of(jdk), Optional.empty(), Optional.of("8.14.6"), Framework.NONE),
-        Map.of());
+            Optional.of(jdk),
+            Optional.empty(),
+            Optional.of("8.14.6"),
+            Framework.NONE
+        ),
+        Map.of()
+    );
   }
 
   private record Configured(String script, BuildFileChange change) {}

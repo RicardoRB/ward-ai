@@ -42,9 +42,10 @@ class AnalysisGateTest {
   void passesWhenNoRuleReports() {
     final GateResult result =
         gate(
-                List.of(rule(LENGTH, RuleCapability.SYNTAX, AnalysisSeverity.ERROR)),
-                Map.of(LENGTH, List.of()),
-                Set.of(RuleCapability.SYNTAX))
+            List.of(rule(LENGTH, RuleCapability.SYNTAX, AnalysisSeverity.ERROR)),
+            Map.of(LENGTH, List.of()),
+            Set.of(RuleCapability.SYNTAX)
+        )
             .execute(PROJECT);
 
     assertThat(result.status()).isEqualTo(GateStatus.PASSED);
@@ -55,9 +56,10 @@ class AnalysisGateTest {
   void failsOnErrorFindingWithRuleIdAndLocation() {
     final GateResult result =
         gate(
-                List.of(rule(LENGTH, RuleCapability.SYNTAX, AnalysisSeverity.ERROR)),
-                Map.of(LENGTH, List.of(new RuleMatch(AT, "too long"))),
-                Set.of(RuleCapability.SYNTAX))
+            List.of(rule(LENGTH, RuleCapability.SYNTAX, AnalysisSeverity.ERROR)),
+            Map.of(LENGTH, List.of(new RuleMatch(AT, "too long"))),
+            Set.of(RuleCapability.SYNTAX)
+        )
             .execute(PROJECT);
 
     assertThat(result.status()).isEqualTo(GateStatus.FAILED);
@@ -73,16 +75,19 @@ class AnalysisGateTest {
                 AT.startLine(),
                 AT.startColumn(),
                 null,
-                List.of()));
+                List.of()
+            )
+        );
   }
 
   @Test
   void warningFindingDoesNotFailTheGate() {
     final GateResult result =
         gate(
-                List.of(rule(LENGTH, RuleCapability.SYNTAX, AnalysisSeverity.WARNING)),
-                Map.of(LENGTH, List.of(new RuleMatch(AT, "long"))),
-                Set.of(RuleCapability.SYNTAX))
+            List.of(rule(LENGTH, RuleCapability.SYNTAX, AnalysisSeverity.WARNING)),
+            Map.of(LENGTH, List.of(new RuleMatch(AT, "long"))),
+            Set.of(RuleCapability.SYNTAX)
+        )
             .execute(PROJECT);
 
     assertThat(result.status()).isEqualTo(GateStatus.PASSED);
@@ -93,9 +98,10 @@ class AnalysisGateTest {
   void rulesThatCannotRunAreUnavailableNotPassed() {
     final GateResult result =
         gate(
-                List.of(rule(FLOW, RuleCapability.DATAFLOW, AnalysisSeverity.ERROR)),
-                Map.of(FLOW, List.of(new RuleMatch(AT, "leak"))),
-                Set.of(RuleCapability.SYNTAX))
+            List.of(rule(FLOW, RuleCapability.DATAFLOW, AnalysisSeverity.ERROR)),
+            Map.of(FLOW, List.of(new RuleMatch(AT, "leak"))),
+            Set.of(RuleCapability.SYNTAX)
+        )
             .execute(PROJECT);
 
     assertThat(result.status()).isEqualTo(GateStatus.UNAVAILABLE);
@@ -107,10 +113,11 @@ class AnalysisGateTest {
   void parseFailureIsExecutionErrorNotFinding() {
     final GateResult result =
         gate(
-                List.of(rule(LENGTH, RuleCapability.SYNTAX, AnalysisSeverity.ERROR)),
-                Map.of(LENGTH, List.of(new RuleMatch(AT, "long"))),
-                Set.of(RuleCapability.SYNTAX),
-                "src/Broken.java")
+            List.of(rule(LENGTH, RuleCapability.SYNTAX, AnalysisSeverity.ERROR)),
+            Map.of(LENGTH, List.of(new RuleMatch(AT, "long"))),
+            Set.of(RuleCapability.SYNTAX),
+            "src/Broken.java"
+        )
             .execute(PROJECT);
 
     assertThat(result.status()).isEqualTo(GateStatus.EXECUTION_ERROR);
@@ -126,23 +133,28 @@ class AnalysisGateTest {
         gate(
             List.of(rule(LENGTH, RuleCapability.SYNTAX, AnalysisSeverity.ERROR)),
             Map.of(LENGTH, List.of(new RuleMatch(AT, "long"))),
-            Set.of(RuleCapability.SYNTAX));
+            Set.of(RuleCapability.SYNTAX)
+        );
 
     assertThat(gate.execute(PROJECT).findings()).isEqualTo(gate.execute(PROJECT).findings());
   }
 
   static AnalysisGate gate(
       final List<RuleDefinition> rules,
-      final Map<String, List<RuleMatch>> matches,
-      final Set<RuleCapability> capabilities) {
+      final Map<String,
+      List<RuleMatch>> matches,
+      final Set<RuleCapability> capabilities
+  ) {
     return gate(rules, matches, capabilities, null);
   }
 
   private static AnalysisGate gate(
       final List<RuleDefinition> rules,
-      final Map<String, List<RuleMatch>> matches,
+      final Map<String,
+      List<RuleMatch>> matches,
       final Set<RuleCapability> capabilities,
-      final String brokenPath) {
+      final String brokenPath
+  ) {
     final LanguageFrontend frontend =
         unit -> {
           if (unit.path().equals(brokenPath)) {
@@ -152,17 +164,17 @@ class AnalysisGateTest {
         };
     final RuleMatcher matcher =
         definition ->
-            new CompiledRule() {
-              @Override
-              public RuleDefinition definition() {
-                return definition;
-              }
+        new CompiledRule() {
+          @Override
+          public RuleDefinition definition() {
+            return definition;
+          }
 
-              @Override
-              public List<RuleMatch> matches(final SyntaxNode root) {
-                return matches.get(definition.id());
-              }
-            };
+          @Override
+          public List<RuleMatch> matches(final SyntaxNode root) {
+            return matches.get(definition.id());
+          }
+        };
     final AnalysisPorts ports =
         new AnalysisPorts(
             () -> new AnalysisRuleLoad(rules, List.of()),
@@ -173,12 +185,15 @@ class AnalysisGateTest {
             AnalysisCacheFixtures.codec(),
             "test",
             DependencyAdapters.none(),
-            (unused, classpath) -> Map.of());
+            (unused, classpath) -> Map.of()
+        );
     return new AnalysisGate("ward", rules, ports);
   }
 
   private static List<SourceUnit> units(
-      final String brokenPath, final Set<AnalysisLanguage> languages) {
+      final String brokenPath,
+      final Set<AnalysisLanguage> languages
+  ) {
     final List<SourceUnit> all = new ArrayList<>();
     all.add(new SourceUnit("src/A.java", AnalysisLanguage.JAVA, ""));
     if (brokenPath != null) {
@@ -188,7 +203,10 @@ class AnalysisGateTest {
   }
 
   private static RuleDefinition rule(
-      final String id, final RuleCapability capability, final AnalysisSeverity severity) {
+      final String id,
+      final RuleCapability capability,
+      final AnalysisSeverity severity
+  ) {
     return new RuleDefinition(id, AnalysisLanguage.JAVA, capability, severity, "body");
   }
 }

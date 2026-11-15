@@ -120,8 +120,7 @@ final class YamlFlow {
       }
       at = close + 1;
       return text.substring(start, at);
-    }
-    while (at < text.length() && !(isEnd(text.charAt(at)) || key && text.charAt(at) == COLON)) {
+    } while (at < text.length() && !(isEnd(text.charAt(at)) || key && text.charAt(at) == COLON)) {
       at++;
     }
     return text.substring(start, at).strip();
@@ -143,6 +142,7 @@ final class YamlFlow {
 
   private LockfileFormatException fail() {
     return new LockfileFormatException(
-        "line " + (line + 1) + " has a shape the reader does not know");
+        "line " + (line + 1) + " has a shape the reader does not know"
+    );
   }
 }

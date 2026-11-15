@@ -16,7 +16,6 @@ import javax.inject.Inject;
  * The body format is owned here, so the engine never reads it.
  */
 public final class DeclarativeRuleMatcher implements RuleMatcher {
-
   private final DeclarativeChecks checks;
 
   /** Creates the matcher over the checks of every bundled language module. */

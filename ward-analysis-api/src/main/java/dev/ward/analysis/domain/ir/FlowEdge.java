@@ -9,7 +9,6 @@ import java.util.Objects;
  * @param kind why control moves there
  */
 public record FlowEdge(int target, FlowEdgeKind kind) {
-
   /**
    * Validates the fields.
    *

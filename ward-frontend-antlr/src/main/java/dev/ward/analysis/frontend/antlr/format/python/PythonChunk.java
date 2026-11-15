@@ -23,8 +23,8 @@ record PythonChunk(
     String first,
     String second,
     boolean opensBlock,
-    Document doc) {
-
+    Document doc
+) {
   /** The kinds of chunks. */
   enum Kind {
     /** Blank lines. */
@@ -76,7 +76,8 @@ record PythonChunk(
       final String first,
       final String second,
       final boolean opensBlock,
-      final Document doc) {
+      final Document doc
+  ) {
     return new PythonChunk(Kind.CODE, 0, depth, "", first, second, opensBlock, doc);
   }
 

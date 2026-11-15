@@ -9,7 +9,6 @@ import java.util.Set;
 
 /** Builds the scopes of Java and Kotlin source for tests. */
 final class JvmScopeFixtures {
-
   private JvmScopeFixtures() {}
 
   /** Parses {@code source} as {@code language} and builds its scopes, with no built-in names. */

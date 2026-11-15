@@ -13,13 +13,10 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class NodeFileSummarizerTest {
-
   @Test
   void recordsEveryStaticImportForm() {
     final FileSummary summary =
-        summarize(
-            AnalysisLanguage.TYPESCRIPT,
-            """
+        summarize(AnalysisLanguage.TYPESCRIPT, """
             import { a as b, c } from "./x.js";
             import "./side";
             import * as ns from "../n";
@@ -33,9 +30,7 @@ class NodeFileSummarizerTest {
   @Test
   void recordsTypeOnlyImportsWithTypePrefix() {
     final FileSummary summary =
-        summarize(
-            AnalysisLanguage.TYPESCRIPT,
-            """
+        summarize(AnalysisLanguage.TYPESCRIPT, """
             import type { Order } from "./order";
             import type * as all from "./all";
             import type from "./named-type";
@@ -48,9 +43,7 @@ class NodeFileSummarizerTest {
   @Test
   void recordsRequireDynamicImportAndExportFromWithLiteralArgumentsOnly() {
     final FileSummary summary =
-        summarize(
-            AnalysisLanguage.JAVASCRIPT,
-            """
+        summarize(AnalysisLanguage.JAVASCRIPT, """
             const r = require("./r");
             const dyn = import("./dyn");
             const t = import(`./t/${name}`);
@@ -75,9 +68,7 @@ class NodeFileSummarizerTest {
   @Test
   void recordsExportedNamesOfDeclarationsListsAndStarReExports() {
     final FileSummary summary =
-        summarize(
-            AnalysisLanguage.TYPESCRIPT,
-            """
+        summarize(AnalysisLanguage.TYPESCRIPT, """
             export const g = 1;
             export async function run() {}
             export class Repo {}
@@ -95,7 +86,9 @@ class NodeFileSummarizerTest {
   void recordsCommonJsNamedExports() {
     final FileSummary summary =
         summarize(
-            AnalysisLanguage.JAVASCRIPT, "module.exports.make = () => 1;\nexports.run = 2;\n");
+            AnalysisLanguage.JAVASCRIPT,
+            "module.exports.make = () => 1;\nexports.run = 2;\n"
+        );
 
     assertThat(exportNames(summary)).containsExactly("make", "run");
   }

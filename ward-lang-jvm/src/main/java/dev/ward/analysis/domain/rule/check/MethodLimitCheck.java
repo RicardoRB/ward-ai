@@ -12,7 +12,6 @@ import java.util.Set;
  * at most one statement is not counted, as PMD's too-many-methods does.
  */
 public final class MethodLimitCheck implements UnitCheck {
-
   private static final String BLOCK = "block";
   private static final String BLOCK_STATEMENT = "blockStatement";
   private static final List<String> ACCESSOR_PREFIXES = List.of("get", "set", "is");
@@ -54,7 +53,10 @@ public final class MethodLimitCheck implements UnitCheck {
     }
     return List.of(
         CheckSupport.at(
-            clazz.span(), CheckSupport.fill(message, String.valueOf(count), String.valueOf(max))));
+            clazz.span(),
+            CheckSupport.fill(message, String.valueOf(count), String.valueOf(max))
+        )
+    );
   }
 
   private static boolean isAccessor(final SyntaxNode method) {

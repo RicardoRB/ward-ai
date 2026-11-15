@@ -19,7 +19,8 @@ public enum Sources {
   private static final Pattern TEST_PATH =
       Pattern.compile(
           "(^|/)(test|tests|__tests__|spec|Tests)/|(Test|Tests|Spec)\\.(java|kt|swift)$"
-              + "|(^|/)test_[^/]*\\.py$|_test\\.py$|\\.(test|spec)\\.[jt]sx?$");
+              + "|(^|/)test_[^/]*\\.py$|_test\\.py$|\\.(test|spec)\\.[jt]sx?$"
+      );
 
   private static final Pattern TOOL_CONFIG = Pattern.compile("(^|/)[^/]+\\.config\\.[cm]?[jt]s$");
 

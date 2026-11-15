@@ -6,7 +6,6 @@ import java.util.Optional;
 
 /** Classifies a known TypeScript type into the {@link ValueKind} the restrict-* rules use. */
 final class ValueKinds {
-
   private static final String ANY = "any";
   private static final String UNKNOWN = "unknown";
   private static final String NUMBER = "number";
@@ -25,7 +24,8 @@ final class ValueKinds {
           Map.entry(REGEXP, ValueKind.REGEXP),
           Map.entry(NUMBER, ValueKind.NUMBER),
           Map.entry(BIGINT, ValueKind.BIGINT),
-          Map.entry(STRING, ValueKind.STRING));
+          Map.entry(STRING, ValueKind.STRING)
+      );
 
   private ValueKinds() {}
 

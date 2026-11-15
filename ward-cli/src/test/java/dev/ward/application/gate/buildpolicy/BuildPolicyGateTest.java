@@ -21,7 +21,8 @@ class BuildPolicyGateTest {
               assertThat(finding.ruleId()).isEqualTo("ward:build/no-dynamic-version");
               assertThat(finding.file()).isEqualTo("pom.xml");
               assertThat(finding.line()).isEqualTo(GateFixtures.DYNAMIC_LINE);
-            });
+            }
+        );
   }
 
   /**
@@ -43,18 +44,22 @@ class BuildPolicyGateTest {
   @Test
   void strictPresetSelectsNoConvergenceAndStandardSelectsNothing() {
     assertThat(
-            GateFixtures.run(
-                    GateFixtures.model(),
-                    GateFixtures.file(GateFixtures.select("standard"), Map.of()))
-                .findings()
-                .total())
+        GateFixtures.run(
+            GateFixtures.model(),
+            GateFixtures.file(GateFixtures.select("standard"), Map.of())
+        )
+            .findings()
+            .total()
+    )
         .isZero();
     assertThat(
-            GateFixtures.run(
-                    GateFixtures.model(),
-                    GateFixtures.file(GateFixtures.select("strict"), Map.of()))
-                .findings()
-                .total())
+        GateFixtures.run(
+            GateFixtures.model(),
+            GateFixtures.file(GateFixtures.select("strict"), Map.of())
+        )
+            .findings()
+            .total()
+    )
         .isEqualTo(1);
   }
 
@@ -65,7 +70,8 @@ class BuildPolicyGateTest {
             root -> {
               throw new BuildFileException("pom.xml", "the file is not well-formed XML");
             },
-            null);
+            null
+        );
     assertThat(result.status()).isEqualTo(GateStatus.EXECUTION_ERROR);
     assertThat(result.stderr()).contains("pom.xml");
   }

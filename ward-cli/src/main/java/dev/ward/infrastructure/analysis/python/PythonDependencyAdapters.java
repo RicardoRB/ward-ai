@@ -12,7 +12,6 @@ import java.util.List;
 
 /** Builds the Python dependency adapters of a run from the project's uv, Poetry or src layout. */
 public final class PythonDependencyAdapters implements DependencyAdapters {
-
   @Override
   public List<DependencySupport> forProject(final Path projectRoot, final List<SourceUnit> units) {
     if (units.stream().noneMatch(unit -> unit.language() == AnalysisLanguage.PYTHON)) {
@@ -23,6 +22,8 @@ public final class PythonDependencyAdapters implements DependencyAdapters {
         new DependencySupport(
             AnalysisLanguage.PYTHON,
             new PythonFileSummarizer(),
-            new PythonDependencyResolver(layout)));
+            new PythonDependencyResolver(layout)
+        )
+    );
   }
 }

@@ -22,7 +22,6 @@ import java.util.Set;
  * reads the key class from the type facts and reports nothing when they are unknown.
  */
 public final class UnhashableKeyCheck implements RuleCheck {
-
   /** Where the hashed collection appears. */
   public enum Use {
     /** A {@code new HashSet<Key>()} or similar creation. */
@@ -44,7 +43,8 @@ public final class UnhashableKeyCheck implements RuleCheck {
           "LinkedHashSet",
           "LinkedHashMap",
           "WeakHashMap",
-          "ConcurrentHashMap");
+          "ConcurrentHashMap"
+      );
   private static final Set<String> SIGNATURE_TYPES =
       Set.of("HashSet", "HashMap", "Hashtable", "LinkedHashSet", "LinkedHashMap", "Set", "Map");
   private static final Set<String> SIGNATURE_PARENTS =
@@ -82,7 +82,8 @@ public final class UnhashableKeyCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     walk(root, null, types, matches);
     return List.copyOf(matches);
@@ -92,7 +93,8 @@ public final class UnhashableKeyCheck implements RuleCheck {
       final SyntaxNode node,
       final SyntaxNode parent,
       final UnitTypeFacts types,
-      final List<RuleMatch> out) {
+      final List<RuleMatch> out
+  ) {
     final Optional<SyntaxNode> collection = collection(node, parent);
     collection
         .flatMap(UnhashableKeyCheck::keyType)
@@ -135,12 +137,14 @@ public final class UnhashableKeyCheck implements RuleCheck {
             arguments ->
                 arguments.children().stream()
                     .filter(child -> TYPE_ARGUMENT.equals(child.kind()))
-                    .findFirst())
+                    .findFirst()
+        )
         .flatMap(
             argument ->
                 argument.children().stream()
                     .filter(child -> TYPE_TYPE.equals(child.kind()))
-                    .findFirst());
+                    .findFirst()
+        );
   }
 
   /** Returns whether the type has its own equals(Object) but no hashCode() besides Object's. */

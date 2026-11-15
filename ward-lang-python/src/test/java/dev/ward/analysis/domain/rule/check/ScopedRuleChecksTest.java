@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Test;
 
 /** The checks that read the lexical scopes, on hand-made scopes, bindings and references. */
 final class ScopedRuleChecksTest {
-
   private static final SourceUnit UNIT = new SourceUnit("m.py", AnalysisLanguage.PYTHON, "");
   private static final Span TARGET = Nodes.at(10, 1);
   private static final Span BOUND = Nodes.at(10, 1);
@@ -34,10 +33,12 @@ final class ScopedRuleChecksTest {
     final NameReference read = ScopeFixtures.reference("x", true, FUNCTION, ReferenceAccess.READ);
 
     assertThat(
-            run(
-                new UnboundLocalCheck("local '{value}' used early"),
-                ScopeFixtures.functionScopes(local, read),
-                Nodes.leaf("")))
+        run(
+            new UnboundLocalCheck("local '{value}' used early"),
+            ScopeFixtures.functionScopes(local, read),
+            Nodes.leaf("")
+        )
+    )
         .extracting(RuleMatch::message)
         .containsExactly("local 'x' used early");
   }
@@ -47,25 +48,37 @@ final class ScopedRuleChecksTest {
     final Binding local = ScopeFixtures.binding("x", BindingKind.VARIABLE, BOUND, FUNCTION);
 
     assertThat(
-            run(
-                new UnboundLocalCheck("m"),
-                ScopeFixtures.functionScopes(
-                    local, ScopeFixtures.reference("x", false, FUNCTION, ReferenceAccess.READ)),
-                Nodes.leaf("")))
+        run(
+            new UnboundLocalCheck("m"),
+            ScopeFixtures.functionScopes(
+                local,
+                ScopeFixtures.reference("x", false, FUNCTION, ReferenceAccess.READ)
+            ),
+            Nodes.leaf("")
+        )
+    )
         .isEmpty();
     assertThat(
-            run(
-                new UnboundLocalCheck("m"),
-                ScopeFixtures.functionScopes(
-                    local, ScopeFixtures.reference("x", true, MODULE, ReferenceAccess.READ)),
-                Nodes.leaf("")))
+        run(
+            new UnboundLocalCheck("m"),
+            ScopeFixtures.functionScopes(
+                local,
+                ScopeFixtures.reference("x", true, MODULE, ReferenceAccess.READ)
+            ),
+            Nodes.leaf("")
+        )
+    )
         .isEmpty();
     assertThat(
-            run(
-                new UnboundLocalCheck("m"),
-                ScopeFixtures.functionScopes(
-                    local, ScopeFixtures.reference("x", true, FUNCTION, ReferenceAccess.WRITE)),
-                Nodes.leaf("")))
+        run(
+            new UnboundLocalCheck("m"),
+            ScopeFixtures.functionScopes(
+                local,
+                ScopeFixtures.reference("x", true, FUNCTION, ReferenceAccess.WRITE)
+            ),
+            Nodes.leaf("")
+        )
+    )
         .isEmpty();
   }
 
@@ -75,10 +88,12 @@ final class ScopedRuleChecksTest {
     final NameReference inside = ScopeFixtures.resolvedReference("i", FUNCTION, loopVar);
 
     assertThat(
-            run(
-                new LoopClosureCheck("bound '{value}' late"),
-                ScopeFixtures.loopScopes(loopVar, inside),
-                forLoop()))
+        run(
+            new LoopClosureCheck("bound '{value}' late"),
+            ScopeFixtures.loopScopes(loopVar, inside),
+            forLoop()
+        )
+    )
         .extracting(RuleMatch::message)
         .containsExactly("bound 'i' late");
   }
@@ -88,21 +103,27 @@ final class ScopedRuleChecksTest {
     final Binding loopVar = ScopeFixtures.binding("i", BindingKind.VARIABLE, BOUND, MODULE);
 
     assertThat(
-            run(
-                new LoopClosureCheck("m"),
-                ScopeFixtures.loopScopes(
-                    loopVar, ScopeFixtures.resolvedReference("i", MODULE, loopVar)),
-                forLoop()))
+        run(
+            new LoopClosureCheck("m"),
+            ScopeFixtures.loopScopes(
+                loopVar,
+                ScopeFixtures.resolvedReference("i", MODULE, loopVar)
+            ),
+            forLoop()
+        )
+    )
         .isEmpty();
   }
 
   @Test
   void undefinedExportReportsAnExportThatTheModuleDoesNotBind() {
     assertThat(
-            run(
-                new UndefinedExportCheck("'{value}' not defined"),
-                ScopeFixtures.moduleScopes(false),
-                exportStatement("\"missing\"")))
+        run(
+            new UndefinedExportCheck("'{value}' not defined"),
+            ScopeFixtures.moduleScopes(false),
+            exportStatement("\"missing\"")
+        )
+    )
         .extracting(RuleMatch::message)
         .containsExactly("'missing' not defined");
   }
@@ -112,23 +133,34 @@ final class ScopedRuleChecksTest {
     final Binding os = ScopeFixtures.binding("os", BindingKind.IMPORT, BOUND, MODULE);
 
     assertThat(
-            run(
-                new UndefinedExportCheck("m"),
-                ScopeFixtures.moduleScopes(false, os),
-                exportStatement("\"os\"")))
+        run(
+            new UndefinedExportCheck("m"),
+            ScopeFixtures.moduleScopes(false, os),
+            exportStatement("\"os\"")
+        )
+    )
         .isEmpty();
     assertThat(
-            run(
-                new UndefinedExportCheck("m"),
-                ScopeFixtures.moduleScopes(true),
-                exportStatement("\"x\"")))
+        run(
+            new UndefinedExportCheck("m"),
+            ScopeFixtures.moduleScopes(true),
+            exportStatement("\"x\"")
+        )
+    )
         .isEmpty();
   }
 
   private static List<RuleMatch> run(
-      final RuleCheck check, final UnitScopes scopes, final SyntaxNode root) {
+      final RuleCheck check,
+      final UnitScopes scopes,
+      final SyntaxNode root
+  ) {
     return check.matches(
-        root, null, new ScopeView(scopes, Map.of(), Set.of(), NoScopes.INSTANCE), UNIT);
+        root,
+        null,
+        new ScopeView(scopes, Map.of(), Set.of(), NoScopes.INSTANCE),
+        UNIT
+    );
   }
 
   /** {@code for i in items: ...}, with the target at {@link #TARGET}. */
@@ -141,7 +173,8 @@ final class ScopedRuleChecksTest {
         target,
         Nodes.leaf("in"),
         Nodes.leaf("items"),
-        Nodes.leaf(":"));
+        Nodes.leaf(":")
+    );
   }
 
   /** {@code __all__ = [<string>]} at the module level. */
@@ -155,6 +188,9 @@ final class ScopedRuleChecksTest {
                 Nodes.leaf("="),
                 Nodes.leaf("["),
                 Nodes.leaf(string),
-                Nodes.leaf("]"))));
+                Nodes.leaf("]")
+            )
+        )
+    );
   }
 }

@@ -11,7 +11,6 @@ package dev.ward.analysis.domain.types;
  *     when it is unknown
  */
 public record TypeComponent(TypeRef type, TypeShape shape, TypeMembers members) {
-
   /** The component that could not be read. */
   public static final TypeComponent UNKNOWN = new TypeComponent(null, null, null);
 

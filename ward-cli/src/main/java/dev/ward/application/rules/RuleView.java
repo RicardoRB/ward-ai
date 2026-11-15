@@ -18,8 +18,8 @@ public record RuleView(
     String category,
     List<String> presets,
     String description,
-    List<OptionView> options) {
-
+    List<OptionView> options
+) {
   /** Copies the lists. */
   public RuleView {
     languages = List.copyOf(languages);
@@ -38,8 +38,13 @@ public record RuleView(
    * @param values the allowed texts of an enum, empty for other types
    */
   public record OptionView(
-      String name, String type, Object defaultValue, Long min, Long max, List<String> values) {
-
+      String name,
+      String type,
+      Object defaultValue,
+      Long min,
+      Long max,
+      List<String> values
+  ) {
     /** Copies the values. */
     public OptionView {
       values = List.copyOf(values);

@@ -95,7 +95,8 @@ public final class FinalParametersCheck implements UnitCheck {
   private static boolean assigned(final String name, final SyntaxNode owner) {
     final Pattern assignment =
         Pattern.compile(
-            String.format(ASSIGNMENT_TEMPLATE, Pattern.quote(name), Pattern.quote(name)));
+            String.format(ASSIGNMENT_TEMPLATE, Pattern.quote(name), Pattern.quote(name))
+        );
     return SyntaxWalk.descendants(owner).stream()
         .filter(node -> "expression".equals(node.kind()))
         .anyMatch(node -> assignment.matcher(SyntaxWalk.text(node)).find());

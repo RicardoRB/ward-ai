@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 
 /** The option values a formatter receives: its declared defaults, overridden by .editorconfig. */
 class EditorConfigOptionMappingTest extends EditorConfigTestSupport {
-
   private static final int CUSTOM_WIDTH = 80;
   private static final int CUSTOM_INDENT = 3;
   private static final int TAB_WIDTH = 6;
@@ -32,7 +31,8 @@ class EditorConfigOptionMappingTest extends EditorConfigTestSupport {
         resolve(
             JAVA_FILE,
             AnalysisLanguage.JAVA,
-            List.of(width, INDENT_STYLE_OPTION, MAX_BLANK_LINES_OPTION, indent));
+            List.of(width, INDENT_STYLE_OPTION, MAX_BLANK_LINES_OPTION, indent)
+        );
     assertThat(settings.layout().maxLineLength()).isEqualTo(OptionalInt.of(CUSTOM_WIDTH));
     assertThat(settings.layout().indentSize()).isEqualTo(CUSTOM_INDENT);
     assertThat(settings.options().get("line-width")).isEqualTo(String.valueOf(CUSTOM_WIDTH));

@@ -31,12 +31,14 @@ class UpdateNoticePrinterTest {
               lookups.incrementAndGet();
               return notice;
             },
-            () -> console);
+            () -> console
+        );
     final CommandLine cli = new CommandLine(commands());
     cli.setOut(new PrintWriter(out, true));
     cli.setErr(new PrintWriter(err, true));
     cli.setExecutionStrategy(
-        new VerboseExecutionStrategy(printer.around(new CommandLine.RunLast())));
+        new VerboseExecutionStrategy(printer.around(new CommandLine.RunLast()))
+    );
     return cli.execute(args);
   }
 
@@ -49,17 +51,19 @@ class UpdateNoticePrinterTest {
                 () -> {
                   out.write("report" + System.lineSeparator());
                   return Boolean.TRUE.equals(check.get().findOption(FAIL).getValue()) ? FAILED : 0;
-                }));
+                }
+        )
+    );
     check.get().mixinStandardHelpOptions(true);
     check.get().addOption(OptionSpec.builder("--format").type(String.class).build());
     check.get().addOption(OptionSpec.builder(FAIL).type(boolean.class).build());
     final CommandSpec root =
-        CommandSpec.wrapWithoutInspection((Callable<Integer>) () -> 0)
+        CommandSpec.wrapWithoutInspection((Callable<Integer>)() -> 0)
             .name("ward")
             .version("0.3.1")
             .mixinStandardHelpOptions(true);
     root.addSubcommand(CHECK, check.get());
-    root.addSubcommand("hook", CommandSpec.wrapWithoutInspection((Callable<Integer>) () -> 0));
+    root.addSubcommand("hook", CommandSpec.wrapWithoutInspection((Callable<Integer>)() -> 0));
     return root;
   }
 

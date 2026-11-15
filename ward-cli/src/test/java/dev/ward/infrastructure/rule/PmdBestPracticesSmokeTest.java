@@ -25,7 +25,6 @@ import org.junit.jupiter.api.Test;
  * and belongs in the pull request with its reason.
  */
 class PmdBestPracticesSmokeTest {
-
   private static final String BINARY_PROPERTY = "ward.pmd.binary";
   private static final String RULESET_PREFIX = "category/java/bestpractices.xml/";
   private static final int NO_VIOLATIONS = 0;
@@ -45,10 +44,13 @@ class PmdBestPracticesSmokeTest {
           Map.entry("constants-in-interface", "ConstantsInInterface"),
           Map.entry("for-loop-variable-count", "ForLoopVariableCount"),
           Map.entry(
-              "j-unit4-suites-should-use-suite-annotation", "JUnit4SuitesShouldUseSuiteAnnotation"),
+              "j-unit4-suites-should-use-suite-annotation",
+              "JUnit4SuitesShouldUseSuiteAnnotation"
+          ),
           Map.entry(
               "j-unit-jupiter-test-should-be-package-private",
-              "JUnitJupiterTestShouldBePackagePrivate"),
+              "JUnitJupiterTestShouldBePackagePrivate"
+          ),
           Map.entry("j-unit-use-expected", "JUnitUseExpected"),
           Map.entry("labeled-statement", "LabeledStatement"),
           Map.entry("literals-first-in-comparisons", "LiteralsFirstInComparisons"),
@@ -62,13 +64,15 @@ class PmdBestPracticesSmokeTest {
           Map.entry("system-println", "SystemPrintln"),
           Map.entry(
               "unit-test-assertions-should-include-message",
-              "UnitTestAssertionsShouldIncludeMessage"),
+              "UnitTestAssertionsShouldIncludeMessage"
+          ),
           Map.entry("unnecessary-varargs-array-creation", "UnnecessaryVarargsArrayCreation"),
           Map.entry("use-collection-is-empty", "UseCollectionIsEmpty"),
           Map.entry("use-standard-charsets", "UseStandardCharsets"),
           Map.entry("use-try-with-resources", "UseTryWithResources"),
           Map.entry("use-varargs", "UseVarargs"),
-          Map.entry("while-loop-with-literal-boolean", "WhileLoopWithLiteralBoolean"));
+          Map.entry("while-loop-with-literal-boolean", "WhileLoopWithLiteralBoolean")
+      );
 
   @Test
   void aRealPmdReportsTheFixtureLines()
@@ -102,18 +106,22 @@ class PmdBestPracticesSmokeTest {
 
   /** Returns the line numbers PMD reports for the violating fixture under one rule. */
   private static Set<String> reportedLines(
-      final String binary, final Path directory, final String pmdRule)
+      final String binary,
+      final Path directory,
+      final String pmdRule
+  )
       throws IOException, InterruptedException {
     final Process process =
         new ProcessBuilder(
-                binary,
-                "check",
-                "--dir",
-                directory.toString(),
-                "--rulesets",
-                RULESET_PREFIX + pmdRule,
-                "--format",
-                "csv")
+            binary,
+            "check",
+            "--dir",
+            directory.toString(),
+            "--rulesets",
+            RULESET_PREFIX + pmdRule,
+            "--format",
+            "csv"
+        )
             .redirectError(ProcessBuilder.Redirect.DISCARD)
             .start();
     final String output =

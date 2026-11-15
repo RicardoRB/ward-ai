@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** The outer type filename check and the block comment asterisk check. */
 class OuterTypeFilenameCheckTest extends TreeBuilders {
-
   private static final SourceFile FOO = new SourceFile("src/Foo.java", "");
 
   @Test

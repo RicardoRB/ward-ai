@@ -13,7 +13,6 @@ import java.util.Set;
  * element counts as content.
  */
 public final class BiomeJsxEmptyElementCheck implements RuleCheck {
-
   private static final String ELEMENT = "jsxElement";
   private static final String OPENING = JsxAttributes.OPENING;
   private static final String SELF_CLOSING = JsxAttributes.SELF_CLOSING;
@@ -31,7 +30,10 @@ public final class BiomeJsxEmptyElementCheck implements RuleCheck {
    * @param message the message of each finding
    */
   public BiomeJsxEmptyElementCheck(
-      final Set<String> elements, final Set<String> exempt, final String message) {
+      final Set<String> elements,
+      final Set<String> exempt,
+      final String message
+  ) {
     this.elements = elements.stream().map(JsxElementSpec::parse).toList();
     this.exempt = Set.copyOf(exempt);
     this.message = Objects.requireNonNull(message, "message");

@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the ktlint checks about comments, the file and its name over real Kotlin sources. */
 class KotlinLayoutChecksTest {
-
   private static final String MESSAGE = "m";
   private static final int DANGLING_LINE = 3;
 
@@ -22,19 +21,24 @@ class KotlinLayoutChecksTest {
 
     assertThat(lines(check.matches(KotlinSourceTrees.parse("/** Doc. */\nclass A\n")))).isEmpty();
     assertThat(
-            lines(
-                check.matches(
-                    KotlinSourceTrees.parse("class A {\n    /** Doc. */\n    val x = 1\n}\n"))))
+        lines(
+            check.matches(KotlinSourceTrees.parse("class A {\n    /** Doc. */\n    val x = 1\n}\n"))
+        )
+    )
         .isEmpty();
     assertThat(
-            lines(
-                check.matches(
-                    KotlinSourceTrees.parse("fun f() {\n    /** Local. */\n    println()\n}\n"))))
+        lines(
+            check.matches(
+                KotlinSourceTrees.parse("fun f() {\n    /** Local. */\n    println()\n}\n")
+            )
+        )
+    )
         .containsExactly(2);
     assertThat(lines(check.matches(KotlinSourceTrees.parse("/** Dangling. */\n"))))
         .containsExactly(1);
     assertThat(
-            lines(check.matches(KotlinSourceTrees.parse("class A(/** Inside. */ val x: Int)\n"))))
+        lines(check.matches(KotlinSourceTrees.parse("class A(/** Inside. */ val x: Int)\n")))
+    )
         .isEmpty();
   }
 
@@ -45,15 +49,22 @@ class KotlinLayoutChecksTest {
     assertThat(lines(check.matches(KotlinSourceTrees.parse("package a\n\n/** Doc. */\nclass A\n"))))
         .isEmpty();
     assertThat(
-            lines(
-                check.matches(
-                    KotlinSourceTrees.parse(
-                        "class A {\n  val x = 1\n\n  /** Doc. */\n  fun f() {}\n}\n"))))
+        lines(
+            check.matches(
+                KotlinSourceTrees.parse(
+                    "class A {\n  val x = 1\n\n  /** Doc. */\n  fun f() {}\n}\n"
+                )
+            )
+        )
+    )
         .isEmpty();
     assertThat(
-            lines(
-                check.matches(
-                    KotlinSourceTrees.parse("class A {\n  val x = 1\n  /** Dangling. */\n}\n"))))
+        lines(
+            check.matches(
+                KotlinSourceTrees.parse("class A {\n  val x = 1\n  /** Dangling. */\n}\n")
+            )
+        )
+    )
         .containsExactly(DANGLING_LINE);
   }
 

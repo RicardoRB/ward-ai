@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Test;
  * -Dtest=RuleReferenceTest -Dward.rules.reference.write=true test}.
  */
 class RuleReferenceTest {
-
   private static final String WRITE = "ward.rules.reference.write";
   private static final Path DOCS = Path.of("..", "website", "src", "content", "docs");
   private static final Path GENERATED_DIRECTORY = DOCS.resolve("reference").resolve("rules");
@@ -40,16 +39,14 @@ class RuleReferenceTest {
     final List<CatalogRow> rows = new ArrayList<>(catalog.rows());
     rows.addAll(
         new RuleCatalogReader()
-            .parse(
-                "catalog/checkstyle-sizes.toml",
-                new StringReader(
-                    """
+            .parse("catalog/checkstyle-sizes.toml", new StringReader("""
                     [[rule]]
                     name = "brand-new-rule"
                     category = "sizes"
                     status = { java = "planned" }
                     issues = { java = "#284" }
-                    """)));
+                    """))
+    );
 
     final Map<String, String> changed = generate(new RuleCatalog(rows));
 

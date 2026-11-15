@@ -63,7 +63,8 @@ class QualityGateRunnerFindingsTest {
         line,
         1,
         null,
-        List.of());
+        List.of()
+    );
   }
 
   @Test
@@ -136,7 +137,9 @@ class QualityGateRunnerFindingsTest {
                     gate("a", GateStatus.PASSED),
                     gate("b", GateStatus.SKIPPED),
                     gate("c", GateStatus.UNAVAILABLE),
-                    gate("d", GateStatus.EXECUTION_ERROR)));
+                    gate("d", GateStatus.EXECUTION_ERROR)
+                )
+            );
 
     assertThat(asked).isEmpty();
     assertThat(report.results())

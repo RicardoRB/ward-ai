@@ -132,6 +132,7 @@ public final class JsonText {
   static WardException malformed() {
     return new WardException(
         "Ward cannot edit this JSON file: its layout cannot be located."
-            + " Format it as a multi-line JSON object, then run init again.");
+            + " Format it as a multi-line JSON object, then run init again."
+    );
   }
 }

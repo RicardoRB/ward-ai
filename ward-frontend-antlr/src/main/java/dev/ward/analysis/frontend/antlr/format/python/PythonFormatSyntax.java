@@ -23,7 +23,6 @@ import org.antlr.v4.runtime.tree.ParseTree;
  * differs between a source and its formatted text.
  */
 public final class PythonFormatSyntax implements FormatSyntax {
-
   private static final String NEWLINE_TYPE = "NEWLINE";
   private static final String NEWLINE_TEXT = "\n";
   private static final int FIRST_LINE = 1;
@@ -41,7 +40,10 @@ public final class PythonFormatSyntax implements FormatSyntax {
     final List<Token> tokens = stream.getTokens();
     final OptionalInt errorLine = errors.line().isPresent() ? errors.line() : unknownLine(tokens);
     return new FormatSyntaxTree(
-        errorLine, formatTokens(PythonEntries.of(source, tokens)), rules(root));
+        errorLine,
+        formatTokens(PythonEntries.of(source, tokens)),
+        rules(root)
+    );
   }
 
   private static OptionalInt unknownLine(final List<Token> tokens) {
@@ -100,7 +102,6 @@ public final class PythonFormatSyntax implements FormatSyntax {
 
   /** Keeps the line of the first syntax error the parser reports. */
   private static final class FirstError extends DefaultErrorStrategy {
-
     private OptionalInt line = OptionalInt.empty();
 
     @Override

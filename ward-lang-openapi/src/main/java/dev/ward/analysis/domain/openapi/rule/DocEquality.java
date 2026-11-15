@@ -6,7 +6,6 @@ import java.util.Locale;
 
 /** Compares nodes by what they hold, ignoring where they are written. */
 final class DocEquality {
-
   private DocEquality() {}
 
   /** Tells whether two nodes hold the same value: same kind, text, entries and items. */

@@ -23,7 +23,6 @@ import java.util.regex.Pattern;
  * whose facts are unknown is never reported.
  */
 public final class CallMatchCheck implements RuleCheck {
-
   private static final String EXPRESSION = "expression";
   private static final String STATEMENT = "statement";
   private static final String SEMICOLON = "';'";
@@ -57,8 +56,8 @@ public final class CallMatchCheck implements RuleCheck {
       boolean ignored,
       Set<String> argumentTypes,
       Set<String> anyArgumentTypes,
-      boolean argumentPrimitiveArray) {
-
+      boolean argumentPrimitiveArray
+  ) {
     /** Copies the sets. */
     public Criteria {
       declaringTypes = Set.copyOf(declaringTypes);
@@ -88,7 +87,10 @@ public final class CallMatchCheck implements RuleCheck {
    * @param message the message reported at the call
    */
   public CallMatchCheck(
-      final Criteria criteria, final CallMatchContext context, final String message) {
+      final Criteria criteria,
+      final CallMatchContext context,
+      final String message
+  ) {
     this.criteria = Objects.requireNonNull(criteria, "criteria");
     this.context = Objects.requireNonNull(context, "context");
     this.message = Objects.requireNonNull(message, "message");
@@ -110,7 +112,8 @@ public final class CallMatchCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(EXPRESSION))) {
       final SyntaxNode call = visit.node();
@@ -122,7 +125,10 @@ public final class CallMatchCheck implements RuleCheck {
   }
 
   private boolean meets(
-      final SyntaxNode call, final SyntaxWalk.Visit visit, final UnitTypeFacts types) {
+      final SyntaxNode call,
+      final SyntaxWalk.Visit visit,
+      final UnitTypeFacts types
+  ) {
     final Optional<CallTarget> target = types.callTarget(call.span());
     return target.isPresent()
         && context.admits(visit.ancestors())
@@ -136,7 +142,7 @@ public final class CallMatchCheck implements RuleCheck {
 
   private boolean declares(final CallTarget target) {
     return (criteria.declaringTypes().isEmpty()
-            || criteria.declaringTypes().contains(target.declaringType().name()))
+        || criteria.declaringTypes().contains(target.declaringType().name()))
         && (criteria.names().isEmpty()
             || criteria.names().contains(target.name())
             || criteria.names().contains(target.declaringType().name() + "#" + target.name()));

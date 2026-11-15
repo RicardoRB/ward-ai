@@ -67,7 +67,8 @@ public final class GradleGraphTool implements ResolvedGraphTool {
                   + " entries="
                   + inventory.entryCount()
                   + " output="
-                  + run.length());
+                  + run.length()
+      );
       return inventory;
     } catch (IOException | UncheckedIOException e) {
       throw new DependencyInventoryException(
@@ -75,7 +76,8 @@ public final class GradleGraphTool implements ResolvedGraphTool {
           ".ward/cache/dependencies",
           "the Gradle listing cannot be written or read",
           "check the permissions of the project folder",
-          e);
+          e
+      );
     } finally {
       delete(work);
     }
@@ -109,7 +111,8 @@ public final class GradleGraphTool implements ResolvedGraphTool {
           project.root().toString(),
           "the Gradle dependency listing",
           "Gradle wrote no result",
-          "run the Gradle build to see why");
+          "run the Gradle build to see why"
+      );
     }
     return GradleTsv.read(
         project.root().toString(),
@@ -118,7 +121,8 @@ public final class GradleGraphTool implements ResolvedGraphTool {
           final Path dir = path.isEmpty() ? project.root() : project.root().resolve(path);
           final String script = GradleModules.buildScript(dir);
           return LockFiles.join(path, script == null ? "settings.gradle" : script);
-        });
+        }
+    );
   }
 
   private static byte[] scriptBytes() throws IOException {

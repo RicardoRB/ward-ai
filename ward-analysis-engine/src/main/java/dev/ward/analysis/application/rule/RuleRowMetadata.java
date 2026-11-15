@@ -59,7 +59,10 @@ public final class RuleRowMetadata {
               .orElseThrow(
                   () ->
                       new IllegalArgumentException(
-                          "'" + PRESETS + "' value '" + key + "' is not standard or strict")));
+                          "'" + PRESETS + "' value '" + key + "' is not standard or strict"
+                      )
+              )
+      );
     }
     return presets;
   }
@@ -94,14 +97,16 @@ public final class RuleRowMetadata {
     final RuleOptionType resolved =
         RuleOptionType.byKey(type == null ? "" : type)
             .orElseThrow(
-                () -> new IllegalArgumentException("'" + where + ".type' is not a known type"));
+                () -> new IllegalArgumentException("'" + where + ".type' is not a known type")
+            );
     return new RuleOption(
         name,
         resolved,
         table.getString("parameter"),
         table.contains("min") ? number(table, "min", where) : Long.MIN_VALUE,
         table.contains("max") ? number(table, "max", where) : Long.MAX_VALUE,
-        strings(table, "values"));
+        strings(table, "values")
+    );
   }
 
   private static long number(final TomlTable table, final String key, final String where) {

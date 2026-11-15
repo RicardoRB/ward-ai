@@ -27,7 +27,10 @@ final class ReportText {
   }
 
   static String summary(
-      final CheckReport report, final LearningOutcome learning, final SeverityThreshold threshold) {
+      final CheckReport report,
+      final LearningOutcome learning,
+      final SeverityThreshold threshold
+  ) {
     final StringBuilder output = new StringBuilder(SUMMARY_CAPACITY);
     output
         .append(NL)
@@ -98,7 +101,10 @@ final class ReportText {
   }
 
   private static void appendFailure(
-      final StringBuilder output, final GateResult result, final SeverityThreshold threshold) {
+      final StringBuilder output,
+      final GateResult result,
+      final SeverityThreshold threshold
+  ) {
     output
         .append(NL)
         .append("Command:")
@@ -155,7 +161,10 @@ final class ReportText {
   }
 
   private static void appendTail(
-      final StringBuilder output, final String label, final String text) {
+      final StringBuilder output,
+      final String label,
+      final String text
+  ) {
     if (text.isBlank()) {
       return;
     }

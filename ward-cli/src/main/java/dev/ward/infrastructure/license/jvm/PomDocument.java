@@ -31,7 +31,8 @@ final class PomDocument {
       factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
       factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
       return Optional.of(
-          new PomDocument(factory.newDocumentBuilder().parse(stream).getDocumentElement()));
+          new PomDocument(factory.newDocumentBuilder().parse(stream).getDocumentElement())
+      );
     } catch (IOException | SAXException | ParserConfigurationException exception) {
       return Optional.empty();
     }
@@ -64,12 +65,17 @@ final class PomDocument {
         .map(
             parent ->
                 new Coordinates(
-                    text(parent, "groupId"), text(parent, "artifactId"), text(parent, "version")))
+                    text(parent, "groupId"),
+                    text(parent, "artifactId"),
+                    text(parent, "version")
+                )
+        )
         .filter(
             parent ->
                 !parent.group().isEmpty()
                     && !parent.artifact().isEmpty()
-                    && !parent.version().isEmpty());
+                    && !parent.version().isEmpty()
+        );
   }
 
   private static List<Element> children(final Element parent, final String name) {

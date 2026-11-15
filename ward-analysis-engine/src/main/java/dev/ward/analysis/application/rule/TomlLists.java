@@ -7,7 +7,6 @@ import org.tomlj.TomlParseResult;
 
 /** Reads lists from a rule body that keep their order. */
 public final class TomlLists {
-
   private TomlLists() {}
 
   /**

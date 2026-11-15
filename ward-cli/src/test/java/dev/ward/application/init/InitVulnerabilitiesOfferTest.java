@@ -62,6 +62,8 @@ class InitVulnerabilitiesOfferTest {
         detect(
             "Package.swift",
             "// swift-tools-version:5.9\nimport PackageDescription\n"
-                + "let package = Package(name: \"Demo\")\n"));
+                + "let package = Package(name: \"Demo\")\n"
+        )
+    );
   }
 }

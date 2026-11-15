@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * Value generic parameters ({@code let N: Int}) are not type names and are skipped.
  */
 public final class SwiftGenericTypeNameCheck implements RuleCheck {
-
   private static final String PARAMETER = "generic_parameter";
   private static final String IDENTIFIER = "declaration_identifier";
   private static final String LET = "let";

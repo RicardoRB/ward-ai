@@ -9,7 +9,6 @@ import java.util.Set;
 
 /** Finds the nodes of a function or class body, leaving nested function and class scopes out. */
 final class FunctionBodies {
-
   /** The kinds that open a scope of their own. */
   static final Set<String> SCOPES = Set.of("funcdef", "classdef");
 
@@ -20,7 +19,10 @@ final class FunctionBodies {
 
   /** The descendants of {@code scope} of the given kinds, not entering {@code skip} subtrees. */
   static List<SyntaxNode> own(
-      final SyntaxNode scope, final Set<String> kinds, final Set<String> skip) {
+      final SyntaxNode scope,
+      final Set<String> kinds,
+      final Set<String> skip
+  ) {
     final List<SyntaxNode> found = new ArrayList<>();
     collect(scope, kinds, skip, found);
     return found;
@@ -83,7 +85,8 @@ final class FunctionBodies {
       final SyntaxNode node,
       final Set<String> kinds,
       final Set<String> skip,
-      final List<SyntaxNode> found) {
+      final List<SyntaxNode> found
+  ) {
     for (final SyntaxNode child : node.children()) {
       if (kinds.contains(child.kind())) {
         found.add(child);

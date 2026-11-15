@@ -19,38 +19,59 @@ import java.util.Optional;
 
 /** The fake specification and the lowering helpers of the Java taint tests. */
 final class JavaTaintFixtures {
-
   /** The specification: sources, sinks and a sanitizer that the tests name. */
   static final TaintSpec SPEC =
       new TaintSpec(
           List.of(
               new TaintEntry(
-                  FlowSiteKind.CALL, "source", Optional.empty(), Optional.empty(), List.of()),
+                  FlowSiteKind.CALL,
+                  "source",
+                  Optional.empty(),
+                  Optional.empty(),
+                  List.of()
+              ),
               new TaintEntry(
                   FlowSiteKind.PARAMETER,
                   "Untrusted",
                   Optional.empty(),
                   Optional.empty(),
-                  List.of()),
+                  List.of()
+              ),
               new TaintEntry(
                   FlowSiteKind.MEMBER_READ,
                   "query",
                   Optional.empty(),
                   Optional.of("req"),
-                  List.of())),
+                  List.of()
+              )
+          ),
           List.of(
               new TaintEntry(
-                  FlowSiteKind.CALL, "sink", Optional.empty(), Optional.empty(), List.of(0)),
+                  FlowSiteKind.CALL,
+                  "sink",
+                  Optional.empty(),
+                  Optional.empty(),
+                  List.of(0)
+              ),
               new TaintEntry(
                   FlowSiteKind.CALL,
                   "executeQuery",
                   Optional.of("java.sql.Statement"),
                   Optional.empty(),
-                  List.of(0))),
+                  List.of(0)
+              )
+          ),
           List.of(
               new TaintEntry(
-                  FlowSiteKind.CALL, "clean", Optional.empty(), Optional.empty(), List.of())),
-          List.of());
+                  FlowSiteKind.CALL,
+                  "clean",
+                  Optional.empty(),
+                  Optional.empty(),
+                  List.of()
+              )
+          ),
+          List.of()
+      );
 
   private JavaTaintFixtures() {}
 

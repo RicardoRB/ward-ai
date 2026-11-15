@@ -22,18 +22,32 @@ import java.util.regex.Pattern;
  * type is unknown is never reported.
  */
 public final class JavaTypeRangeCheck implements RuleCheck {
-
   private static final Pattern LITERAL = Pattern.compile("^-?\\d{1,9}$");
   private static final int PARTS = 3;
   private static final Map<String, long[]> RANGES =
       Map.of(
-          "byte", new long[] {Byte.MIN_VALUE, Byte.MAX_VALUE},
-          "short", new long[] {Short.MIN_VALUE, Short.MAX_VALUE},
-          "char", new long[] {Character.MIN_VALUE, Character.MAX_VALUE});
+          "byte",
+          new long[] {Byte.MIN_VALUE, Byte.MAX_VALUE},
+          "short",
+          new long[] {Short.MIN_VALUE, Short.MAX_VALUE},
+          "char",
+          new long[] {Character.MIN_VALUE, Character.MAX_VALUE}
+      );
   private static final Map<String, String> MIRROR =
       Map.of(
-          "'<'", "'>'", "'>'", "'<'", "'<='", "'>='", "'>='", "'<='", "'=='", "'=='", "'!='",
-          "'!='");
+          "'<'",
+          "'>'",
+          "'>'",
+          "'<'",
+          "'<='",
+          "'>='",
+          "'>='",
+          "'<='",
+          "'=='",
+          "'=='",
+          "'!='",
+          "'!='"
+      );
 
   private final String message;
 
@@ -62,7 +76,8 @@ public final class JavaTypeRangeCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("expression"))) {
       final SyntaxNode comparison = visit.node();
@@ -70,7 +85,9 @@ public final class JavaTypeRangeCheck implements RuleCheck {
           .ifPresent(
               type ->
                   matches.add(
-                      CheckSupport.at(comparison.span(), CheckSupport.fill(message, type, ""))));
+                      CheckSupport.at(comparison.span(), CheckSupport.fill(message, type, ""))
+                  )
+          );
     }
     return List.copyOf(matches);
   }
@@ -90,7 +107,8 @@ public final class JavaTypeRangeCheck implements RuleCheck {
       final SyntaxNode variable,
       final SyntaxNode literal,
       final String operator,
-      final UnitTypeFacts types) {
+      final UnitTypeFacts types
+  ) {
     final String text = SyntaxWalk.text(literal);
     final Optional<TypeRef> type = types.typeOf(variable.span());
     if (!LITERAL.matcher(text).matches()
@@ -107,7 +125,11 @@ public final class JavaTypeRangeCheck implements RuleCheck {
   }
 
   private static boolean constant(
-      final long low, final long high, final String operator, final long value) {
+      final long low,
+      final long high,
+      final String operator,
+      final long value
+  ) {
     return switch (operator) {
       case "'<'" -> high < value || low >= value;
       case "'<='" -> high <= value || low > value;

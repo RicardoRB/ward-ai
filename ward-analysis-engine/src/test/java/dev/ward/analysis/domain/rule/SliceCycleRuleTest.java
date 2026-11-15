@@ -13,14 +13,15 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class SliceCycleRuleTest {
-
   private static final String ROOT = "src/main/java/com/acme";
   private static final int FIRST_LINE = 3;
   private static final int SECOND_LINE = 5;
 
   private static SliceCycleRule rule() {
     return new SliceCycleRule(
-        definition(SliceCycleRule.ID, GraphRuleBody.encodeRoots(List.of(ROOT))), List.of(ROOT));
+        definition(SliceCycleRule.ID, GraphRuleBody.encodeRoots(List.of(ROOT))),
+        List.of(ROOT)
+    );
   }
 
   @Test
@@ -28,7 +29,8 @@ class SliceCycleRuleTest {
     final DependencyGraph graph =
         graph(
             edge(ROOT + "/orders/Order.java", ROOT + "/billing/Invoice.java", FIRST_LINE),
-            edge(ROOT + "/billing/Invoice.java", ROOT + "/orders/Order.java", SECOND_LINE));
+            edge(ROOT + "/billing/Invoice.java", ROOT + "/orders/Order.java", SECOND_LINE)
+        );
 
     final List<GraphMatch> matches = rule().matches(graph);
 
@@ -50,7 +52,8 @@ class SliceCycleRuleTest {
     final DependencyGraph graph =
         graph(
             edge(ROOT + "/orders/A.java", ROOT + "/orders/sub/B.java", 1),
-            edge(ROOT + "/orders/sub/B.java", ROOT + "/orders/A.java", 1));
+            edge(ROOT + "/orders/sub/B.java", ROOT + "/orders/A.java", 1)
+        );
 
     assertThat(rule().matches(graph)).isEmpty();
   }
@@ -59,7 +62,9 @@ class SliceCycleRuleTest {
   void reportsNothingForAFileDirectlyInTheRoot() {
     final DependencyGraph graph =
         graph(
-            edge("src/index.ts", "src/orders/a.ts", 1), edge("src/orders/a.ts", "src/index.ts", 1));
+            edge("src/index.ts", "src/orders/a.ts", 1),
+            edge("src/orders/a.ts", "src/index.ts", 1)
+        );
     final SliceCycleRule rule =
         new SliceCycleRule(definition(SliceCycleRule.ID, "src"), List.of("src"));
 
@@ -73,7 +78,8 @@ class SliceCycleRuleTest {
             edge(ROOT + "/alpha/A.java", ROOT + "/beta/B.java", 1),
             edge(ROOT + "/beta/B.java", ROOT + "/gamma/C.java", 1),
             edge(ROOT + "/gamma/C.java", ROOT + "/alpha/A.java", 1),
-            edge(ROOT + "/gamma/C.java", ROOT + "/beta/B.java", 2));
+            edge(ROOT + "/gamma/C.java", ROOT + "/beta/B.java", 2)
+        );
 
     final List<GraphMatch> matches = rule().matches(graph);
 

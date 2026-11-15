@@ -17,7 +17,6 @@ import java.util.Set;
  * reported. A string literal argument is reported even when its type is unknown.
  */
 public final class StringInstantiationCheck extends FactsCheck {
-
   private static final String EXPRESSION = "expression";
   private static final String CREATOR = "creator";
   private static final String EXPRESSION_LIST = "expressionList";

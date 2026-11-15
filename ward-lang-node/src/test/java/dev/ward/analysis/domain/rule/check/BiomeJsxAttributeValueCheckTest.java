@@ -13,10 +13,13 @@ import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
 
 class BiomeJsxAttributeValueCheckTest {
-
   private static final BiomeJsxAttributeValueCheck CHECK =
       new BiomeJsxAttributeValueCheck(
-          "tabIndex", false, Pattern.compile("^(\\{[1-9][0-9]*\\}|\"[1-9][0-9]*\")$"), "message");
+          "tabIndex",
+          false,
+          Pattern.compile("^(\\{[1-9][0-9]*\\}|\"[1-9][0-9]*\")$"),
+          "message"
+      );
 
   @Test
   void reportsAPositiveValueAtTheValue() {

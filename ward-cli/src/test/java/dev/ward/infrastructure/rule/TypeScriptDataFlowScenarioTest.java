@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** The TypeScript and JavaScript data-flow scenarios of the intraprocedural spec. */
 final class TypeScriptDataFlowScenarioTest {
-
   @Test
   void typeScriptBranchesReachTheReadAfterThem() {
     final String source =
@@ -45,7 +44,8 @@ final class TypeScriptDataFlowScenarioTest {
         source,
         DataFlowFixtures.reachingWrites(DataFlowFixtures.typescript(source, "f"), "item"),
         "item",
-        "use(item)");
+        "use(item)"
+    );
   }
 
   @Test
@@ -56,7 +56,8 @@ final class TypeScriptDataFlowScenarioTest {
         source,
         DataFlowFixtures.reachingWrites(DataFlowFixtures.typescript(source, "f"), "err"),
         "err",
-        "use(err)");
+        "use(err)"
+    );
   }
 
   @Test
@@ -67,6 +68,7 @@ final class TypeScriptDataFlowScenarioTest {
         source,
         DataFlowFixtures.reachingWrites(DataFlowFixtures.javaScript(source, "f"), "key"),
         "key",
-        "use(key)");
+        "use(key)"
+    );
   }
 }

@@ -7,7 +7,6 @@ import java.util.stream.IntStream;
 import org.junit.jupiter.api.Test;
 
 class YamlRejectionsTest {
-
   private static final int BOMB_LEVELS = 25;
   private static final int DEEP = 5000;
 
@@ -51,7 +50,8 @@ class YamlRejectionsTest {
         "l0: &l0 [x, x]\n"
             + IntStream.range(1, BOMB_LEVELS)
                 .mapToObj(
-                    level -> "l%d: &l%d [*l%d, *l%d]".formatted(level, level, level - 1, level - 1))
+                    level -> "l%d: &l%d [*l%d, *l%d]".formatted(level, level, level - 1, level - 1)
+                )
                 .collect(Collectors.joining("\n"));
 
     assertThat(YamlTrees.dump(bomb)).contains("too many nodes");

@@ -2,7 +2,6 @@ package dev.ward.analysis.domain.android;
 
 /** A position in an XML text and the reads that move it. */
 final class XmlCursor {
-
   private final String text;
   private int position;
 

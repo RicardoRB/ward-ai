@@ -10,7 +10,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class ImpossibleConversionCheckTest {
-
   private static final String EXPRESSION = "expression";
   private static final String TYPE_TYPE = "typeType";
   private static final String TEXT = "\"text\"";
@@ -33,9 +32,13 @@ class ImpossibleConversionCheckTest {
       ParsedFacts.typed(CHILD, TypeShape.Kind.CLASS, false, BASE, ParsedFacts.OBJECT);
 
   private static List<String> run(
-      final ImpossibleConversionCheck.Mode mode, final String statements, final SpanFacts target) {
+      final ImpossibleConversionCheck.Mode mode,
+      final String statements,
+      final SpanFacts target
+  ) {
     return new ParsedFacts(
-            "final class C {\n  Object t(boolean c, Object p) {\n" + statements + "  }\n}\n")
+        "final class C {\n  Object t(boolean c, Object p) {\n" + statements + "  }\n}\n"
+    )
         .at(EXPRESSION, TEXT, STRING_VALUE)
         .at(EXPRESSION, "newBase()", BASE_VALUE)
         .at(EXPRESSION, "make()", BASE_VALUE)
@@ -77,30 +80,38 @@ class ImpossibleConversionCheckTest {
     assertThat(cast(branches.formatted(TEXT), INTEGER_TARGET)).hasSize(1);
     assertThat(cast(branches.formatted("p"), INTEGER_TARGET)).isEmpty();
     assertThat(
-            cast(
-                HOLD + "    while (c) {\n      v = p;\n    }\n    return (Integer) v;\n",
-                INTEGER_TARGET))
+        cast(
+            HOLD + "    while (c) {\n      v = p;\n    }\n    return (Integer) v;\n",
+            INTEGER_TARGET
+        )
+    )
         .isEmpty();
     assertThat(
-            cast(
-                HOLD + "    while (c) {\n      c = !c;\n    }\n    return (Integer) v;\n",
-                INTEGER_TARGET))
+        cast(
+            HOLD + "    while (c) {\n      c = !c;\n    }\n    return (Integer) v;\n",
+            INTEGER_TARGET
+        )
+    )
         .hasSize(1);
   }
 
   @Test
   void anInstanceofTestThatCanNeverBeTrueIsReported() {
     assertThat(
-            run(
-                ImpossibleConversionCheck.Mode.INSTANCEOF,
-                HOLD + "    return v instanceof Integer;\n",
-                INTEGER_TARGET))
+        run(
+            ImpossibleConversionCheck.Mode.INSTANCEOF,
+            HOLD + "    return v instanceof Integer;\n",
+            INTEGER_TARGET
+        )
+    )
         .containsExactly("4:12");
     assertThat(
-            run(
-                ImpossibleConversionCheck.Mode.INSTANCEOF,
-                HOLD + "    return v instanceof CharSequence;\n",
-                CHARS_TARGET))
+        run(
+            ImpossibleConversionCheck.Mode.INSTANCEOF,
+            HOLD + "    return v instanceof CharSequence;\n",
+            CHARS_TARGET
+        )
+    )
         .isEmpty();
   }
 
@@ -112,10 +123,12 @@ class ImpossibleConversionCheckTest {
         .containsExactly("4:12");
     assertThat(run(ImpossibleConversionCheck.Mode.CAST, statements, CHILD_TARGET)).isEmpty();
     assertThat(
-            run(
-                ImpossibleConversionCheck.Mode.DOWNCAST,
-                "    Object v = new Base();\n    return (Integer) v;\n",
-                INTEGER_TARGET))
+        run(
+            ImpossibleConversionCheck.Mode.DOWNCAST,
+            "    Object v = new Base();\n    return (Integer) v;\n",
+            INTEGER_TARGET
+        )
+    )
         .isEmpty();
     assertThat(cast("    Object v = new Base();\n    return (Integer) v;\n", INTEGER_TARGET))
         .hasSize(1);
@@ -124,26 +137,32 @@ class ImpossibleConversionCheckTest {
   @Test
   void aValueThatMightBeASubclassOrWhoseSupertypesAreUnknownIsNotReported() {
     assertThat(
-            run(
-                ImpossibleConversionCheck.Mode.DOWNCAST,
-                "    Object v = make();\n    return (Child) v;\n",
-                CHILD_TARGET))
+        run(
+            ImpossibleConversionCheck.Mode.DOWNCAST,
+            "    Object v = make();\n    return (Child) v;\n",
+            CHILD_TARGET
+        )
+    )
         .isEmpty();
     assertThat(
-            new ParsedFacts(
-                    "final class C {\n  Object t() {\n"
-                        + HOLD
-                        + "    return (Integer) v;\n  }\n}\n")
-                .at(EXPRESSION, TEXT, ParsedFacts.typed(STRING, TypeShape.Kind.CLASS, true))
-                .at(TYPE_TYPE, "Integer", INTEGER_TARGET)
-                .run(new ImpossibleConversionCheck(ImpossibleConversionCheck.Mode.CAST, "message")))
+        new ParsedFacts(
+            "final class C {\n  Object t() {\n"
+                + HOLD
+                + "    return (Integer) v;\n  }\n}\n"
+        )
+            .at(EXPRESSION, TEXT, ParsedFacts.typed(STRING, TypeShape.Kind.CLASS, true))
+            .at(TYPE_TYPE, "Integer", INTEGER_TARGET)
+            .run(new ImpossibleConversionCheck(ImpossibleConversionCheck.Mode.CAST, "message"))
+    )
         .isEmpty();
     assertThat(
-            new ParsedFacts(
-                    "final class C {\n  Object t() {\n"
-                        + HOLD
-                        + "    return (Integer) v;\n  }\n}\n")
-                .run(new ImpossibleConversionCheck(ImpossibleConversionCheck.Mode.CAST, "message")))
+        new ParsedFacts(
+            "final class C {\n  Object t() {\n"
+                + HOLD
+                + "    return (Integer) v;\n  }\n}\n"
+        )
+            .run(new ImpossibleConversionCheck(ImpossibleConversionCheck.Mode.CAST, "message"))
+    )
         .isEmpty();
   }
 
@@ -159,7 +178,10 @@ class ImpossibleConversionCheckTest {
   }
 
   private static List<String> arrays(
-      final String statements, final SpanFacts value, final SpanFacts target) {
+      final String statements,
+      final SpanFacts value,
+      final SpanFacts target
+  ) {
     return new ParsedFacts("final class C {\n  Object t() {\n" + statements + "  }\n}\n")
         .at(EXPRESSION, "newint[3]", value)
         .at(TYPE_TYPE, "long[]", target)
@@ -167,6 +189,9 @@ class ImpossibleConversionCheckTest {
         .at(TYPE_TYPE, "long[][]", ParsedFacts.type(new TypeRef("long", List.of(), 2, true)))
         .run(
             new ImpossibleConversionCheck(
-                ImpossibleConversionCheck.Mode.PRIMITIVE_ARRAY_CAST, "message"));
+                ImpossibleConversionCheck.Mode.PRIMITIVE_ARRAY_CAST,
+                "message"
+            )
+        );
   }
 }

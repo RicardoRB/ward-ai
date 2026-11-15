@@ -15,7 +15,6 @@ import java.util.Set;
  * through to the next clause; an arrow clause ends at the block after the switch.
  */
 final class JavaSwitches {
-
   private static final String BLOCK = "block";
   private static final String BLOCK_STATEMENT = "blockStatement";
   private static final String SWITCH_GROUP = "switchBlockStatementGroup";

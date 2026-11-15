@@ -36,7 +36,8 @@ final class Operators {
           Map.entry("in", COMPARISON),
           Map.entry("??", Operators::coalesce),
           Map.entry("||", Operators::or),
-          Map.entry("&&", Operators::and));
+          Map.entry("&&", Operators::and)
+      );
 
   private Operators() {}
 
@@ -62,7 +63,8 @@ final class Operators {
     final List<TsType> kept =
         union.parts().stream()
             .filter(
-                part -> !MemberValues.isNullish(part) && !(falsy && "false".equals(part.print())))
+                part -> !MemberValues.isNullish(part) && !(falsy && "false".equals(part.print()))
+            )
             .toList();
     return kept.size() == 1 ? kept.get(0) : new TsType.Union(kept);
   }

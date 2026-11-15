@@ -13,7 +13,6 @@ import java.util.Set;
  * every static member of that class.
  */
 public final class StaticImportCheck implements RuleCheck {
-
   private final Set<String> excludes;
   private final String message;
 
@@ -35,7 +34,10 @@ public final class StaticImportCheck implements RuleCheck {
       if (declaration.isStatic() && !excluded(declaration)) {
         matches.add(
             CheckSupport.at(
-                declaration.span(), CheckSupport.fill(message, declaration.fullName(), "")));
+                declaration.span(),
+                CheckSupport.fill(message, declaration.fullName(), "")
+            )
+        );
       }
     }
     return List.copyOf(matches);

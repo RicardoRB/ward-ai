@@ -20,7 +20,6 @@ import java.util.stream.IntStream;
  * is not reported, nor is a call whose target is unknown.
  */
 public final class FormatStringAnnotationCheck extends FactsCheck {
-
   private static final String ANNOTATION = "com.google.errorprone.annotations.FormatString";
   private static final Pattern LITERAL = Pattern.compile("^\"(?:[^\"\\\\]|\\\\.)*\"$");
   private static final Pattern COMPUTED = Pattern.compile("[+(]");

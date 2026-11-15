@@ -20,7 +20,10 @@ public final class ProcessAgentRunner implements AgentRunner {
    * argument.
    */
   public ProcessAgentRunner(
-      final CommandExecutor executor, final Path root, final List<String> command) {
+      final CommandExecutor executor,
+      final Path root,
+      final List<String> command
+  ) {
     this.executor = executor;
     this.root = root;
     this.command = List.copyOf(command);
@@ -39,6 +42,7 @@ public final class ProcessAgentRunner implements AgentRunner {
     return new AgentResult(
         result.succeeded(),
         result.succeeded() ? "Agent completed." : "Agent failed.",
-        result.stdout() + result.stderr());
+        result.stdout() + result.stderr()
+    );
   }
 }

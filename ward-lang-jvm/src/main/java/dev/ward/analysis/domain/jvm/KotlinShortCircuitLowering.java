@@ -11,7 +11,6 @@ import java.util.List;
  * whole, so a tainted operand taints it.
  */
 final class KotlinShortCircuitLowering {
-
   private static final String DISJUNCTION = "disjunction";
 
   private final ControlFlowBuilder flow;

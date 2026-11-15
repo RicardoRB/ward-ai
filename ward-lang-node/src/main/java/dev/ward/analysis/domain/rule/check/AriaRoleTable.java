@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
  * text is parsed here without I/O; the application layer reads the resource files.
  */
 public final class AriaRoleTable {
-
   private final Map<String, AriaRoleRow> roles;
   private final List<ImplicitRow> implicit;
   private final Map<String, AriaAttributeRow> attributes;
@@ -33,11 +32,16 @@ public final class AriaRoleTable {
    * @param semantic the HTML elements of each role, base and related
    */
   public AriaRoleTable(
-      final Map<String, AriaRoleRow> roles,
+      final Map<String,
+      AriaRoleRow> roles,
       final List<ImplicitRow> implicit,
-      final Map<String, AriaAttributeRow> attributes,
-      final Map<String, Set<String>> handlers,
-      final Map<String, List<ElementConcept>> semantic) {
+      final Map<String,
+      AriaAttributeRow> attributes,
+      final Map<String,
+      Set<String>> handlers,
+      final Map<String,
+      List<ElementConcept>> semantic
+  ) {
     this.roles = Map.copyOf(roles);
     this.implicit = List.copyOf(implicit);
     this.attributes = Map.copyOf(attributes);
@@ -111,7 +115,11 @@ public final class AriaRoleTable {
    * element whose condition holds. Empty when the element has no implicit role.
    */
   public Optional<String> implicitRole(
-      final String element, final Predicate<String> has, final Map<String, String> literals) {
+      final String element,
+      final Predicate<String> has,
+      final Map<String,
+      String> literals
+  ) {
     return implicit.stream()
         .filter(row -> row.element().equals(element))
         .filter(row -> row.condition().holds(has, literals))
@@ -132,8 +140,8 @@ public final class AriaRoleTable {
       Set<String> supported,
       Set<String> required,
       Set<String> prohibited,
-      Set<String> deprecated) {
-
+      Set<String> deprecated
+  ) {
     /** Copies the sets. */
     public AriaRoleRow {
       Objects.requireNonNull(name, "name");
@@ -147,7 +155,6 @@ public final class AriaRoleTable {
 
   /** One attribute: its value type, and the token values a token attribute accepts. */
   public record AriaAttributeRow(String name, String valueType, Set<String> values) {
-
     /** Copies the values. */
     public AriaAttributeRow {
       Objects.requireNonNull(name, "name");
@@ -157,7 +164,6 @@ public final class AriaRoleTable {
 
   /** One implicit-role row: the element, the condition, and the role ("" for none). */
   public record ImplicitRow(String element, Condition condition, String role) {
-
     /** Reads the condition from its written form. */
     public ImplicitRow(final String element, final String condition, final String role) {
       this(element, Condition.parse(condition), role);
@@ -166,7 +172,6 @@ public final class AriaRoleTable {
 
   /** An HTML element a role maps to, and the static attributes it must have. */
   public record ElementConcept(String element, Map<String, String> attributes) {
-
     /** Copies the attributes. */
     public ElementConcept {
       attributes = Map.copyOf(attributes);

@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
  * field of its class. A dead store whose declaration the tree does not show is left out.
  */
 public final class DeadStoreCheck implements RuleCheck {
-
   /** Which dead stores are reported. */
   public enum Kind {
     /** A dead store of {@code null}. */
@@ -86,7 +85,9 @@ public final class DeadStoreCheck implements RuleCheck {
   }
 
   private static Optional<Store> declarator(
-      final SyntaxNode node, final List<SyntaxNode> ancestors) {
+      final SyntaxNode node,
+      final List<SyntaxNode> ancestors
+  ) {
     final List<SyntaxNode> parts = node.children();
     if (parts.size() != DECLARATOR_PARTS || !"'='".equals(parts.get(1).kind())) {
       return Optional.empty();
@@ -95,11 +96,15 @@ public final class DeadStoreCheck implements RuleCheck {
         new Store(
             parts.get(0).span().startOffset(),
             SyntaxWalk.text(parts.get(2)),
-            names(ancestors).contains(SyntaxWalk.text(parts.get(0)))));
+            names(ancestors).contains(SyntaxWalk.text(parts.get(0)))
+        )
+    );
   }
 
   private static Optional<Store> assignment(
-      final SyntaxNode node, final List<SyntaxNode> ancestors) {
+      final SyntaxNode node,
+      final List<SyntaxNode> ancestors
+  ) {
     if (!"'='".equals(node.children().get(1).kind())) {
       return Optional.empty();
     }
@@ -107,7 +112,9 @@ public final class DeadStoreCheck implements RuleCheck {
         new Store(
             node.children().get(0).span().startOffset(),
             Assignments.value(node),
-            names(ancestors).contains(Assignments.target(node))));
+            names(ancestors).contains(Assignments.target(node))
+        )
+    );
   }
 
   /** Returns the names of the fields of the nearest enclosing class. */

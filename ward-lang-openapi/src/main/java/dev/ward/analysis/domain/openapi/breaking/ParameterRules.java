@@ -11,7 +11,6 @@ import java.util.Map;
  * required.
  */
 final class ParameterRules {
-
   private static final String PATH = "path:";
 
   private ParameterRules() {}
@@ -21,14 +20,18 @@ final class ParameterRules {
     return List.of(
         RowRule.of(
             "new-required-request-parameter",
-            pair -> added(pair, "new-required-request-parameter")),
+            pair -> added(pair, "new-required-request-parameter")
+        ),
         RowRule.of(
             "new-required-request-default-parameter-to-existing-path",
-            pair -> added(pair, "new-required-request-default-parameter-to-existing-path")),
+            pair -> added(pair, "new-required-request-default-parameter-to-existing-path")
+        ),
         RowRule.of("new-request-path-parameter", pair -> added(pair, "new-request-path-parameter")),
         RowRule.of(
             "request-parameter-became-required",
-            pair -> OperationPairs.each(pair, (base, now) -> required(pair, base, now))));
+            pair -> OperationPairs.each(pair, (base, now) -> required(pair, base, now))
+        )
+    );
   }
 
   /**
@@ -49,13 +52,19 @@ final class ParameterRules {
                     if (!before.containsKey(key) && kind(key, parameter, pathLevel).equals(id)) {
                       findings.add(finding(id, now, parameter));
                     }
-                  });
+                  }
+              );
           return findings;
-        });
+        }
+    );
   }
 
   private static String kind(
-      final String key, final DocNode parameter, final Map<String, DocNode> pathLevel) {
+      final String key,
+      final DocNode parameter,
+      final Map<String,
+      DocNode> pathLevel
+  ) {
     if (key.startsWith(PATH)) {
       return "new-request-path-parameter";
     }
@@ -68,7 +77,10 @@ final class ParameterRules {
   }
 
   private static List<BreakingFinding> required(
-      final DocumentPair pair, final Operation base, final Operation now) {
+      final DocumentPair pair,
+      final Operation base,
+      final Operation now
+  ) {
     final Map<String, DocNode> after = NamedParts.parameters(pair.revision(), now);
     final List<BreakingFinding> findings = new ArrayList<>();
     NamedParts.parameters(pair.base(), base)
@@ -80,9 +92,12 @@ final class ParameterRules {
                     finding(
                         "request-parameter-became-required",
                         now,
-                        parameter.get("required").orElse(parameter)));
+                        parameter.get("required").orElse(parameter)
+                    )
+                );
               }
-            });
+            }
+        );
     return findings;
   }
 
@@ -92,6 +107,7 @@ final class ParameterRules {
         OperationIndex.method(now) + " " + now.path() + ": " + id.replace('-', ' '),
         OperationIndex.method(now),
         now.path(),
-        at);
+        at
+    );
   }
 }

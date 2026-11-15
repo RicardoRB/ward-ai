@@ -31,7 +31,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** The files, ports and fake Git history that the {@code secrets} gate tests share. */
 class SecretGateTestSupport {
-
   protected static final String TOKEN = "ghp_" + "aB3dE5gH7jK9mN1pQ3sT5vW7yZ9bD1fH3jL5";
 
   protected static final String CONFIG = "config/app.yml";
@@ -66,7 +65,8 @@ class SecretGateTestSupport {
         AnalysisCacheFixtures.codec(),
         "test",
         DependencyAdapters.none(),
-        (unused, classpath) -> Map.of());
+        (unused, classpath) -> Map.of()
+    );
   }
 
   protected GateResult run(final SecretsOptions options, final List<String> focus) {
@@ -80,7 +80,8 @@ class SecretGateTestSupport {
                 throw historyFailure;
               }
               sink.accept(patches);
-            });
+            }
+        );
     final GateConfiguration check =
         new GateConfiguration(
             "secrets",
@@ -104,7 +105,8 @@ class SecretGateTestSupport {
             null,
             null,
             null,
-            null);
+            null
+        );
     return gates
         .create(check, focus)
         .execute(new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE));

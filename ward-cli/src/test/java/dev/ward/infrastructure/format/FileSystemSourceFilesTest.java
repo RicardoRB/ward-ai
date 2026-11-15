@@ -17,8 +17,8 @@ import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
 
 class FileSystemSourceFilesTest {
-  private static final byte[] BOM = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
-  private static final byte[] NOT_UTF8 = {(byte) 0xFF, (byte) 0xFE, 'a'};
+  private static final byte[] BOM = {(byte)0xEF, (byte)0xBB, (byte)0xBF};
+  private static final byte[] NOT_UTF8 = {(byte)0xFF, (byte)0xFE, 'a'};
   private static final String FILE_NAME = "A.java";
 
   @TempDir Path folder;

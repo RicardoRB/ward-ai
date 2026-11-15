@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
  * Checks that the code after a try statement is reached from the try's finally and catch blocks.
  */
 class NodeTryFlowTest {
-
   @Test
   void statementAfterTryCatchFinallyIsReachableFromTheCatchAndFinallyBlocks() {
     final String source =
@@ -21,12 +20,20 @@ class NodeTryFlowTest {
 
     final int after = NodeFlowFixtures.blockWith(graph, source, "done()");
     assertThat(
-            NodeFlowFixtures.reachable(
-                graph, NodeFlowFixtures.blockWith(graph, source, "recover()"), after))
+        NodeFlowFixtures.reachable(
+            graph,
+            NodeFlowFixtures.blockWith(graph, source, "recover()"),
+            after
+        )
+    )
         .isTrue();
     assertThat(
-            NodeFlowFixtures.reachable(
-                graph, NodeFlowFixtures.blockWith(graph, source, "cleanup()"), after))
+        NodeFlowFixtures.reachable(
+            graph,
+            NodeFlowFixtures.blockWith(graph, source, "cleanup()"),
+            after
+        )
+    )
         .isTrue();
   }
 
@@ -38,10 +45,12 @@ class NodeTryFlowTest {
     final ControlFlowGraph graph = NodeFlowFixtures.lowerNamed(source, "f");
 
     assertThat(
-            NodeFlowFixtures.reachable(
-                graph,
-                NodeFlowFixtures.blockWith(graph, source, "work()"),
-                NodeFlowFixtures.blockWith(graph, source, "return 2")))
+        NodeFlowFixtures.reachable(
+            graph,
+            NodeFlowFixtures.blockWith(graph, source, "work()"),
+            NodeFlowFixtures.blockWith(graph, source, "return 2")
+        )
+    )
         .isTrue();
   }
 

@@ -14,7 +14,8 @@ public record InitResult(
     List<String> pomChanges,
     List<Path> preservedRuleFiles,
     List<String> pomWarnings,
-    List<Path> ownedSections) {
+    List<Path> ownedSections
+) {
   /** Copies the lists; missing values mean empty. */
   public InitResult {
     gates = gates == null ? List.of() : List.copyOf(gates);
@@ -35,7 +36,8 @@ public record InitResult(
       final Path file,
       final boolean created,
       final List<InitGateOption> gates,
-      final List<IntegrationResult> integrations) {
+      final List<IntegrationResult> integrations
+  ) {
     this(file, created, false, gates, integrations, List.of(), List.of(), List.of(), List.of());
   }
 
@@ -45,7 +47,8 @@ public record InitResult(
       final boolean created,
       final List<InitGateOption> gates,
       final List<IntegrationResult> integrations,
-      final List<String> pomChanges) {
+      final List<String> pomChanges
+  ) {
     this(file, created, false, gates, integrations, pomChanges, List.of(), List.of(), List.of());
   }
 }

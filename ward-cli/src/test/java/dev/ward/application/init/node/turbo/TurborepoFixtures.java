@@ -37,11 +37,15 @@ final class TurborepoFixtures {
         Set.of(),
         "24",
         TaskRunner.TURBO,
-        null);
+        null
+    );
   }
 
   static WorkspaceMember memberOf(
-      final Path root, final String relative, final Framework framework) {
+      final Path root,
+      final String relative,
+      final Framework framework
+  ) {
     final Path dir = root.resolve(relative);
     return new WorkspaceMember(
         relative,
@@ -56,7 +60,9 @@ final class TurborepoFixtures {
             Set.of(),
             "24",
             TaskRunner.NONE,
-            null));
+            null
+        )
+    );
   }
 
   /**
@@ -65,8 +71,10 @@ final class TurborepoFixtures {
   static InitInputs inputs(
       final Path root,
       final List<WorkspaceMember> members,
-      final Map<Path, PackageManifest> manifests,
-      final Set<Path> withSources) {
+      final Map<Path,
+      PackageManifest> manifests,
+      final Set<Path> withSources
+  ) {
     return new InitInputs(
         new FakeEnvironmentInspection("npm", "pnpm", "turbo"),
         dir -> manifests.getOrDefault(dir, EMPTY),
@@ -76,18 +84,22 @@ final class TurborepoFixtures {
         (dir, tool) -> Optional.empty(),
         new Members(members),
         SwiftPorts.NONE,
-        dev.ward.domain.init.BuildModulePlanning.none());
+        dev.ward.domain.init.BuildModulePlanning.none()
+    );
   }
 
   static InitInputs inputs(
       final Path root,
       final List<WorkspaceMember> members,
-      final Map<Path, PackageManifest> manifests) {
+      final Map<Path,
+      PackageManifest> manifests
+  ) {
     return inputs(
         root,
         members,
         manifests,
-        members.stream().map(WorkspaceMember::directory).collect(Collectors.toSet()));
+        members.stream().map(WorkspaceMember::directory).collect(Collectors.toSet())
+    );
   }
 
   /** Lists the given members for the workspace root. */

@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 
 /** Reports the {@code any} keyword of a type, but not in a rest parameter array when allowed. */
 public final class NoExplicitAnyCheck implements RuleCheck {
-
   private static final String ANY = "any";
   private static final String PREDEFINED = "predefinedType";
   private static final String REST = "restParameter";
@@ -60,6 +59,7 @@ public final class NoExplicitAnyCheck implements RuleCheck {
         .anyMatch(
             outer ->
                 outer.startOffset() <= inner.startOffset()
-                    && inner.endOffset() <= outer.endOffset());
+                    && inner.endOffset() <= outer.endOffset()
+        );
   }
 }

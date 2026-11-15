@@ -13,8 +13,8 @@ public record NativeHookInput(
     String patch,
     String skill,
     boolean unreadable,
-    boolean continued) {
-
+    boolean continued
+) {
   /** An event whose payload could not be parsed. */
   public static NativeHookInput unreadableInput() {
     return new NativeHookInput(null, null, "", null, null, null, null, true, false);

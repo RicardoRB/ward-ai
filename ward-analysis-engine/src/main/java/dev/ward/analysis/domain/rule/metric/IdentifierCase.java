@@ -10,7 +10,6 @@ import java.util.Optional;
  * leading underscores are ignored.
  */
 final class IdentifierCase implements Measure {
-
   private static final String ASSIGN = "=";
   private static final String BACKTICK = "`";
 
@@ -19,7 +18,8 @@ final class IdentifierCase implements Measure {
       final SyntaxNode node,
       final MetricRule.Target target,
       final boolean method,
-      final MetricRule rule) {
+      final MetricRule rule
+  ) {
     final Optional<String> declared = declared(node, rule);
     if (declared.isEmpty() || skipped(declared.get())) {
       return Optional.empty();

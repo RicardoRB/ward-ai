@@ -15,7 +15,6 @@ import java.util.stream.IntStream;
 
 /** Runs the example rules of {@code rules-examples/} over a source and reads the findings. */
 final class ExampleRuns {
-
   private ExampleRuns() {}
 
   /** Returns the findings of the language's example rules over one file. */
@@ -37,7 +36,10 @@ final class ExampleRuns {
   }
 
   static List<AnalysisFinding> run(
-      final AnalysisLanguage language, final String name, final String source) {
+      final AnalysisLanguage language,
+      final String name,
+      final String source
+  ) {
     final FrontendSupport frontend =
         new FrontendSupport(language, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX));
     final String path = language == AnalysisLanguage.JAVA ? "src/main/java/A.java" : "app/mod.py";

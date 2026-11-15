@@ -7,7 +7,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class InvalidJavaBeanCheckTest extends ClassMemberTrees {
-
   private static final String MESSAGE = "{value}";
   private static final String CUSTOMER = "Customer";
   private static final String NAME = "name";
@@ -26,7 +25,11 @@ class InvalidJavaBeanCheckTest extends ClassMemberTrees {
         packageUnit(
             PACKAGE_NAME,
             classNamed(
-                CUSTOMER, member(field(NAME), PRIVATE), member(method("getName", 0, 0), PUBLIC)));
+                CUSTOMER,
+                member(field(NAME), PRIVATE),
+                member(method("getName", 0, 0), PUBLIC)
+            )
+        );
 
     assertThat(bean(root, List.of(PACKAGE_NAME))).containsExactly(NAME);
   }
@@ -45,7 +48,9 @@ class InvalidJavaBeanCheckTest extends ClassMemberTrees {
                 member(typedMethod(IS_ACTIVE, BOOLEAN), PUBLIC),
                 member(typedSetter(SET_ACTIVE, BOOLEAN), PUBLIC),
                 member(typedField("cache", INT), PRIVATE, STATIC),
-                member(typedField("scratch", INT), PRIVATE, TRANSIENT)));
+                member(typedField("scratch", INT), PRIVATE, TRANSIENT)
+            )
+        );
 
     assertThat(bean(root, List.of(PACKAGE_NAME))).isEmpty();
   }
@@ -74,8 +79,13 @@ class InvalidJavaBeanCheckTest extends ClassMemberTrees {
                             DECLARATOR,
                             LINE,
                             COLUMN,
-                            node(VARIABLE_DECLARATOR_ID, LINE, COLUMN, ident("loose")))),
-                    PRIVATE)));
+                            node(VARIABLE_DECLARATOR_ID, LINE, COLUMN, ident("loose"))
+                        )
+                    ),
+                    PRIVATE
+                )
+            )
+        );
     final SyntaxNode otherPackage =
         packageUnit(OTHER_PACKAGE, classNamed(CUSTOMER, member(field(NAME), PRIVATE)));
 
@@ -86,6 +96,7 @@ class InvalidJavaBeanCheckTest extends ClassMemberTrees {
 
   private static List<String> bean(final SyntaxNode root, final List<String> packages) {
     return Trees.messages(
-        new InvalidJavaBeanCheck(packages, MESSAGE).check(root, SourceFile.UNKNOWN));
+        new InvalidJavaBeanCheck(packages, MESSAGE).check(root, SourceFile.UNKNOWN)
+    );
   }
 }

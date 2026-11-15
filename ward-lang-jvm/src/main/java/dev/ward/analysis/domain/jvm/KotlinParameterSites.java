@@ -15,7 +15,6 @@ import java.util.Optional;
  * RequestParam} of a handler.
  */
 final class KotlinParameterSites {
-
   private static final String PARAMETER = "parameter";
   private static final String MODIFIER_LIST = "modifierList";
   private static final String ANNOTATION = "annotation";
@@ -73,7 +72,9 @@ final class KotlinParameterSites {
               Optional.empty(),
               annotations,
               List.of(),
-              node.span()));
+              node.span()
+          )
+      );
     }
   }
 

@@ -10,7 +10,6 @@ import java.util.Set;
  * positions of the grammar's parts stay fixed.
  */
 final class JavaFlowSyntax {
-
   private static final int BINARY_PARTS = 3;
   private static final int TERNARY_PARTS = 5;
   private static final int PRIMARY_PARTS = 3;

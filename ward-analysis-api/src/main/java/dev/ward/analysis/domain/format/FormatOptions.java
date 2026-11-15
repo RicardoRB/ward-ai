@@ -10,7 +10,6 @@ import java.util.Map;
  * @param values the values, copied on construction
  */
 public record FormatOptions(Map<String, String> values) {
-
   /**
    * Copies the values.
    *

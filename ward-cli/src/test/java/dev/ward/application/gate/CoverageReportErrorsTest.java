@@ -52,7 +52,8 @@ class CoverageReportErrorsTest {
         CoverageGateFixture.REPORT,
         CoverageGateFixture.NEW,
         true,
-        CoverageGateFixture.entry(FILE, 0, 0, 0, 0));
+        CoverageGateFixture.entry(FILE, 0, 0, 0, 0)
+    );
 
     final GateResult result = fixture.run(0, null, null);
 
@@ -66,7 +67,8 @@ class CoverageReportErrorsTest {
         CoverageGateFixture.REPORT,
         CoverageGateFixture.NEW,
         false,
-        CoverageGateFixture.entry(FILE, HUNDRED, HUNDRED, 0, 0));
+        CoverageGateFixture.entry(FILE, HUNDRED, HUNDRED, 0, 0)
+    );
 
     final GateResult result = fixture.run(SEVENTY, SEVENTY_FIVE, null);
 
@@ -80,7 +82,8 @@ class CoverageReportErrorsTest {
         CoverageGateFixture.REPORT,
         CoverageGateFixture.NEW,
         true,
-        CoverageGateFixture.entry(FILE, HUNDRED, HUNDRED, 0, 0));
+        CoverageGateFixture.entry(FILE, HUNDRED, HUNDRED, 0, 0)
+    );
 
     final GateResult result = fixture.run(SEVENTY, SEVENTY_FIVE, null);
 
@@ -94,7 +97,8 @@ class CoverageReportErrorsTest {
         CoverageGateFixture.REPORT,
         CoverageGateFixture.OLD,
         true,
-        CoverageGateFixture.entry(FILE, HUNDRED, HUNDRED, 0, 0));
+        CoverageGateFixture.entry(FILE, HUNDRED, HUNDRED, 0, 0)
+    );
 
     final GateResult result = fixture.run(SEVENTY, null, 0);
 
@@ -108,7 +112,8 @@ class CoverageReportErrorsTest {
         CoverageGateFixture.REPORT,
         CoverageGateFixture.OLD,
         true,
-        CoverageGateFixture.entry("Cart.java", HUNDRED, HUNDRED, 0, 0));
+        CoverageGateFixture.entry("Cart.java", HUNDRED, HUNDRED, 0, 0)
+    );
     fixture.source("Cart.java", CoverageGateFixture.NEW);
 
     final GateResult result = fixture.run(SEVENTY, null, null);
@@ -143,7 +148,8 @@ class CoverageReportErrorsTest {
         CoverageGateFixture.REPORT,
         CoverageGateFixture.NEW,
         true,
-        CoverageGateFixture.entry("com/secret/Hidden.java", TEN, TEN, 0, 0));
+        CoverageGateFixture.entry("com/secret/Hidden.java", TEN, TEN, 0, 0)
+    );
     try {
       fixture.run(SEVENTY, null, null);
     } finally {

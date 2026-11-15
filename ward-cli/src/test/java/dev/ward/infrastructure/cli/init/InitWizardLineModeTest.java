@@ -45,7 +45,8 @@ class InitWizardLineModeTest {
     Files.writeString(
         root.resolve("pom.xml"),
         "<project><modelVersion>4.0.0</modelVersion><groupId>example</groupId>"
-            + "<artifactId>demo</artifactId><version>1.0.0</version></project>");
+            + "<artifactId>demo</artifactId><version>1.0.0</version></project>"
+    );
     Files.createDirectories(root.resolve(".git/hooks"));
   }
 
@@ -123,7 +124,8 @@ class InitWizardLineModeTest {
     }
     assertThat(configuration.split("\\[checks\\.", -1))
         .hasSize(
-            JavaPresetGates.STANDARD.size() + 1 + STANDARD_PARTIAL_TABLES + WARD_TABLE_SECTIONS);
+            JavaPresetGates.STANDARD.size() + 1 + STANDARD_PARTIAL_TABLES + WARD_TABLE_SECTIONS
+        );
   }
 
   @Test
@@ -136,7 +138,8 @@ class InitWizardLineModeTest {
             "--integration",
             "none",
             "--preset",
-            "strict");
+            "strict"
+        );
 
     assertThat(exit).as(output.toString()).isZero();
     assertThat(output.toString()).doesNotContain("Select an architecture style");
@@ -151,7 +154,8 @@ class InitWizardLineModeTest {
             new ProjectDetector(new FileSystemProjectInspection()),
             Set.of(),
             new InitSetupCatalog(new FakeEnvironmentInspection(), new QualityHookInstaller()),
-            InitFixtures.projectFiles(new PomToolConfigurator(), RuleFileTargetsFixtures.writer()));
+            InitFixtures.projectFiles(new PomToolConfigurator(), RuleFileTargetsFixtures.writer())
+        );
     final CommandLine command = new CommandLine(new InitCommand(service, input));
     command.setOut(new PrintWriter(output, true));
     command.setErr(new PrintWriter(output, true));

@@ -1,6 +1,6 @@
 # Size and complexity rules for Java. Each rule mirrors one Checkstyle 14.3.0 check of the sizes and
 # metrics groups, with the same option names in kebab-case. The standard preset keeps the limits of
-# this repository's config/checkstyle.xml and google_checks.xml; the other defaults are Checkstyle's.
+# this repository's ward-cli/src/test/resources/repository-rules/checkstyle.xml and google_checks.xml; the other defaults are Checkstyle's.
 # The body of each rule is a TOML description of one check; see DeclarativeChecks.
 
 [[rules]]

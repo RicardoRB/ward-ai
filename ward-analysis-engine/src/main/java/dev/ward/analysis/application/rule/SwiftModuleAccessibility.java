@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
  * Upgrade by resolving each use to its declaration through the type index.
  */
 final class SwiftModuleAccessibility {
-
   private static final String SWIFT_SUFFIX = ".swift";
   private static final String QUALIFIER = ".";
 
@@ -42,8 +41,11 @@ final class SwiftModuleAccessibility {
    */
   static List<AnalysisFinding> findings(
       final RuleDefinition rule,
-      final Map<String, FileSummary> summaries,
-      final Function<String, Optional<String>> moduleOf) {
+      final Map<String,
+      FileSummary> summaries,
+      final Function<String,
+      Optional<String>> moduleOf
+  ) {
     final Map<String, List<String>> usersByName = usersByName(summaries);
     final List<AnalysisFinding> findings = new ArrayList<>();
     for (final FileSummary summary : swiftSummaries(summaries)) {
@@ -66,8 +68,11 @@ final class SwiftModuleAccessibility {
       final String declaringPath,
       final String module,
       final String name,
-      final Map<String, List<String>> usersByName,
-      final Function<String, Optional<String>> moduleOf) {
+      final Map<String,
+      List<String>> usersByName,
+      final Function<String,
+      Optional<String>> moduleOf
+  ) {
     final List<String> users =
         usersByName.getOrDefault(lastComponent(name), List.of()).stream()
             .filter(path -> !path.equals(declaringPath))
@@ -82,12 +87,15 @@ final class SwiftModuleAccessibility {
         .flatMap(
             summary ->
                 spelledNames(summary.usedNames()).stream()
-                    .map(name -> Map.entry(name, summary.path())))
+                    .map(name -> Map.entry(name, summary.path()))
+        )
         .collect(
             Collectors.groupingBy(
                 Map.Entry::getKey,
                 HashMap::new,
-                Collectors.mapping(Map.Entry::getValue, Collectors.toList())));
+                Collectors.mapping(Map.Entry::getValue, Collectors.toList())
+            )
+        );
   }
 
   private static Set<String> spelledNames(final Set<String> usedNames) {
@@ -96,7 +104,8 @@ final class SwiftModuleAccessibility {
             name ->
                 name.startsWith(SwiftUnusedDefinitions.CONFORMANCE_PREFIX)
                     ? name.substring(SwiftUnusedDefinitions.CONFORMANCE_PREFIX.length())
-                    : name)
+                    : name
+        )
         .collect(Collectors.toUnmodifiableSet());
   }
 
@@ -113,7 +122,11 @@ final class SwiftModuleAccessibility {
   }
 
   private static AnalysisFinding finding(
-      final RuleDefinition rule, final String path, final String module, final Symbol symbol) {
+      final RuleDefinition rule,
+      final String path,
+      final String module,
+      final Symbol symbol
+  ) {
     return new AnalysisFinding(
         rule.id(),
         rule.severity(),
@@ -126,6 +139,7 @@ final class SwiftModuleAccessibility {
         symbol.span().startLine(),
         symbol.span().startColumn(),
         null,
-        List.of());
+        List.of()
+    );
   }
 }

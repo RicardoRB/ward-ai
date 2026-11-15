@@ -17,4 +17,5 @@ public record DoctorPorts(
     WardConfigurationReader configurationReader,
     BuildToolConfiguration buildTools,
     SwiftToolchainInspection swift,
-    AnalysisRuleSource rules) {}
+    AnalysisRuleSource rules
+) {}

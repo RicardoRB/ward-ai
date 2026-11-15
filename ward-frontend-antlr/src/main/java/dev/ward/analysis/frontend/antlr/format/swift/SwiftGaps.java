@@ -13,7 +13,6 @@ import org.antlr.v4.runtime.Token;
  * or subscript bracket, or after a prefix operator. Other spacing is kept as written.
  */
 final class SwiftGaps {
-
   private static final String COMMA = ",";
   private static final String COLON = ":";
   private static final String DOT = ".";
@@ -89,7 +88,8 @@ final class SwiftGaps {
       final Token previous,
       final Token token,
       final String between,
-      final boolean firstInGroup) {
+      final boolean firstInGroup
+  ) {
     if (firstInGroup) {
       return Document.softLine();
     }
@@ -109,7 +109,11 @@ final class SwiftGaps {
    * @return the gap
    */
   static Document space(
-      final Token before, final Token previous, final Token token, final String between) {
+      final Token before,
+      final Token previous,
+      final Token token,
+      final String between
+  ) {
     return switch (spacing(before, previous, token, between)) {
       case SPACE -> SPACE_DOC;
       case NONE -> EMPTY;
@@ -118,7 +122,11 @@ final class SwiftGaps {
   }
 
   private static Spacing spacing(
-      final Token before, final Token previous, final Token token, final String between) {
+      final Token before,
+      final Token previous,
+      final Token token,
+      final String between
+  ) {
     final Spacing closing = closing(before, previous, token, between);
     if (closing != null) {
       return closing;
@@ -129,7 +137,11 @@ final class SwiftGaps {
 
   /** Spacing that depends on closing brackets, member dots, calls, subscripts and postfix marks. */
   private static Spacing closing(
-      final Token before, final Token previous, final Token token, final String between) {
+      final Token before,
+      final Token previous,
+      final Token token,
+      final String between
+  ) {
     final String prev = previous.getText();
     final String text = token.getText();
     if ((between.isEmpty() && SwiftTokens.isGluedOperator(previous, text))

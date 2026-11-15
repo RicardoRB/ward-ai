@@ -6,7 +6,6 @@ import org.tomlj.TomlParseResult;
 /** Builds one named check from the parameters of a rule body. */
 @FunctionalInterface
 public interface CheckFactory {
-
   /**
    * Builds the check described by {@code toml}.
    *

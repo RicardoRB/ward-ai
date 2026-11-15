@@ -19,12 +19,16 @@ import java.util.Set;
  * @param classNames the simple names of the classes the file defines
  */
 record PythonDeclarations(
-    Map<String, SyntaxNode> nodes,
-    Map<String, SyntaxNode> annotations,
-    Map<String, SyntaxNode> initializers,
-    Map<String, SyntaxNode> functions,
-    Set<String> classNames) {
-
+    Map<String,
+    SyntaxNode> nodes,
+    Map<String,
+    SyntaxNode> annotations,
+    Map<String,
+    SyntaxNode> initializers,
+    Map<String,
+    SyntaxNode> functions,
+    Set<String> classNames
+) {
   private static final String COMMENT = PythonTypeKinds.COMMENT;
   private static final String EQUALS = "=";
   private static final int ANNOTATION_INDEX = 2;
@@ -38,7 +42,12 @@ record PythonDeclarations(
   static PythonDeclarations of(final SyntaxNode tree) {
     final PythonDeclarations found =
         new PythonDeclarations(
-            new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashSet<>());
+            new HashMap<>(),
+            new HashMap<>(),
+            new HashMap<>(),
+            new HashMap<>(),
+            new HashSet<>()
+        );
     collect(tree, found);
     return found;
   }
@@ -85,7 +94,10 @@ record PythonDeclarations(
   }
 
   private static void indexAnnotated(
-      final SyntaxNode target, final List<SyntaxNode> annassign, final PythonDeclarations found) {
+      final SyntaxNode target,
+      final List<SyntaxNode> annassign,
+      final PythonDeclarations found
+  ) {
     plainName(target)
         .ifPresent(
             name -> {
@@ -93,7 +105,8 @@ record PythonDeclarations(
               if (annassign.size() == ANNASSIGN_WITH_VALUE) {
                 found.initializers().put(startKey(name), annassign.get(ANNASSIGN_WITH_VALUE - 1));
               }
-            });
+            }
+        );
   }
 
   private static java.util.Optional<SyntaxNode> plainName(final SyntaxNode node) {

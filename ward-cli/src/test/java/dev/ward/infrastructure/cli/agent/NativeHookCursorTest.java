@@ -37,12 +37,15 @@ class NativeHookCursorTest {
   @Test
   void failingChecksAfterAWriteReachTheAgentAsAdditionalContext() {
     assertThat(
-            hook.run(
-                1,
-                tool(
-                    "postToolUse",
-                    "Write",
-                    "{\"file_path\":\"" + root.resolve("src/A.java") + "\",\"content\":\"x\"}")))
+        hook.run(
+            1,
+            tool(
+                "postToolUse",
+                "Write",
+                "{\"file_path\":\"" + root.resolve("src/A.java") + "\",\"content\":\"x\"}"
+            )
+        )
+    )
         .isZero();
     assertThat(hook.out.toString())
         .startsWith("{\"additional_context\":")
@@ -53,11 +56,13 @@ class NativeHookCursorTest {
   @Test
   void failingChecksAtStopSubmitAFollowUpOnce() {
     assertThat(
-            hook.run(1, "{\"hook_event_name\":\"stop\",\"status\":\"completed\",\"loop_count\":0}"))
+        hook.run(1, "{\"hook_event_name\":\"stop\",\"status\":\"completed\",\"loop_count\":0}")
+    )
         .isZero();
     assertThat(hook.out.toString()).startsWith("{\"followup_message\":");
     assertThat(
-            hook.run(1, "{\"hook_event_name\":\"stop\",\"status\":\"completed\",\"loop_count\":1}"))
+        hook.run(1, "{\"hook_event_name\":\"stop\",\"status\":\"completed\",\"loop_count\":1}")
+    )
         .isZero();
     assertThat(hook.out.toString()).isEmpty();
     assertThat(hook.err.toString()).contains("Ward quality findings");

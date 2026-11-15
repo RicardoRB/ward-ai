@@ -16,7 +16,6 @@ import java.util.Set;
  * @param sites the flow sites of the parameters
  */
 record PythonParameters(List<VariableAccess> accesses, List<FlowSite> sites) {
-
   /** The parameters of a module or a class, which has none. */
   static final PythonParameters NONE = new PythonParameters(List.of(), List.of());
 
@@ -60,7 +59,8 @@ record PythonParameters(List<VariableAccess> accesses, List<FlowSite> sites) {
         PythonSyntax.text(PythonSyntax.tokens(name).get(0)),
         AccessKind.PARAMETER,
         name.span(),
-        name.span());
+        name.span()
+    );
   }
 
   /** The parameter names of a parameter list, skipping the defaults and annotations. */

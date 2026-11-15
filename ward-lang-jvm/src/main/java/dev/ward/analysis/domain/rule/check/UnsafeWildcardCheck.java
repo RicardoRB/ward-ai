@@ -18,7 +18,6 @@ import java.util.Set;
  * clauses, {@code return null} and casts of {@code null}.
  */
 public final class UnsafeWildcardCheck implements RuleCheck {
-
   private static final String TYPE_TYPE = "typeType";
   private static final String DECLARATOR = "variableDeclarator";
   private static final String NULL = "null";
@@ -49,7 +48,9 @@ public final class UnsafeWildcardCheck implements RuleCheck {
                 "localVariableDeclaration",
                 "classDeclaration",
                 "statement",
-                "expression"))) {
+                "expression"
+            )
+        )) {
       found.addAll(look(visit, types));
     }
     return List.copyOf(found);
@@ -84,7 +85,8 @@ public final class UnsafeWildcardCheck implements RuleCheck {
                   if (FIELD.equals(node.kind())) {
                     found.add(CheckSupport.at(type.get().span(), message));
                   }
-                });
+                }
+            );
       }
     }
     return found;
@@ -101,7 +103,8 @@ public final class UnsafeWildcardCheck implements RuleCheck {
             child ->
                 "typeList".equals(child.kind())
                     ? child.children().stream()
-                    : java.util.stream.Stream.of(child))
+                    : java.util.stream.Stream.of(child)
+        )
         .filter(child -> TYPE_TYPE.equals(child.kind()) && types.unsafe(child))
         .map(child -> CheckSupport.at(child.span(), message))
         .toList();

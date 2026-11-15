@@ -30,7 +30,9 @@ final class ReportBindingsModule {
 
   @Provides
   static LineCoverageReport lineCoverageReport(
-      final JacocoXmlLineCoverage jacoco, final LcovLineCoverage lcov) {
+      final JacocoXmlLineCoverage jacoco,
+      final LcovLineCoverage lcov
+  ) {
     return new DetectedLineCoverage(List.of(jacoco, lcov));
   }
 
@@ -40,7 +42,8 @@ final class ReportBindingsModule {
       final StrykerJsonMutationReport stryker,
       final PitXmlMutationReport pit,
       final MutmutMetaMutationReport mutmut,
-      final PlatformGatePorts swift) {
+      final PlatformGatePorts swift
+  ) {
     return new GateReportPorts(directories, stryker, pit, mutmut, swift);
   }
 
@@ -49,7 +52,8 @@ final class ReportBindingsModule {
       final SimctlSimulators simulators,
       final LlvmCovCoverageReport llvmCov,
       final XccovCoverageReport xccov,
-      final AndroidJacocoCoverageReport android) {
+      final AndroidJacocoCoverageReport android
+  ) {
     return new PlatformGatePorts(simulators, llvmCov, xccov, android);
   }
 }

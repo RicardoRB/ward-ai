@@ -18,7 +18,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class ScopeViewTest {
-
   private static final int POS_0 = 0;
   private static final int POS_1 = 1;
   private static final int POS_5 = 5;
@@ -41,11 +40,23 @@ class ScopeViewTest {
   private static UnitScopes imports() {
     final ScopeBuilder builder = new ScopeBuilder(span(POS_0, POS_100), ClassScopes.VISIBLE);
     builder.declareImport(
-        "c", span(POS_20, POS_21), new ImportOrigin("a.b", "c", span(POS_0, POS_30)), Set.of());
+        "c",
+        span(POS_20, POS_21),
+        new ImportOrigin("a.b", "c", span(POS_0, POS_30)),
+        Set.of()
+    );
     builder.declareImport(
-        "other", span(POS_24, POS_29), new ImportOrigin("a.b", "e", span(POS_0, POS_30)), Set.of());
+        "other",
+        span(POS_24, POS_29),
+        new ImportOrigin("a.b", "e", span(POS_0, POS_30)),
+        Set.of()
+    );
     builder.declareImport(
-        "ext", span(POS_50, POS_53), new ImportOrigin("lib", "x", span(POS_40, POS_60)), Set.of());
+        "ext",
+        span(POS_50, POS_53),
+        new ImportOrigin("lib", "x", span(POS_40, POS_60)),
+        Set.of()
+    );
     return builder.build();
   }
 
@@ -56,9 +67,13 @@ class ScopeViewTest {
         List.of(),
         List.of(
             new DependencyEdge(
-                "m.py", "a/b.py", new Reference("from:0:a.b:c", span(POS_0, POS_30))),
-            new DependencyEdge(
-                "m.py", "a/b.py", new Reference("from:0:a.b:e", span(POS_0, POS_30)))));
+                "m.py",
+                "a/b.py",
+                new Reference("from:0:a.b:c", span(POS_0, POS_30))
+            ),
+            new DependencyEdge("m.py", "a/b.py", new Reference("from:0:a.b:e", span(POS_0, POS_30)))
+        )
+    );
   }
 
   @Test
@@ -97,7 +112,8 @@ class ScopeViewTest {
         new DependencyView(
             List.of(new FileSummary("A.java", List.of(), List.of(), List.of(nested))),
             List.of(),
-            List.of());
+            List.of()
+        );
 
     final ScopeView view = ScopeView.of(UnitScopes.EMPTY, dependencies, NoScopes.INSTANCE);
 

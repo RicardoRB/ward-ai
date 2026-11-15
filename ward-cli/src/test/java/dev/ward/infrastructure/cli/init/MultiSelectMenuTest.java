@@ -19,11 +19,13 @@ class MultiSelectMenuTest {
   @Test
   void togglesItemsAndConfirmsSelection() {
     assertThat(
-            menu.select(
-                "Choose",
-                List.of("first", "second"),
-                script(' ', ESCAPE, '[', 'B', ' ', '\n'),
-                output()))
+        menu.select(
+            "Choose",
+            List.of("first", "second"),
+            script(' ', ESCAPE, '[', 'B', ' ', '\n'),
+            output()
+        )
+    )
         .containsExactly(0, 1);
     assertThat(rendered.toString()).contains("[x] 1) first", "[x] 2) second");
   }
@@ -31,8 +33,13 @@ class MultiSelectMenuTest {
   @Test
   void cursorWrapsFromFirstToLast() {
     assertThat(
-            menu.select(
-                "Choose", List.of("first", "last"), script(ESCAPE, '[', 'A', ' ', '\n'), output()))
+        menu.select(
+            "Choose",
+            List.of("first", "last"),
+            script(ESCAPE, '[', 'A', ' ', '\n'),
+            output()
+        )
+    )
         .containsExactly(1);
   }
 
@@ -49,12 +56,14 @@ class MultiSelectMenuTest {
   @Test
   void emptySelectionShowsTheMessageAndKeepsTheMenuOpen() {
     assertThat(
-            menu.select(
-                "Choose",
-                List.of("one", "two"),
-                "Select at least one integration, or choose none.",
-                script(ESCAPE, '[', 'B', '\n', ' ', '\n'),
-                output()))
+        menu.select(
+            "Choose",
+            List.of("one", "two"),
+            "Select at least one integration, or choose none.",
+            script(ESCAPE, '[', 'B', '\n', ' ', '\n'),
+            output()
+        )
+    )
         .containsExactly(1);
     assertThat(rendered.toString())
         .contains("Select at least one integration, or choose none.", "> [x] 2) two");
@@ -76,7 +85,8 @@ class MultiSelectMenuTest {
         List.of("one", "two"),
         "Select at least one item.",
         script(ESCAPE, '[', 'B', '\n', ' ', '\n'),
-        output());
+        output()
+    );
 
     final String screen = rendered.toString();
     assertThat(screen).doesNotContain("\033[2J");

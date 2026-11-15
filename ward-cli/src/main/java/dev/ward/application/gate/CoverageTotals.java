@@ -15,7 +15,6 @@ import java.util.Map;
  * @param branches the covered and coverable branches
  */
 record CoverageTotals(LineCoverage lines, LineCoverage branches) {
-
   /**
    * Sums the reports. A file is told apart by the module directory of its report and its name, and
    * a line that any report covers is covered. shortcut: a configured report outside every module
@@ -42,7 +41,9 @@ record CoverageTotals(LineCoverage lines, LineCoverage branches) {
       coveredBranches += lines.coveredBranchCount();
     }
     return new CoverageTotals(
-        LineCoverage.of(covered, coverable), LineCoverage.of(coveredBranches, branches));
+        LineCoverage.of(covered, coverable),
+        LineCoverage.of(coveredBranches, branches)
+    );
   }
 
   private static String module(final List<Path> modules, final Path report) {

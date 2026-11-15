@@ -11,7 +11,6 @@ import java.util.Set;
  * same class, with the lock held. Lambda bodies and nested class bodies are not entered.
  */
 final class AccessWalker {
-
   private static final Set<String> STOPS = Set.of("classBody", "lambdaExpression");
   private static final String METHOD_CALL = "methodCall";
   private static final String EXPRESSION = "expression";
@@ -64,7 +63,9 @@ final class AccessWalker {
   }
 
   private static FieldAccessScan.Lock held(
-      final FieldAccessScan.Lock outer, final SyntaxNode statement) {
+      final FieldAccessScan.Lock outer,
+      final SyntaxNode statement
+  ) {
     final boolean self =
         "this".equals(SyntaxWalk.text(statement.children().get(SYNCHRONIZED_LOCK)));
     return self || outer == FieldAccessScan.Lock.THIS
@@ -90,7 +91,8 @@ final class AccessWalker {
       final SyntaxNode node,
       final SyntaxNode wrapper,
       final SyntaxNode outer,
-      final Site site) {
+      final Site site
+  ) {
     final FieldAccessScan.Field field = fields.get(name);
     if (field != null && !site.shadow().contains(name)) {
       final AccessShape shape = AccessShape.of(wrapper, outer, name);
@@ -102,7 +104,9 @@ final class AccessWalker {
               shape.arithmetic(),
               shape.receiver(),
               site.lock(),
-              site.method()));
+              site.method()
+          )
+      );
     }
   }
 
@@ -127,7 +131,7 @@ final class AccessWalker {
             && EXPRESSION.equals(parent.kind())
             && (parent.children().size() == 1
                 || parent.children().size() == BINARY_PARTS
-                    && "this".equals(SyntaxWalk.text(parent.children().get(0))));
+                && "this".equals(SyntaxWalk.text(parent.children().get(0))));
     final String name = JavaNodes.kid(node, "identifier").map(SyntaxWalk::text).orElse("");
     if (own && !name.isEmpty()) {
       graph.call(name, site.method(), site.lock());

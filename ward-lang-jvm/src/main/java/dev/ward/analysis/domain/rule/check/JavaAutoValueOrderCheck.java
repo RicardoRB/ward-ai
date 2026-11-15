@@ -21,7 +21,6 @@ import java.util.regex.Pattern;
  * names that are not exactly the property names, are left alone.
  */
 public final class JavaAutoValueOrderCheck implements RuleCheck {
-
   private static final String SIMPLE_ANNOTATION = "@AutoValue";
   private static final String PREFIX = "AutoValue_";
   private static final String AUTO_VALUE = "com.google.auto.value.AutoValue";
@@ -54,7 +53,10 @@ public final class JavaAutoValueOrderCheck implements RuleCheck {
   }
 
   private static Optional<SyntaxNode> reordered(
-      final SyntaxWalk.Visit visit, final Map<String, List<String>> properties) {
+      final SyntaxWalk.Visit visit,
+      final Map<String,
+      List<String>> properties
+  ) {
     final String created =
         JavaNodes.kid(visit.node(), "createdName").map(SyntaxWalk::text).orElse("");
     final List<SyntaxNode> up = visit.ancestors();
@@ -111,7 +113,7 @@ public final class JavaAutoValueOrderCheck implements RuleCheck {
   private static boolean isAutoValue(final String annotation, final Set<String> imports) {
     return ("@" + AUTO_VALUE).equals(annotation)
         || SIMPLE_ANNOTATION.equals(annotation)
-            && JavaAnnotations.resolves(imports, "AutoValue", AUTO_VALUE);
+        && JavaAnnotations.resolves(imports, "AutoValue", AUTO_VALUE);
   }
 
   /** The AutoValue property names of a class: its abstract accessors, in order. */

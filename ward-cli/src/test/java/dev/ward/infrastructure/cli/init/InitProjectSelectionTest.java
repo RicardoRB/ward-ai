@@ -50,7 +50,8 @@ class InitProjectSelectionTest {
   void moduleNamedAsProjectFailsAndNamesTheAggregator() throws IOException {
     write(
         API + "/pom.xml",
-        POM.replace("</project>", "<modules><module>core</module></modules></project>"));
+        POM.replace("</project>", "<modules><module>core</module></modules></project>")
+    );
     write(API + "/core/pom.xml", POM);
     final Map<String, String> before = ProjectSnapshot.of(root);
 

@@ -34,7 +34,11 @@ final class AnnotationSourceValues {
   }
 
   private static void read(
-      final SyntaxNode annotation, final TypeScope scope, final Map<String, List<String>> into) {
+      final SyntaxNode annotation,
+      final TypeScope scope,
+      final Map<String,
+      List<String>> into
+  ) {
     final String name =
         Syntax.child(annotation, "qualifiedName")
             .map(written -> JavaModifiers.annotationName(Syntax.text(written), scope))
@@ -48,11 +52,15 @@ final class AnnotationSourceValues {
               final List<String> found = new ArrayList<>();
               Syntax.child(pair, VALUE).ifPresent(value -> collect(value, scope, found));
               into.computeIfAbsent(name + "#" + element, key -> new ArrayList<>()).addAll(found);
-            });
+            }
+        );
   }
 
   private static void collect(
-      final SyntaxNode value, final TypeScope scope, final List<String> into) {
+      final SyntaxNode value,
+      final TypeScope scope,
+      final List<String> into
+  ) {
     final List<SyntaxNode> nested = Syntax.children(value, VALUE);
     if (!nested.isEmpty() || Syntax.hasToken(value, "{")) {
       nested.forEach(inner -> collect(inner, scope, into));

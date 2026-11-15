@@ -16,7 +16,6 @@ import java.util.Set;
  * reported.
  */
 public final class PrivateSecurityContractProtoAccessCheck extends FactsCheck {
-
   private static final String TYPES_PACKAGE = "com.google.common.html.types";
   private static final String PRIVATE = "PrivateDoNotAccessOrElse";
   private static final String EXPRESSION = "expression";
@@ -28,7 +27,8 @@ public final class PrivateSecurityContractProtoAccessCheck extends FactsCheck {
           TYPES_PACKAGE + ".TrustedResourceUrlProto",
           TYPES_PACKAGE + ".SafeScriptProto",
           TYPES_PACKAGE + ".SafeStyleProto",
-          TYPES_PACKAGE + ".SafeStyleSheetProto");
+          TYPES_PACKAGE + ".SafeStyleSheetProto"
+      );
   private static final FactNeed NEED = new FactNeed(Set.of(EXPRESSION), Set.of(FactKind.CALL));
 
   private final String message;

@@ -21,7 +21,8 @@ final class JavaFileScan {
           "interfaceDeclaration",
           "enumDeclaration",
           "recordDeclaration",
-          "annotationTypeDeclaration");
+          "annotationTypeDeclaration"
+      );
   private static final Set<String> TYPE_POSITIONS =
       Set.of("typeType", "createdName", "expression", "qualifiedName");
   private static final String STATIC_KEYWORD = "static";

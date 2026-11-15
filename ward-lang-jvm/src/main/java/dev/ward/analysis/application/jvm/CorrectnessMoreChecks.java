@@ -15,7 +15,6 @@ import java.util.Map;
  * The checks of the SpotBugs correctness rules over array types, instanceof tests and parameters.
  */
 final class CorrectnessMoreChecks {
-
   private static final String MESSAGE = "message";
 
   private CorrectnessMoreChecks() {}
@@ -25,7 +24,8 @@ final class CorrectnessMoreChecks {
     return Map.ofEntries(
         entry(
             "redundant-instanceof",
-            toml -> new RedundantInstanceofCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new RedundantInstanceofCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "array-equals",
             toml ->
@@ -33,13 +33,19 @@ final class CorrectnessMoreChecks {
                     ArrayEqualsCheck.Mismatch.valueOf(
                         TomlValues.required(toml, "mismatch")
                             .replace('-', '_')
-                            .toUpperCase(Locale.ROOT)),
-                    TomlValues.required(toml, MESSAGE))),
+                            .toUpperCase(Locale.ROOT)
+                    ),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "vararg-primitive-array",
-            toml -> new VarargPrimitiveArrayCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new VarargPrimitiveArrayCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "overwritten-parameter",
-            toml -> new OverwrittenParameterCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new OverwrittenParameterCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 }

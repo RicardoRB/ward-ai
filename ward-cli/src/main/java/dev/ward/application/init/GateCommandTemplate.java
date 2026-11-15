@@ -9,7 +9,6 @@ import java.util.List;
  * Writes the {@code uses} and {@code command} keys of a gate in the generated {@code ward.toml}.
  */
 final class GateCommandTemplate {
-
   private GateCommandTemplate() {}
 
   /**

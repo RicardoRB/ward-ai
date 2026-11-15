@@ -81,7 +81,7 @@ final class JsonTree {
         case '\t' -> out.append("\\t");
         default -> {
           if (character < CONTROL_LIMIT) {
-            out.append(String.format("\\u%04x", (int) character));
+            out.append(String.format("\\u%04x", (int)character));
           } else {
             out.append(character);
           }

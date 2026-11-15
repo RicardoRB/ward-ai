@@ -29,7 +29,8 @@ public final class PublicInNonPublicCheck implements UnitCheck {
           "enumDeclaration",
           "recordDeclaration",
           "interfaceDeclaration",
-          "annotationTypeDeclaration");
+          "annotationTypeDeclaration"
+      );
   private static final Set<String> INTERFACES =
       Set.of("interfaceDeclaration", "annotationTypeDeclaration");
   private static final Set<String> WRAPPERS = Set.of("typeDeclaration", MEMBER, INTERFACE_MEMBER);
@@ -50,7 +51,8 @@ public final class PublicInNonPublicCheck implements UnitCheck {
   public List<RuleMatch> check(final SyntaxNode root, final SourceFile file) {
     return SyntaxWalk.visits(root, Set.of(MEMBER, COMPACT)).stream()
         .filter(
-            visit -> MemberDeclarations.modifiers(visit.node()).contains(MemberDeclarations.PUBLIC))
+            visit -> MemberDeclarations.modifiers(visit.node()).contains(MemberDeclarations.PUBLIC)
+        )
         .filter(visit -> !exempt(visit.node()) && !isRecord(visit.node()))
         .filter(visit -> hiddenType(visit.ancestors()))
         .map(visit -> CheckSupport.at(publicModifier(visit.node()).span(), message))

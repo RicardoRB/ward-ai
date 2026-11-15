@@ -44,13 +44,15 @@ public final class RuleOptions {
         rule.category(),
         rule.presets(),
         rule.options(),
-        rule.minJavaRelease());
+        rule.minJavaRelease()
+    );
   }
 
   private static RuleOption declared(final RuleDefinition rule, final String name) {
     return rule.option(name)
         .orElseThrow(
-            () -> new IllegalArgumentException("unknown option '" + name + "' of " + rule.id()));
+            () -> new IllegalArgumentException("unknown option '" + name + "' of " + rule.id())
+        );
   }
 
   private static String substitute(final String body, final String key, final Object value) {

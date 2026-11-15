@@ -14,14 +14,23 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class BiomeNoRedundantRolesCheckTest {
-
   private static final AriaRoleTable TABLE =
       new AriaRoleTable(
           Map.of(
               "banner",
               new AriaRoleTable.AriaRoleRow(
-                  "banner", false, Set.of(), false, true, true, false, Set.of(), Set.of(), Set.of(),
-                  Set.of()),
+                  "banner",
+                  false,
+                  Set.of(),
+                  false,
+                  true,
+                  true,
+                  false,
+                  Set.of(),
+                  Set.of(),
+                  Set.of(),
+                  Set.of()
+              ),
               "navigation",
               new AriaRoleTable.AriaRoleRow(
                   "navigation",
@@ -34,12 +43,16 @@ class BiomeNoRedundantRolesCheckTest {
                   Set.of(),
                   Set.of(),
                   Set.of(),
-                  Set.of())),
+                  Set.of()
+              )
+          ),
           AriaTableParser.parseImplicit(
-              List.of("nav\t-\tnavigation", "div\t-\tgeneric", "img\talt-blank\tpresentation")),
+              List.of("nav\t-\tnavigation", "div\t-\tgeneric", "img\talt-blank\tpresentation")
+          ),
           Map.of(),
           Map.of(),
-          Map.of());
+          Map.of()
+      );
   private static final BiomeNoRedundantRolesCheck CHECK =
       new BiomeNoRedundantRolesCheck(TABLE, "message");
 

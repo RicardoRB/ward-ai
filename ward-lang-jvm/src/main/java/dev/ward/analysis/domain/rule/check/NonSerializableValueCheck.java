@@ -27,7 +27,6 @@ import java.util.Set;
  * which is Serializable; any type that is not fully known is let through.
  */
 public final class NonSerializableValueCheck implements RuleCheck {
-
   private static final String EXPRESSION = "expression";
   private static final String SERIALIZABLE = "java.io.Serializable";
   private static final String TRANSIENT = "transient";
@@ -37,7 +36,8 @@ public final class NonSerializableValueCheck implements RuleCheck {
   private static final FactNeed NEED =
       new FactNeed(
           Set.of(EXPRESSION),
-          Set.of(FactKind.CALL, FactKind.TYPE, FactKind.MEMBERS, FactKind.SHAPE));
+          Set.of(FactKind.CALL, FactKind.TYPE, FactKind.MEMBERS, FactKind.SHAPE)
+      );
 
   private final boolean session;
   private final String message;
@@ -69,7 +69,8 @@ public final class NonSerializableValueCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     if (session) {
       sessionStores(root, types, matches);
@@ -80,7 +81,10 @@ public final class NonSerializableValueCheck implements RuleCheck {
   }
 
   private void sessionStores(
-      final SyntaxNode root, final UnitTypeFacts types, final List<RuleMatch> matches) {
+      final SyntaxNode root,
+      final UnitTypeFacts types,
+      final List<RuleMatch> matches
+  ) {
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(EXPRESSION))) {
       final Optional<CallTarget> target = types.callTarget(visit.node().span());
       final List<SyntaxNode> arguments = CallArgumentShapes.arguments(visit.node());
@@ -95,7 +99,10 @@ public final class NonSerializableValueCheck implements RuleCheck {
   }
 
   private void fieldStores(
-      final SyntaxNode root, final UnitTypeFacts types, final List<RuleMatch> matches) {
+      final SyntaxNode root,
+      final UnitTypeFacts types,
+      final List<RuleMatch> matches
+  ) {
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(MemberDeclarations.CLASS))) {
       final SyntaxNode clazz = visit.node();
       if (!ClassHeaders.implementsSerializable(clazz)) {

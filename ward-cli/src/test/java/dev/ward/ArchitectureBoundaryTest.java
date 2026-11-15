@@ -29,22 +29,26 @@ class ArchitectureBoundaryTest {
           "org.tomlj.",
           "org.apache.fory.",
           "javax.xml.",
-          "org.w3c.dom.");
+          "org.w3c.dom."
+      );
 
   @ArchTest
   static void domainDoesNotDependOnOuterLayersOrExternalEffectImplementations(
-      final JavaClasses classes) {
+      final JavaClasses classes
+  ) {
     assertNoDependencies(
         classes,
         "dev.ward.domain..",
         target ->
             DOMAIN_FORBIDDEN_PACKAGES.stream().anyMatch(target::startsWith)
-                || isInnerLayerExternalEffectApi(target));
+                || isInnerLayerExternalEffectApi(target)
+    );
   }
 
   @ArchTest
   static void applicationDoesNotDependOnInfrastructureOrPerformExternalEffects(
-      final JavaClasses classes) {
+      final JavaClasses classes
+  ) {
     assertNoDependencies(
         classes,
         "dev.ward.application..",
@@ -56,25 +60,31 @@ class ArchitectureBoundaryTest {
                 || target.startsWith("org.tomlj.")
                 || target.startsWith("org.apache.fory.")
                 || target.startsWith("javax.xml.")
-                || target.startsWith("org.w3c.dom."));
+                || target.startsWith("org.w3c.dom.")
+    );
   }
 
   @ArchTest
   static void cliAdaptersDoNotDependOnOutboundAdaptersOrPerformFilesystemOrProcessWork(
-      final JavaClasses classes) {
+      final JavaClasses classes
+  ) {
     assertNoDependencies(
         classes,
         "dev.ward.infrastructure.cli..",
         target ->
             (target.startsWith("dev.ward.infrastructure.")
-                    && !target.startsWith("dev.ward.infrastructure.cli."))
-                || isCliExternalEffectApi(target));
+                && !target.startsWith("dev.ward.infrastructure.cli."))
+                || isCliExternalEffectApi(target)
+    );
   }
 
   @ArchTest
   static void springIsAbsentFromProductionDependencies(final JavaClasses classes) {
     assertNoDependencies(
-        classes, "dev.ward..", target -> target.startsWith("org.springframework."));
+        classes,
+        "dev.ward..",
+        target -> target.startsWith("org.springframework.")
+    );
     assertThat(System.getProperty("java.class.path")).doesNotContain("spring");
   }
 

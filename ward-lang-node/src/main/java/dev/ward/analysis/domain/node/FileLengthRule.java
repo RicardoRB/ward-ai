@@ -14,7 +14,6 @@ import java.util.List;
  * @param limit the largest allowed number of lines
  */
 public record FileLengthRule(RuleDefinition definition, int limit) implements CompiledRule {
-
   @Override
   public List<RuleMatch> matches(final SyntaxNode root) {
     final int lines = SyntaxTrees.lastLine(SyntaxTrees.withoutErrors(root));
@@ -22,6 +21,7 @@ public record FileLengthRule(RuleDefinition definition, int limit) implements Co
       return List.of();
     }
     return List.of(
-        new RuleMatch(root.span(), "File has " + lines + " lines (limit " + limit + ")"));
+        new RuleMatch(root.span(), "File has " + lines + " lines (limit " + limit + ")")
+    );
   }
 }

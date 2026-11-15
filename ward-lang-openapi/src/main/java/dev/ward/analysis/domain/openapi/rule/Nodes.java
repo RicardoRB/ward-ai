@@ -12,7 +12,6 @@ import java.util.Set;
 
 /** Walks the nodes of a document the way a JSONPath does: each with the key it sits under. */
 final class Nodes {
-
   private Nodes() {}
 
   /** A node and the key, or the index, it is written under; the root has an empty key. */
@@ -35,7 +34,10 @@ final class Nodes {
   }
 
   private static List<Located> walk(
-      final OpenApiDocument document, final DocNode start, final boolean follow) {
+      final OpenApiDocument document,
+      final DocNode start,
+      final boolean follow
+  ) {
     final List<Located> found = new ArrayList<>();
     final Set<DocNode> seen = Collections.newSetFromMap(new IdentityHashMap<>());
     final Deque<Located> stack = new ArrayDeque<>();
@@ -64,14 +66,17 @@ final class Nodes {
       final OpenApiDocument document,
       final DocNode node,
       final List<String> path,
-      final boolean follow) {
+      final boolean follow
+  ) {
     final List<Located> children = new ArrayList<>();
     for (final DocNode.Entry entry : node.entries()) {
       children.add(
           new Located(
               entry.key(),
               follow ? document.resolve(entry.value()) : entry.value(),
-              extend(path, entry.key())));
+              extend(path, entry.key())
+          )
+      );
     }
     for (int index = 0; index < node.items().size(); index++) {
       final DocNode item = node.items().get(index);
@@ -79,14 +84,19 @@ final class Nodes {
           new Located(
               Integer.toString(index),
               follow ? document.resolve(item) : item,
-              extend(path, Integer.toString(index))));
+              extend(path, Integer.toString(index))
+          )
+      );
     }
     return children;
   }
 
   /** The nodes below {@code start}, itself excluded, written under {@code key}. */
   static List<DocNode> named(
-      final OpenApiDocument document, final DocNode start, final String key) {
+      final OpenApiDocument document,
+      final DocNode start,
+      final String key
+  ) {
     return resolved(document, start).stream()
         .filter(located -> !located.node().equals(document.resolve(start)))
         .filter(located -> key.equals(located.key()))

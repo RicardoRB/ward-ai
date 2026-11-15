@@ -1,6 +1,6 @@
 # Coding rules for Java. Each rule mirrors one Checkstyle 14.3.0 check of the coding group, with the
 # same option names in kebab-case and Checkstyle's defaults. The standard preset keeps the settings
-# of google_checks.xml and this repository's config/checkstyle.xml, so presets follow that file.
+# of google_checks.xml and this repository's ward-cli/src/test/resources/repository-rules/checkstyle.xml, so presets follow that file.
 
 [[rules]]
 id = "ward:java/package-declaration"

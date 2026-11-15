@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
 
 /** Reads the classes a module declares at its top level: header, metaclass and members. */
 final class PythonClassInfos {
-
   private static final Pattern METACLASS_KEYWORD = Pattern.compile("metaclass=(.+)$");
   private static final Pattern ABC_METACLASS = Pattern.compile("^(?:abc\\.)?ABCMeta$");
   private static final Pattern HEADER = Pattern.compile("^(?:async)?class\\w+\\(([^)]*)\\)");
@@ -42,7 +41,13 @@ final class PythonClassInfos {
     final Set<String> attributes = new HashSet<>(FunctionBodies.assignedNames(definition));
     attributes.addAll(nestedClassNames(definition));
     return new PythonClassModel.ClassInfo(
-        name, definition, bases, abcMetaclass, methods, attributes);
+        name,
+        definition,
+        bases,
+        abcMetaclass,
+        methods,
+        attributes
+    );
   }
 
   /** Adds the positional bases, and reports whether the metaclass keyword is ABCMeta. */
@@ -75,7 +80,10 @@ final class PythonClassInfos {
 
   /** Collects the functions defined directly in a class body, not in nested scopes. */
   private static void collectMethods(
-      final SyntaxNode scope, final Map<String, PythonClassModel.Method> methods) {
+      final SyntaxNode scope,
+      final Map<String,
+      PythonClassModel.Method> methods
+  ) {
     for (final SyntaxNode child : scope.children()) {
       if (SyntaxKinds.DECORATED.equals(child.kind())) {
         addDecorated(child, methods);
@@ -88,7 +96,10 @@ final class PythonClassInfos {
   }
 
   private static void addDecorated(
-      final SyntaxNode decorated, final Map<String, PythonClassModel.Method> methods) {
+      final SyntaxNode decorated,
+      final Map<String,
+      PythonClassModel.Method> methods
+  ) {
     decoratedDefinition(decorated)
         .ifPresent(inner -> addMethod(inner, decoratorText(decorated, inner), methods));
   }
@@ -111,9 +122,12 @@ final class PythonClassInfos {
   private static void addMethod(
       final SyntaxNode function,
       final String decorators,
-      final Map<String, PythonClassModel.Method> methods) {
+      final Map<String,
+      PythonClassModel.Method> methods
+  ) {
     ModuleDefinitions.definedName(function)
         .ifPresent(
-            name -> methods.put(name, new PythonClassModel.Method(name, function, decorators)));
+            name -> methods.put(name, new PythonClassModel.Method(name, function, decorators))
+        );
   }
 }

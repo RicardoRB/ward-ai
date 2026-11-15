@@ -35,7 +35,10 @@ public final class NodeLicenseMetadata implements LicenseMetadata {
 
   @Override
   public LicenseLookup lookup(
-      final Project project, final String modulePath, final Dependency dependency) {
+      final Project project,
+      final String modulePath,
+      final Dependency dependency
+  ) {
     final String name = dependency.id().name();
     final String version = dependency.id().version();
     String mismatch = null;
@@ -56,21 +59,28 @@ public final class NodeLicenseMetadata implements LicenseMetadata {
     }
     return mismatch == null
         ? LicenseLookup.missing(
-            LicenseLookup.Reason.NOT_INSTALLED, name + " is not installed in node_modules")
+            LicenseLookup.Reason.NOT_INSTALLED,
+            name + " is not installed in node_modules"
+        )
         : LicenseLookup.missing(
             LicenseLookup.Reason.VERSION_MISMATCH,
-            "installed version " + mismatch + " differs from " + version);
+            "installed version " + mismatch + " differs from " + version
+        );
   }
 
   private static List<Path> candidates(
-      final Path modules, final String name, final String version) {
+      final Path modules,
+      final String name,
+      final String version
+  ) {
     return List.of(
         modules.resolve(name),
         modules
             .resolve(".pnpm")
             .resolve(name.replace('/', '+') + "@" + version)
             .resolve(NODE_MODULES)
-            .resolve(name));
+            .resolve(name)
+    );
   }
 
   private Optional<Map<?, ?>> read(final Path file) {
@@ -91,7 +101,9 @@ public final class NodeLicenseMetadata implements LicenseMetadata {
     collect(json.get("licenses"), entries);
     return entries.isEmpty()
         ? LicenseLookup.missing(
-            LicenseLookup.Reason.NO_LICENSE_DECLARED, "package.json declares no license")
+            LicenseLookup.Reason.NO_LICENSE_DECLARED,
+            "package.json declares no license"
+        )
         : LicenseLookup.found(new DeclaredLicense(entries), "package-json");
   }
 

@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.tomlj.TomlParseResult;
 
 class TomlValuesTest {
-
   private static final int COUNT = 3;
   private static final int FALLBACK = 7;
   private static final String BODY =

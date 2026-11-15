@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 class AnnotationReflectionCheckTest {
-
   private static final AnnotationReflectionCheck CHECK = new AnnotationReflectionCheck("message");
   private static final String USE =
       "final class C {\n  boolean t(Class<?> k) {\n    return k.isAnnotationPresent(Marker.class);\n  }\n}\n";
@@ -18,9 +17,11 @@ class AnnotationReflectionCheckTest {
   void aQueryForAnAnnotationThatIsNotKeptAtRunTimeIsReported() {
     assertThat(run("@interface Marker {\n}\n" + USE)).containsExactly("5:14");
     assertThat(
-            run(
-                "@Retention(RetentionPolicy.CLASS)\n@interface Marker {\n}\n"
-                    + USE.replace("isAnnotationPresent", "getAnnotation")))
+        run(
+            "@Retention(RetentionPolicy.CLASS)\n@interface Marker {\n}\n"
+                + USE.replace("isAnnotationPresent", "getAnnotation")
+        )
+    )
         .hasSize(1);
     assertThat(run(USE.replace("Marker", "java.lang.Override"))).hasSize(1);
     assertThat(run(USE.replace("Marker", "SuppressWarnings"))).hasSize(1);

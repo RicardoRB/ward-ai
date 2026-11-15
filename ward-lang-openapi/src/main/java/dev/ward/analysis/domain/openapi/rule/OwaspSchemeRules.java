@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 
 /** The OWASP rules about security schemes: weak schemes, keys in URLs and token lifetime. */
 final class OwaspSchemeRules {
-
   private static final String SCHEMES = "securitySchemes";
   private static final String TYPE = "type";
   private static final Pattern IN_URL = Pattern.compile("^(path|query)\\z");
@@ -31,7 +30,10 @@ final class OwaspSchemeRules {
                       Findings.atValue(
                           value,
                           "Security scheme uses HTTP Basic. Use a more secure authentication"
-                              + " method, like OAuth 2, or OpenID.")));
+                              + " method, like OAuth 2, or OpenID."
+                      )
+                  )
+          );
     }
     return findings;
   }
@@ -51,7 +53,10 @@ final class OwaspSchemeRules {
                           value,
                           "API Key passed in URL: \""
                               + value.text()
-                              + "\" must not match the pattern \"^(path|query)$\".")));
+                              + "\" must not match the pattern \"^(path|query)$\"."
+                      )
+                  )
+          );
     }
     return findings;
   }
@@ -71,7 +76,10 @@ final class OwaspSchemeRules {
                           value,
                           "Authentication scheme is considered outdated or insecure: "
                               + value.text()
-                              + ".")));
+                              + "."
+                      )
+                  )
+          );
     }
     return findings;
   }
@@ -117,7 +125,9 @@ final class OwaspSchemeRules {
                 flow,
                 "Authentication scheme does not appear to support refresh tokens, meaning access"
                     + " tokens likely do not expire.",
-                "refreshUrl"));
+                "refreshUrl"
+            )
+        );
       }
     }
     return findings;

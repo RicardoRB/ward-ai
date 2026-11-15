@@ -45,7 +45,9 @@ final class Overloads {
 
   /** Returns the method called, or empty when none applies or several are equally specific. */
   Optional<Hierarchy.Found<JvmMethod>> select(
-      final List<Hierarchy.Found<JvmMethod>> candidates, final List<Argument> arguments) {
+      final List<Hierarchy.Found<JvmMethod>> candidates,
+      final List<Argument> arguments
+  ) {
     for (int phase = STRICT_PHASE; phase <= VARARGS_PHASE; phase++) {
       final int current = phase;
       final List<Hierarchy.Found<JvmMethod>> applicable =
@@ -60,7 +62,10 @@ final class Overloads {
   }
 
   private boolean applicable(
-      final Hierarchy.Found<JvmMethod> candidate, final List<Argument> arguments, final int phase) {
+      final Hierarchy.Found<JvmMethod> candidate,
+      final List<Argument> arguments,
+      final int phase
+  ) {
     final List<JType> parameters = parameters(candidate);
     final boolean varargs = phase == VARARGS_PHASE;
     final boolean arity =
@@ -111,7 +116,8 @@ final class Overloads {
           parameter.name(),
           parameter.bounds().isEmpty()
               ? JType.ClassType.of(Types.OBJECT)
-              : parameter.bounds().get(0));
+              : parameter.bounds().get(0)
+      );
     }
     return candidate.member().parameters().stream()
         .map(parameter -> Types.substitute(parameter, erased))
@@ -119,7 +125,9 @@ final class Overloads {
   }
 
   private Optional<Hierarchy.Found<JvmMethod>> mostSpecific(
-      final List<Hierarchy.Found<JvmMethod>> applicable, final boolean varargs) {
+      final List<Hierarchy.Found<JvmMethod>> applicable,
+      final boolean varargs
+  ) {
     if (applicable.size() == ONE) {
       return Optional.of(applicable.get(0));
     }
@@ -140,7 +148,8 @@ final class Overloads {
   private boolean moreSpecific(
       final Hierarchy.Found<JvmMethod> first,
       final Hierarchy.Found<JvmMethod> second,
-      final boolean varargs) {
+      final boolean varargs
+  ) {
     final List<JType> left = parameters(first);
     final List<JType> right = parameters(second);
     final int count = Math.max(left.size(), right.size());

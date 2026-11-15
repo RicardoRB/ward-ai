@@ -15,7 +15,6 @@ import java.util.Set;
  * that hold no layout text, such as the manifest and {@code values} files, are not read.
  */
 public final class HardcodedTextCheck implements RuleCheck {
-
   private static final Set<String> ATTRIBUTES = Set.of("text", "hint", "title", "summary", "label");
   private static final Set<String> OTHER_ROOTS =
       Set.of(
@@ -27,7 +26,8 @@ public final class HardcodedTextCheck implements RuleCheck {
           "layer-list",
           "network-security-config",
           "adaptive-icon",
-          "ripple");
+          "ripple"
+      );
   private static final String MESSAGE =
       "Hard-coded text: move it to a string resource and refer to it with @string/.";
 

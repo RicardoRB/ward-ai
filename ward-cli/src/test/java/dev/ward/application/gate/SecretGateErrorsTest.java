@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 
 /** The {@code secrets} gate: SecretGateErrorsTest. */
 final class SecretGateErrorsTest extends SecretGateTestSupport {
-
   @Test
   void aTextFileOverTheLimitIsAnExecutionErrorNamingTheFile() throws IOException {
     writeLarge("big/data.txt");
@@ -30,7 +29,9 @@ final class SecretGateErrorsTest extends SecretGateTestSupport {
     write("locked/key.txt", "x\n");
     final Path file = root.resolve("locked/key.txt");
     Files.setPosixFilePermissions(
-        file, java.util.EnumSet.noneOf(java.nio.file.attribute.PosixFilePermission.class));
+        file,
+        java.util.EnumSet.noneOf(java.nio.file.attribute.PosixFilePermission.class)
+    );
 
     final GateResult result = run(SecretsOptions.NONE, List.of());
 
@@ -53,8 +54,9 @@ final class SecretGateErrorsTest extends SecretGateTestSupport {
     write("fixtures/a.yml", TOKEN_LINE);
 
     assertThat(
-            run(new SecretsOptions(false, Optional.empty(), List.of("fixtures/**")), List.of())
-                .status())
+        run(new SecretsOptions(false, Optional.empty(), List.of("fixtures/**")), List.of())
+            .status()
+    )
         .isEqualTo(GateStatus.PASSED);
   }
 
@@ -64,7 +66,8 @@ final class SecretGateErrorsTest extends SecretGateTestSupport {
     write(CONFIG, TOKEN_LINE);
     write(
         "ward-rules.toml",
-        "version = 1\n[rules.secrets.github-pat]\nexclude-paths = [\"docs/**\"]\n");
+        "version = 1\n[rules.secrets.github-pat]\nexclude-paths = [\"docs/**\"]\n"
+    );
 
     final GateResult result = run(SecretsOptions.NONE, List.of());
 

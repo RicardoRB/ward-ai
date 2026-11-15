@@ -14,12 +14,10 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class SwiftFileSummarizerTest {
-
   @Test
   void recordsEveryImportFormAsAModuleReference() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             import Foundation
             @testable import Shop
             import struct Domain.Order
@@ -32,8 +30,7 @@ class SwiftFileSummarizerTest {
   @Test
   void recordsPublicAndOpenDeclarationsAsExportsOfTheirKind() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             public struct Cart {
                 public func total() -> Int { 0 }
                 public var count: Int = 0
@@ -49,14 +46,14 @@ class SwiftFileSummarizerTest {
             tuple("Cart", SwiftFileSummarizer.PUBLIC_TYPE_KIND),
             tuple("total", SwiftFileSummarizer.PUBLIC_FUNCTION_KIND),
             tuple("count", SwiftFileSummarizer.PUBLIC_PROPERTY_KIND),
-            tuple("Base", SwiftFileSummarizer.PUBLIC_TYPE_KIND));
+            tuple("Base", SwiftFileSummarizer.PUBLIC_TYPE_KIND)
+        );
   }
 
   @Test
   void recordsDeclaredTypesQualifiedByTheirEnclosingType() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             public struct Cart {
                 enum Kind { case book }
                 protocol Priced {}
@@ -67,7 +64,8 @@ class SwiftFileSummarizerTest {
     assertThat(summary.declared().stream().map(Symbol::name))
         .containsExactly("Cart", "Cart.Kind", "Cart.Priced", "Items");
     assertThat(
-            summary.exports().stream().filter(symbol -> symbol.kind().isEmpty()).map(Symbol::name))
+        summary.exports().stream().filter(symbol -> symbol.kind().isEmpty()).map(Symbol::name)
+    )
         .containsExactlyElementsOf(summary.declared().stream().map(Symbol::name).toList());
   }
 
@@ -79,8 +77,7 @@ class SwiftFileSummarizerTest {
   @Test
   void recordsUsedIdentifiersButNotOwnDeclaredNamesOrImports() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             import Shop
             public struct Cart {
                 let service: OrderService
@@ -93,8 +90,7 @@ class SwiftFileSummarizerTest {
   @Test
   void aNameThatAppearsOnlyInACommentIsNotAUse() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             // OrderService is only mentioned here
             /* and OrderService here too */
             struct Cart {}
@@ -106,8 +102,7 @@ class SwiftFileSummarizerTest {
   @Test
   void aNameInAStringLiteralIsNotAUse() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             struct Cart {
                 let label = "OrderService"
             }

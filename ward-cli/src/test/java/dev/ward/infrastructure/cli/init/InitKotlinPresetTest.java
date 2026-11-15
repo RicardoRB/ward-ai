@@ -70,7 +70,8 @@ class InitKotlinPresetTest {
     final InitCommandFixture init =
         InitCommandFixture.repository(
             root,
-            new JvmBuildToolConfigurator(new PomToolConfigurator(), new GradleToolConfigurator()));
+            new JvmBuildToolConfigurator(new PomToolConfigurator(), new GradleToolConfigurator())
+        );
 
     final int exit =
         init.run(
@@ -81,7 +82,8 @@ class InitKotlinPresetTest {
             "none",
             "--architecture",
             "layered",
-            "--yes");
+            "--yes"
+        );
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     return Files.readString(root.resolve("ward.toml"));

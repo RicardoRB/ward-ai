@@ -8,7 +8,6 @@ import java.util.Optional;
  */
 @FunctionalInterface
 public interface ProjectFileReader {
-
   /**
    * Reads one file.
    *

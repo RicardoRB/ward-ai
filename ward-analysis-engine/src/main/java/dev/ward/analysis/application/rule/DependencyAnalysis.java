@@ -33,7 +33,9 @@ public final class DependencyAnalysis {
    * dependencies}.
    */
   public DependencyAnalysis(
-      final List<FrontendSupport> frontends, final List<DependencySupport> dependencies) {
+      final List<FrontendSupport> frontends,
+      final List<DependencySupport> dependencies
+  ) {
     this.frontends = byLanguage(frontends, FrontendSupport::language);
     this.dependencies = List.copyOf(dependencies);
   }
@@ -58,13 +60,16 @@ public final class DependencyAnalysis {
         new DependencyGraph(edges),
         summaries,
         DependencyEntries.of(dependencies),
-        units.stream().collect(Collectors.toMap(SourceUnit::path, unit -> unit, (a, b) -> a)));
+        units.stream().collect(Collectors.toMap(SourceUnit::path, unit -> unit, (a, b) -> a))
+    );
   }
 
   private static List<FileSummary> summariesOf(
       final List<SourceUnit> units,
       final Set<AnalysisLanguage> languages,
-      final Map<String, FileSummary> summaries) {
+      final Map<String,
+      FileSummary> summaries
+  ) {
     return units.stream()
         .filter(unit -> languages.contains(unit.language()))
         .map(unit -> summaries.get(unit.path()))
@@ -87,7 +92,9 @@ public final class DependencyAnalysis {
   }
 
   private Optional<FileSummary> summarizeFresh(
-      final SourceUnit unit, final DependencySupport support) {
+      final SourceUnit unit,
+      final DependencySupport support
+  ) {
     try {
       final ParseResult result = frontends.get(unit.language()).frontend().parse(unit);
       if (!result.diagnostics().isEmpty()) {
@@ -104,7 +111,10 @@ public final class DependencyAnalysis {
   }
 
   private static <T> Map<AnalysisLanguage, T> byLanguage(
-      final List<T> items, final Function<T, AnalysisLanguage> language) {
+      final List<T> items,
+      final Function<T,
+      AnalysisLanguage> language
+  ) {
     return items.stream().collect(Collectors.toMap(language, Function.identity()));
   }
 }

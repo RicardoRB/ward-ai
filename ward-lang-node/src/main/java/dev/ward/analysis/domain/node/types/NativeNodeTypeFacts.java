@@ -39,7 +39,10 @@ public final class NativeNodeTypeFacts implements TypeFacts {
    * @param scopes the scope analysis of TypeScript and JavaScript
    */
   public NativeNodeTypeFacts(
-      final Program program, final LanguageFrontend frontend, final ScopeAnalysis scopes) {
+      final Program program,
+      final LanguageFrontend frontend,
+      final ScopeAnalysis scopes
+  ) {
     this.program = program;
     this.frontend = frontend;
     this.scopes = scopes;
@@ -47,7 +50,10 @@ public final class NativeNodeTypeFacts implements TypeFacts {
 
   @Override
   public UnitTypeFacts factsOf(
-      final SourceUnit unit, final List<Span> spans, final Set<FactKind> kinds) {
+      final SourceUnit unit,
+      final List<Span> spans,
+      final Set<FactKind> kinds
+  ) {
     final boolean node =
         unit.language() == AnalysisLanguage.TYPESCRIPT
             || unit.language() == AnalysisLanguage.JAVASCRIPT;

@@ -31,7 +31,8 @@ class SwiftMatrixCellsTest {
           "27.1,swiftpm,strict",
           "27.1,xcode,strict",
           "27.2,swiftpm,strict",
-          "27.2,xcode,strict");
+          "27.2,xcode,strict"
+      );
   private static final int XCODE_COLUMN = 0;
   private static final int FIXTURE_COLUMN = 3;
 
@@ -51,7 +52,7 @@ class SwiftMatrixCellsTest {
   @Test
   void everyRowNamesAFixtureWithViolations() throws IOException {
     for (final String row : rows()) {
-      final String fixture = row.split(",", -1)[FIXTURE_COLUMN];
+      final String fixture = row.split(",", -1) [FIXTURE_COLUMN];
       assertThat(FIXTURES.resolve(fixture)).as("fixture for row %s", row).isDirectory();
       assertThat(VIOLATIONS.resolve(fixture)).as("violations for row %s", row).isDirectory();
     }
@@ -63,10 +64,10 @@ class SwiftMatrixCellsTest {
         Files.readAllLines(RUNNERS).stream()
             .skip(1)
             .filter(line -> !line.isBlank())
-            .map(line -> line.split(",", -1)[0])
+            .map(line -> line.split(",", -1) [0])
             .collect(Collectors.toSet());
     final Set<String> xcodes =
-        rows().stream().map(row -> row.split(",", -1)[XCODE_COLUMN]).collect(Collectors.toSet());
+        rows().stream().map(row -> row.split(",", -1) [XCODE_COLUMN]).collect(Collectors.toSet());
 
     assertThat(xcodes).allSatisfy(xcode -> assertThat(runners).contains(xcode));
   }

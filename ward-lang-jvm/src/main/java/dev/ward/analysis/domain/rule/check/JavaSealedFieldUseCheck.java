@@ -16,7 +16,6 @@ import java.util.Set;
  * annotation is left alone.
  */
 public final class JavaSealedFieldUseCheck implements RuleCheck {
-
   /** The use the check looks for. */
   public enum Mode {
     /** The field is written but never read. */
@@ -62,7 +61,10 @@ public final class JavaSealedFieldUseCheck implements RuleCheck {
   }
 
   private void fieldsOf(
-      final SyntaxNode field, final SyntaxNode root, final List<RuleMatch> matches) {
+      final SyntaxNode field,
+      final SyntaxNode root,
+      final List<RuleMatch> matches
+  ) {
     final List<String> modifiers = MemberDeclarations.modifiers(field);
     final boolean exposed =
         modifiers.contains(MemberDeclarations.PUBLIC)

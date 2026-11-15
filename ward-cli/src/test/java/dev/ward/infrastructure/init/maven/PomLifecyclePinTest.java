@@ -36,7 +36,8 @@ class PomLifecyclePinTest {
             "maven-jar-plugin:3.5.0",
             "maven-install-plugin:3.1.4",
             "maven-deploy-plugin:3.1.4",
-            "maven-site-plugin:3.12.1");
+            "maven-site-plugin:3.12.1"
+        );
   }
 
   @Test
@@ -49,8 +50,10 @@ class PomLifecyclePinTest {
         PomXml.addManagedPlugin(
             POM.replace(
                 "</project>",
-                "<build><pluginManagement><plugins></plugins></pluginManagement></build>\n</project>"),
-            plugin);
+                "<build><pluginManagement><plugins></plugins></pluginManagement></build>\n</project>"
+            ),
+            plugin
+        );
 
     for (final String pom : List.of(noBuild, buildOnly, existing)) {
       assertThat(pom)
@@ -64,7 +67,8 @@ class PomLifecyclePinTest {
     final String pom = apply(POM, QualityPreset.STRICT);
 
     PresetPluginSnippets.LIFECYCLE_PLUGINS.forEach(
-        plugin -> assertThat(pom).contains("<artifactId>" + plugin.artifact() + "</artifactId>"));
+        plugin -> assertThat(pom).contains("<artifactId>" + plugin.artifact() + "</artifactId>")
+    );
     assertThat(pom).contains("<pluginManagement>");
   }
 
@@ -74,7 +78,8 @@ class PomLifecyclePinTest {
         POM.replace(
             "</project>",
             "<build><plugins><plugin><artifactId>maven-compiler-plugin</artifactId>"
-                + "<version>3.13.0</version></plugin></plugins></build>\n</project>");
+                + "<version>3.13.0</version></plugin></plugins></build>\n</project>"
+        );
 
     final String pom = apply(declared, QualityPreset.STRICT);
 

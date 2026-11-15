@@ -16,7 +16,6 @@ import org.tomlj.TomlTable;
  * IllegalArgumentException} whose message the reader attaches to the file and the rule.
  */
 final class CatalogTables {
-
   private static final String STATUS = "status";
   private static final String ISSUES = "issues";
   private static final String NOT_APPLICABLE = "not-applicable";
@@ -32,7 +31,8 @@ final class CatalogTables {
           STATUS,
           ISSUES,
           NOT_APPLICABLE,
-          IDS);
+          IDS
+      );
 
   private CatalogTables() {}
 
@@ -46,7 +46,10 @@ final class CatalogTables {
    * files, in the order of {@link AnalysisLanguage}. A language that both name is rejected.
    */
   static Map<AnalysisLanguage, LanguageStatus> statuses(
-      final TomlTable row, final Map<AnalysisLanguage, CatalogStatusFiles.Entry> external) {
+      final TomlTable row,
+      final Map<AnalysisLanguage,
+      CatalogStatusFiles.Entry> external
+  ) {
     final TomlTable status = CatalogValues.table(row, STATUS);
     final TomlTable issues = CatalogValues.table(row, ISSUES);
     final TomlTable reasons = CatalogValues.table(row, NOT_APPLICABLE);
@@ -61,13 +64,16 @@ final class CatalogTables {
             throw new IllegalArgumentException(
                 "the status of "
                     + CatalogRow.key(language)
-                    + " is in the row and in a status file");
+                    + " is in the row and in a status file"
+            );
           }
-        });
+        }
+    );
     final Map<AnalysisLanguage, LanguageStatus> statuses = new EnumMap<>(AnalysisLanguage.class);
     all.forEach(
         (language, entry) ->
-            statuses.put(language, languageStatus(CatalogRow.key(language), entry, reasons)));
+            statuses.put(language, languageStatus(CatalogRow.key(language), entry, reasons))
+    );
     rejectUnlisted(issues, status, ISSUES);
     rejectUnlisted(reasons, all);
     return statuses;
@@ -80,7 +86,8 @@ final class CatalogTables {
     for (final String key : table.keySet()) {
       ids.put(
           CatalogValues.language(key),
-          CatalogValues.required(table.getString(key), IDS + "." + key));
+          CatalogValues.required(table.getString(key), IDS + "." + key)
+      );
     }
     return ids;
   }
@@ -99,13 +106,21 @@ final class CatalogTables {
   }
 
   private static CatalogStatusFiles.Entry entryOf(
-      final String key, final TomlTable status, final TomlTable issues) {
+      final String key,
+      final TomlTable status,
+      final TomlTable issues
+  ) {
     return new CatalogStatusFiles.Entry(
-        status.getString(key), CatalogValues.optional(issues.getString(key)));
+        status.getString(key),
+        CatalogValues.optional(issues.getString(key))
+    );
   }
 
   private static LanguageStatus languageStatus(
-      final String key, final CatalogStatusFiles.Entry entry, final TomlTable reasons) {
+      final String key,
+      final CatalogStatusFiles.Entry entry,
+      final TomlTable reasons
+  ) {
     final CatalogStatus value =
         CatalogStatus.byKey(entry.status()).orElseThrow(() -> unknownStatus(key));
     return new LanguageStatus(value, entry.issue(), CatalogValues.optional(reasons.getString(key)));
@@ -116,7 +131,10 @@ final class CatalogTables {
   }
 
   private static void rejectUnlisted(
-      final TomlTable table, final TomlTable status, final String name) {
+      final TomlTable table,
+      final TomlTable status,
+      final String name
+  ) {
     for (final String key : table.keySet()) {
       if (!status.contains(key)) {
         throw new IllegalArgumentException("'" + name + "' names " + key + " with no status");
@@ -125,11 +143,15 @@ final class CatalogTables {
   }
 
   private static void rejectUnlisted(
-      final TomlTable reasons, final Map<AnalysisLanguage, CatalogStatusFiles.Entry> all) {
+      final TomlTable reasons,
+      final Map<AnalysisLanguage,
+      CatalogStatusFiles.Entry> all
+  ) {
     for (final String key : reasons.keySet()) {
       if (!all.containsKey(CatalogValues.language(key))) {
         throw new IllegalArgumentException(
-            "'" + NOT_APPLICABLE + "' names " + key + " with no status");
+            "'" + NOT_APPLICABLE + "' names " + key + " with no status"
+        );
       }
     }
   }

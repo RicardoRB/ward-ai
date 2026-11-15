@@ -7,7 +7,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import org.junit.jupiter.api.Test;
 
 class ErrorProneNamesTest extends ErrorProneTrees {
-
   @Test
   void reportsFieldIgnoringCaseAndMethodWithTheExactNameOfTheirClass() {
     final SyntaxNode clazz =
@@ -17,7 +16,8 @@ class ErrorProneNamesTest extends ErrorProneTrees {
             member(method(CLASS_NAME, 0, 0)),
             member(method("SAMPLE", 0, 0)),
             member(constructorWith(0)),
-            member(field("other")));
+            member(field("other"))
+        );
 
     assertThat(run(new MemberNamedAfterClassCheck("field", MESSAGE), clazz)).hasSize(1);
     assertThat(run(new MemberNamedAfterClassCheck("method", MESSAGE), clazz)).hasSize(1);
@@ -40,7 +40,8 @@ class ErrorProneNamesTest extends ErrorProneTrees {
         COLUMN,
         leaf("'return'", "return", LINE, COLUMN),
         leaf("'null'", "null", LINE, COLUMN),
-        leaf("';'", ";", LINE, COLUMN));
+        leaf("';'", ";", LINE, COLUMN)
+    );
   }
 
   private SyntaxNode returning(final String type, final SyntaxNode... body) {
@@ -51,7 +52,8 @@ class ErrorProneNamesTest extends ErrorProneTrees {
         node(TYPE_TYPE, LINE, COLUMN, leaf(TOKEN_IDENTIFIER, type, LINE, COLUMN)),
         ident("find"),
         node(FORMAL_PARAMETERS, LINE, COLUMN),
-        node(BLOCK, LINE, COLUMN, body));
+        node(BLOCK, LINE, COLUMN, body)
+    );
   }
 
   @Test
@@ -61,7 +63,8 @@ class ErrorProneNamesTest extends ErrorProneTrees {
             CLASS_NAME,
             member(returning("List<String>", returnNull())),
             member(returning("java.util.Map", returnNull())),
-            member(returning("int[]", returnNull())));
+            member(returning("int[]", returnNull()))
+        );
 
     assertThat(run(new ReturnEmptyCollectionCheck(MESSAGE), clazz)).hasSize(THREE);
   }
@@ -74,7 +77,8 @@ class ErrorProneNamesTest extends ErrorProneTrees {
             CLASS_NAME,
             member(returning("String", returnNull())),
             member(returning("List", lambda)),
-            member(method("run", 0, 0)));
+            member(method("run", 0, 0))
+        );
 
     assertThat(run(new ReturnEmptyCollectionCheck(MESSAGE), clazz)).isEmpty();
   }
@@ -85,7 +89,8 @@ class ErrorProneNamesTest extends ErrorProneTrees {
         1,
         1,
         node("classOrInterfaceModifier", 1, 1, leaf("ANNOTATION", annotation, 1, 1)),
-        clazz);
+        clazz
+    );
   }
 
   @Test
@@ -99,14 +104,17 @@ class ErrorProneNamesTest extends ErrorProneTrees {
             leaf("'class'", "class", 1, 1),
             ident("Impl"),
             node("typeList", 1, 1, ident("SessionBean")),
-            node("classBody", 1, 1, body));
+            node("classBody", 1, 1, body)
+        );
 
     assertThat(
-            run(
-                new StaticEjbFieldCheck(MESSAGE),
-                annotated("@javax.ejb.Stateless", classNamed(CLASS_NAME, body)),
-                annotated("@MessageDriven(name=\"x\")", classNamed("Other", body)),
-                implementing))
+        run(
+            new StaticEjbFieldCheck(MESSAGE),
+            annotated("@javax.ejb.Stateless", classNamed(CLASS_NAME, body)),
+            annotated("@MessageDriven(name=\"x\")", classNamed("Other", body)),
+            implementing
+        )
+    )
         .hasSize(THREE);
   }
 
@@ -115,11 +123,13 @@ class ErrorProneNamesTest extends ErrorProneTrees {
     final SyntaxNode finalField = member(field("a"), STATIC, "final");
 
     assertThat(
-            run(
-                new StaticEjbFieldCheck(MESSAGE),
-                annotated("@Stateless", classNamed(CLASS_NAME, finalField, member(field("b")))),
-                annotated("@Other", classNamed("Plain", member(field("c"), STATIC))),
-                classNamed("Bare", member(field("d"), STATIC))))
+        run(
+            new StaticEjbFieldCheck(MESSAGE),
+            annotated("@Stateless", classNamed(CLASS_NAME, finalField, member(field("b")))),
+            annotated("@Other", classNamed("Plain", member(field("c"), STATIC))),
+            classNamed("Bare", member(field("d"), STATIC))
+        )
+    )
         .isEmpty();
   }
 }

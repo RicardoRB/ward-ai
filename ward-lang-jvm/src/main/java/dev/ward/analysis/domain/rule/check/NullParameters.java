@@ -7,7 +7,6 @@ import java.util.Set;
 
 /** Reads which type parameters of a type declaration accept a nullable argument. */
 final class NullParameters {
-
   private NullParameters() {}
 
   /** Returns, per type parameter of {@code type}, whether its bound is annotated nullable. */
@@ -17,7 +16,8 @@ final class NullParameters {
         .ifPresent(
             parameters ->
                 SyntaxWalk.visits(parameters, Set.of("typeParameter"))
-                    .forEach(visit -> out.add(nullableBound(visit.node()))));
+                    .forEach(visit -> out.add(nullableBound(visit.node())))
+        );
     return out;
   }
 

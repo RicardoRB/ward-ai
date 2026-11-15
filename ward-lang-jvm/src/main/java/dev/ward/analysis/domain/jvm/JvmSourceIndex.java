@@ -24,17 +24,20 @@ final class JvmSourceIndex {
         roots.stream()
             .sorted(
                 Comparator.comparingInt((JavaSourceRoot root) -> root.directory().length())
-                    .reversed())
+                    .reversed()
+            )
             .toList();
     summaries.stream()
         .flatMap(
             summary ->
-                summary.declared().stream().map(type -> Map.entry(type.name(), summary.path())))
+                summary.declared().stream().map(type -> Map.entry(type.name(), summary.path()))
+        )
         .forEach(
             entry ->
                 declaringFiles
                     .computeIfAbsent(entry.getKey(), name -> new LinkedHashSet<>())
-                    .add(entry.getValue()));
+                    .add(entry.getValue())
+        );
   }
 
   /** Returns the files visible to {@code from} that declare the qualified name {@code type}. */

@@ -71,7 +71,11 @@ public final class FileGraphCache implements GraphCache {
       Files.writeString(temporary, text, StandardCharsets.UTF_8);
       try {
         Files.move(
-            temporary, file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+            temporary,
+            file,
+            StandardCopyOption.ATOMIC_MOVE,
+            StandardCopyOption.REPLACE_EXISTING
+        );
       } catch (AtomicMoveNotSupportedException e) {
         Files.move(temporary, file, StandardCopyOption.REPLACE_EXISTING);
       }

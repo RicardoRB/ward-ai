@@ -28,7 +28,9 @@ public class TextReportRenderer implements CheckProgressListener {
    */
   @Inject
   public TextReportRenderer(
-      final TerminalCapabilities terminal, @Named("ward.version") final String version) {
+      final TerminalCapabilities terminal,
+      @Named("ward.version") final String version
+  ) {
     this.terminal = terminal;
     this.version = version;
   }
@@ -52,7 +54,8 @@ public class TextReportRenderer implements CheckProgressListener {
             return false;
           }
         },
-        "dev");
+        "dev"
+    );
   }
 
   /** Prints the header to {@code output} and sends later progress there. */
@@ -102,7 +105,10 @@ public class TextReportRenderer implements CheckProgressListener {
 
   /** Prints the summary of {@code report}, listing findings at or above {@code threshold}. */
   public void summary(
-      final CheckReport report, final LearningOutcome learning, final SeverityThreshold threshold) {
+      final CheckReport report,
+      final LearningOutcome learning,
+      final SeverityThreshold threshold
+  ) {
     print.accept(ReportText.summary(report, learning, threshold));
     flush.run();
   }
@@ -119,7 +125,10 @@ public class TextReportRenderer implements CheckProgressListener {
 
   /** Returns the complete text report, listing findings at or above {@code threshold}. */
   public String render(
-      final CheckReport report, final LearningOutcome learning, final SeverityThreshold threshold) {
+      final CheckReport report,
+      final LearningOutcome learning,
+      final SeverityThreshold threshold
+  ) {
     final StringBuilder output = new StringBuilder(RENDER_CAPACITY);
     output.append("Ward ").append(version).append(ReportText.NL).append(ReportText.NL);
     for (final GateResult result : report.results()) {

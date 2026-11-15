@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 
 /** The rules about where a nullness annotation sits and about {@code Optional.get}. */
 final class NullMiscFinders {
-
   private static final Pattern ABSENT =
       Pattern.compile("^(?:!(\\w+)\\.isPresent\\(\\)|(\\w+)\\.isEmpty\\(\\))$");
   private static final String NULLABLE = "Nullable";
@@ -22,14 +21,16 @@ final class NullMiscFinders {
   private static final Set<String> TYPE_USE_IMPORTS =
       Set.of(
           "org.jspecify.annotations.Nullable",
-          "org.checkerframework.checker.nullness.qual.Nullable");
+          "org.checkerframework.checker.nullness.qual.Nullable"
+      );
 
   private static final Set<String> ENTRIES =
       Set.of(
           "classBodyDeclaration",
           "interfaceBodyDeclaration",
           "formalParameter",
-          "localVariableDeclaration");
+          "localVariableDeclaration"
+      );
   private static final Set<String> DECLARING =
       Set.of(
           "typeTypeOrVoid",
@@ -43,7 +44,8 @@ final class NullMiscFinders {
           "classBodyDeclaration",
           "interfaceBodyDeclaration",
           "formalParameter",
-          "localVariableDeclaration");
+          "localVariableDeclaration"
+      );
 
   private NullMiscFinders() {}
 
@@ -103,7 +105,8 @@ final class NullMiscFinders {
               return head.indexOf('.') > 0
                   && Character.isUpperCase(head.charAt(0))
                   && SyntaxWalk.visits(named, Set.of(ANNOTATION)).isEmpty();
-            })
+            }
+        )
         .orElse(false);
   }
 
@@ -157,7 +160,9 @@ final class NullMiscFinders {
   /** Runs {@code action} for each rule of this class. */
   static void each(final BiConsumer<String, NullFinder> action) {
     action.accept(
-        "nullable-on-wrong-nested-class-level", NullMiscFinders::nullableOnWrongNestedClassLevel);
+        "nullable-on-wrong-nested-class-level",
+        NullMiscFinders::nullableOnWrongNestedClassLevel
+    );
     action.accept("nullable-varargs-unsupported", NullMiscFinders::nullableVarargsUnsupported);
     action.accept("get-on-empty-optional", NullMiscFinders::getOnEmptyOptional);
   }

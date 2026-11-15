@@ -36,9 +36,20 @@ final class FocusedGateFixtures {
   static final List<RuleDefinition> RULES =
       List.of(
           new RuleDefinition(
-              LENGTH, AnalysisLanguage.JAVA, RuleCapability.SYNTAX, AnalysisSeverity.ERROR, "b"),
+              LENGTH,
+              AnalysisLanguage.JAVA,
+              RuleCapability.SYNTAX,
+              AnalysisSeverity.ERROR,
+              "b"
+          ),
           new RuleDefinition(
-              LAYER, AnalysisLanguage.JAVA, RuleCapability.SYMBOLS, AnalysisSeverity.ERROR, "b"));
+              LAYER,
+              AnalysisLanguage.JAVA,
+              RuleCapability.SYMBOLS,
+              AnalysisSeverity.ERROR,
+              "b"
+          )
+      );
   static final Map<String, List<RuleMatch>> MATCHES =
       Map.of(LENGTH, List.of(new RuleMatch(AT, "long")), LAYER, List.of(new RuleMatch(AT, "edge")));
 
@@ -50,23 +61,24 @@ final class FocusedGateFixtures {
         unit -> new ParseResult(new SyntaxNode("file", AT, Map.of(), List.of()), List.of());
     final RuleMatcher matcher =
         definition ->
-            new CompiledRule() {
-              @Override
-              public RuleDefinition definition() {
-                return definition;
-              }
+        new CompiledRule() {
+          @Override
+          public RuleDefinition definition() {
+            return definition;
+          }
 
-              @Override
-              public List<RuleMatch> matches(final SyntaxNode root) {
-                return MATCHES.get(definition.id());
-              }
-            };
+          @Override
+          public List<RuleMatch> matches(final SyntaxNode root) {
+            return MATCHES.get(definition.id());
+          }
+        };
     final DependencyResolver resolver = summaries -> EDGES;
     final DependencySupport support =
         new DependencySupport(
             AnalysisLanguage.JAVA,
             (unit, tree) -> new FileSummary(unit.path(), List.of(), List.of(), List.of()),
-            resolver);
+            resolver
+        );
     final AnalysisPorts ports =
         new AnalysisPorts(
             () -> new AnalysisRuleLoad(RULES, List.of()),
@@ -76,12 +88,15 @@ final class FocusedGateFixtures {
                 new FrontendSupport(
                     AnalysisLanguage.JAVA,
                     frontend,
-                    Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS))),
+                    Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS)
+                )
+            ),
             root -> AnalysisCacheFixtures.NO_CACHE,
             AnalysisCacheFixtures.codec(),
             "test",
             (root, units) -> List.of(support),
-            (unused, classpath) -> Map.of());
+            (unused, classpath) -> Map.of()
+        );
     return new AnalysisGate("ward", RULES, ports, null, focus);
   }
 

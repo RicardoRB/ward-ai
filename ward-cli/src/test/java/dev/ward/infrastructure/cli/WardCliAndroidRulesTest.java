@@ -29,13 +29,12 @@ class WardCliAndroidRulesTest extends WardCliIntegrationSupport {
     Files.writeString(
         source.resolve("pom.xml"),
         "<project><modelVersion>4.0.0</modelVersion><groupId>a</groupId>"
-            + "<artifactId>a</artifactId><version>1</version></project>\n");
+            + "<artifactId>a</artifactId><version>1</version></project>\n"
+    );
     write("app/src/main/AndroidManifest.xml", MANIFEST);
     write("app/src/main/res/layout/main.xml", LAYOUT);
     write("app/src/main/resources/res/other.xml", LAYOUT);
-    Files.writeString(
-        source.resolve(WARD_TOML),
-        """
+    Files.writeString(source.resolve(WARD_TOML), """
         version = 2
         [checks.android]
         uses = "ward"

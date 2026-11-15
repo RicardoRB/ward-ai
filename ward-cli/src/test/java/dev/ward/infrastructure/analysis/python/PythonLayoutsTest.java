@@ -12,7 +12,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** Reads the source roots of each Python layout the fixtures and a temporary project declare. */
 final class PythonLayoutsTest {
-
   private static final Path FIXTURES = Path.of("src/test/resources/fixtures");
 
   @TempDir Path temp;

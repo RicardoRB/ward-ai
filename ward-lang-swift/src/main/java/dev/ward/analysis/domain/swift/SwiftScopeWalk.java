@@ -20,7 +20,6 @@ import java.util.function.Consumer;
  * with no signature, whose {@code $0} and receiver-like names are implicit.
  */
 final class SwiftScopeWalk {
-
   private static final Set<String> TYPES =
       Set.of(
           "struct_declaration",
@@ -29,7 +28,8 @@ final class SwiftScopeWalk {
           "raw_value_style_enum",
           "protocol_declaration",
           "extension_declaration",
-          "actor_declaration");
+          "actor_declaration"
+      );
   private static final Set<String> SCOPED =
       Set.of("code_block", "while_statement", "switch_case", "repeat_while_statement");
   private static final Set<String> SKIPPED =
@@ -45,7 +45,8 @@ final class SwiftScopeWalk {
           "type_inheritance_clause",
           "generic_where_clause",
           "function_result",
-          "label_identifier");
+          "label_identifier"
+      );
   private static final String PRIMARY = "primary_expression";
   private static final String PATTERN = "pattern";
 
@@ -134,7 +135,8 @@ final class SwiftScopeWalk {
       final SyntaxNode name,
       final BindingKind kind,
       final boolean written,
-      final boolean destructured) {
+      final boolean destructured
+  ) {
     final Set<BindingFlag> flags = EnumSet.noneOf(BindingFlag.class);
     if (destructured) {
       flags.add(BindingFlag.DESTRUCTURED);

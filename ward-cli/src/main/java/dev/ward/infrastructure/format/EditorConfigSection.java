@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
  * @param properties the keys (lowercase) and values of the section, copied on construction
  */
 record EditorConfigSection(String header, Pattern pattern, Map<String, String> properties) {
-
   /**
    * Copies the properties.
    *

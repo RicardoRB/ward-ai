@@ -20,7 +20,10 @@ final class FormatTargetPaths {
    * @throws WardException if a path lies outside the project or covers no formattable file
    */
   static List<FormatTarget> select(
-      final Path root, final List<FormatTarget> all, final List<Path> paths) {
+      final Path root,
+      final List<FormatTarget> all,
+      final List<Path> paths
+  ) {
     final Path absoluteRoot = root.toAbsolutePath().normalize();
     final Map<String, FormatTarget> chosen = new TreeMap<>();
     for (final Path path : paths) {

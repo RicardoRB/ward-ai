@@ -16,7 +16,6 @@ import java.util.Set;
  * or unreadable tabIndex is left alone, and so is a dynamic role.
  */
 public final class BiomeNoninteractiveTabindexCheck implements RuleCheck {
-
   private static final String TABINDEX = "tabIndex";
   private static final String ROLE = "role";
 
@@ -42,7 +41,10 @@ public final class BiomeNoninteractiveTabindexCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(JsxAttributes.OPENING, JsxAttributes.SELF_CLOSING))
         .stream()
         .flatMap(visit -> reported(visit.node(), unit.text()).stream())
@@ -53,7 +55,10 @@ public final class BiomeNoninteractiveTabindexCheck implements RuleCheck {
   /** The tabIndex attribute of the element when it is reported. */
   private Optional<SyntaxNode> reported(final SyntaxNode element, final String source) {
     if (!AriaElements.isNotInteractive(
-        table, JsxAttributes.elementName(element), AriaElements.Attributes.of(element))) {
+        table,
+        JsxAttributes.elementName(element),
+        AriaElements.Attributes.of(element)
+    )) {
       return Optional.empty();
     }
     final Optional<SyntaxNode> tabIndex = attributeNamed(element, TABINDEX);
@@ -73,14 +78,14 @@ public final class BiomeNoninteractiveTabindexCheck implements RuleCheck {
   /** A static tabIndex that Rust's i32 parse reads as zero or more, or a number in braces. */
   private static boolean nonNegative(final SyntaxNode tabIndex, final String source) {
     return JsxAttributes.rawLiteral(tabIndex, source)
-            .map(String::trim)
-            .filter(text -> text.matches("\\+?\\d+"))
-            .filter(BiomeNoninteractiveTabindexCheck::fitsI32)
-            .isPresent()
+        .map(String::trim)
+        .filter(text -> text.matches("\\+?\\d+"))
+        .filter(BiomeNoninteractiveTabindexCheck::fitsI32)
+        .isPresent()
         || JsxAttributes.value(tabIndex)
-            .map(SyntaxWalk::text)
-            .filter(text -> text.matches("\\{\\d+\\}"))
-            .isPresent();
+        .map(SyntaxWalk::text)
+        .filter(text -> text.matches("\\{\\d+\\}"))
+        .isPresent();
   }
 
   private static boolean fitsI32(final String text) {

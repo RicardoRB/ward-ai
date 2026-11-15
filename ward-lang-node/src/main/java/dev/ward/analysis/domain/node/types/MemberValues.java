@@ -6,14 +6,19 @@ import java.util.Map;
 
 /** Helpers split out of {@link Members}. */
 final class MemberValues {
-
   private static final Map<String, String> BOXES =
       Map.of(
-          "boolean", "Boolean",
-          "true", "Boolean",
-          "false", "Boolean",
-          "bigint", "BigInt",
-          "symbol", "Symbol");
+          "boolean",
+          "Boolean",
+          "true",
+          "Boolean",
+          "false",
+          "Boolean",
+          "bigint",
+          "BigInt",
+          "symbol",
+          "Symbol"
+      );
 
   private MemberValues() {}
 

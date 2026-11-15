@@ -10,7 +10,6 @@ import java.util.Map;
  * written type, whether they are final, and their initializer.
  */
 final class JavaClassFields {
-
   private static final String CLASS_BODY = "classBody";
   private static final String MEMBER = "classBodyDeclaration";
   private static final String FIELD = "fieldDeclaration";
@@ -32,7 +31,6 @@ final class JavaClassFields {
    * @param initializer the initializer node, or null
    */
   record Field(String name, String type, boolean isFinal, SyntaxNode initializer) {
-
     /** Gives a body the type of the field, and its creation when a final field is initialized. */
     void declareIn(final Map<String, String> declared, final JavaCreationTypes creations) {
       declared.put(name, type);
@@ -84,7 +82,9 @@ final class JavaClassFields {
                 JavaFlowSyntax.text(JavaSyntaxNames.identifierOf(id)),
                 JavaFlowSyntax.text(type),
                 isFinal,
-                JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(declarator), INITIALIZER)));
+                JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(declarator), INITIALIZER)
+            )
+        );
       }
     }
   }

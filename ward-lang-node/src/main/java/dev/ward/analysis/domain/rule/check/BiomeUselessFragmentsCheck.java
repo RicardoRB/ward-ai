@@ -20,7 +20,6 @@ import java.util.Set;
  * when its name resolves to React, through {@link ReactFragmentNames}.
  */
 public final class BiomeUselessFragmentsCheck implements RuleCheck {
-
   private static final String FRAGMENT = "jsxFragment";
   private static final String ELEMENT = "jsxElement";
   private static final String TEXT = "jsxText";
@@ -46,7 +45,11 @@ public final class BiomeUselessFragmentsCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final Map<Integer, NameReference> byStart = ReactFragmentNames.referencesByStart(view.scopes());
     return SyntaxWalk.visits(root, Set.of(FRAGMENT, ELEMENT)).stream()
         .filter(visit -> isFragment(visit.node(), byStart))
@@ -57,12 +60,18 @@ public final class BiomeUselessFragmentsCheck implements RuleCheck {
 
   /** A short fragment is always one; an element is one when it names React's Fragment. */
   private static boolean isFragment(
-      final SyntaxNode node, final Map<Integer, NameReference> byStart) {
+      final SyntaxNode node,
+      final Map<Integer,
+      NameReference> byStart
+  ) {
     return FRAGMENT.equals(node.kind()) || ReactFragmentNames.isFragmentElement(node, byStart);
   }
 
   private static boolean reported(
-      final SyntaxNode fragment, final List<SyntaxNode> ancestors, final String source) {
+      final SyntaxNode fragment,
+      final List<SyntaxNode> ancestors,
+      final String source
+  ) {
     final FragmentContext.Context context = FragmentContext.of(ancestors);
     if (context == FragmentContext.Context.PRESERVED) {
       return false;
@@ -81,7 +90,9 @@ public final class BiomeUselessFragmentsCheck implements RuleCheck {
 
   /** Text inside an expression or a logical operand, or an expression inside a logical operand. */
   private static boolean keepsFragment(
-      final SyntaxNode child, final FragmentContext.Context context) {
+      final SyntaxNode child,
+      final FragmentContext.Context context
+  ) {
     final boolean inExpression =
         context == FragmentContext.Context.EXPRESSION_CHILD
             || context == FragmentContext.Context.LOGICAL;
@@ -100,7 +111,8 @@ public final class BiomeUselessFragmentsCheck implements RuleCheck {
   private static boolean singleChildReported(
       final SyntaxNode child,
       final FragmentContext.Context context,
-      final List<SyntaxNode> ancestors) {
+      final List<SyntaxNode> ancestors
+  ) {
     if (TEXT.equals(child.kind())) {
       return textChildReported(context, ancestors);
     }
@@ -111,7 +123,9 @@ public final class BiomeUselessFragmentsCheck implements RuleCheck {
    * Text alone keeps the fragment in an attribute or a return, and elsewhere only in a fragment.
    */
   private static boolean textChildReported(
-      final FragmentContext.Context context, final List<SyntaxNode> ancestors) {
+      final FragmentContext.Context context,
+      final List<SyntaxNode> ancestors
+  ) {
     if (context == FragmentContext.Context.ATTRIBUTE
         || context == FragmentContext.Context.RETURNED) {
       return false;

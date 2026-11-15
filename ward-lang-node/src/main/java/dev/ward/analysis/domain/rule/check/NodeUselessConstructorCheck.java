@@ -14,7 +14,6 @@ import java.util.Set;
  * super call are left alone.
  */
 public final class NodeUselessConstructorCheck implements RuleCheck {
-
   private static final String CONSTRUCTOR = "constructorDeclaration";
   private static final String METHOD = "methodDefinition";
   private static final String PARAMETERS = "formalParameterList";
@@ -55,7 +54,7 @@ public final class NodeUselessConstructorCheck implements RuleCheck {
   private static boolean constructor(final SyntaxNode node) {
     return CONSTRUCTOR.equals(node.kind())
         || METHOD.equals(node.kind())
-            && "constructor".equals(NodeSyntax.leaves(node).stream().findFirst().orElse(""));
+        && "constructor".equals(NodeSyntax.leaves(node).stream().findFirst().orElse(""));
   }
 
   /** Whether the constructor has a body, keeps the default visibility, and only forwards. */
@@ -67,7 +66,8 @@ public final class NodeUselessConstructorCheck implements RuleCheck {
     }
     if (parts.stream()
         .anyMatch(
-            part -> ACCESSIBILITY.equals(part.kind()) && !"public".equals(NodeSyntax.text(part)))) {
+            part -> ACCESSIBILITY.equals(part.kind()) && !"public".equals(NodeSyntax.text(part))
+        )) {
       return false;
     }
     final Optional<List<String>> forwarded = forwardedParameters(parts);

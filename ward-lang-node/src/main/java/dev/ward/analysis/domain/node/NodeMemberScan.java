@@ -11,7 +11,6 @@ import java.util.Set;
  * uses a name bound to one: as {@code name.member}, or in any other way, which uses every member.
  */
 final class NodeMemberScan {
-
   private static final String IDENTIFIER = "Identifier";
   private static final String STRING = "StringLiteral";
   private static final String DOT = ".";

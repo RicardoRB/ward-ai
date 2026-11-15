@@ -26,8 +26,10 @@ class ArchitectureDependencyRuleTest {
                 "domain-is-pure",
                 ArchitectureFixtures.dirs(ArchitectureFixtures.DOMAIN_DIR),
                 Kind.MUST_NOT_DEPEND_ON,
-                ArchitectureFixtures.dirs("infrastructure")),
-            ArchitectureFixtures.edge(DOMAIN, DB));
+                ArchitectureFixtures.dirs("infrastructure")
+            ),
+            ArchitectureFixtures.edge(DOMAIN, DB)
+        );
 
     assertThat(matches).hasSize(1);
     assertThat(matches.getFirst().file()).isEqualTo(DOMAIN);
@@ -47,8 +49,10 @@ class ArchitectureDependencyRuleTest {
                 "domain-is-pure",
                 ArchitectureFixtures.dirs(ArchitectureFixtures.DOMAIN_DIR),
                 Kind.MUST_NOT_DEPEND_ON,
-                ArchitectureFixtures.dirs("infrastructure")),
-            ArchitectureFixtures.edge(KOTLIN_DOMAIN, DB));
+                ArchitectureFixtures.dirs("infrastructure")
+            ),
+            ArchitectureFixtures.edge(KOTLIN_DOMAIN, DB)
+        );
 
     assertThat(matches).extracting(GraphMatch::file).containsExactly(KOTLIN_DOMAIN);
   }
@@ -60,14 +64,16 @@ class ArchitectureDependencyRuleTest {
             "domain-closed",
             ArchitectureFixtures.dirs(ArchitectureFixtures.DOMAIN_DIR),
             Kind.MAY_ONLY_DEPEND_ON,
-            ArchitectureFixtures.dirs("shared"));
+            ArchitectureFixtures.dirs("shared")
+        );
 
     final List<GraphMatch> matches =
         ArchitectureFixtures.dependencies(
             rule,
             ArchitectureFixtures.edge(DOMAIN, SHARED),
             ArchitectureFixtures.edge(DOMAIN, KOTLIN_DOMAIN),
-            ArchitectureFixtures.edge(DOMAIN, APPLICATION));
+            ArchitectureFixtures.edge(DOMAIN, APPLICATION)
+        );
 
     assertThat(matches).hasSize(1);
     assertThat(matches.getFirst().match().message()).contains(APPLICATION);
@@ -80,7 +86,8 @@ class ArchitectureDependencyRuleTest {
             "domain-closed",
             ArchitectureFixtures.dirs(ArchitectureFixtures.DOMAIN_DIR),
             Kind.MAY_ONLY_DEPEND_ON,
-            ArchitectureFixtures.dirs("shared"));
+            ArchitectureFixtures.dirs("shared")
+        );
 
     assertThat(ArchitectureFixtures.dependencies(rule)).isEmpty();
   }
@@ -92,13 +99,15 @@ class ArchitectureDependencyRuleTest {
             "repositories-behind-services",
             ArchitectureFixtures.paths("src/**/repository/**"),
             Kind.ONLY_ACCESSED_BY,
-            ArchitectureFixtures.paths("src/**/service/**"));
+            ArchitectureFixtures.paths("src/**/service/**")
+        );
 
     final List<GraphMatch> matches =
         ArchitectureFixtures.dependencies(
             rule,
             ArchitectureFixtures.edge(SERVICE, REPOSITORY),
-            ArchitectureFixtures.edge(CONTROLLER, REPOSITORY));
+            ArchitectureFixtures.edge(CONTROLLER, REPOSITORY)
+        );
 
     assertThat(matches).extracting(GraphMatch::file).containsExactly(CONTROLLER);
   }
@@ -107,25 +116,36 @@ class ArchitectureDependencyRuleTest {
   void aTestSourceIsSelectedUnlessExcluded() {
     final ArchitectureSelector excluding =
         new ArchitectureSelector(
-            List.of(), List.of(ArchitectureFixtures.DOMAIN_DIR), List.of("src/test/**"));
+            List.of(),
+            List.of(ArchitectureFixtures.DOMAIN_DIR),
+            List.of("src/test/**")
+        );
     final ArchitectureConstraint constraint =
         new ArchitectureConstraint(
-            Kind.MUST_NOT_DEPEND_ON, ArchitectureFixtures.dirs("infrastructure"), null);
+            Kind.MUST_NOT_DEPEND_ON,
+            ArchitectureFixtures.dirs("infrastructure"),
+            null
+        );
 
     assertThat(
-            ArchitectureFixtures.dependencies(
-                new ArchitectureRule(
-                    "open",
-                    ArchitectureFixtures.dirs(ArchitectureFixtures.DOMAIN_DIR),
-                    constraint,
-                    "why",
-                    false),
-                ArchitectureFixtures.edge(TEST_DOMAIN, DB)))
+        ArchitectureFixtures.dependencies(
+            new ArchitectureRule(
+                "open",
+                ArchitectureFixtures.dirs(ArchitectureFixtures.DOMAIN_DIR),
+                constraint,
+                "why",
+                false
+            ),
+            ArchitectureFixtures.edge(TEST_DOMAIN, DB)
+        )
+    )
         .hasSize(1);
     assertThat(
-            ArchitectureFixtures.dependencies(
-                new ArchitectureRule("closed", excluding, constraint, "why", false),
-                ArchitectureFixtures.edge(TEST_DOMAIN, DB)))
+        ArchitectureFixtures.dependencies(
+            new ArchitectureRule("closed", excluding, constraint, "why", false),
+            ArchitectureFixtures.edge(TEST_DOMAIN, DB)
+        )
+    )
         .isEmpty();
   }
 }

@@ -21,7 +21,6 @@ import java.util.Optional;
  * it, which grows by one step per propagating write.
  */
 final class TaintOrigins {
-
   private static final String ASSIGNED = "assigned to ";
 
   private final ControlFlowGraph graph;
@@ -30,7 +29,10 @@ final class TaintOrigins {
   private final Map<AccessSite, Taint> tainted = new HashMap<>();
 
   private TaintOrigins(
-      final ControlFlowGraph graph, final ReachingDefinitions reaching, final TaintSpec spec) {
+      final ControlFlowGraph graph,
+      final ReachingDefinitions reaching,
+      final TaintSpec spec
+  ) {
     this.graph = graph;
     this.reaching = reaching;
     this.spec = spec;
@@ -45,7 +47,10 @@ final class TaintOrigins {
    * @return the taint of each tainted write
    */
   static Map<AccessSite, Taint> of(
-      final ControlFlowGraph graph, final ReachingDefinitions reaching, final TaintSpec spec) {
+      final ControlFlowGraph graph,
+      final ReachingDefinitions reaching,
+      final TaintSpec spec
+  ) {
     final TaintOrigins origins = new TaintOrigins(graph, reaching, spec);
     new TaintSeeds(graph, spec, origins.tainted).seed();
     origins.propagate();
@@ -85,7 +90,8 @@ final class TaintOrigins {
       final AccessSite use,
       final AccessSite definition,
       final BasicBlock block,
-      final Span statement) {
+      final Span statement
+  ) {
     return use.block() == definition.block()
         && use.access().kind() == AccessKind.READ
         && TaintSpans.contains(statement, use.access().span())

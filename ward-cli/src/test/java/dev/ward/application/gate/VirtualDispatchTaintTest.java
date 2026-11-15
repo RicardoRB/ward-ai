@@ -101,13 +101,15 @@ class VirtualDispatchTaintTest {
             unit("Handler", HANDLER),
             unit("Unsafe", UNSAFE),
             unit("Safe", SAFE),
-            unit("Router", ROUTER_TEXT));
+            unit("Router", ROUTER_TEXT)
+        );
     final List<AnalysisFinding> found =
         new UnitResultCache(
-                new RuleEngine(new DeclarativeRuleMatcher()),
-                AnalysisCacheFixtures.codec(),
-                "test",
-                new JvmDependencyAdapters().forProject(root, units))
+            new RuleEngine(new DeclarativeRuleMatcher()),
+            AnalysisCacheFixtures.codec(),
+            "test",
+            new JvmDependencyAdapters().forProject(root, units)
+        )
             .run(AnalysisCacheFixtures.NO_CACHE, units, frontends, rules)
             .findings();
 

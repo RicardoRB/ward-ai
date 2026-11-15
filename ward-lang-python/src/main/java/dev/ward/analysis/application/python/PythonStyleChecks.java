@@ -22,7 +22,6 @@ import org.tomlj.TomlParseResult;
  * distances.
  */
 final class PythonStyleChecks {
-
   private static final String MESSAGE = "message";
   private static final String PROBLEM = "problem";
 
@@ -38,30 +37,40 @@ final class PythonStyleChecks {
         entry("docstring", PythonStyleChecks::docstring),
         entry(
             "overload-order",
-            toml -> new PythonOverloadOrderCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new PythonOverloadOrderCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry("metaclass-argument", PythonStyleChecks::metaclassArgument),
         entry(
             "ungrouped-imports",
-            toml -> new PythonUngroupedImportCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new PythonUngroupedImportCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "python-import-order",
-            toml -> new PythonImportOrderCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new PythonImportOrderCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "python-variable-distance",
             toml ->
                 new VariableDistanceCheck(
-                    TomlValues.integer(toml, "max"), TomlValues.required(toml, MESSAGE))));
+                    TomlValues.integer(toml, "max"),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        )
+    );
   }
 
   private static RuleCheck docstring(final TomlParseResult toml) {
     return new PythonDocstringCheck(
-        PythonDocstringCheck.Problem.valueOf(problem(toml)), TomlValues.required(toml, MESSAGE));
+        PythonDocstringCheck.Problem.valueOf(problem(toml)),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static RuleCheck metaclassArgument(final TomlParseResult toml) {
     return new PythonMetaclassArgumentCheck(
         PythonMetaclassArgumentCheck.Problem.valueOf(problem(toml)),
-        TomlValues.required(toml, MESSAGE));
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   /**

@@ -9,7 +9,6 @@ import java.util.Set;
  * supported Python release.
  */
 public final class PythonStdlibModules {
-
   /** The standard library module names, sorted. */
   public static final Set<String> NAMES =
       Set.of(
@@ -309,7 +308,8 @@ public final class PythonStdlibModules {
           "zipfile",
           "zipimport",
           "zlib",
-          "zoneinfo");
+          "zoneinfo"
+      );
 
   private PythonStdlibModules() {}
 }

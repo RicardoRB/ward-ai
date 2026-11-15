@@ -26,7 +26,6 @@ import java.util.regex.Pattern;
  * type.
  */
 public final class ForLoopCanBeForeachCheck implements RuleCheck {
-
   private static final Set<String> ITERABLES =
       Set.of("java.lang.Iterable", "java.util.Collection", "java.util.List");
   private static final FactNeed NEED =
@@ -66,7 +65,8 @@ public final class ForLoopCanBeForeachCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return loops(root, types);
   }
 
@@ -84,14 +84,19 @@ public final class ForLoopCanBeForeachCheck implements RuleCheck {
             .ifPresent(
                 collection ->
                     matches.add(
-                        CheckSupport.at(loop.span(), CheckSupport.fill(message, collection, ""))));
+                        CheckSupport.at(loop.span(), CheckSupport.fill(message, collection, ""))
+                    )
+            );
       }
     }
     return List.copyOf(matches);
   }
 
   private static Optional<String> collectionOf(
-      final SyntaxNode control, final SyntaxNode loop, final UnitTypeFacts types) {
+      final SyntaxNode control,
+      final SyntaxNode loop,
+      final UnitTypeFacts types
+  ) {
     final List<SyntaxNode> parts =
         control.children().stream().filter(c -> !c.kind().startsWith("'")).toList();
     if (parts.size() < CONTROL_PARTS || !"forInit".equals(parts.get(0).kind())) {
@@ -128,7 +133,8 @@ public final class ForLoopCanBeForeachCheck implements RuleCheck {
             d ->
                 SyntaxWalk.descendants(d).stream()
                     .filter(n -> "identifier".equals(n.kind()))
-                    .findFirst())
+                    .findFirst()
+        )
         .map(SyntaxWalk::text)
         .orElse("");
   }
@@ -138,21 +144,23 @@ public final class ForLoopCanBeForeachCheck implements RuleCheck {
       final String index,
       final String collection,
       final UnitTypeFacts types,
-      final boolean array) {
+      final boolean array
+  ) {
     final long named =
         SyntaxWalk.descendants(body).stream()
             .filter(n -> "identifier".equals(n.kind()) && index.equals(SyntaxWalk.text(n)))
             .count();
     final Matcher reads =
         Pattern.compile(
-                "(?<![\\w.])"
-                    + Pattern.quote(collection)
-                    + "(\\["
-                    + index
-                    + "\\]|\\.get\\("
-                    + index
-                    + "\\))"
-                    + ASSIGNED)
+            "(?<![\\w.])"
+                + Pattern.quote(collection)
+                + "(\\["
+                + index
+                + "\\]|\\.get\\("
+                + index
+                + "\\))"
+                + ASSIGNED
+        )
             .matcher(SyntaxWalk.text(body));
     long allowed = 0;
     while (reads.find()) {
@@ -162,14 +170,18 @@ public final class ForLoopCanBeForeachCheck implements RuleCheck {
   }
 
   private static boolean iterable(
-      final SyntaxNode body, final String collection, final UnitTypeFacts types) {
+      final SyntaxNode body,
+      final String collection,
+      final UnitTypeFacts types
+  ) {
     return types != null
         && SyntaxWalk.descendants(body).stream()
             .filter(n -> "expression".equals(n.kind()))
             .filter(
                 n ->
                     n.children().size() > 1
-                        && collection.equals(SyntaxWalk.text(n.children().get(0))))
+                        && collection.equals(SyntaxWalk.text(n.children().get(0)))
+            )
             .anyMatch(n -> isIterable(n.children().get(0), types));
   }
 

@@ -15,7 +15,6 @@ import java.util.Set;
  * repeated.
  */
 public final class RedundantImportCheck implements RuleCheck {
-
   private static final String JAVA_LANG = "java.lang";
 
   private final String message;
@@ -39,14 +38,19 @@ public final class RedundantImportCheck implements RuleCheck {
       if (!seen.add(key) || redundantClass(declaration, unitPackage)) {
         matches.add(
             CheckSupport.at(
-                declaration.span(), CheckSupport.fill(message, declaration.fullName(), "")));
+                declaration.span(),
+                CheckSupport.fill(message, declaration.fullName(), "")
+            )
+        );
       }
     }
     return List.copyOf(matches);
   }
 
   private static boolean redundantClass(
-      final ImportDeclaration declaration, final Optional<String> unitPackage) {
+      final ImportDeclaration declaration,
+      final Optional<String> unitPackage
+  ) {
     if (declaration.isStatic() || declaration.star()) {
       return false;
     }

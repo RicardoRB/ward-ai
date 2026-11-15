@@ -15,15 +15,17 @@ class FileSystemNodeToolConfigsTest {
   private final FileSystemNodeToolConfigs configs = new FileSystemNodeToolConfigs();
 
   @ParameterizedTest
-  @CsvSource({
-    "vitest, vitest.config.ts",
-    "vitest, vite.config.ts",
-    "jest, jest.config.js",
-    "stryker, stryker.conf.json",
-    "stryker, .stryker.config.mjs",
-    "stryker, stryker.config.mjs",
-    "vitest, vitest.config.mjs"
-  })
+  @CsvSource(
+      {
+          "vitest, vitest.config.ts",
+          "vitest, vite.config.ts",
+          "jest, jest.config.js",
+          "stryker, stryker.conf.json",
+          "stryker, .stryker.config.mjs",
+          "stryker, stryker.config.mjs",
+          "vitest, vitest.config.mjs"
+      }
+  )
   void userConfigOfTheGatesToolIsFound(final String gate, final String file) throws IOException {
     Files.writeString(root.resolve(file), "export default {};\n");
 

@@ -14,7 +14,6 @@ import java.util.Objects;
  * edge of the shortest cycle through that slice.
  */
 public final class SliceCycleRule implements GraphRule {
-
   /** The id of the rule, the same in every language. */
   public static final String ID = "ward:architecture/cycles";
 
@@ -54,12 +53,18 @@ public final class SliceCycleRule implements GraphRule {
           new FlowStep(
               edge.reference().span(),
               ring.get(index) + " depends on " + ring.get(index + 1),
-              edge.from()));
+              edge.from()
+          )
+      );
     }
     final DependencyEdge first = cycle.edges().getFirst();
     return new GraphMatch(
         first.from(),
         new RuleMatch(
-            first.reference().span(), "slices form a cycle: " + String.join(" -> ", ring), steps));
+            first.reference().span(),
+            "slices form a cycle: " + String.join(" -> ", ring),
+            steps
+        )
+    );
   }
 }

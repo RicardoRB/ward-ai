@@ -14,7 +14,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** Byte-for-byte contract verification of the persisted learning store. */
 class LearningStoreSaveContractTest {
-
   @Test
   void storeSaveMatchesContractFixtureIncludingUnicodeAndTimestamps(@TempDir final Path root)
       throws Exception {

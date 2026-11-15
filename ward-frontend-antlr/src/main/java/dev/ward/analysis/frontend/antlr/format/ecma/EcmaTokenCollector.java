@@ -16,7 +16,6 @@ import org.antlr.v4.runtime.Vocabulary;
  * its closing one, becomes one token whose text is its exact source, so no space inside it moves.
  */
 final class EcmaTokenCollector {
-
   private static final String COMMENT_TYPE = "comment";
   private static final String LINE_COMMENT = "SingleLineComment";
   private static final String WHITESPACES = "WhiteSpaces";
@@ -81,7 +80,11 @@ final class EcmaTokenCollector {
 
   /** Routes one token to JSX, layout whitespace, a template or a plain layout token. */
   private void dispatch(
-      final Token token, final String name, final boolean hidden, final boolean whitespace) {
+      final Token token,
+      final String name,
+      final boolean hidden,
+      final boolean whitespace
+  ) {
     final String text = token.getText();
     if (jsx.active() || (templateDepth == 0 && EcmaJsxText.OPEN.equals(name))) {
       acceptJsx(name, token);
@@ -122,8 +125,8 @@ final class EcmaTokenCollector {
         errorLine == Integer.MAX_VALUE
             ? parserErrorLine
             : parserErrorLine.isPresent()
-                ? OptionalInt.of(Math.min(errorLine, parserErrorLine.getAsInt()))
-                : OptionalInt.of(errorLine);
+            ? OptionalInt.of(Math.min(errorLine, parserErrorLine.getAsInt()))
+            : OptionalInt.of(errorLine);
     return new EcmaParse(tokens, syntaxTokens, rules, first);
   }
 

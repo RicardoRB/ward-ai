@@ -14,7 +14,6 @@ import java.util.stream.Stream;
  * the module does not declare is unknown, and so is the order of every class that derives from it.
  */
 final class PythonClassOrder {
-
   private final Map<String, PythonClassModel.ClassInfo> classes;
   private final Map<String, PythonClassModel.Order> orders = new HashMap<>();
 
@@ -42,7 +41,9 @@ final class PythonClassOrder {
   }
 
   private PythonClassModel.Order orderOf(
-      final PythonClassModel.ClassInfo info, final Set<String> visiting) {
+      final PythonClassModel.ClassInfo info,
+      final Set<String> visiting
+  ) {
     final Optional<List<String>> bases = resolvedBases(info);
     if (bases.isEmpty() || new HashSet<>(bases.get()).size() != bases.get().size()) {
       return PythonClassModel.Order.unknown();
@@ -63,7 +64,9 @@ final class PythonClassOrder {
         .map(
             merged ->
                 PythonClassModel.Order.known(
-                    Stream.concat(Stream.of(info.name()), merged.stream()).toList()))
+                    Stream.concat(Stream.of(info.name()), merged.stream()).toList()
+                )
+        )
         .orElseGet(PythonClassModel.Order::inconsistent);
   }
 

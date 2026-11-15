@@ -23,7 +23,10 @@ final class GradleToolVersions {
   private final Optional<String> warning;
 
   private GradleToolVersions(
-      final Map<String, CompatibilityFinding> findings, final Optional<String> warning) {
+      final Map<String,
+      CompatibilityFinding> findings,
+      final Optional<String> warning
+  ) {
     this.findings = Map.copyOf(findings);
     this.warning = warning;
   }
@@ -35,15 +38,19 @@ final class GradleToolVersions {
   static GradleToolVersions resolve(
       final Optional<CompatibilityFindings> compatibility,
       final Project project,
-      final Set<String> selected) {
+      final Set<String> selected
+  ) {
     return compatibility
         .map(
             resolver ->
                 new GradleToolVersions(
                     resolver.resolve(
                         project,
-                        toolsByGate(selected).values().stream().flatMap(List::stream).toList()),
-                    resolver.runtimeJdk(project).flatMap(JavaSupport::warning)))
+                        toolsByGate(selected).values().stream().flatMap(List::stream).toList()
+                    ),
+                    resolver.runtimeJdk(project).flatMap(JavaSupport::warning)
+                )
+        )
         .orElseGet(() -> new GradleToolVersions(Map.of(), Optional.empty()));
   }
 
@@ -55,7 +62,8 @@ final class GradleToolVersions {
           if (selected.contains(gate)) {
             tools.put(gate, names);
           }
-        });
+        }
+    );
     return tools;
   }
 

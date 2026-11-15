@@ -15,7 +15,6 @@ import java.util.Set;
  * such as {@code (n := 1).real}, is not reported.
  */
 public final class NamedExprWithoutContextCheck implements RuleCheck {
-
   private static final Set<String> STATEMENTS = Set.of("expr_stmt");
   private static final String NAMED_EXPRESSION = "namedexpr_test";
   private static final int ASSIGNMENT_EXPRESSION_PARTS = 3;

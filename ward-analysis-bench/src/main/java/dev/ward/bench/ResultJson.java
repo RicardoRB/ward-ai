@@ -10,7 +10,6 @@ import java.util.Map;
  * variables and no captured process output.
  */
 final class ResultJson {
-
   static final int SCHEMA_VERSION = 1;
   private static final String INDENT = "  ";
   private static final char SPACE = ' ';
@@ -23,10 +22,13 @@ final class ResultJson {
     root.put("generatedAt", generatedAt.toString());
     root.put("completed", result.completed());
     root.put(
-        "host", Map.of("os", System.getProperty("os.name"), "arch", System.getProperty("os.arch")));
+        "host",
+        Map.of("os", System.getProperty("os.name"), "arch", System.getProperty("os.arch"))
+    );
     root.put(
         "binary",
-        Map.of("sizeBytes", result.binary().sizeBytes(), "sha256", result.binary().sha256()));
+        Map.of("sizeBytes", result.binary().sizeBytes(), "sha256", result.binary().sha256())
+    );
     root.put("repeats", Map.of("full", result.fullRepeats(), "edit", result.editRepeats()));
     root.put("manifest", manifest(result));
     root.put("entries", entries(result));
@@ -40,11 +42,17 @@ final class ResultJson {
         .map(
             entry ->
                 (Object)
-                    Map.of(
-                        "language", entry.entry().language(),
-                        "name", entry.entry().name(),
-                        "url", entry.entry().url(),
-                        "commit", entry.entry().commit()))
+                Map.of(
+                    "language",
+                    entry.entry().language(),
+                    "name",
+                    entry.entry().name(),
+                    "url",
+                    entry.entry().url(),
+                    "commit",
+                    entry.entry().commit()
+                )
+        )
         .toList();
   }
 
@@ -53,9 +61,13 @@ final class ResultJson {
         .map(
             entry ->
                 (Object)
-                    Map.of(
-                        "name", entry.entry().name(),
-                        "jobs", entry.jobs().stream().map(ResultJson::job).toList()))
+                Map.of(
+                    "name",
+                    entry.entry().name(),
+                    "jobs",
+                    entry.jobs().stream().map(ResultJson::job).toList()
+                )
+        )
         .toList();
   }
 
@@ -93,7 +105,8 @@ final class ResultJson {
           map.entrySet().stream().map(e -> Map.entry(e.getKey().toString(), e.getValue())).toList(),
           depth,
           '{',
-          '}');
+          '}'
+      );
     } else if (value instanceof List<?> list) {
       writeList(json, list, depth);
     } else {
@@ -103,10 +116,12 @@ final class ResultJson {
 
   private static void writeContainer(
       final StringBuilder json,
-      final List<Map.Entry<String, Object>> entries,
+      final List<Map.Entry<String,
+      Object>> entries,
       final int depth,
       final char open,
-      final char close) {
+      final char close
+  ) {
     json.append(open);
     String separator = "";
     for (final Map.Entry<String, Object> entry : entries) {
@@ -159,7 +174,7 @@ final class ResultJson {
         case '\t' -> json.append("\\t");
         default -> {
           if (c < SPACE) {
-            json.append(String.format("\\u%04x", (int) c));
+            json.append(String.format("\\u%04x", (int)c));
           } else {
             json.append(c);
           }

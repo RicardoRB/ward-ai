@@ -12,7 +12,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class SwiftScopeAnalysisPatternsTest {
-
   private static final int LINE_1 = 1;
   private static final int LINE_2 = 2;
   private static final int LINE_3 = 3;
@@ -49,7 +48,8 @@ class SwiftScopeAnalysisPatternsTest {
   void macroParametersStayInsideTheMacro() {
     final UnitScopes scopes =
         SwiftScopeFixtures.scopes(
-            "macro m(_ value: Int) = #externalMacro(module: \"M\", type: \"S\")\nfunc g() { print(value) }\n");
+            "macro m(_ value: Int) = #externalMacro(module: \"M\", type: \"S\")\nfunc g() { print(value) }\n"
+        );
 
     assertThat(only(scopes, "value", LINE_2).resolved()).isEmpty();
   }
@@ -60,7 +60,8 @@ class SwiftScopeAnalysisPatternsTest {
 
     assertThat(scopes.references())
         .filteredOn(
-            reference -> "n".equals(reference.name()) && reference.span().startLine() == LINE_2)
+            reference -> "n".equals(reference.name()) && reference.span().startLine() == LINE_2
+        )
         .extracting(NameReference::access)
         .containsExactlyInAnyOrder(ReferenceAccess.READ, ReferenceAccess.WRITE);
   }
@@ -74,7 +75,8 @@ class SwiftScopeAnalysisPatternsTest {
         .extracting(Binding::name, Binding::kind)
         .containsExactly(
             org.assertj.core.groups.Tuple.tuple("Foundation", BindingKind.IMPORT),
-            org.assertj.core.groups.Tuple.tuple("Thing", BindingKind.IMPORT));
+            org.assertj.core.groups.Tuple.tuple("Thing", BindingKind.IMPORT)
+        );
   }
 
   @Test

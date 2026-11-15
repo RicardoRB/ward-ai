@@ -27,7 +27,6 @@ import java.util.Set;
  * because the scopes do not bind them. The options mirror ward:java/hidden-field.
  */
 public final class NodeHiddenFieldCheck implements RuleCheck {
-
   private static final String CLASS_DECLARATION = "classDeclaration";
   private static final String CLASS_EXPRESSION = "classExpression";
   private static final Set<ScopeKind> LOCAL_SCOPES = Set.of(ScopeKind.FUNCTION, ScopeKind.BLOCK);
@@ -47,7 +46,10 @@ public final class NodeHiddenFieldCheck implements RuleCheck {
    * @param message the message of each finding; {@code {value}} is the name
    */
   public NodeHiddenFieldCheck(
-      final boolean ignoreConstructorParameter, final boolean ignoreSetter, final String message) {
+      final boolean ignoreConstructorParameter,
+      final boolean ignoreSetter,
+      final String message
+  ) {
     this.ignoreConstructorParameter = ignoreConstructorParameter;
     this.ignoreSetter = ignoreSetter;
     this.message = message;
@@ -65,7 +67,11 @@ public final class NodeHiddenFieldCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes();
     final Map<Span, SyntaxNode> classes = new HashMap<>();
     collectClasses(root, classes);
@@ -93,7 +99,11 @@ public final class NodeHiddenFieldCheck implements RuleCheck {
 
   /** The class declaration of the nearest class scope above the scope, if the tree has it. */
   private static Optional<SyntaxNode> enclosingClass(
-      final Scope scope, final UnitScopes scopes, final Map<Span, SyntaxNode> classes) {
+      final Scope scope,
+      final UnitScopes scopes,
+      final Map<Span,
+      SyntaxNode> classes
+  ) {
     Optional<Scope> ancestor = scopes.parent(scope);
     while (ancestor.isPresent() && ancestor.get().kind() != ScopeKind.CLASS) {
       ancestor = scopes.parent(ancestor.get());
@@ -105,7 +115,8 @@ public final class NodeHiddenFieldCheck implements RuleCheck {
       final SyntaxNode declared,
       final Scope scope,
       final Binding binding,
-      final List<RuleMatch> found) {
+      final List<RuleMatch> found
+  ) {
     final List<SyntaxNode> members = NodeClassMembers.elements(declared);
     if (!NodeClassMembers.fieldNames(members).contains(binding.name())) {
       return;

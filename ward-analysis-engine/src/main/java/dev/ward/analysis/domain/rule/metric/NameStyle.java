@@ -14,7 +14,10 @@ enum NameStyle {
   CAMEL("camel", "lowerCamelCase", "[a-z][A-Za-z0-9]*"),
   /** Snake case for variables, or upper snake case for constants. */
   SNAKE_OR_UPPER(
-      "snake-or-upper", "snake_case or UPPER_SNAKE_CASE", "[a-z][a-z0-9_]*|[A-Z][A-Z0-9_]*");
+      "snake-or-upper",
+      "snake_case or UPPER_SNAKE_CASE",
+      "[a-z][a-z0-9_]*|[A-Z][A-Z0-9_]*"
+  );
 
   private final String key;
   private final String description;

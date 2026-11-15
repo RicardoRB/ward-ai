@@ -14,7 +14,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class VarargPrimitiveArrayCheckTest {
-
   private static final String FORMAT = "format";
   private static final TypeRef OBJECTS = MoreTrees.type("java.lang.Object", 1, false);
   private static final TypeRef STRING = MoreTrees.type("java.lang.String", 0, false);
@@ -26,9 +25,16 @@ class VarargPrimitiveArrayCheckTest {
   }
 
   private static UnitTypeFacts facts(
-      final List<TypeRef> parameters, final boolean varargs, final SpanFacts argument) {
+      final List<TypeRef> parameters,
+      final boolean varargs,
+      final SpanFacts argument
+  ) {
     return MoreTrees.table(
-        Calls.CALL, MoreTrees.called(parameters, varargs), Calls.SECOND, argument);
+        Calls.CALL,
+        MoreTrees.called(parameters, varargs),
+        Calls.SECOND,
+        argument
+    );
   }
 
   private static SyntaxNode call() {
@@ -46,7 +52,11 @@ class VarargPrimitiveArrayCheckTest {
   void anArrayBeforeTheVariablePartIsNotReported() {
     final UnitTypeFacts facts =
         MoreTrees.table(
-            Calls.CALL, MoreTrees.called(List.of(STRING, OBJECTS), true), Calls.ARGUMENT, INTS);
+            Calls.CALL,
+            MoreTrees.called(List.of(STRING, OBJECTS), true),
+            Calls.ARGUMENT,
+            INTS
+        );
 
     assertThat(run(call(), facts)).isEmpty();
   }
@@ -57,9 +67,11 @@ class VarargPrimitiveArrayCheckTest {
     assertThat(run(call(), facts(List.of(), true, INTS))).isEmpty();
     assertThat(run(call(), facts(List.of(STRING, STRING), true, INTS))).isEmpty();
     assertThat(
-            run(
-                call(),
-                facts(List.of(STRING, MoreTrees.type("java.lang.Object", 0, false)), true, INTS)))
+        run(
+            call(),
+            facts(List.of(STRING, MoreTrees.type("java.lang.Object", 0, false)), true, INTS)
+        )
+    )
         .isEmpty();
     assertThat(run(call(), facts(List.of(STRING, OBJECTS), true, MoreTrees.typed(STRING))))
         .isEmpty();

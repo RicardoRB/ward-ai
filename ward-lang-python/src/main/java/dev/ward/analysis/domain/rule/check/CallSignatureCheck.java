@@ -17,7 +17,6 @@ import java.util.Set;
  * because their signature is not known here.
  */
 public final class CallSignatureCheck implements RuleCheck {
-
   /** The problem a call is reported for. */
   public enum Problem {
     /** More positional arguments than the signature takes. */
@@ -62,7 +61,9 @@ public final class CallSignatureCheck implements RuleCheck {
   }
 
   private boolean violates(
-      final SignatureReader.Signature signature, final CallSites.Arguments arguments) {
+      final SignatureReader.Signature signature,
+      final CallSites.Arguments arguments
+  ) {
     return switch (problem) {
       case TOO_MANY_POSITIONAL ->
           !signature.varargs() && arguments.positional() > signature.positional().size();

@@ -13,7 +13,6 @@ import java.util.Set;
  * class of the same name counts.
  */
 public final class AccessorClassGenerationCheck implements UnitCheck {
-
   private static final String CREATOR = "creator";
   private static final String IDENTIFIER = "identifier";
   private static final String CONSTRUCTOR = "constructorDeclaration";
@@ -50,7 +49,9 @@ public final class AccessorClassGenerationCheck implements UnitCheck {
             .forEach(
                 creator ->
                     matches.add(
-                        CheckSupport.at(creator.span(), CheckSupport.fill(message, name, ""))));
+                        CheckSupport.at(creator.span(), CheckSupport.fill(message, name, ""))
+                    )
+            );
       }
     }
     return List.copyOf(matches);
@@ -65,7 +66,8 @@ public final class AccessorClassGenerationCheck implements UnitCheck {
                 member.children().stream()
                     .filter(child -> MEMBER_DECLARATION.equals(child.kind()))
                     .flatMap(child -> child.children().stream())
-                    .anyMatch(child -> CONSTRUCTOR.equals(child.kind())));
+                    .anyMatch(child -> CONSTRUCTOR.equals(child.kind()))
+        );
   }
 
   private static String createdName(final SyntaxNode creator) {

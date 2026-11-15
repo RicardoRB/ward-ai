@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** Where a secret rule matches: lines, windows around keyword hits, and sliding windows. */
 class SecretRegionsTest {
-
   private static final int LONG = SecretRegions.LONG_LINE;
 
   private static final int LINES = 3;
@@ -32,7 +31,8 @@ class SecretRegionsTest {
         0,
         multiline,
         List.of(),
-        "m");
+        "m"
+    );
   }
 
   private static List<int[]> regions(final String text, final SecretRule rule) {
@@ -54,8 +54,8 @@ class SecretRegionsTest {
 
     assertThat(regions).hasSizeGreaterThan(LINES);
     assertThat(regions.get(0)).containsExactly(0, LONG);
-    assertThat(regions.get(1)[0]).isLessThan(LONG);
-    assertThat(regions.get(regions.size() - 1)[1]).isEqualTo(LINES * LONG);
+    assertThat(regions.get(1) [0]).isLessThan(LONG);
+    assertThat(regions.get(regions.size() - 1) [1]).isEqualTo(LINES * LONG);
   }
 
   @Test
@@ -68,7 +68,7 @@ class SecretRegionsTest {
     final List<int[]> many = regions(dense, keyed);
 
     assertThat(around).hasSize(1);
-    assertThat(around.get(0)[0]).isLessThanOrEqualTo(GAP).isGreaterThan(GAP - LONG);
+    assertThat(around.get(0) [0]).isLessThanOrEqualTo(GAP).isGreaterThan(GAP - LONG);
     assertThat(many.stream().mapToLong(region -> region[1] - region[0]).sum())
         .isLessThan(dense.length() * 2L);
   }
@@ -79,8 +79,8 @@ class SecretRegionsTest {
 
     final List<int[]> regions = regions(text, rule(List.of("begin"), true));
 
-    assertThat(regions.get(0)[0]).isEqualTo(BEFORE_KEYWORD - LEAD);
-    assertThat(regions.get(0)[1] - regions.get(0)[0]).isEqualTo(TEXT_WINDOW);
+    assertThat(regions.get(0) [0]).isEqualTo(BEFORE_KEYWORD - LEAD);
+    assertThat(regions.get(0) [1] - regions.get(0) [0]).isEqualTo(TEXT_WINDOW);
   }
 
   @Test

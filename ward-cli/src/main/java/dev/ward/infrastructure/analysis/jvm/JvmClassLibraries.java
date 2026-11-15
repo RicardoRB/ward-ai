@@ -46,7 +46,8 @@ public final class JvmClassLibraries implements JvmLibrary, AutoCloseable {
       final Path projectRoot,
       final List<String> classpath,
       final Optional<Path> javaHome,
-      final Optional<Path> cacheDirectory) {
+      final Optional<Path> cacheDirectory
+  ) {
     final List<JvmLibrary> libraries = new ArrayList<>();
     final List<Closeable> owned = new ArrayList<>();
     for (final String entry : classpath) {
@@ -60,7 +61,8 @@ public final class JvmClassLibraries implements JvmLibrary, AutoCloseable {
             image -> {
               libraries.add(image);
               owned.add(image);
-            });
+            }
+        );
     if (LOGGER.isLoggable(Level.FINE)) {
       LOGGER.fine("event=jvm-libraries-opened count=" + libraries.size());
     }
@@ -68,7 +70,10 @@ public final class JvmClassLibraries implements JvmLibrary, AutoCloseable {
   }
 
   private static void addEntry(
-      final Path path, final Optional<Path> cacheDirectory, final List<JvmLibrary> libraries) {
+      final Path path,
+      final Optional<Path> cacheDirectory,
+      final List<JvmLibrary> libraries
+  ) {
     final Path fileName = path.getFileName();
     final String name = fileName == null ? "" : fileName.toString();
     if (Files.isDirectory(path)) {
@@ -86,7 +91,9 @@ public final class JvmClassLibraries implements JvmLibrary, AutoCloseable {
    * @param runningHome the {@code java.home} of this process, empty when unset
    */
   public static Optional<Path> jdkHome(
-      final Optional<String> environmentHome, final Optional<String> runningHome) {
+      final Optional<String> environmentHome,
+      final Optional<String> runningHome
+  ) {
     return java.util.stream.Stream.concat(environmentHome.stream(), runningHome.stream())
         .filter(home -> !home.isBlank())
         .map(Path::of)
@@ -107,7 +114,8 @@ public final class JvmClassLibraries implements JvmLibrary, AutoCloseable {
             libraries.stream()
                 .filter(library -> library.exists(key))
                 .findFirst()
-                .flatMap(library -> library.find(key)));
+                .flatMap(library -> library.find(key))
+    );
   }
 
   @Override

@@ -8,7 +8,6 @@ import java.util.logging.LogRecord;
  * Compact formatter for application diagnostics. It deliberately never renders exception messages.
  */
 public final class SafeLogFormatter extends Formatter {
-
   @Override
   public String format(final LogRecord record) {
     String result =
@@ -51,7 +50,7 @@ public final class SafeLogFormatter extends Formatter {
         case '\t' -> escaped.append("\\t");
         default -> {
           if (Character.isISOControl(character)) {
-            escaped.append(String.format("\\u%04x", (int) character));
+            escaped.append(String.format("\\u%04x", (int)character));
           } else {
             escaped.append(character);
           }

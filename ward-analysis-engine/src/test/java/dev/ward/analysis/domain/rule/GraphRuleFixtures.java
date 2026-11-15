@@ -11,7 +11,6 @@ import java.util.Set;
 
 /** Builds graphs and definitions for the graph rule tests. */
 final class GraphRuleFixtures {
-
   private GraphRuleFixtures() {}
 
   /** An import on {@code line} of {@code from} that resolves to {@code to}. */
@@ -30,6 +29,7 @@ final class GraphRuleFixtures {
         Set.of(AnalysisLanguage.JAVA, AnalysisLanguage.PYTHON),
         RuleCapability.SYMBOLS,
         AnalysisSeverity.ERROR,
-        body);
+        body
+    );
   }
 }

@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * pair reads as a tuple. A following call is not reported, since no name could be mistaken for it.
  */
 public final class ConfusingWithCheck implements RuleCheck {
-
   private static final String WITH = "with_stmt";
   private static final String ITEM = "with_item";
   private static final String AS = "as";

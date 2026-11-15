@@ -35,7 +35,9 @@ class PythonDependencySourceTest {
   @Test
   void aTruncatedUvLockNamesTheFile(@TempDir final Path dir) throws IOException {
     Files.writeString(
-        dir.resolve("pyproject.toml"), "[project]\nname='a'\ndependencies=['idna']\n");
+        dir.resolve("pyproject.toml"),
+        "[project]\nname='a'\ndependencies=['idna']\n"
+    );
     Files.writeString(dir.resolve("uv.lock"), "version = 1\n[[package\n");
 
     assertThatThrownBy(() -> read(dir, BuildTool.UV))
@@ -46,7 +48,9 @@ class PythonDependencySourceTest {
   @Test
   void aMissingLockfileNamesTheCommandThatCreatesIt(@TempDir final Path dir) throws IOException {
     Files.writeString(
-        dir.resolve("pyproject.toml"), "[project]\nname='a'\ndependencies=['idna']\n");
+        dir.resolve("pyproject.toml"),
+        "[project]\nname='a'\ndependencies=['idna']\n"
+    );
 
     assertThatThrownBy(() -> read(dir, BuildTool.POETRY)).hasMessageContaining("poetry lock");
     assertThatThrownBy(() -> read(dir, BuildTool.UV)).hasMessageContaining("uv lock");
@@ -55,10 +59,13 @@ class PythonDependencySourceTest {
   @Test
   void aDeclaredDependencyMissingFromTheLockfileFails(@TempDir final Path dir) throws IOException {
     Files.writeString(
-        dir.resolve("pyproject.toml"), "[project]\nname='a'\ndependencies=['idna']\n");
+        dir.resolve("pyproject.toml"),
+        "[project]\nname='a'\ndependencies=['idna']\n"
+    );
     Files.writeString(
         dir.resolve("uv.lock"),
-        "version = 1\n[[package]]\nname = \"a\"\nversion = \"0\"\nsource = { virtual = \".\" }\n");
+        "version = 1\n[[package]]\nname = \"a\"\nversion = \"0\"\nsource = { virtual = \".\" }\n"
+    );
 
     assertThatThrownBy(() -> read(dir, BuildTool.UV))
         .hasMessageContaining("idna")
@@ -68,7 +75,9 @@ class PythonDependencySourceTest {
   @Test
   void aLockVersionItDoesNotKnowFails(@TempDir final Path dir) throws IOException {
     Files.writeString(
-        dir.resolve("pyproject.toml"), "[project]\nname='a'\ndependencies=['idna']\n");
+        dir.resolve("pyproject.toml"),
+        "[project]\nname='a'\ndependencies=['idna']\n"
+    );
     Files.writeString(dir.resolve("uv.lock"), "version = 7\n");
 
     assertThatThrownBy(() -> read(dir, BuildTool.UV)).hasMessageContaining("version 7");

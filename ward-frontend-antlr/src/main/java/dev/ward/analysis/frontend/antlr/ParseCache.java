@@ -17,7 +17,6 @@ import java.util.logging.Logger;
  * asking for the same unit wait for the one parse of it.
  */
 final class ParseCache {
-
   private static final Logger LOG = Logger.getLogger(ParseCache.class.getName());
   private static final int INITIAL_CAPACITY = 16;
   private static final float LOAD_FACTOR = 0.75f;

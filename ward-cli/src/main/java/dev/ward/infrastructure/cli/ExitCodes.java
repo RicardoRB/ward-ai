@@ -2,7 +2,6 @@ package dev.ward.infrastructure.cli;
 
 /** The process exit codes shared by every command. */
 public final class ExitCodes {
-
   /** Everything passed / the command succeeded. */
   public static final int OK = 0;
 

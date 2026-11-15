@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** Grammar predicates and actions for TypeScriptPredicate, exercised through the frontend. */
 class TypeScriptPredicateTest {
-
   private static ParseResult parse(final AnalysisLanguage language, final String text) {
     return new AntlrLanguageFrontend().parse(new SourceUnit("sample", language, text));
   }
@@ -30,20 +29,21 @@ class TypeScriptPredicateTest {
   @Test
   void typeScriptReturnWithLineTerminatorParses() {
     assertThat(
-            parse(AnalysisLanguage.TYPESCRIPT, "function f(): number {\n  return\n  1;\n}\n")
-                .diagnostics())
+        parse(AnalysisLanguage.TYPESCRIPT, "function f(): number {\n  return\n  1;\n}\n")
+            .diagnostics()
+    )
         .isEmpty();
   }
 
   @Test
   void callInsideArrowBlockWithoutSemicolonParses() {
     final String[] snippets = {
-      "const a = () => { return g(x) }",
-      "const a = () => { return g(1) }",
-      "const a = () => { return g() }",
-      "const a = () => { return g(x, y) }",
-      "const a = () => { return g(x); }",
-      "function f() { return g(x) }",
+        "const a = () => { return g(x) }",
+        "const a = () => { return g(1) }",
+        "const a = () => { return g() }",
+        "const a = () => { return g(x, y) }",
+        "const a = () => { return g(x); }",
+        "function f() { return g(x) }",
     };
     for (final String snippet : snippets) {
       assertThat(parse(AnalysisLanguage.TYPESCRIPT, snippet).diagnostics()).as(snippet).isEmpty();
@@ -60,21 +60,21 @@ class TypeScriptPredicateTest {
   @Test
   void validTypeScriptConstructsParseWithoutDiagnostics() {
     final String[] snippets = {
-      "const f = (x: number): x is number => x > 0;",
-      "let t = `outer ${`inner ${1}`} end`;",
-      "let t = `a ${ {k: 1}.k } b`;",
-      "function f() { if (x) { return } }",
-      "class A { private x = 1; get y(): number { return this.x; } }",
-      "let v = a\n++b;",
-      "type T = {a: number}\nlet u = 1",
-      "enum E { A, B }",
-      "let r = /x/.test(s) ? 1 : 2;",
-      "abstract class B { abstract m(): void; }",
-      "interface I { a?: string; }",
-      "export default function () {}",
-      "let n = x as unknown as number;",
-      "for (const k of [1]) {}",
-      "label: for (;;) { break label; }",
+        "const f = (x: number): x is number => x > 0;",
+        "let t = `outer ${`inner ${1}`} end`;",
+        "let t = `a ${ {k: 1}.k } b`;",
+        "function f() { if (x) { return } }",
+        "class A { private x = 1; get y(): number { return this.x; } }",
+        "let v = a\n++b;",
+        "type T = {a: number}\nlet u = 1",
+        "enum E { A, B }",
+        "let r = /x/.test(s) ? 1 : 2;",
+        "abstract class B { abstract m(): void; }",
+        "interface I { a?: string; }",
+        "export default function () {}",
+        "let n = x as unknown as number;",
+        "for (const k of [1]) {}",
+        "label: for (;;) { break label; }",
     };
     for (final String snippet : snippets) {
       assertThat(parse(AnalysisLanguage.TYPESCRIPT, snippet).diagnostics()).as(snippet).isEmpty();

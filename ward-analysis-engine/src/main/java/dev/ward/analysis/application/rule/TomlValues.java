@@ -14,7 +14,6 @@ import org.tomlj.TomlTable;
 
 /** Reads typed parameters from a rule body, reporting a missing or wrong-typed value. */
 public final class TomlValues {
-
   private TomlValues() {}
 
   /**
@@ -50,7 +49,10 @@ public final class TomlValues {
 
   /** Reads an integer, or {@code fallback} when the key is absent. */
   public static int optionalInteger(
-      final TomlParseResult toml, final String key, final int fallback) {
+      final TomlParseResult toml,
+      final String key,
+      final int fallback
+  ) {
     return toml.contains(key) ? integer(toml, key) : fallback;
   }
 

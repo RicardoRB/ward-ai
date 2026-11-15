@@ -18,7 +18,6 @@ import org.tomlj.TomlTable;
 
 /** Builds every check the JVM module registers from the bodies of its own bundled rules. */
 final class JvmCheckProviderTest {
-
   private static final String CHECK = "check";
 
   @Test
@@ -51,7 +50,8 @@ final class JvmCheckProviderTest {
   private static TomlTable read(final String resource) throws IOException {
     try (InputStream in = JvmCheckProviderTest.class.getResourceAsStream("/" + resource)) {
       return Toml.parse(
-          new String(Objects.requireNonNull(in, resource).readAllBytes(), StandardCharsets.UTF_8));
+          new String(Objects.requireNonNull(in, resource).readAllBytes(), StandardCharsets.UTF_8)
+      );
     }
   }
 }

@@ -14,7 +14,6 @@ import java.util.Set;
  * literal and the operand and reports where the {@code %} expression starts.
  */
 public final class PercentFormatCheck implements RuleCheck {
-
   /** The mistakes the check tells apart, one per rule. */
   public enum Problem {
     /** The format ends inside a conversion. */
@@ -81,7 +80,9 @@ public final class PercentFormatCheck implements RuleCheck {
             content ->
                 new Operation(
                     PercentFormatString.parse(content),
-                    PercentArgument.of(SyntaxWalk.text(children.get(2)))));
+                    PercentArgument.of(SyntaxWalk.text(children.get(2)))
+                )
+        );
   }
 
   /** The text between the quotes of one string literal, if the text is exactly one. */
@@ -104,7 +105,6 @@ public final class PercentFormatCheck implements RuleCheck {
 
   /** One {@code %} expression: its format and its right operand. */
   private record Operation(PercentFormatString format, PercentArgument argument) {
-
     boolean violates(final Problem kind) {
       return switch (kind) {
         case INVALID -> format.incomplete();

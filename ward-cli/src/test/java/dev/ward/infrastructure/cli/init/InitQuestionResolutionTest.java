@@ -22,7 +22,12 @@ class InitQuestionResolutionTest {
 
     assertThat(init.output())
         .doesNotContain(
-            "Choose a preset", "Select agent", "Select quality gates", "Select optional", "[y/N]");
+            "Choose a preset",
+            "Select agent",
+            "Select quality gates",
+            "Select optional",
+            "[y/N]"
+        );
     for (final String gate : JavaPresetGates.STANDARD) {
       assertThat(init.configuration()).contains("[checks." + gate + "]");
     }

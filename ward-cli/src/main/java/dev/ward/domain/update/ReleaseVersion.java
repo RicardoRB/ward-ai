@@ -36,7 +36,9 @@ public record ReleaseVersion(int major, int minor, int patch) {
         new ReleaseVersion(
             Integer.parseInt(matcher.group(1)),
             Integer.parseInt(matcher.group(2)),
-            Integer.parseInt(matcher.group(PATCH_GROUP))));
+            Integer.parseInt(matcher.group(PATCH_GROUP))
+        )
+    );
   }
 
   /** Returns whether this version is strictly newer than {@code other}. */

@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 
 /** Reports a literal type that repeats a literal value, where {@code as const} would do. */
 public final class PreferAsConstCheck implements RuleCheck {
-
   private static final Pattern LITERAL =
       Pattern.compile("'[^']*'|\"[^\"]*\"|-?[0-9][0-9_.]*|true|false");
   private static final String AS = "as";

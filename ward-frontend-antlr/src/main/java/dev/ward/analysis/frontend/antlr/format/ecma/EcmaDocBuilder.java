@@ -14,7 +14,6 @@ import java.util.Set;
  * line breaks are ignored, except that an object keeps a break after its brace.
  */
 final class EcmaDocBuilder {
-
   private static final String EMPTY = "";
   private static final String NEWLINE = "\n";
   private static final String COMMA = ",";
@@ -102,7 +101,8 @@ final class EcmaDocBuilder {
           openText,
           Document.indent(items(open + 1, close, Context.BLOCK)),
           separator(close - 1, close, Context.BLOCK),
-          closeText);
+          closeText
+      );
     }
     if (brackets.isGroup(open)) {
       return Document.group(
@@ -110,13 +110,16 @@ final class EcmaDocBuilder {
               openText,
               Document.indent(items(open + 1, close, Context.GROUP)),
               separator(close - 1, close, Context.GROUP),
-              closeText));
+              closeText
+          )
+      );
     }
     return Document.concat(
         openText,
         items(open + 1, close, Context.FLAT),
         separator(close - 1, close, Context.FLAT),
-        closeText);
+        closeText
+    );
   }
 
   private Document separator(final int prev, final int next, final Context context) {
@@ -201,7 +204,9 @@ final class EcmaDocBuilder {
     final int blank =
         edge ? 0 : Math.max(0, tokens.get(next).line() - tokens.get(prev).endLine() - 1);
     return Document.concat(
-        Document.text(NEWLINE.repeat(Math.min(blank, maxBlankLines))), Document.hardLine());
+        Document.text(NEWLINE.repeat(Math.min(blank, maxBlankLines))),
+        Document.hardLine()
+    );
   }
 
   private String text(final int index) {

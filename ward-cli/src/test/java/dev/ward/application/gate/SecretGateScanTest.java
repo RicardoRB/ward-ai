@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 
 /** The {@code secrets} gate: SecretGateScanTest. */
 final class SecretGateScanTest extends SecretGateTestSupport {
-
   @Test
   void reportsTheTokenWithRuleFileLineAndColumnAndNoSecret() throws IOException {
     write(CONFIG, TOKEN_LINE);
@@ -70,7 +69,8 @@ final class SecretGateScanTest extends SecretGateTestSupport {
     Files.createDirectories(root.resolve("config"));
     Files.write(
         root.resolve(CONFIG),
-        ("café: 1\ntoken: " + TOKEN + "\n").getBytes(StandardCharsets.ISO_8859_1));
+        ("café: 1\ntoken: " + TOKEN + "\n").getBytes(StandardCharsets.ISO_8859_1)
+    );
 
     assertThat(onlyFinding(run(SecretsOptions.NONE, List.of())).line()).isEqualTo(2);
   }

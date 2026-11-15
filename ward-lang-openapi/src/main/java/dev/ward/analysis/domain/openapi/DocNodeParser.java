@@ -2,7 +2,6 @@ package dev.ward.analysis.domain.openapi;
 
 /** Parses a YAML or JSON text into the nodes of {@link DocNode}, for texts that are not specs. */
 public final class DocNodeParser {
-
   private DocNodeParser() {}
 
   /**

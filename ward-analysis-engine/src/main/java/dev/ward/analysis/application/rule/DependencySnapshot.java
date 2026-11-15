@@ -20,10 +20,12 @@ import java.util.Set;
  */
 public record DependencySnapshot(
     DependencyGraph graph,
-    Map<String, FileSummary> summaries,
+    Map<String,
+    FileSummary> summaries,
     Set<String> entries,
-    Map<String, SourceUnit> units) {
-
+    Map<String,
+    SourceUnit> units
+) {
   /** The snapshot of a run with no dependency adapters: no summaries and no edges. */
   public static final DependencySnapshot EMPTY =
       new DependencySnapshot(new DependencyGraph(List.of()), Map.of(), Set.of(), Map.of());
@@ -31,8 +33,10 @@ public record DependencySnapshot(
   /** Creates a snapshot that holds no source units. */
   public DependencySnapshot(
       final DependencyGraph graph,
-      final Map<String, FileSummary> summaries,
-      final Set<String> entries) {
+      final Map<String,
+      FileSummary> summaries,
+      final Set<String> entries
+  ) {
     this(graph, summaries, entries, Map.of());
   }
 
@@ -62,7 +66,8 @@ public record DependencySnapshot(
     return new DependencyView(
         summariesOf(graph.dependenciesOf(path)),
         summariesOf(graph.dependentsOf(path)),
-        graph.outgoingEdgesOf(path));
+        graph.outgoingEdgesOf(path)
+    );
   }
 
   /**

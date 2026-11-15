@@ -9,7 +9,6 @@ import java.util.Set;
 
 /** Reports a module that imports itself by its dotted path, like Pylint W0406. */
 public final class ImportSelfCheck implements UnitCheck {
-
   private static final Set<String> IMPORTS = Set.of("import_name", "import_from");
   private static final Set<String> DOTTED = Set.of("dotted_name");
   private static final String PACKAGE_INIT = ".__init__";

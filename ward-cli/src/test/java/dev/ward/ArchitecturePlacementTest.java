@@ -23,7 +23,8 @@ class ArchitecturePlacementTest {
           "DaggerCommandFactory",
           "ProjectOptions",
           "WardCommand",
-          "VersionProvider");
+          "VersionProvider"
+      );
 
   @ArchTest
   static void productionCodeDoesNotUseFieldInjection(final JavaClasses classes) {
@@ -34,20 +35,24 @@ class ArchitecturePlacementTest {
 
   @ArchTest
   static void productionClassesFollowLayerFeaturePackagesAndExplicitRootExceptions(
-      final JavaClasses classes) {
+      final JavaClasses classes
+  ) {
     classes.forEach(
         javaClass ->
             assertThat(isAllowedPackage(javaClass, COMMON_CLI_TYPES))
                 .as("package placement for %s", javaClass.getName())
-                .isTrue());
+                .isTrue()
+    );
   }
 
   @Test
   void placementRuleRejectsAMisplacedAdapterFixture() {
     assertThat(
-            isAllowedPackage(
-                new ClassFileImporter().importClasses(MisplacedAdapter.class).iterator().next(),
-                COMMON_CLI_TYPES))
+        isAllowedPackage(
+            new ClassFileImporter().importClasses(MisplacedAdapter.class).iterator().next(),
+            COMMON_CLI_TYPES
+        )
+    )
         .isFalse();
   }
 

@@ -18,7 +18,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class SwiftUnusedParameterCheckTest {
-
   private static final SyntaxNode ROOT = SwiftCheckNodes.node("file", 0, 0);
   private static final String PLAIN = "func move(x: Int) {}";
   private static final String OVERRIDE = "override func move(x: Int) {}";
@@ -47,7 +46,8 @@ class SwiftUnusedParameterCheckTest {
         name,
         BindingKind.PARAMETER,
         SwiftCheckNodes.span(PARAMETER_START, PARAMETER_END),
-        Set.of());
+        Set.of()
+    );
     if (read) {
       builder.reference(name, SwiftCheckNodes.span(USE_START, USE_END), ReferenceAccess.READ);
     }
@@ -65,7 +65,11 @@ class SwiftUnusedParameterCheckTest {
     }
     builder.open(ScopeKind.FUNCTION, SwiftCheckNodes.span(0, FUNCTION_END));
     builder.declare(
-        "x", BindingKind.PARAMETER, SwiftCheckNodes.span(PARAMETER_START, PARAMETER_END), Set.of());
+        "x",
+        BindingKind.PARAMETER,
+        SwiftCheckNodes.span(PARAMETER_START, PARAMETER_END),
+        Set.of()
+    );
     builder.close();
     builder.close();
     return builder.build();

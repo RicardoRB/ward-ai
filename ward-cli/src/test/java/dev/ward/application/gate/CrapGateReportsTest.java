@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 
 /** Reports that cannot be used are never a pass. */
 class CrapGateReportsTest {
-
   private static final int FIVE = CrapGateFixture.FIVE;
   private static final int NINE = CrapGateFixture.NINE;
   private static final String REPORT = CrapGateFixture.REPORT;
@@ -66,7 +65,9 @@ class CrapGateReportsTest {
         new LineHits.Entry(
             LineHits.Kind.PACKAGE_FILE,
             "org/other/Thing.java",
-            new FileLines(new TreeSet<>(Set.of(1)), new TreeSet<>())));
+            new FileLines(new TreeSet<>(Set.of(1)), new TreeSet<>())
+        )
+    );
 
     final GateResult result = fixture.run();
 

@@ -7,7 +7,6 @@ import java.util.Set;
 
 /** Finds the method or constructor a node sits in, from its ancestors. */
 final class Callables {
-
   private static final Set<String> KINDS = Set.of("methodDeclaration", "constructorDeclaration");
 
   private Callables() {}

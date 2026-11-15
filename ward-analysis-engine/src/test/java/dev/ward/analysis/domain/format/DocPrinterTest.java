@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 class DocPrinterTest {
-
   private static final int WIDE = 100;
   private static final int TEN = 10;
   private static final int EIGHT = 8;
@@ -21,27 +20,34 @@ class DocPrinterTest {
       final int width,
       final IndentStyle style,
       final int indentWidth,
-      final EndOfLine endOfLine) {
+      final EndOfLine endOfLine
+  ) {
     return new DocPrinter(new PrintStyle(width, style, indentWidth, endOfLine)).print(doc);
   }
 
   @Test
   void printsGroupFlatWhenItFits() {
     assertThat(
-            print(
-                Document.group(
-                    Document.concat(Document.text("a"), Document.line(), Document.text("b"))),
-                TEN))
+        print(
+            Document.group(
+                Document.concat(Document.text("a"), Document.line(), Document.text("b"))
+            ),
+            TEN
+        )
+    )
         .isEqualTo("a b");
   }
 
   @Test
   void breaksGroupWhenItDoesNotFit() {
     assertThat(
-            print(
-                Document.group(
-                    Document.concat(Document.text("aaaa"), Document.line(), Document.text("bbbb"))),
-                EIGHT))
+        print(
+            Document.group(
+                Document.concat(Document.text("aaaa"), Document.line(), Document.text("bbbb"))
+            ),
+            EIGHT
+        )
+    )
         .isEqualTo("aaaa\nbbbb");
   }
 
@@ -59,8 +65,10 @@ class DocPrinterTest {
     final Document doc =
         Document.concat(
             Document.group(
-                Document.concat(Document.text("a"), Document.line(), Document.text("b"))),
-            Document.text("cccc"));
+                Document.concat(Document.text("a"), Document.line(), Document.text("b"))
+            ),
+            Document.text("cccc")
+        );
 
     assertThat(print(doc, FIVE)).isEqualTo("a\nbcccc");
   }
@@ -75,7 +83,9 @@ class DocPrinterTest {
                 Document.text("call("),
                 Document.indent(Document.concat(Document.softLine(), inner)),
                 Document.softLine(),
-                Document.text(")")));
+                Document.text(")")
+            )
+        );
 
     assertThat(print(outer, EIGHT)).isEqualTo("call(\n    a, b\n)");
   }
@@ -91,9 +101,13 @@ class DocPrinterTest {
                         Document.softLine(),
                         Document.text("a,"),
                         Document.line(),
-                        Document.text("b"))),
+                        Document.text("b")
+                    )
+                ),
                 Document.softLine(),
-                Document.text(")")));
+                Document.text(")")
+            )
+        );
 
     assertThat(print(outer, EIGHT)).isEqualTo("call(\n    a,\n    b\n)");
   }
@@ -105,9 +119,12 @@ class DocPrinterTest {
             Document.concat(
                 Document.text("a"),
                 Document.group(
-                    Document.concat(Document.text("b"), Document.line(), Document.text("c"))),
+                    Document.concat(Document.text("b"), Document.line(), Document.text("c"))
+                ),
                 Document.hardLine(),
-                Document.text("d")));
+                Document.text("d")
+            )
+        );
 
     assertThat(print(doc, WIDE)).isEqualTo("ab c\nd");
   }
@@ -115,10 +132,13 @@ class DocPrinterTest {
   @Test
   void keepsSoftLineEmptyWhenFlat() {
     assertThat(
-            print(
-                Document.group(
-                    Document.concat(Document.text("a"), Document.softLine(), Document.text("b"))),
-                WIDE))
+        print(
+            Document.group(
+                Document.concat(Document.text("a"), Document.softLine(), Document.text("b"))
+            ),
+            WIDE
+        )
+    )
         .isEqualTo("ab");
   }
 }

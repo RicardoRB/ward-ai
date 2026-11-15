@@ -23,7 +23,6 @@ import java.util.regex.Pattern;
  * enclosing class of a nested one may, is not reported.
  */
 public final class SingularFieldCheck implements UnitCheck {
-
   private static final String IDENTIFIER = "identifier";
   private static final String DECLARATOR_ID = "variableDeclaratorId";
   private static final String EXPRESSION = "expression";
@@ -35,7 +34,8 @@ public final class SingularFieldCheck implements UnitCheck {
           "switchBlockStatementGroup",
           "catchClause",
           "finallyBlock",
-          "classBody");
+          "classBody"
+      );
   private static final Set<String> BRANCH_TOKENS =
       Set.of("'if'", "'while'", "'for'", "'do'", "'switch'", "'try'");
   private static final int THIS_PREFIX = "this.".length();
@@ -71,7 +71,9 @@ public final class SingularFieldCheck implements UnitCheck {
             field ->
                 names(field).stream()
                     .anyMatch(
-                        name -> isSingular(name, field, members) && !usedOutside(name, body, root)))
+                        name -> isSingular(name, field, members) && !usedOutside(name, body, root)
+                    )
+        )
         .map(field -> CheckSupport.at(field.span(), message))
         .toList();
   }
@@ -85,7 +87,10 @@ public final class SingularFieldCheck implements UnitCheck {
   }
 
   private static boolean isSingular(
-      final String name, final SyntaxNode field, final List<SyntaxNode> members) {
+      final String name,
+      final SyntaxNode field,
+      final List<SyntaxNode> members
+  ) {
     final List<SyntaxNode> users =
         members.stream()
             .flatMap(member -> MemberDeclarations.declaration(member).stream())
@@ -101,13 +106,17 @@ public final class SingularFieldCheck implements UnitCheck {
    * Whether code of the file outside the class body mentions the name, as an enclosing class may.
    */
   private static boolean usedOutside(
-      final String name, final SyntaxNode body, final SyntaxNode root) {
+      final String name,
+      final SyntaxNode body,
+      final SyntaxNode root
+  ) {
     return SyntaxWalk.descendants(root).stream()
         .filter(node -> IDENTIFIER.equals(node.kind()) && name.equals(SyntaxWalk.text(node)))
         .anyMatch(
             node ->
                 node.span().startOffset() < body.span().startOffset()
-                    || node.span().endOffset() > body.span().endOffset());
+                    || node.span().endOffset() > body.span().endOffset()
+        );
   }
 
   private static boolean usesName(final SyntaxNode declaration, final String name) {
@@ -137,9 +146,9 @@ public final class SingularFieldCheck implements UnitCheck {
     return !mentions.isEmpty()
         && mentions.get(0) <= target.startOffset() + THIS_PREFIX
         && mentions.stream()
-                .filter(at -> at >= target.startOffset() && at < target.endOffset())
-                .count()
-            == 1;
+            .filter(at -> at >= target.startOffset() && at < target.endOffset())
+            .count()
+        == 1;
   }
 
   /** Whether the assignment may be skipped: it sits in a branch, loop, handler or lambda. */
@@ -152,10 +161,10 @@ public final class SingularFieldCheck implements UnitCheck {
       return true;
     }
     return ("statement".equals(node.kind()) || EXPRESSION.equals(node.kind()))
-            && !node.children().isEmpty()
-            && BRANCH_TOKENS.contains(node.children().get(0).kind())
+        && !node.children().isEmpty()
+        && BRANCH_TOKENS.contains(node.children().get(0).kind())
         || EXPRESSION.equals(node.kind())
-            && node.children().stream().anyMatch(child -> "'?'".equals(child.kind()));
+        && node.children().stream().anyMatch(child -> "'?'".equals(child.kind()));
   }
 
   private static List<String> names(final SyntaxNode field) {

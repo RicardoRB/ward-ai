@@ -9,7 +9,6 @@ import java.util.List;
  * independence rule needs every edge at once, so it runs once per run and is never cached per unit.
  */
 public interface GraphRule {
-
   /** Returns the definition this rule was built from. */
   RuleDefinition definition();
 

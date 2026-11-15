@@ -13,11 +13,14 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class NodeScopeAnalysisTypesTest {
-
   private static final int LINE_1 = 1;
 
   private static NameReference only(
-      final UnitScopes scopes, final String name, final int line, final ReferenceAccess access) {
+      final UnitScopes scopes,
+      final String name,
+      final int line,
+      final ReferenceAccess access
+  ) {
     final List<NameReference> found =
         scopes.references().stream()
             .filter(reference -> reference.name().equals(name))
@@ -33,7 +36,8 @@ class NodeScopeAnalysisTypesTest {
     final UnitScopes scopes =
         NodeScopeFixtures.scopes(
             AnalysisLanguage.TYPESCRIPT,
-            "import type { T } from './t';\nimport { type U, V } from './u';\nlet x: T = new V();\n");
+            "import type { T } from './t';\nimport { type U, V } from './u';\nlet x: T = new V();\n"
+        );
 
     assertThat(scopes.module().bindings())
         .filteredOn(binding -> binding.kind() == BindingKind.IMPORT)
@@ -41,7 +45,8 @@ class NodeScopeAnalysisTypesTest {
         .containsExactly(
             org.assertj.core.groups.Tuple.tuple("T", true),
             org.assertj.core.groups.Tuple.tuple("U", true),
-            org.assertj.core.groups.Tuple.tuple("V", false));
+            org.assertj.core.groups.Tuple.tuple("V", false)
+        );
     assertThat(scopes.unresolved()).isEmpty();
   }
 
@@ -50,7 +55,8 @@ class NodeScopeAnalysisTypesTest {
     final UnitScopes scopes =
         NodeScopeFixtures.scopes(
             AnalysisLanguage.TYPESCRIPT,
-            "interface Box<T> { value: T }\nfunction id<R>(x: R): R { return x; }\n");
+            "interface Box<T> { value: T }\nfunction id<R>(x: R): R { return x; }\n"
+        );
 
     assertThat(scopes.bindings())
         .filteredOn(binding -> binding.kind() == BindingKind.TYPE)

@@ -30,7 +30,6 @@ import java.util.Set;
 
 /** The frontends the fixture runner of this module gives the rule engine. */
 final class PythonFixtureFrontends {
-
   private static final String BUILTINS = "/dev/ward/analysis/lang/python/builtins/python.txt";
 
   private PythonFixtureFrontends() {}
@@ -45,16 +44,20 @@ final class PythonFixtureFrontends {
                 RuleCapability.SYMBOLS,
                 RuleCapability.CFG,
                 RuleCapability.DATAFLOW,
-                RuleCapability.SCOPES),
+                RuleCapability.SCOPES
+            ),
             new PythonControlFlow(),
-            new CachedScopes(new PythonScopes(builtins()))));
+            new CachedScopes(new PythonScopes(builtins()))
+        )
+    );
   }
 
   private static BuiltinNames builtins() {
     try (InputStream stream = PythonFixtureFrontends.class.getResourceAsStream(BUILTINS)) {
       final Set<String> names =
           Set.copyOf(
-              List.of(new String(stream.readAllBytes(), StandardCharsets.UTF_8).split("\\R")));
+              List.of(new String(stream.readAllBytes(), StandardCharsets.UTF_8).split("\\R"))
+          );
       return environments -> names;
     } catch (final IOException exception) {
       throw new UncheckedIOException(exception);
@@ -63,7 +66,10 @@ final class PythonFixtureFrontends {
 
   /** A rule that needs types gets the facts of the fixture's {@code types.json}. */
   static List<FrontendSupport> forRule(
-      final RuleDefinition rule, final AnalysisLanguage language, final Path directory) {
+      final RuleDefinition rule,
+      final AnalysisLanguage language,
+      final Path directory
+  ) {
     final List<FrontendSupport> frontends = of(language);
     if (rule.capability() != RuleCapability.TYPES) {
       return frontends;
@@ -84,7 +90,10 @@ final class PythonFixtureFrontends {
 
   /** A fixture is one file, so a definition is used when the file itself uses it. */
   static List<String> unusedPositions(
-      final RuleDefinition rule, final String path, final String text) {
+      final RuleDefinition rule,
+      final String path,
+      final String text
+  ) {
     final SourceUnit unit = new SourceUnit(path, AnalysisLanguage.PYTHON, text);
     final FileSummary summary =
         new PythonFileSummarizer().summarize(unit, new AntlrLanguageFrontend().parse(unit).tree());

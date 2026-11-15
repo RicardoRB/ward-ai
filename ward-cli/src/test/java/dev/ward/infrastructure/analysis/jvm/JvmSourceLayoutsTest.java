@@ -28,14 +28,13 @@ class JvmSourceLayoutsTest {
             new JavaSourceRoot(MAIN_JAVA, "", false),
             new JavaSourceRoot(TEST_JAVA, "", true),
             new JavaSourceRoot(MAIN_KOTLIN, "", false),
-            new JavaSourceRoot(TEST_KOTLIN, "", true));
+            new JavaSourceRoot(TEST_KOTLIN, "", true)
+        );
   }
 
   @Test
   void mavenLiteralCustomRootsReplaceTheDefaults() throws IOException {
-    write(
-        root.resolve("pom.xml"),
-        """
+    write(root.resolve("pom.xml"), """
         <project>
           <build>
             <sourceDirectory>src/app</sourceDirectory>
@@ -49,14 +48,13 @@ class JvmSourceLayoutsTest {
             new JavaSourceRoot("src/app", "", false),
             new JavaSourceRoot("tests/java", "", true),
             new JavaSourceRoot(MAIN_KOTLIN, "", false),
-            new JavaSourceRoot(TEST_KOTLIN, "", true));
+            new JavaSourceRoot(TEST_KOTLIN, "", true)
+        );
   }
 
   @Test
   void mavenRootsBuiltFromPropertiesFallBackToTheDefaults() throws IOException {
-    write(
-        root.resolve("pom.xml"),
-        """
+    write(root.resolve("pom.xml"), """
         <project>
           <build>
             <sourceDirectory>${project.basedir}/src/app</sourceDirectory>
@@ -69,14 +67,13 @@ class JvmSourceLayoutsTest {
             new JavaSourceRoot(MAIN_JAVA, "", false),
             new JavaSourceRoot(TEST_JAVA, "", true),
             new JavaSourceRoot(MAIN_KOTLIN, "", false),
-            new JavaSourceRoot(TEST_KOTLIN, "", true));
+            new JavaSourceRoot(TEST_KOTLIN, "", true)
+        );
   }
 
   @Test
   void mavenLiteralKotlinSourceDirsAddToTheDefaults() throws IOException {
-    write(
-        root.resolve("pom.xml"),
-        """
+    write(root.resolve("pom.xml"), """
         <project>
           <build>
             <plugins>
@@ -106,7 +103,8 @@ class JvmSourceLayoutsTest {
             new JavaSourceRoot(MAIN_KOTLIN, "", false),
             new JavaSourceRoot("generated/kotlin", "", false),
             new JavaSourceRoot(TEST_KOTLIN, "", true),
-            new JavaSourceRoot("src/test/extra", "", true));
+            new JavaSourceRoot("src/test/extra", "", true)
+        );
   }
 
   private static List<JavaSourceRoot> roots(final Path project) {

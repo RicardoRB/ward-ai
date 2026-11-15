@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks what the Python formatter's syntax view and refusals report. */
 class PythonFormatSyntaxTest {
-
   private static final FormatOptions OPTIONS =
       new FormatOptions(
           Map.of(
@@ -26,7 +25,9 @@ class PythonFormatSyntaxTest {
               "line-width",
               "100",
               "max-blank-lines",
-              "1"));
+              "1"
+          )
+      );
 
   @Test
   void reportsTheLineOfTheFirstSyntaxError() {

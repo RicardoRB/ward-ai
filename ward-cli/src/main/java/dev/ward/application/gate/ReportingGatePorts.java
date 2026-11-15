@@ -8,4 +8,7 @@ package dev.ward.application.gate;
  * @param vulnerabilities builds the {@code vulnerabilities} gate, or {@code null}
  */
 public record ReportingGatePorts(
-    SecretGates secrets, CrapPorts crap, VulnerabilityGates vulnerabilities) {}
+    SecretGates secrets,
+    CrapPorts crap,
+    VulnerabilityGates vulnerabilities
+) {}

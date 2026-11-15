@@ -25,7 +25,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class ScopeChecksTest {
-
   private static final int REFERENCES = 3;
 
   private static final int OFFSET_0 = 0;
@@ -62,11 +61,15 @@ class ScopeChecksTest {
           public Set<String> builtins(final Set<String> environments) {
             return environments.isEmpty() ? builtins : Set.of("env");
           }
-        });
+        }
+    );
   }
 
   private static List<RuleMatch> run(
-      final RuleCheck check, final AnalysisLanguage language, final ScopeView view) {
+      final RuleCheck check,
+      final AnalysisLanguage language,
+      final ScopeView view
+  ) {
     return check.matches(ROOT, FlowView.NONE, view, new SourceUnit("m", language, ""));
   }
 
@@ -86,7 +89,8 @@ class ScopeChecksTest {
         run(
             new UndefinedNameCheck("undefined '{value}'", Set.of()),
             AnalysisLanguage.PYTHON,
-            view(builder.build(), Set.of("print")));
+            view(builder.build(), Set.of("print"))
+        );
 
     assertThat(found).extracting(RuleMatch::message).containsExactly("undefined 'missing'");
   }
@@ -98,13 +102,12 @@ class ScopeChecksTest {
     final ScopeView view = view(builder.build(), Set.of());
 
     assertThat(
-            run(new UndefinedNameCheck("m {value}", Set.of()), AnalysisLanguage.JAVASCRIPT, view))
+        run(new UndefinedNameCheck("m {value}", Set.of()), AnalysisLanguage.JAVASCRIPT, view)
+    )
         .hasSize(1);
     assertThat(
-            run(
-                new UndefinedNameCheck("m {value}", Set.of("node")),
-                AnalysisLanguage.JAVASCRIPT,
-                view))
+        run(new UndefinedNameCheck("m {value}", Set.of("node")), AnalysisLanguage.JAVASCRIPT, view)
+    )
         .isEmpty();
   }
 
@@ -142,7 +145,8 @@ class ScopeChecksTest {
         run(
             new UnusedBindingCheck("unused {value}"),
             AnalysisLanguage.PYTHON,
-            view(builder.build(), Set.of()));
+            view(builder.build(), Set.of())
+        );
 
     assertThat(found)
         .extracting(RuleMatch::message)
@@ -157,10 +161,12 @@ class ScopeChecksTest {
     builder.declare("local", BindingKind.VARIABLE, at(OFFSET_2), Set.of());
 
     assertThat(
-            run(
-                new UnusedBindingCheck("m {value}"),
-                AnalysisLanguage.PYTHON,
-                view(builder.build(), Set.of())))
+        run(
+            new UnusedBindingCheck("m {value}"),
+            AnalysisLanguage.PYTHON,
+            view(builder.build(), Set.of())
+        )
+    )
         .isEmpty();
   }
 

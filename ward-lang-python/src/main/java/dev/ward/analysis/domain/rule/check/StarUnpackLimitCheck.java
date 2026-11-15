@@ -13,7 +13,6 @@ import java.util.Set;
  * before a starred expression in an assignment target.
  */
 public final class StarUnpackLimitCheck implements RuleCheck {
-
   private static final Set<String> STATEMENTS = Set.of("expr_stmt");
   private static final int BEFORE_STAR_BITS = 8;
   private static final int MAX_BEFORE_STAR = 1 << BEFORE_STAR_BITS;

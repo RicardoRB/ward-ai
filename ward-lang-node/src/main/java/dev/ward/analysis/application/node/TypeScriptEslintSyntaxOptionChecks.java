@@ -18,9 +18,11 @@ import org.tomlj.TomlParseResult;
  * other syntax-only checks are in {@link TypeScriptEslintChecks}.
  */
 final class TypeScriptEslintSyntaxOptionChecks {
-
   private static final String[] DIRECTIVES = {
-    "ts-check", "ts-expect-error", "ts-ignore", "ts-nocheck"
+      "ts-check",
+      "ts-expect-error",
+      "ts-ignore",
+      "ts-nocheck"
   };
 
   private TypeScriptEslintSyntaxOptionChecks() {}
@@ -33,7 +35,8 @@ final class TypeScriptEslintSyntaxOptionChecks {
     checks.put("node-no-namespace", TypeScriptEslintSyntaxOptionChecks::namespace);
     checks.put(
         "node-no-duplicate-type-constituents",
-        TypeScriptEslintSyntaxOptionChecks::duplicateConstituents);
+        TypeScriptEslintSyntaxOptionChecks::duplicateConstituents
+    );
     checks.put("node-no-misused-new", TypeScriptEslintSyntaxOptionChecks::misusedNew);
     checks.put("node-ban-ts-comment", TypeScriptEslintSyntaxOptionChecks::banTsComment);
     checks.put("node-triple-slash-reference", TypeScriptEslintSyntaxOptionChecks::tripleSlash);
@@ -43,28 +46,32 @@ final class TypeScriptEslintSyntaxOptionChecks {
   private static NoExplicitAnyCheck explicitAny(final TomlParseResult toml) {
     return new NoExplicitAnyCheck(
         Boolean.TRUE.equals(toml.getBoolean("ignore-rest-args")),
-        TypeScriptEslintChecks.message(toml));
+        TypeScriptEslintChecks.message(toml)
+    );
   }
 
   private static NoNamespaceCheck namespace(final TomlParseResult toml) {
     return new NoNamespaceCheck(
         TypeScriptEslintChecks.flag(toml, "allow-declarations", false),
         TypeScriptEslintChecks.flag(toml, "allow-definition-files", true),
-        TypeScriptEslintChecks.message(toml));
+        TypeScriptEslintChecks.message(toml)
+    );
   }
 
   private static ThisAliasCheck thisAlias(final TomlParseResult toml) {
     return new ThisAliasCheck(
         !Boolean.FALSE.equals(toml.getBoolean("allow-destructuring")),
         TomlValues.optionalStrings(toml, "allowed-names"),
-        TypeScriptEslintChecks.message(toml));
+        TypeScriptEslintChecks.message(toml)
+    );
   }
 
   private static DuplicateConstituentsCheck duplicateConstituents(final TomlParseResult toml) {
     return new DuplicateConstituentsCheck(
         Boolean.TRUE.equals(toml.getBoolean("ignore-unions")),
         Boolean.TRUE.equals(toml.getBoolean("ignore-intersections")),
-        TypeScriptEslintChecks.message(toml));
+        TypeScriptEslintChecks.message(toml)
+    );
   }
 
   private static TripleSlashReferenceCheck tripleSlash(final TomlParseResult toml) {
@@ -72,12 +79,15 @@ final class TypeScriptEslintSyntaxOptionChecks {
         toml.getString("lib"),
         toml.getString("path"),
         toml.getString("types"),
-        TypeScriptEslintChecks.message(toml));
+        TypeScriptEslintChecks.message(toml)
+    );
   }
 
   private static MisusedNewCheck misusedNew(final TomlParseResult toml) {
     return new MisusedNewCheck(
-        TomlValues.required(toml, "class-message"), TomlValues.required(toml, "interface-message"));
+        TomlValues.required(toml, "class-message"),
+        TomlValues.required(toml, "interface-message")
+    );
   }
 
   private static BanTsCommentCheck banTsComment(final TomlParseResult toml) {
@@ -93,6 +103,7 @@ final class TypeScriptEslintSyntaxOptionChecks {
         directives,
         TomlValues.integer(toml, "minimum-description-length"),
         format == null ? "" : format,
-        TypeScriptEslintChecks.message(toml));
+        TypeScriptEslintChecks.message(toml)
+    );
   }
 }

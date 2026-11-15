@@ -14,7 +14,6 @@ import java.util.Set;
  * does. A dynamic role is never reported.
  */
 public final class BiomeAriaRoleCheck implements RuleCheck {
-
   private static final String ROLE = "role";
 
   private final AriaRoleTable table;
@@ -39,7 +38,10 @@ public final class BiomeAriaRoleCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(JsxAttributes.OPENING, JsxAttributes.SELF_CLOSING))
         .stream()
         .filter(visit -> invalid(visit.node(), unit.text()))
@@ -55,7 +57,8 @@ public final class BiomeAriaRoleCheck implements RuleCheck {
         .filter(attribute -> JsxAttributes.rawLiteral(attribute, source).isPresent())
         .filter(
             attribute ->
-                JsxAttributes.tokens(attribute, source).stream().noneMatch(table::isConcrete))
+                JsxAttributes.tokens(attribute, source).stream().noneMatch(table::isConcrete)
+        )
         .isPresent();
   }
 }

@@ -18,7 +18,6 @@ import java.util.Set;
  * with no such parent is not reported.
  */
 public final class BiomeMisplacedListElementCheck implements RuleCheck {
-
   private static final String LIST_ITEM = "li";
   private static final Set<String> LIST_CONTAINERS = Set.of("ul", "ol", "menu");
   private static final String ELEMENT = "jsxElement";
@@ -46,7 +45,10 @@ public final class BiomeMisplacedListElementCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(OPENING, JsxAttributes.SELF_CLOSING)).stream()
         .filter(visit -> LIST_ITEM.equals(JsxAttributes.elementName(visit.node())))
         .filter(BiomeMisplacedListElementCheck::misplaced)

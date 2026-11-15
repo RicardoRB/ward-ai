@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks that names read in Kotlin string templates count as references of their bindings. */
 class KotlinStringTemplateReadsTest {
-
   @Test
   void aDollarNameInATemplateReadsTheBinding() {
     final UnitScopes scopes =
@@ -29,7 +28,8 @@ class KotlinStringTemplateReadsTest {
   void aBracedExpressionInATemplateReadsEveryNameInIt() {
     final UnitScopes scopes =
         JvmScopeFixtures.kotlin(
-            "fun g(): String {\n  val inner = 2\n  return \"${inner + 1}\"\n}\n");
+            "fun g(): String {\n  val inner = 2\n  return \"${inner + 1}\"\n}\n"
+        );
 
     assertThat(scopes.references())
         .filteredOn(reference -> "inner".equals(reference.name()))

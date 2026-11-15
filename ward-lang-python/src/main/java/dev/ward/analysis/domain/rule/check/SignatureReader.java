@@ -12,7 +12,6 @@ import java.util.Set;
  * __init__} of a class that has no bases. A {@code /} marker makes the signature unknown.
  */
 final class SignatureReader {
-
   private static final String FUNCTION = "funcdef";
   private static final String INIT = "__init__";
   private static final String PARAMETERS = "parameters";
@@ -28,8 +27,11 @@ final class SignatureReader {
    * The parameters of a callee: the positional names, the keyword-only names and the catch-alls.
    */
   record Signature(
-      List<String> positional, Set<String> keywordOnly, boolean varargs, boolean kwargs) {
-
+      List<String> positional,
+      Set<String> keywordOnly,
+      boolean varargs,
+      boolean kwargs
+  ) {
     boolean accepts(final String keyword) {
       return kwargs || positional.contains(keyword) || keywordOnly.contains(keyword);
     }
@@ -80,7 +82,6 @@ final class SignatureReader {
 
   /** The state of one left-to-right scan over the parameter list. */
   private static final class ParameterScan {
-
     private final List<String> positional = new ArrayList<>();
     private final Set<String> keywordOnly = new HashSet<>();
     private boolean varargs;
@@ -126,7 +127,8 @@ final class SignatureReader {
         names.remove(0);
       }
       return Optional.of(
-          new Signature(List.copyOf(names), Set.copyOf(keywordOnly), varargs, kwargs));
+          new Signature(List.copyOf(names), Set.copyOf(keywordOnly), varargs, kwargs)
+      );
     }
   }
 }

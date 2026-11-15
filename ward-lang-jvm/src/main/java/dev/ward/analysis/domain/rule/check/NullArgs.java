@@ -14,7 +14,6 @@ import java.util.Set;
  * annotation is non-null in a {@code @NullMarked} scope, which the callers require.
  */
 final class NullArgs {
-
   private static final String TYPE_ARGUMENT = "typeArgument";
   private static final String TYPE_TYPE = "typeType";
 
@@ -45,7 +44,10 @@ final class NullArgs {
 
   /** The type arguments an expression has: those of {@code new T<...>()} or of a known name. */
   static Optional<List<Boolean>> ofValue(
-      final SyntaxNode expression, final Map<String, List<Boolean>> env) {
+      final SyntaxNode expression,
+      final Map<String,
+      List<Boolean>> env
+  ) {
     final List<SyntaxNode> parts = expression.children();
     if (parts.size() == 2 && "new".equals(SyntaxWalk.text(parts.get(0)))) {
       return NullSyntax.first(parts.get(1), "createdName").flatMap(NullArgs::of);
@@ -71,7 +73,11 @@ final class NullArgs {
   }
 
   private static void declared(
-      final SyntaxNode declaration, final String name, final Map<String, List<Boolean>> env) {
+      final SyntaxNode declaration,
+      final String name,
+      final Map<String,
+      List<Boolean>> env
+  ) {
     env.remove(name);
     NullSyntax.first(declaration, TYPE_TYPE)
         .flatMap(NullArgs::of)

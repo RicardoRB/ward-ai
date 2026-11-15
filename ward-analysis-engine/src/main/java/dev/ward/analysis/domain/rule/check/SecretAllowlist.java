@@ -21,8 +21,8 @@ public record SecretAllowlist(
     List<Pattern> regexes,
     List<String> stopwords,
     Target target,
-    boolean all) {
-
+    boolean all
+) {
   /** What an allowlist regex is searched in. */
   public enum Target {
     /** The secret. */

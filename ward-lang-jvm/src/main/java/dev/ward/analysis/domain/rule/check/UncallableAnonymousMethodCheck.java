@@ -66,7 +66,8 @@ public final class UncallableAnonymousMethodCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final Set<String> called = AnonymousCalls.of(root);
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(CREATOR))) {
@@ -85,7 +86,9 @@ public final class UncallableAnonymousMethodCheck implements RuleCheck {
 
   /** Returns the members of the type that the creator names, unless it is plain {@code Object}. */
   private static Optional<TypeMembers> supertype(
-      final SyntaxNode creator, final UnitTypeFacts types) {
+      final SyntaxNode creator,
+      final UnitTypeFacts types
+  ) {
     return creator.children().stream()
         .filter(part -> "createdName".equals(part.kind()))
         .findFirst()
@@ -134,7 +137,10 @@ public final class UncallableAnonymousMethodCheck implements RuleCheck {
   }
 
   private static boolean dead(
-      final Member member, final Set<String> defined, final Set<String> called) {
+      final Member member,
+      final Set<String> defined,
+      final Set<String> called
+  ) {
     final String name = nameOf(member.method());
     final int arity = arity(member.method());
     final String modifiers = member.modifiers();

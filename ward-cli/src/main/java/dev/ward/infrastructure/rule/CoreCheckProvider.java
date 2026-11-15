@@ -32,7 +32,6 @@ import org.tomlj.TomlParseResult;
  * the {@link CheckProvider} of that language's module.
  */
 public final class CoreCheckProvider implements CheckProvider {
-
   private static final String KINDS = "kinds";
   private static final String MAX = "max";
   private static final String MESSAGE = "message";
@@ -52,7 +51,9 @@ public final class CoreCheckProvider implements CheckProvider {
                     TomlValues.strings(toml, KINDS),
                     TomlValues.integer(toml, MAX),
                     TomlValues.required(toml, MESSAGE),
-                    Optional.ofNullable(toml.getBoolean(COUNT_EMPTY)).orElse(true))),
+                    Optional.ofNullable(toml.getBoolean(COUNT_EMPTY)).orElse(true)
+                )
+        ),
         entry("descendant-count", CoreCheckProvider::descendantCount),
         // A whole-run rule: DuplicateCodeFindings reports its copies, so no unit has a match here.
         entry("duplicate-code", toml -> root -> List.of()),
@@ -60,33 +61,44 @@ public final class CoreCheckProvider implements CheckProvider {
         entry("text-pattern", CoreCheckProvider::textPattern),
         entry(
             "unreferenced-name",
-            toml -> new UnreferencedNameCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new UnreferencedNameCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "unused-assignment",
-            toml -> new UnusedAssignmentCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new UnusedAssignmentCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "undefined-name",
             toml ->
                 new UndefinedNameCheck(
                     TomlValues.required(toml, MESSAGE),
-                    Set.copyOf(TomlValues.optionalStrings(toml, "env")))),
+                    Set.copyOf(TomlValues.optionalStrings(toml, "env"))
+                )
+        ),
         entry("unused-binding", toml -> new UnusedBindingCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "unreachable-code",
-            toml -> new UnreachableCodeCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new UnreachableCodeCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "reassigned-binding",
             toml ->
                 ReassignedBindingCheck.of(
-                    TomlValues.strings(toml, "binding-kinds"), TomlValues.required(toml, MESSAGE))),
+                    TomlValues.strings(toml, "binding-kinds"),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "taint",
             toml ->
                 new TaintCheck(
                     TaintSpecFiles.load(SpecPaths.of(toml, SPECS)),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry("preceding-comment", CoreCheckProvider::precedingComment),
-        entry("secret-scan", SecretScanFactory::create));
+        entry("secret-scan", SecretScanFactory::create)
+    );
   }
 
   private static RuleCheck descendantCount(final TomlParseResult toml) {
@@ -95,14 +107,16 @@ public final class CoreCheckProvider implements CheckProvider {
         countedKinds(toml, "counted"),
         TomlValues.optionalInteger(toml, "base", 0),
         TomlValues.integer(toml, MAX),
-        TomlValues.required(toml, MESSAGE));
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static CountedKinds countedKinds(final TomlParseResult toml, final String key) {
     return new CountedKinds(
         TomlValues.strings(toml, key),
         TomlValues.kindMap(toml, "requires-sibling"),
-        TomlValues.kindMap(toml, "cancelled-by"));
+        TomlValues.kindMap(toml, "cancelled-by")
+    );
   }
 
   private static RuleCheck cognitiveComplexity(final TomlParseResult toml) {
@@ -111,9 +125,11 @@ public final class CoreCheckProvider implements CheckProvider {
         new CognitiveTokens(
             countedKinds(toml, "structures"),
             TomlValues.strings(toml, "flat"),
-            TomlValues.optionalStrings(toml, "chaining")),
+            TomlValues.optionalStrings(toml, "chaining")
+        ),
         TomlValues.integer(toml, MAX),
-        TomlValues.required(toml, MESSAGE));
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static RuleCheck textPattern(final TomlParseResult toml) {
@@ -122,14 +138,16 @@ public final class CoreCheckProvider implements CheckProvider {
         TomlValues.required(toml, "name"),
         TomlValues.optionalStrings(toml, "skip"),
         TomlValues.required(toml, "pattern"),
-        TomlValues.required(toml, MESSAGE));
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static RuleCheck precedingComment(final TomlParseResult toml) {
     return new PrecedingCommentCheck(
         filter(toml),
         Optional.ofNullable(toml.getString("exempt-annotation")),
-        TomlValues.required(toml, MESSAGE));
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static DeclarationFilter filter(final TomlParseResult toml) {
@@ -137,6 +155,7 @@ public final class CoreCheckProvider implements CheckProvider {
         TomlValues.strings(toml, KINDS),
         TomlValues.strings(toml, MODIFIERS),
         Optional.ofNullable(toml.getString(REQUIRED)),
-        Optional.ofNullable(toml.getString(EXCLUDED)));
+        Optional.ofNullable(toml.getString(EXCLUDED))
+    );
   }
 }

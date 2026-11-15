@@ -26,14 +26,19 @@ class DependencyVersionRulesTest {
                     List.of(
                         RuleModels.entry("semver", "6.3.1"),
                         RuleModels.entry("semver", "7.6.0"),
-                        RuleModels.entry("left-pad", "1.3.0")))));
+                        RuleModels.entry("left-pad", "1.3.0")
+                    )
+                )
+            )
+        );
     final List<BuildPolicyFinding> findings =
         BuildPolicyRules.forRule(BuildRule.DEPENDENCY_CONVERGENCE)
             .check(new BuildPolicyInput(BuildModel.EMPTY, () -> inventory, Map.of()));
     assertThat(findings)
         .singleElement()
         .satisfies(
-            f -> assertThat(f.message()).contains("semver").contains("6.3.1").contains("7.6.0"));
+            f -> assertThat(f.message()).contains("semver").contains("6.3.1").contains("7.6.0")
+        );
   }
 
   @Test
@@ -51,7 +56,8 @@ class DependencyVersionRulesTest {
             f ->
                 assertThat(f.message())
                     .contains("g:lib resolves to 3.0")
-                    .contains("3.12.0 (pkg:maven/g/text@1.10.0)"));
+                    .contains("3.12.0 (pkg:maven/g/text@1.10.0)")
+        );
   }
 
   @Test
@@ -75,7 +81,8 @@ class DependencyVersionRulesTest {
             "pom.xml",
             "",
             Set.of(text),
-            Set.of(new RequestedVersion(text.purl(), "3.0", "3.12.0")));
+            Set.of(new RequestedVersion(text.purl(), "3.0", "3.12.0"))
+        );
     final DependencyInventory inventory =
         new DependencyInventory(List.of(new ModuleDependencies("", List.of(managed))));
     final BuildPolicyInput input =
@@ -91,10 +98,12 @@ class DependencyVersionRulesTest {
   void upperBoundIgnoresSourcesThatReportNoRequestsAndOtherEcosystems() {
     final DependencyInventory inventory =
         new DependencyInventory(
-            List.of(new ModuleDependencies("", List.of(RuleModels.entry("semver", "6.3.1")))));
+            List.of(new ModuleDependencies("", List.of(RuleModels.entry("semver", "6.3.1"))))
+        );
     assertThat(
-            BuildPolicyRules.forRule(BuildRule.REQUIRE_UPPER_BOUND)
-                .check(new BuildPolicyInput(BuildModel.EMPTY, () -> inventory, Map.of())))
+        BuildPolicyRules.forRule(BuildRule.REQUIRE_UPPER_BOUND)
+            .check(new BuildPolicyInput(BuildModel.EMPTY, () -> inventory, Map.of()))
+    )
         .isEmpty();
   }
 
@@ -117,7 +126,8 @@ class DependencyVersionRulesTest {
             "pom.xml",
             "pom.xml",
             Set.of(),
-            Set.of(RequestedVersion.byModule(resolved), RequestedVersion.by(text, "3.12.0")));
+            Set.of(RequestedVersion.byModule(resolved), RequestedVersion.by(text, "3.12.0"))
+        );
     final Dependency textEntry =
         new Dependency(
             text,
@@ -127,7 +137,8 @@ class DependencyVersionRulesTest {
             "pom.xml",
             "pom.xml",
             Set.of(),
-            Set.of(RequestedVersion.byModule("1.10.0")));
+            Set.of(RequestedVersion.byModule("1.10.0"))
+        );
     final DependencyInventory inventory =
         new DependencyInventory(List.of(new ModuleDependencies("", List.of(libEntry, textEntry))));
     return BuildPolicyRules.forRule(rule)

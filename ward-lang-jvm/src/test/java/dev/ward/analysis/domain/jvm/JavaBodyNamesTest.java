@@ -7,7 +7,6 @@ import dev.ward.analysis.domain.port.ControlFlowResult;
 import org.junit.jupiter.api.Test;
 
 class JavaBodyNamesTest {
-
   @Test
   void bodiesOfAPackagedTypeAreNamedWithTheirPackage() {
     final ControlFlowResult result =

@@ -14,7 +14,6 @@ import org.tomlj.TomlParseResult;
  * methods that must call their {@code super} method, and a misspelled {@code hashCode}.
  */
 final class ObjectMethodChecks {
-
   private static final String MESSAGE = "message";
   private static final String CLONE = "clone";
   private static final String FINALIZE = "finalize";
@@ -28,13 +27,18 @@ final class ObjectMethodChecks {
         entry("no-finalizer", toml -> check(FINALIZE, false, toml)),
         entry(
             "suspicious-hashcode-name",
-            toml -> new SuspiciousHashCodeNameCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new SuspiciousHashCodeNameCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry("super-clone", toml -> check(CLONE, true, toml)),
-        entry("super-finalize", toml -> check(FINALIZE, true, toml)));
+        entry("super-finalize", toml -> check(FINALIZE, true, toml))
+    );
   }
 
   private static ObjectMethodCheck check(
-      final String name, final boolean requireSuperCall, final TomlParseResult toml) {
+      final String name,
+      final boolean requireSuperCall,
+      final TomlParseResult toml
+  ) {
     return new ObjectMethodCheck(name, requireSuperCall, TomlValues.required(toml, MESSAGE));
   }
 }

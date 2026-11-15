@@ -21,7 +21,6 @@ import org.tomlj.TomlParseResult;
  * declaration kinds by their Checkstyle token, and the tag options name block tags.
  */
 final class JavadocChecks {
-
   private static final String MESSAGE = "message";
   private static final String TAG_ORDER = "tag-order";
   private static final String TARGET = "target";
@@ -31,14 +30,23 @@ final class JavadocChecks {
 
   private static final Map<String, String> TOKEN_KINDS =
       Map.of(
-          "CLASS_DEF", "classDeclaration",
-          "INTERFACE_DEF", "interfaceDeclaration",
-          "ENUM_DEF", "enumDeclaration",
-          "RECORD_DEF", "recordDeclaration",
-          "METHOD_DEF", "methodDeclaration",
-          "CTOR_DEF", "constructorDeclaration",
-          "COMPACT_CTOR_DEF", "compactConstructorDeclaration",
-          "VARIABLE_DEF", "fieldDeclaration");
+          "CLASS_DEF",
+          "classDeclaration",
+          "INTERFACE_DEF",
+          "interfaceDeclaration",
+          "ENUM_DEF",
+          "enumDeclaration",
+          "RECORD_DEF",
+          "recordDeclaration",
+          "METHOD_DEF",
+          "methodDeclaration",
+          "CTOR_DEF",
+          "constructorDeclaration",
+          "COMPACT_CTOR_DEF",
+          "compactConstructorDeclaration",
+          "VARIABLE_DEF",
+          "fieldDeclaration"
+      );
 
   private JavadocChecks() {}
 
@@ -57,17 +65,26 @@ final class JavadocChecks {
                     kinds(toml),
                     TomlValues.strings(toml, MODIFIERS),
                     TomlLists.optional(toml, TAG_ORDER),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "non-empty-atclause-description",
             toml ->
                 new NonEmptyAtclauseDescriptionCheck(
-                    TomlValues.strings(toml, JAVADOC_TOKENS), TomlValues.required(toml, MESSAGE))),
+                    TomlValues.strings(toml, JAVADOC_TOKENS),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "javadoc-tag-continuation-indentation",
             toml ->
                 new JavadocTagContinuationIndentationCheck(
-                    TomlValues.integer(toml, OFFSET), TomlValues.required(toml, MESSAGE))));
+                    TomlValues.integer(toml, OFFSET),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        )
+    );
   }
 
   private static Set<String> kinds(final TomlParseResult toml) {

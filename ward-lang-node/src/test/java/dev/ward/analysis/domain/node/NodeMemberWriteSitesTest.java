@@ -15,7 +15,6 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 /** Checks the member-write sites and the constructor sites of TypeScript and JavaScript. */
 class NodeMemberWriteSitesTest {
-
   private static final String WRITES =
       """
       function go(el, html) {
@@ -28,9 +27,7 @@ class NodeMemberWriteSitesTest {
 
   /** Scenario: Member write. The site names the property, its qualifier and the value. */
   @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
+  @EnumSource(value = AnalysisLanguage.class, names = {"TYPESCRIPT", "JAVASCRIPT"})
   void memberWriteNamesPropertyAndValue(final AnalysisLanguage language) {
     final FlowSite write = writeOn(language, "innerHTML");
     assertThat(write.qualifier()).isEqualTo("el");
@@ -39,9 +36,7 @@ class NodeMemberWriteSitesTest {
 
   /** Scenario: Member write after the sites in the value. The write comes last. */
   @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
+  @EnumSource(value = AnalysisLanguage.class, names = {"TYPESCRIPT", "JAVASCRIPT"})
   void memberWriteIsListedAfterTheSitesInItsValue(final AnalysisLanguage language) {
     final List<String> names =
         sitesOf(NodeTaintFixtures.graph(language, WRITES, "go")).stream()
@@ -53,9 +48,7 @@ class NodeMemberWriteSitesTest {
 
   /** Scenario: Bracket key. A string literal key names the property. */
   @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
+  @EnumSource(value = AnalysisLanguage.class, names = {"TYPESCRIPT", "JAVASCRIPT"})
   void bracketKeyNamesTheProperty(final AnalysisLanguage language) {
     final FlowSite write = writeOn(language, "outerHTML");
     assertThat(argumentText(write, WRITES)).isEqualTo("html");
@@ -63,18 +56,14 @@ class NodeMemberWriteSitesTest {
 
   /** Scenario: Compound assignment writes the property too. */
   @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
+  @EnumSource(value = AnalysisLanguage.class, names = {"TYPESCRIPT", "JAVASCRIPT"})
   void compoundAssignmentIsAMemberWrite(final AnalysisLanguage language) {
     assertThat(writeOn(language, "title").qualifier()).isEqualTo("el");
   }
 
   /** Scenario: Comparison is not a write. Only assignment operators write a property. */
   @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
+  @EnumSource(value = AnalysisLanguage.class, names = {"TYPESCRIPT", "JAVASCRIPT"})
   void comparisonIsNotAMemberWrite(final AnalysisLanguage language) {
     final List<FlowSite> writes =
         sitesOf(NodeTaintFixtures.graph(language, WRITES, "go")).stream()
@@ -85,9 +74,7 @@ class NodeMemberWriteSitesTest {
 
   /** Scenario: Constructor site. A new expression is a call named <init> on its class. */
   @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
+  @EnumSource(value = AnalysisLanguage.class, names = {"TYPESCRIPT", "JAVASCRIPT"})
   void newExpressionIsAConstructorCall(final AnalysisLanguage language) {
     final String source = "function go(body) { const f = new Function(body); }";
     final FlowSite init =
@@ -107,16 +94,22 @@ class NodeMemberWriteSitesTest {
                     "no write of "
                         + name
                         + "\n"
-                        + ControlFlowDump.render(NodeTaintFixtures.graph(language, WRITES, "go"))));
+                        + ControlFlowDump.render(NodeTaintFixtures.graph(language, WRITES, "go"))
+                )
+        );
   }
 
   private static FlowSite siteOn(
-      final ControlFlowGraph graph, final String name, final String qualifier) {
+      final ControlFlowGraph graph,
+      final String name,
+      final String qualifier
+  ) {
     return sitesOf(graph).stream()
         .filter(site -> site.name().equals(name) && site.qualifier().equals(qualifier))
         .findFirst()
         .orElseThrow(
-            () -> new AssertionError("no site " + name + "\n" + ControlFlowDump.render(graph)));
+            () -> new AssertionError("no site " + name + "\n" + ControlFlowDump.render(graph))
+        );
   }
 
   private static List<FlowSite> sitesOf(final ControlFlowGraph graph) {

@@ -6,7 +6,6 @@ import java.util.Optional;
 
 /** Reads the Xcode workspace, shared schemes and target platforms of an Xcode project. */
 public interface XcodeSchemes {
-
   /**
    * Returns the name of the {@code .xcworkspace} in {@code root}, or empty when there is none; the
    * workspace is the container the Xcode test command uses in preference to the project.

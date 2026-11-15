@@ -17,8 +17,8 @@ public record DeclarationFilter(
     Set<String> kinds,
     Set<String> modifierKinds,
     Optional<String> required,
-    Optional<String> excluded) {
-
+    Optional<String> excluded
+) {
   /**
    * Copies the sets.
    *

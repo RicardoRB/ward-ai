@@ -7,7 +7,6 @@ import java.util.Set;
 
 /** Finds the closing braces of if, else, try, catch and finally blocks. */
 final class IfTryBraces {
-
   private static final String CLOSE = "'}'";
   private static final String BLOCK = "block";
   private static final String STATEMENT = "statement";

@@ -64,7 +64,8 @@ final class GradleModules {
             "settings.gradle",
             "settings.gradle.kts",
             "gradle.properties",
-            "gradle/wrapper/gradle-wrapper.properties")) {
+            "gradle/wrapper/gradle-wrapper.properties"
+        )) {
       final Path file = root.resolve(name);
       if (Files.isRegularFile(file)) {
         files.add(file);

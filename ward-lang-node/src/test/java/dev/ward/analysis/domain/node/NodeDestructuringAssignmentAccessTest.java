@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
  * dead store or an unused assignment of the variable.
  */
 class NodeDestructuringAssignmentAccessTest {
-
   private static final String WRITE_A = "WRITE a";
   private static final String READ_A = "READ a";
   private static final String READ_SRC = "READ src";
@@ -33,7 +32,8 @@ class NodeDestructuringAssignmentAccessTest {
         WRITE_A,
         READ_SRC,
         WRITE_A,
-        READ_A);
+        READ_A
+    );
   }
 
   @Test
@@ -45,7 +45,8 @@ class NodeDestructuringAssignmentAccessTest {
         WRITE_A,
         READ_SRC,
         WRITE_A,
-        READ_A);
+        READ_A
+    );
   }
 
   @Test
@@ -59,7 +60,8 @@ class NodeDestructuringAssignmentAccessTest {
         READ_SRC,
         "READ dflt",
         WRITE_A,
-        READ_A);
+        READ_A
+    );
   }
 
   @Test
@@ -73,12 +75,18 @@ class NodeDestructuringAssignmentAccessTest {
         READ_SRC,
         "READ c",
         WRITE_A,
-        READ_A);
+        READ_A
+    );
   }
 
   @Test
   void aMemberTargetInsideAPatternStillReadsItsObject() {
     assertBothLanguages(
-        "function f(o, v) { ({ x: o.p } = v); }", "PARAMETER o", "PARAMETER v", "READ v", "READ o");
+        "function f(o, v) { ({ x: o.p } = v); }",
+        "PARAMETER o",
+        "PARAMETER v",
+        "READ v",
+        "READ o"
+    );
   }
 }

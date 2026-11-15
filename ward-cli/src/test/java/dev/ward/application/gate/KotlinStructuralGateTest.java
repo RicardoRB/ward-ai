@@ -32,7 +32,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** The {@code ward} gate with the bundled Kotlin rules, on a real Gradle Kotlin project. */
 class KotlinStructuralGateTest {
-
   private static final String TYPE_NAME = "ward:kotlin/type-name";
   private static final String UNKNOWN = "ward:kotlin/no-such-rule";
   private static final int CLASS_LINE = 3;
@@ -55,7 +54,8 @@ class KotlinStructuralGateTest {
               assertThat(finding.ruleId()).isEqualTo(TYPE_NAME);
               assertThat(finding.file()).isEqualTo("src/main/kotlin/App.kt");
               assertThat(finding.line()).isEqualTo(CLASS_LINE);
-            });
+            }
+        );
   }
 
   @Test
@@ -110,7 +110,8 @@ class KotlinStructuralGateTest {
             null,
             null,
             null,
-            null);
+            null
+        );
     return AnalysisGates.create(check, ports());
   }
 
@@ -123,12 +124,15 @@ class KotlinStructuralGateTest {
             new FrontendSupport(
                 AnalysisLanguage.KOTLIN,
                 new AntlrLanguageFrontend(),
-                Set.of(RuleCapability.SYNTAX))),
+                Set.of(RuleCapability.SYNTAX)
+            )
+        ),
         root -> AnalysisCacheFixtures.NO_CACHE,
         AnalysisCacheFixtures.codec(),
         "test",
         DependencyAdapters.none(),
-        (unused, classpath) -> Map.of());
+        (unused, classpath) -> Map.of()
+    );
   }
 
   private Project project() {
@@ -142,6 +146,7 @@ class KotlinStructuralGateTest {
         Set.of(),
         null,
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 }

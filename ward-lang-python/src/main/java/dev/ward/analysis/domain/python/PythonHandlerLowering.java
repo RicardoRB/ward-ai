@@ -11,7 +11,6 @@ import java.util.function.Consumer;
  * with} runs its items and body in order; its bindings hold after it, as Pylint assumes.
  */
 final class PythonHandlerLowering {
-
   private static final String BLOCK = "block";
   private static final String HANDLER = "except_clause";
   private static final String ELSE = "else";

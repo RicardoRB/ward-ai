@@ -18,7 +18,6 @@ import java.util.stream.Stream;
  * closeable, such as an {@code XMLStreamReader}, cannot be a try-with-resources resource.
  */
 public final class CloseInFinallyCheck extends FactsCheck {
-
   private static final String EXPRESSION = "expression";
   private static final String AUTO_CLOSEABLE = "java.lang.AutoCloseable";
   private static final String CLOSE_CALL = ".close()";

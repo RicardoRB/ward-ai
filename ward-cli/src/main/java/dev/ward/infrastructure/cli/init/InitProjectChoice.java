@@ -22,7 +22,8 @@ final class InitProjectChoice {
       final Path start,
       final boolean ask,
       final InitWizard wizard,
-      final PrintWriter out) {
+      final PrintWriter out
+  ) {
     final Path base = start.toAbsolutePath().normalize();
     final List<DiscoveredProject> candidates = targets.projects();
     final List<String> ids =
@@ -39,7 +40,8 @@ final class InitProjectChoice {
       throw new WardException(
           "Found several Maven or Gradle projects. Choose them with --project: "
               + ids.stream().map(id -> "--project " + id).collect(Collectors.joining(" "))
-              + ". No files were changed.");
+              + ". No files were changed."
+      );
     }
     final List<String> labels =
         candidates.stream().map(candidate -> label(base, candidate)).toList();

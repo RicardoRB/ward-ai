@@ -25,7 +25,6 @@ import java.util.Set;
  * {@code it} are never reported.
  */
 public final class KotlinNameShadowingCheck implements RuleCheck {
-
   private static final Set<ScopeKind> LOCAL_SCOPES =
       Set.of(ScopeKind.BLOCK, ScopeKind.LAMBDA, ScopeKind.FUNCTION);
   private static final Set<BindingKind> VALUE_KINDS =
@@ -58,7 +57,11 @@ public final class KotlinNameShadowingCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes();
     final List<RuleMatch> found = new ArrayList<>();
     for (final Scope scope : scopes.scopes()) {
@@ -66,7 +69,8 @@ public final class KotlinNameShadowingCheck implements RuleCheck {
         for (final Binding binding : scope.bindings()) {
           if (candidate(binding, scope) && shadowsOuter(binding, scope, scopes)) {
             found.add(
-                new RuleMatch(binding.declaration(), message.replace("{value}", binding.name())));
+                new RuleMatch(binding.declaration(), message.replace("{value}", binding.name()))
+            );
           }
         }
       }
@@ -83,7 +87,10 @@ public final class KotlinNameShadowingCheck implements RuleCheck {
   }
 
   private static boolean shadowsOuter(
-      final Binding binding, final Scope scope, final UnitScopes scopes) {
+      final Binding binding,
+      final Scope scope,
+      final UnitScopes scopes
+  ) {
     Scope current = scope;
     while (current.parent() != NO_SCOPE) {
       final Scope outer = scopes.scopes().get(current.parent());
@@ -95,7 +102,8 @@ public final class KotlinNameShadowingCheck implements RuleCheck {
               other ->
                   declaredBefore(other, binding)
                       && other.name().equals(binding.name())
-                      && VALUE_KINDS.contains(other.kind()))) {
+                      && VALUE_KINDS.contains(other.kind())
+          )) {
         return true;
       }
       if (outer.kind() == ScopeKind.FUNCTION) {

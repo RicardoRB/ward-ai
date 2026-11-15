@@ -10,7 +10,6 @@ import java.util.List;
  * Reports a {@code new} method in a class, or a constructor in an interface, that builds the type.
  */
 public final class MisusedNewCheck implements RuleCheck {
-
   private static final String CLASS = "class";
   private static final String INTERFACE = "interface";
   private static final String NEW = "new";

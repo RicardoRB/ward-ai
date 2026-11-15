@@ -18,7 +18,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class MavenTestGateTest {
-
   private final Project project =
       new Project(Path.of("/work/app"), Language.JAVA, BuildTool.MAVEN, Framework.SPRING_BOOT);
 
@@ -59,7 +58,9 @@ class MavenTestGateTest {
     final QualityGateFactory factory = new QualityGateFactory(executor);
     final WardConfiguration configuration =
         new WardConfiguration(
-            1, Map.of("tests", new GateConfiguration("tests", true, List.of("./gradlew", "test"))));
+            1,
+            Map.of("tests", new GateConfiguration("tests", true, List.of("./gradlew", "test")))
+        );
 
     factory.create(configuration, gradleProject).getFirst().execute(gradleProject);
 

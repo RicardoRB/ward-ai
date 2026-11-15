@@ -40,10 +40,11 @@ class CommandQualityGateReportDirectoryTest {
   @Test
   void commandsWithoutReportPathPrepareNothing() {
     new CommandQualityGate(
-            TRIVY,
-            new FakeCommandExecutor(0, "", ""),
-            List.of(TRIVY, "detect", REPORT_PATH),
-            recording)
+        TRIVY,
+        new FakeCommandExecutor(0, "", ""),
+        List.of(TRIVY, "detect", REPORT_PATH),
+        recording
+    )
         .execute(project);
     new CommandQualityGate(TRIVY, new FakeCommandExecutor(0, "", ""), List.of(TRIVY), recording)
         .execute(project);

@@ -15,7 +15,8 @@ final class NodeAngularCompatibility {
   static List<CompatibilityFinding> check(
       final int node,
       final PackageManifest manifest,
-      final List<NodePackageCatalog.Package> added) {
+      final List<NodePackageCatalog.Package> added
+  ) {
     if (!manifest.declares(NodePackageCatalog.ANGULAR_CORE)) {
       return List.of();
     }
@@ -30,7 +31,8 @@ final class NodeAngularCompatibility {
       final int node,
       final PackageManifest manifest,
       final List<NodePackageCatalog.Package> added,
-      final AngularRelease release) {
+      final AngularRelease release
+  ) {
     final List<CompatibilityFinding> findings = new ArrayList<>();
     typescript(manifest, added, release).ifPresent(findings::add);
     node(node, release).ifPresent(findings::add);
@@ -38,7 +40,9 @@ final class NodeAngularCompatibility {
   }
 
   private static CompatibilityFinding unsupportedMajor(
-      final PackageManifest manifest, final Optional<String> major) {
+      final PackageManifest manifest,
+      final Optional<String> major
+  ) {
     final String declared = manifest.dependencies().get(NodePackageCatalog.ANGULAR_CORE);
     final String supported = String.join(", ", AngularReleases.majors());
     final String current = major.map(value -> "Angular " + value).orElse("Angular " + declared);
@@ -52,13 +56,15 @@ final class NodeAngularCompatibility {
             + declared
             + " is outside the supported Angular majors "
             + supported
-            + ".");
+            + "."
+    );
   }
 
   private static Optional<CompatibilityFinding> typescript(
       final PackageManifest manifest,
       final List<NodePackageCatalog.Package> added,
-      final AngularRelease release) {
+      final AngularRelease release
+  ) {
     return packageVersion(NodePackageCatalog.TYPESCRIPT, manifest, added)
         .flatMap(NodeVersionRange::lowerBound)
         .filter(version -> !NodeVersionRange.matches(release.typescript(), version))
@@ -75,7 +81,9 @@ final class NodeAngularCompatibility {
                         + release.typescript()
                         + "; the project uses TypeScript "
                         + version
-                        + "."));
+                        + "."
+                )
+        );
   }
 
   private static Optional<CompatibilityFinding> node(final int node, final AngularRelease release) {
@@ -94,13 +102,16 @@ final class NodeAngularCompatibility {
                 + release.node()
                 + "; the project uses Node "
                 + node
-                + "."));
+                + "."
+        )
+    );
   }
 
   private static Optional<String> packageVersion(
       final String name,
       final PackageManifest manifest,
-      final List<NodePackageCatalog.Package> added) {
+      final List<NodePackageCatalog.Package> added
+  ) {
     if (manifest.declares(name)) {
       return Optional.of(manifest.dependencies().get(name));
     }

@@ -8,7 +8,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class ByteAddCheckTest {
-
   private static final ByteAddCheck CHECK = new ByteAddCheck("message");
   private static final TypeRef BYTE = new TypeRef("byte", List.of(), 0, true);
   private static final String SOURCE =

@@ -14,7 +14,6 @@ import java.util.Set;
  * {@code for_where}. The {@code if} is reported.
  */
 public final class SwiftForWhereCheck implements RuleCheck {
-
   private static final String FOR_IN = "for_in_statement";
   private static final int SINGLE = 1;
   private static final String IF = "if_statement";

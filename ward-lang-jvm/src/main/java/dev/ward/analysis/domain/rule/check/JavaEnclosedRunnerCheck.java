@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * JUnit4TestsNotRunWithinEnclosed does.
  */
 public final class JavaEnclosedRunnerCheck implements RuleCheck {
-
   private static final Pattern ENCLOSED =
       Pattern.compile("^@(?:\\w+\\.)*RunWith\\(.*Enclosed\\.class\\)$");
 
@@ -44,7 +43,10 @@ public final class JavaEnclosedRunnerCheck implements RuleCheck {
                     matches.add(
                         CheckSupport.at(
                             member.node().span(),
-                            CheckSupport.fill(message, JavaNodes.name(member.node()), ""))));
+                            CheckSupport.fill(message, JavaNodes.name(member.node()), "")
+                        )
+                    )
+            );
       }
     }
     return List.copyOf(matches);

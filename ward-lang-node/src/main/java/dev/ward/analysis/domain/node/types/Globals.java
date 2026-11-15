@@ -56,7 +56,8 @@ final class Globals implements Lookup {
     }
     return ambientModules.computeIfAbsent(
         specifier,
-        key -> new Module(program, "module:" + key, FileDecls.EMPTY, decls, Module.Kind.AMBIENT));
+        key -> new Module(program, "module:" + key, FileDecls.EMPTY, decls, Module.Kind.AMBIENT)
+    );
   }
 
   private Map<String, Sym> index() {
@@ -106,7 +107,8 @@ final class Globals implements Lookup {
               if (!DeclReader.globalKey().equals(specifier)) {
                 ambient.computeIfAbsent(specifier, key -> new ArrayList<>()).addAll(decls);
               }
-            });
+            }
+        );
     for (final String reference : file.references()) {
       referenceTarget(path, reference).ifPresent(queue::add);
     }

@@ -48,7 +48,8 @@ public final class FormatFileEvaluator {
       final FormatterRegistry registry,
       final SourceReader reader,
       final SourceSink sink,
-      @Named("ward.version") final String wardVersion) {
+      @Named("ward.version") final String wardVersion
+  ) {
     this.registry = registry;
     this.reader = reader;
     this.sink = sink;
@@ -63,7 +64,8 @@ public final class FormatFileEvaluator {
       final Path root,
       final FormatTarget target,
       final Optional<AnalysisCache> cache,
-      final boolean write) {
+      final boolean write
+  ) {
     try {
       final FormatFileOutcome outcome = evaluate(root, target, cache, write);
       LOGGER.fine(() -> "event=format-file verdict=" + outcome.verdict());
@@ -71,7 +73,11 @@ public final class FormatFileEvaluator {
     } catch (final WardException exception) {
       LOGGER.fine("event=format-failed");
       return new FormatFileOutcome(
-          target.relativePath(), Verdict.FAILED, NO_LINE, exception.getMessage());
+          target.relativePath(),
+          Verdict.FAILED,
+          NO_LINE,
+          exception.getMessage()
+      );
     }
   }
 
@@ -79,7 +85,8 @@ public final class FormatFileEvaluator {
       final Path root,
       final FormatTarget target,
       final Optional<AnalysisCache> cache,
-      final boolean write) {
+      final boolean write
+  ) {
     final String path = target.relativePath();
     final SourceText original = reader.read(root.resolve(path));
     final String lf = original.text().replace(CRLF, LF);
@@ -95,7 +102,10 @@ public final class FormatFileEvaluator {
     final FormatSettings settings = target.settings();
     final String laid =
         FormatLayouts.apply(
-            formatted, settings.layout(), FormatLayouts.lineEndingOf(original.text()));
+            formatted,
+            settings.layout(),
+            FormatLayouts.lineEndingOf(original.text())
+        );
     final boolean bom = FormatLayouts.byteOrderMark(settings.layout(), original.byteOrderMark());
     if (laid.equals(original.text()) && bom == original.byteOrderMark()) {
       key.ifPresent(value -> cache.orElseThrow().write(value, CLEAN));

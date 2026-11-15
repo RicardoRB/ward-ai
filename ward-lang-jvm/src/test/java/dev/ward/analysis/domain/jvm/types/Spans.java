@@ -15,9 +15,9 @@ final class Spans {
   }
 
   static Span at(final String text, final int start, final int end) {
-    final int line = (int) text.substring(0, start).chars().filter(c -> c == '\n').count() + 1;
+    final int line = (int)text.substring(0, start).chars().filter(c -> c == '\n').count() + 1;
     final int column = start - text.lastIndexOf('\n', start - 1);
-    final int endLine = (int) text.substring(0, end).chars().filter(c -> c == '\n').count() + 1;
+    final int endLine = (int)text.substring(0, end).chars().filter(c -> c == '\n').count() + 1;
     final int endColumn = end - text.lastIndexOf('\n', end - 1);
     return new Span(line, column, endLine, endColumn, start, end);
   }

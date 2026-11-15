@@ -20,92 +20,113 @@ class PartialCheckPlanTest {
   @Test
   void irrelevantEditSkipsTheGate() {
     assertThat(
-            PartialPlans.plan(
-                PartialPlans.gate(
-                    PartialPlans.partial(
-                        PartialPlans.JAVA, PartialPlans.RULES, List.of(), null, null)),
-                "README.md"))
+        PartialPlans.plan(
+            PartialPlans.gate(
+                PartialPlans.partial(PartialPlans.JAVA, PartialPlans.RULES, List.of(), null, null)
+            ),
+            "README.md"
+        )
+    )
         .isEqualTo(
-            new PartialCheckPlan.GatePlan(
-                PartialPlans.GATE, PartialCheckPlan.Scope.SKIP, List.of()));
+            new PartialCheckPlan.GatePlan(PartialPlans.GATE, PartialCheckPlan.Scope.SKIP, List.of())
+        );
   }
 
   @Test
   void configurationEditRunsTheGateInFull() {
     assertThat(
-            PartialPlans.plan(
-                PartialPlans.gate(
-                    PartialPlans.partial(
-                        PartialPlans.JAVA,
-                        PartialPlans.RULES,
-                        PartialPlans.INCLUDES,
-                        "**/{name}",
-                        ",")),
-                "config/lint.xml"))
+        PartialPlans.plan(
+            PartialPlans.gate(
+                PartialPlans.partial(
+                    PartialPlans.JAVA,
+                    PartialPlans.RULES,
+                    PartialPlans.INCLUDES,
+                    "**/{name}",
+                    ","
+                )
+            ),
+            "config/lint.xml"
+        )
+    )
         .isEqualTo(PartialPlans.full());
   }
 
   @Test
   void configurationEditAlongsideASourceEditStillRunsInFull() {
     assertThat(
-            PartialPlans.plan(
-                PartialPlans.gate(
-                    PartialPlans.partial(
-                        PartialPlans.JAVA,
-                        PartialPlans.RULES,
-                        PartialPlans.INCLUDES,
-                        "**/{name}",
-                        ",")),
-                PartialPlans.ORDER,
-                "config/lint.xml"))
+        PartialPlans.plan(
+            PartialPlans.gate(
+                PartialPlans.partial(
+                    PartialPlans.JAVA,
+                    PartialPlans.RULES,
+                    PartialPlans.INCLUDES,
+                    "**/{name}",
+                    ","
+                )
+            ),
+            PartialPlans.ORDER,
+            "config/lint.xml"
+        )
+    )
         .isEqualTo(PartialPlans.full());
   }
 
   @Test
   void sourceEditNarrowsTheGateByFileName() {
     assertThat(
-            PartialPlans.plan(
-                PartialPlans.gate(
-                    PartialPlans.partial(
-                        PartialPlans.JAVA,
-                        PartialPlans.RULES,
-                        PartialPlans.INCLUDES,
-                        "**/{name}",
-                        ",")),
-                PartialPlans.ORDER))
+        PartialPlans.plan(
+            PartialPlans.gate(
+                PartialPlans.partial(
+                    PartialPlans.JAVA,
+                    PartialPlans.RULES,
+                    PartialPlans.INCLUDES,
+                    "**/{name}",
+                    ","
+                )
+            ),
+            PartialPlans.ORDER
+        )
+    )
         .isEqualTo(PartialPlans.narrowed("-Dlint.includes=**/Order.java"));
   }
 
   @Test
   void relevantGateWithoutArgumentsRunsInFull() {
     assertThat(
-            PartialPlans.plan(
-                PartialPlans.gate(
-                    PartialPlans.partial(
-                        PartialPlans.JAVA, PartialPlans.RULES, List.of(), null, null)),
-                PartialPlans.ORDER))
+        PartialPlans.plan(
+            PartialPlans.gate(
+                PartialPlans.partial(PartialPlans.JAVA, PartialPlans.RULES, List.of(), null, null)
+            ),
+            PartialPlans.ORDER
+        )
+    )
         .isEqualTo(PartialPlans.full());
   }
 
   @Test
   void deletedSourceRunsTheGateInFull() {
     assertThat(
-            PartialCheckPlan.create(
-                    PartialPlans.ROOT,
-                    Map.of(
-                        PartialPlans.GATE,
-                        PartialPlans.gate(
-                            PartialPlans.partial(
-                                PartialPlans.JAVA,
-                                PartialPlans.RULES,
-                                PartialPlans.INCLUDES,
-                                "**/{name}",
-                                ","))),
-                    List.of(PartialPlans.ROOT.resolve("src/B.java")),
-                    path -> false,
-                    path -> Optional.empty())
-                .gates()
-                .get(PartialPlans.GATE))
+        PartialCheckPlan.create(
+            PartialPlans.ROOT,
+            Map.of(
+                PartialPlans.GATE,
+                PartialPlans.gate(
+                    PartialPlans.partial(
+                        PartialPlans.JAVA,
+                        PartialPlans.RULES,
+                        PartialPlans.INCLUDES,
+                        "**/{name}",
+                        ","
+                    )
+                )
+            ),
+            List.of(PartialPlans.ROOT.resolve("src/B.java")),
+            path -> false,
+            path -> Optional.empty()
+        )
+            .gates()
+            .get(PartialPlans.GATE)
+    )
         .isEqualTo(PartialPlans.full());
   }
 
@@ -114,18 +135,27 @@ class PartialCheckPlanTest {
     final Path deleted = PartialPlans.ROOT.resolve("src/B.java");
 
     assertThat(
-            PartialCheckPlan.create(
-                    PartialPlans.ROOT,
-                    Map.of(
-                        PartialPlans.GATE,
-                        PartialPlans.gate(
-                            PartialPlans.partial(
-                                PartialPlans.JAVA, List.of(), List.of("{paths}"), null, null))),
-                    List.of(PartialPlans.ROOT.resolve("src/A.java"), deleted),
-                    path -> !path.equals(deleted),
-                    path -> Optional.empty())
-                .gates()
-                .get(PartialPlans.GATE))
+        PartialCheckPlan.create(
+            PartialPlans.ROOT,
+            Map.of(
+                PartialPlans.GATE,
+                PartialPlans.gate(
+                    PartialPlans.partial(
+                        PartialPlans.JAVA,
+                        List.of(),
+                        List.of("{paths}"),
+                        null,
+                        null
+                    )
+                )
+            ),
+            List.of(PartialPlans.ROOT.resolve("src/A.java"), deleted),
+            path -> !path.equals(deleted),
+            path -> Optional.empty()
+        )
+            .gates()
+            .get(PartialPlans.GATE)
+    )
         .isEqualTo(PartialPlans.narrowed("src/A.java"));
   }
 
@@ -138,10 +168,18 @@ class PartialCheckPlanTest {
                 PartialPlans.GATE,
                 PartialPlans.gate(
                     PartialPlans.partial(
-                        PartialPlans.JAVA, PartialPlans.RULES, PartialPlans.INCLUDES, null, ","))),
+                        PartialPlans.JAVA,
+                        PartialPlans.RULES,
+                        PartialPlans.INCLUDES,
+                        null,
+                        ","
+                    )
+                )
+            ),
             List.of(),
             PartialPlans.EVERYTHING_EXISTS,
-            path -> Optional.empty());
+            path -> Optional.empty()
+        );
 
     assertThat(plan.gates().get(PartialPlans.GATE)).isEqualTo(PartialPlans.full());
   }
@@ -152,7 +190,9 @@ class PartialCheckPlanTest {
     gates.put(
         PartialPlans.GATE,
         PartialPlans.gate(
-            PartialPlans.partial(List.of("**"), List.of(), PartialPlans.INCLUDES, null, ",")));
+            PartialPlans.partial(List.of("**"), List.of(), PartialPlans.INCLUDES, null, ",")
+        )
+    );
     gates.put("tests", PartialPlans.gate(null));
 
     final PartialCheckPlan plan =
@@ -161,7 +201,8 @@ class PartialCheckPlanTest {
             gates,
             List.of(PartialPlans.ROOT.resolveSibling("other/Order.java")),
             PartialPlans.EVERYTHING_EXISTS,
-            path -> Optional.empty());
+            path -> Optional.empty()
+        );
 
     assertThat(plan.gates().get(PartialPlans.GATE).scope()).isEqualTo(PartialCheckPlan.Scope.SKIP);
     assertThat(plan.gates().get("tests").scope()).isEqualTo(PartialCheckPlan.Scope.FULL);

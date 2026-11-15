@@ -31,7 +31,6 @@ import java.util.regex.Pattern;
  * {@code String}. It lowers the control flow itself, since a rule reads either types or flow.
  */
 public final class ImpossibleConversionCheck implements RuleCheck {
-
   /** What the check reports. */
   public enum Mode {
     /** A cast between types where neither is above the other. */
@@ -53,7 +52,9 @@ public final class ImpossibleConversionCheck implements RuleCheck {
   private static final Pattern NAME = Pattern.compile("[A-Za-z_$][A-Za-z0-9_$]*");
   private static final FactNeed NEED =
       new FactNeed(
-          Set.of(EXPRESSION, TYPE_TYPE), Set.of(FactKind.TYPE, FactKind.SHAPE, FactKind.MEMBERS));
+          Set.of(EXPRESSION, TYPE_TYPE),
+          Set.of(FactKind.TYPE, FactKind.SHAPE, FactKind.MEMBERS)
+      );
 
   private final Mode mode;
   private final String message;
@@ -85,7 +86,8 @@ public final class ImpossibleConversionCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     final TypeState state = new TypeState(types);
     for (final ControlFlowGraph graph : new JavaControlFlow().lower(unit, root).graphs()) {
@@ -97,7 +99,8 @@ public final class ImpossibleConversionCheck implements RuleCheck {
                 matches.add(CheckSupport.at(candidate.span(), message));
               }
             }
-          });
+          }
+      );
     }
     return List.copyOf(matches);
   }
@@ -111,8 +114,10 @@ public final class ImpossibleConversionCheck implements RuleCheck {
   private boolean impossible(
       final SyntaxNode node,
       final BasicBlock block,
-      final Map<Span, TypeState.Known> known,
-      final UnitTypeFacts types) {
+      final Map<Span,
+      TypeState.Known> known,
+      final UnitTypeFacts types
+  ) {
     if (!EXPRESSION.equals(node.kind())) {
       return false;
     }
@@ -131,7 +136,8 @@ public final class ImpossibleConversionCheck implements RuleCheck {
     final SyntaxNode target = cast ? parts.get(CAST_TYPE) : typeOfTest(parts);
     return held(operand, block, known)
         .flatMap(
-            value -> types.typeOf(target.span()).map(type -> conflict(value, type, target, types)))
+            value -> types.typeOf(target.span()).map(type -> conflict(value, type, target, types))
+        )
         .orElse(false);
   }
 
@@ -147,7 +153,11 @@ public final class ImpossibleConversionCheck implements RuleCheck {
 
   /** Returns what the local variable named by {@code operand} holds, if it is known. */
   private static Optional<TypeState.Known> held(
-      final SyntaxNode operand, final BasicBlock block, final Map<Span, TypeState.Known> known) {
+      final SyntaxNode operand,
+      final BasicBlock block,
+      final Map<Span,
+      TypeState.Known> known
+  ) {
     if (!NAME.matcher(SyntaxWalk.text(operand)).matches()) {
       return Optional.empty();
     }
@@ -163,7 +173,8 @@ public final class ImpossibleConversionCheck implements RuleCheck {
       final TypeState.Known value,
       final TypeRef wanted,
       final SyntaxNode target,
-      final UnitTypeFacts types) {
+      final UnitTypeFacts types
+  ) {
     if (!value.exact()) {
       return false;
     }
@@ -176,7 +187,8 @@ public final class ImpossibleConversionCheck implements RuleCheck {
       final TypeState.Known value,
       final TypeRef wanted,
       final SyntaxNode target,
-      final UnitTypeFacts types) {
+      final UnitTypeFacts types
+  ) {
     final boolean classes = value.type().arrayDepth() == 0 && wanted.arrayDepth() == 0;
     final boolean related =
         value.type().name().equals(wanted.name()) || value.ancestors().contains(wanted.name());

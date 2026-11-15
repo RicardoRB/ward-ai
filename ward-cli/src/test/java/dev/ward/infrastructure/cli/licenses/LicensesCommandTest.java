@@ -17,7 +17,8 @@ class LicensesCommandTest {
   private LicensesCommand command(final LicenseService licenses) {
     return new LicensesCommand(
         new NoticeService(LicenseFixtures.detector(), licenses, new BundledLicenseTexts()),
-        fixtures.output);
+        fixtures.output
+    );
   }
 
   @Test

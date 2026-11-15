@@ -42,7 +42,8 @@ public final class UncheckedEqualsCastCheck implements UnitCheck {
         .flatMap(visit -> DeclaredMethods.of(visit.node()).stream())
         .filter(
             method ->
-                EQUALS.equals(method.name()) && method.parameterTypes().equals(List.of(OBJECT)))
+                EQUALS.equals(method.name()) && method.parameterTypes().equals(List.of(OBJECT))
+        )
         .flatMap(method -> unguardedCast(method.node()).stream())
         .map(cast -> CheckSupport.at(cast.span(), message))
         .toList();
@@ -66,7 +67,9 @@ public final class UncheckedEqualsCastCheck implements UnitCheck {
                 .noneMatch(
                     node ->
                         guards(node, parameter.get())
-                            && node.span().startOffset() < found.span().startOffset()));
+                            && node.span().startOffset() < found.span().startOffset()
+                )
+    );
   }
 
   private static boolean castsParameter(final SyntaxNode node, final String parameter) {
@@ -89,6 +92,7 @@ public final class UncheckedEqualsCastCheck implements UnitCheck {
         && parts.stream()
             .anyMatch(
                 part ->
-                    "identifier".equals(part.kind()) && GET_CLASS.equals(SyntaxWalk.text(part)));
+                    "identifier".equals(part.kind()) && GET_CLASS.equals(SyntaxWalk.text(part))
+            );
   }
 }

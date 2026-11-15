@@ -9,7 +9,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class SyntaxNodeTest {
-
   private static final Span SPAN = new Span(1, 1, 1, 5, 0, 4);
 
   @Test

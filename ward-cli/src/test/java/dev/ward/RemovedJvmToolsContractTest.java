@@ -27,7 +27,14 @@ class RemovedJvmToolsContractTest {
   /** Lower-case names of the removed tools and the Semgrep pack that only they used. */
   private static final List<String> REMOVED_TOOLS =
       List.of(
-          "checkstyle", "pmd", "spotbugs", "errorprone", "error-prone", "error prone", "nullaway");
+          "checkstyle",
+          "pmd",
+          "spotbugs",
+          "errorprone",
+          "error-prone",
+          "error prone",
+          "nullaway"
+      );
 
   /** The removed Java Semgrep pack; {@code p/javascript} is a different pack. */
   private static final Pattern SEMGREP_JAVA_PACK = Pattern.compile("p/java(?!script)");
@@ -59,7 +66,8 @@ class RemovedJvmToolsContractTest {
             definition ->
                 assertThat(namesRemovedTool(definition.id() + " " + definition.displayName()))
                     .as("gate %s", definition.id())
-                    .isFalse());
+                    .isFalse()
+        );
   }
 
   @Test
@@ -79,9 +87,11 @@ class RemovedJvmToolsContractTest {
   @Test
   void skillsAndUserDocsNameNoRemovedTool() throws IOException {
     assertThat(
-            violations(
-                docFiles(),
-                line -> !(line.contains(BIOME_CHECKSTYLE_REPORTER) || line.contains("ward:"))))
+        violations(
+            docFiles(),
+            line -> !(line.contains(BIOME_CHECKSTYLE_REPORTER) || line.contains("ward:"))
+        )
+    )
         .as("doc lines that name a removed tool")
         .isEmpty();
   }

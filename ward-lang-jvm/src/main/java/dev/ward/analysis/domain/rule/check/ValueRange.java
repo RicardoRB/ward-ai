@@ -8,7 +8,6 @@ import java.util.Optional;
  * reached.
  */
 record ValueRange(long low, long high) {
-
   /** Every {@code long} value. */
   static final ValueRange ANY = new ValueRange(Long.MIN_VALUE, Long.MAX_VALUE);
 

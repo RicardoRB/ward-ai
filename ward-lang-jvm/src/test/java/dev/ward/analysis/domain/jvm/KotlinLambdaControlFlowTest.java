@@ -7,16 +7,15 @@ import org.junit.jupiter.api.Test;
 
 /** The control flow inside and around a lambda. */
 class KotlinLambdaControlFlowTest {
-
   @Test
   void aBranchInsideALambdaKeepsTheCleanPathApart() {
     assertThat(
-            count(
-                "val q = src()\nq.let {\n var s = it\n if (it.isEmpty()) { s = \"x\" }\n sink(s)\n }"))
+        count("val q = src()\nq.let {\n var s = it\n if (it.isEmpty()) { s = \"x\" }\n sink(s)\n }")
+    )
         .isOne();
     assertThat(
-            count(
-                "val q = src()\nq.let {\n var s = it\n if (it.isEmpty()) { s = \"x\"\n sink(s) }\n }"))
+        count("val q = src()\nq.let {\n var s = it\n if (it.isEmpty()) { s = \"x\"\n sink(s) }\n }")
+    )
         .isZero();
   }
 

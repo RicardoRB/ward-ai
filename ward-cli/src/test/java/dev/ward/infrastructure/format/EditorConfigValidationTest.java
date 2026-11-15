@@ -12,14 +12,14 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class EditorConfigValidationTest extends EditorConfigTestSupport {
-
   @Test
   void declaredKeyOfAnotherLanguageIsRejected() throws IOException {
     write("[*]\nward_continuation_indent_size = 12\n");
     assertThat(
-            resolve(JAVA_FILE, AnalysisLanguage.JAVA, JAVA_OPTIONS)
-                .options()
-                .get("continuation-indent-size"))
+        resolve(JAVA_FILE, AnalysisLanguage.JAVA, JAVA_OPTIONS)
+            .options()
+            .get("continuation-indent-size")
+    )
         .isEqualTo(String.valueOf(CONTINUATION_VALUE));
     assertThatThrownBy(() -> resolve("app.ts", AnalysisLanguage.TYPESCRIPT, TYPESCRIPT_OPTIONS))
         .isInstanceOf(FormatConfigurationException.class)
@@ -68,10 +68,15 @@ class EditorConfigValidationTest extends EditorConfigTestSupport {
   void declaredOptionWithAllowedValuesRejectsOthers() throws IOException {
     final FormatOption style =
         new FormatOption(
-            "quote-style", FormatOptionType.TEXT, "double", List.of("double", "single"));
+            "quote-style",
+            FormatOptionType.TEXT,
+            "double",
+            List.of("double", "single")
+        );
     write("[*]\nward_quote_style = backtick\n");
     assertThatThrownBy(
-            () -> resolve("app.ts", AnalysisLanguage.TYPESCRIPT, with(TYPESCRIPT_OPTIONS, style)))
+        () -> resolve("app.ts", AnalysisLanguage.TYPESCRIPT, with(TYPESCRIPT_OPTIONS, style))
+    )
         .isInstanceOf(FormatConfigurationException.class)
         .hasMessageContaining("double, single");
   }

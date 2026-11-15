@@ -13,12 +13,13 @@ import java.util.stream.IntStream;
  * point.
  */
 final class FixedPointStates {
-
   private FixedPointStates() {}
 
   /** Iterates the transfer function over the blocks until the entry state of each is stable. */
   static BitSet[] entryStates(
-      final ControlFlowGraph graph, final ReachingDefinitions.Writes writes) {
+      final ControlFlowGraph graph,
+      final ReachingDefinitions.Writes writes
+  ) {
     final List<List<Integer>> predecessors = predecessors(graph);
     final int count = graph.blocks().size();
     final BitSet[] in = new BitSet[count];
@@ -49,8 +50,11 @@ final class FixedPointStates {
   }
 
   private static BitSet transfer(
-      final BasicBlock block, final BitSet entry, final ReachingDefinitions.Writes writes) {
-    final BitSet result = (BitSet) entry.clone();
+      final BasicBlock block,
+      final BitSet entry,
+      final ReachingDefinitions.Writes writes
+  ) {
+    final BitSet result = (BitSet)entry.clone();
     for (final AccessSite site : ReachingDefinitions.sites(block)) {
       if (ReachingDefinitions.isWrite(site.access())) {
         writes.apply(result, site);
@@ -62,7 +66,7 @@ final class FixedPointStates {
   private static List<List<Integer>> predecessors(final ControlFlowGraph graph) {
     final List<List<Integer>> predecessors =
         IntStream.range(0, graph.blocks().size())
-            .<List<Integer>>mapToObj(id -> new ArrayList<>())
+            .<List<Integer>> mapToObj(id -> new ArrayList<>())
             .toList();
     for (final BasicBlock block : graph.blocks()) {
       for (final FlowEdge edge : block.successors()) {

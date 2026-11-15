@@ -10,7 +10,6 @@ import java.util.Map;
 
 /** Runs the unused-assignment check on one hand-built graph and reads its findings. */
 final class CheckResults {
-
   private static final String MESSAGE = "the value assigned to '{value}' is never read";
   private static final SyntaxNode ROOT =
       new SyntaxNode("file", new Span(1, 1, 1, 2, 0, 1), Map.of(), List.of());

@@ -23,7 +23,6 @@ import org.junit.jupiter.api.condition.EnabledIf;
  * oasdiff executable; the pinned version is 1.37.0.
  */
 final class OasdiffParitySmokeTest {
-
   private static final String PROPERTY = "ward.parity.oasdiff";
   private static final String APPROXIMATIONS =
       "src/test/resources/parity/oasdiff-approximations.txt";
@@ -76,7 +75,15 @@ final class OasdiffParitySmokeTest {
       throws IOException {
     final Process process =
         new ProcessBuilder(
-                oasdiff, "breaking", "-f", "json", "--fail-on", "ERR", "base.yaml", "revision.yaml")
+            oasdiff,
+            "breaking",
+            "-f",
+            "json",
+            "--fail-on",
+            "ERR",
+            "base.yaml",
+            "revision.yaml"
+        )
             .directory(directory.toFile())
             .redirectErrorStream(false)
             .start();
@@ -101,7 +108,8 @@ final class OasdiffParitySmokeTest {
                 + "\t"
                 + text(change, "operation")
                 + "\t"
-                + text(change, "path"));
+                + text(change, "path")
+        );
       }
     }
     return results;

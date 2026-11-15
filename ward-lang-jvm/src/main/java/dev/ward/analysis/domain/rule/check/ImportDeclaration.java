@@ -18,7 +18,6 @@ import java.util.Set;
  * @param span the span of the whole declaration
  */
 record ImportDeclaration(String name, boolean isStatic, boolean isModule, boolean star, Span span) {
-
   private static final String IMPORT_KIND = "importDeclaration";
   private static final String NAME_KIND = "qualifiedName";
   private static final String PACKAGE_KIND = "packageDeclaration";
@@ -44,7 +43,8 @@ record ImportDeclaration(String name, boolean isStatic, boolean isModule, boolea
     return SyntaxWalk.visits(root, Set.of(PACKAGE_KIND)).stream()
         .findFirst()
         .flatMap(
-            visit -> SyntaxWalk.firstDescendant(visit.node(), NAME_KIND, Set.of(ANNOTATION_KIND)))
+            visit -> SyntaxWalk.firstDescendant(visit.node(), NAME_KIND, Set.of(ANNOTATION_KIND))
+        )
         .map(SyntaxWalk::text);
   }
 
@@ -87,9 +87,11 @@ record ImportDeclaration(String name, boolean isStatic, boolean isModule, boolea
         leaves.stream()
             .anyMatch(
                 leaf ->
-                    leaf.span().startOffset() >= nameEnd && STAR.equals(leaf.fields().get("text")));
+                    leaf.span().startOffset() >= nameEnd && STAR.equals(leaf.fields().get("text"))
+            );
     return Optional.of(
-        new ImportDeclaration(SyntaxWalk.text(name.get()), isStatic, isModule, star, node.span()));
+        new ImportDeclaration(SyntaxWalk.text(name.get()), isStatic, isModule, star, node.span())
+    );
   }
 
   /** A keyword is a leaf before the name, so a package called {@code module} is not one. */

@@ -16,7 +16,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class BiomeNamespaceAccessCheckTest {
-
   private static final BiomeNamespaceAccessCheck CHECK = new BiomeNamespaceAccessCheck("message");
 
   @Test
@@ -36,7 +35,8 @@ class BiomeNamespaceAccessCheckTest {
   @Test
   void ignoresALocalThatShadowsTheNamespace() {
     assertThat(
-            reported("import * as foo from 'foo';\nfunction f(foo) {\n  return foo['bar'];\n}\n"))
+        reported("import * as foo from 'foo';\nfunction f(foo) {\n  return foo['bar'];\n}\n")
+    )
         .isEmpty();
   }
 

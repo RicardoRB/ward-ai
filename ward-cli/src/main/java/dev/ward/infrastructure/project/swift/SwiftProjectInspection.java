@@ -52,7 +52,9 @@ public final class SwiftProjectInspection {
                     Set.of(Language.SWIFT),
                     version(dir, names, tool),
                     TaskRunner.NONE,
-                    null));
+                    null
+                )
+        );
   }
 
   /** The first rule that matches decides: Xcode, SwiftPM, Tuist, then XcodeGen. */
@@ -114,8 +116,9 @@ public final class SwiftProjectInspection {
                     .matcher(readText(dir.resolve(project).resolve(PBXPROJ)))
                     .results()
                     .map(found -> new int[] {toInt(found.group(1)), toInt(found.group(2))})
-                    .max(Comparator.<int[]>comparingInt(v -> v[0]).thenComparingInt(v -> v[1]))
-                    .map(v -> sourced(project + "/" + PBXPROJ, v[0] + "." + v[1])));
+                    .max(Comparator.<int[]> comparingInt(v -> v[0]).thenComparingInt(v -> v[1]))
+                    .map(v -> sourced(project + "/" + PBXPROJ, v[0] + "." + v[1]))
+        );
   }
 
   private static int toInt(final String digits) {

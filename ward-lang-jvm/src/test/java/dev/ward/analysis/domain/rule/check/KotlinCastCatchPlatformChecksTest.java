@@ -27,53 +27,80 @@ final class KotlinCastCatchPlatformChecksTest {
     final List<String> ancestors = List.of(OBJECT);
     final SpanFacts string = KotlinCheckFactBuilders.typed(STRING, CLASS_KIND, true, ancestors);
     assertThat(
-            check.matches(
-                root,
-                null,
-                null,
-                KotlinCheckFactBuilders.casted(
-                    cast,
-                    string,
-                    KotlinCheckFactBuilders.typed(
-                        "java.lang.Integer",
-                        CLASS_KIND,
-                        true,
-                        List.of("java.lang.Number", OBJECT))),
-                KotlinTypedCheckFixtures.unit(source)))
+        check.matches(
+            root,
+            null,
+            null,
+            KotlinCheckFactBuilders.casted(
+                cast,
+                string,
+                KotlinCheckFactBuilders.typed(
+                    "java.lang.Integer",
+                    CLASS_KIND,
+                    true,
+                    List.of("java.lang.Number", OBJECT)
+                )
+            ),
+            KotlinTypedCheckFixtures.unit(source)
+        )
+    )
         .hasSize(1);
     assertThat(
-            check.matches(
-                root,
-                null,
-                null,
-                KotlinCheckFactBuilders.casted(
-                    cast,
-                    string,
-                    KotlinCheckFactBuilders.typed(
-                        "java.lang.CharSequence", INTERFACE_KIND, true, List.of())),
-                KotlinTypedCheckFixtures.unit(source)))
+        check.matches(
+            root,
+            null,
+            null,
+            KotlinCheckFactBuilders.casted(
+                cast,
+                string,
+                KotlinCheckFactBuilders.typed(
+                    "java.lang.CharSequence",
+                    INTERFACE_KIND,
+                    true,
+                    List.of()
+                )
+            ),
+            KotlinTypedCheckFixtures.unit(source)
+        )
+    )
+        .isEmpty();
+  }
+
+  @Test
+  void unsafeCastIgnoresCastsWhereNeitherClassIsFinal() {
+    final String source = "fun f(s: String) {\n    val n = s as Target\n}\n";
+    final SyntaxNode root = KotlinTypedCheckFixtures.parse(source);
+    final SyntaxNode cast = KotlinTypedCheckFixtures.nodes(root, "typeRHS").get(0);
+    final KotlinUnsafeCastCheck check = new KotlinUnsafeCastCheck(MESSAGE);
+    final List<String> ancestors = List.of(OBJECT);
+    final SpanFacts string = KotlinCheckFactBuilders.typed(STRING, CLASS_KIND, true, ancestors);
+    assertThat(
+        check.matches(
+            root,
+            null,
+            null,
+            KotlinCheckFactBuilders.casted(
+                cast,
+                string,
+                KotlinCheckFactBuilders.typed(OBJECT, CLASS_KIND, false, List.of())
+            ),
+            KotlinTypedCheckFixtures.unit(source)
+        )
+    )
         .isEmpty();
     assertThat(
-            check.matches(
-                root,
-                null,
-                null,
-                KotlinCheckFactBuilders.casted(
-                    cast,
-                    string,
-                    KotlinCheckFactBuilders.typed(OBJECT, CLASS_KIND, false, List.of())),
-                KotlinTypedCheckFixtures.unit(source)))
-        .isEmpty();
-    assertThat(
-            check.matches(
-                root,
-                null,
-                null,
-                KotlinCheckFactBuilders.casted(
-                    cast,
-                    KotlinCheckFactBuilders.typed("app.Base", CLASS_KIND, false, ancestors),
-                    KotlinCheckFactBuilders.typed("app.Other", CLASS_KIND, false, ancestors)),
-                KotlinTypedCheckFixtures.unit(source)))
+        check.matches(
+            root,
+            null,
+            null,
+            KotlinCheckFactBuilders.casted(
+                cast,
+                KotlinCheckFactBuilders.typed("app.Base", CLASS_KIND, false, ancestors),
+                KotlinCheckFactBuilders.typed("app.Other", CLASS_KIND, false, ancestors)
+            ),
+            KotlinTypedCheckFixtures.unit(source)
+        )
+    )
         .isEmpty();
   }
 
@@ -85,31 +112,37 @@ final class KotlinCastCatchPlatformChecksTest {
     final KotlinUnreachableCatchCheck check = new KotlinUnreachableCatchCheck(MESSAGE);
     final List<String> ioAncestors = List.of("java.lang.Exception", "java.lang.Throwable", OBJECT);
     assertThat(
-            check.matches(
+        check.matches(
+            root,
+            null,
+            null,
+            KotlinCheckFactBuilders.catches(
                 root,
-                null,
-                null,
-                KotlinCheckFactBuilders.catches(
-                    root,
-                    "java.lang.Exception",
-                    List.of("java.lang.Throwable", OBJECT),
-                    "java.io.IOException",
-                    ioAncestors),
-                KotlinTypedCheckFixtures.unit(source)))
+                "java.lang.Exception",
+                List.of("java.lang.Throwable", OBJECT),
+                "java.io.IOException",
+                ioAncestors
+            ),
+            KotlinTypedCheckFixtures.unit(source)
+        )
+    )
         .extracting(match -> match.span().startLine())
         .containsExactly(UNREACHABLE_LINE);
     assertThat(
-            check.matches(
+        check.matches(
+            root,
+            null,
+            null,
+            KotlinCheckFactBuilders.catches(
                 root,
-                null,
-                null,
-                KotlinCheckFactBuilders.catches(
-                    root,
-                    "java.lang.Exception",
-                    List.of("java.lang.Throwable", OBJECT),
-                    "java.io.IOException",
-                    null),
-                KotlinTypedCheckFixtures.unit(source)))
+                "java.lang.Exception",
+                List.of("java.lang.Throwable", OBJECT),
+                "java.io.IOException",
+                null
+            ),
+            KotlinTypedCheckFixtures.unit(source)
+        )
+    )
         .isEmpty();
   }
 
@@ -120,41 +153,53 @@ final class KotlinCastCatchPlatformChecksTest {
     final KotlinPlatformTypeCheck check = new KotlinPlatformTypeCheck(MESSAGE);
     final CallTarget javaCall = KotlinCheckFactBuilders.javaCall("java.lang.System", List.of());
     assertThat(
-            check.matches(
-                root,
-                null,
-                null,
-                KotlinCheckFactBuilders.calledAt(root, javaCall),
-                KotlinTypedCheckFixtures.unit(source)))
+        check.matches(
+            root,
+            null,
+            null,
+            KotlinCheckFactBuilders.calledAt(root, javaCall),
+            KotlinTypedCheckFixtures.unit(source)
+        )
+    )
         .hasSize(1);
     final String privateSource =
         "class App {\n    private val name = System.getProperty(\"x\")\n}\n";
     final SyntaxNode privateRoot = KotlinTypedCheckFixtures.parse(privateSource);
     assertThat(
-            check.matches(
-                privateRoot,
-                null,
-                null,
-                KotlinCheckFactBuilders.calledAt(privateRoot, javaCall),
-                KotlinTypedCheckFixtures.unit(privateSource)))
+        check.matches(
+            privateRoot,
+            null,
+            null,
+            KotlinCheckFactBuilders.calledAt(privateRoot, javaCall),
+            KotlinTypedCheckFixtures.unit(privateSource)
+        )
+    )
         .isEmpty();
     assertThat(
-            check.matches(
+        check.matches(
+            root,
+            null,
+            null,
+            KotlinCheckFactBuilders.calledAt(
                 root,
-                null,
-                null,
-                KotlinCheckFactBuilders.calledAt(
-                    root, KotlinCheckFactBuilders.javaCall("java.lang.System", List.of(NULLABLE))),
-                KotlinTypedCheckFixtures.unit(source)))
+                KotlinCheckFactBuilders.javaCall("java.lang.System", List.of(NULLABLE))
+            ),
+            KotlinTypedCheckFixtures.unit(source)
+        )
+    )
         .isEmpty();
     assertThat(
-            check.matches(
+        check.matches(
+            root,
+            null,
+            null,
+            KotlinCheckFactBuilders.calledAt(
                 root,
-                null,
-                null,
-                KotlinCheckFactBuilders.calledAt(
-                    root, KotlinCheckFactBuilders.javaCall("app.Repo", List.of())),
-                KotlinTypedCheckFixtures.unit(source)))
+                KotlinCheckFactBuilders.javaCall("app.Repo", List.of())
+            ),
+            KotlinTypedCheckFixtures.unit(source)
+        )
+    )
         .isEmpty();
   }
 }

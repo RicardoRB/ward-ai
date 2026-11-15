@@ -17,7 +17,6 @@ import java.util.stream.Stream;
  * {@code @Mock} or {@code @Spy}. A type whose annotations are unknown is never reported.
  */
 public final class DoNotMockCheck extends FactsCheck {
-
   private static final String DO_NOT_MOCK = ".DoNotMock";
   private static final String MOCKITO = "org.mockito.Mockito";
   private static final String TYPE_TYPE = "typeType";
@@ -67,7 +66,8 @@ public final class DoNotMockCheck extends FactsCheck {
             .filter(
                 target ->
                     MOCKITO.equals(target.declaringType().name())
-                        && FACTORIES.contains(target.name()))
+                        && FACTORIES.contains(target.name())
+            )
             .isPresent()
         && doNotMock(arguments.get(0), types);
   }

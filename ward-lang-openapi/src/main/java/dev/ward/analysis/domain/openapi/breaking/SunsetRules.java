@@ -13,7 +13,6 @@ import java.util.function.Function;
  * flags, so a sunset is too small only when it is already past.
  */
 final class SunsetRules {
-
   private SunsetRules() {}
 
   /** The names of the five checks of a family and where to find what they apply to. */
@@ -23,15 +22,17 @@ final class SunsetRules {
       String earlier,
       String changedTooSmall,
       String deleted,
-      Function<DocumentPair, List<Subject>> subjects) {
-
+      Function<DocumentPair,
+      List<Subject>> subjects
+  ) {
     List<BreakingRule> rules() {
       return List.of(
           each(parse, subjects, SunsetRules::unparsable),
           each(tooSmall, subjects, SunsetRules::tooSmall),
           each(earlier, subjects, change -> moved(change, false)),
           each(changedTooSmall, subjects, change -> moved(change, true)),
-          each(deleted, subjects, SunsetRules::deleted));
+          each(deleted, subjects, SunsetRules::deleted)
+      );
     }
   }
 
@@ -46,28 +47,33 @@ final class SunsetRules {
                 "api-sunset-date-changed-earlier",
                 "api-sunset-date-changed-too-small",
                 "sunset-deleted",
-                Subjects::operations),
+                Subjects::operations
+            ),
             new Family(
                 "request-parameter-sunset-parse",
                 "request-parameter-sunset-date-too-small",
                 "request-parameter-sunset-date-changed-earlier",
                 "request-parameter-sunset-date-changed-too-small",
                 "request-parameter-sunset-deleted",
-                Subjects::parameters),
+                Subjects::parameters
+            ),
             new Family(
                 "request-property-deprecated-sunset-invalid",
                 "request-property-sunset-date-too-small",
                 "request-property-sunset-date-changed-earlier",
                 "request-property-sunset-date-changed-too-small",
                 "request-property-sunset-deleted",
-                Subjects::requestProperties),
+                Subjects::requestProperties
+            ),
             new Family(
                 "response-property-deprecated-sunset-invalid",
                 "response-property-sunset-date-too-small",
                 "response-property-sunset-date-changed-earlier",
                 "response-property-sunset-date-changed-too-small",
                 "response-property-sunset-deleted",
-                Subjects::responseProperties))) {
+                Subjects::responseProperties
+            )
+        )) {
       rules.addAll(family.rules());
     }
     return rules;
@@ -75,7 +81,6 @@ final class SunsetRules {
 
   /** One subject in both documents, the day, and the id a finding gets. */
   private record Change(Subject subject, LocalDate today, String id) {
-
     Optional<DocNode> sunset() {
       return Lifecycle.sunset(subject.revision());
     }
@@ -91,13 +96,18 @@ final class SunsetRules {
   }
 
   private static BreakingRule each(
-      final String id, final Function<DocumentPair, List<Subject>> subjects, final Check check) {
+      final String id,
+      final Function<DocumentPair,
+      List<Subject>> subjects,
+      final Check check
+  ) {
     return RowRule.of(
         id,
         pair ->
             subjects.apply(pair).stream()
                 .flatMap(subject -> check.check(new Change(subject, pair.today(), id)).stream())
-                .toList());
+                .toList()
+    );
   }
 
   private static Optional<BreakingFinding> unparsable(final Change change) {
@@ -108,7 +118,8 @@ final class SunsetRules {
         && !before.equals(now.get().text())
         && Lifecycle.day(now.get()).isEmpty()) {
       return Optional.of(
-          change.at(now.get(), "the sunset date '" + now.get().text() + "' is not a date"));
+          change.at(now.get(), "the sunset date '" + now.get().text() + "' is not a date")
+      );
     }
     return Optional.empty();
   }
@@ -135,7 +146,9 @@ final class SunsetRules {
       return Optional.of(
           change.at(
               change.sunset().orElseThrow(),
-              "the sunset date moved from " + before.get() + " to " + after.get()));
+              "the sunset date moved from " + before.get() + " to " + after.get()
+          )
+      );
     }
     return Optional.empty();
   }
@@ -149,7 +162,9 @@ final class SunsetRules {
               change.subject().revision(),
               "the sunset date was deleted but the "
                   + change.subject().what()
-                  + " stays deprecated"));
+                  + " stays deprecated"
+          )
+      );
     }
     return Optional.empty();
   }

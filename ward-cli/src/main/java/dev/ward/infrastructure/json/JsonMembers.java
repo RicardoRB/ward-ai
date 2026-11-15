@@ -26,13 +26,17 @@ public final class JsonMembers {
             object ->
                 read(masked, object).stream()
                     .map(Member::name)
-                    .collect(Collectors.toCollection(LinkedHashSet::new)))
+                    .collect(Collectors.toCollection(LinkedHashSet::new))
+        )
         .orElseGet(LinkedHashSet::new);
   }
 
   /** Returns the span of the string value of {@code name} in the top-level object {@code key}. */
   public static Optional<JsonSpan> stringValue(
-      final String masked, final String key, final String name) {
+      final String masked,
+      final String key,
+      final String name
+  ) {
     return JsonLayout.of(masked)
         .member(key)
         .flatMap(
@@ -41,7 +45,8 @@ public final class JsonMembers {
                     .filter(member -> member.name().equals(name))
                     .map(Member::value)
                     .filter(value -> masked.charAt(value.open()) == JsonText.QUOTE)
-                    .findFirst());
+                    .findFirst()
+        );
   }
 
   /**
@@ -49,7 +54,10 @@ public final class JsonMembers {
    * quotes included, or empty when the file has no such string.
    */
   public static Optional<String> stringText(
-      final String content, final String key, final String name) {
+      final String content,
+      final String key,
+      final String name
+  ) {
     return stringValue(JsonText.mask(content), key, name)
         .map(span -> content.substring(span.open(), span.close() + 1));
   }

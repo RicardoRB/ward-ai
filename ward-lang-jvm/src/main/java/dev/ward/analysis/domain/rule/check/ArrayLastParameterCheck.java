@@ -35,11 +35,15 @@ public final class ArrayLastParameterCheck implements UnitCheck {
                 lastParameter(visit.node())
                     .filter(parameter -> ARRAY.matcher(SyntaxWalk.text(parameter)).find())
                     .filter(parameter -> !isMain(visit))
-                    .stream())
+                    .stream()
+        )
         .map(
             parameter ->
                 CheckSupport.at(
-                    parameter.span(), CheckSupport.fill(message, SyntaxWalk.text(parameter), "")))
+                    parameter.span(),
+                    CheckSupport.fill(message, SyntaxWalk.text(parameter), "")
+                )
+        )
         .toList();
   }
 
@@ -61,7 +65,8 @@ public final class ArrayLastParameterCheck implements UnitCheck {
         up.get(up.size() - 1).children().stream()
             .anyMatch(
                 child ->
-                    "identifier".equals(child.kind()) && "main".equals(SyntaxWalk.text(child)));
+                    "identifier".equals(child.kind()) && "main".equals(SyntaxWalk.text(child))
+            );
     return named
         && SyntaxWalk.descendants(parameters.node()).stream()
             .noneMatch(node -> COMMA.equals(node.kind()));

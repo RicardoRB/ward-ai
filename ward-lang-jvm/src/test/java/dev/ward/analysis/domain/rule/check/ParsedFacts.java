@@ -43,7 +43,12 @@ final class ParsedFacts {
   List<String> run(final RuleCheck check) {
     final List<RuleMatch> found =
         check.matches(
-            tree, FlowView.NONE, ScopeView.NONE, new UnitTypeFacts(Map.copyOf(facts)), unit);
+            tree,
+            FlowView.NONE,
+            ScopeView.NONE,
+            new UnitTypeFacts(Map.copyOf(facts)),
+            unit
+        );
     return found.stream().map(m -> m.span().startLine() + ":" + m.span().startColumn()).toList();
   }
 
@@ -63,7 +68,16 @@ final class ParsedFacts {
 
   static SpanFacts members(final TypeMembers members) {
     return new SpanFacts(
-        null, null, null, List.of(), List.of(), List.of(), List.of(), null, members);
+        null,
+        null,
+        null,
+        List.of(),
+        List.of(),
+        List.of(),
+        List.of(),
+        null,
+        members
+    );
   }
 
   static SpanFacts type(final TypeRef type) {
@@ -74,7 +88,8 @@ final class ParsedFacts {
       final TypeRef type,
       final TypeShape.Kind kind,
       final boolean isFinal,
-      final TypeRef... above) {
+      final TypeRef... above
+  ) {
     return new SpanFacts(
         type,
         new TypeShape(kind, false, isFinal, false, List.of()),
@@ -84,14 +99,16 @@ final class ParsedFacts {
         List.of(),
         List.of(),
         null,
-        new TypeMembers(List.of(), List.of(), List.of(above), List.of()));
+        new TypeMembers(List.of(), List.of(), List.of(above), List.of())
+    );
   }
 
   static CallTarget method(
       final String owner,
       final String name,
       final List<TypeRef> parameters,
-      final String... annotations) {
+      final String... annotations
+  ) {
     return new CallTarget(
         TypeRef.of(owner),
         name,
@@ -108,12 +125,23 @@ final class ParsedFacts {
         null,
         Map.of(),
         Map.of(),
-        null);
+        null
+    );
   }
 
   static TypeMembers withMethods(
-      final List<CallTarget> declared, final List<CallTarget> inherited) {
+      final List<CallTarget> declared,
+      final List<CallTarget> inherited
+  ) {
     return new TypeMembers(
-        declared, List.of(), List.of(OBJECT), List.of(), inherited, List.of(), Map.of(), List.of());
+        declared,
+        List.of(),
+        List.of(OBJECT),
+        List.of(),
+        inherited,
+        List.of(),
+        Map.of(),
+        List.of()
+    );
   }
 }

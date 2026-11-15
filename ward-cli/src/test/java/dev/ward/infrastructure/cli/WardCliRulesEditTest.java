@@ -40,7 +40,8 @@ class WardCliRulesEditTest extends WardCliIntegrationSupport {
         project.resolve(FILE),
         "# team rules\nversion = 1\n\n[select]\n# turn on the DI rule\ninclude = [\""
             + FIELD
-            + "\"]\n");
+            + "\"]\n"
+    );
 
     assertThat(run(RULES, ENABLE, METHOD, DIRECTORY, project.toString())).isEqualTo(ExitCodes.OK);
 
@@ -54,7 +55,9 @@ class WardCliRulesEditTest extends WardCliIntegrationSupport {
   @Test
   void disableMovesTheRuleToExclude() throws IOException {
     Files.writeString(
-        project.resolve(FILE), "version = 1\n[select]\ninclude = [\"" + METHOD_NAME + "\"]\n");
+        project.resolve(FILE),
+        "version = 1\n[select]\ninclude = [\"" + METHOD_NAME + "\"]\n"
+    );
 
     assertThat(run(RULES, DISABLE, METHOD, DIRECTORY, project.toString())).isEqualTo(ExitCodes.OK);
 

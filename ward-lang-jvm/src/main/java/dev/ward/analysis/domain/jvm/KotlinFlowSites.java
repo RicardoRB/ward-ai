@@ -27,7 +27,6 @@ import java.util.Set;
  * when a rule needs a Kotlin function whose name starts with a capital.
  */
 final class KotlinFlowSites implements FlowSites {
-
   private static final String CONSTRUCTOR = "<init>";
   private static final String DOT = ".";
   private static final String CALL_SUFFIX = "callSuffix";
@@ -45,7 +44,8 @@ final class KotlinFlowSites implements FlowSites {
           "companionObject",
           "secondaryConstructor",
           "anonymousInitializer",
-          "typeAlias");
+          "typeAlias"
+      );
 
   private final JavaTypeNames types;
   private final Map<String, String> declared = new HashMap<>();
@@ -132,7 +132,9 @@ final class KotlinFlowSites implements FlowSites {
     final SyntaxNode type = KotlinFlowSyntax.child(node, "type");
     if (name != null && type != null) {
       declared.put(
-          KotlinFlowSyntax.text(name), KotlinCalls.erasedNullability(KotlinFlowSyntax.text(type)));
+          KotlinFlowSyntax.text(name),
+          KotlinCalls.erasedNullability(KotlinFlowSyntax.text(type))
+      );
     }
   }
 
@@ -175,7 +177,8 @@ final class KotlinFlowSites implements FlowSites {
       final String qualifier,
       final Span start,
       final SyntaxNode operation,
-      final List<FlowSite> found) {
+      final List<FlowSite> found
+  ) {
     final SyntaxNode suffix = KotlinFlowSyntax.child(operation, CALL_SUFFIX);
     final List<SyntaxNode> arguments = KotlinCalls.argumentsOf(suffix);
     arguments.forEach(argument -> walk(argument, found));
@@ -195,7 +198,9 @@ final class KotlinFlowSites implements FlowSites {
               types.resolve(written),
               List.of(),
               spans,
-              span));
+              span
+          )
+      );
     } else {
       found.add(
           new FlowSite(
@@ -205,7 +210,9 @@ final class KotlinFlowSites implements FlowSites {
               receiverType(qualifier),
               List.of(),
               spans,
-              span));
+              span
+          )
+      );
     }
   }
 
@@ -223,7 +230,9 @@ final class KotlinFlowSites implements FlowSites {
             receiverType(qualifier),
             List.of(),
             List.of(),
-            span));
+            span
+        )
+    );
   }
 
   private FlowSite read(final String name, final String qualifier, final Span span) {
@@ -234,7 +243,8 @@ final class KotlinFlowSites implements FlowSites {
         receiverType(qualifier),
         List.of(),
         List.of(),
-        span);
+        span
+    );
   }
 
   /** The type of a qualifier: a declared variable's type, or an imported or known type name. */

@@ -6,7 +6,6 @@ import java.nio.file.Path;
 /** Opens the result cache of the {@code ward-format} gate for one project. */
 @FunctionalInterface
 public interface FormatCaches {
-
   /**
    * Returns the cache that keeps the formatting results of the project at {@code projectRoot}.
    *

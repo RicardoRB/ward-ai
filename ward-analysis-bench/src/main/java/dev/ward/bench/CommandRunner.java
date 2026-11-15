@@ -5,7 +5,6 @@ import java.util.List;
 
 /** Runs external commands as argument vectors. Tests replace it with a fake. */
 interface CommandRunner {
-
   /**
    * Runs the command with its output discarded and returns its exit code, timing and peak memory.
    */

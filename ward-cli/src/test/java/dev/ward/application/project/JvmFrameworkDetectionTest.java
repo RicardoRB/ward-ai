@@ -16,46 +16,51 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 /** JVM frameworks are labels on Maven and Gradle projects, not separate project types. */
 class JvmFrameworkDetectionTest {
-
   @TempDir Path dir;
 
   private final ProjectDetector detector = new ProjectDetector(new FileSystemProjectInspection());
 
   @ParameterizedTest
-  @CsvSource({
-    "org.springframework.boot, SPRING_BOOT",
-    "io.quarkus, QUARKUS",
-    "io.quarkus.platform, QUARKUS",
-    "io.micronaut, MICRONAUT",
-    "io.helidon.webserver, HELIDON",
-    "io.dropwizard, DROPWIZARD",
-    "io.javalin, JAVALIN",
-    "io.ktor, KTOR"
-  })
+  @CsvSource(
+      {
+          "org.springframework.boot, SPRING_BOOT",
+          "io.quarkus, QUARKUS",
+          "io.quarkus.platform, QUARKUS",
+          "io.micronaut, MICRONAUT",
+          "io.helidon.webserver, HELIDON",
+          "io.dropwizard, DROPWIZARD",
+          "io.javalin, JAVALIN",
+          "io.ktor, KTOR"
+      }
+  )
   void detectsFrameworkFromPomGroupId(final String groupId, final Framework expected) {
     withPom(
         dir,
         "<project><dependencies><dependency><groupId>"
             + groupId
-            + "</groupId><artifactId>app</artifactId></dependency></dependencies></project>");
+            + "</groupId><artifactId>app</artifactId></dependency></dependencies></project>"
+    );
 
     assertThat(detector.detect(dir)).get().extracting(Project::framework).isEqualTo(expected);
   }
 
   @ParameterizedTest
-  @CsvSource({
-    "io.quarkus, QUARKUS",
-    "io.micronaut, MICRONAUT",
-    "io.helidon, HELIDON",
-    "io.dropwizard, DROPWIZARD",
-    "io.javalin, JAVALIN",
-    "io.ktor, KTOR"
-  })
+  @CsvSource(
+      {
+          "io.quarkus, QUARKUS",
+          "io.micronaut, MICRONAUT",
+          "io.helidon, HELIDON",
+          "io.dropwizard, DROPWIZARD",
+          "io.javalin, JAVALIN",
+          "io.ktor, KTOR"
+      }
+  )
   void detectsFrameworkFromGradleScript(final String groupId, final Framework expected)
       throws Exception {
     Files.writeString(
         dir.resolve("build.gradle.kts"),
-        "dependencies { implementation(\"" + groupId + ":app\") }\n");
+        "dependencies { implementation(\"" + groupId + ":app\") }\n"
+    );
 
     assertThat(detector.detect(dir)).get().extracting(Project::framework).isEqualTo(expected);
   }
@@ -65,7 +70,8 @@ class JvmFrameworkDetectionTest {
     withPom(
         dir,
         "<project><dependencies><dependency><groupId>io.quarkusfork</groupId>"
-            + "<artifactId>app</artifactId></dependency></dependencies></project>");
+            + "<artifactId>app</artifactId></dependency></dependencies></project>"
+    );
 
     assertThat(detector.detect(dir)).get().extracting(Project::framework).isEqualTo(Framework.NONE);
   }
@@ -82,9 +88,7 @@ class JvmFrameworkDetectionTest {
 
   @Test
   void detectsSpringBootFromDependencyWithoutParent() {
-    withPom(
-        dir,
-        """
+    withPom(dir, """
                 <project><dependencies><dependency>
                   <groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter</artifactId>
                 </dependency></dependencies></project>
@@ -100,7 +104,8 @@ class JvmFrameworkDetectionTest {
   void detectsSpringBootFromGradleGroovyPlugin() throws Exception {
     Files.writeString(
         dir.resolve("build.gradle"),
-        "plugins { id 'java'; id 'org.springframework.boot' version '3.3.0' }\n");
+        "plugins { id 'java'; id 'org.springframework.boot' version '3.3.0' }\n"
+    );
 
     assertThat(detector.detect(dir))
         .get()
@@ -112,7 +117,8 @@ class JvmFrameworkDetectionTest {
   void detectsSpringBootFromGradleKotlinDependency() throws Exception {
     Files.writeString(
         dir.resolve("build.gradle.kts"),
-        "dependencies { implementation(\"org.springframework.boot:spring-boot-starter\") }\n");
+        "dependencies { implementation(\"org.springframework.boot:spring-boot-starter\") }\n"
+    );
 
     assertThat(detector.detect(dir))
         .get()

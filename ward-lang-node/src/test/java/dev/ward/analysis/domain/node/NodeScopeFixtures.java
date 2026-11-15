@@ -8,7 +8,6 @@ import java.util.Set;
 
 /** Builds the scopes of JavaScript and TypeScript source for tests. */
 final class NodeScopeFixtures {
-
   private NodeScopeFixtures() {}
 
   /** Parses {@code source} as {@code language} and builds its scopes, with no built-in names. */

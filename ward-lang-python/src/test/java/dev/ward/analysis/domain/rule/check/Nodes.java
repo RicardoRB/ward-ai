@@ -8,7 +8,6 @@ import java.util.Map;
 
 /** Builders of hand-made syntax nodes for the tree-based check tests. */
 final class Nodes {
-
   private static final String TEXT = "text";
 
   private Nodes() {}

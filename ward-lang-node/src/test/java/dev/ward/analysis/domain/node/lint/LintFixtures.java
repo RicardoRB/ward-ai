@@ -19,7 +19,6 @@ import java.util.Map;
 
 /** Parses TypeScript text and builds the type facts of the typescript-eslint check tests. */
 final class LintFixtures {
-
   static final String PATH = "src/app.ts";
 
   private LintFixtures() {}
@@ -78,7 +77,8 @@ final class LintFixtures {
           List.of(),
           List.of(),
           null,
-          members.get(start));
+          members.get(start)
+      );
     }
 
     private java.util.Set<String> keys() {
@@ -92,7 +92,10 @@ final class LintFixtures {
 
   /** Runs a check and returns its findings as {@code line:column}, in order. */
   static List<String> positions(
-      final TypedCheck check, final String text, final UnitTypeFacts types) {
+      final TypedCheck check,
+      final String text,
+      final UnitTypeFacts types
+  ) {
     final SourceUnit unit = new SourceUnit(PATH, AnalysisLanguage.TYPESCRIPT, text);
     return starts(check.matches(tree(text), null, null, types, unit));
   }
@@ -135,6 +138,7 @@ final class LintFixtures {
         null,
         Map.of(),
         Map.of(),
-        null);
+        null
+    );
   }
 }

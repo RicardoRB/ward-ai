@@ -43,13 +43,21 @@ public final class DeclReader {
                 Collectors.toMap(
                     NodeImportBindings.Import::local,
                     binding -> new FileDecls.Import(binding.specifier(), binding.member()),
-                    (first, second) -> second));
+                    (first, second) -> second
+                )
+            );
     final boolean isModule =
         !imports.isEmpty()
             || !sink.exports().isEmpty()
             || sink.decls().stream().anyMatch(decl -> decl.has(Decl.EXPORTED));
     return new FileDecls(
-        isModule, imports, sink.decls(), sink.exports(), sink.modules(), references(text));
+        isModule,
+        imports,
+        sink.decls(),
+        sink.exports(),
+        sink.modules(),
+        references(text)
+    );
   }
 
   /** The key of the ambient declarations that augment the global scope. */

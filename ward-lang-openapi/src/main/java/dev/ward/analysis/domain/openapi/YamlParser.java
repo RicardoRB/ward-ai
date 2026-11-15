@@ -21,7 +21,6 @@ import java.util.List;
  * either.
  */
 public final class YamlParser {
-
   private static final int MAX_DEPTH = 256;
   private static final String START = "---";
   private static final String END = "...";
@@ -97,7 +96,8 @@ public final class YamlParser {
           lines.atDocumentMarker()
               ? "more than one document in a file is not supported"
               : "unexpected content after the end of the document",
-          cursor.pos());
+          cursor.pos()
+      );
     }
   }
 

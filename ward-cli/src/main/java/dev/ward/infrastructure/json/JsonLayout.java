@@ -14,7 +14,12 @@ import java.util.Optional;
  * @param indent the file's indentation unit, when a member line shows one
  */
 public record JsonLayout(
-    int rootOpen, int rootClose, Map<String, JsonSpan> objects, Optional<String> indent) {
+    int rootOpen,
+    int rootClose,
+    Map<String,
+    JsonSpan> objects,
+    Optional<String> indent
+) {
   private static final String DEFAULT_INDENT = "  ";
   private static final char OPEN_OBJECT = '{';
   private static final char CLOSE_OBJECT = '}';

@@ -11,7 +11,6 @@ import java.util.Objects;
  * no-single-line-block-comment} rule asks to write as an end-of-line comment.
  */
 public final class KotlinSingleLineBlockCommentCheck implements RuleCheck {
-
   private static final char NEWLINE = '\n';
   private static final String END_OF_FILE = "EOF";
 

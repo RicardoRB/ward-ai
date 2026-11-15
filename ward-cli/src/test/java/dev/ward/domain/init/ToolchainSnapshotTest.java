@@ -24,28 +24,48 @@ class ToolchainSnapshotTest {
   @Test
   void releaseDefaultsToTheRuntimeJdk() {
     assertThat(
-            new ToolchainSnapshot(
-                    Optional.of(JAVA_17), Optional.empty(), Optional.of("3.9.9"), Framework.NONE)
-                .release())
+        new ToolchainSnapshot(
+            Optional.of(JAVA_17),
+            Optional.empty(),
+            Optional.of("3.9.9"),
+            Framework.NONE
+        )
+            .release()
+    )
         .contains(JAVA_17);
     assertThat(
-            new ToolchainSnapshot(
-                    Optional.of(JAVA_17), Optional.of(JAVA_11), Optional.empty(), Framework.NONE)
-                .release())
+        new ToolchainSnapshot(
+            Optional.of(JAVA_17),
+            Optional.of(JAVA_11),
+            Optional.empty(),
+            Framework.NONE
+        )
+            .release()
+    )
         .contains(JAVA_11);
   }
 
   @Test
   void rejectsANonPositiveVersion() {
     assertThatThrownBy(
-            () ->
-                new ToolchainSnapshot(
-                    Optional.of(0), Optional.empty(), Optional.empty(), Framework.NONE))
+        () ->
+            new ToolchainSnapshot(
+                Optional.of(0),
+                Optional.empty(),
+                Optional.empty(),
+                Framework.NONE
+            )
+    )
         .isInstanceOf(IllegalArgumentException.class);
     assertThatThrownBy(
-            () ->
-                new ToolchainSnapshot(
-                    Optional.of(JAVA_17), Optional.of(-1), Optional.empty(), Framework.NONE))
+        () ->
+            new ToolchainSnapshot(
+                Optional.of(JAVA_17),
+                Optional.of(-1),
+                Optional.empty(),
+                Framework.NONE
+            )
+    )
         .isInstanceOf(IllegalArgumentException.class);
   }
 }

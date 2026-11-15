@@ -11,7 +11,6 @@ import dev.ward.analysis.domain.ir.VariableAccess;
  * @param declaration where the variable is declared
  */
 record VariableKey(String name, Span declaration) {
-
   /** Returns the variable an access touches. */
   static VariableKey of(final VariableAccess access) {
     return new VariableKey(access.name(), access.declaration());

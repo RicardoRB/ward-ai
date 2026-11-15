@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
  * {@code Type}; a metaclass declared under another name is judged as a regular class.
  */
 public final class FirstArgumentCheck implements RuleCheck {
-
   private static final Set<String> SCOPES =
       Set.of("funcdef", "classdef", "async_funcdef", "lambdef");
   private static final Set<String> EXEMPT_NAMES =

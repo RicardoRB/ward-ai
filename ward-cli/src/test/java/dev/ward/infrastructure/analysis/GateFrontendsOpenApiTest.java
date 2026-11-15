@@ -12,7 +12,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class GateFrontendsOpenApiTest {
-
   private final List<FrontendSupport> frontends = GateFrontends.create(new AntlrLanguageFrontend());
 
   private ParseResult parse(final AnalysisLanguage language, final String path, final String text) {

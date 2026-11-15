@@ -25,7 +25,10 @@ class KotlinMixedLayersTest {
   @Test
   void aKotlinFileImportingAJavaFileOfAForbiddenLayerIsReported() throws IOException {
     ArchitectureGateRun.copy(
-        Path.of("src/test/resources/fixtures/kotlin-resolution"), root, file -> true);
+        Path.of("src/test/resources/fixtures/kotlin-resolution"),
+        root,
+        file -> true
+    );
 
     final List<String> files = runIn(LEGACY_TO_DOMAIN).stream().map(Finding::file).toList();
 
@@ -35,10 +38,14 @@ class KotlinMixedLayersTest {
   @Test
   void aKotlinFileOfADomainLayerThatImportsAJavaFileOfLegacyIsReported() throws IOException {
     ArchitectureGateRun.copy(
-        Path.of("src/test/resources/fixtures/kotlin-resolution"), root, file -> true);
+        Path.of("src/test/resources/fixtures/kotlin-resolution"),
+        root,
+        file -> true
+    );
     write(
         "domain/src/main/kotlin/shop/domain/Back.kt",
-        "package shop.domain\n\nimport shop.legacy.Report\n\nclass Back(val r: Report)\n");
+        "package shop.domain\n\nimport shop.legacy.Report\n\nclass Back(val r: Report)\n"
+    );
 
     final List<String> files = runIn(DOMAIN_TO_LEGACY).stream().map(Finding::file).toList();
 
@@ -48,11 +55,15 @@ class KotlinMixedLayersTest {
   @Test
   void aJavaFileOfAFromLayerThatImportsAKotlinFileOfAForbiddenLayerIsReported() throws IOException {
     ArchitectureGateRun.copy(
-        Path.of("src/test/resources/fixtures/kotlin-resolution"), root, file -> true);
+        Path.of("src/test/resources/fixtures/kotlin-resolution"),
+        root,
+        file -> true
+    );
     write(
         "domain/src/main/java/shop/legacy/Uses.java",
         "package shop.legacy;\n\nimport shop.domain.Discount;\n\npublic final class Uses {\n"
-            + "  Discount d;\n}\n");
+            + "  Discount d;\n}\n"
+    );
 
     final List<String> files = runIn(LEGACY_TO_DOMAIN).stream().map(Finding::file).toList();
 

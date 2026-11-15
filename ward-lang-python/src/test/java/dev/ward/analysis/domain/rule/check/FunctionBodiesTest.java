@@ -8,13 +8,14 @@ import org.junit.jupiter.api.Test;
 
 /** The names and nodes that the function-body helper finds, leaving nested scopes out. */
 final class FunctionBodiesTest {
-
   @Test
   void assignedNamesIncludeAssignmentsAndLoopTargetsButNotNestedScopes() {
     final SyntaxNode function =
         firstFunction(
             ParsedPython.tree(
-                "def f():\n    x = 1\n    for i in y:\n        pass\n    def g():\n        z = 2\n"));
+                "def f():\n    x = 1\n    for i in y:\n        pass\n    def g():\n        z = 2\n"
+            )
+        );
 
     assertThat(FunctionBodies.assignedNames(function)).containsExactlyInAnyOrder("x", "i");
   }

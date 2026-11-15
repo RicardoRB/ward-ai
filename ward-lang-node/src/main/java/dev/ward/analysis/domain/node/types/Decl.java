@@ -21,7 +21,8 @@ public record Decl(
     List<Member> members,
     TsType type,
     List<Decl> body,
-    int flags) {
+    int flags
+) {
   /** The declaration is exported. */
   public static final int EXPORTED = 1;
 
@@ -71,7 +72,8 @@ public record Decl(
       List<TsType> implementsTypes,
       List<Sig> calls,
       List<Sig> constructs,
-      List<String> decorators) {
+      List<String> decorators
+  ) {
     /** The header of a declaration that has none. */
     public static final Header NONE =
         new Header(List.of(), List.of(), List.of(), List.of(), List.of(), List.of());

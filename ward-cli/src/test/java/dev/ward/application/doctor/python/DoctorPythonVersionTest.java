@@ -53,7 +53,9 @@ class DoctorPythonVersionTest {
   }
 
   private static DoctorService.Finding finding(
-      final List<DoctorService.Finding> findings, final String name) {
+      final List<DoctorService.Finding> findings,
+      final String name
+  ) {
     return findings.stream()
         .filter(finding -> name.equals(finding.name()))
         .findFirst()

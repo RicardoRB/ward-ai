@@ -21,7 +21,8 @@ import java.util.regex.Pattern;
 final class PinnedRequirements {
   private static final Pattern PIN =
       Pattern.compile(
-          "^([A-Za-z0-9][A-Za-z0-9._-]*)\\s*(?:\\[[^\\]]*\\])?\\s*(?:===|==)\\s*([^\\s,;*]+)$");
+          "^([A-Za-z0-9][A-Za-z0-9._-]*)\\s*(?:\\[[^\\]]*\\])?\\s*(?:===|==)\\s*([^\\s,;*]+)$"
+      );
   private static final Pattern HASH = Pattern.compile("\\s--hash[= ]\\S+");
   private static final Pattern INCLUDE =
       Pattern.compile("^(?:-r|--requirement|-c|--constraint)\\s*=?\\s*(\\S+)$");
@@ -104,7 +105,10 @@ final class PinnedRequirements {
 
   /** Records a pip-compile {@code # via} annotation; returns whether more items may follow. */
   private static boolean annotation(
-      final String text, final boolean inVia, final List<String> via) {
+      final String text,
+      final boolean inVia,
+      final List<String> via
+  ) {
     if (text.startsWith(VIA)) {
       final String rest = text.substring(VIA.length()).strip();
       if (!rest.isEmpty()) {
@@ -126,7 +130,10 @@ final class PinnedRequirements {
     last.ifPresent(
         pin ->
             pins.set(
-                pins.lastIndexOf(pin), new Pin(pin.name(), pin.version(), pin.file(), transitive)));
+                pins.lastIndexOf(pin),
+                new Pin(pin.name(), pin.version(), pin.file(), transitive)
+            )
+    );
   }
 
   /** Reads one logical line; returns the pin it adds, or none for an option or an include. */
@@ -135,7 +142,8 @@ final class PinnedRequirements {
       final String label,
       final int number,
       final String line,
-      final List<String> via) {
+      final List<String> via
+  ) {
     final String inline = comment(line, via);
     final String text = HASH.matcher(inline).replaceAll("").strip();
     if (text.isEmpty()) {
@@ -155,7 +163,8 @@ final class PinnedRequirements {
               + number
               + ": '"
               + requirement
-              + "' is not an exact version (use name==version)");
+              + "' is not an exact version (use name==version)"
+      );
     }
     final Pin result =
         new Pin(PyprojectDependencies.normalize(pin.group(1)), pin.group(2), label, false);
@@ -179,7 +188,8 @@ final class PinnedRequirements {
   private void option(final Path file, final String label, final int number, final String text) {
     if (text.startsWith("-e") || text.startsWith("--editable")) {
       throw new LockfileFormatException(
-          label + " line " + number + ": an editable requirement is not an exact version");
+          label + " line " + number + ": an editable requirement is not an exact version"
+      );
     }
     final Matcher include = INCLUDE.matcher(text);
     if (include.matches()) {
@@ -194,7 +204,8 @@ final class PinnedRequirements {
     final Path target = file.resolveSibling(name).normalize();
     if (!target.startsWith(root) || !Files.isRegularFile(target)) {
       throw new LockfileFormatException(
-          label + " line " + number + ": the included file " + name + " is not in the project");
+          label + " line " + number + ": the included file " + name + " is not in the project"
+      );
     }
     return target;
   }

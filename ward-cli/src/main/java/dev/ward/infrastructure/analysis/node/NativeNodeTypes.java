@@ -39,7 +39,16 @@ public final class NativeNodeTypes {
   private static final String CACHE_DIRECTORY = ".ward/cache/types/node";
   private static final Set<String> SKIPPED_DIRECTORIES =
       Set.of(
-          "node_modules", ".git", ".ward", "dist", "build", "out", "coverage", "target", ".next");
+          "node_modules",
+          ".git",
+          ".ward",
+          "dist",
+          "build",
+          "out",
+          "coverage",
+          "target",
+          ".next"
+      );
   private static final List<String> EXTENSIONS =
       List.of(".ts", ".tsx", ".mts", ".cts", ".js", ".jsx", ".mjs", ".cjs");
 
@@ -67,7 +76,10 @@ public final class NativeNodeTypes {
     return new TypeFacts() {
       @Override
       public UnitTypeFacts factsOf(
-          final SourceUnit unit, final List<Span> spans, final Set<FactKind> kinds) {
+          final SourceUnit unit,
+          final List<Span> spans,
+          final Set<FactKind> kinds
+      ) {
         lock.lock();
         try {
           if (facts == null) {
@@ -90,14 +102,19 @@ public final class NativeNodeTypes {
             new DiskDeclarationCache(projectRoot.resolve(CACHE_DIRECTORY)),
             frontend,
             files,
-            new NodeModuleResolver(layout)::resolve);
+            new NodeModuleResolver(layout)::resolve
+        );
     if (LOGGER.isLoggable(Level.FINE)) {
       LOGGER.fine("event=native-node-types-opened files=" + files.size());
     }
     return new CachedTypeFacts(
         new NativeNodeTypeFacts(
-            program, frontend, new NodeScopeAnalysis(ClasspathBuiltinNames.typescript())),
-        "");
+            program,
+            frontend,
+            new NodeScopeAnalysis(ClasspathBuiltinNames.typescript())
+        ),
+        ""
+    );
   }
 
   private Set<String> projectFiles() {
@@ -108,7 +125,9 @@ public final class NativeNodeTypes {
           new SimpleFileVisitor<>() {
             @Override
             public FileVisitResult preVisitDirectory(
-                final Path dir, final BasicFileAttributes attrs) {
+                final Path dir,
+                final BasicFileAttributes attrs
+            ) {
               final String name = Objects.toString(dir.getFileName(), "");
               final boolean skipped =
                   !dir.equals(projectRoot)
@@ -124,7 +143,8 @@ public final class NativeNodeTypes {
               }
               return FileVisitResult.CONTINUE;
             }
-          });
+          }
+      );
     } catch (IOException unreadable) {
       LOGGER.log(Level.WARNING, "event=native-node-types-walk-failed");
     }

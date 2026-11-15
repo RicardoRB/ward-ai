@@ -8,12 +8,10 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 class PackageManifestTargetsTest {
-
   @Test
   void readsLiteralTargetsWithDefaultAndCustomPaths() {
     final Optional<List<SwiftTarget>> targets =
-        PackageManifestTargets.read(
-            """
+        PackageManifestTargets.read("""
             // swift-tools-version: 6.0
             let package = Package(
                 name: "Shop",
@@ -38,9 +36,7 @@ class PackageManifestTargetsTest {
 
   @Test
   void aComputedTargetListIsUnreadable() {
-    assertThat(
-            PackageManifestTargets.read(
-                """
+    assertThat(PackageManifestTargets.read("""
                 let names = ["A", "B"]
                 let package = Package(name: "X", targets: names.map { .target(name: $0) })
                 """))
@@ -50,8 +46,10 @@ class PackageManifestTargetsTest {
   @Test
   void aTargetWithoutALiteralNameIsUnreadable() {
     assertThat(
-            PackageManifestTargets.read(
-                "let package = Package(name: \"X\", targets: [.target(name: target)])"))
+        PackageManifestTargets.read(
+            "let package = Package(name: \"X\", targets: [.target(name: target)])"
+        )
+    )
         .isEmpty();
   }
 }

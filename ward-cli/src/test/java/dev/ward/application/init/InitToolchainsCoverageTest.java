@@ -39,7 +39,7 @@ class InitToolchainsCoverageTest {
             .count();
 
     assertThat(InitToolchains.all())
-        .hasSize((int) configured)
+        .hasSize((int)configured)
         .allSatisfy(support -> assertThat(support.presets()).isNotEmpty());
   }
 }

@@ -24,7 +24,6 @@ import java.util.Set;
  * a qualified class name, and every fact that the decision reads must be known.
  */
 public final class JavaIsInstanceIncompatibleCheck implements RuleCheck {
-
   private static final String CLASS = "java.lang.Class";
   private static final String METHOD = "isInstance";
 
@@ -56,7 +55,8 @@ public final class JavaIsInstanceIncompatibleCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("expression"))) {
       incompatible(visit.node(), types)
@@ -64,7 +64,11 @@ public final class JavaIsInstanceIncompatibleCheck implements RuleCheck {
               pair ->
                   matches.add(
                       CheckSupport.at(
-                          visit.node().span(), CheckSupport.fill(message, pair[0], pair[1]))));
+                          visit.node().span(),
+                          CheckSupport.fill(message, pair[0], pair[1])
+                      )
+                  )
+          );
     }
     return List.copyOf(matches);
   }
@@ -101,7 +105,8 @@ public final class JavaIsInstanceIncompatibleCheck implements RuleCheck {
       final SyntaxNode argument,
       final String actual,
       final String expected,
-      final UnitTypeFacts types) {
+      final UnitTypeFacts types
+  ) {
     final boolean isFinalClass =
         types
             .shapeOf(argument.span())

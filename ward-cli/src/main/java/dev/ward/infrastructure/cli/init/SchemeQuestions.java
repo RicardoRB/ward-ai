@@ -12,7 +12,10 @@ final class SchemeQuestions {
   private final boolean useDefaults;
 
   SchemeQuestions(
-      final InitQuestions.Answers answers, final InitWizard wizard, final boolean useDefaults) {
+      final InitQuestions.Answers answers,
+      final InitWizard wizard,
+      final boolean useDefaults
+  ) {
     this.answers = answers;
     this.wizard = wizard;
     this.useDefaults = useDefaults;

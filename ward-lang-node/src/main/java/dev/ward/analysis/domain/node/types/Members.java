@@ -53,7 +53,11 @@ final class Members {
     }
     if (receiver instanceof TsType.Tuple tuple) {
       return symbols.inSym(
-          global(ARRAY), List.of(MemberValues.common(tuple.elements())), name, depth);
+          global(ARRAY),
+          List.of(MemberValues.common(tuple.elements())),
+          name,
+          depth
+      );
     }
     return symbols.inSym(global("Function"), List.of(), name, depth);
   }
@@ -103,7 +107,8 @@ final class Members {
         first.member(),
         single ? first.sigs() : List.of(),
         single ? types.get(0) : new TsType.Union(types),
-        first.owner());
+        first.owner()
+    );
   }
 
   private Found inter(final TsType.Inter inter, final String name, final int depth) {

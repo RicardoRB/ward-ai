@@ -21,7 +21,6 @@ import java.util.regex.Pattern;
  * also counts are not.
  */
 public final class InvalidLogMessageFormatCheck extends FactsCheck {
-
   private static final Set<String> LOGGERS =
       Set.of("org.slf4j.Logger", "org.apache.logging.log4j.Logger");
   private static final Set<String> LEVELS =
@@ -54,7 +53,8 @@ public final class InvalidLogMessageFormatCheck extends FactsCheck {
                 types
                     .callTarget(call.span())
                     .filter(InvalidLogMessageFormatCheck::isLog)
-                    .isPresent())
+                    .isPresent()
+        )
         .flatMap(call -> reportOf(call, types).stream())
         .toList();
   }
@@ -70,7 +70,7 @@ public final class InvalidLogMessageFormatCheck extends FactsCheck {
       return List.of();
     }
     final int placeholders =
-        (int) PLACEHOLDER.matcher(SyntaxWalk.text(arguments.get(at))).results().count();
+        (int)PLACEHOLDER.matcher(SyntaxWalk.text(arguments.get(at))).results().count();
     final List<SyntaxNode> values = arguments.subList(at + 1, arguments.size());
     if (hasArray(values, types) || fits(placeholders, values, types)) {
       return List.of();
@@ -99,7 +99,10 @@ public final class InvalidLogMessageFormatCheck extends FactsCheck {
   }
 
   private static boolean fits(
-      final int placeholders, final List<SyntaxNode> values, final UnitTypeFacts types) {
+      final int placeholders,
+      final List<SyntaxNode> values,
+      final UnitTypeFacts types
+  ) {
     return values.size() == placeholders
         || values.size() == placeholders + 1 && isThrowable(values.get(values.size() - 1), types);
   }

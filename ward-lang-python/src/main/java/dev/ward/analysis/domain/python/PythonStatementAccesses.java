@@ -12,7 +12,6 @@ import java.util.Set;
  * {@code del}, definitions, imports, {@code except ... as} and {@code with ... as} clauses.
  */
 final class PythonStatementAccesses {
-
   private static final String EXPR_STMT = "expr_stmt";
   private static final String ANNASSIGN = "annassign";
   private static final String AUGASSIGN = "augassign";
@@ -106,7 +105,10 @@ final class PythonStatementAccesses {
   }
 
   private void annotated(
-      final SyntaxNode target, final SyntaxNode annotation, final List<VariableAccess> out) {
+      final SyntaxNode target,
+      final SyntaxNode annotation,
+      final List<VariableAccess> out
+  ) {
     final List<SyntaxNode> parts = annotation.children();
     final int equals = PythonSyntax.indexOfToken(parts, EQUALS);
     if (equals < 0) {

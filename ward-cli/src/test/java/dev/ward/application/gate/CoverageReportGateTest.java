@@ -36,7 +36,8 @@ class CoverageReportGateTest {
         CoverageGateFixture.REPORT,
         CoverageGateFixture.NEW,
         true,
-        CoverageGateFixture.entry(FILE, HUNDRED, SEVENTY, 0, 0));
+        CoverageGateFixture.entry(FILE, HUNDRED, SEVENTY, 0, 0)
+    );
 
     final GateResult result = fixture.run(SEVENTY, null, null);
 
@@ -50,7 +51,8 @@ class CoverageReportGateTest {
         CoverageGateFixture.REPORT,
         CoverageGateFixture.NEW,
         true,
-        CoverageGateFixture.entry(FILE, HUNDRED, EIGHTY, 0, 0));
+        CoverageGateFixture.entry(FILE, HUNDRED, EIGHTY, 0, 0)
+    );
 
     final GateResult result = fixture.run(EIGHTY_FIVE, null, null);
 
@@ -64,7 +66,8 @@ class CoverageReportGateTest {
         CoverageGateFixture.REPORT,
         CoverageGateFixture.NEW,
         true,
-        CoverageGateFixture.entry(FILE, HUNDRED, NINETY, HUNDRED, SIXTY));
+        CoverageGateFixture.entry(FILE, HUNDRED, NINETY, HUNDRED, SIXTY)
+    );
 
     final GateResult result = fixture.run(EIGHTY_FIVE, SEVENTY_FIVE, null);
 
@@ -80,7 +83,8 @@ class CoverageReportGateTest {
         CoverageGateFixture.REPORT,
         CoverageGateFixture.NEW,
         true,
-        CoverageGateFixture.entry(FILE, HUNDRED, NINETY, HUNDRED, TEN));
+        CoverageGateFixture.entry(FILE, HUNDRED, NINETY, HUNDRED, TEN)
+    );
 
     assertThat(fixture.run(SEVENTY, null, null).status()).isEqualTo(GateStatus.PASSED);
   }
@@ -91,7 +95,8 @@ class CoverageReportGateTest {
         CoverageGateFixture.REPORT,
         CoverageGateFixture.NEW,
         true,
-        CoverageGateFixture.entry(FILE, HUNDRED, HUNDRED, 0, 0));
+        CoverageGateFixture.entry(FILE, HUNDRED, HUNDRED, 0, 0)
+    );
 
     final GateResult result = fixture.run(SEVENTY, null, 1);
 
@@ -105,7 +110,8 @@ class CoverageReportGateTest {
         CoverageGateFixture.REPORT,
         CoverageGateFixture.NEW,
         true,
-        CoverageGateFixture.entry(FILE, HUNDRED, HUNDRED, 0, 0));
+        CoverageGateFixture.entry(FILE, HUNDRED, HUNDRED, 0, 0)
+    );
 
     final GateResult result = fixture.run(SEVENTY, null, 0);
 
@@ -119,7 +125,8 @@ class CoverageReportGateTest {
         CoverageGateFixture.REPORT,
         CoverageGateFixture.NEW,
         true,
-        CoverageGateFixture.entry(FILE, HUNDRED, HUNDRED, 0, 0));
+        CoverageGateFixture.entry(FILE, HUNDRED, HUNDRED, 0, 0)
+    );
 
     final GateResult result = fixture.run(SEVENTY, null, null);
 
@@ -135,12 +142,14 @@ class CoverageReportGateTest {
         "api/" + CoverageGateFixture.REPORT,
         CoverageGateFixture.NEW,
         true,
-        CoverageGateFixture.entry(FILE, FORTY, THIRTY, 0, 0));
+        CoverageGateFixture.entry(FILE, FORTY, THIRTY, 0, 0)
+    );
     fixture.report(
         "domain/" + CoverageGateFixture.REPORT,
         CoverageGateFixture.NEW,
         true,
-        CoverageGateFixture.entry(FILE, TEN, TEN, 0, 0));
+        CoverageGateFixture.entry(FILE, TEN, TEN, 0, 0)
+    );
 
     final GateResult result = fixture.run(EIGHTY, null, null);
 
@@ -154,13 +163,21 @@ class CoverageReportGateTest {
         CoverageGateFixture.REPORT,
         CoverageGateFixture.NEW,
         true,
-        CoverageGateFixture.entry(FILE, 2, 0, 0, 0));
+        CoverageGateFixture.entry(FILE, 2, 0, 0, 0)
+    );
     fixture.report(
-        "second.xml", CoverageGateFixture.NEW, true, CoverageGateFixture.entry(FILE, 2, 1, 0, 0));
+        "second.xml",
+        CoverageGateFixture.NEW,
+        true,
+        CoverageGateFixture.entry(FILE, 2, 1, 0, 0)
+    );
 
     final GateResult result =
         fixture.runWith(
-            50, new CoverageOptions(List.of(CoverageGateFixture.REPORT, "second.xml"), null), null);
+            50,
+            new CoverageOptions(List.of(CoverageGateFixture.REPORT, "second.xml"), null),
+            null
+        );
 
     assertThat(result.status()).isEqualTo(GateStatus.PASSED);
     assertThat(result.summary()).contains("50%");

@@ -27,8 +27,8 @@ public record ApiType(
     List<ApiTypeParameter> typeParameters,
     List<ApiTypeRef> supertypes,
     List<ApiMember> members,
-    ApiLocation location) {
-
+    ApiLocation location
+) {
   /** What a type is. */
   public enum Kind {
     /** A class. */

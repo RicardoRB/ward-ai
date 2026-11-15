@@ -7,7 +7,6 @@ import java.util.Set;
 
 /** Reads the methods of an interface declaration: its single abstract method and its defaults. */
 final class InterfaceSam {
-
   private static final String METHOD = "interfaceMethodDeclaration";
   private static final String MODIFIER = "interfaceMethodModifier";
   private static final Set<String> CONCRETE = Set.of("default", "static", "private");
@@ -75,12 +74,13 @@ final class InterfaceSam {
         SyntaxWalk.descendants(common).stream()
             .filter(node -> "formalParameter".equals(node.kind()))
             .count();
-    return new Sam(NullOperands.methodName(common), (int) arity);
+    return new Sam(NullOperands.methodName(common), (int)arity);
   }
 
   /** Returns the name of a method declaration. */
   static String name(final SyntaxNode method) {
     return NullOperands.methodName(
-        NullSyntax.first(method, "interfaceCommonBodyDeclaration").orElse(method));
+        NullSyntax.first(method, "interfaceCommonBodyDeclaration").orElse(method)
+    );
   }
 }

@@ -14,11 +14,11 @@ import java.util.regex.Pattern;
  * does nothing here.
  */
 public final class MisplacedScopeCheck implements RuleCheck {
-
   private static final Pattern SCOPE =
       Pattern.compile(
           "^@(?:[\\w.]*\\.)?(?:Singleton|Reusable|SessionScoped|RequestScoped|ApplicationScoped)"
-              + "\\b");
+              + "\\b"
+      );
   private static final Pattern INJECT = Pattern.compile("^@(?:[\\w.]*\\.)?Inject\\b");
   private static final String PARAMETER = "formalParameter";
   private static final String MEMBER = "classBodyDeclaration";

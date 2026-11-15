@@ -15,7 +15,6 @@ import java.util.Objects;
  * of the source; it reports each at the start of its literal, as ESLint does.
  */
 public final class NodeUselessBackreferenceCheck implements RuleCheck {
-
   private static final String REGEX = "RegularExpressionLiteral";
   private static final char SLASH = '/';
   private static final char BACKSLASH = '\\';
@@ -106,7 +105,6 @@ public final class NodeUselessBackreferenceCheck implements RuleCheck {
 
   /** A single pass over a pattern: its groups, and the backreferences with their paths. */
   private static final class ReferenceScan {
-
     private static final int NONE = -1;
     private static final int ROOT_FRAMES = 1;
 
@@ -157,7 +155,9 @@ public final class NodeUselessBackreferenceCheck implements RuleCheck {
                 Integer.parseInt(pattern.substring(start + 1, end)),
                 pattern.substring(start, end),
                 start,
-                path()));
+                path()
+            )
+        );
         return end;
       }
       return start + 2;
@@ -175,10 +175,10 @@ public final class NodeUselessBackreferenceCheck implements RuleCheck {
       final boolean capturing =
           !(index + 1 < pattern.length() && pattern.charAt(index + 1) == QUESTION)
               || index + 2 < pattern.length()
-                  && pattern.charAt(index + 2) == NAME_OPEN
-                  && index + NAME_OFFSET < pattern.length()
-                  && pattern.charAt(index + NAME_OFFSET) != '='
-                  && pattern.charAt(index + NAME_OFFSET) != '!';
+              && pattern.charAt(index + 2) == NAME_OPEN
+              && index + NAME_OFFSET < pattern.length()
+              && pattern.charAt(index + NAME_OFFSET) != '='
+              && pattern.charAt(index + NAME_OFFSET) != '!';
       final int group = capturing ? count + 1 : NONE;
       if (capturing) {
         count++;

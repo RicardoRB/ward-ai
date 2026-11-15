@@ -39,10 +39,14 @@ class PartialCheckPlanLinkTest {
                         PartialPlans.RULES,
                         PartialPlans.INCLUDES,
                         "{path}",
-                        null))),
+                        null
+                    )
+                )
+            ),
             List.of(link.resolve(PartialPlans.ORDER)),
             existence,
-            path -> Optional.empty());
+            path -> Optional.empty()
+        );
 
     assertThat(plan.gates().get(PartialPlans.GATE))
         .isEqualTo(PartialPlans.narrowed("-Dlint.includes=" + PartialPlans.ORDER));

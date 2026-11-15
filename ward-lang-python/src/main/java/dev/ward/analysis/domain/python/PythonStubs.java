@@ -15,7 +15,6 @@ import java.util.function.Function;
  * from {@code sources}; a module with no text is unknown.
  */
 public final class PythonStubs {
-
   private static final String DOT = ".";
   private static final int MAX_BASES = 4;
 
@@ -33,7 +32,10 @@ public final class PythonStubs {
 
   /** Creates the stubs; {@code sources} gives the {@code .pyi} text of a dotted module name. */
   public PythonStubs(
-      final LanguageFrontend parser, final Function<String, Optional<String>> sources) {
+      final LanguageFrontend parser,
+      final Function<String,
+      Optional<String>> sources
+  ) {
     this.parser = parser;
     this.sources = sources;
   }
@@ -44,14 +46,20 @@ public final class PythonStubs {
         .flatMap(
             tree ->
                 PythonStubDefinitions.single(
-                    PythonStubDefinitions.named(tree, PythonTypeKinds.FUNCDEF, name)))
+                    PythonStubDefinitions.named(tree, PythonTypeKinds.FUNCDEF, name)
+                )
+        )
         .map(definition -> new StubFunction(definition, module));
   }
 
   /** Returns the method {@code member} of the class {@code owner}, or of one of its bases. */
   Optional<StubFunction> method(final String owner, final String member) {
     return method(
-        PythonQualifiedNames.moduleOf(owner), PythonQualifiedNames.simpleName(owner), member, 0);
+        PythonQualifiedNames.moduleOf(owner),
+        PythonQualifiedNames.simpleName(owner),
+        member,
+        0
+    );
   }
 
   /** Whether {@code qualified} names a class declared by a stub. */
@@ -67,11 +75,18 @@ public final class PythonStubs {
                     PythonStubDefinitions.named(
                         tree,
                         PythonTypeKinds.CLASSDEF,
-                        PythonQualifiedNames.simpleName(qualified))));
+                        PythonQualifiedNames.simpleName(qualified)
+                    )
+                )
+        );
   }
 
   private Optional<StubFunction> method(
-      final String module, final String className, final String member, final int depth) {
+      final String module,
+      final String className,
+      final String member,
+      final int depth
+  ) {
     if (depth > MAX_BASES) {
       return Optional.empty();
     }
@@ -80,7 +95,9 @@ public final class PythonStubs {
             .flatMap(
                 tree ->
                     PythonStubDefinitions.single(
-                        PythonStubDefinitions.named(tree, PythonTypeKinds.CLASSDEF, className)));
+                        PythonStubDefinitions.named(tree, PythonTypeKinds.CLASSDEF, className)
+                    )
+            );
     if (klass.isEmpty()) {
       return Optional.empty();
     }

@@ -60,10 +60,7 @@ class ArchitectureSelectorShapeTest {
 
   @Test
   void allowEmptyAndEveryConstraintKindAreRead() throws IOException {
-    ArchitectureFiles.write(
-        root,
-        "ward-architecture.toml",
-        """
+    ArchitectureFiles.write(root, "ward-architecture.toml", """
         version = 1
 
         [[rule]]

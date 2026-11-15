@@ -29,7 +29,6 @@ import java.util.SortedMap;
  * does.
  */
 public final class NodeUnusedExportCheck implements RuleCheck, ProjectCheck {
-
   private static final String NAMESPACE = "*";
   private static final Set<String> TYPE_KEYWORDS = Set.of("type", "interface");
 
@@ -59,7 +58,10 @@ public final class NodeUnusedExportCheck implements RuleCheck, ProjectCheck {
 
   @Override
   public List<ProjectMatch> project(
-      final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
+      final SortedMap<String,
+      SyntaxNode> trees,
+      final ProjectFiles files
+  ) {
     final Set<String> imported = new HashSet<>();
     trees.values().forEach(tree -> imported.addAll(NodeFileFacts.importedMembers(tree)));
     final boolean everything = imported.contains(NAMESPACE);
@@ -80,10 +82,13 @@ public final class NodeUnusedExportCheck implements RuleCheck, ProjectCheck {
               found.add(
                   new ProjectMatch(
                       path,
-                      new RuleMatch(export.span(), message.replace("{value}", export.name()))));
+                      new RuleMatch(export.span(), message.replace("{value}", export.name()))
+                  )
+              );
             }
           }
-        });
+        }
+    );
     return List.copyOf(found);
   }
 

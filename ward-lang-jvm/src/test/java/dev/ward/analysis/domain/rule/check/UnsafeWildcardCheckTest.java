@@ -6,15 +6,14 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class UnsafeWildcardCheckTest {
-
   private static final UnsafeWildcardCheck CHECK = new UnsafeWildcardCheck("message");
   private static final String HEAD = "class G<T extends Number> {}\nclass C<U> {\n";
 
   private static List<String> run(final String body) {
     return new ParsedFacts(HEAD + body + "}\n")
         .plain(CHECK).stream()
-            .map(match -> match.span().startLine() + ":" + match.span().startColumn())
-            .toList();
+        .map(match -> match.span().startLine() + ":" + match.span().startColumn())
+        .toList();
   }
 
   @Test
@@ -37,13 +36,16 @@ class UnsafeWildcardCheckTest {
     assertThat(run("  final G<? super U> f;\n  C() {\n    f = null;\n  }\n")).hasSize(1);
     assertThat(run("  Other<? super U> f = null;\n")).isEmpty();
     assertThat(
-            new ParsedFacts("class B<T> {}\nclass C<U> {\n  B<? super U> f = null;\n}\n")
-                .plain(CHECK))
+        new ParsedFacts("class B<T> {}\nclass C<U> {\n  B<? super U> f = null;\n}\n")
+            .plain(CHECK)
+    )
         .isEmpty();
     assertThat(
-            new ParsedFacts(
-                    "class G<T extends Number> {}\nclass C<U extends Number> {\n  G<? super U> f = null;\n}\n")
-                .plain(CHECK))
+        new ParsedFacts(
+            "class G<T extends Number> {}\nclass C<U extends Number> {\n  G<? super U> f = null;\n}\n"
+        )
+            .plain(CHECK)
+    )
         .isEmpty();
   }
 

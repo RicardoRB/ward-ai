@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 /** The small parts of secret matching: entropy, the work budget, positions and text files. */
 class SecretSupportTest {
-
   private static final double FOUR_SYMBOLS = 2.0;
 
   private static final int LENGTH = 6;
@@ -32,11 +31,12 @@ class SecretSupportTest {
     budget.reset(1);
 
     assertThatThrownBy(
-            () -> {
-              for (long read = 0; read <= WorkBudget.FLOOR; read++) {
-                budget.spend();
-              }
-            })
+        () -> {
+          for (long read = 0; read <= WorkBudget.FLOOR; read++) {
+            budget.spend();
+          }
+        }
+    )
         .isInstanceOf(WorkBudget.BudgetExceededException.class);
     budget.reset(1);
     budget.spend();
@@ -75,8 +75,12 @@ class SecretSupportTest {
     assertThat(SecretText.line(text, new int[] {0, text.length()}, matcher.start()))
         .isEqualTo("cde");
     assertThat(
-            SecretText.line(
-                text, new int[] {SECOND_LINE + 1, SECOND_LINE + SECOND_LINE}, matcher.start()))
+        SecretText.line(
+            text,
+            new int[] {SECOND_LINE + 1, SECOND_LINE + SECOND_LINE},
+            matcher.start()
+        )
+    )
         .isEqualTo("de");
   }
 

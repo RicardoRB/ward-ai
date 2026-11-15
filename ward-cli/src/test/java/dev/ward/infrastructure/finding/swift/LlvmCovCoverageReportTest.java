@@ -45,7 +45,9 @@ class LlvmCovCoverageReportTest {
   @Test
   void projectRelativePathIsResolvedFromTheRoot() {
     FindingFixtures.write(
-        root.resolve(EXPORT), SwiftFixtures.read("swift/llvm-cov-export.json", root));
+        root.resolve(EXPORT),
+        SwiftFixtures.read("swift/llvm-cov-export.json", root)
+    );
 
     assertThat(report.read(project(), EXPORT).executable()).isEqualTo(CART_LINES);
   }
@@ -69,7 +71,8 @@ class LlvmCovCoverageReportTest {
         """
             .formatted(
                 root.resolve("Tests/AppTests/AppTests.swift"),
-                root.resolve("Sources/AppUITests/Helpers.swift"));
+                root.resolve("Sources/AppUITests/Helpers.swift")
+            );
 
     assertThat(read(testsOnly).problem()).contains("no executable production lines");
   }

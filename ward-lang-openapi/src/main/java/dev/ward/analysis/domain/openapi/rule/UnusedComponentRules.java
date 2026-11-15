@@ -9,7 +9,6 @@ import java.util.Set;
 
 /** The rule that finds a reusable component nothing refers to. */
 final class UnusedComponentRules {
-
   private static final List<String> SECTIONS =
       List.of(
           "schemas",
@@ -19,7 +18,8 @@ final class UnusedComponentRules {
           "requestBodies",
           "headers",
           "links",
-          "callbacks");
+          "callbacks"
+      );
 
   private UnusedComponentRules() {}
 
@@ -39,8 +39,8 @@ final class UnusedComponentRules {
       for (final DocNode.Entry component : document.parts().component(section)) {
         if (!targets.contains(component.value().file() + "#" + component.value().pointer())) {
           findings.add(
-              Findings.atValue(
-                  component.value(), "Potentially unused component has been detected."));
+              Findings.atValue(component.value(), "Potentially unused component has been detected.")
+          );
         }
       }
     }

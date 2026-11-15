@@ -4,7 +4,6 @@ import java.util.Optional;
 
 /** Keeps declaration indexes between runs. A cache that cannot read or write answers nothing. */
 public interface DeclarationCache {
-
   /** A cache that keeps nothing. */
   DeclarationCache NONE =
       new DeclarationCache() {

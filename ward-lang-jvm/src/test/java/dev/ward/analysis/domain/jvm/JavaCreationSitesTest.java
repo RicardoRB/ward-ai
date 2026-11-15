@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks the object creations and constructor calls that the Java lowering records as sites. */
 class JavaCreationSitesTest {
-
   private static final String CONSTRUCTOR = "<init>";
   private static final int CREATION_SITES = 5;
 
@@ -64,7 +63,14 @@ class JavaCreationSitesTest {
     final List<FlowSite> sites = sitesOf(CREATIONS, "run(1)", FlowSiteKind.CALL, "");
     assertThat(sites.stream().map(FlowSite::name).toList())
         .containsExactly(
-            CONSTRUCTOR, "getPath", CONSTRUCTOR, CONSTRUCTOR, CONSTRUCTOR, "trim", CONSTRUCTOR);
+            CONSTRUCTOR,
+            "getPath",
+            CONSTRUCTOR,
+            CONSTRUCTOR,
+            CONSTRUCTOR,
+            "trim",
+            CONSTRUCTOR
+        );
   }
 
   /** A constructor's {@code super(...)} call is a site named by its keyword, with its argument. */
@@ -88,7 +94,11 @@ class JavaCreationSitesTest {
   }
 
   private static List<FlowSite> sitesOf(
-      final String source, final String body, final FlowSiteKind kind, final String name) {
+      final String source,
+      final String body,
+      final FlowSiteKind kind,
+      final String name
+  ) {
     final ControlFlowResult result = JavaFlowFixtures.lower(source);
     final ControlFlowGraph graph =
         result.graphs().stream()

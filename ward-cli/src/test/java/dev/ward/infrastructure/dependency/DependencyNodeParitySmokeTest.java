@@ -31,8 +31,11 @@ class DependencyNodeParitySmokeTest {
     final Set<String> listed = new TreeSet<>();
     collectNpm(
         ParitySupport.CODEC.fromJson(
-            ParitySupport.run(dir, "npm", "ls", "--all", "--json"), Object.class),
-        listed);
+            ParitySupport.run(dir, "npm", "ls", "--all", "--json"),
+            Object.class
+        ),
+        listed
+    );
 
     final DependencyInventory inventory =
         new NodeDependencySource(ParitySupport.CODEC)
@@ -51,7 +54,8 @@ class DependencyNodeParitySmokeTest {
     final Object projects =
         ParitySupport.CODEC.fromJson(
             ParitySupport.run(dir, "pnpm", "ls", "--recursive", "--depth", "Infinity", "--json"),
-            Object.class);
+            Object.class
+        );
     if (projects instanceof List<?> list) {
       list.forEach(project -> collectNpm(project, listed));
     }
@@ -90,7 +94,10 @@ class DependencyNodeParitySmokeTest {
   }
 
   private static void collectNpmEntry(
-      final Object name, final Object child, final Set<String> listed) {
+      final Object name,
+      final Object child,
+      final Set<String> listed
+  ) {
     if (child instanceof Map<?, ?> info) {
       final String version = info.get("version") instanceof String text ? text : "";
       if (String.valueOf(info.get("resolved")).startsWith("file:") || version.startsWith("link:")) {

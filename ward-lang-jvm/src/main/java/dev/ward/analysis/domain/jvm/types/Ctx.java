@@ -16,10 +16,11 @@ import java.util.Optional;
  */
 record Ctx(
     TypeScope scope,
-    Map<String, JType> bounds,
+    Map<String,
+    JType> bounds,
     List<String> annotations,
-    Optional<List<Optional<JType>>> returns) {
-
+    Optional<List<Optional<JType>>> returns
+) {
   Ctx {
     bounds = Map.copyOf(bounds);
     annotations = List.copyOf(annotations);
@@ -32,7 +33,8 @@ record Ctx(
           parameter.name(),
           parameter.bounds().isEmpty()
               ? JType.ClassType.of(Types.OBJECT)
-              : parameter.bounds().get(0));
+              : parameter.bounds().get(0)
+      );
     }
     return new Ctx(inner, merged, annotations, returns);
   }

@@ -22,18 +22,18 @@ class InitMultiProjectPlanTest {
   private static final String BILLING = "services/billing";
   private static final String PRE_COMMIT = ".git/hooks/pre-commit";
   private static final String[] BOTH = {
-    "--project",
-    API,
-    "--project",
-    BILLING,
-    "--integration",
-    "none",
-    "--gate",
-    "tests",
-    "--quality-hooks",
-    "--ci",
-    "github",
-    "--yes"
+      "--project",
+      API,
+      "--project",
+      BILLING,
+      "--integration",
+      "none",
+      "--gate",
+      "tests",
+      "--quality-hooks",
+      "--ci",
+      "github",
+      "--yes"
   };
 
   @TempDir Path root;
@@ -71,7 +71,8 @@ class InitMultiProjectPlanTest {
     assertThat(Files.readString(root.resolve(PRE_COMMIT)))
         .contains(
             "# ward-owned: quality-hooks v1 begin apps/api",
-            "# ward-owned: quality-hooks v1 begin services/billing");
+            "# ward-owned: quality-hooks v1 begin services/billing"
+        );
     assertThat(root.resolve(".github/workflows/ward-apps-api.yml")).exists();
     assertThat(root.resolve(".github/workflows/ward-services-billing.yml")).exists();
     assertThat(root.resolve(API).resolve("ward.toml")).exists();
@@ -93,13 +94,15 @@ class InitMultiProjectPlanTest {
             "--ci",
             "github",
             "--yes",
-            "--dry-run");
+            "--dry-run"
+        );
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(init.output())
         .contains(
             "create     ../../" + PRE_COMMIT,
-            "create     ../../.github/workflows/ward-apps-api.yml")
+            "create     ../../.github/workflows/ward-apps-api.yml"
+        )
         .contains("create     ward.toml");
   }
 
@@ -122,7 +125,8 @@ class InitMultiProjectPlanTest {
               "strict",
               "--architecture",
               "layered",
-              "--yes");
+              "--yes"
+          );
 
       assertThat(exit).as(init.output()).isEqualTo(ExitCodes.ERROR);
       assertThat(init.output())

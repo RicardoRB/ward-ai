@@ -26,7 +26,9 @@ public final class GeminiIntegration implements NativeHarnessAdapter {
           Set.of(
               IntegrationCapability.POST_EDIT,
               IntegrationCapability.TURN_END,
-              IntegrationCapability.FEEDBACK));
+              IntegrationCapability.FEEDBACK
+          )
+      );
 
   @Override
   public NativeAgentIntegration.Definition definition() {
@@ -97,7 +99,8 @@ public final class GeminiIntegration implements NativeHarnessAdapter {
     return Optional.of(
         "{\"hookSpecificOutput\":{\"hookEventName\":\"AfterTool\",\"additionalContext\":"
             + NativeHookText.quote(findings)
-            + "}}");
+            + "}}"
+    );
   }
 
   @Override
@@ -138,7 +141,8 @@ public final class GeminiIntegration implements NativeHarnessAdapter {
           null,
           null,
           false,
-          Boolean.TRUE.equals(stopHookActive));
+          Boolean.TRUE.equals(stopHookActive)
+      );
     }
   }
 

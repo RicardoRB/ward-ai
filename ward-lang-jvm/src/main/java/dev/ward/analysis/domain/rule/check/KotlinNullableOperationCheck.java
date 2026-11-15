@@ -47,7 +47,10 @@ public final class KotlinNullableOperationCheck implements RuleCheck {
    * @param message the message reported at the expression
    */
   public KotlinNullableOperationCheck(
-      final Operation operation, final Nullness wanted, final String message) {
+      final Operation operation,
+      final Nullness wanted,
+      final String message
+  ) {
     this.operation = Objects.requireNonNull(operation, "operation");
     this.wanted = Objects.requireNonNull(wanted, "wanted");
     this.message = Objects.requireNonNull(message, "message");
@@ -69,7 +72,8 @@ public final class KotlinNullableOperationCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(POSTFIX)).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(post -> isFinding(post, types))

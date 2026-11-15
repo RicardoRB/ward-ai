@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 /** The Python provider registers every order check, and each one builds from its table. */
 final class PythonOrderChecksTest {
-
   private static final List<String> NAMES =
       List.of(
           "comparison-operator",
@@ -29,7 +28,8 @@ final class PythonOrderChecksTest {
           "unused-annotation",
           "groupby-reuse",
           "string-annotation",
-          "strict-call");
+          "strict-call"
+      );
 
   @Test
   void everyOrderCheckIsRegisteredAndBuilds() {
@@ -56,14 +56,16 @@ final class PythonOrderChecksTest {
     final Map<String, CheckFactory> checks = new PythonCheckProvider().checks();
 
     assertThat(
-            checks
-                .get("comparison-operator")
-                .create(TomlValues.parse("message = \"m\"\nproblem = \"is-literal\"\n")))
+        checks
+            .get("comparison-operator")
+            .create(TomlValues.parse("message = \"m\"\nproblem = \"is-literal\"\n"))
+    )
         .isNotNull();
     assertThat(
-            checks
-                .get("loop-variable")
-                .create(TomlValues.parse("message = \"m\"\nproblem = \"shadows-import\"\n")))
+        checks
+            .get("loop-variable")
+            .create(TomlValues.parse("message = \"m\"\nproblem = \"shadows-import\"\n"))
+    )
         .isNotNull();
   }
 }

@@ -20,7 +20,6 @@ import java.util.regex.Pattern;
  * bind names.
  */
 public final class ExposedStateCheck implements UnitCheck {
-
   private static final String STATEMENT = "statement";
   private static final String RETURN = "'return'";
   private static final String EXPRESSION = "expression";
@@ -50,8 +49,8 @@ public final class ExposedStateCheck implements UnitCheck {
       boolean staticFields,
       boolean buffers,
       Pattern types,
-      boolean publicStaticMethod) {
-
+      boolean publicStaticMethod
+  ) {
     /** Checks the pattern. */
     public Criteria {
       Objects.requireNonNull(types, "types");
@@ -96,7 +95,11 @@ public final class ExposedStateCheck implements UnitCheck {
   }
 
   private void returns(
-      final SyntaxNode method, final Map<String, String> fields, final List<RuleMatch> matches) {
+      final SyntaxNode method,
+      final Map<String,
+      String> fields,
+      final List<RuleMatch> matches
+  ) {
     for (final SyntaxNode node : SyntaxWalk.descendants(method)) {
       final List<SyntaxNode> parts = node.children();
       if (STATEMENT.equals(node.kind())
@@ -135,7 +138,11 @@ public final class ExposedStateCheck implements UnitCheck {
   }
 
   private void stores(
-      final SyntaxNode member, final Map<String, String> fields, final List<RuleMatch> matches) {
+      final SyntaxNode member,
+      final Map<String,
+      String> fields,
+      final List<RuleMatch> matches
+  ) {
     final SyntaxNode callable = ClassMembers.declarationOf(member);
     final Map<String, String> parameters = parameters(callable);
     for (final SyntaxNode assignment : Assignments.in(callable)) {

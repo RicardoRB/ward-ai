@@ -19,7 +19,6 @@ import java.util.Set;
  * erased parameter type hides the element type that the call infers.
  */
 public final class ConfusingArgumentToVarargsMethodCheck extends FactsCheck {
-
   private static final String EXPRESSION = "expression";
   private static final String NULL = "null";
   private static final Set<String> ARRAY_SUPERTYPES =
@@ -73,7 +72,10 @@ public final class ConfusingArgumentToVarargsMethodCheck extends FactsCheck {
   }
 
   private static boolean confusing(
-      final SyntaxNode last, final TypeRef expected, final UnitTypeFacts types) {
+      final SyntaxNode last,
+      final TypeRef expected,
+      final UnitTypeFacts types
+  ) {
     return NULL.equals(SyntaxWalk.text(last))
         || (arrayIsAnElement(expected) && subtypeArray(last, expected, types));
   }
@@ -88,13 +90,17 @@ public final class ConfusingArgumentToVarargsMethodCheck extends FactsCheck {
   }
 
   private static boolean subtypeArray(
-      final SyntaxNode last, final TypeRef expected, final UnitTypeFacts types) {
+      final SyntaxNode last,
+      final TypeRef expected,
+      final UnitTypeFacts types
+  ) {
     return types
         .typeOf(last.span())
         .filter(given -> !given.primitive() && given.arrayDepth() >= expected.arrayDepth())
         .filter(
             given ->
-                given.arrayDepth() > expected.arrayDepth() || !given.name().equals(expected.name()))
+                given.arrayDepth() > expected.arrayDepth() || !given.name().equals(expected.name())
+        )
         .isPresent();
   }
 }

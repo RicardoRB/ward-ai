@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * {@code ABC} makes the class and its subclasses unknown, so the checks report nothing for them.
  */
 final class PythonClassModel {
-
   static final String OBJECT = "object";
   static final String ABC = "ABC";
   static final String ABC_QUALIFIED = "abc.ABC";
@@ -37,7 +36,6 @@ final class PythonClassModel {
 
   /** A method resolution order, most derived class first, when the status is known. */
   record Order(Status status, List<String> names) {
-
     /** Copies the names. */
     Order {
       names = List.copyOf(names);
@@ -61,7 +59,6 @@ final class PythonClassModel {
 
   /** A function defined directly in a class body, with the text of its decorators. */
   record Method(String name, SyntaxNode node, String decorators) {
-
     /** Whether the function is decorated as abstract. */
     boolean isAbstract() {
       return ABSTRACT.matcher(decorators).find();
@@ -81,9 +78,10 @@ final class PythonClassModel {
       SyntaxNode node,
       List<String> rawBases,
       boolean abcMetaclass,
-      Map<String, Method> methods,
-      Set<String> attributes) {
-
+      Map<String,
+      Method> methods,
+      Set<String> attributes
+  ) {
     /** Copies the lists, the sorted method map and the attribute set. */
     ClassInfo {
       rawBases = List.copyOf(rawBases);
@@ -131,7 +129,8 @@ final class PythonClassModel {
         .anyMatch(
             ancestor ->
                 ABC.equals(ancestor)
-                    || (classes.containsKey(ancestor) && classes.get(ancestor).abcMetaclass()));
+                    || (classes.containsKey(ancestor) && classes.get(ancestor).abcMetaclass())
+        );
   }
 
   /**

@@ -35,7 +35,8 @@ public final class FileSystemNodeSources implements NodeSources {
           "setup.cfg",
           "Cargo.toml",
           "go.mod",
-          "Package.swift");
+          "Package.swift"
+      );
   private static final Logger LOGGER = Logger.getLogger(FileSystemNodeSources.class.getName());
   private static final Pattern SOURCE = Pattern.compile(".*\\.(js|jsx|mjs|cjs|ts|tsx|mts|cts)$");
   private static final Pattern TOOL_CONFIG =
@@ -68,7 +69,9 @@ public final class FileSystemNodeSources implements NodeSources {
           new SimpleFileVisitor<>() {
             @Override
             public FileVisitResult preVisitDirectory(
-                final Path dir, final BasicFileAttributes attributes) {
+                final Path dir,
+                final BasicFileAttributes attributes
+            ) {
               return dir.equals(root) || !skipped(root, dir)
                   ? FileVisitResult.CONTINUE
                   : FileVisitResult.SKIP_SUBTREE;
@@ -76,7 +79,9 @@ public final class FileSystemNodeSources implements NodeSources {
 
             @Override
             public FileVisitResult visitFile(
-                final Path file, final BasicFileAttributes attributes) {
+                final Path file,
+                final BasicFileAttributes attributes
+            ) {
               if (attributes.isRegularFile()
                   && isSource(root, file)
                   && (!nestedOnly || !root.equals(file.getParent()))) {
@@ -90,7 +95,8 @@ public final class FileSystemNodeSources implements NodeSources {
             public FileVisitResult visitFileFailed(final Path file, final IOException failure) {
               return FileVisitResult.CONTINUE;
             }
-          });
+          }
+      );
     } catch (IOException e) {
       throw new IllegalStateException("Could not inspect JavaScript sources in " + root, e);
     }
@@ -104,7 +110,7 @@ public final class FileSystemNodeSources implements NodeSources {
         || name != null && "coverage".equals(name.toString())
         || OTHER_BUILD_FILES.stream().anyMatch(file -> Files.isRegularFile(dir.resolve(file)))
         || Files.isRegularFile(dir.resolve(NodeProjectInspection.PACKAGE_JSON))
-            && !NodeWorkspaces.isMember(root, dir);
+        && !NodeWorkspaces.isMember(root, dir);
   }
 
   private static boolean isSource(final Path root, final Path file) {

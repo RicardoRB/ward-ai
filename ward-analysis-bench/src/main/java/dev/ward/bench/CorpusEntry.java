@@ -4,7 +4,6 @@ import java.util.regex.Pattern;
 
 /** One pinned corpus repository, read from a row of {@code corpus.csv}. */
 record CorpusEntry(String language, String name, String url, String commit) {
-
   private static final Pattern FULL_SHA = Pattern.compile("[0-9a-f]{40}|[0-9a-f]{64}");
   private static final Pattern SAFE_NAME = Pattern.compile("[A-Za-z0-9._-]+");
 

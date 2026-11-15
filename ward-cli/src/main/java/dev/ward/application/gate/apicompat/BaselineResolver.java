@@ -36,14 +36,17 @@ final class BaselineResolver {
                     new ApiCompatException(
                         "api-compat needs a Git repository with a commit, and "
                             + root
-                            + " has none."));
+                            + " has none."
+                    )
+            );
     final Baseline baseline = base == null ? latestRelease(root, head) : configured(root, base);
     if (LOGGER.isLoggable(Level.INFO)) {
       LOGGER.info(
           "event=api-compat-baseline ref="
               + baseline.ref()
               + " commit="
-              + baseline.commit().substring(0, Math.min(baseline.commit().length(), ABBREVIATION)));
+              + baseline.commit().substring(0, Math.min(baseline.commit().length(), ABBREVIATION))
+      );
     }
     return baseline;
   }
@@ -56,7 +59,10 @@ final class BaselineResolver {
             .orElseThrow(
                 () ->
                     new ApiCompatException(
-                        "The base ref '" + base + "' of api-compat names no commit. " + HINT)));
+                        "The base ref '" + base + "' of api-compat names no commit. " + HINT
+                    )
+            )
+    );
   }
 
   private Baseline latestRelease(final Path root, final String head) {
@@ -65,11 +71,13 @@ final class BaselineResolver {
         ReleaseTags.highest(
             revisions.tagsReachableFrom(root, head).stream()
                 .filter(name -> !atHead.contains(name))
-                .toList());
+                .toList()
+        );
     if (tag.isEmpty()) {
       final String clone = revisions.isShallow(root) ? " The repository is a shallow clone." : "";
       throw new ApiCompatException(
-          "api-compat found no release tag (such as v1.2.3) before HEAD." + clone + " " + HINT);
+          "api-compat found no release tag (such as v1.2.3) before HEAD." + clone + " " + HINT
+      );
     }
     return new Baseline(
         tag.get(),
@@ -77,6 +85,8 @@ final class BaselineResolver {
             .resolve(root, "refs/tags/" + tag.get())
             .orElseThrow(
                 () ->
-                    new ApiCompatException("The release tag " + tag.get() + " names no commit.")));
+                    new ApiCompatException("The release tag " + tag.get() + " names no commit.")
+            )
+    );
   }
 }

@@ -9,14 +9,16 @@ class TgfNodeTest {
   void readsTheVersionThatDependencyManagementOverrode() {
     final TgfNode kept =
         TgfNode.parse(
-            "org.apache.commons:commons-lang3:jar:3.0:compile (version managed from 3.12.0)");
+            "org.apache.commons:commons-lang3:jar:3.0:compile (version managed from 3.12.0)"
+        );
     assertThat(kept.version()).isEqualTo("3.0");
     assertThat(kept.premanaged()).isEqualTo("3.12.0");
 
     final TgfNode omitted =
         TgfNode.parse(
             "(org.apache.commons:commons-lang3:jar:3.0:compile - version managed from 3.12.0;"
-                + " omitted for duplicate)");
+                + " omitted for duplicate)"
+        );
     assertThat(omitted.omitted()).isTrue();
     assertThat(omitted.premanaged()).isEqualTo("3.12.0");
   }

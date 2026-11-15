@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
  * to a literal, and does not define it otherwise.
  */
 public final class ClassBaseCheck implements RuleCheck {
-
   /** The mistakes the check tells apart, one per rule. */
   public enum Problem {
     /** The C3 linearization of the class's bases does not exist. */
@@ -91,7 +90,10 @@ public final class ClassBaseCheck implements RuleCheck {
 
   /** The module-level names that the module binds once, to a literal, and nothing else. */
   private static Set<String> literalNames(
-      final SyntaxNode root, final Map<String, SyntaxNode> definitions) {
+      final SyntaxNode root,
+      final Map<String,
+      SyntaxNode> definitions
+  ) {
     final Map<String, Integer> bindings = new HashMap<>();
     final Map<String, String> values = new HashMap<>();
     for (final SyntaxNode statement : FunctionBodies.ownScope(root, EXPRESSIONS)) {

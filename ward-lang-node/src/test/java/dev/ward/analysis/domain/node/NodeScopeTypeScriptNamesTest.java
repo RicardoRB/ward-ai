@@ -8,7 +8,6 @@ import dev.ward.analysis.domain.scope.UnitScopes;
 import org.junit.jupiter.api.Test;
 
 class NodeScopeTypeScriptNamesTest {
-
   @Test
   void aTypeScriptReadInAnInitializerIsAnUnresolvedReference() {
     final UnitScopes scopes = NodeScopeFixtures.typescript("const total = unknownName + 1;\n");

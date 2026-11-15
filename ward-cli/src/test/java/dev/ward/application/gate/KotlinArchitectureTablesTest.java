@@ -55,7 +55,8 @@ class KotlinArchitectureTablesTest {
     kotlinProject();
     write(
         "src/test/kotlin/shop/legacy/CouponTest.kt",
-        "package shop.legacy\n\nimport shop.domain.Discount\n\nclass CouponTest(val d: Discount)\n");
+        "package shop.legacy\n\nimport shop.domain.Discount\n\nclass CouponTest(val d: Discount)\n"
+    );
 
     assertThat(run(LEGACY_TO_DOMAIN)).extracting(Finding::file).containsExactly(LEGACY_COUPON);
   }
@@ -72,7 +73,8 @@ class KotlinArchitectureTablesTest {
     final LayerBoundary hexagonal = ArchitectureLayers.forStyle("hexagonal", Framework.NONE);
     write(
         "src/main/kotlin/shop/domain/Order.kt",
-        "package shop.domain\n\nimport shop.adapter.Db\n\nclass Order(val d: Db)\n");
+        "package shop.domain\n\nimport shop.adapter.Db\n\nclass Order(val d: Db)\n"
+    );
     write("src/main/kotlin/shop/adapter/Db.kt", "package shop.adapter\n\nclass Db\n");
 
     final List<Finding> findings =
@@ -82,7 +84,8 @@ class KotlinArchitectureTablesTest {
                 + quoted(hexagonal.from())
                 + "\nforbidden = "
                 + quoted(hexagonal.forbidden())
-                + "\n");
+                + "\n"
+        );
 
     assertThat(findings)
         .extracting(Finding::file)
@@ -94,7 +97,8 @@ class KotlinArchitectureTablesTest {
     kotlinProject();
     write(
         DOMAIN_DISCOUNT,
-        "package shop.domain\n\nimport shop.legacy.Coupon\n\nclass Discount(val c: Coupon?)\n");
+        "package shop.domain\n\nimport shop.legacy.Coupon\n\nclass Discount(val c: Coupon?)\n"
+    );
 
     final List<Finding> findings = run(CYCLES);
 
@@ -127,7 +131,8 @@ class KotlinArchitectureTablesTest {
     write(DOMAIN_DISCOUNT, "package shop.domain\n\nclass Discount(val percent: Int)\n");
     write(
         LEGACY_COUPON,
-        "package shop.legacy\n\nimport shop.domain.Discount\n\nclass Coupon(val d: Discount)\n");
+        "package shop.legacy\n\nimport shop.domain.Discount\n\nclass Coupon(val d: Discount)\n"
+    );
   }
 
   private void write(final String path, final String text) throws IOException {

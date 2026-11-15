@@ -30,7 +30,8 @@ class RemovedSemgrepGateContractTest {
         .allSatisfy(
             definition ->
                 assertThat(definition.id() + " " + definition.displayName())
-                    .doesNotContainPattern(SEMGREP));
+                    .doesNotContainPattern(SEMGREP)
+        );
   }
 
   @Test
@@ -51,7 +52,8 @@ class RemovedSemgrepGateContractTest {
     files.addAll(
         regularFiles(ROOT.resolve("website/src/content/docs"), ".*\\.(md|mdx)").stream()
             .filter(file -> !file.toString().replace('\\', '/').contains("/reference/rules"))
-            .toList());
+            .toList()
+    );
     assertThat(violations(files)).as("doc lines that name Semgrep").isEmpty();
   }
 

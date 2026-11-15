@@ -19,7 +19,6 @@ import java.util.stream.Stream;
  * {@code super.name(...)}. A class whose supertypes are unknown is not reported.
  */
 public final class CallSuperCheck extends FactsCheck {
-
   /** Where the call to the super method must be. */
   public enum Position {
     /** The first statement of the method. */
@@ -50,7 +49,8 @@ public final class CallSuperCheck extends FactsCheck {
       final Position position,
       final Set<String> methods,
       final Set<String> ancestors,
-      final String message) {
+      final String message
+  ) {
     super(NEED);
     this.position = Objects.requireNonNull(position, "position");
     this.methods = Set.copyOf(methods);

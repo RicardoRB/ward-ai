@@ -23,8 +23,8 @@ record PythonEntry(
     int stop,
     int line,
     int column,
-    boolean ownLine) {
-
+    boolean ownLine
+) {
   /** What a Python source entry is. */
   enum Kind {
     /** A token of the default channel. */
@@ -62,6 +62,6 @@ record PythonEntry(
    * @return the end line, from 1
    */
   int endLine() {
-    return line + (int) text.chars().filter(character -> character == '\n').count();
+    return line + (int)text.chars().filter(character -> character == '\n').count();
   }
 }

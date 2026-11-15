@@ -37,9 +37,14 @@ class DeclCodecTest {
             new AntlrLanguageFrontend()
                 .parse(
                     new dev.ward.analysis.domain.ir.SourceUnit(
-                        "x.d.ts", dev.ward.analysis.domain.ir.AnalysisLanguage.TYPESCRIPT, SOURCE))
+                        "x.d.ts",
+                        dev.ward.analysis.domain.ir.AnalysisLanguage.TYPESCRIPT,
+                        SOURCE
+                    )
+                )
                 .tree(),
-            SOURCE);
+            SOURCE
+        );
 
     final FileDecls back = DeclCodec.decode(DeclCodec.encode(decls)).orElseThrow();
 
@@ -62,7 +67,8 @@ class DeclCodecTest {
     decl.members()
         .forEach(
             member ->
-                out.append(' ').append(member.name()).append(':').append(member.type().print()));
+                out.append(' ').append(member.name()).append(':').append(member.type().print())
+        );
     decl.header().calls().forEach(sig -> out.append(' ').append(TypePrinter.printSig(sig, "=>")));
     decl.header()
         .constructs()
@@ -90,9 +96,14 @@ class DeclCodecTest {
             new AntlrLanguageFrontend()
                 .parse(
                     new dev.ward.analysis.domain.ir.SourceUnit(
-                        "g.d.ts", dev.ward.analysis.domain.ir.AnalysisLanguage.TYPESCRIPT, text))
+                        "g.d.ts",
+                        dev.ward.analysis.domain.ir.AnalysisLanguage.TYPESCRIPT,
+                        text
+                    )
+                )
                 .tree(),
-            text);
+            text
+        );
 
     assertThat(decls.references()).containsExactly("lib:es2015", "types:node");
     assertThat(decls.isModule()).isFalse();

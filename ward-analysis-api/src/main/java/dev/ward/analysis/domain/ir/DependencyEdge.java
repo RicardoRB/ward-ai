@@ -10,7 +10,6 @@ import java.util.Objects;
  * @param reference the reference that resolved to {@code to}
  */
 public record DependencyEdge(String from, String to, Reference reference) {
-
   /**
    * Validates the required fields.
    *

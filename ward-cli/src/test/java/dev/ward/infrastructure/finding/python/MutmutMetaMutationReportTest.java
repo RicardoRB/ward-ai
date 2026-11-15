@@ -94,7 +94,9 @@ class MutmutMetaMutationReportTest {
   @Test
   void resultsWithOnlySkippedMutantsHaveNoValidMutants() {
     FindingFixtures.write(
-        resultFile("src/demo/calc.py.meta"), "{\"exit_code_by_key\": {\"a.x\": 34}}");
+        resultFile("src/demo/calc.py.meta"),
+        "{\"exit_code_by_key\": {\"a.x\": 34}}"
+    );
 
     final MutationCounts counts = read();
 

@@ -10,7 +10,6 @@ import java.util.Optional;
  * nodes themselves and is empty, never null, when the document lacks the part.
  */
 public final class OpenApiParts {
-
   private static final List<String> METHODS =
       List.of("get", "put", "post", "delete", "options", "head", "patch", "trace");
 
@@ -71,7 +70,8 @@ public final class OpenApiParts {
       for (final DocNode.Entry method : item.entries()) {
         if (METHODS.contains(method.key())) {
           operations.add(
-              new Operation(path.key(), method.key(), item, document.resolve(method.value())));
+              new Operation(path.key(), method.key(), item, document.resolve(method.value()))
+          );
         }
       }
     }

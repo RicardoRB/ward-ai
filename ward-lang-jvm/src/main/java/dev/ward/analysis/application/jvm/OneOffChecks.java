@@ -20,7 +20,6 @@ import java.util.Map;
 
 /** The checks of single rules that need a check of their own. */
 final class OneOffChecks {
-
   private static final String MESSAGE = "message";
 
   private OneOffChecks() {}
@@ -30,19 +29,24 @@ final class OneOffChecks {
     return Map.ofEntries(
         entry(
             "annotation-reflection",
-            toml -> new AnnotationReflectionCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new AnnotationReflectionCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "unused-class-literal",
-            toml -> new UnusedClassLiteralCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new UnusedClassLiteralCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "applet-constructor",
-            toml -> new AppletConstructorCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new AppletConstructorCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "control-body-braces",
-            toml -> new ControlBodyBracesCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new ControlBodyBracesCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "loop-ends-with-branch",
-            toml -> new LoopEndsWithBranchCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new LoopEndsWithBranchCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry("terminate-vm", toml -> new TerminateVmCheck(TomlValues.required(toml, MESSAGE))),
         entry("byte-add", toml -> new ByteAddCheck(TomlValues.required(toml, MESSAGE))),
         entry("time-from-int", toml -> new TimeFromIntCheck(TomlValues.required(toml, MESSAGE))),
@@ -55,13 +59,19 @@ final class OneOffChecks {
                     TomlValues.required(toml, "method"),
                     TomlValues.required(toml, "cast"),
                     TomlValues.strings(toml, "operand-types"),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "array-range",
             toml ->
                 new ArrayRangeCheck(
                     ArrayRangeCheck.Mode.valueOf(
-                        TomlValues.required(toml, "mode").toUpperCase(Locale.ROOT)),
-                    TomlValues.required(toml, MESSAGE))));
+                        TomlValues.required(toml, "mode").toUpperCase(Locale.ROOT)
+                    ),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        )
+    );
   }
 }

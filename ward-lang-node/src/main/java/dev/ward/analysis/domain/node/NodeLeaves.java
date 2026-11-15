@@ -60,6 +60,7 @@ final class NodeLeaves {
         last.endLine(),
         last.endColumn(),
         first.startOffset(),
-        last.endOffset());
+        last.endOffset()
+    );
   }
 }

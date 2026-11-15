@@ -36,7 +36,10 @@ public final class AnalysisGate implements QualityGate {
 
   /** Creates the gate that runs {@code rules} through the adapters in {@code ports}. */
   public AnalysisGate(
-      final String name, final List<RuleDefinition> rules, final AnalysisPorts ports) {
+      final String name,
+      final List<RuleDefinition> rules,
+      final AnalysisPorts ports
+  ) {
     this(name, rules, ports, null);
   }
 
@@ -49,7 +52,8 @@ public final class AnalysisGate implements QualityGate {
       final String name,
       final List<RuleDefinition> rules,
       final AnalysisPorts ports,
-      final String javaClasspath) {
+      final String javaClasspath
+  ) {
     this(name, rules, ports, javaClasspath, List.of());
   }
 
@@ -62,7 +66,8 @@ public final class AnalysisGate implements QualityGate {
       final List<RuleDefinition> rules,
       final AnalysisPorts ports,
       final String javaClasspath,
-      final List<String> focus) {
+      final List<String> focus
+  ) {
     this(name, (root, javaRelease) -> RuleSet.of(rules), ports, javaClasspath, focus);
   }
 
@@ -75,7 +80,8 @@ public final class AnalysisGate implements QualityGate {
       final RuleSetup setup,
       final AnalysisPorts ports,
       final String javaClasspath,
-      final List<String> focus) {
+      final List<String> focus
+  ) {
     this.name = name;
     this.setup = setup;
     this.ports = ports;
@@ -115,7 +121,9 @@ public final class AnalysisGate implements QualityGate {
                 .nativeTypeFacts()
                 .apply(
                     project.root(),
-                    Optional.ofNullable(javaClasspath).map(project.root()::resolve)));
+                    Optional.ofNullable(javaClasspath).map(project.root()::resolve)
+                )
+        );
     final UnitResultCache results =
         new UnitResultCache(
             new RuleEngine(ports.matcher()),
@@ -124,7 +132,8 @@ public final class AnalysisGate implements QualityGate {
             ports
                 .dependencies()
                 .forProject(project.root(), units, Optional.ofNullable(javaClasspath)),
-            progress);
+            progress
+        );
     final List<FrontendSupport> frontends = types.withTypes(ports.frontends());
     final Set<String> manifests =
         frontends.stream()
@@ -132,7 +141,12 @@ public final class AnalysisGate implements QualityGate {
             .collect(Collectors.toUnmodifiableSet());
     final UnitResultCache.CachedRun run =
         results.analyze(
-            cache, units, frontends, rules, ports.sources().manifests(project.root(), manifests));
+            cache,
+            units,
+            frontends,
+            rules,
+            ports.sources().manifests(project.root(), manifests)
+        );
     return AnalysisGateResults.result(name, focused(ExcludedFindings.drop(run, set), rules), rules);
   }
 
@@ -141,7 +155,9 @@ public final class AnalysisGate implements QualityGate {
    * unanalyzed code is still never a pass, even when it lies outside the changed files.
    */
   private RuleRunResult focused(
-      final UnitResultCache.CachedRun cached, final List<RuleDefinition> rules) {
+      final UnitResultCache.CachedRun cached,
+      final List<RuleDefinition> rules
+  ) {
     final RuleRunResult run = cached.result();
     if (focus.isEmpty()) {
       return run;
@@ -156,7 +172,8 @@ public final class AnalysisGate implements QualityGate {
                   + " findings="
                   + run.findings().size()
                   + " reported="
-                  + kept.size());
+                  + kept.size()
+      );
     }
     return new RuleRunResult(kept, run.executionErrors(), run.notRun());
   }

@@ -6,7 +6,6 @@ import java.util.List;
 
 /** Builds the trees and runs the checks the PMD error-prone class check tests share. */
 class ErrorProneTrees extends ClassMemberTrees {
-
   static final String MESSAGE = "m";
   static final String START = "start";
   static final int THREE = 3;
@@ -21,7 +20,8 @@ class ErrorProneTrees extends ClassMemberTrees {
         LINE,
         COLUMN,
         ident(CLASS_NAME),
-        node(BLOCK, LINE, COLUMN, statements));
+        node(BLOCK, LINE, COLUMN, statements)
+    );
   }
 
   SyntaxNode annotatedMember(final String annotation, final SyntaxNode method) {
@@ -30,6 +30,7 @@ class ErrorProneTrees extends ClassMemberTrees {
         LINE,
         COLUMN,
         node("modifier", LINE, COLUMN, leaf("ANNOTATION", annotation, LINE, COLUMN)),
-        node(MEMBER_DECLARATION, LINE, COLUMN, method));
+        node(MEMBER_DECLARATION, LINE, COLUMN, method)
+    );
   }
 }

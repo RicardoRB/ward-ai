@@ -5,7 +5,6 @@ import java.util.List;
 
 /** Reads literal ({@code |}) and folded ({@code >}) block scalars. */
 final class YamlBlockScalar {
-
   private static final int DECIMAL = 10;
 
   private final YamlCursor cursor;

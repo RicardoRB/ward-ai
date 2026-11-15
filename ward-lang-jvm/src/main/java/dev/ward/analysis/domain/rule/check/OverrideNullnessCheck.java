@@ -22,7 +22,6 @@ import java.util.Set;
  * unknown, or that has no explicit annotation, is never reported.
  */
 public final class OverrideNullnessCheck implements RuleCheck {
-
   /** What the check looks for. */
   public enum Mode {
     /** A parameter annotated non-null that the overridden method declares nullable. */
@@ -54,7 +53,8 @@ public final class OverrideNullnessCheck implements RuleCheck {
       final Mode mode,
       final Set<String> nullable,
       final Set<String> nonNull,
-      final String message) {
+      final String message
+  ) {
     this.mode = Objects.requireNonNull(mode, "mode");
     this.nullable = Set.copyOf(nullable);
     this.nonNull = Set.copyOf(nonNull);
@@ -77,7 +77,8 @@ public final class OverrideNullnessCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(METHOD))) {
       final SyntaxNode method = visit.node();
@@ -105,9 +106,7 @@ public final class OverrideNullnessCheck implements RuleCheck {
             .filter(node -> PARAMETER.equals(node.kind()))
             .toList();
     for (final CallTarget target : overridden) {
-      for (int index = 0;
-          index < parameters.size() && index < target.parameterAnnotations().size();
-          index++) {
+      for (int index = 0; index < parameters.size() && index < target.parameterAnnotations().size(); index++) {
         if (isNonNull(parameters.get(index))
             && !Collections.disjoint(target.parameterAnnotations().get(index), nullable)) {
           return true;

@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 /** Formats the tool names and the counterpart cells of the generated rule reference. */
 final class RuleReferenceTools {
-
   private static final Map<String, String> TOOL_NAMES =
       Map.ofEntries(
           Map.entry("checkstyle", "Checkstyle"),
@@ -32,7 +31,8 @@ final class RuleReferenceTools {
           Map.entry("jscpd", "jscpd"),
           Map.entry("gitleaks", "Gitleaks"),
           Map.entry("spectral", "Spectral"),
-          Map.entry("oasdiff", "oasdiff"));
+          Map.entry("oasdiff", "oasdiff")
+      );
 
   private RuleReferenceTools() {}
 

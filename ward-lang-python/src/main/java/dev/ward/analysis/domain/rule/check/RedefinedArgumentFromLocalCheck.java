@@ -9,7 +9,6 @@ import java.util.Set;
 
 /** Reports a loop or except target that rebinds an argument of its function, like Pylint R1704. */
 public final class RedefinedArgumentFromLocalCheck implements RuleCheck {
-
   private static final Set<String> FUNCTIONS = Set.of("funcdef");
   private static final Set<String> LOOPS = Set.of("for_stmt");
   private static final Set<String> HANDLERS = Set.of("except_clause");

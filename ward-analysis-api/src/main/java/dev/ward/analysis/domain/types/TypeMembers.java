@@ -28,9 +28,10 @@ public record TypeMembers(
     List<String> annotations,
     List<CallTarget> inheritedMethods,
     List<FieldRef> inheritedFields,
-    Map<String, List<String>> annotationValues,
-    List<TypeComponent> components) {
-
+    Map<String,
+    List<String>> annotationValues,
+    List<TypeComponent> components
+) {
   /**
    * Creates the members of a type whose inherited members are not known.
    *
@@ -40,7 +41,8 @@ public record TypeMembers(
       final List<CallTarget> methods,
       final List<FieldRef> fields,
       final List<TypeRef> ancestors,
-      final List<String> annotations) {
+      final List<String> annotations
+  ) {
     this(methods, fields, ancestors, annotations, List.of(), List.of(), Map.of(), List.of());
   }
 

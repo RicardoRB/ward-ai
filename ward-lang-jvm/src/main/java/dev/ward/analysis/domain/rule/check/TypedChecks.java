@@ -11,7 +11,6 @@ import java.util.Set;
 
 /** Reads the type facts that the type-aware checks ask for, by node kind and fact kind. */
 final class TypedChecks {
-
   /** The needs of a check that reads the calls of expressions. */
   static final FactNeed CALLS = new FactNeed(Set.of("expression"), Set.of(FactKind.CALL));
 

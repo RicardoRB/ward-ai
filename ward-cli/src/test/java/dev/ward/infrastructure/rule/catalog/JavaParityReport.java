@@ -14,7 +14,6 @@ import java.util.TreeMap;
 
 /** Builds the parity report of the implemented Java rules against the real tools. */
 final class JavaParityReport {
-
   private static final List<String> TOOLS =
       List.of("checkstyle", "pmd", "spotbugs", "errorprone", "nullaway");
 
@@ -23,7 +22,8 @@ final class JavaParityReport {
       List.of(
           "# Java parity report: Ward rules against Checkstyle 14.3.0, PMD 7.29.0, SpotBugs 4.9.7,",
           "# Error Prone 2.50.0 with NullAway 0.14.2.",
-          "# rule, tool, tool id, outcome, note. Regenerate with -Dward.parity.write=true.");
+          "# rule, tool, tool id, outcome, note. Regenerate with -Dward.parity.write=true."
+      );
 
   private JavaParityReport() {}
 
@@ -49,7 +49,8 @@ final class JavaParityReport {
           if (row.counterparts().containsKey(tool)) {
             counterparts.put(tool, row.counterparts().get(tool));
           }
-        });
+        }
+    );
     return new ParityTarget(fixtures.name(), counterparts, fixtures.expected(""));
   }
 
@@ -110,6 +111,8 @@ final class JavaParityReport {
   /** Reads the committed report. */
   static String committed() throws IOException {
     return Files.readString(
-        Path.of("src/test/resources/parity/java-report.txt"), StandardCharsets.UTF_8);
+        Path.of("src/test/resources/parity/java-report.txt"),
+        StandardCharsets.UTF_8
+    );
   }
 }

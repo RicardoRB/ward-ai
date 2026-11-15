@@ -15,7 +15,6 @@ import java.util.List;
  * continuation of its kind.
  */
 final class JavaContinuations {
-
   private final List<Document> parts;
   private final Deque<Continuation> open = new ArrayDeque<>();
   private int levels;

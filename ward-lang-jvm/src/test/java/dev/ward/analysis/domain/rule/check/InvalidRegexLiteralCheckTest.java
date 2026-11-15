@@ -8,7 +8,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import org.junit.jupiter.api.Test;
 
 class InvalidRegexLiteralCheckTest {
-
   private static final int LITERAL = 3;
   private static final int CLOSE = 4;
 
@@ -21,7 +20,8 @@ class InvalidRegexLiteralCheckTest {
         leaf("IDENTIFIER", name, 1),
         leaf("(", "(", 2),
         leaf("STRING", argument, LITERAL),
-        leaf(")", ")", CLOSE));
+        leaf(")", ")", CLOSE)
+    );
   }
 
   @Test

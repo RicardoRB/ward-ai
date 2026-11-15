@@ -13,7 +13,6 @@ import java.util.Set;
  * value is unused. The last statement of a block is skipped, because a lambda returns it.
  */
 public final class UnusedUnaryOperatorCheck implements UnitCheck {
-
   private static final String PREFIX = "prefixUnaryExpression";
 
   private final String message;

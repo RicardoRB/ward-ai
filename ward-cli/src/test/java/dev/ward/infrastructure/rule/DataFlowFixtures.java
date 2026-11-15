@@ -27,10 +27,13 @@ import java.util.Set;
  * Lowers Java and TypeScript or JavaScript sources and reads their reaching writes and findings.
  */
 final class DataFlowFixtures {
-
   static final Set<RuleCapability> FLOW =
       Set.of(
-          RuleCapability.SYNTAX, RuleCapability.CFG, RuleCapability.DATAFLOW, RuleCapability.TAINT);
+          RuleCapability.SYNTAX,
+          RuleCapability.CFG,
+          RuleCapability.DATAFLOW,
+          RuleCapability.TAINT
+      );
 
   private DataFlowFixtures() {}
 
@@ -49,7 +52,11 @@ final class DataFlowFixtures {
 
   /** The only write that reaches the read is the binding at the start of the construct. */
   static void assertBindingWriteReaches(
-      final String source, final List<VariableAccess> writes, final String name, final String use) {
+      final String source,
+      final List<VariableAccess> writes,
+      final String name,
+      final String use
+  ) {
     assertThat(writes).hasSize(1);
     final VariableAccess write = writes.get(0);
     assertThat(write.kind()).isEqualTo(AccessKind.WRITE);
@@ -76,7 +83,8 @@ final class DataFlowFixtures {
       final AnalysisLanguage language,
       final String path,
       final String source,
-      final String body) {
+      final String body
+  ) {
     final SourceUnit unit = new SourceUnit(path, language, source);
     final ParseResult parsed = new AntlrLanguageFrontend().parse(unit);
     return lowering.lower(unit, parsed.tree()).graphs().stream()
@@ -86,7 +94,9 @@ final class DataFlowFixtures {
   }
 
   static List<AnalysisFinding> unusedFindings(
-      final AnalysisLanguage language, final String source) {
+      final AnalysisLanguage language,
+      final String source
+  ) {
     final String path = language == AnalysisLanguage.JAVA ? "A.java" : "a.ts";
     final ControlFlowLowering lowering =
         language == AnalysisLanguage.JAVA ? new JavaControlFlow() : new NodeControlFlow();
@@ -95,9 +105,9 @@ final class DataFlowFixtures {
     final List<RuleDefinition> rules =
         new ClasspathRuleSource()
             .load().rules().stream()
-                .filter(rule -> rule.id().endsWith("/unused-assignment"))
-                .filter(rule -> rule.languages().contains(language))
-                .toList();
+            .filter(rule -> rule.id().endsWith("/unused-assignment"))
+            .filter(rule -> rule.languages().contains(language))
+            .toList();
     final RuleRunResult result =
         new RuleEngine(BundledRuleMatchers.create())
             .run(List.of(new SourceUnit(path, language, source)), List.of(support), rules);

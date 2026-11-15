@@ -12,7 +12,6 @@ import java.util.Set;
 
 /** Reports a switch over an enum that has no {@code default} and misses a constant of the enum. */
 public final class NonExhaustiveSwitchCheck implements RuleCheck {
-
   private static final String STATEMENT = "statement";
 
   private final String message;
@@ -42,7 +41,8 @@ public final class NonExhaustiveSwitchCheck implements RuleCheck {
       final dev.ward.analysis.domain.rule.FlowView flow,
       final dev.ward.analysis.domain.rule.ScopeView scopes,
       final UnitTypeFacts types,
-      final dev.ward.analysis.domain.ir.SourceUnit unit) {
+      final dev.ward.analysis.domain.ir.SourceUnit unit
+  ) {
     final Map<String, Set<String>> declared = EnumSwitch.declaredConstants(root);
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(STATEMENT))) {

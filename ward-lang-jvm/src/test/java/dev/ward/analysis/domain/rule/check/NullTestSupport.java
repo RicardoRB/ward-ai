@@ -8,7 +8,6 @@ import java.util.Map;
 
 /** Runs the null data-flow check over a class body, for the tests of its rules. */
 final class NullTestSupport {
-
   private NullTestSupport() {}
 
   static List<String> run(final NullDataflowCheck.Mode mode, final String body) {
@@ -20,14 +19,19 @@ final class NullTestSupport {
       final NullDataflowCheck.Mode mode,
       final String body,
       final String call,
-      final SpanFacts facts) {
+      final SpanFacts facts
+  ) {
     return new ParsedFacts("class C {\n" + body + "}\n")
         .at("expression", call, facts)
         .run(new NullDataflowCheck(mode, "message"));
   }
 
   static SpanFacts target(
-      final String owner, final String name, final int params, final String... annotated) {
+      final String owner,
+      final String name,
+      final int params,
+      final String... annotated
+  ) {
     final List<TypeRef> types = java.util.Collections.nCopies(params, ParsedFacts.OBJECT);
     return new SpanFacts(
         null,
@@ -48,12 +52,14 @@ final class NullTestSupport {
             null,
             Map.of(),
             Map.of(),
-            null),
+            null
+        ),
         List.of(),
         List.of(),
         List.of(),
         List.of(),
         null,
-        null);
+        null
+    );
   }
 }

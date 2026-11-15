@@ -5,7 +5,6 @@ import java.util.Optional;
 
 /** Reads the parts of an operation, a path item and a response; each is empty when missing. */
 public final class OperationNodes {
-
   private OperationNodes() {}
 
   /** Returns the items of {@code parameters} of a path item or an operation. */

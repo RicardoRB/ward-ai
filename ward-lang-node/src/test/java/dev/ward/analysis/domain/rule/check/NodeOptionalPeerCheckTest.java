@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** The referenced-optional-peer check: only optional peers that a file imports. */
 final class NodeOptionalPeerCheckTest {
-
   private static final String MESSAGE = "optional {value} is imported";
 
   @Test
@@ -18,12 +17,16 @@ final class NodeOptionalPeerCheckTest {
         new NodeOptionalPeerCheck(MESSAGE)
             .project(
                 ProjectFixtures.trees(
-                    Map.of("index.ts", "import { ref } from 'vue';\nexport const a = ref;")),
+                    Map.of("index.ts", "import { ref } from 'vue';\nexport const a = ref;")
+                ),
                 ProjectFixtures.manifests(
                     Map.of(
                         "package.json",
                         "{\n  \"peerDependencies\": {\n    \"react\": \"^18\",\n    \"vue\": \"^3\"\n  },\n"
-                            + "  \"peerDependenciesMeta\": {\"vue\": {\"optional\": true}}\n}")));
+                            + "  \"peerDependenciesMeta\": {\"vue\": {\"optional\": true}}\n}"
+                    )
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).containsExactly("package.json:4:5");
     assertThat(ProjectFixtures.messages(found)).containsExactly("optional vue is imported");
@@ -35,9 +38,12 @@ final class NodeOptionalPeerCheckTest {
         new NodeOptionalPeerCheck(MESSAGE)
             .project(
                 ProjectFixtures.trees(
-                    Map.of("index.ts", "import { ref } from 'vue';\nexport const a = ref;")),
+                    Map.of("index.ts", "import { ref } from 'vue';\nexport const a = ref;")
+                ),
                 ProjectFixtures.manifests(
-                    Map.of("package.json", "{\"peerDependencies\":{\"vue\":\"^3\"}}")));
+                    Map.of("package.json", "{\"peerDependencies\":{\"vue\":\"^3\"}}")
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }
@@ -51,7 +57,10 @@ final class NodeOptionalPeerCheckTest {
                 ProjectFixtures.manifests(
                     Map.of(
                         "package.json",
-                        "{\"peerDependencies\":{\"vue\":\"^3\"},\"peerDependenciesMeta\":{\"vue\":{\"optional\":true}}}")));
+                        "{\"peerDependencies\":{\"vue\":\"^3\"},\"peerDependenciesMeta\":{\"vue\":{\"optional\":true}}}"
+                    )
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }

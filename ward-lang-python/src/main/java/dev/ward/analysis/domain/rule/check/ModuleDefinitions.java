@@ -14,7 +14,6 @@ import java.util.Set;
  * from the syntax alone.
  */
 final class ModuleDefinitions {
-
   private static final String OPEN = "(";
   private static final String IDENTIFIER = "[A-Za-z_]\\w*";
   private static final Set<String> WRAPPERS = Set.of("file_input", "stmt", "compound_stmt");

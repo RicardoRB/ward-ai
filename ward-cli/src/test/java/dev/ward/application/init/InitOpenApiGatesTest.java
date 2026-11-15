@@ -96,7 +96,8 @@ class InitOpenApiGatesTest {
         List.of(
             catalog.gate(project(), LINT),
             catalog.gate(project(), DIFF),
-            catalog.gate(project(), COMPAT));
+            catalog.gate(project(), COMPAT)
+        );
     final Path file = dir.resolve("ward.toml");
     Files.writeString(file, ConfigurationTemplate.render(gates, null, project()));
 

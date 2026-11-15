@@ -13,7 +13,6 @@ import java.util.Set;
  * more than two operands.
  */
 public final class SimplifiableConditionCheck implements RuleCheck {
-
   private static final Set<String> OPERATIONS = Set.of("and_test", "or_test");
   private static final Set<String> CONDITIONS = Set.of("if_stmt", "while_stmt");
   private static final String AND = "and";

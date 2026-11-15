@@ -18,21 +18,23 @@ class NodeDependencySourceTest {
   }
 
   @ParameterizedTest
-  @CsvSource({
-    "npm-v1,NPM",
-    "npm-v2,NPM",
-    "npm-v3,NPM",
-    "npm-workspace,NPM",
-    "pnpm-v6,PNPM",
-    "pnpm-v9,PNPM",
-    "pnpm-workspace,PNPM",
-    "yarn-classic,YARN",
-    "yarn-classic-workspace,YARN",
-    "yarn-berry,YARN",
-    "yarn-berry-workspace,YARN",
-    "bun,BUN",
-    "bun-workspace,BUN"
-  })
+  @CsvSource(
+      {
+          "npm-v1,NPM",
+          "npm-v2,NPM",
+          "npm-v3,NPM",
+          "npm-workspace,NPM",
+          "pnpm-v6,PNPM",
+          "pnpm-v9,PNPM",
+          "pnpm-workspace,PNPM",
+          "yarn-classic,YARN",
+          "yarn-classic-workspace,YARN",
+          "yarn-berry,YARN",
+          "yarn-berry-workspace,YARN",
+          "bun,BUN",
+          "bun-workspace,BUN"
+      }
+  )
   void everyLockfileFormatMatchesItsGoldenInventory(final String fixture, final BuildTool tool) {
     final Path dir = InventoryFixtures.fixture(fixture);
 

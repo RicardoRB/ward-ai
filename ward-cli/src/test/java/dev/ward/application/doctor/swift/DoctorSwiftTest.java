@@ -80,7 +80,9 @@ class DoctorSwiftTest {
             new Finding(
                 "cocoapods",
                 Status.WARNING,
-                "CocoaPods trunk is read-only; Ward does not install pods."));
+                "CocoaPods trunk is read-only; Ward does not install pods."
+            )
+        );
     assertThat(findings)
         .filteredOn(finding -> finding.name().startsWith("x") || SWIFT.equals(finding.name()))
         .extracting(Finding::status)
@@ -98,13 +100,15 @@ class DoctorSwiftTest {
       final BuildTool tool,
       final boolean podfile,
       final SwiftToolchainInspection swift,
-      final String... executables) {
+      final String... executables
+  ) {
     final Project project = new Project(ROOT, Language.SWIFT, tool, Framework.NONE, podfile);
     return new DoctorService(
-            new ProjectDetector(new FixedProjectInspection(project)),
-            new FakeEnvironmentInspection(executables),
-            new DoctorPorts(null, null, swift, null),
-            Set.of())
+        new ProjectDetector(new FixedProjectInspection(project)),
+        new FakeEnvironmentInspection(executables),
+        new DoctorPorts(null, null, swift, null),
+        Set.of()
+    )
         .diagnose(ROOT);
   }
 

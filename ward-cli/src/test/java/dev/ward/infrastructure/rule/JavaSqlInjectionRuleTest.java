@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** Scenarios of {@code ward:java/sql-injection}, run through the rule engine with full paths. */
 final class JavaSqlInjectionRuleTest {
-
   private static final String RULE = "ward:java/sql-injection";
 
   /**
@@ -29,7 +28,8 @@ final class JavaSqlInjectionRuleTest {
                     statement.executeQuery("select * from t where id = " + id);
                   }
                 }
-                """);
+                """
+        );
     assertThat(found).hasSize(1);
     assertThat(JavaTaintFixtures.messages(found.get(0).path()))
         .containsExactly("source: getParameter", "sink: executeQuery argument 0");
@@ -50,7 +50,8 @@ final class JavaSqlInjectionRuleTest {
                     statement.executeQuery(b);
                   }
                 }
-                """);
+                """
+        );
     assertThat(found).hasSize(1);
     assertThat(JavaTaintFixtures.messages(found.get(0).path()))
         .containsExactly("source: getParameter", "assigned to b", "sink: executeQuery argument 0");
@@ -71,7 +72,8 @@ final class JavaSqlInjectionRuleTest {
                     ps.setString(1, id);
                   }
                 }
-                """);
+                """
+        );
     assertThat(found).isEmpty();
   }
 
@@ -89,7 +91,8 @@ final class JavaSqlInjectionRuleTest {
                     other.executeQuery(id);
                   }
                 }
-                """);
+                """
+        );
     assertThat(found).isEmpty();
   }
 
@@ -107,7 +110,8 @@ final class JavaSqlInjectionRuleTest {
                     statement.executeQuery("select * from t where id = " + id);
                   }
                 }
-                """);
+                """
+        );
     assertThat(found).isEmpty();
   }
 
@@ -115,9 +119,7 @@ final class JavaSqlInjectionRuleTest {
   @Test
   void jakartaRequestReachesExecute() {
     final List<AnalysisFinding> found =
-        JavaSecurityRuleRun.findings(
-            RULE,
-            """
+        JavaSecurityRuleRun.findings(RULE, """
             import java.sql.Statement;
             import jakarta.servlet.http.HttpServletRequest;
             class Search {

@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
  * braces. With no attribute name, every attribute counts.
  */
 public final class BiomeJsxAttributeValueCheck implements RuleCheck {
-
   private static final String ATTRIBUTE = "jsxAttribute";
   private static final String NAME = "JsxIdentifier";
   private static final String VALUE = "jsxAttributeValue";
@@ -38,7 +37,8 @@ public final class BiomeJsxAttributeValueCheck implements RuleCheck {
       final String attribute,
       final boolean atExpression,
       final Pattern text,
-      final String message) {
+      final String message
+  ) {
     this.attribute = attribute;
     this.atExpression = atExpression;
     this.text = Objects.requireNonNull(text, "text");
@@ -54,7 +54,10 @@ public final class BiomeJsxAttributeValueCheck implements RuleCheck {
         .map(
             value ->
                 CheckSupport.at(
-                    reported(value).span(), CheckSupport.fill(message, SyntaxWalk.text(value), "")))
+                    reported(value).span(),
+                    CheckSupport.fill(message, SyntaxWalk.text(value), "")
+                )
+        )
         .toList();
   }
 
@@ -63,7 +66,8 @@ public final class BiomeJsxAttributeValueCheck implements RuleCheck {
         .anyMatch(
             child ->
                 NAME.equals(child.kind())
-                    && (attribute == null || attribute.equals(SyntaxWalk.text(child))));
+                    && (attribute == null || attribute.equals(SyntaxWalk.text(child)))
+        );
   }
 
   /** The node the finding is reported at: the value, or its expression inside the braces. */

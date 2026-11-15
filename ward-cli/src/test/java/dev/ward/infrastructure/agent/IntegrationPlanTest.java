@@ -69,6 +69,9 @@ class IntegrationPlanTest {
     return plan.stream()
         .collect(
             Collectors.toMap(
-                change -> root.relativize(change.file()).toString(), PlannedFileChange::action));
+                change -> root.relativize(change.file()).toString(),
+                PlannedFileChange::action
+            )
+        );
   }
 }

@@ -16,7 +16,6 @@ import java.util.stream.IntStream;
  * not overridable, and neither are methods with an ignored annotation.
  */
 public final class DesignForExtensionCheck implements RuleCheck {
-
   private static final String CLASS = "classDeclaration";
   private static final String METHOD = "methodDeclaration";
   private static final String PUBLIC = "public";
@@ -37,7 +36,8 @@ public final class DesignForExtensionCheck implements RuleCheck {
   public DesignForExtensionCheck(
       final Set<String> ignoredAnnotations,
       final Pattern requiredJavadocPhrase,
-      final String message) {
+      final String message
+  ) {
     this.ignoredAnnotations = Set.copyOf(ignoredAnnotations);
     this.requiredJavadocPhrase =
         Objects.requireNonNull(requiredJavadocPhrase, "requiredJavadocPhrase");
@@ -67,8 +67,10 @@ public final class DesignForExtensionCheck implements RuleCheck {
             .allMatch(
                 index ->
                     DesignMembers.modifiers(
-                            new SyntaxWalk.Visit(ancestors.get(index), ancestors.subList(0, index)))
-                        .contains(PUBLIC));
+                        new SyntaxWalk.Visit(ancestors.get(index), ancestors.subList(0, index))
+                    )
+                        .contains(PUBLIC)
+            );
   }
 
   private void undocumented(final SyntaxNode body, final List<RuleMatch> matches) {
@@ -77,7 +79,10 @@ public final class DesignForExtensionCheck implements RuleCheck {
       if (METHOD.equals(method.kind()) && overridable(member, method) && !documented(member)) {
         matches.add(
             CheckSupport.at(
-                method.span(), CheckSupport.fill(message, JUnitMembers.name(method), "")));
+                method.span(),
+                CheckSupport.fill(message, JUnitMembers.name(method), "")
+            )
+        );
       }
     }
   }

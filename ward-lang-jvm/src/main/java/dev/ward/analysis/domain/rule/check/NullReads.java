@@ -8,7 +8,6 @@ import java.util.stream.IntStream;
 
 /** Reads the tokens of a constructor to find where a field is first used. */
 final class NullReads {
-
   private NullReads() {}
 
   /**
@@ -34,7 +33,10 @@ final class NullReads {
    * this.}.
    */
   private static boolean mentions(
-      final List<SyntaxNode> leaves, final int index, final String name) {
+      final List<SyntaxNode> leaves,
+      final int index,
+      final String name
+  ) {
     if (!name.equals(text(leaves.get(index)))) {
       return false;
     }

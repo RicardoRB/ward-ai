@@ -8,7 +8,6 @@ import java.util.Set;
 
 /** Reports each JUnit test method with more assertion calls than {@code max}. */
 public final class UnitTestAssertCountCheck implements UnitCheck {
-
   private final int max;
   private final String message;
 
@@ -37,7 +36,10 @@ public final class UnitTestAssertCountCheck implements UnitCheck {
                     CheckSupport.fill(
                         message,
                         String.valueOf(JUnitMethods.assertionCount(method)),
-                        String.valueOf(max))))
+                        String.valueOf(max)
+                    )
+                )
+        )
         .toList();
   }
 }

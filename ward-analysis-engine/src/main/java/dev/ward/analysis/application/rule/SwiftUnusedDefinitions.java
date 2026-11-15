@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
  * CodingKeys} enum declares none of them, so it is never reported.
  */
 final class SwiftUnusedDefinitions implements UnusedDefinitionStrategy {
-
   /** The rule id for unused Swift functions that no protocol, superclass or attribute fixes. */
   static final String DECLARATION_ID = "ward:swift/unused-declaration";
 
@@ -40,9 +39,13 @@ final class SwiftUnusedDefinitions implements UnusedDefinitionStrategy {
 
   private static final Map<String, UnusedDefinitionKind> KINDS =
       Map.of(
-          DECLARATION_ID, UnusedDefinitionKind.FUNCTION,
-          ASSIGN_ONLY_ID, UnusedDefinitionKind.ASSIGNED_PROPERTY,
-          REDUNDANT_PROTOCOL_ID, UnusedDefinitionKind.PROTOCOL);
+          DECLARATION_ID,
+          UnusedDefinitionKind.FUNCTION,
+          ASSIGN_ONLY_ID,
+          UnusedDefinitionKind.ASSIGNED_PROPERTY,
+          REDUNDANT_PROTOCOL_ID,
+          UnusedDefinitionKind.PROTOCOL
+      );
   private static final String SWIFT_SUFFIX = ".swift";
 
   @Override

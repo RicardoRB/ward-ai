@@ -32,7 +32,7 @@ final class RuleTableReader {
       problem("", RULES, "expected a table of rule tables");
       return rules;
     }
-    for (final String key : table == null ? Set.<String>of() : table.keySet()) {
+    for (final String key : table == null ? Set.<String> of() : table.keySet()) {
       if (key.contains(":")) {
         quotedRule(key);
       } else {
@@ -51,12 +51,18 @@ final class RuleTableReader {
             + id
             + "\"]: name the table [rules.<language>.<rule-name>]; write [rules."
             + dotted
-            + "]");
+            + "]"
+    );
   }
 
   /** Reads {@code [rules.<group>.<name>]} as {@code ward:<group>/<name>}. */
   private void group(
-      final TomlTable table, final String group, final Map<String, Map<String, Object>> rules) {
+      final TomlTable table,
+      final String group,
+      final Map<String,
+      Map<String,
+      Object>> rules
+  ) {
     final TomlTable entries = table.isTable(List.of(group)) ? table.getTable(List.of(group)) : null;
     if (entries == null) {
       problem("", RULES, "[rules." + group + "] must be a table");

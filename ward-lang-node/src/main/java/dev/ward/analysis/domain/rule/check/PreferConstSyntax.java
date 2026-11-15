@@ -9,7 +9,6 @@ import java.util.Optional;
  * Source-text and tree lookups of the prefer-const check: declarations, patterns and assignments.
  */
 final class PreferConstSyntax {
-
   private static final String DECLARATION = "variableDeclaration";
 
   private PreferConstSyntax() {}

@@ -23,10 +23,13 @@ final class CoverageGateFakes {
 
   /** Ports that answer from the given reports, modification times, files and module directories. */
   static CrapPorts ports(
-      final Map<String, LineHits> hits,
-      final Map<String, Instant> modified,
+      final Map<String,
+      LineHits> hits,
+      final Map<String,
+      Instant> modified,
       final Set<String> files,
-      final List<Path> modules) {
+      final List<Path> modules
+  ) {
     final LineCoverageReport reader =
         new LineCoverageReport() {
           @Override
@@ -58,7 +61,9 @@ final class CoverageGateFakes {
           @Override
           public Instant modified(final Path file) {
             return modified.getOrDefault(
-                CoverageGateFixture.ROOT.relativize(file).toString(), Instant.MIN);
+                CoverageGateFixture.ROOT.relativize(file).toString(),
+                Instant.MIN
+            );
           }
         };
     return new CrapPorts(reader, fake);
@@ -72,11 +77,16 @@ final class CoverageGateFakes {
         (root, languages) -> units,
         List.of(
             new FrontendSupport(
-                AnalysisLanguage.JAVA, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX))),
+                AnalysisLanguage.JAVA,
+                new AntlrLanguageFrontend(),
+                Set.of(RuleCapability.SYNTAX)
+            )
+        ),
         root -> AnalysisCacheFixtures.NO_CACHE,
         AnalysisCacheFixtures.codec(),
         "test",
         DependencyAdapters.none(),
-        (unused, classpath) -> Map.of());
+        (unused, classpath) -> Map.of()
+    );
   }
 }

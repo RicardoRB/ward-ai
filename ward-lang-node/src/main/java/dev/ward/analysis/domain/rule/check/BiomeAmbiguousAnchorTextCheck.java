@@ -15,7 +15,6 @@ import java.util.Set;
  * Biome's list).
  */
 public final class BiomeAmbiguousAnchorTextCheck implements RuleCheck {
-
   private static final String ANCHOR = "a";
 
   private final Set<String> words;
@@ -40,7 +39,10 @@ public final class BiomeAmbiguousAnchorTextCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(JsxAttributes.OPENING)).stream()
         .filter(visit -> ANCHOR.equals(JsxAttributes.elementName(visit.node())))
         .filter(visit -> !visit.ancestors().isEmpty())
@@ -48,7 +50,11 @@ public final class BiomeAmbiguousAnchorTextCheck implements RuleCheck {
             visit ->
                 words.contains(
                     JsxAccessibleText.ofElement(
-                        visit.ancestors().get(visit.ancestors().size() - 1), unit.text())))
+                        visit.ancestors().get(visit.ancestors().size() - 1),
+                        unit.text()
+                    )
+                )
+        )
         .map(visit -> CheckSupport.at(visit.node().span(), message))
         .toList();
   }

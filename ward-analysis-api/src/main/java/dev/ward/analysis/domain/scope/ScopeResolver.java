@@ -8,7 +8,6 @@ import java.util.Optional;
  * global} or {@code nonlocal} alias sends the search to the module or to the enclosing functions.
  */
 final class ScopeResolver {
-
   private final List<Scope> scopes;
   private final ClassScopes classScopes;
 
@@ -23,7 +22,11 @@ final class ScopeResolver {
   }
 
   private Optional<Found> search(
-      final String name, final int start, final int first, final int offset) {
+      final String name,
+      final int start,
+      final int first,
+      final int offset
+  ) {
     int current = first;
     while (current != Scope.NO_PARENT) {
       final Scope scope = scopes.get(current);

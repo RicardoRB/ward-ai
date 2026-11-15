@@ -11,7 +11,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class ControlFlowModelTest {
-
   private static final Span SPAN = new Span(1, 1, 1, 2, 0, 1);
 
   @Test
@@ -32,7 +31,7 @@ class ControlFlowModelTest {
         .isInstanceOf(NullPointerException.class);
     assertThatThrownBy(() -> new BasicBlock(0, List.of(), null))
         .isInstanceOf(NullPointerException.class);
-    assertThatThrownBy(() -> new BasicBlock(0, Arrays.asList((SyntaxNode) null), List.of()))
+    assertThatThrownBy(() -> new BasicBlock(0, Arrays.asList((SyntaxNode)null), List.of()))
         .isInstanceOf(NullPointerException.class);
     assertThatThrownBy(() -> new BasicBlock(-1, List.of(), List.of()))
         .isInstanceOf(IllegalArgumentException.class);
@@ -77,7 +76,9 @@ class ControlFlowModelTest {
 
   private static List<BasicBlock> twoBlocks() {
     return List.of(
-        new BasicBlock(0, List.of(), List.of()), new BasicBlock(1, List.of(), List.of()));
+        new BasicBlock(0, List.of(), List.of()),
+        new BasicBlock(1, List.of(), List.of())
+    );
   }
 
   private static SyntaxNode node() {

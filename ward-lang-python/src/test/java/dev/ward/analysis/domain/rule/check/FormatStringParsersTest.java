@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 /** The percent and str.format parsers and the argument reader, on the shapes the rules judge. */
 final class FormatStringParsersTest {
-
   private static final int THREE = 3;
 
   @Test

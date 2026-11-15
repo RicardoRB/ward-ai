@@ -6,7 +6,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 
 /** Lowers an {@code if} of a Kotlin body: a condition, a branch for each arm, and a join. */
 final class KotlinIfLowering {
-
   private static final String EXPRESSION = "expression";
   private static final String BODY = "controlStructureBody";
   private static final String ELSE = "else";

@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 /** Which files each {@link Sources} mode looks at. */
 class SourcesTest {
-
   @Test
   void appSkipsToolConfigurationAndTestFiles() {
     assertThat(Sources.APP.admits("src/index.ts")).isTrue();

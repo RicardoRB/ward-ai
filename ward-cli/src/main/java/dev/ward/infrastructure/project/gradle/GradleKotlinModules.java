@@ -21,7 +21,8 @@ public final class GradleKotlinModules {
   private static final List<String> BUILDS = List.of("build.gradle.kts", "build.gradle");
   private static final Pattern KOTLIN_JVM =
       Pattern.compile(
-          "org\\.jetbrains\\.kotlin\\.jvm|kotlin\\(\\s*\"jvm\"\\s*\\)|alias\\s*\\([^)]*kotlin[.-]jvm");
+          "org\\.jetbrains\\.kotlin\\.jvm|kotlin\\(\\s*\"jvm\"\\s*\\)|alias\\s*\\([^)]*kotlin[.-]jvm"
+      );
   private static final Pattern JAVA =
       Pattern.compile("[`'\"](java|java-library)[`'\"]|apply\\s+plugin:\\s*['\"]java['\"]");
 
@@ -67,9 +68,9 @@ public final class GradleKotlinModules {
 
   /** A directory below {@code root} that is buildSrc, or sits under its own settings file. */
   static boolean nested(final Path root, final Path dir) {
-    for (Path current = dir;
-        current != null && !current.equals(root);
-        current = current.getParent()) {
+    for (Path current = dir; current != null && !current.equals(
+        root
+    ); current = current.getParent()) {
       if (BUILD_SRC.equals(String.valueOf(current.getFileName())) || hasSettings(current)) {
         return true;
       }

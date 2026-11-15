@@ -16,7 +16,6 @@ import java.util.Set;
  * commented block is not reported, as in detekt.
  */
 public final class KotlinEmptyBlockCheck implements RuleCheck {
-
   private static final String BLOCK = "block";
   private static final String CLASS_BODY = "classBody";
   private static final String BODY = "controlStructureBody";

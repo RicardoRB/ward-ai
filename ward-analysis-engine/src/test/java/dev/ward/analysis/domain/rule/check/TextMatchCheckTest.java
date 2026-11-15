@@ -13,14 +13,14 @@ import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
 
 class TextMatchCheckTest {
-
   private static final String COMMENT = "comment";
   private static final String UNIT = "unit";
   private static final SourceUnit FILE =
       new SourceUnit(
           "src/main/Foo.java",
           AnalysisLanguage.JAVA,
-          "// TODO: remove\nint a;\nint b; // TODO: x\n");
+          "// TODO: remove\nint a;\nint b; // TODO: x\n"
+      );
 
   private final TreeLayout gen = new TreeLayout();
 
@@ -29,11 +29,13 @@ class TextMatchCheckTest {
       final String pattern,
       final boolean required,
       final int limit,
-      final Set<String> kinds) {
+      final Set<String> kinds
+  ) {
     return new TextMatchCheck(
         NodeFilter.of(kinds),
         new TextMatchCheck.Rule(target, Pattern.compile(pattern), required, limit, 1),
-        "{value} / {max}");
+        "{value} / {max}"
+    );
   }
 
   @Test
@@ -76,20 +78,24 @@ class TextMatchCheckTest {
     final SyntaxNode root = gen.node(UNIT, gen.leaf("tok", "x"));
 
     assertThat(
-            text(TextMatchCheck.Target.FILENAME, "^[A-Z]\\w*\\.java$", true, 1, Set.of())
-                .matches(root, FlowView.NONE, FILE))
+        text(TextMatchCheck.Target.FILENAME, "^[A-Z]\\w*\\.java$", true, 1, Set.of())
+            .matches(root, FlowView.NONE, FILE)
+    )
         .isEmpty();
     assertThat(
-            text(TextMatchCheck.Target.FILENAME, "^[a-z]", true, 1, Set.of())
-                .matches(root, FlowView.NONE, FILE))
+        text(TextMatchCheck.Target.FILENAME, "^[a-z]", true, 1, Set.of())
+            .matches(root, FlowView.NONE, FILE)
+    )
         .hasSize(1);
     assertThat(
-            text(TextMatchCheck.Target.HEADER, "Copyright", true, 1, Set.of())
-                .matches(root, FlowView.NONE, FILE))
+        text(TextMatchCheck.Target.HEADER, "Copyright", true, 1, Set.of())
+            .matches(root, FlowView.NONE, FILE)
+    )
         .hasSize(1);
     assertThat(
-            text(TextMatchCheck.Target.HEADER, "TODO", true, 1, Set.of())
-                .matches(root, FlowView.NONE, FILE))
+        text(TextMatchCheck.Target.HEADER, "TODO", true, 1, Set.of())
+            .matches(root, FlowView.NONE, FILE)
+    )
         .isEmpty();
   }
 

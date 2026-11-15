@@ -27,7 +27,6 @@ import javax.inject.Inject;
  * resolver, so they see each other's declarations. A run without Java or Kotlin sources gets none.
  */
 public final class JvmDependencyAdapters implements DependencyAdapters {
-
   /** Creates the adapter factory; it holds no state, so one instance serves every project. */
   @Inject
   public JvmDependencyAdapters() {}
@@ -39,7 +38,10 @@ public final class JvmDependencyAdapters implements DependencyAdapters {
 
   @Override
   public List<DependencySupport> forProject(
-      final Path projectRoot, final List<SourceUnit> units, final Optional<String> javaClasspath) {
+      final Path projectRoot,
+      final List<SourceUnit> units,
+      final Optional<String> javaClasspath
+  ) {
     if (units.stream().noneMatch(JvmDependencyAdapters::isJvm)) {
       return List.of();
     }
@@ -47,16 +49,19 @@ public final class JvmDependencyAdapters implements DependencyAdapters {
     final List<JavaSourceRoot> roots = JvmSourceLayouts.of(root, jvmModules(root));
     final DependencyResolver resolver =
         javaClasspath
-            .<DependencyResolver>map(
+            .<DependencyResolver> map(
                 name ->
                     new JdtJavaDependencyResolver(
                         root,
                         JdtJavaDependencyResolver.classpathEntries(classpathFile(root, name)),
-                        roots))
+                        roots
+                    )
+            )
             .orElseGet(() -> new JvmDependencyResolver(roots));
     return List.of(
         new DependencySupport(AnalysisLanguage.JAVA, new JavaFileSummarizer(), resolver),
-        new DependencySupport(AnalysisLanguage.KOTLIN, new KotlinFileSummarizer(), resolver));
+        new DependencySupport(AnalysisLanguage.KOTLIN, new KotlinFileSummarizer(), resolver)
+    );
   }
 
   private static boolean isJvm(final SourceUnit unit) {

@@ -23,7 +23,9 @@ class BuildPolicyToolAndConvergenceTest {
             List.of(
                 new ToolVersion("maven", "3.8.8", "w", 1),
                 new ToolVersion("maven", "3.9.9", "w", 1),
-                new ToolVersion("gradle", "1.0", "g", 1)));
+                new ToolVersion("gradle", "1.0", "g", 1)
+            )
+        );
     assertThat(RuleModels.run(BuildRule.MINIMUM_BUILD_TOOL_VERSION, model))
         .singleElement()
         .satisfies(f -> assertThat(f.message()).contains("3.8.8").contains("3.9"));

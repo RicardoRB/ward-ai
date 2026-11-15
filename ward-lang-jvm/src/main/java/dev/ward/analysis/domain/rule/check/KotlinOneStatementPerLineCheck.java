@@ -12,7 +12,6 @@ import java.util.Set;
  * that a line holds one statement, as Checkstyle's OneStatementPerLine requires.
  */
 public final class KotlinOneStatementPerLineCheck implements UnitCheck {
-
   private static final Set<String> LISTS = Set.of("statements", "classBody");
   private static final Set<String> ITEMS = Set.of("statement", "classMemberDeclaration");
 

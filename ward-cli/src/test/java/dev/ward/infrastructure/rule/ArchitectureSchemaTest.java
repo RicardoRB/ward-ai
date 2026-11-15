@@ -46,11 +46,11 @@ class ArchitectureSchemaTest {
 
   @Test
   void everyConstraintIsOneOfTheChoicesOfARule() throws IOException {
-    final List<?> choices = (List<?>) definition("rule").get("oneOf");
+    final List<?> choices = (List<?>)definition("rule").get("oneOf");
 
     final Set<String> required = new HashSet<>();
     for (final Object choice : choices) {
-      ((List<?>) ((Map<?, ?>) choice).get("required"))
+      ((List<?>)((Map<?, ?>)choice).get("required"))
           .forEach(key -> required.add(String.valueOf(key)));
     }
     final Set<String> constraints = new HashSet<>();
@@ -64,7 +64,8 @@ class ArchitectureSchemaTest {
     return map(
         ForyJson.builder()
             .build()
-            .fromJson(Files.readString(SCHEMA, StandardCharsets.UTF_8), Object.class));
+            .fromJson(Files.readString(SCHEMA, StandardCharsets.UTF_8), Object.class)
+    );
   }
 
   private static Map<String, Object> definition(final String name) throws IOException {
@@ -77,7 +78,7 @@ class ArchitectureSchemaTest {
 
   private static Map<String, Object> map(final Object value) {
     final Map<String, Object> copy = new LinkedHashMap<>();
-    ((Map<?, ?>) value).forEach((key, entry) -> copy.put(String.valueOf(key), entry));
+    ((Map<?, ?>)value).forEach((key, entry) -> copy.put(String.valueOf(key), entry));
     return copy;
   }
 }

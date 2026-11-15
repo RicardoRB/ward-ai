@@ -16,7 +16,6 @@ import java.util.Set;
  * that is not a definition file. A for-of head is not a statement here, so it is not reported.
  */
 public final class BiomeImplicitAnyLetCheck implements RuleCheck {
-
   private static final String STATEMENT = "variableStatement";
   private static final String LIST = "variableDeclarationList";
   private static final String DECLARATION = "variableDeclaration";
@@ -45,7 +44,10 @@ public final class BiomeImplicitAnyLetCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     if (unit.path().endsWith(DEFINITION_SUFFIX)) {
       return List.of();
     }
@@ -71,7 +73,8 @@ public final class BiomeImplicitAnyLetCheck implements RuleCheck {
         .filter(child -> DECLARATION.equals(child.kind()))
         .filter(
             declaration ->
-                !hasToken(declaration, INITIALIZER) && !hasChild(declaration, ANNOTATION))
+                !hasToken(declaration, INITIALIZER) && !hasChild(declaration, ANNOTATION)
+        )
         .findFirst();
   }
 

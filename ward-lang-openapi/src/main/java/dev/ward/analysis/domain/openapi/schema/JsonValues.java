@@ -6,7 +6,6 @@ import java.util.Optional;
 
 /** How JSON Schema compares and measures the values of a document. */
 final class JsonValues {
-
   private static final String TRUE = "true";
 
   private JsonValues() {}
@@ -83,7 +82,7 @@ final class JsonValues {
   /** Prints a number as JavaScript does: a whole number without a fraction. */
   static String show(final double value) {
     return value == Math.rint(value) && !Double.isInfinite(value)
-        ? Long.toString((long) value)
+        ? Long.toString((long)value)
         : Double.toString(value);
   }
 

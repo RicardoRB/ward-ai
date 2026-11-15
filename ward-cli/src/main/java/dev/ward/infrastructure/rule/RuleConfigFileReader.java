@@ -105,7 +105,8 @@ final class RuleConfigFileReader {
         strings(table, "languages"),
         strings(table, "categories"),
         strings(table, "include"),
-        strings(table, "exclude"));
+        strings(table, "exclude")
+    );
   }
 
   private String text(final TomlTable table, final String key) {

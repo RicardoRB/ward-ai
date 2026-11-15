@@ -32,7 +32,8 @@ record NpmEntry(String name, String version, String resolved, String link, Set<S
         text(body.get("version")),
         text(body.get("resolved")),
         link,
-        required);
+        required
+    );
   }
 
   /** Flattens a version 1 {@code dependencies} tree into the path keys of version 2. */
@@ -43,18 +44,25 @@ record NpmEntry(String name, String version, String resolved, String link, Set<S
   }
 
   private static void flatten(
-      final Map<String, NpmEntry> entries, final String parent, final Object tree) {
+      final Map<String,
+      NpmEntry> entries,
+      final String parent,
+      final Object tree
+  ) {
     if (tree instanceof Map<?, ?> dependencies) {
       dependencies.forEach(
-          (name, value) -> flattenOne(entries, parent, String.valueOf(name), value));
+          (name, value) -> flattenOne(entries, parent, String.valueOf(name), value)
+      );
     }
   }
 
   private static void flattenOne(
-      final Map<String, NpmEntry> entries,
+      final Map<String,
+      NpmEntry> entries,
       final String parent,
       final String name,
-      final Object value) {
+      final Object value
+  ) {
     if (!(value instanceof Map<?, ?> body)) {
       return;
     }
@@ -65,7 +73,8 @@ record NpmEntry(String name, String version, String resolved, String link, Set<S
     }
     entries.put(
         key,
-        new NpmEntry(name, text(body.get("version")), text(body.get("resolved")), "", required));
+        new NpmEntry(name, text(body.get("version")), text(body.get("resolved")), "", required)
+    );
     flatten(entries, key, body.get("dependencies"));
   }
 

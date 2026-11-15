@@ -22,9 +22,7 @@ class CheckServicePartialCommandTest {
   @Test
   void narrowedCommandReplacesTheFullCommand() throws IOException {
     withPom(dir, PLAIN_POM);
-    Files.writeString(
-        dir.resolve("ward.toml"),
-        """
+    Files.writeString(dir.resolve("ward.toml"), """
         version = 2
         [checks.prettier]
         profiles = ["default", "edit"]
@@ -44,6 +42,7 @@ class CheckServicePartialCommandTest {
     assertThat(executor.commands)
         .containsExactly(
             List.of("npx", "prettier", "--check", "src/app.ts"),
-            List.of("npx", "prettier", "--check", "."));
+            List.of("npx", "prettier", "--check", ".")
+        );
   }
 }

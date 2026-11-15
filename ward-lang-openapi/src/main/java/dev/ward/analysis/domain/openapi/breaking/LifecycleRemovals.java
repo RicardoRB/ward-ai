@@ -13,7 +13,6 @@ import java.util.Optional;
  * to come.
  */
 final class LifecycleRemovals {
-
   private LifecycleRemovals() {}
 
   /** The removal rules. */
@@ -22,10 +21,13 @@ final class LifecycleRemovals {
         RowRule.of("request-parameter-removed-before-sunset", LifecycleRemovals::parameters),
         RowRule.of(
             "request-property-removed-before-sunset",
-            pair -> properties(pair, SchemaSites.requestBodies(pair), Direction.REQUEST)),
+            pair -> properties(pair, SchemaSites.requestBodies(pair), Direction.REQUEST)
+        ),
         RowRule.of(
             "response-required-property-removed-before-sunset",
-            pair -> properties(pair, SchemaSites.responseBodies(pair), Direction.RESPONSE)));
+            pair -> properties(pair, SchemaSites.responseBodies(pair), Direction.RESPONSE)
+        )
+    );
   }
 
   private static List<BreakingFinding> parameters(final DocumentPair pair) {
@@ -44,15 +46,22 @@ final class LifecycleRemovals {
                               now.node(),
                               OperationIndex.method(now),
                               now.path(),
-                              "the parameter was removed before its sunset date"));
+                              "the parameter was removed before its sunset date"
+                          )
+                      );
                     }
-                  });
+                  }
+              );
           return findings;
-        });
+        }
+    );
   }
 
   private static List<BreakingFinding> properties(
-      final DocumentPair pair, final List<Site> sites, final Direction direction) {
+      final DocumentPair pair,
+      final List<Site> sites,
+      final Direction direction
+  ) {
     final SchemaSides sides = new SchemaSides(pair.base(), pair.revision(), direction);
     final String id =
         direction == Direction.REQUEST
@@ -68,7 +77,9 @@ final class LifecycleRemovals {
                   schemas.revision().get("properties").orElse(schemas.revision()),
                   OperationIndex.method(site.operation()),
                   site.operation().path(),
-                  "the property " + property.key() + " was removed before its sunset date"));
+                  "the property " + property.key() + " was removed before its sunset date"
+              )
+          );
         }
       }
     }
@@ -84,7 +95,10 @@ final class LifecycleRemovals {
 
   /** The properties of the base schema that the revision lacks and that were to end later. */
   private static List<DocNode.Entry> removed(
-      final SchemaDiff.Pair schemas, final Direction direction, final LocalDate today) {
+      final SchemaDiff.Pair schemas,
+      final Direction direction,
+      final LocalDate today
+  ) {
     final List<DocNode.Entry> removed = new ArrayList<>();
     for (final DocNode.Entry property :
         schemas.base().get("properties").map(DocNode::entries).orElse(List.of())) {
@@ -99,7 +113,10 @@ final class LifecycleRemovals {
 
   /** A response only cares about the properties it promised to send. */
   private static boolean wanted(
-      final DocNode base, final DocNode.Entry property, final Direction direction) {
+      final DocNode base,
+      final DocNode.Entry property,
+      final Direction direction
+  ) {
     return direction == Direction.REQUEST
         || base.get("required").stream()
             .flatMap(required -> required.items().stream())
@@ -120,8 +137,14 @@ final class LifecycleRemovals {
       final DocNode at,
       final String method,
       final String path,
-      final String message) {
+      final String message
+  ) {
     return new BreakingFinding(
-        RowRule.PREFIX + id, method + " " + path + ": " + message, method, path, at);
+        RowRule.PREFIX + id,
+        method + " " + path + ": " + message,
+        method,
+        path,
+        at
+    );
   }
 }

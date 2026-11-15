@@ -64,7 +64,9 @@ final class InterfaceMemberReader {
             SigReader.annotated(TreeKit.child(node, "typeAnnotation")),
             List.of(),
             flags,
-            List.of()));
+            List.of()
+        )
+    );
   }
 
   private void methodSignature(final SyntaxNode node) {
@@ -73,6 +75,7 @@ final class InterfaceMemberReader {
         TreeText.unquote(TreeText.text(TreeKit.child(node, PROPERTY_NAME))),
         SigReader.of(TreeKit.child(node, CALL_SIGNATURE)),
         flags,
-        List.of());
+        List.of()
+    );
   }
 }

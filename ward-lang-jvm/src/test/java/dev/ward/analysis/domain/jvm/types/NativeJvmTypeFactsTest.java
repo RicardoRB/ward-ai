@@ -10,7 +10,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class NativeJvmTypeFactsTest {
-
   private static String body(final String statements) {
     return "package app;\nimport java.util.*;\nimport java.util.function.*;\npublic class App {\n"
         + "  String name = \"n\";\n  static final int PORT = 8080;\n  int[] numbers = new int[2];\n"
@@ -24,7 +23,9 @@ class NativeJvmTypeFactsTest {
     final Probe probe =
         Probe.of(
             body(
-                "    String a = name;\n    int b = PORT;\n    long c = numbers.length + 1L;\n    var d = \"x\" + b;\n    double e = 1.5 * b;"));
+                "    String a = name;\n    int b = PORT;\n    long c = numbers.length + 1L;\n    var d = \"x\" + b;\n    double e = 1.5 * b;"
+            )
+        );
 
     assertThat(probe.type("name")).isEqualTo("java.lang.String");
     assertThat(probe.type("PORT")).isEqualTo("int");
@@ -54,7 +55,9 @@ class NativeJvmTypeFactsTest {
     final Probe probe =
         Probe.of(
             body(
-                "    var a = Math.max(1, 2L);\n    var b = Math.abs(1.5f);\n    var c = String.valueOf(any);\n    var d = Arrays.asList(1, 2);\n    var e = List.of(\"a\");"));
+                "    var a = Math.max(1, 2L);\n    var b = Math.abs(1.5f);\n    var c = String.valueOf(any);\n    var d = Arrays.asList(1, 2);\n    var e = List.of(\"a\");"
+            )
+        );
 
     assertThat(probe.call("Math.max(1, 2L)").orElseThrow().parameters())
         .extracting(TypeRef::name)
@@ -72,7 +75,9 @@ class NativeJvmTypeFactsTest {
     final Probe probe =
         Probe.of(
             body(
-                "    var a = items.get(0);\n    var b = counts.get(\"k\");\n    var c = items.stream().map(s -> s.length()).toList();\n    for (String s : items) { var l = s.length(); }\n    var d = counts.entrySet().iterator().next().getValue();"));
+                "    var a = items.get(0);\n    var b = counts.get(\"k\");\n    var c = items.stream().map(s -> s.length()).toList();\n    for (String s : items) { var l = s.length(); }\n    var d = counts.entrySet().iterator().next().getValue();"
+            )
+        );
 
     assertThat(probe.type("items.get(0)")).isEqualTo("java.lang.String");
     assertThat(probe.type("counts.get(\"k\")")).isEqualTo("java.lang.Integer");
@@ -88,7 +93,9 @@ class NativeJvmTypeFactsTest {
     final Probe probe =
         Probe.of(
             body(
-                "    List<String> a = new ArrayList<>();\n    var b = new HashMap<String, Integer>();\n    String c = (String) any;\n    var d = any != null ? name : \"x\";\n    if (any instanceof String s) { var n = s.trim(); }\n    int[] e = new int[3];"));
+                "    List<String> a = new ArrayList<>();\n    var b = new HashMap<String, Integer>();\n    String c = (String) any;\n    var d = any != null ? name : \"x\";\n    if (any instanceof String s) { var n = s.trim(); }\n    int[] e = new int[3];"
+            )
+        );
 
     assertThat(probe.type("new ArrayList<>()")).isEqualTo("java.util.ArrayList<java.lang.String>");
     assertThat(probe.call("new ArrayList<>()")).isPresent();
@@ -107,7 +114,9 @@ class NativeJvmTypeFactsTest {
             "package app;\npublic class App {\n  void run(Helper h) {\n    var a = h.size();\n    var b = Helper.make();\n    var c = missing.call();\n    Gone g = null;\n    var d = g.value();\n  }\n}\n",
             Map.of(
                 "app.Helper",
-                "package app;\npublic class Helper {\n  public int size() { return 1; }\n  public static Helper make() { return null; }\n}\n"));
+                "package app;\npublic class Helper {\n  public int size() { return 1; }\n  public static Helper make() { return null; }\n}\n"
+            )
+        );
 
     assertThat(probe.type("h.size()")).isEqualTo("int");
     assertThat(probe.type("Helper.make()")).isEqualTo("app.Helper");

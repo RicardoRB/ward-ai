@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
  * like Pylint W0244.
  */
 public final class RedefinedSlotsInSubclassCheck implements RuleCheck {
-
   private static final Set<String> CLASSES = Set.of("classdef");
   private static final Set<String> ASSIGNMENTS = Set.of("expr_stmt");
   private static final Pattern CLASS_NAME = Pattern.compile("^class(\\w+)[:(]");

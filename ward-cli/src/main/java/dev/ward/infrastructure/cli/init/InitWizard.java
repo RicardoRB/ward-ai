@@ -35,7 +35,8 @@ final class InitWizard {
   InitWizard(
       final LinePrompt prompt,
       final Supplier<Optional<RawSession>> rawTerminal,
-      final PrintWriter out) {
+      final PrintWriter out
+  ) {
     this(prompt, rawTerminal, out, false);
   }
 
@@ -43,7 +44,8 @@ final class InitWizard {
       final LinePrompt prompt,
       final Supplier<Optional<RawSession>> rawTerminal,
       final PrintWriter out,
-      final boolean terminal) {
+      final boolean terminal
+  ) {
     this.prompt = prompt;
     this.rawTerminal = rawTerminal;
     this.out = out;
@@ -83,7 +85,8 @@ final class InitWizard {
             default ->
                 throw new InvalidAnswerException("Invalid preset selection. Choose 1, 2, or 3.");
           };
-        });
+        }
+    );
   }
 
   List<String> selectIntegrations(final InitSetupCatalog catalog) {
@@ -96,38 +99,48 @@ final class InitWizard {
                 choices.stream().map(InitIntegrationOption::label).toList(),
                 "Select at least one integration, or choose none.",
                 Set.of(),
-                false),
-            ids);
+                false
+            ),
+            ids
+        );
     if (fromMenu.isPresent()) {
       return fromMenu.get();
     }
     return answering.ask(
         () -> {
           out.println(
-              "Select agent integrations (enter numbers separated by spaces, then press Enter):");
+              "Select agent integrations (enter numbers separated by spaces, then press Enter):"
+          );
           for (int i = 0; i < choices.size(); i++) {
             out.printf("> [ ] %d) %s%n", i + 1, choices.get(i).label());
           }
           out.print(
-              "Toggle integrations with space-separated numbers [1-" + choices.size() + "]: ");
+              "Toggle integrations with space-separated numbers [1-" + choices.size() + "]: "
+          );
           out.flush();
           return prompt
               .readSelection(
                   ids,
                   List.of(),
                   "integration",
-                  "Select at least one integration, or choose 1 for none.")
+                  "Select at least one integration, or choose 1 for none."
+              )
               .orElseGet(
                   () -> {
                     LinePrompt.logDefault("integrations");
                     return List.of(InitSetupCatalog.NO_INTEGRATION);
-                  });
-        });
+                  }
+              );
+        }
+    );
   }
 
   /** Asks for the gates, starting with {@code preselected} checked. */
   List<String> selectGates(
-      final InitSetupCatalog catalog, final Project project, final List<String> preselected) {
+      final InitSetupCatalog catalog,
+      final Project project,
+      final List<String> preselected
+  ) {
     final List<InitGateOption> offered = catalog.gates(project, null);
     final Set<String> omittedIds = new HashSet<>();
     JdkGates.of(catalog)
@@ -136,7 +149,8 @@ final class InitWizard {
             omission -> {
               out.println("Unavailable on this JDK: " + omission.note());
               omittedIds.add(omission.gate());
-            });
+            }
+        );
     final List<InitGateOption> choices =
         offered.stream().filter(choice -> !omittedIds.contains(choice.id())).toList();
     final List<String> ids = choices.stream().map(InitGateOption::id).toList();
@@ -151,31 +165,39 @@ final class InitWizard {
                     .filter(i -> presetGates.contains(ids.get(i)))
                     .boxed()
                     .collect(Collectors.toSet()),
-                false),
-            ids);
+                false
+            ),
+            ids
+        );
     if (fromMenu.isPresent()) {
       return fromMenu.get();
     }
     return answering.ask(
         () -> {
           out.println(
-              "Select quality gates (enter numbers separated by spaces, then press Enter):");
+              "Select quality gates (enter numbers separated by spaces, then press Enter):"
+          );
           for (int i = 0; i < choices.size(); i++) {
             final InitGateOption choice = choices.get(i);
             out.printf(
                 "> %s %d) %s%n",
-                presetGates.contains(choice.id()) ? "[x]" : "[ ]", i + 1, gateLabel(choice));
+                presetGates.contains(choice.id()) ? "[x]" : "[ ]",
+                i + 1,
+                gateLabel(choice)
+            );
           }
           out.print(
               "Toggle quality gates with space-separated numbers [1-"
                   + choices.size()
                   + "]"
-                  + (presetGates.isEmpty() ? ": " : ", or press Enter to accept: "));
+                  + (presetGates.isEmpty() ? ": " : ", or press Enter to accept: ")
+          );
           out.flush();
           return prompt
               .readSelection(ids, presetGates, "quality-gate", "Select at least one quality gate.")
               .orElseThrow(() -> new WardException(GATE_INPUT_ENDED));
-        });
+        }
+    );
   }
 
   String selectArchitecture(final InitSetupCatalog catalog) {
@@ -191,7 +213,8 @@ final class InitWizard {
                   + choices.size()
                   + ", Enter="
                   + InitQuestions.DEFAULT_ARCHITECTURE
-                  + "]: ");
+                  + "]: "
+          );
           out.flush();
           final Optional<String> answer = prompt.readOrDefault("architecture");
           if (answer.isEmpty() || answer.get().isBlank()) {
@@ -202,16 +225,20 @@ final class InitWizard {
             choice = Integer.parseInt(answer.get().trim());
           } catch (NumberFormatException e) {
             throw new InvalidAnswerException(
-                "Invalid architecture selection '" + answer.get() + "'.", e);
+                "Invalid architecture selection '" + answer.get() + "'.",
+                e
+            );
           }
           if (choice <= 0 || choice > choices.size()) {
             throw new InvalidAnswerException(
                 "Invalid architecture selection. Choose a number from 1 to "
                     + choices.size()
-                    + ".");
+                    + "."
+            );
           }
           return choices.get(choice - 1).id();
-        });
+        }
+    );
   }
 
   /** Asks which of several Xcode schemes Ward's test gate runs; the first is the default. */
@@ -225,7 +252,8 @@ final class InitWizard {
           out.printf("Choose a scheme [1-%d, Enter=1]: ", schemes.size());
           out.flush();
           return schemeAnswer(prompt.readOrDefault("scheme"), schemes);
-        });
+        }
+    );
   }
 
   private static String schemeAnswer(final Optional<String> answer, final List<String> schemes) {
@@ -244,7 +272,8 @@ final class InitWizard {
     }
     if (choice <= 0 || choice > count) {
       throw new InvalidAnswerException(
-          "Invalid scheme selection. Choose a number from 1 to " + count + ".");
+          "Invalid scheme selection. Choose a number from 1 to " + count + "."
+      );
     }
     return choice;
   }
@@ -262,8 +291,10 @@ final class InitWizard {
                 labels,
                 "Select at least one project.",
                 all,
-                false),
-            ids);
+                false
+            ),
+            ids
+        );
     if (fromMenu.isPresent()) {
       return fromMenu.get();
     }
@@ -276,12 +307,14 @@ final class InitWizard {
           out.print(
               "Toggle projects with space-separated numbers [1-"
                   + labels.size()
-                  + "], or press Enter to accept: ");
+                  + "], or press Enter to accept: "
+          );
           out.flush();
           return prompt
               .readSelection(ids, ids, "project", "Select at least one project.")
               .orElseThrow(() -> new WardException(PROJECT_INPUT_ENDED));
-        });
+        }
+    );
   }
 
   /** A gate row: id and description, marked when its tool is not available. */
@@ -297,7 +330,8 @@ final class InitWizard {
     }
     try (RawSession session = raw.get()) {
       return Optional.of(
-          new MultiSelectMenu().select(spec, session::read, out).stream().map(ids::get).toList());
+          new MultiSelectMenu().select(spec, session::read, out).stream().map(ids::get).toList()
+      );
     }
   }
 }

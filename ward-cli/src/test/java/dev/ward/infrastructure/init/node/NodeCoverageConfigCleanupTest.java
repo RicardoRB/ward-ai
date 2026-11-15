@@ -38,7 +38,10 @@ class NodeCoverageConfigCleanupTest {
   private final PresetRuleFileWriter writer =
       new PresetRuleFileWriter(
           RuleFileTargetsFixtures.of(
-              new FileSystemPackageManifests(), new FileSystemNodeToolConfigs()));
+              new FileSystemPackageManifests(),
+              new FileSystemNodeToolConfigs()
+          )
+      );
 
   @BeforeEach
   void manifest() throws IOException {
@@ -49,16 +52,19 @@ class NodeCoverageConfigCleanupTest {
   void vitestConfigFromAnEarlierVersionLosesItsThreshold() throws IOException {
     Files.writeString(
         root.resolve(VITEST_CONFIG),
-        "// managed-by: ward preset=standard\nexport default { thresholds: { lines: 70 } };\n");
+        "// managed-by: ward preset=standard\nexport default { thresholds: { lines: 70 } };\n"
+    );
 
     final List<PlannedFileChange> plan =
         RuleFilePlans.tools(
-            writer.plan(project(BuildTool.NPM), QualityPreset.STANDARD, gates(VITEST)));
+            writer.plan(project(BuildTool.NPM), QualityPreset.STANDARD, gates(VITEST))
+        );
     writer.apply(project(BuildTool.NPM), QualityPreset.STANDARD, gates(VITEST));
 
     assertThat(plan)
         .containsExactly(
-            new PlannedFileChange(root.resolve(VITEST_CONFIG), PlannedFileChange.Action.MODIFY));
+            new PlannedFileChange(root.resolve(VITEST_CONFIG), PlannedFileChange.Action.MODIFY)
+        );
     assertThat(Files.readString(root.resolve(VITEST_CONFIG))).doesNotContain("thresholds");
   }
 
@@ -69,7 +75,8 @@ class NodeCoverageConfigCleanupTest {
 
     Files.writeString(
         root.resolve(JEST_CONFIG),
-        "// managed-by: ward preset=strict\nexport default { coverageThreshold: {} };\n");
+        "// managed-by: ward preset=strict\nexport default { coverageThreshold: {} };\n"
+    );
     final List<PlannedFileChange> plan =
         RuleFilePlans.tools(writer.plan(project(BuildTool.NPM), QualityPreset.STRICT, gates(JEST)));
     final RuleFileChange change =
@@ -103,10 +110,12 @@ class NodeCoverageConfigCleanupTest {
   void bunfigFromAnEarlierVersionIsRemovedAndANotherOneIsKept() throws IOException {
     Files.writeString(
         root.resolve("bunfig.toml"),
-        "# managed-by: ward preset=strict\n[test]\ncoverageThreshold = { lines = 0.85 }\n");
+        "# managed-by: ward preset=strict\n[test]\ncoverageThreshold = { lines = 0.85 }\n"
+    );
     final List<PlannedFileChange> plan =
         RuleFilePlans.tools(
-            writer.plan(project(BuildTool.BUN), QualityPreset.STRICT, gates("bun-test")));
+            writer.plan(project(BuildTool.BUN), QualityPreset.STRICT, gates("bun-test"))
+        );
     writer.apply(project(BuildTool.BUN), QualityPreset.STRICT, gates("bun-test"));
 
     assertThat(plan)
@@ -131,7 +140,8 @@ class NodeCoverageConfigCleanupTest {
         Set.of(),
         "24",
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 
   private static List<InitGateOption> gates(final String... ids) {

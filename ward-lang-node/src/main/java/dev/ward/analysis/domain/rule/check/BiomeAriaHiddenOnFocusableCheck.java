@@ -17,7 +17,6 @@ import java.util.Set;
  * report, and a value that does not read leaves the decision to the element being interactive.
  */
 public final class BiomeAriaHiddenOnFocusableCheck implements RuleCheck {
-
   private static final String ARIA_HIDDEN = "aria-hidden";
   private static final String TABINDEX = "tabIndex";
   private static final String FALSE = "false";
@@ -44,7 +43,10 @@ public final class BiomeAriaHiddenOnFocusableCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(JsxAttributes.OPENING, JsxAttributes.SELF_CLOSING))
         .stream()
         .map(SyntaxWalk.Visit::node)
@@ -64,8 +66,11 @@ public final class BiomeAriaHiddenOnFocusableCheck implements RuleCheck {
             .orElse(TabIndexReading.UNREADABLE);
     return reading == TabIndexReading.NON_NEGATIVE
         || reading != TabIndexReading.BLOCKED
-            && !AriaElements.isNotInteractive(
-                table, JsxAttributes.elementName(element), AriaElements.Attributes.of(element));
+        && !AriaElements.isNotInteractive(
+            table,
+            JsxAttributes.elementName(element),
+            AriaElements.Attributes.of(element)
+        );
   }
 
   /** Whether aria-hidden has a static value other than false. */

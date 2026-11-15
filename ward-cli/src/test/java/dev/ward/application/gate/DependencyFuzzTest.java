@@ -50,7 +50,9 @@ class DependencyFuzzTest {
   }
 
   private static void assertSameAsColdBuild(
-      final AnalysisCache cache, final List<SourceUnit> units) {
+      final AnalysisCache cache,
+      final List<SourceUnit> units
+  ) {
     final DependencyFixtureLanguage incremental = new DependencyFixtureLanguage();
     final DependencyFixtureLanguage cold = new DependencyFixtureLanguage();
     final RuleRunResult warm = run(incremental, cache, units);
@@ -64,19 +66,22 @@ class DependencyFuzzTest {
   private static RuleRunResult run(
       final DependencyFixtureLanguage fixture,
       final AnalysisCache cache,
-      final List<SourceUnit> units) {
+      final List<SourceUnit> units
+  ) {
     return new UnitResultCache(
-            new RuleEngine(fixture.matcher()),
-            AnalysisCacheFixtures.codec(),
-            "0.6.0",
-            fixture.dependencies())
+        new RuleEngine(fixture.matcher()),
+        AnalysisCacheFixtures.codec(),
+        "0.6.0",
+        fixture.dependencies()
+    )
         .run(cache, units, List.of(fixture.frontend()), List.of(DependencyFixtureLanguage.RULE));
   }
 
   private static DependencyGraph graph(
       final DependencyFixtureLanguage fixture,
       final AnalysisCache cache,
-      final List<SourceUnit> units) {
+      final List<SourceUnit> units
+  ) {
     return new DependencyAnalysis(List.of(fixture.frontend()), fixture.dependencies())
         .analyze(units, new AnalysisSummaryCache(cache, AnalysisCacheFixtures.codec(), "0.6.0"))
         .graph();
@@ -86,7 +91,8 @@ class DependencyFuzzTest {
     final List<SourceUnit> units = new ArrayList<>();
     PATHS.forEach(
         path ->
-            units.add(new SourceUnit(path, DependencyFixtureLanguage.LANGUAGE, texts.get(path))));
+            units.add(new SourceUnit(path, DependencyFixtureLanguage.LANGUAGE, texts.get(path)))
+    );
     return units;
   }
 

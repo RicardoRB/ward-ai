@@ -10,7 +10,6 @@ import java.util.Optional;
 
 /** Reports an {@code as} assertion to the type the expression already has. */
 public final class UnnecessaryAssertionCheck extends TypedCheck {
-
   private static final String AS = "as";
 
   private final String message;

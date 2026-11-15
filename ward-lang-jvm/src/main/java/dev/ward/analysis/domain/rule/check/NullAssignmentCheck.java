@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * that field empty.
  */
 public final class NullAssignmentCheck implements UnitCheck {
-
   private static final Pattern NULL_ASSIGNMENT = Pattern.compile("^([\\w.\\[\\]]+)=null$");
 
   private final String message;
@@ -52,6 +51,7 @@ public final class NullAssignmentCheck implements UnitCheck {
     return ClassMembers.fieldMembers(clazz).stream()
         .filter(field -> MemberDeclarations.modifiers(field).contains(MemberDeclarations.FINAL))
         .anyMatch(
-            field -> ClassMembers.fieldNames(ClassMembers.declarationOf(field)).contains(name));
+            field -> ClassMembers.fieldNames(ClassMembers.declarationOf(field)).contains(name)
+        );
   }
 }

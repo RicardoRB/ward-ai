@@ -35,7 +35,8 @@ final class TomlAnalysisParser {
           LAYERS,
           PATHS,
           TomlArchitectureParser.CYCLES,
-          TomlArchitectureParser.INDEPENDENCE);
+          TomlArchitectureParser.INDEPENDENCE
+      );
 
   private TomlAnalysisParser() {}
 
@@ -59,7 +60,8 @@ final class TomlAnalysisParser {
     final String path = gate.getString(JAVA_CLASSPATH);
     if (path == null || path.isBlank()) {
       throw new WardException(
-          "'" + where + "." + JAVA_CLASSPATH + "' must be the path of a classpath file");
+          "'" + where + "." + JAVA_CLASSPATH + "' must be the path of a classpath file"
+      );
     }
     return path;
   }
@@ -82,7 +84,8 @@ final class TomlAnalysisParser {
               + where
               + "."
               + RULES_FILE
-              + "' must be a relative path inside the project, such as ward-rules.toml");
+              + "' must be a relative path inside the project, such as ward-rules.toml"
+      );
     }
     return path;
   }
@@ -119,7 +122,8 @@ final class TomlAnalysisParser {
                 + "."
                 + name
                 + "' is not a key of a layer boundary. Supported keys: "
-                + BOUNDARY_KEYS);
+                + BOUNDARY_KEYS
+        );
       }
     }
     try {
@@ -133,7 +137,8 @@ final class TomlAnalysisParser {
     final TomlArray array = table.getArray(name);
     if (array == null || array.isEmpty()) {
       throw new WardException(
-          "'" + key + "." + name + "' must be a non-empty array of layer names");
+          "'" + key + "." + name + "' must be a non-empty array of layer names"
+      );
     }
     final List<String> names = new ArrayList<>();
     for (int index = 0; index < array.size(); index++) {
@@ -154,7 +159,8 @@ final class TomlAnalysisParser {
                 + "."
                 + key
                 + "' is not a key of an analysis check. Supported keys: "
-                + KEYS);
+                + KEYS
+        );
       }
     }
   }
@@ -177,7 +183,8 @@ final class TomlAnalysisParser {
     final String id = array.isString(index) ? array.getString(index) : null;
     if (id == null || !id.startsWith(RULE_PREFIX) || id.length() == RULE_PREFIX.length()) {
       throw new WardException(
-          "'" + key + "' must contain only ward rule ids such as ward:java/method-length");
+          "'" + key + "' must contain only ward rule ids such as ward:java/method-length"
+      );
     }
     return id;
   }

@@ -11,7 +11,6 @@ import org.tomlj.TomlParseResult;
 
 /** Builds the checks of the rules about StringBuilder and StringBuffer appends. */
 final class StringBuilderChecks {
-
   private static final String MESSAGE = "message";
 
   private StringBuilderChecks() {}
@@ -20,7 +19,8 @@ final class StringBuilderChecks {
   static Map<String, CheckFactory> checks() {
     return Map.ofEntries(
         entry("consecutive-appends-should-reuse", StringBuilderChecks::consecutiveAppends),
-        entry("insufficient-string-buffer-declaration", StringBuilderChecks::capacity));
+        entry("insufficient-string-buffer-declaration", StringBuilderChecks::capacity)
+    );
   }
 
   private static ConsecutiveAppendsCheck consecutiveAppends(final TomlParseResult toml) {

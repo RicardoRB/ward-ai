@@ -74,7 +74,8 @@ final class MutationGateFixtures {
         null,
         null,
         null,
-        null);
+        null
+    );
   }
 
   static GateResult run(final int exitCode, final MutationReport report, final Integer minimum) {
@@ -83,7 +84,11 @@ final class MutationGateFixtures {
 
   /** Runs gate {@code id}; the fake report answers for that gate's tool. */
   static GateResult run(
-      final String id, final int exitCode, final MutationReport report, final Integer minimum) {
+      final String id,
+      final int exitCode,
+      final MutationReport report,
+      final Integer minimum
+  ) {
     final GateReportPorts ports =
         switch (id) {
           case PIT -> new GateReportPorts(ReportDirectories.NONE, null, report, null);

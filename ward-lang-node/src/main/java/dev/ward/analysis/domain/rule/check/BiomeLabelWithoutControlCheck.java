@@ -16,7 +16,6 @@ import java.util.Set;
  * select, textarea or button. Whitespace text counts as text, as Biome counts it.
  */
 public final class BiomeLabelWithoutControlCheck implements RuleCheck {
-
   private static final String LABEL = "label";
   private static final String ELEMENT = "jsxElement";
   private static final String TEXT = "jsxText";
@@ -49,7 +48,10 @@ public final class BiomeLabelWithoutControlCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(OPENING, SELF_CLOSING)).stream()
         .filter(visit -> LABEL.equals(JsxAttributes.elementName(visit.node())))
         .filter(visit -> !(hasText(visit, unit.text()) && hasControl(visit)))

@@ -13,7 +13,6 @@ import java.util.Set;
  * MultipleVariableDeclarations requires. A destructuring declaration counts as one declaration.
  */
 public final class KotlinMultipleDeclarationsCheck implements UnitCheck {
-
   private static final Set<String> LISTS = Set.of("statements", "classBody");
   private static final String STATEMENT = "statement";
   private static final String MEMBER = "classMemberDeclaration";

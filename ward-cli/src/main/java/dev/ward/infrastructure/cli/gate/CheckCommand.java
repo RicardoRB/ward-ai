@@ -35,9 +35,9 @@ import picocli.CommandLine.Spec;
     description = "Run all enabled quality gates from ward.toml.",
     mixinStandardHelpOptions = true,
     versionProvider = VersionProvider.class,
-    footer = {"", "Exit codes: 0 = all gates passed, 1 = at least one gate failed, 2 = error"})
+    footer = {"", "Exit codes: 0 = all gates passed, 1 = at least one gate failed, 2 = error"}
+)
 public class CheckCommand implements Callable<Integer> {
-
   // The constants are the user-facing --format values.
   /** The machine-readable or human report format selected with {@code --format}. */
   public enum Format {
@@ -57,7 +57,8 @@ public class CheckCommand implements Callable<Integer> {
       defaultValue = "text",
       converter = FormatConverter.class,
       completionCandidates = FormatCandidates.class,
-      description = "Output format: ${COMPLETION-CANDIDATES} (default: ${DEFAULT-VALUE}).")
+      description = "Output format: ${COMPLETION-CANDIDATES} (default: ${DEFAULT-VALUE})."
+  )
   private Format format;
 
   @Option(
@@ -67,19 +68,22 @@ public class CheckCommand implements Callable<Integer> {
       converter = SeverityConverter.class,
       completionCandidates = SeverityCandidates.class,
       description =
-          "Minimum finding severity: ${COMPLETION-CANDIDATES} (default: ${DEFAULT-VALUE}).")
+          "Minimum finding severity: ${COMPLETION-CANDIDATES} (default: ${DEFAULT-VALUE})."
+  )
   private SeverityThreshold severity;
 
   @Option(
       names = "--profile",
       split = ",",
-      description = "Gate profile(s), comma-separated or repeated (default: default).")
+      description = "Gate profile(s), comma-separated or repeated (default: default)."
+  )
   private List<String> profiles = new ArrayList<>();
 
   @Option(
       names = "--path",
       paramLabel = "<path>",
-      description = "Edited path to check partially; may be repeated.")
+      description = "Edited path to check partially; may be repeated."
+  )
   private final List<Path> paths = new ArrayList<>();
 
   @Option(names = "--fail-fast", description = "Stop after the first gate that does not pass.")
@@ -88,20 +92,23 @@ public class CheckCommand implements Callable<Integer> {
   @Option(
       names = "--learn-after",
       paramLabel = "<n>",
-      description = "Learn recurring failures after n occurrences.")
+      description = "Learn recurring failures after n occurrences."
+  )
   private Integer learnAfter;
 
   @Option(
       names = "--offline",
       description =
-          "Make no network request; the vulnerabilities check reads its stored databases.")
+          "Make no network request; the vulnerabilities check reads its stored databases."
+  )
   private boolean offline;
 
   @Option(
       names = "--output",
       paramLabel = "<path>",
       description =
-          "Write the json or sarif report to this file and print the text report on stdout.")
+          "Write the json or sarif report to this file and print the text report on stdout."
+  )
   private Path outputFile;
 
   private final CheckService service;
@@ -151,7 +158,8 @@ public class CheckCommand implements Callable<Integer> {
   public CheckCommand(
       final CheckService service,
       final ReportRenderers renderers,
-      final CheckCollaborators collaborators) {
+      final CheckCollaborators collaborators
+  ) {
     this.service = service;
     this.textRenderer = renderers.text();
     this.jsonRenderer = renderers.json();
@@ -182,11 +190,15 @@ public class CheckCommand implements Callable<Integer> {
   private void validateOptions() {
     if (learnAfter != null && learnAfter < 1) {
       throw new picocli.CommandLine.ParameterException(
-          spec.commandLine(), "--learn-after must be at least 1");
+          spec.commandLine(),
+          "--learn-after must be at least 1"
+      );
     }
     if (outputFile != null && format == Format.TEXT) {
       throw new picocli.CommandLine.ParameterException(
-          spec.commandLine(), "--output requires --format json or --format sarif");
+          spec.commandLine(),
+          "--output requires --format json or --format sarif"
+      );
     }
   }
 
@@ -209,7 +221,8 @@ public class CheckCommand implements Callable<Integer> {
             report,
             new JsonReportOptions(profiles.contains("strict"), failFast, severity),
             learning,
-            learnAfter);
+            learnAfter
+        );
   }
 
   private CheckReport runChecks() {
@@ -241,10 +254,14 @@ public class CheckCommand implements Callable<Integer> {
                 path ->
                     path.isAbsolute()
                         ? path.normalize()
-                        : workingDirectory.resolve(path).normalize())
+                        : workingDirectory.resolve(path).normalize()
+            )
             .toList();
     return service.checkPartial(
-        workingDirectory, resolved, new CheckRunOptions(profiles, listener, failFast, Set.of()));
+        workingDirectory,
+        resolved,
+        new CheckRunOptions(profiles, listener, failFast, Set.of())
+    );
   }
 
   private PrintWriter output() {

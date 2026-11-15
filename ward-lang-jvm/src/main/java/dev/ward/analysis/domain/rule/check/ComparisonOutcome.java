@@ -34,7 +34,10 @@ enum ComparisonOutcome {
   }
 
   private static void collect(
-      final SyntaxNode expression, final UnitTypeFacts types, final Set<ComparisonOutcome> seen) {
+      final SyntaxNode expression,
+      final UnitTypeFacts types,
+      final Set<ComparisonOutcome> seen
+  ) {
     final List<SyntaxNode> parts = expression.children();
     if (parts.size() == CONDITIONAL_PARTS && "'?'".equals(parts.get(1).kind())) {
       collect(parts.get(TRUE_BRANCH), types, seen);
@@ -53,7 +56,7 @@ enum ComparisonOutcome {
         .constant(expression.span())
         .map(ConstantValue::value)
         .filter(Long.class::isInstance)
-        .map(value -> sign((Long) value))
+        .map(value -> sign((Long)value))
         .orElse(NONCONSTANT);
   }
 

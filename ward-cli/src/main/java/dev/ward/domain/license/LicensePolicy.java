@@ -49,7 +49,8 @@ public final class LicensePolicy {
         .findFirst()
         .map(
             pattern ->
-                new LicenseVerdict(LicenseVerdict.Outcome.DENIED, "deny " + pattern, term.id()))
+                new LicenseVerdict(LicenseVerdict.Outcome.DENIED, "deny " + pattern, term.id())
+        )
         .orElseGet(LicenseVerdict::passed);
   }
 
@@ -57,7 +58,10 @@ public final class LicensePolicy {
     return listed(settings.patterns(), term.id())
         ? LicenseVerdict.passed()
         : new LicenseVerdict(
-            LicenseVerdict.Outcome.NOT_ALLOWED, "allow " + settings.patterns(), term.id());
+            LicenseVerdict.Outcome.NOT_ALLOWED,
+            "allow " + settings.patterns(),
+            term.id()
+        );
   }
 
   private static boolean listed(final List<String> entries, final String id) {

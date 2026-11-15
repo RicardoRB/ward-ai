@@ -8,7 +8,6 @@ import dev.ward.domain.config.WardException;
 import org.junit.jupiter.api.Test;
 
 class CommandLineTokenizerTest {
-
   @Test
   void splitsOnWhitespace() {
     assertThat(CommandLineTokenizer.tokenize("  ./mvnw   test -q "))

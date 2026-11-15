@@ -5,7 +5,6 @@ import java.util.List;
 
 /** A compiled rule with capability {@code TEXT}, which reads the text of a file. */
 public interface TextCompiledRule extends CompiledRule {
-
   /**
    * Returns the matches of this rule in the text of {@code file}.
    *

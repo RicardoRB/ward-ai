@@ -25,7 +25,8 @@ class ProjectNameReadersTest {
     write(
         "pom.xml",
         "<project><parent><artifactId>parent</artifactId></parent>"
-            + "<artifactId>shop</artifactId></project>");
+            + "<artifactId>shop</artifactId></project>"
+    );
 
     assertThat(new JvmProjectName().read(project(BuildTool.MAVEN))).contains("shop");
   }

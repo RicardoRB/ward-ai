@@ -12,7 +12,6 @@ import java.util.Optional;
  * parser: a file it cannot parse yields no manifest, so a rule that needs it reports nothing.
  */
 public final class NodeManifest {
-
   private static final int HEX_DIGITS = 4;
   private static final int HEX_RADIX = 16;
   private static final String LITERAL_TRUE = "true";
@@ -27,7 +26,6 @@ public final class NodeManifest {
 
   /** One member of an object: its key, where the key is written, and its value. */
   public record Member(String key, int line, int column, Value value) {
-
     /**
      * Validates the parts.
      *
@@ -41,13 +39,11 @@ public final class NodeManifest {
 
   /** A JSON value, with the members of objects kept in the order the file writes them. */
   public sealed interface Value {
-
     /** A string value. */
     record Text(String value) implements Value {}
 
     /** An array value. */
     record Array(List<Value> items) implements Value {
-
       /** Copies the items in and out. */
       public Array {
         items = List.copyOf(items);
@@ -61,7 +57,6 @@ public final class NodeManifest {
 
     /** An object value. */
     record Obj(List<Member> members) implements Value {
-
       /** Copies the members in and out. */
       public Obj {
         members = List.copyOf(members);
@@ -103,7 +98,7 @@ public final class NodeManifest {
     return member(key)
         .map(Member::value)
         .filter(Value.Text.class::isInstance)
-        .map(value -> ((Value.Text) value).value());
+        .map(value -> ((Value.Text)value).value());
   }
 
   /**
@@ -114,7 +109,7 @@ public final class NodeManifest {
     return member(key)
         .map(Member::value)
         .filter(Value.Obj.class::isInstance)
-        .map(value -> ((Value.Obj) value).members())
+        .map(value -> ((Value.Obj)value).members())
         .orElse(List.of());
   }
 
@@ -126,12 +121,13 @@ public final class NodeManifest {
         .filter(Value.Array.class::isInstance)
         .ifPresent(
             value -> {
-              for (final Value item : ((Value.Array) value).items()) {
+              for (final Value item : ((Value.Array)value).items()) {
                 if (item instanceof Value.Text text) {
                   strings.add(text.value());
                 }
               }
-            });
+            }
+        );
     return List.copyOf(strings);
   }
 
@@ -143,7 +139,6 @@ public final class NodeManifest {
 
   /** The character reader of one document: where it is, and the reads that move it. */
   private static final class Cursor {
-
     private static final char QUOTE = '"';
     private static final char NEWLINE = '\n';
     private static final char UNICODE_ESCAPE = 'u';
@@ -152,7 +147,23 @@ public final class NodeManifest {
     private static final String NUMBER_CHARS = "+-.0123456789eE";
     private static final Map<Character, Character> SIMPLE_ESCAPES =
         Map.of(
-            'n', '\n', 't', '\t', 'r', '\r', 'b', '\b', 'f', '\f', '"', '"', '\\', '\\', '/', '/');
+            'n',
+            '\n',
+            't',
+            '\t',
+            'r',
+            '\r',
+            'b',
+            '\b',
+            'f',
+            '\f',
+            '"',
+            '"',
+            '\\',
+            '\\',
+            '/',
+            '/'
+        );
 
     private final String text;
     private int at;
@@ -226,7 +237,7 @@ public final class NodeManifest {
       if (at + HEX_DIGITS > text.length()) {
         throw new IllegalArgumentException("bad unicode escape");
       }
-      final char code = (char) Integer.parseInt(text.substring(at, at + HEX_DIGITS), HEX_RADIX);
+      final char code = (char)Integer.parseInt(text.substring(at, at + HEX_DIGITS), HEX_RADIX);
       at += HEX_DIGITS;
       return code;
     }
@@ -265,7 +276,6 @@ public final class NodeManifest {
 
   /** A recursive-descent reader over one document; bad input throws IllegalArgumentException. */
   private static final class Parser {
-
     private final Cursor cursor;
 
     Parser(final String text) {

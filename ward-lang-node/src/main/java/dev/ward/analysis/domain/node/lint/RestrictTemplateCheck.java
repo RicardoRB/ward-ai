@@ -10,7 +10,6 @@ import java.util.Optional;
 
 /** Reports a template placeholder whose known type the policy does not allow in a string. */
 public final class RestrictTemplateCheck extends TypedCheck {
-
   private static final String OPEN = "${";
 
   private final TemplatePolicy policy;

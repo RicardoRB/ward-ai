@@ -36,20 +36,24 @@ public final class InitSetupCatalog extends InitGeneralCatalog {
 
   /** Creates a catalog that cannot read an existing configuration. */
   public InitSetupCatalog(
-      final EnvironmentInspection environment, final QualityHookGeneration qualityHooks) {
+      final EnvironmentInspection environment,
+      final QualityHookGeneration qualityHooks
+  ) {
     this(
         environment,
         qualityHooks,
         file -> {
           throw new WardException("Reading the existing configuration is unavailable.");
-        });
+        }
+    );
   }
 
   /** Creates a catalog for a development build, whose CI workflow installs the latest release. */
   public InitSetupCatalog(
       final EnvironmentInspection environment,
       final QualityHookGeneration qualityHooks,
-      final WardConfigurationReader configurations) {
+      final WardConfigurationReader configurations
+  ) {
     this(environment, qualityHooks, configurations, CiWorkflowTemplate.DEVELOPMENT_VERSION);
   }
 
@@ -58,7 +62,8 @@ public final class InitSetupCatalog extends InitGeneralCatalog {
       final EnvironmentInspection environment,
       final QualityHookGeneration qualityHooks,
       final WardConfigurationReader configurations,
-      final String wardVersion) {
+      final String wardVersion
+  ) {
     this(InitInputs.withoutManifests(environment), qualityHooks, configurations, wardVersion);
   }
 
@@ -72,7 +77,8 @@ public final class InitSetupCatalog extends InitGeneralCatalog {
       final NodeInputs node,
       final QualityHookGeneration qualityHooks,
       final WardConfigurationReader configurations,
-      @Named("ward.version") final String wardVersion) {
+      @Named("ward.version") final String wardVersion
+  ) {
     this(InitInputs.of(environment, node), qualityHooks, configurations, wardVersion);
   }
 
@@ -85,7 +91,8 @@ public final class InitSetupCatalog extends InitGeneralCatalog {
       final InitPorts ports,
       final QualityHookGeneration qualityHooks,
       final WardConfigurationReader configurations,
-      @Named("ward.version") final String wardVersion) {
+      @Named("ward.version") final String wardVersion
+  ) {
     this(InitInputs.of(ports), qualityHooks, configurations, wardVersion);
   }
 
@@ -93,7 +100,8 @@ public final class InitSetupCatalog extends InitGeneralCatalog {
       final InitInputs inputs,
       final QualityHookGeneration qualityHooks,
       final WardConfigurationReader configurations,
-      final String wardVersion) {
+      final String wardVersion
+  ) {
     super(inputs);
     this.manifests = inputs.manifests();
     this.qualityHooks = () -> qualityHooks;
@@ -117,19 +125,27 @@ public final class InitSetupCatalog extends InitGeneralCatalog {
         gates(project, null).stream().map(InitGateOption::id).collect(Collectors.toSet());
     return Optional.of(
         new PreviousChoices(
-            configuration.enabledGates().keySet().stream().filter(offered::contains).toList()));
+            configuration.enabledGates().keySet().stream().filter(offered::contains).toList()
+        )
+    );
   }
 
   /** Renders the CI workflow of {@code provider} that installs this Ward release. */
   OwnedSection ciWorkflow(
-      final String provider, final Project project, final List<InitGateOption> gates) {
+      final String provider,
+      final Project project,
+      final List<InitGateOption> gates
+  ) {
     return CiWorkflowTemplate.render(
         provider,
         project,
         gates,
         wardVersion,
         new CiWorkflowTemplate.ProjectFacts(
-            manifests.read(project.root()), inputs.runtimeJdk(project)));
+            manifests.read(project.root()),
+            inputs.runtimeJdk(project)
+        )
+    );
   }
 
   QualityHookGeneration qualityHooks() {

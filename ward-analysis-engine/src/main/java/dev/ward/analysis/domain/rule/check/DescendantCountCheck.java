@@ -13,7 +13,6 @@ import java.util.Set;
  * {@code base}, and fails the node when the total is above the limit.
  */
 public final class DescendantCountCheck implements RuleCheck {
-
   private final Set<String> kinds;
   private final CountedKinds counted;
   private final int base;
@@ -35,7 +34,8 @@ public final class DescendantCountCheck implements RuleCheck {
       final CountedKinds counted,
       final int base,
       final int max,
-      final String message) {
+      final String message
+  ) {
     this.kinds = Set.copyOf(kinds);
     this.counted = Objects.requireNonNull(counted, "counted");
     this.base = CheckSupport.nonNegative(base, "base");
@@ -61,7 +61,9 @@ public final class DescendantCountCheck implements RuleCheck {
         matches.add(
             new RuleMatch(
                 measured.span(),
-                CheckSupport.fill(message, String.valueOf(measured.value()), String.valueOf(max))));
+                CheckSupport.fill(message, String.valueOf(measured.value()), String.valueOf(max))
+            )
+        );
       }
     }
     return List.copyOf(matches);

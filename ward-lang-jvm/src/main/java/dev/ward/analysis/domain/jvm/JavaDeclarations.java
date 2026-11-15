@@ -12,7 +12,6 @@ import java.util.Set;
  * declaration with a value is a write at its declaration, as an initializer is.
  */
 final class JavaDeclarations {
-
   private static final String IDENTIFIER = "identifier";
   private static final String VARIABLE_DECLARATOR_ID = "variableDeclaratorId";
   private static final String VARIABLE_INITIALIZER = "variableInitializer";
@@ -55,7 +54,8 @@ final class JavaDeclarations {
     declareWithValue(
         JavaSyntaxNames.identifierOf(JavaFlowSyntax.firstOf(parts, VARIABLE_DECLARATOR_ID)),
         initializer != null,
-        found);
+        found
+    );
   }
 
   /** A resource declares its name and writes the value it is initialized with. */
@@ -74,7 +74,10 @@ final class JavaDeclarations {
 
   /** Declares a name and, when it has a value, writes it at the declaration. */
   void declareWithValue(
-      final SyntaxNode name, final boolean hasValue, final List<VariableAccess> found) {
+      final SyntaxNode name,
+      final boolean hasValue,
+      final List<VariableAccess> found
+  ) {
     if (name == null) {
       return;
     }
@@ -90,7 +93,9 @@ final class JavaDeclarations {
         found.add(
             scopes.declare(
                 JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(child), IDENTIFIER),
-                AccessKind.PARAMETER));
+                AccessKind.PARAMETER
+            )
+        );
       } else if (IDENTIFIER.equals(child.kind()) && LAMBDA_PARAMETERS.equals(node.kind())) {
         found.add(scopes.declare(child, AccessKind.PARAMETER));
       } else if (PARAMETER_HOLDERS.contains(child.kind())) {

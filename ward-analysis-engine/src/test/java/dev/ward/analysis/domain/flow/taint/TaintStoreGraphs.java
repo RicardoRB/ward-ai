@@ -61,14 +61,17 @@ final class TaintStoreGraphs {
             List.of(
                 new VariableAccess("c", AccessKind.WRITE, WRITE, DECLARATION),
                 new VariableAccess("c", AccessKind.READ, STORE_READ, DECLARATION),
-                new VariableAccess("c", AccessKind.READ, SINK_READ, DECLARATION)),
-            sites);
+                new VariableAccess("c", AccessKind.READ, SINK_READ, DECLARATION)
+            ),
+            sites
+        );
     return new ControlFlowGraph(
         "A#m(0)",
         WHOLE,
         List.of(body, new BasicBlock(1, List.of(), List.of(), List.of(), List.of())),
         0,
-        1);
+        1
+    );
   }
 
   private static FlowSite site(
@@ -76,7 +79,8 @@ final class TaintStoreGraphs {
       final String name,
       final String qualifier,
       final Span argument,
-      final Span span) {
+      final Span span
+  ) {
     return new FlowSite(
         kind,
         name,
@@ -84,7 +88,8 @@ final class TaintStoreGraphs {
         Optional.empty(),
         List.of(),
         argument == null ? List.of() : List.of(argument),
-        span);
+        span
+    );
   }
 
   private static SyntaxNode statement(final Span span) {

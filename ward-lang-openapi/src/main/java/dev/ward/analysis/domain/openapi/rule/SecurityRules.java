@@ -10,7 +10,6 @@ import java.util.Optional;
 
 /** The rule that ties every security requirement to a security scheme. */
 final class SecurityRules {
-
   private static final String LOCATION = "\"security\" values must match a scheme defined in the ";
 
   private SecurityRules() {}
@@ -32,13 +31,19 @@ final class SecurityRules {
                       .forEach(
                           item ->
                               findings.addAll(
-                                  requirement(document, document.resolve(item), "Operation"))));
+                                  requirement(document, document.resolve(item), "Operation")
+                              )
+                      )
+          );
     }
     return findings;
   }
 
   private static List<OpenApiFinding> requirement(
-      final OpenApiDocument document, final DocNode requirement, final String owner) {
+      final OpenApiDocument document,
+      final DocNode requirement,
+      final String owner
+  ) {
     final List<OpenApiFinding> findings = new ArrayList<>();
     if (!valid(requirement)) {
       return findings;
@@ -51,13 +56,17 @@ final class SecurityRules {
       if (scheme.isEmpty()) {
         findings.add(
             Findings.atValue(
-                entry.value(), owner + " " + LOCATION + "\"components.securitySchemes\" object."));
+                entry.value(),
+                owner + " " + LOCATION + "\"components.securitySchemes\" object."
+            )
+        );
         continue;
       }
       for (final DocNode scope : entry.value().items()) {
         if (!scopeDefined(document, scope.text(), scheme.get())) {
           findings.add(
-              Findings.atValue(scope, "\"" + scope.text() + "\" must be listed among scopes."));
+              Findings.atValue(scope, "\"" + scope.text() + "\" must be listed among scopes.")
+          );
         }
       }
     }
@@ -73,11 +82,15 @@ final class SecurityRules {
                 entry ->
                     entry.value().kind() == DocNode.Kind.ARRAY
                         && entry.value().items().stream()
-                            .allMatch(item -> item.kind() == DocNode.Kind.STRING));
+                            .allMatch(item -> item.kind() == DocNode.Kind.STRING)
+            );
   }
 
   private static boolean scopeDefined(
-      final OpenApiDocument document, final String scope, final DocNode scheme) {
+      final OpenApiDocument document,
+      final String scope,
+      final DocNode scheme
+  ) {
     final Optional<DocNode> flows = document.get(scheme, "flows", View.RESOLVED);
     if (flows.isEmpty() || flows.get().kind() != DocNode.Kind.OBJECT) {
       return false;
@@ -90,6 +103,7 @@ final class SecurityRules {
                     .get(flow, "scopes", View.RESOLVED)
                     .filter(scopes -> scopes.kind() == DocNode.Kind.OBJECT)
                     .filter(scopes -> scopes.get(scope).isPresent())
-                    .isPresent());
+                    .isPresent()
+        );
   }
 }

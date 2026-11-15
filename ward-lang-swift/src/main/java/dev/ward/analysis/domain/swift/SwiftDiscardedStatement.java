@@ -10,7 +10,6 @@ import java.util.Set;
  * return or the single expression of a closure, function or getter body, which return it.
  */
 final class SwiftDiscardedStatement {
-
   private static final String STATEMENT = "statement";
   private static final String STATEMENTS = "statements";
   private static final String STATEMENT_LIST = "statements_impl";
@@ -59,7 +58,9 @@ final class SwiftDiscardedStatement {
   }
 
   private static List<SyntaxNode> directStatements(
-      final SyntaxNode node, final List<SyntaxNode> out) {
+      final SyntaxNode node,
+      final List<SyntaxNode> out
+  ) {
     for (final SyntaxNode child : node.children()) {
       if (STATEMENT.equals(child.kind())) {
         out.add(child);

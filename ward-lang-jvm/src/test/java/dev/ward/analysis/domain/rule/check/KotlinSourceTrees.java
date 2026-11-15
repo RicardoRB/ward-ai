@@ -7,7 +7,6 @@ import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 
 /** Parses Kotlin source with the real frontend, for the ktlint check tests. */
 final class KotlinSourceTrees {
-
   private static final String FILE = "Sample.kt";
 
   private KotlinSourceTrees() {}

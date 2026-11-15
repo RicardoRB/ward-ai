@@ -14,7 +14,6 @@ import java.util.Set;
  * set.
  */
 public final class NodePromiseRejectCheck implements RuleCheck {
-
   private static final String CALL_ARGUMENTS = "arguments";
   private static final String ARGUMENT = "argument";
   private static final String ARGUMENT_LIST = "argumentList";
@@ -110,7 +109,8 @@ public final class NodePromiseRejectCheck implements RuleCheck {
         .findFirst()
         .flatMap(
             argument ->
-                argument.children().stream().filter(c -> SINGLE.equals(c.kind())).findFirst());
+                argument.children().stream().filter(c -> SINGLE.equals(c.kind())).findFirst()
+        );
   }
 
   /** The port of ESLint {@code couldBeError} to the expression tree. */
@@ -131,7 +131,7 @@ public final class NodePromiseRejectCheck implements RuleCheck {
       return lastSingle(children.get(OPERATOR));
     }
     return children.get(LEFT).children().isEmpty()
-            && PREFIXES.contains(LeafText.of(children.get(LEFT)))
+        && PREFIXES.contains(LeafText.of(children.get(LEFT)))
         || operator(children);
   }
 

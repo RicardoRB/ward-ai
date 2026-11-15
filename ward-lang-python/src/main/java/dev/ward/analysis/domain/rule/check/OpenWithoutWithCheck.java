@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * {@code open} is checked, not the other resource-returning calls Pylint lists.
  */
 public final class OpenWithoutWithCheck implements RuleCheck {
-
   private static final Set<String> CALLS = Set.of("atom_expr");
   private static final Pattern OPEN = Pattern.compile("^open\\(.*");
   private static final Set<String> WITH_ITEMS = Set.of("with_item", "with_stmt");

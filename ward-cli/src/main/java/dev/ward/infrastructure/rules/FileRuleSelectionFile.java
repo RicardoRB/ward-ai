@@ -69,7 +69,8 @@ public final class FileRuleSelectionFile implements RuleSelectionFile {
     throw new WardException(
         toml.errors().stream()
             .map(FileRuleSelectionFile::describe)
-            .collect(Collectors.joining("\n")));
+            .collect(Collectors.joining("\n"))
+    );
   }
 
   private static String describe(final TomlParseError error) {

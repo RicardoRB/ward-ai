@@ -18,7 +18,6 @@ import org.tomlj.TomlParseResult;
  * and {@code allowlist}, beside {@code check}, {@code description} and {@code message}.
  */
 final class SecretScanFactory {
-
   private static final Set<String> KEYS =
       Set.of(
           "check",
@@ -31,7 +30,8 @@ final class SecretScanFactory {
           "secret-group",
           "span",
           "allowlists",
-          "allowlist");
+          "allowlist"
+      );
   private static final String DEFAULT_ALLOWLIST = "default";
   private static final String SPAN = "span";
 
@@ -58,7 +58,8 @@ final class SecretScanFactory {
             group,
             multiline(toml),
             SecretAllowlistParser.parse(toml.getArray("allowlists")),
-            TomlValues.required(toml, "message"));
+            TomlValues.required(toml, "message")
+        );
     return new SecretScanCheck(rule, global(toml));
   }
 

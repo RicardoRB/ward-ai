@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks the inferred and unknown native Swift types against the scenarios of the spec. */
 final class SwiftTypeInferenceTest {
-
   @Test
   void initializersInferDefaultTypesAndDeclaredConstructors() {
     final SwiftTypeProject.Project project =
@@ -18,7 +17,9 @@ final class SwiftTypeInferenceTest {
             Map.of(
                 "App/Values.swift",
                 "class Session {}\nlet count = 1\nlet title = \"x\"\nlet ratio = 1.5\n"
-                    + "let flag = true\nlet session = Session()\n"));
+                    + "let flag = true\nlet session = Session()\n"
+            )
+        );
 
     assertThat(SwiftTypeProject.binding(project, "App/Values.swift", "count"))
         .map(TypeRef::name)
@@ -44,12 +45,14 @@ final class SwiftTypeInferenceTest {
             Map.of(
                 "App/Net.swift",
                 "import Foundation\nimport UIKit\nlet date: Date = Date()\n"
-                    + "class Screen: UIViewController {}\n"));
+                    + "class Screen: UIViewController {}\n"
+            )
+        );
 
     assertThat(SwiftTypeProject.binding(project, "App/Net.swift", "date")).isEmpty();
     assertThat(
-            SwiftTypeProject.supertypesOf(
-                project, "App/Net.swift", "class_declaration", "classScreen"))
+        SwiftTypeProject.supertypesOf(project, "App/Net.swift", "class_declaration", "classScreen")
+    )
         .isEmpty();
   }
 
@@ -58,9 +61,14 @@ final class SwiftTypeInferenceTest {
     final SwiftTypeProject.Project project =
         SwiftTypeProject.project(
             Map.of(
-                "Core/Logger.swift", "struct Logger {}\n",
-                "Util/Logger.swift", "struct Logger {}\n",
-                "App/Use.swift", "import Core\nimport Util\nlet log: Logger = Logger()\n"));
+                "Core/Logger.swift",
+                "struct Logger {}\n",
+                "Util/Logger.swift",
+                "struct Logger {}\n",
+                "App/Use.swift",
+                "import Core\nimport Util\nlet log: Logger = Logger()\n"
+            )
+        );
 
     assertThat(SwiftTypeProject.binding(project, "App/Use.swift", "log")).isEmpty();
   }
@@ -80,7 +88,8 @@ final class SwiftTypeInferenceTest {
               assertThat(array.arguments())
                   .singleElement()
                   .satisfies(element -> assertThat(element.name()).isEqualTo("String"));
-            });
+            }
+        );
   }
 
   @Test
@@ -99,7 +108,9 @@ final class SwiftTypeInferenceTest {
                 "App/Local.swift",
                 "func run() {\n  struct Temp {}\n  let t: Temp = Temp()\n}\n",
                 "App/Other.swift",
-                "let t: Temp = Temp()\n"));
+                "let t: Temp = Temp()\n"
+            )
+        );
 
     assertThat(SwiftTypeProject.binding(project, "App/Local.swift", "t")).isEmpty();
     assertThat(SwiftTypeProject.binding(project, "App/Other.swift", "t")).isEmpty();

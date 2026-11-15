@@ -26,9 +26,7 @@ class TypeFactsFixtureTest {
   @Test
   void buildsFactsFromATypesJsonNextToAFixture() throws IOException {
     final Path file =
-        Files.writeString(
-            folder.resolve("types.json"),
-            """
+        Files.writeString(folder.resolve("types.json"), """
             {
               "3:12": {"scopes": ["org.jspecify.annotations.NullMarked"]},
               "5:9-5:25": {
@@ -55,8 +53,7 @@ class TypeFactsFixtureTest {
   @Test
   void readsTheAnnotationsOfACallTargetAndTheMembersOfAType() {
     final UnitTypeFacts facts =
-        TypeFactsFixture.parse(
-            """
+        TypeFactsFixture.parse("""
             {
               "5:9": {
                 "call": {"declaring": {"name": "a.Api"}, "name": "run",
@@ -91,7 +88,8 @@ class TypeFactsFixtureTest {
             field -> {
               assertThat(field.isStatic()).isTrue();
               assertThat(field.annotations()).containsExactly("a.Nullable");
-            });
+            }
+        );
     assertThat(members.ancestors()).extracting(TypeRef::name).containsExactly("java.lang.Object");
     assertThat(members.annotations()).containsExactly("a.ThreadSafe");
   }
@@ -99,8 +97,7 @@ class TypeFactsFixtureTest {
   @Test
   void readsTheInheritedMembersOfAType() {
     final UnitTypeFacts facts =
-        TypeFactsFixture.parse(
-            """
+        TypeFactsFixture.parse("""
             {"5:9-5:25": {"members": {
               "inheritedFields": [{"name": "count", "static": true}],
               "inheritedMethods": [{"declaring": {"name": "app.Base"}, "name": "run",
@@ -133,8 +130,7 @@ class TypeFactsFixtureTest {
   @Test
   void readsTheElementValuesOfAnnotations() {
     final UnitTypeFacts facts =
-        TypeFactsFixture.parse(
-            """
+        TypeFactsFixture.parse("""
             {"5:9-5:25": {
               "call": {"declaring": {"name": "A"}, "name": "m",
                        "annotationValues": {"X#v": ["a", "b"], "X#w": "c"},

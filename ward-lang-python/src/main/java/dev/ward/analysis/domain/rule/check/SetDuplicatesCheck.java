@@ -13,7 +13,6 @@ import java.util.Set;
  * add nothing. A display with a colon is a dictionary, and a comprehension is not judged.
  */
 public final class SetDuplicatesCheck implements RuleCheck {
-
   private static final Set<String> ATOMS = Set.of("atom");
   private static final String OPEN = "{";
   private static final String CLOSE = "}";

@@ -53,7 +53,8 @@ public final class StringRangeCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(EXPRESSION)).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(call -> outOfRange(call, types))
@@ -73,7 +74,7 @@ public final class StringRangeCheck implements RuleCheck {
             .constant(parts.get(0).span())
             .map(ConstantValue::value)
             .filter(String.class::isInstance)
-            .map(value -> ((String) value).length());
+            .map(value -> ((String)value).length());
     final String method =
         invoked.get().children().stream()
             .filter(c -> "identifier".equals(c.kind()))
@@ -109,7 +110,7 @@ public final class StringRangeCheck implements RuleCheck {
         .constant(argument.span())
         .map(ConstantValue::value)
         .filter(Number.class::isInstance)
-        .map(value -> ((Number) value).longValue());
+        .map(value -> ((Number)value).longValue());
   }
 
   private static List<SyntaxNode> arguments(final SyntaxNode invoked) {

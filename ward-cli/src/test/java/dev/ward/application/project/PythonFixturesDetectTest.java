@@ -22,7 +22,8 @@ class PythonFixturesDetectTest {
             project -> {
               assertThat(project.buildTool()).isEqualTo(BuildTool.UV);
               assertThat(project.language()).isEqualTo(Language.PYTHON);
-            });
+            }
+        );
   }
 
   @Test
@@ -39,7 +40,8 @@ class PythonFixturesDetectTest {
               assertThat(project.buildTool()).isEqualTo(BuildTool.PIP);
               assertThat(project.language()).isEqualTo(Language.PYTHON);
               assertThat(project.framework()).isEqualTo(Framework.NONE);
-            });
+            }
+        );
     assertThat(detector.detect(FIXTURES.resolve("python-requirements")))
         .hasValueSatisfying(project -> assertThat(project.buildTool()).isEqualTo(BuildTool.PIP));
   }

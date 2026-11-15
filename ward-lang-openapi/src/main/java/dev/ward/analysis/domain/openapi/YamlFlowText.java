@@ -2,7 +2,6 @@ package dev.ward.analysis.domain.openapi;
 
 /** Scans the plain scalars of the flow context, which end at a flow indicator. */
 final class YamlFlowText {
-
   private static final String INDICATORS = ",[]{}";
 
   private final YamlCursor cursor;

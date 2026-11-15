@@ -9,7 +9,6 @@ import java.util.Map;
 /** Lists the files of a project that the formatters may change, with their settings. */
 @FunctionalInterface
 public interface FormatTargets {
-
   /**
    * Lists the selected files, sorted by path, with each file's resolved settings.
    *

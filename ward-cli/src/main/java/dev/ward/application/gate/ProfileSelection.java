@@ -25,7 +25,8 @@ final class ProfileSelection {
       final WardConfigurationReader configurationReader,
       final Project project,
       final List<String> requestedProfiles,
-      final Set<String> excludedGates) {
+      final Set<String> excludedGates
+  ) {
     final WardConfiguration configuration =
         configurationReader.read(project.root().resolve(WardConfiguration.FILE_NAME));
     final List<String> profiles = EditProfile.withoutEmptyEdit(configuration, requestedProfiles);
@@ -42,7 +43,8 @@ final class ProfileSelection {
       throw new WardException(
           "No quality gates are enabled in "
               + WardConfiguration.FILE_NAME
-              + "; refusing to report a pass without checking anything.");
+              + "; refusing to report a pass without checking anything."
+      );
     }
     return Optional.of(selected);
   }

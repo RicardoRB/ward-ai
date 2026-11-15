@@ -49,7 +49,8 @@ class NodeDependencyEdgesTest {
             "src/app.ts->packages/lib/src/index.ts",
             "src/app.ts->packages/lib/src/feature/one.ts",
             "src/legacy.js->src/data/index.ts",
-            "src/legacy.js->src/lazy.js");
+            "src/legacy.js->src/lazy.js"
+        );
   }
 
   @Test
@@ -86,12 +87,16 @@ class NodeDependencyEdgesTest {
                 new FrontendSupport(
                     AnalysisLanguage.TYPESCRIPT,
                     new AntlrLanguageFrontend(),
-                    Set.of(RuleCapability.SYNTAX)),
+                    Set.of(RuleCapability.SYNTAX)
+                ),
                 new FrontendSupport(
                     AnalysisLanguage.JAVASCRIPT,
                     new AntlrLanguageFrontend(),
-                    Set.of(RuleCapability.SYNTAX))),
-            supports);
+                    Set.of(RuleCapability.SYNTAX)
+                )
+            ),
+            supports
+        );
     return analysis.analyze(units, NO_CACHE).graph().edges().stream()
         .map(edge -> edge.from() + "->" + edge.to())
         .sorted()
@@ -121,11 +126,13 @@ class NodeDependencyEdgesTest {
     try {
       if (TYPESCRIPT_EXTENSIONS.contains(extension)) {
         return Optional.of(
-            new SourceUnit(path, AnalysisLanguage.TYPESCRIPT, Files.readString(file)));
+            new SourceUnit(path, AnalysisLanguage.TYPESCRIPT, Files.readString(file))
+        );
       }
       if (JAVASCRIPT_EXTENSIONS.contains(extension)) {
         return Optional.of(
-            new SourceUnit(path, AnalysisLanguage.JAVASCRIPT, Files.readString(file)));
+            new SourceUnit(path, AnalysisLanguage.JAVASCRIPT, Files.readString(file))
+        );
       }
       return Optional.empty();
     } catch (IOException e) {

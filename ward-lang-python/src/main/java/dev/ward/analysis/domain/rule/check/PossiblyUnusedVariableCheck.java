@@ -23,7 +23,6 @@ import java.util.Set;
  * scope, so it does not count for the enclosing function.
  */
 public final class PossiblyUnusedVariableCheck implements RuleCheck {
-
   private static final Set<String> CALLS = Set.of("atom_expr");
   private static final String LOCALS_CALL = "locals()";
 
@@ -51,7 +50,11 @@ public final class PossiblyUnusedVariableCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes();
     final List<Span> calls = localsCalls(root);
     final List<RuleMatch> found = new ArrayList<>();
@@ -65,7 +68,10 @@ public final class PossiblyUnusedVariableCheck implements RuleCheck {
   }
 
   private List<RuleMatch> reportedIn(
-      final Scope scope, final UnitScopes scopes, final List<Span> owned) {
+      final Scope scope,
+      final UnitScopes scopes,
+      final List<Span> owned
+  ) {
     final List<RuleMatch> found = new ArrayList<>();
     for (final Binding binding : scope.bindings()) {
       if (UnusedBindings.isUnused(binding, scopes) && readLater(binding, owned)) {
@@ -90,7 +96,10 @@ public final class PossiblyUnusedVariableCheck implements RuleCheck {
 
   /** The calls whose innermost enclosing scope is {@code scope}. */
   private static List<Span> ownedCalls(
-      final List<Span> calls, final UnitScopes scopes, final Scope scope) {
+      final List<Span> calls,
+      final UnitScopes scopes,
+      final Scope scope
+  ) {
     return calls.stream().filter(call -> innermostId(scopes, call) == scope.id()).toList();
   }
 
@@ -99,7 +108,8 @@ public final class PossiblyUnusedVariableCheck implements RuleCheck {
         .filter(candidate -> contains(candidate.span(), call))
         .max(
             Comparator.comparingInt((Scope candidate) -> candidate.span().startOffset())
-                .thenComparingInt(Scope::id))
+                .thenComparingInt(Scope::id)
+        )
         .map(Scope::id)
         .orElse(Scope.NO_PARENT);
   }

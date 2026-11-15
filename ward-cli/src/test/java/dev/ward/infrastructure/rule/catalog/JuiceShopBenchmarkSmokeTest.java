@@ -33,7 +33,6 @@ import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
  * fails the test: a new finding needs a reading before it is counted.
  */
 class JuiceShopBenchmarkSmokeTest {
-
   private static final String REPORT = "benchmark/juice-shop-report.txt";
   private static final String LABELS = "benchmark/juice-shop-labels.txt";
   private static final String SECURITY = "security";
@@ -87,7 +86,8 @@ class JuiceShopBenchmarkSmokeTest {
         .filter(rule -> SECURITY.equals(rule.category()))
         .filter(
             rule ->
-                rule.id().startsWith(LANGUAGE_PREFIX) || rule.id().startsWith(JAVASCRIPT_PREFIX))
+                rule.id().startsWith(LANGUAGE_PREFIX) || rule.id().startsWith(JAVASCRIPT_PREFIX)
+        )
         .sorted((left, right) -> left.id().compareTo(right.id()))
         .toList();
   }
@@ -105,7 +105,9 @@ class JuiceShopBenchmarkSmokeTest {
       final RuleRunResult result,
       final int files,
       final List<Place> found,
-      final Map<Place, String> labels) {
+      final Map<Place,
+      String> labels
+  ) {
     final long failed =
         result.executionErrors().stream()
             .filter(error -> error.path() != null && error.reason().contains(SYNTAX))
@@ -122,7 +124,11 @@ class JuiceShopBenchmarkSmokeTest {
   }
 
   private static String line(
-      final String rule, final List<Place> found, final Map<Place, String> labels) {
+      final String rule,
+      final List<Place> found,
+      final Map<Place,
+      String> labels
+  ) {
     final Map<String, Integer> counts = new LinkedHashMap<>();
     for (final String label : List.of("tp", "fp", "un")) {
       counts.put(label, 0);
@@ -136,7 +142,8 @@ class JuiceShopBenchmarkSmokeTest {
             counts.values().stream().mapToInt(Integer::intValue).sum(),
             counts.get("tp"),
             counts.get("fp"),
-            counts.get("un"));
+            counts.get("un")
+        );
   }
 
   private static Map<Place, String> labels() throws IOException {

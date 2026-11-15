@@ -109,10 +109,12 @@ class NativeHookRepositoryTest {
         new NativeHookCommand(
             new HookChecks(
                 HookCheckFixtures.checks(executor),
-                new HookScope(detector, directory -> true, new FileSystemProjectPaths())),
+                new HookScope(detector, directory -> true, new FileSystemProjectPaths())
+            ),
             new ForyJsonCodec(),
             Set.of(new CodexIntegration()),
-            new ByteArrayInputStream(payload.getBytes(StandardCharsets.UTF_8)));
+            new ByteArrayInputStream(payload.getBytes(StandardCharsets.UTF_8))
+        );
     final CommandLine cli = new CommandLine(command);
     cli.setOut(new PrintWriter(out, true));
     cli.setErr(new PrintWriter(err, true));

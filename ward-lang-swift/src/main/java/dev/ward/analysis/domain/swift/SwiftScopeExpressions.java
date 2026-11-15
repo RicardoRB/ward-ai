@@ -7,7 +7,6 @@ import java.util.Set;
 
 /** Handles the expressions of Swift: assignments, member access and names. */
 final class SwiftScopeExpressions {
-
   private static final Set<String> COMPOUND =
       Set.of("+=", "-=", "*=", "/=", "%=", "&=", "|=", "^=", "<<=", ">>=", "&&=", "||=", "??=");
   private static final String IDENTIFIER = "declaration_identifier";
@@ -61,8 +60,8 @@ final class SwiftScopeExpressions {
   static SyntaxNode plainName(final SyntaxNode node) {
     SyntaxNode current = node;
     while (("prefix_expression".equals(current.kind())
-            || "postfix_expression".equals(current.kind())
-            || PRIMARY.equals(current.kind()))
+        || "postfix_expression".equals(current.kind())
+        || PRIMARY.equals(current.kind()))
         && current.children().size() == 1) {
       current = current.children().get(0);
     }

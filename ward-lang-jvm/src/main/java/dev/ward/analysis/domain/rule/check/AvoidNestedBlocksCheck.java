@@ -12,7 +12,6 @@ import java.util.Set;
  * the only statement of a switch case is allowed when {@code allowInSwitchCase} holds.
  */
 public final class AvoidNestedBlocksCheck implements RuleCheck {
-
   private static final String BLOCK = "block";
   private static final String STATEMENT = "statement";
   private static final String BLOCK_STATEMENT = "blockStatement";
@@ -57,8 +56,8 @@ public final class AvoidNestedBlocksCheck implements RuleCheck {
       return false;
     }
     return up.get(up.size() - SWITCH_GROUP_DEPTH).children().stream()
-            .filter(child -> BLOCK_STATEMENT.equals(child.kind()))
-            .count()
+        .filter(child -> BLOCK_STATEMENT.equals(child.kind()))
+        .count()
         == 1;
   }
 }

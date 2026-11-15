@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** Scenarios of the command and path rules, run through the rule engine with full paths. */
 final class JavaCommandAndPathRuleTest {
-
   private static final String COMMAND = "ward:java/command-injection";
   private static final String PATH = "ward:java/path-injection";
 
@@ -28,7 +27,8 @@ final class JavaCommandAndPathRuleTest {
                     Runtime.getRuntime().exec(cmd);
                   }
                 }
-                """);
+                """
+        );
     assertThat(found).hasSize(1);
     assertThat(JavaTaintFixtures.messages(found.get(0).path()))
         .last()
@@ -49,7 +49,8 @@ final class JavaCommandAndPathRuleTest {
                     new ProcessBuilder("sh", "-c", cmd).start();
                   }
                 }
-                """);
+                """
+        );
     assertThat(found).hasSize(1);
   }
 
@@ -57,9 +58,7 @@ final class JavaCommandAndPathRuleTest {
   @Test
   void springRequestParamReachesTheFileConstructor() {
     final List<AnalysisFinding> found =
-        JavaSecurityRuleRun.findings(
-            PATH,
-            """
+        JavaSecurityRuleRun.findings(PATH, """
             import java.io.File;
             import org.springframework.web.bind.annotation.RequestParam;
             class Files {
@@ -72,7 +71,8 @@ final class JavaCommandAndPathRuleTest {
     assertThat(JavaTaintFixtures.messages(found.get(0).path()))
         .containsExactly(
             "source: org.springframework.web.bind.annotation.RequestParam",
-            "sink: <init> argument 1");
+            "sink: <init> argument 1"
+        );
   }
 
   /** Every bundled Java specification file loads, so no entry is malformed. */
@@ -84,7 +84,9 @@ final class JavaCommandAndPathRuleTest {
                 "taint/java/sources.toml",
                 "taint/java/sql.toml",
                 "taint/java/command.toml",
-                "taint/java/path.toml"));
+                "taint/java/path.toml"
+            )
+        );
     assertThat(spec.sources()).isNotEmpty();
     assertThat(spec.sinks()).isNotEmpty();
     assertThat(spec.sanitizers()).isNotEmpty();

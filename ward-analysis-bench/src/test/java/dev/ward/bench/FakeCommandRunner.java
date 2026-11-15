@@ -8,7 +8,6 @@ import java.util.List;
 
 /** Records every command and answers from canned results, so tests never start a real process. */
 final class FakeCommandRunner implements CommandRunner {
-
   private static final long ELAPSED_NANOS = 2_000_000L;
   private static final long RSS_KB = 1_024L;
 

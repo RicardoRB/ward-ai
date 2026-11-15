@@ -33,7 +33,8 @@ final class PartialGates {
       final WardConfiguration selected,
       final PartialCheckPlan plan,
       final QualityGateFactory factory,
-      final Project project) {
+      final Project project
+  ) {
     final Map<String, GateConfiguration> executed = new LinkedHashMap<>();
     selected
         .checks()
@@ -42,7 +43,8 @@ final class PartialGates {
               if (!skipped(name, gate, plan)) {
                 executed.put(name, narrowed(gate, plan.gates().get(name)));
               }
-            });
+            }
+        );
     final Iterator<QualityGate> created =
         factory
             .create(new WardConfiguration(selected.version(), executed), project, focus(plan))
@@ -55,8 +57,12 @@ final class PartialGates {
                 gates.add(
                     skipped(name, gate, plan)
                         ? new TypedQualityGate(
-                            gate.type(), new SkippedQualityGate(name, NOT_AFFECTED))
-                        : created.next()));
+                            gate.type(),
+                            new SkippedQualityGate(name, NOT_AFFECTED)
+                        )
+                        : created.next()
+                )
+        );
     return gates;
   }
 
@@ -73,7 +79,10 @@ final class PartialGates {
 
   /** Labels each result with the plan's decision and records the edited paths. */
   static CheckReport scoped(
-      final CheckReport report, final PartialCheckPlan plan, final List<Path> paths) {
+      final CheckReport report,
+      final PartialCheckPlan plan,
+      final List<Path> paths
+  ) {
     final List<GateResult> results =
         report.results().stream()
             .map(result -> result.withScope(scope(plan.gates().get(result.name()))))
@@ -90,17 +99,23 @@ final class PartialGates {
               if (!gate.focus().isEmpty()) {
                 focus.put(name, gate.focus());
               }
-            });
+            }
+        );
     return focus;
   }
 
   private static boolean skipped(
-      final String name, final GateConfiguration gate, final PartialCheckPlan plan) {
+      final String name,
+      final GateConfiguration gate,
+      final PartialCheckPlan plan
+  ) {
     return gate.enabled() && plan.gates().get(name).scope() == PartialCheckPlan.Scope.SKIP;
   }
 
   private static GateConfiguration narrowed(
-      final GateConfiguration gate, final PartialCheckPlan.GatePlan plan) {
+      final GateConfiguration gate,
+      final PartialCheckPlan.GatePlan plan
+  ) {
     if (plan.scope() != PartialCheckPlan.Scope.NARROW
         || SupportedQualityGates.SECRETS.equals(gate.type())) {
       return gate;
@@ -129,7 +144,8 @@ final class PartialGates {
         gate.vulnerabilities(),
         gate.license(),
         gate.apiCompat(),
-        null);
+        null
+    );
   }
 
   private static GateScope scope(final PartialCheckPlan.GatePlan plan) {
@@ -150,7 +166,8 @@ final class PartialGates {
             path ->
                 path.startsWith(absoluteRoot)
                     ? absoluteRoot.relativize(path).toString().replace('\\', '/')
-                    : path.toString())
+                    : path.toString()
+        )
         .toList();
   }
 }

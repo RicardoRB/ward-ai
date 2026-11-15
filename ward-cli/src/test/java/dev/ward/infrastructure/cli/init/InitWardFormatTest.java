@@ -25,7 +25,6 @@ import org.junit.jupiter.api.io.TempDir;
  * Init writes the {@code ward-format} gate and, without one, the {@code .editorconfig} it reads.
  */
 class InitWardFormatTest {
-
   @TempDir Path root;
 
   @Test
@@ -91,7 +90,9 @@ class InitWardFormatTest {
             .withSwiftPorts(
                 new SwiftPorts(
                     new XcodebuildSchemes(new FakeCommandExecutor(), new ForyJsonCodec()),
-                    new FileSystemSwiftSourceDirectories()));
+                    new FileSystemSwiftSourceDirectories()
+                )
+            );
 
     final int exit = init.run("", "--preset", "standard", "--yes");
 
@@ -107,7 +108,8 @@ class InitWardFormatTest {
     Files.writeString(
         root.resolve("pom.xml"),
         "<project><modelVersion>4.0.0</modelVersion><groupId>g</groupId>"
-            + "<artifactId>a</artifactId><version>1</version></project>\n");
+            + "<artifactId>a</artifactId><version>1</version></project>\n"
+    );
     Files.createDirectories(root.resolve("src/main/java/shop"));
     Files.writeString(root.resolve("src/main/java/shop/App.java"), "package shop;\nclass App {}\n");
   }
@@ -115,7 +117,8 @@ class InitWardFormatTest {
   private InitCommandFixture init() throws IOException {
     return InitCommandFixture.repository(
         root,
-        new JvmBuildToolConfigurator(new PomToolConfigurator(), new GradleToolConfigurator()));
+        new JvmBuildToolConfigurator(new PomToolConfigurator(), new GradleToolConfigurator())
+    );
   }
 
   private static SwiftToolchainInspection mac() {

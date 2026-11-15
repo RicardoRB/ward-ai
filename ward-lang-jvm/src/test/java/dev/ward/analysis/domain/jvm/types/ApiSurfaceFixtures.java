@@ -24,7 +24,8 @@ final class ApiSurfaceFixtures {
         .read(
             units,
             new AntlrLanguageFrontend(),
-            name -> ClassLoader.getSystemResource(name.replace('.', '/') + ".class") != null);
+            name -> ClassLoader.getSystemResource(name.replace('.', '/') + ".class") != null
+        );
   }
 
   static Optional<ApiType> type(final List<ApiType> types, final String name) {

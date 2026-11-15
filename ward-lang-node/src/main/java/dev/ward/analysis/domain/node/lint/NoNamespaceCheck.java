@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
  * {@code declare} namespace (with its contents) is allowed when {@code allowDeclarations} is set.
  */
 public final class NoNamespaceCheck implements RuleCheck {
-
   private static final String NAMESPACE = "namespaceDeclaration";
   private static final String DECLARE = "declare";
   private static final Pattern GLOBAL = Pattern.compile("^(declare)?global\\b");
@@ -38,7 +37,10 @@ public final class NoNamespaceCheck implements RuleCheck {
    * @param message the message of each finding
    */
   public NoNamespaceCheck(
-      final boolean allowDeclarations, final boolean allowDefinitionFiles, final String message) {
+      final boolean allowDeclarations,
+      final boolean allowDefinitionFiles,
+      final String message
+  ) {
     this.allowDeclarations = allowDeclarations;
     this.allowDefinitionFiles = allowDefinitionFiles;
     this.message = Objects.requireNonNull(message, "message");
@@ -52,7 +54,10 @@ public final class NoNamespaceCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     if (allowDefinitionFiles && isDefinitionFile(unit.path())) {
       return List.of();
     }
@@ -88,7 +93,8 @@ public final class NoNamespaceCheck implements RuleCheck {
         .anyMatch(
             outer ->
                 outer.startOffset() <= inner.startOffset()
-                    && inner.endOffset() <= outer.endOffset());
+                    && inner.endOffset() <= outer.endOffset()
+        );
   }
 
   /** Reports whether the file is a TypeScript definition file, as typescript-eslint reads it. */

@@ -8,7 +8,6 @@ import java.util.Set;
 
 /** The untracked files that Git ignores under a project root, which Ward does not read. */
 public final class GitIgnoredFiles {
-
   private GitIgnoredFiles() {}
 
   /**
@@ -43,7 +42,8 @@ public final class GitIgnoredFiles {
     final CommandResult result =
         executor.execute(
             List.of("git", "ls-files", "-o", "-i", "--exclude-standard", "--directory", "-z"),
-            root);
+            root
+        );
     if (result.executionError() != null || result.exitCode() != 0) {
       return Set.of();
     }

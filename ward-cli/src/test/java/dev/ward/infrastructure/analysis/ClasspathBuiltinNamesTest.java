@@ -8,7 +8,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class ClasspathBuiltinNamesTest {
-
   @Test
   void pythonProvidesItsBuiltinsAndModuleNames() {
     assertThat(ClasspathBuiltinNames.python().of(Set.of()))

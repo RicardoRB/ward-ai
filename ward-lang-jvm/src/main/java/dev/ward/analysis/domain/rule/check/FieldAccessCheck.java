@@ -14,7 +14,6 @@ import java.util.Set;
  * of it, and a field a constructor reads before it writes it.
  */
 public final class FieldAccessCheck implements UnitCheck {
-
   /** What the check looks for. */
   public enum Mode {
     /** A private field that is read and never written. */
@@ -116,7 +115,8 @@ public final class FieldAccessCheck implements UnitCheck {
   private void firstReads(
       final FieldAccesses.Member constructor,
       final Set<String> candidates,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     final Set<String> seen = new HashSet<>();
     for (final FieldAccesses.Access access : constructor.accesses()) {
       if (candidates.contains(access.field())
@@ -132,7 +132,9 @@ public final class FieldAccessCheck implements UnitCheck {
   }
 
   private static boolean neverWritten(
-      final FieldAccesses.Field field, final FieldAccesses accesses) {
+      final FieldAccesses.Field field,
+      final FieldAccesses accesses
+  ) {
     return eligible(field)
         && !field.initialized()
         && accesses.accessesTo(field.name()).stream()
@@ -140,7 +142,9 @@ public final class FieldAccessCheck implements UnitCheck {
   }
 
   private static List<FieldAccesses.Access> reads(
-      final FieldAccesses.Field field, final FieldAccesses accesses) {
+      final FieldAccesses.Field field,
+      final FieldAccesses accesses
+  ) {
     return accesses.accessesTo(field.name()).stream()
         .filter(access -> access.use() == FieldAccesses.Use.READ)
         .toList();

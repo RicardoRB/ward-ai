@@ -7,7 +7,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class JavaTaintAcrossMethodsTest {
-
   private static List<TaintFinding> run(final String members) {
     return JavaTaintFixtures.runFile("class Flow {\n" + members + "\n}\n");
   }
@@ -26,7 +25,8 @@ class JavaTaintAcrossMethodsTest {
     final List<TaintFinding> found =
         run(
             "String a() { return source(); }\nString b() { String x = a(); return x; }\n"
-                + "void run() { sink(this.b()); }");
+                + "void run() { sink(this.b()); }"
+        );
 
     assertThat(found).hasSize(1);
   }
@@ -59,9 +59,11 @@ class JavaTaintAcrossMethodsTest {
   @Test
   void overloadsWithOneArityAreNotFollowed() {
     assertThat(
-            run(
-                "String read() { return source(); }\nclass Other { String read() { return \"\"; } }\n"
-                    + "void run() { sink(read()); }"))
+        run(
+            "String read() { return source(); }\nclass Other { String read() { return \"\"; } }\n"
+                + "void run() { sink(read()); }"
+        )
+    )
         .isEmpty();
   }
 

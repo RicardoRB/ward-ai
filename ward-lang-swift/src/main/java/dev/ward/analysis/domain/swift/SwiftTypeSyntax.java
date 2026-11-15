@@ -12,7 +12,6 @@ import java.util.Set;
  * rules do not declare or resolve them.
  */
 final class SwiftTypeSyntax {
-
   /** The separator of nested type names, as in {@code Outer.Inner}. */
   static final String NAME_SEPARATOR = ".";
 
@@ -40,7 +39,12 @@ final class SwiftTypeSyntax {
    * @param inExtension whether an extension body encloses it
    */
   record Visit(
-      SyntaxNode node, String scope, String parentKind, boolean local, boolean inExtension) {}
+      SyntaxNode node,
+      String scope,
+      String parentKind,
+      boolean local,
+      boolean inExtension
+  ) {}
 
   /** The context a node inherits from its ancestors while the walk descends. */
   private record Context(String scope, String parentKind, boolean local, boolean inExtension) {}
@@ -107,10 +111,19 @@ final class SwiftTypeSyntax {
   }
 
   private static void collect(
-      final SyntaxNode node, final Context context, final List<Visit> visits) {
+      final SyntaxNode node,
+      final Context context,
+      final List<Visit> visits
+  ) {
     visits.add(
         new Visit(
-            node, context.scope(), context.parentKind(), context.local(), context.inExtension()));
+            node,
+            context.scope(),
+            context.parentKind(),
+            context.local(),
+            context.inExtension()
+        )
+    );
     final String inner =
         isTypeDeclaration(node.kind())
             ? nameOf(node).map(name -> qualify(context.scope(), name)).orElse(context.scope())
@@ -120,7 +133,8 @@ final class SwiftTypeSyntax {
             inner,
             node.kind(),
             context.local() || LOCAL_BODIES.contains(node.kind()),
-            context.inExtension() || EXTENSION_BODY.equals(node.kind()));
+            context.inExtension() || EXTENSION_BODY.equals(node.kind())
+        );
     for (final SyntaxNode child : node.children()) {
       collect(child, nested, visits);
     }

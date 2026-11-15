@@ -15,7 +15,6 @@ import java.util.Set;
  * requires the packages to be configured. The Serializable requirement is not checked.
  */
 public final class InvalidJavaBeanCheck implements UnitCheck {
-
   private static final String UNIT = "compilationunit";
   private static final String PACKAGE = "packageDeclaration";
   private static final String PACKAGE_PREFIX = "package";
@@ -65,7 +64,8 @@ public final class InvalidJavaBeanCheck implements UnitCheck {
     final List<RuleMatch> reports = new ArrayList<>();
     if (!hasNoArgConstructor(members)) {
       reports.add(
-          CheckSupport.at(clazz.span(), fill(MemberDeclarations.name(clazz) + " constructor")));
+          CheckSupport.at(clazz.span(), fill(MemberDeclarations.name(clazz) + " constructor"))
+      );
     }
     for (final SyntaxNode member : members) {
       if (isBeanField(member)) {

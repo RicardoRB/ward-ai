@@ -68,7 +68,9 @@ final class NodeMatrixFixtureEdits {
                   .matcher(text)
                   .replaceAll(
                       Matcher.quoteReplacement(
-                          "\"" + entry.getKey() + "\": \"" + entry.getValue() + "\""));
+                          "\"" + entry.getKey() + "\": \"" + entry.getValue() + "\""
+                      )
+                  );
           missing.remove(entry.getKey());
         }
       }

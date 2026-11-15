@@ -10,7 +10,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class ValueClassIdentityCheckTest {
-
   private static final ValueClassIdentityCheck CHECK = new ValueClassIdentityCheck("message");
   private static final String EXPRESSION = "expression";
   private static final TypeRef INTEGER = TypeRef.of("java.lang.Integer");
@@ -45,13 +44,15 @@ class ValueClassIdentityCheckTest {
             null,
             java.util.Map.of(),
             java.util.Map.of(),
-            null),
+            null
+        ),
         List.of(),
         List.of(),
         List.of(),
         List.of(),
         null,
-        null);
+        null
+    );
   }
 
   private static List<String> run(final String body, final String node, final SpanFacts facts) {
@@ -83,10 +84,12 @@ class ValueClassIdentityCheckTest {
     assertThat(run(map, made, generic("java.util.IdentityHashMap", STRING, BOOLEAN))).isEmpty();
     final String weakMap = "Object m = new java.util.WeakHashMap<>();";
     assertThat(
-            run(
-                weakMap,
-                "newjava.util.WeakHashMap<>()",
-                generic("java.util.WeakHashMap", INTEGER, STRING)))
+        run(
+            weakMap,
+            "newjava.util.WeakHashMap<>()",
+            generic("java.util.WeakHashMap", INTEGER, STRING)
+        )
+    )
         .hasSize(1);
   }
 
@@ -94,16 +97,19 @@ class ValueClassIdentityCheckTest {
   void identityHashCodeAndMonitorCallsOnAValueBasedClassAreReported() {
     final ParsedFacts hash =
         new ParsedFacts(
-                "class C {\n  int t(Integer n) {\n    return System.identityHashCode(n);\n  }\n}\n")
+            "class C {\n  int t(Integer n) {\n    return System.identityHashCode(n);\n  }\n}\n"
+        )
             .at(
                 EXPRESSION,
                 "System.identityHashCode(n)",
-                call("java.lang.System", "identityHashCode"))
+                call("java.lang.System", "identityHashCode")
+            )
             .at(EXPRESSION, "n", type(INTEGER));
     assertThat(hash.run(CHECK)).containsExactly("3:12");
     final ParsedFacts wait =
         new ParsedFacts(
-                "class C {\n  void t(Integer n) throws Exception {\n    n.wait();\n  }\n}\n")
+            "class C {\n  void t(Integer n) throws Exception {\n    n.wait();\n  }\n}\n"
+        )
             .at(EXPRESSION, "n.wait()", call("java.lang.Object", "wait"))
             .at(EXPRESSION, "n", type(INTEGER));
     assertThat(wait.run(CHECK)).containsExactly("3:5");
@@ -122,24 +128,36 @@ class ValueClassIdentityCheckTest {
     final SpanFacts build =
         withType(
             call("com.google.common.cache.CacheBuilder", "build"),
-            generic("c.Cache", INTEGER, STRING));
+            generic("c.Cache", INTEGER, STRING)
+        );
     assertThat(new ParsedFacts(source).at(EXPRESSION, node, build).run(CHECK))
         .containsExactly("3:12");
     final SpanFacts valueKeyed =
         withType(
             call("com.google.common.cache.CacheBuilder", "build"),
-            generic("c.Cache", STRING, INTEGER));
+            generic("c.Cache", STRING, INTEGER)
+        );
     assertThat(new ParsedFacts(source).at(EXPRESSION, node, valueKeyed).run(CHECK)).isEmpty();
     assertThat(
-            new ParsedFacts(source.replace("weakKeys", "weakValues"))
-                .at(EXPRESSION, node.replace("weakKeys", "weakValues"), valueKeyed)
-                .run(CHECK))
+        new ParsedFacts(source.replace("weakKeys", "weakValues"))
+            .at(EXPRESSION, node.replace("weakKeys", "weakValues"), valueKeyed)
+            .run(CHECK)
+    )
         .hasSize(1);
     assertThat(new ParsedFacts("class C {}").plain(CHECK)).isEmpty();
   }
 
   private static SpanFacts withType(final SpanFacts call, final SpanFacts type) {
     return new SpanFacts(
-        type.type(), null, call.call(), List.of(), List.of(), List.of(), List.of(), null, null);
+        type.type(),
+        null,
+        call.call(),
+        List.of(),
+        List.of(),
+        List.of(),
+        List.of(),
+        null,
+        null
+    );
   }
 }

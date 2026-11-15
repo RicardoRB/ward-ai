@@ -16,16 +16,17 @@ import java.util.regex.Pattern;
  * returns a constant.
  */
 public final class ConstantClampCheck implements UnitCheck {
-
   private static final String EXPRESSION = "expression";
   private static final int FIRST = 1;
   private static final int SECOND = 2;
   private static final Pattern MAX_OF_MIN =
       Pattern.compile(
-          "^Math\\.max\\(\\s*Math\\.min\\(\\s*[^,()]+,\\s*(-?\\d+)\\s*\\)\\s*,\\s*(-?\\d+)\\s*\\)$");
+          "^Math\\.max\\(\\s*Math\\.min\\(\\s*[^,()]+,\\s*(-?\\d+)\\s*\\)\\s*,\\s*(-?\\d+)\\s*\\)$"
+      );
   private static final Pattern MIN_OF_MAX =
       Pattern.compile(
-          "^Math\\.min\\(\\s*Math\\.max\\(\\s*[^,()]+,\\s*(-?\\d+)\\s*\\)\\s*,\\s*(-?\\d+)\\s*\\)$");
+          "^Math\\.min\\(\\s*Math\\.max\\(\\s*[^,()]+,\\s*(-?\\d+)\\s*\\)\\s*,\\s*(-?\\d+)\\s*\\)$"
+      );
 
   private final String message;
 

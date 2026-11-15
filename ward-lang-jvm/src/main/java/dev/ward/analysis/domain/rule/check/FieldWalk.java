@@ -11,7 +11,6 @@ import java.util.Set;
  * reads before it writes.
  */
 final class FieldWalk {
-
   private static final String EXPRESSION = "expression";
   private static final String THIS = "this.";
   private static final String NULL = "null";
@@ -34,7 +33,8 @@ final class FieldWalk {
       final SyntaxNode parent,
       final Set<String> fieldNames,
       final Set<String> locals,
-      final List<FieldAccesses.Access> out) {
+      final List<FieldAccesses.Access> out
+  ) {
     if (Assignments.isAssignment(node)) {
       assignment(node, fieldNames, locals, out);
     } else if (isStep(node)) {
@@ -43,8 +43,8 @@ final class FieldWalk {
         && named(SyntaxWalk.text(node), fieldNames, locals).isPresent()) {
       final String name = named(SyntaxWalk.text(node), fieldNames, locals).orElseThrow();
       out.add(
-          new FieldAccesses.Access(
-              name, node, FieldAccesses.Use.READ, selectsMember(node, parent)));
+          new FieldAccesses.Access(name, node, FieldAccesses.Use.READ, selectsMember(node, parent))
+      );
     } else {
       node.children().forEach(child -> walk(child, node, fieldNames, locals, out));
     }
@@ -54,7 +54,8 @@ final class FieldWalk {
       final SyntaxNode node,
       final Set<String> fieldNames,
       final Set<String> locals,
-      final List<FieldAccesses.Access> out) {
+      final List<FieldAccesses.Access> out
+  ) {
     final SyntaxNode target = node.children().get(0);
     final SyntaxNode value = node.children().get(2);
     final Optional<String> name = named(SyntaxWalk.text(target), fieldNames, locals);
@@ -73,7 +74,9 @@ final class FieldWalk {
             name.get(),
             target,
             isNull ? FieldAccesses.Use.WRITE_NULL : FieldAccesses.Use.WRITE,
-            false));
+            false
+        )
+    );
   }
 
   private static boolean isStep(final SyntaxNode node) {
@@ -87,7 +90,8 @@ final class FieldWalk {
       final SyntaxNode node,
       final Set<String> fieldNames,
       final Set<String> locals,
-      final List<FieldAccesses.Access> out) {
+      final List<FieldAccesses.Access> out
+  ) {
     final SyntaxNode operand =
         node.children().stream().filter(c -> EXPRESSION.equals(c.kind())).findFirst().orElseThrow();
     final Optional<String> name = named(SyntaxWalk.text(operand), fieldNames, locals);
@@ -101,7 +105,10 @@ final class FieldWalk {
 
   /** Returns the field that {@code text} names, as {@code x} or {@code this.x}. */
   private static Optional<String> named(
-      final String text, final Set<String> fieldNames, final Set<String> locals) {
+      final String text,
+      final Set<String> fieldNames,
+      final Set<String> locals
+  ) {
     if (text.startsWith(THIS)) {
       final String name = text.substring(THIS.length());
       return fieldNames.contains(name) ? Optional.of(name) : Optional.empty();

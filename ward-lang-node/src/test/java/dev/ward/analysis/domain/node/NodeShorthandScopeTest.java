@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
  * grammars, so the unused, undefined and reassignment rules see the use.
  */
 class NodeShorthandScopeTest {
-
   private static final int LINE_2 = 2;
 
   private static List<UnitScopes> bothLanguages(final String source) {
@@ -43,7 +42,8 @@ class NodeShorthandScopeTest {
                 assertThat(read.resolved()).isPresent();
                 assertThat(scopes.scopes().get(read.resolved().orElseThrow().scope()).kind())
                     .isEqualTo(ScopeKind.FUNCTION);
-              });
+              }
+          );
     }
   }
 

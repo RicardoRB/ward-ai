@@ -21,7 +21,10 @@ final class KotlinCheckFactBuilders {
 
   /** Gives the operand and the target of {@code cast} their facts. */
   static UnitTypeFacts casted(
-      final SyntaxNode cast, final SpanFacts source, final SpanFacts target) {
+      final SyntaxNode cast,
+      final SpanFacts source,
+      final SpanFacts target
+  ) {
     final Map<String, SpanFacts> facts = new HashMap<>();
     facts.put(UnitTypeFacts.startKey(cast.children().get(0).span()), source);
     facts.put(UnitTypeFacts.startKey(cast.children().get(2).span()), target);
@@ -34,7 +37,8 @@ final class KotlinCheckFactBuilders {
       final String firstType,
       final List<String> firstAncestors,
       final String secondType,
-      final List<String> secondAncestors) {
+      final List<String> secondAncestors
+  ) {
     final Map<String, SpanFacts> facts = new HashMap<>();
     final List<SyntaxNode> types = KotlinTypedCheckFixtures.nodes(root, "userType");
     facts.put(UnitTypeFacts.startKey(types.get(0).span()), named(firstType, firstAncestors));
@@ -52,14 +56,19 @@ final class KotlinCheckFactBuilders {
   }
 
   static SpanFacts typed(
-      final String name, final String kind, final boolean isFinal, final List<String> ancestors) {
+      final String name,
+      final String kind,
+      final boolean isFinal,
+      final List<String> ancestors
+  ) {
     final TypeShape shape =
         new TypeShape(
             TypeShape.Kind.valueOf(kind.toUpperCase(Locale.ROOT)),
             false,
             isFinal,
             false,
-            ancestors.stream().limit(1).map(TypeRef::of).toList());
+            ancestors.stream().limit(1).map(TypeRef::of).toList()
+        );
     return new SpanFacts(
         TypeRef.of(name),
         shape,
@@ -69,7 +78,8 @@ final class KotlinCheckFactBuilders {
         List.of(),
         List.of(),
         null,
-        members(ancestors));
+        members(ancestors)
+    );
   }
 
   static SpanFacts named(final String name, final List<String> ancestors) {
@@ -82,12 +92,22 @@ final class KotlinCheckFactBuilders {
         List.of(),
         List.of(),
         null,
-        ancestors == null ? null : members(ancestors));
+        ancestors == null ? null : members(ancestors)
+    );
   }
 
   static SpanFacts call(final CallTarget target) {
     return new SpanFacts(
-        null, null, target, List.of(), List.of(), List.of(), List.of(), null, null);
+        null,
+        null,
+        target,
+        List.of(),
+        List.of(),
+        List.of(),
+        List.of(),
+        null,
+        null
+    );
   }
 
   static TypeMembers members(final List<String> ancestors) {
@@ -99,7 +119,8 @@ final class KotlinCheckFactBuilders {
         List.of(),
         List.of(),
         Map.of(),
-        List.of());
+        List.of()
+    );
   }
 
   static CallTarget javaCall(final String declaring, final List<String> annotations) {
@@ -119,6 +140,7 @@ final class KotlinCheckFactBuilders {
         null,
         Map.of(),
         Map.of(),
-        null);
+        null
+    );
   }
 }

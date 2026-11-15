@@ -27,8 +27,8 @@ public record SecretRule(
     int secretGroup,
     boolean multiline,
     List<SecretAllowlist> allowlists,
-    String message) {
-
+    String message
+) {
   /** Copies the lists and lower-cases the keywords. */
   public SecretRule {
     Objects.requireNonNull(regex, "regex");

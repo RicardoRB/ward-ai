@@ -9,7 +9,6 @@ import dev.ward.analysis.domain.port.ParseResult;
  * not parse, so regular files keep their diagnostics.
  */
 final class JavaSession implements LanguageFrontend {
-
   private final LanguageFrontend unit;
   private final LanguageFrontend compact;
 

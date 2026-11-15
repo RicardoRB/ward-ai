@@ -16,7 +16,8 @@ final class ClineHookScripts {
         marker,
         "PostToolUse",
         onlyTools("editor", "apply_patch")
-            + "printf '%s' \"$payload\" | exec ward hook native --agent cline --event-stdin\n");
+            + "printf '%s' \"$payload\" | exec ward hook native --agent cline --event-stdin\n"
+    );
   }
 
   /** Lets the hook continue only for the named tools. */
@@ -24,7 +25,8 @@ final class ClineHookScripts {
     return Arrays.stream(tools)
         .map(tool -> "*'\"toolName\":\"" + tool + "\"'*")
         .collect(
-            Collectors.joining("|", "case \"$payload\" in\n  ", ") ;;\n  *) exit 0 ;;\nesac\n"));
+            Collectors.joining("|", "case \"$payload\" in\n  ", ") ;;\n  *) exit 0 ;;\nesac\n")
+        );
   }
 
   private static String script(final String marker, final String event, final String body) {

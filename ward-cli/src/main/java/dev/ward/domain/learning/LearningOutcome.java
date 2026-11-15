@@ -11,7 +11,10 @@ import java.util.Objects;
  * @param warnings problems reading or writing the store
  */
 public record LearningOutcome(
-    LearningLedger ledger, List<LearningPrompt> prompts, List<String> warnings) {
+    LearningLedger ledger,
+    List<LearningPrompt> prompts,
+    List<String> warnings
+) {
   /**
    * Copies the prompts and warnings.
    *

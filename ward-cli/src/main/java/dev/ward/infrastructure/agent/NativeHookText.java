@@ -34,7 +34,7 @@ final class NativeHookText {
         case '\t' -> json.append("\\t");
         default -> {
           if (ch < FIRST_PRINTABLE) {
-            json.append(String.format(Locale.ROOT, "\\u%04x", (int) ch));
+            json.append(String.format(Locale.ROOT, "\\u%04x", (int)ch));
           } else {
             json.append(ch);
           }
@@ -49,7 +49,7 @@ final class NativeHookText {
    * turn-end events, which run the quality check.
    */
   static String wrapper(final String id, final String hookFile) {
-    final String up = "/..".repeat((int) hookFile.chars().filter(ch -> ch == '/').count());
+    final String up = "/..".repeat((int)hookFile.chars().filter(ch -> ch == '/').count());
     return "#!/bin/sh\n# "
         + marker(id)
         + "\n# Native event adapter for "
@@ -77,7 +77,9 @@ final class NativeHookText {
       final JsonCodec codec,
       final String payload,
       final Class<T> type,
-      final Function<T, NativeHookInput> input) {
+      final Function<T,
+      NativeHookInput> input
+  ) {
     final T value = codec.fromJson(payload, type);
     return value == null ? NativeHookInput.unreadableInput() : input.apply(value);
   }

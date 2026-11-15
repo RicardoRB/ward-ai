@@ -40,7 +40,9 @@ class InitServicePresetSelectionTest {
               new PresetRuleFileWriter(RuleFileTargetsFixtures.defaults()),
               ArchitectureTablesFixtures.create(),
               new FileConfigurationStorage(),
-              new OwnedSectionWriter()));
+              new OwnedSectionWriter()
+          )
+      );
 
   @Test
   void ordersSelectedPresetGatesBeforeOtherGates(@TempDir final Path dir) throws Exception {
@@ -52,7 +54,9 @@ class InitServicePresetSelectionTest {
                 List.of("none"),
                 List.of("secrets", "tests", "compile", "coverage"),
                 null,
-                QualityPreset.STANDARD));
+                QualityPreset.STANDARD
+            )
+        );
     assertThat(result.gates())
         .extracting(InitGateOption::id)
         .containsExactly("compile", "tests", "coverage", "secrets", "ward-format");
@@ -70,7 +74,12 @@ class InitServicePresetSelectionTest {
         service.initialize(
             dir,
             new InitSelection(
-                List.of("none"), strictWithoutMutation, "layered", QualityPreset.STRICT));
+                List.of("none"),
+                strictWithoutMutation,
+                "layered",
+                QualityPreset.STRICT
+            )
+        );
 
     final List<String> expected = new ArrayList<>(strictWithoutMutation);
     expected.add("ward-format");
@@ -87,8 +96,8 @@ class InitServicePresetSelectionTest {
 
     service.initialize(
         dir,
-        new InitSelection(
-            List.of("none"), JavaPresetGates.STRICT, "layered", QualityPreset.STRICT));
+        new InitSelection(List.of("none"), JavaPresetGates.STRICT, "layered", QualityPreset.STRICT)
+    );
 
     assertThat(Files.readString(dir.resolve(WARD_TOML))).doesNotContain("enforcer");
     assertThat(dir.resolve("config/enforcer-rules.xml")).doesNotExist();

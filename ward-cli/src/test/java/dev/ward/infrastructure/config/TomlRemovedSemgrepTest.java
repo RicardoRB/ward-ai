@@ -11,11 +11,12 @@ class TomlRemovedSemgrepTest {
   @Test
   void usesSemgrepIsAConfigurationError() {
     assertThatThrownBy(
-            () ->
-                new TomlConfigurationReader()
-                    .parse(
-                        Toml.parse(
-                            "version = 2\n[checks.x]\nuses = \"semgrep\"\ncommand = \"tool\"\n")))
+        () ->
+            new TomlConfigurationReader()
+                .parse(
+                    Toml.parse("version = 2\n[checks.x]\nuses = \"semgrep\"\ncommand = \"tool\"\n")
+                )
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("checks.x.uses");
   }

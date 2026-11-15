@@ -21,7 +21,6 @@ import java.util.regex.Pattern;
  * names, and importing {@code unittest} or {@code mock} uses the names of their bundled whitelists.
  */
 final class PythonTopLevelDefinitions {
-
   private static final Pattern IDENTIFIER = Pattern.compile("[A-Za-z_]\\w*");
   private static final String FUNCDEF = "funcdef";
   private static final String CLASSDEF = "classdef";
@@ -55,7 +54,8 @@ final class PythonTopLevelDefinitions {
           "failureException",
           "longMessage",
           "maxDiff",
-          "subTest");
+          "subTest"
+      );
   private static final Set<String> MOCK_WHITELIST = Set.of("return_value", "side_effect");
 
   private PythonTopLevelDefinitions() {}
@@ -73,7 +73,8 @@ final class PythonTopLevelDefinitions {
             .limit(1)
             .forEach(
                 name ->
-                    symbols.add(new Symbol(PythonSyntax.dottedName(name), statement.span(), kind)));
+                    symbols.add(new Symbol(PythonSyntax.dottedName(name), statement.span(), kind))
+            );
       }
     }
     symbols.addAll(PythonMemberDefinitions.declared(tree));
@@ -111,7 +112,10 @@ final class PythonTopLevelDefinitions {
    * Adds the names under {@code node}, leaving out {@code skip}, the stored name of an assignment.
    */
   private static void collect(
-      final SyntaxNode node, final Set<String> names, final SyntaxNode skip) {
+      final SyntaxNode node,
+      final Set<String> names,
+      final SyntaxNode skip
+  ) {
     if (PythonSyntax.COMMENT_KIND.equals(node.kind()) || node.equals(skip)) {
       return;
     }

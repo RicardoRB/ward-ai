@@ -9,7 +9,6 @@ import java.util.Set;
 
 /** Reads type qualifier declarations and their applications from the syntax of a file. */
 final class QualifierReader {
-
   private static final String ANNOTATION_TYPE = "annotationTypeDeclaration";
   private static final String IDENTIFIER = "identifier";
   private static final String WHEN = "when";
@@ -38,7 +37,9 @@ final class QualifierReader {
   }
 
   private static QualifierScope.Qualifier qualifier(
-      final String name, final List<SyntaxNode> elements) {
+      final String name,
+      final List<SyntaxNode> elements
+  ) {
     final Optional<SyntaxNode> when =
         elements.stream().filter(e -> WHEN.equals(elementName(e))).findFirst();
     final QualWhen fallback = when.flatMap(QualifierReader::defaultOf).orElse(QualWhen.ALWAYS);
@@ -74,7 +75,10 @@ final class QualifierReader {
 
   /** Returns what the annotations of a declaration say for each qualifier. */
   static Map<String, QualWhen> applied(
-      final List<SyntaxNode> annotations, final Map<String, QualifierScope.Qualifier> known) {
+      final List<SyntaxNode> annotations,
+      final Map<String,
+      QualifierScope.Qualifier> known
+  ) {
     final Map<String, QualWhen> out = new HashMap<>();
     for (final SyntaxNode annotation : annotations) {
       final QualifierScope.Qualifier qualifier = known.get(NullSyntax.simpleName(annotation));
@@ -86,7 +90,9 @@ final class QualifierReader {
   }
 
   private static Optional<QualWhen> whenOf(
-      final SyntaxNode annotation, final QualifierScope.Qualifier qualifier) {
+      final SyntaxNode annotation,
+      final QualifierScope.Qualifier qualifier
+  ) {
     final Optional<SyntaxNode> given =
         SyntaxWalk.descendants(annotation).stream()
             .filter(node -> "annotationFieldValue".equals(node.kind()))

@@ -14,8 +14,10 @@ import java.util.Optional;
  * @param expression the normalized SPDX expression, or empty when the license is unknown
  */
 public record PackageLicense(
-    Dependency dependency, LicenseLookup lookup, Optional<LicenseExpression> expression) {
-
+    Dependency dependency,
+    LicenseLookup lookup,
+    Optional<LicenseExpression> expression
+) {
   /** Returns whether the package has a normalized license. */
   public boolean known() {
     return expression.isPresent();

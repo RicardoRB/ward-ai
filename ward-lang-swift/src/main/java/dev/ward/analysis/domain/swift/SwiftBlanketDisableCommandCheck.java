@@ -21,7 +21,6 @@ import java.util.regex.Pattern;
  * read.
  */
 public final class SwiftBlanketDisableCommandCheck implements RuleCheck {
-
   private static final String COMMENT = "comment";
   private static final Pattern COMMAND =
       Pattern.compile("^//\\s*swiftlint:(disable|enable)(:(this|next|previous))?\\s+(.*)$");
@@ -61,8 +60,10 @@ public final class SwiftBlanketDisableCommandCheck implements RuleCheck {
 
   private void apply(
       final SyntaxNode comment,
-      final Map<String, Written> disabled,
-      final List<RuleMatch> matches) {
+      final Map<String,
+      Written> disabled,
+      final List<RuleMatch> matches
+  ) {
     final String text = comment.fields().get("text");
     final Matcher command = COMMAND.matcher(text);
     if (!command.matches() || command.group(MODIFIER_GROUP) != null) {
@@ -79,7 +80,11 @@ public final class SwiftBlanketDisableCommandCheck implements RuleCheck {
   }
 
   private void disable(
-      final Written written, final Map<String, Written> disabled, final List<RuleMatch> matches) {
+      final Written written,
+      final Map<String,
+      Written> disabled,
+      final List<RuleMatch> matches
+  ) {
     if (disabled.containsKey(written.rule())) {
       matches.add(new RuleMatch(written.span(), message));
     }
@@ -87,7 +92,11 @@ public final class SwiftBlanketDisableCommandCheck implements RuleCheck {
   }
 
   private void enable(
-      final Written written, final Map<String, Written> disabled, final List<RuleMatch> matches) {
+      final Written written,
+      final Map<String,
+      Written> disabled,
+      final List<RuleMatch> matches
+  ) {
     if (disabled.remove(written.rule()) == null) {
       matches.add(new RuleMatch(written.span(), message));
     }
@@ -95,7 +104,10 @@ public final class SwiftBlanketDisableCommandCheck implements RuleCheck {
 
   /** The identifiers of a command; {@code rules} is the end of {@code text}. */
   private static List<Written> identifiers(
-      final SyntaxNode comment, final String text, final String rules) {
+      final SyntaxNode comment,
+      final String text,
+      final String rules
+  ) {
     final List<Written> out = new ArrayList<>();
     final Matcher identifier = IDENTIFIER.matcher(rules);
     final int rulesStart = text.length() - rules.length();
@@ -115,7 +127,8 @@ public final class SwiftBlanketDisableCommandCheck implements RuleCheck {
             start.startLine(),
             start.startColumn() + index,
             start.startOffset() + index,
-            start.startOffset() + index);
+            start.startOffset() + index
+        );
     return new Written(rule, span);
   }
 }

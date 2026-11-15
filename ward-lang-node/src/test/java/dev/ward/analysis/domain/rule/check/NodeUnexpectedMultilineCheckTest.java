@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /** Reports a call, bracket access or tagged template that starts on a later line. */
 class NodeUnexpectedMultilineCheckTest {
-
   /** Scenario: a call whose parenthesis starts a line is reported at the parenthesis. */
   @Test
   void aCallWithItsParenthesisOnALaterLineIsReported() {

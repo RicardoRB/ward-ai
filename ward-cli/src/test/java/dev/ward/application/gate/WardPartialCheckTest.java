@@ -59,7 +59,8 @@ class WardPartialCheckTest {
               assertThat(result.findings().items())
                   .extracting(Finding::file)
                   .containsExactly(ORDER);
-            });
+            }
+        );
   }
 
   @Test
@@ -73,7 +74,8 @@ class WardPartialCheckTest {
             result -> {
               assertThat(result.scope()).isEqualTo(GateScope.SKIPPED);
               assertThat(result.status()).isEqualTo(GateStatus.SKIPPED);
-            });
+            }
+        );
   }
 
   @Test
@@ -89,7 +91,8 @@ class WardPartialCheckTest {
               assertThat(result.findings().items())
                   .extracting(Finding::file)
                   .containsExactlyInAnyOrder(ORDER, CUSTOMER);
-            });
+            }
+        );
   }
 
   @Test

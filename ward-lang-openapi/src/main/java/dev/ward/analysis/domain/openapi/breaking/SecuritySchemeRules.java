@@ -10,7 +10,6 @@ import java.util.Optional;
  * The rules about the security schemes under {@code components}: a type or a field that changed.
  */
 final class SecuritySchemeRules {
-
   private static final String KEY_NAME = "name";
 
   private SecuritySchemeRules() {}
@@ -22,7 +21,10 @@ final class SecuritySchemeRules {
         scheme("api-security-component-http-scheme-changed", "scheme", "http"),
         scheme("api-security-component-api-key-in-changed", "in", "apiKey"),
         RowRule.of(
-            "api-security-component-api-key-name-changed", SecuritySchemeRules::keyNameChanged));
+            "api-security-component-api-key-name-changed",
+            SecuritySchemeRules::keyNameChanged
+        )
+    );
   }
 
   /** A change of one field of a security scheme of the given type, under {@code components}. */
@@ -37,7 +39,8 @@ final class SecuritySchemeRules {
                 .ifPresent(now -> findings.add(finding(id, before.key(), now)));
           }
           return findings;
-        });
+        }
+    );
   }
 
   private static List<BreakingFinding> keyNameChanged(final DocumentPair pair) {
@@ -48,7 +51,8 @@ final class SecuritySchemeRules {
           .filter(
               now ->
                   differs(pair.base().resolve(before.value()), now, KEY_NAME, "apiKey")
-                      || differs(pair.base().resolve(before.value()), now, "in", "apiKey"))
+                      || differs(pair.base().resolve(before.value()), now, "in", "apiKey")
+          )
           .ifPresent(now -> findings.add(finding(id, before.key(), now)));
     }
     return findings;
@@ -56,7 +60,11 @@ final class SecuritySchemeRules {
 
   /** Tells whether {@code field} differs; a field of a given type counts only if both have it. */
   private static boolean differs(
-      final DocNode before, final DocNode now, final String field, final String type) {
+      final DocNode before,
+      final DocNode now,
+      final String field,
+      final String type
+  ) {
     final boolean applicable =
         "type".equals(type)
             || (type.equals(before.string("type").orElse(""))
@@ -77,6 +85,11 @@ final class SecuritySchemeRules {
 
   private static BreakingFinding finding(final String id, final String name, final DocNode at) {
     return new BreakingFinding(
-        RowRule.PREFIX + id, "the security scheme " + name + " changed", "", "", at);
+        RowRule.PREFIX + id,
+        "the security scheme " + name + " changed",
+        "",
+        "",
+        at
+    );
   }
 }

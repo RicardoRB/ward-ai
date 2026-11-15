@@ -11,7 +11,6 @@ import java.util.Objects;
  * @param path the steps up to and including this write, in order
  */
 record Taint(String source, List<FlowStep> path) {
-
   /**
    * Copies the path.
    *

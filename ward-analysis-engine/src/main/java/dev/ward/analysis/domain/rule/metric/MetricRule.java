@@ -15,8 +15,12 @@ import java.util.Set;
  * @param keys the body keys that the measurement reads, such as the path to parameters
  */
 record MetricRule(
-    Measurement measurement, List<Target> targets, int max, String message, MetricRuleKeys keys) {
-
+    Measurement measurement,
+    List<Target> targets,
+    int max,
+    String message,
+    MetricRuleKeys keys
+) {
   /** A node kind to measure, with the style its declared names must follow, if any. */
   record Target(String kind, NameStyle style) {}
 
@@ -35,5 +39,6 @@ record MetricRule(
       List<List<String>> parameterPaths,
       Set<String> receivers,
       Set<String> nested,
-      Set<String> decisions) {}
+      Set<String> decisions
+  ) {}
 }

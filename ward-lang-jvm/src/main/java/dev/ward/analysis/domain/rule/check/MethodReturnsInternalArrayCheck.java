@@ -12,7 +12,6 @@ import java.util.Set;
  * parameter or local shadows is not checked, since the syntax tree does not bind names.
  */
 public final class MethodReturnsInternalArrayCheck implements UnitCheck {
-
   private static final int STATEMENT_PARTS = 3;
 
   private final String message;

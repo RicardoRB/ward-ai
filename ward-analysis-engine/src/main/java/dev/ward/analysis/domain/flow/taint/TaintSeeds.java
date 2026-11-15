@@ -21,7 +21,6 @@ import java.util.stream.IntStream;
  * sources and sources outside any statement taint nothing.
  */
 final class TaintSeeds {
-
   private static final String SOURCE = "source: ";
 
   private final ControlFlowGraph graph;
@@ -29,7 +28,11 @@ final class TaintSeeds {
   private final Map<AccessSite, Taint> tainted;
 
   TaintSeeds(
-      final ControlFlowGraph graph, final TaintSpec spec, final Map<AccessSite, Taint> tainted) {
+      final ControlFlowGraph graph,
+      final TaintSpec spec,
+      final Map<AccessSite,
+      Taint> tainted
+  ) {
     this.graph = graph;
     this.spec = spec;
     this.tainted = tainted;
@@ -73,11 +76,16 @@ final class TaintSeeds {
   }
 
   private void taintParameter(
-      final BasicBlock block, final int index, final FlowSite site, final String annotation) {
+      final BasicBlock block,
+      final int index,
+      final FlowSite site,
+      final String annotation
+  ) {
     final List<FlowStep> path = List.of(new FlowStep(site.span(), SOURCE + annotation));
     tainted.put(
         new AccessSite(block.id(), index, block.accesses().get(index)),
-        new Taint(annotation, path));
+        new Taint(annotation, path)
+    );
   }
 
   /** A call or member read taints the last write before it in the same statement. */
@@ -91,11 +99,16 @@ final class TaintSeeds {
         definition ->
             tainted.putIfAbsent(
                 definition,
-                new Taint(site.name(), List.of(new FlowStep(site.span(), SOURCE + site.name())))));
+                new Taint(site.name(), List.of(new FlowStep(site.span(), SOURCE + site.name())))
+            )
+    );
   }
 
   private Optional<AccessSite> lastWriteBefore(
-      final BasicBlock block, final Span statement, final Span before) {
+      final BasicBlock block,
+      final Span statement,
+      final Span before
+  ) {
     return IntStream.range(0, block.accesses().size())
         .filter(index -> isWriteBefore(block.accesses().get(index), statement, before))
         .boxed()
@@ -104,7 +117,10 @@ final class TaintSeeds {
   }
 
   private static boolean isWriteBefore(
-      final VariableAccess access, final Span statement, final Span before) {
+      final VariableAccess access,
+      final Span statement,
+      final Span before
+  ) {
     return isWrite(access)
         && TaintSpans.contains(statement, access.span())
         && access.span().startOffset() < before.startOffset();

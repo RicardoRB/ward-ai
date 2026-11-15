@@ -25,7 +25,10 @@ final class TomlApiCompatParser {
       return null;
     }
     return new ApiCompatOptions(
-        base(where, gate), strings(where, gate, INCLUDE), strings(where, gate, MODULES));
+        base(where, gate),
+        strings(where, gate, INCLUDE),
+        strings(where, gate, MODULES)
+    );
   }
 
   private static String base(final String where, final TomlTable gate) {
@@ -40,7 +43,10 @@ final class TomlApiCompatParser {
   }
 
   private static List<String> strings(
-      final String where, final TomlTable gate, final String option) {
+      final String where,
+      final TomlTable gate,
+      final String option
+  ) {
     if (!gate.contains(option)) {
       return List.of();
     }

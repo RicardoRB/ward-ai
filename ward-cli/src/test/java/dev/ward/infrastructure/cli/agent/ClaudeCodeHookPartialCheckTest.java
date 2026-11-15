@@ -29,7 +29,8 @@ class ClaudeCodeHookPartialCheckTest extends ClaudeCodeHookTestSupport {
             args = ["-Dlint.includes={paths}"]
             item = "**/{name}"
             separator = ","
-            """);
+            """
+    );
     Files.createDirectories(root.resolve("src/main/java"));
     Files.writeString(root.resolve("src/main/java/App.java"), "class App {}\n");
   }
@@ -66,8 +67,7 @@ class ClaudeCodeHookPartialCheckTest extends ClaudeCodeHookTestSupport {
 
   @Test
   void eventWithoutPathSkipsGatesWithPathsAndRunsTheRest() {
-    hook(
-        """
+    hook("""
         {"hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{}}
         """);
 

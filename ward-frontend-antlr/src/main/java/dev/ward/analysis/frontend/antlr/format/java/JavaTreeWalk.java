@@ -27,14 +27,14 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 /** Walks a Java parse tree once and collects the {@link JavaTreeFacts}. */
 final class JavaTreeWalk {
-
   private static final Set<String> ANGLE_RULES =
       Set.of(
           "typeParameters",
           "typeArguments",
           "nonWildcardTypeArguments",
           "typeArgumentsOrDiamond",
-          "nonWildcardTypeArgumentsOrDiamond");
+          "nonWildcardTypeArgumentsOrDiamond"
+      );
 
   private static final String OPEN_BRACE = "{";
 
@@ -68,7 +68,8 @@ final class JavaTreeWalk {
         walk.hardAfter,
         walk.annotationEnds,
         walk.angleTokens,
-        walk.expressionBlocks);
+        walk.expressionBlocks
+    );
   }
 
   private void visit(final ParseTree node) {
@@ -126,7 +127,7 @@ final class JavaTreeWalk {
 
   private static boolean isExpressionBody(final ParserRuleContext context) {
     return context instanceof ClassBodyContext
-            && context.getParent() instanceof ClassCreatorRestContext
+        && context.getParent() instanceof ClassCreatorRestContext
         || context instanceof BlockContext && context.getParent() instanceof LambdaBodyContext;
   }
 
@@ -134,7 +135,7 @@ final class JavaTreeWalk {
     return context instanceof ArrayInitializerContext
         || context instanceof ElementValueArrayInitializerContext
         || context instanceof AnnotationValueContext
-            && OPEN_BRACE.equals(context.getStart().getText());
+        && OPEN_BRACE.equals(context.getStart().getText());
   }
 
   private Set<Integer> target(final String text) {

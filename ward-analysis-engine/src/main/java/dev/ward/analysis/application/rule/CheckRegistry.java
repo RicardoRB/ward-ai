@@ -9,7 +9,6 @@ import java.util.Set;
 
 /** The declarative checks of every provider, found by name. */
 public final class CheckRegistry {
-
   private final Map<String, CheckFactory> factories;
 
   /**
@@ -30,7 +29,8 @@ public final class CheckRegistry {
                   + "' is registered by both "
                   + previous.getClass().getSimpleName()
                   + " and "
-                  + provider.getClass().getSimpleName());
+                  + provider.getClass().getSimpleName()
+          );
         }
         all.put(entry.getKey(), entry.getValue());
       }

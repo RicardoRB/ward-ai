@@ -11,12 +11,13 @@ import javax.inject.Singleton;
 @Singleton
 @Component(
     modules = {
-      PortBindingsModule.class,
-      CommandBindingsModule.class,
-      LicenseBindingsModule.class,
-      RulesCommandBindingsModule.class,
-      WardProvidesModule.class
-    })
+        PortBindingsModule.class,
+        CommandBindingsModule.class,
+        LicenseBindingsModule.class,
+        RulesCommandBindingsModule.class,
+        WardProvidesModule.class
+    }
+)
 public interface WardComponent {
   /** Returns the runner that parses and executes the command line. */
   CommandLineRunnerImpl commandLineRunner();

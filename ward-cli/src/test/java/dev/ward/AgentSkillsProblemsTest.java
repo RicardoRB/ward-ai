@@ -43,7 +43,9 @@ class AgentSkillsProblemsTest {
   void reportsNameMismatch(@TempDir final Path root) throws IOException {
     final Path skill = SkillFixtures.write(root, "body");
     Files.writeString(
-        skill, Files.readString(skill).replace("name: " + SkillFixtures.SKILL, "name: other"));
+        skill,
+        Files.readString(skill).replace("name: " + SkillFixtures.SKILL, "name: other")
+    );
 
     assertThat(SkillFixtures.consistency(root).problems())
         .singleElement()
@@ -89,6 +91,7 @@ class AgentSkillsProblemsTest {
     assertThat(SkillFixtures.consistency(root).problems())
         .containsExactly(
             SkillFixtures.SKILL + ": SKILL.md has no frontmatter",
-            "empty-skill: SKILL.md is missing");
+            "empty-skill: SKILL.md is missing"
+        );
   }
 }

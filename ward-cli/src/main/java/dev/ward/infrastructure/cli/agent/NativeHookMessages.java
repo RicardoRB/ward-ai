@@ -16,7 +16,8 @@ final class NativeHookMessages {
             : report.results().stream()
                 .map(Object::toString)
                 .limit(MAX_ITEMS)
-                .reduce("Ward quality findings:", (a, b) -> a + "\n" + b));
+                .reduce("Ward quality findings:", (a, b) -> a + "\n" + b)
+    );
   }
 
   static String safeMessage(final Exception exception) {

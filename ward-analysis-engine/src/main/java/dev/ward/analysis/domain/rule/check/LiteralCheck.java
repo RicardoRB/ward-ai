@@ -15,7 +15,6 @@ import java.util.Set;
  * {@code max-repeats} and {@code min-length}.
  */
 public final class LiteralCheck implements UnitCheck {
-
   /** The repeat limit that turns repeat counting off. */
   public static final int NO_REPEAT_LIMIT = -1;
 
@@ -43,7 +42,8 @@ public final class LiteralCheck implements UnitCheck {
       final Set<String> ignore,
       final Set<String> ignoreContexts,
       final int maxRepeats,
-      final String message) {
+      final String message
+  ) {
     this(filter, ignore, ignoreContexts, new Limits(maxRepeats, 0), message);
   }
 
@@ -61,7 +61,8 @@ public final class LiteralCheck implements UnitCheck {
       final Set<String> ignore,
       final Set<String> ignoreContexts,
       final Limits limits,
-      final String message) {
+      final String message
+  ) {
     this.filter = Objects.requireNonNull(filter, "filter");
     this.ignore = Set.copyOf(ignore);
     this.ignoreContexts = Set.copyOf(ignoreContexts);
@@ -80,7 +81,9 @@ public final class LiteralCheck implements UnitCheck {
             visit ->
                 CheckSupport.at(
                     visit.node().span(),
-                    CheckSupport.fill(message, SyntaxWalk.text(visit.node()), "")))
+                    CheckSupport.fill(message, SyntaxWalk.text(visit.node()), "")
+                )
+        )
         .toList();
   }
 

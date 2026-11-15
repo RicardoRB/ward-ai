@@ -12,7 +12,6 @@ import java.util.Set;
  * from} clause, like pyflakes {@code B904}. A bare re-raise is not reported.
  */
 public final class RaiseWithoutFromCheck implements RuleCheck {
-
   private static final Set<String> TRIES = Set.of("try_stmt");
   private static final String HANDLER = "except_clause";
   private static final String BLOCK = "block";
@@ -54,7 +53,9 @@ public final class RaiseWithoutFromCheck implements RuleCheck {
 
   /** The first block after a handler; the grammar puts the colon between them. */
   private static Optional<SyntaxNode> nextBlock(
-      final List<SyntaxNode> children, final int handler) {
+      final List<SyntaxNode> children,
+      final int handler
+  ) {
     for (int index = handler + 1; index < children.size(); index++) {
       if (BLOCK.equals(children.get(index).kind())) {
         return Optional.of(children.get(index));

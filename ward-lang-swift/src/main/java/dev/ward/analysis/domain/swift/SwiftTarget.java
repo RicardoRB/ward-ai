@@ -13,8 +13,11 @@ import java.util.Objects;
  * @param dependencies the names of the modules this module declares as dependencies
  */
 public record SwiftTarget(
-    String name, List<String> directories, List<String> files, List<String> dependencies) {
-
+    String name,
+    List<String> directories,
+    List<String> files,
+    List<String> dependencies
+) {
   /**
    * Copies the collections and validates the name.
    *

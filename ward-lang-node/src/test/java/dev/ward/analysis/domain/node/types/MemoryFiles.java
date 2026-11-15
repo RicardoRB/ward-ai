@@ -42,7 +42,7 @@ final class MemoryFiles implements DeclarationFiles {
     final String prefix = directory + "/";
     return files.keySet().stream()
         .filter(path -> path.startsWith(prefix))
-        .map(path -> path.substring(prefix.length()).split("/")[0])
+        .map(path -> path.substring(prefix.length()).split("/") [0])
         .distinct()
         .toList();
   }

@@ -12,7 +12,6 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 /** The bundled path-traversal and XSS rules, on the scenarios of their specification. */
 class NodeSinkRulesTest {
-
   private static final String PATH = "/path-traversal";
   private static final String XSS = "/xss";
   private static final int PATH_LINE = 4;
@@ -20,14 +19,10 @@ class NodeSinkRulesTest {
 
   /** Scenario: Path traversal from req.params into fs.readFile. */
   @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
+  @EnumSource(value = AnalysisLanguage.class, names = {"TYPESCRIPT", "JAVASCRIPT"})
   void pathTraversalIntoReadFile(final AnalysisLanguage language) {
     final List<AnalysisFinding> found =
-        findings(
-            language,
-            """
+        findings(language, """
             import * as fs from 'fs';
             export function handle(req) {
               const name = req.params.name;
@@ -43,14 +38,10 @@ class NodeSinkRulesTest {
 
   /** Scenario: Path traversal into res.sendFile. */
   @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
+  @EnumSource(value = AnalysisLanguage.class, names = {"TYPESCRIPT", "JAVASCRIPT"})
   void pathTraversalIntoSendFile(final AnalysisLanguage language) {
     final List<AnalysisFinding> found =
-        findings(
-            language,
-            """
+        findings(language, """
             export function handle(req, res) {
               const name = req.params.name;
               res.sendFile(name);
@@ -62,14 +53,10 @@ class NodeSinkRulesTest {
 
   /** Scenario: XSS through innerHTML in browser code. */
   @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
+  @EnumSource(value = AnalysisLanguage.class, names = {"TYPESCRIPT", "JAVASCRIPT"})
   void xssThroughInnerHtml(final AnalysisLanguage language) {
     final List<AnalysisFinding> found =
-        findings(
-            language,
-            """
+        findings(language, """
             export function show(el) {
               const q = location.search;
               el.innerHTML = q;
@@ -84,14 +71,10 @@ class NodeSinkRulesTest {
 
   /** Scenario: Sanitized value through encodeURIComponent before an HTML sink. */
   @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
+  @EnumSource(value = AnalysisLanguage.class, names = {"TYPESCRIPT", "JAVASCRIPT"})
   void sanitizedValueIsNotReported(final AnalysisLanguage language) {
     final List<AnalysisFinding> found =
-        findings(
-            language,
-            """
+        findings(language, """
             export function show(el) {
               const q = location.search;
               el.innerHTML = encodeURIComponent(q);
@@ -101,7 +84,9 @@ class NodeSinkRulesTest {
   }
 
   private static List<AnalysisFinding> findings(
-      final AnalysisLanguage language, final String text) {
+      final AnalysisLanguage language,
+      final String text
+  ) {
     final String path = language == AnalysisLanguage.TYPESCRIPT ? "src/a.ts" : "src/a.js";
     return NodeSecurityRules.run(new SourceUnit(path, language, text));
   }

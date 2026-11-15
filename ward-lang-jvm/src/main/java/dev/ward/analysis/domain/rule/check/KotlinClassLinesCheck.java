@@ -13,7 +13,6 @@ import java.util.Set;
  * belong to that class, so a large nested class does not make its outer class large.
  */
 public final class KotlinClassLinesCheck implements RuleCheck {
-
   private static final Set<String> NESTED =
       Set.of("classDeclaration", "objectDeclaration", "companionObject", "objectLiteral");
   private static final String COMMENT = "comment";
@@ -44,8 +43,9 @@ public final class KotlinClassLinesCheck implements RuleCheck {
             node ->
                 new RuleMatch(
                     node.span(),
-                    CheckSupport.fill(
-                        message, String.valueOf(lineCount(node)), String.valueOf(max))))
+                    CheckSupport.fill(message, String.valueOf(lineCount(node)), String.valueOf(max))
+                )
+        )
         .toList();
   }
 

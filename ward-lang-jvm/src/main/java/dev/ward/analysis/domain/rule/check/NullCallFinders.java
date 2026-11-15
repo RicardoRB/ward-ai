@@ -10,7 +10,6 @@ import java.util.function.BiConsumer;
 
 /** The rules about a call: what it passes, what it dereferences, and what it casts. */
 final class NullCallFinders {
-
   private static final String EXPRESSION = "expression";
   private static final String LOCAL = "localVariableDeclaration";
   private static final String CAST_NON_NULL = "castToNonNull";
@@ -32,9 +31,11 @@ final class NullCallFinders {
             final Optional<NullCallees.Callee> callee = NullCallees.resolve(unit, type, expression);
             callee.ifPresent(
                 target ->
-                    NullCallees.passes(target, NullFlow.arguments(expression), names, calls, hits));
+                    NullCallees.passes(target, NullFlow.arguments(expression), names, calls, hits)
+            );
           }
-        });
+        }
+    );
   }
 
   /** A member access on a name or a call that may be null, which the method never checks. */
@@ -53,7 +54,8 @@ final class NullCallFinders {
               hits.add(NullHit.at(parts.get(0), SyntaxWalk.text(parts.get(0))));
             }
           }
-        });
+        }
+    );
   }
 
   /** A null stored in an array whose elements must not be null. */
@@ -78,12 +80,15 @@ final class NullCallFinders {
               hits.add(NullHit.at(value, SyntaxWalk.text(target.get(0))));
             }
           }
-        });
+        }
+    );
   }
 
   /** Maps each array or other variable name to whether it is an array of non-null elements. */
   private static Map<String, Boolean> arrays(
-      final NullModel.Type type, final NullModel.Method method) {
+      final NullModel.Type type,
+      final NullModel.Method method
+  ) {
     final Map<String, Boolean> arrays = new HashMap<>();
     type.fields()
         .forEach(field -> arrays.put(field.name(), field.array() && !field.notes().nullable()));
@@ -94,7 +99,7 @@ final class NullCallFinders {
       final boolean nullable =
           NullSyntax.notes(NullSyntax.annotations(local)).nullable()
               || declared.isPresent()
-                  && NullSyntax.notes(NullSyntax.annotations(declared.get())).nullable();
+              && NullSyntax.notes(NullSyntax.annotations(declared.get())).nullable();
       SyntaxWalk.visits(local, Set.of("variableDeclaratorId"))
           .forEach(visit -> arrays.put(SyntaxWalk.text(visit.node()), array && !nullable));
     }
@@ -118,7 +123,8 @@ final class NullCallFinders {
                 .filter(NullCallFinders::plainlyNonNull)
                 .ifPresent(arg -> hits.add(NullHit.at(arg, SyntaxWalk.text(arg))));
           }
-        });
+        }
+    );
   }
 
   private static boolean plainlyNonNull(final SyntaxNode argument) {
@@ -131,7 +137,9 @@ final class NullCallFinders {
     action.accept("pass-nullable", NullCallFinders::passNullable);
     action.accept("dereference-nullable", NullCallFinders::dereferenceNullable);
     action.accept(
-        "assign-nullable-to-nonnull-array", NullCallFinders::assignNullableToNonnullArray);
+        "assign-nullable-to-nonnull-array",
+        NullCallFinders::assignNullableToNonnullArray
+    );
     action.accept("cast-to-nonnull-arg-nonnull", NullCallFinders::castToNonnullArgNonnull);
   }
 }

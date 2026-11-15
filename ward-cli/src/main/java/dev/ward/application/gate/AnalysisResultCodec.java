@@ -11,7 +11,6 @@ import java.util.Optional;
  * reverse-dependency index, and reads them back.
  */
 public interface AnalysisResultCodec {
-
   /** Encodes the findings of the unit stored under {@code key}. */
   String encode(String key, List<AnalysisFinding> findings);
 

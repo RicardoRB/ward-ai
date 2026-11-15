@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 /** The hidden-field check on small class bodies: hiding, static contexts and the two options. */
 class HiddenFieldCheckTest extends TreeBuilders {
-
   private static final String COUNT = "count";
   private static final String MESSAGE = "hides {value}";
   private static final String STATIC = "'static'";
@@ -67,7 +66,9 @@ class HiddenFieldCheckTest extends TreeBuilders {
         n(
             "fieldDeclaration",
             t(INT, INT),
-            n("variableDeclarators", n("variableDeclarator", t(TOKEN_IDENTIFIER, name)))));
+            n("variableDeclarators", n("variableDeclarator", t(TOKEN_IDENTIFIER, name)))
+        )
+    );
   }
 
   private static SyntaxNode method(
@@ -75,7 +76,8 @@ class HiddenFieldCheckTest extends TreeBuilders {
       final String returnType,
       final String name,
       final String parameter,
-      final boolean constructor) {
+      final boolean constructor
+  ) {
     final SyntaxNode head =
         constructor
             ? n(
@@ -83,16 +85,19 @@ class HiddenFieldCheckTest extends TreeBuilders {
                 t(TOKEN_IDENTIFIER, name),
                 t(TOKEN_OPEN, "("),
                 param(parameter),
-                t(TOKEN_CLOSE, ")"))
+                t(TOKEN_CLOSE, ")")
+            )
             : n(
                 METHOD_DECLARATION,
                 t(
                     returnType.isEmpty() ? VOID : returnType,
-                    returnType.isEmpty() ? VOID : returnType),
+                    returnType.isEmpty() ? VOID : returnType
+                ),
                 t(TOKEN_IDENTIFIER, name),
                 t(TOKEN_OPEN, "("),
                 param(parameter),
-                t(TOKEN_CLOSE, ")"));
+                t(TOKEN_CLOSE, ")")
+            );
     return member(isStatic, head);
   }
 
@@ -105,7 +110,8 @@ class HiddenFieldCheckTest extends TreeBuilders {
         n(
             "localVariableDeclaration",
             t(INT, INT),
-            n("variableDeclarator", t(TOKEN_IDENTIFIER, name)));
+            n("variableDeclarator", t(TOKEN_IDENTIFIER, name))
+        );
     return member(
         isStatic,
         n(
@@ -114,6 +120,8 @@ class HiddenFieldCheckTest extends TreeBuilders {
             t(TOKEN_IDENTIFIER, "run"),
             t(TOKEN_OPEN, "("),
             t(TOKEN_CLOSE, ")"),
-            n(BLOCK, n(BLOCK_STATEMENT, local))));
+            n(BLOCK, n(BLOCK_STATEMENT, local))
+        )
+    );
   }
 }

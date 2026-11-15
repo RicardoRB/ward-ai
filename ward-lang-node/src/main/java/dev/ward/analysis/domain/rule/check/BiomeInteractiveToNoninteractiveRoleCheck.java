@@ -17,7 +17,6 @@ import java.util.Set;
  * silent.
  */
 public final class BiomeInteractiveToNoninteractiveRoleCheck implements RuleCheck {
-
   private static final Set<String> EXEMPT_ELEMENTS = Set.of("div", "span", "source");
 
   private final AriaRoleTable table;
@@ -30,7 +29,9 @@ public final class BiomeInteractiveToNoninteractiveRoleCheck implements RuleChec
    * @param message the message of each finding
    */
   public BiomeInteractiveToNoninteractiveRoleCheck(
-      final AriaRoleTable table, final String message) {
+      final AriaRoleTable table,
+      final String message
+  ) {
     this.table = Objects.requireNonNull(table, "table");
     this.message = Objects.requireNonNull(message, "message");
   }
@@ -43,7 +44,10 @@ public final class BiomeInteractiveToNoninteractiveRoleCheck implements RuleChec
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(JsxAttributes.OPENING, JsxAttributes.SELF_CLOSING))
         .stream()
         .filter(visit -> reported(visit.node(), unit.text()))
@@ -72,7 +76,7 @@ public final class BiomeInteractiveToNoninteractiveRoleCheck implements RuleChec
         || EXEMPT_ELEMENTS.contains(name)
         || ("svg".equals(name) || "canvas".equals(name)) && "img".equals(value)
         || "a".equals(name)
-            && JsxAttributes.of(element).stream()
-                .noneMatch(attribute -> "href".equals(JsxAttributes.name(attribute)));
+        && JsxAttributes.of(element).stream()
+            .noneMatch(attribute -> "href".equals(JsxAttributes.name(attribute)));
   }
 }

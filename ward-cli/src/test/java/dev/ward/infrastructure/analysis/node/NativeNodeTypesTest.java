@@ -56,7 +56,8 @@ class NativeNodeTypesTest {
     final Span base =
         span(
             text,
-            text.substring(text.indexOf("abstract class Base"), text.indexOf("class Impl") - 1));
+            text.substring(text.indexOf("abstract class Base"), text.indexOf("class Impl") - 1)
+        );
     final Span impl =
         span(text, text.substring(text.indexOf("class Impl"), text.indexOf("const biggest") - 1));
     final Span run = span(text, "run(): number {\n    return 1;\n  }");
@@ -67,7 +68,8 @@ class NativeNodeTypesTest {
             .factsOf(
                 new SourceUnit(PATH, AnalysisLanguage.TYPESCRIPT, text),
                 List.of(max, base, impl, run),
-                EnumSet.allOf(FactKind.class));
+                EnumSet.allOf(FactKind.class)
+            );
 
     assertThat(actual.callTarget(max)).isEqualTo(expected.callTarget(max)).isPresent();
     assertThat(actual.typeOf(max)).isEqualTo(expected.typeOf(max)).isPresent();
@@ -137,10 +139,10 @@ class NativeNodeTypesTest {
 
   private static Span span(final String text, final String token) {
     final int offset = text.lastIndexOf(token);
-    final int line = (int) text.substring(0, offset).chars().filter(c -> c == '\n').count() + 1;
+    final int line = (int)text.substring(0, offset).chars().filter(c -> c == '\n').count() + 1;
     final int column = offset - text.lastIndexOf('\n', offset - 1);
     final int last = offset + token.length() - 1;
-    final int endLine = (int) text.substring(0, last).chars().filter(c -> c == '\n').count() + 1;
+    final int endLine = (int)text.substring(0, last).chars().filter(c -> c == '\n').count() + 1;
     final int endColumn = last - text.lastIndexOf('\n', last - 1);
     return new Span(line, column, endLine, endColumn, offset, last + 1);
   }

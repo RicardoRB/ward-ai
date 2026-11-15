@@ -12,7 +12,6 @@ import java.util.Set;
  * The commas between constants belong to the constant list, not to the declaration.
  */
 public final class NoEnumTrailingCommaCheck implements UnitCheck {
-
   private static final String COMMA = "','";
 
   private final String message;

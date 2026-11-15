@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
  * that is not part of the list.
  */
 final class NodeGlobalComments {
-
   private static final Pattern COMMENT =
       Pattern.compile("/\\*\\s*globals?\\s(.*?)\\*/", Pattern.DOTALL);
   private static final Pattern IDENTIFIER = Pattern.compile("[A-Za-z_$][\\w$]*");

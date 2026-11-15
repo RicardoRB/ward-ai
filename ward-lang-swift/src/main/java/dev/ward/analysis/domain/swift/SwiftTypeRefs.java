@@ -13,7 +13,6 @@ import java.util.Set;
  * such as a Foundation or UIKit type the project does not declare, is unknown.
  */
 final class SwiftTypeRefs {
-
   private static final Set<String> STANDARD_TYPES =
       Set.of(
           "Int",
@@ -25,7 +24,8 @@ final class SwiftTypeRefs {
           "Array",
           "Dictionary",
           "Set",
-          "Optional");
+          "Optional"
+      );
   private static final String OPTIONAL = "Optional";
   private static final String ARRAY = "Array";
   private static final String OPTIONAL_MARK = "'?'";
@@ -51,7 +51,10 @@ final class SwiftTypeRefs {
 
   /** Returns the project type a type identifier names, if the index resolves it. */
   Optional<SwiftTypeDecl> declOf(
-      final SyntaxNode identifier, final String file, final String scope) {
+      final SyntaxNode identifier,
+      final String file,
+      final String scope
+  ) {
     return index.resolve(file, scope, SwiftNodes.pathOf(identifier));
   }
 
@@ -71,7 +74,11 @@ final class SwiftTypeRefs {
 
   /** The generic arguments of a type identifier; empty when one is unknown or a path has them. */
   private Optional<List<TypeRef>> arguments(
-      final SyntaxNode node, final int segments, final String file, final String scope) {
+      final SyntaxNode node,
+      final int segments,
+      final String file,
+      final String scope
+  ) {
     final List<SyntaxNode> clauses = SwiftNodes.outermost(node, GENERIC_CLAUSE);
     if (clauses.isEmpty()) {
       return Optional.of(List.of());

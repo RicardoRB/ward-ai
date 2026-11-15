@@ -13,7 +13,6 @@ import java.util.Set;
  * trace.
  */
 public final class PreserveStackTraceCheck implements UnitCheck {
-
   private static final String CATCH = "catchClause";
   private static final String THROW = "'throw'";
   private static final String ARGUMENTS = "arguments";

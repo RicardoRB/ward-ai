@@ -34,7 +34,8 @@ public final class FileSystemWorkingFiles implements WorkingFiles {
     } catch (IOException exception) {
       LOGGER.log(
           Level.WARNING,
-          () -> "event=working-files-list-failed error=" + exception.getClass().getSimpleName());
+          () -> "event=working-files-list-failed error=" + exception.getClass().getSimpleName()
+      );
       return List.of();
     }
   }

@@ -29,7 +29,10 @@ public final class SourceLanguages<C> {
    * @throws WardException if a language has no entry in {@code gates}
    */
   public static <C> SourceLanguages<C> of(
-      final Map<Language, SourceLanguageGates<C>> gates, final Project project) {
+      final Map<Language,
+      SourceLanguageGates<C>> gates,
+      final Project project
+  ) {
     return new SourceLanguages<>(
         Stream.concat(Stream.of(project.language()), project.languages().stream())
             .distinct()
@@ -42,12 +45,15 @@ public final class SourceLanguages<C> {
                             + language.displayName()
                             + " "
                             + project.buildTool().displayName()
-                            + " projects yet.");
+                            + " projects yet."
+                    );
                   }
                   return entry;
-                })
+                }
+            )
             .distinct()
-            .toList());
+            .toList()
+    );
   }
 
   /** Returns the analysis gates of every language, each gate ID once, in first-seen order. */
@@ -55,7 +61,8 @@ public final class SourceLanguages<C> {
     final Map<String, InitGateOption> byId = new LinkedHashMap<>();
     languages.forEach(
         language ->
-            language.analysisGates(toolchain).forEach(gate -> byId.putIfAbsent(gate.id(), gate)));
+            language.analysisGates(toolchain).forEach(gate -> byId.putIfAbsent(gate.id(), gate))
+    );
     return List.copyOf(byId.values());
   }
 

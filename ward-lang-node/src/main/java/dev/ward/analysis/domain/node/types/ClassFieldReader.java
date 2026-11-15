@@ -16,14 +16,17 @@ final class ClassFieldReader {
       final SyntaxNode node,
       final SyntaxNode name,
       final int flags,
-      final List<String> decorators) {
+      final List<String> decorators
+  ) {
     final int all = flags | (TreeKit.hasToken(node, "?") ? Member.OPTIONAL : 0);
     TsType type = SigReader.annotated(TreeKit.child(node, TYPE_ANNOTATION));
     final SyntaxNode initializer = TreeKit.child(node, "initializer");
     if (TreeKit.child(node, TYPE_ANNOTATION) == null && initializer != null) {
       type =
           SimpleInit.of(
-              TreeKit.child(initializer, "singleExpression"), (all & Member.READONLY) != 0);
+              TreeKit.child(initializer, "singleExpression"),
+              (all & Member.READONLY) != 0
+          );
     }
     sink.add(new Member(TreeText.unquote(TreeText.text(name)), type, List.of(), all, decorators));
   }
@@ -33,7 +36,8 @@ final class ClassFieldReader {
       final MemberSink sink,
       final SyntaxNode node,
       final int flags,
-      final List<String> decorators) {
+      final List<String> decorators
+  ) {
     final SyntaxNode getAccessor = TreeKit.child(node, "getAccessor");
     final SyntaxNode abstractMember = TreeKit.child(node, "abstractDeclaration");
     if (getAccessor != null) {
@@ -46,7 +50,10 @@ final class ClassFieldReader {
   }
 
   private static void abstractMethod(
-      final MemberSink sink, final SyntaxNode node, final List<String> decorators) {
+      final MemberSink sink,
+      final SyntaxNode node,
+      final List<String> decorators
+  ) {
     final SyntaxNode name = TreeKit.child(node, "identifier");
     final SyntaxNode signature = TreeKit.child(node, "callSignature");
     if (name != null && signature != null) {
@@ -67,7 +74,8 @@ final class ClassFieldReader {
     SigReader.params(holder)
         .forEach(
             param ->
-                sink.add(new Member(param.name(), param.type(), List.of(), hidden, List.of())));
+                sink.add(new Member(param.name(), param.type(), List.of(), hidden, List.of()))
+        );
   }
 
   /** Returns the member flags that the modifier tokens give. */

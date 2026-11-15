@@ -12,8 +12,7 @@ class YamlSubsetTest {
   @Test
   void readsBlockMapsQuotedKeysFlowCollectionsAndSequences() {
     final Map<String, Object> root =
-        YamlSubset.parse(
-            """
+        YamlSubset.parse("""
             # comment
             lockfileVersion: '9.0'
             packages:

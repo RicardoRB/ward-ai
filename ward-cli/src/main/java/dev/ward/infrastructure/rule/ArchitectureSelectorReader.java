@@ -46,7 +46,11 @@ final class ArchitectureSelectorReader {
   }
 
   private List<String> strings(
-      final TomlTable table, final String label, final String parent, final String key) {
+      final TomlTable table,
+      final String label,
+      final String parent,
+      final String key
+  ) {
     if (!table.contains(key)) {
       return List.of();
     }

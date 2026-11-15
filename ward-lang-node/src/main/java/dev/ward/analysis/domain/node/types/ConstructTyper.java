@@ -53,7 +53,8 @@ final class ConstructTyper {
             parts.size() > ARGUMENTS_INDEX
                 ? Exprs.arguments(parts.get(ARGUMENTS_INDEX))
                 : List.of(),
-            List.of());
+            List.of()
+        );
     final TsType instance =
         new TsType.Named(typeOf.name(), typeArguments(TreeKit.parts(target)), typeOf.ref());
     final Sig declared =
@@ -69,7 +70,8 @@ final class ConstructTyper {
         .flatMap(
             located ->
                 located.decl().header().constructs().stream()
-                    .map(sig -> Instantiate.sig(sig, Map.of(), located.scope())))
+                    .map(sig -> Instantiate.sig(sig, Map.of(), located.scope()))
+        )
         .toList();
   }
 
@@ -93,7 +95,11 @@ final class ConstructTyper {
         .map(
             argument ->
                 Instantiate.apply(
-                    TyParser.parse(TreeText.leaves(argument)), Map.of(), model.module()))
+                    TyParser.parse(TreeText.leaves(argument)),
+                    Map.of(),
+                    model.module()
+                )
+        )
         .toList();
   }
 

@@ -8,7 +8,8 @@ public class XcodeSchemeOptions {
   @Option(
       names = "--scheme",
       paramLabel = "<name>",
-      description = "Xcode scheme that the tests run, when the project has several.")
+      description = "Xcode scheme that the tests run, when the project has several."
+  )
   private String scheme;
 
   /** Returns the scheme the user named, or {@code null} when none was given. */

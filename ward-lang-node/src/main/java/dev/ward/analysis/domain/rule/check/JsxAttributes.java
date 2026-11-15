@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
  * spread attribute is not an attribute here: it is a separate node the checks do not read.
  */
 final class JsxAttributes {
-
   /** The node kinds of an element that carries attributes. */
   static final String OPENING = "jsxOpeningElement";
 
@@ -30,7 +29,8 @@ final class JsxAttributes {
     return of(element).stream()
         .anyMatch(
             attribute ->
-                attribute.children().stream().anyMatch(child -> SPREAD.equals(child.kind())));
+                attribute.children().stream().anyMatch(child -> SPREAD.equals(child.kind()))
+        );
   }
 
   /** The attribute nodes of an element, in source order. */

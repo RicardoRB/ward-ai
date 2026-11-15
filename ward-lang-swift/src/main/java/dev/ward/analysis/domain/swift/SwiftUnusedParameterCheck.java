@@ -18,11 +18,11 @@ import java.util.regex.Pattern;
  * function keeps its signature, so its parameters are left alone.
  */
 public final class SwiftUnusedParameterCheck implements RuleCheck {
-
   /** A function declaration that no fixed signature constrains: only plain modifiers come first. */
   private static final Pattern PLAIN_FUNCTION =
       Pattern.compile(
-          "(?:(?:private|fileprivate|internal|static|final|mutating|nonmutating)\\s+)*func\\s");
+          "(?:(?:private|fileprivate|internal|static|final|mutating|nonmutating)\\s+)*func\\s"
+      );
 
   private final UnusedParameterCheck shared;
 
@@ -47,7 +47,11 @@ public final class SwiftUnusedParameterCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     return shared.matches(root, flow, view, unit);
   }
 

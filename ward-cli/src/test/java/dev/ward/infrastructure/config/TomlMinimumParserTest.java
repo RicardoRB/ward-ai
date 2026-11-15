@@ -32,28 +32,32 @@ class TomlMinimumParserTest {
   @Test
   void minimumOnPitIsRead() throws IOException {
     assertThat(
-            read(
-                    reader,
-                    dir,
-                    "version = 2\n[checks.mutation]\ncommand = \"./mvnw pitest:mutationCoverage\"\n"
-                        + "minimum = 60")
-                .checks()
-                .get("mutation")
-                .minimum())
+        read(
+            reader,
+            dir,
+            "version = 2\n[checks.mutation]\ncommand = \"./mvnw pitest:mutationCoverage\"\n"
+                + "minimum = 60"
+        )
+            .checks()
+            .get("mutation")
+            .minimum()
+    )
         .isEqualTo(MINIMUM);
   }
 
   @Test
   void minimumOnMutmutIsRead() throws IOException {
     assertThat(
-            read(
-                    reader,
-                    dir,
-                    "version = 2\n[checks.mutmut]\ncommand = [\"uv\", \"run\", \"mutmut\", \"run\"]\n"
-                        + "minimum = 60")
-                .checks()
-                .get("mutmut")
-                .minimum())
+        read(
+            reader,
+            dir,
+            "version = 2\n[checks.mutmut]\ncommand = [\"uv\", \"run\", \"mutmut\", \"run\"]\n"
+                + "minimum = 60"
+        )
+            .checks()
+            .get("mutmut")
+            .minimum()
+    )
         .isEqualTo(MINIMUM);
   }
 
@@ -81,12 +85,14 @@ class TomlMinimumParserTest {
   @Test
   void minimumOnAnotherGateIsRejectedNamingTheKey() {
     assertThatThrownBy(
-            () ->
-                read(
-                    reader,
-                    dir,
-                    "version = 2\n[checks.vitest]\ncommand = \"npx vitest run\"\n"
-                        + "minimum = 60"))
+        () ->
+            read(
+                reader,
+                dir,
+                "version = 2\n[checks.vitest]\ncommand = \"npx vitest run\"\n"
+                    + "minimum = 60"
+            )
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("checks.vitest.minimum");
   }

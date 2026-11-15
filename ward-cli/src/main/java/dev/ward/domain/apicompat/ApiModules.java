@@ -42,7 +42,8 @@ public final class ApiModules {
       final List<ApiType> current,
       final List<String> baselineModules,
       final List<String> currentModules,
-      final Predicate<String> inScope) {
+      final Predicate<String> inScope
+  ) {
     final List<ApiChange> changes = new ArrayList<>();
     for (final ApiType type : baseline) {
       if (type.isVisible() && inScope.test(type.name())) {
@@ -60,7 +61,9 @@ public final class ApiModules {
                   "",
                   "module " + label(was),
                   "module " + label(now.get(0)),
-                  type.location()));
+                  type.location()
+              )
+          );
         }
       }
     }

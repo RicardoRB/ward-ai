@@ -26,7 +26,10 @@ final class TypeCodec {
 
   static Sig readSig(final DataInputStream in) throws IOException {
     return new Sig(
-        CodecIo.read(in, CodecIo::readText), CodecIo.read(in, TypeCodec::readParam), readTy(in));
+        CodecIo.read(in, CodecIo::readText),
+        CodecIo.read(in, TypeCodec::readParam),
+        readTy(in)
+    );
   }
 
   static void param(final DataOutputStream out, final Param param) throws IOException {

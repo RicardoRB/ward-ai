@@ -39,7 +39,8 @@ final class PipRequirementsSource {
             root.toString(),
             "requirements.txt",
             "the project declares dependencies and has no pinned requirements file",
-            "run `pip freeze > requirements.txt` or `pip-compile`");
+            "run `pip freeze > requirements.txt` or `pip-compile`"
+        );
       }
       return new DependencyInventory(List.of(new ModuleDependencies("", List.of())));
     }
@@ -52,7 +53,9 @@ final class PipRequirementsSource {
       final Path root,
       final Path file,
       final ModuleBuilder builder,
-      final Map<PackageId, String> sources) {
+      final Map<PackageId,
+      String> sources
+  ) {
     final DependencyScope scope = scopeOf(LockFiles.fileName(file));
     try {
       for (final PinnedRequirements.Pin pin : PinnedRequirements.read(root, file)) {
@@ -69,13 +72,17 @@ final class PipRequirementsSource {
           LockFiles.relative(root, file),
           e.getMessage(),
           "pin every requirement with `==`, for example with `pip-compile`",
-          e);
+          e
+      );
     }
   }
 
   /** Gives each entry the file its pin was read from instead of the first file read. */
   private static ModuleDependencies withSources(
-      final ModuleDependencies module, final Map<PackageId, String> sources) {
+      final ModuleDependencies module,
+      final Map<PackageId,
+      String> sources
+  ) {
     return new ModuleDependencies(
         module.modulePath(),
         module.dependencies().stream()
@@ -89,8 +96,11 @@ final class PipRequirementsSource {
                         sources.get(entry.id()),
                         entry.declaredIn(),
                         entry.requiredBy(),
-                        entry.requested()))
-            .toList());
+                        entry.requested()
+                    )
+            )
+            .toList()
+    );
   }
 
   private static DependencyScope scopeOf(final String file) {
@@ -110,7 +120,8 @@ final class PipRequirementsSource {
               .filter(
                   file ->
                       PythonProjectInspection.isRequirementsFile(LockFiles.fileName(file))
-                          || !dir.equals(root) && LockFiles.fileName(file).endsWith(".txt"))
+                          || !dir.equals(root) && LockFiles.fileName(file).endsWith(".txt")
+              )
               .sorted()
               .forEach(files::add);
         } catch (IOException e) {
@@ -119,7 +130,8 @@ final class PipRequirementsSource {
               "requirements",
               "the folder cannot be read",
               "check its permissions",
-              e);
+              e
+          );
         }
       }
     }

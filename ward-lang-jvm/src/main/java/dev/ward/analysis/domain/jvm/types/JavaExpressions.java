@@ -88,7 +88,10 @@ final class JavaExpressions {
   }
 
   private Typed withLeft(
-      final List<SyntaxNode> parts, final Ctx ctx, final Optional<JType> target) {
+      final List<SyntaxNode> parts,
+      final Ctx ctx,
+      final Optional<JType> target
+  ) {
     final String operator = Syntax.token(parts.get(1));
     if (DOT.equals(operator)) {
       return names.member(parts, ctx);
@@ -110,7 +113,8 @@ final class JavaExpressions {
       final List<SyntaxNode> parts,
       final String operator,
       final Ctx ctx,
-      final Optional<JType> target) {
+      final Optional<JType> target
+  ) {
     if (INSTANCE_OF.equals(operator)) {
       expression(parts.get(0), ctx, Optional.empty());
       names.instanceOf(parts.get(2), ctx);

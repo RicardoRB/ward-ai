@@ -14,7 +14,6 @@ import java.util.Set;
  * binding keyword is reported. Optional forms are allowed only for reference types.
  */
 public final class SwiftValidIbinspectableCheck implements RuleCheck {
-
   private static final List<String> DECLARATIONS =
       List.of("variable_declaration", "constant_declaration");
   private static final Set<String> BINDINGS =
@@ -25,7 +24,8 @@ public final class SwiftValidIbinspectableCheck implements RuleCheck {
           "code_block",
           "getter_setter_block",
           "initializer",
-          "pattern");
+          "pattern"
+      );
   private static final String IB_INSPECTABLE = "IBInspectable";
   private static final String LET = "let";
   private static final String VAR = "var";
@@ -35,8 +35,24 @@ public final class SwiftValidIbinspectableCheck implements RuleCheck {
   private static final String TYPE_ANNOTATION = "type_annotation";
   private static final Set<String> VALUE_TYPES =
       Set.of(
-          "Bool", "Int", "Int8", "Int16", "Int32", "Int64", "UInt", "UInt8", "UInt16", "UInt32",
-          "UInt64", "Float", "Double", "CGFloat", "CGPoint", "CGSize", "CGRect");
+          "Bool",
+          "Int",
+          "Int8",
+          "Int16",
+          "Int32",
+          "Int64",
+          "UInt",
+          "UInt8",
+          "UInt16",
+          "UInt32",
+          "UInt64",
+          "Float",
+          "Double",
+          "CGFloat",
+          "CGPoint",
+          "CGSize",
+          "CGRect"
+      );
   private static final Set<String> REFERENCE_TYPES =
       Set.of("String", "NSString", "UIColor", "NSColor", "UIImage", "NSImage", "UIFont", "NSFont");
 
@@ -78,7 +94,8 @@ public final class SwiftValidIbinspectableCheck implements RuleCheck {
     final boolean instance =
         header.stream()
             .noneMatch(
-                node -> SwiftTrees.hasToken(node, STATIC) || SwiftTrees.hasToken(node, CLASS));
+                node -> SwiftTrees.hasToken(node, STATIC) || SwiftTrees.hasToken(node, CLASS)
+            );
     return inspectable && instance;
   }
 
@@ -109,7 +126,8 @@ public final class SwiftValidIbinspectableCheck implements RuleCheck {
     return header.stream()
         .flatMap(node -> SwiftTrees.leaves(node).stream())
         .filter(
-            leaf -> LET.equals(leaf.fields().get("text")) || VAR.equals(leaf.fields().get("text")))
+            leaf -> LET.equals(leaf.fields().get("text")) || VAR.equals(leaf.fields().get("text"))
+        )
         .findFirst();
   }
 }

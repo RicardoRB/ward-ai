@@ -18,7 +18,6 @@ import org.tomlj.TomlParseResult;
  * Checkstyle property in kebab-case.
  */
 final class DeclarationChecks {
-
   private static final String MESSAGE = "message";
   private static final int DEFAULT_DISTANCE = 3;
 
@@ -34,21 +33,30 @@ final class DeclarationChecks {
                 new HiddenFieldCheck(
                     flag(toml, "ignore-constructor-parameter", false),
                     flag(toml, "ignore-setter", false),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "parameter-assignment",
-            toml -> new ParameterAssignmentCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new ParameterAssignmentCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "variable-declaration-usage-distance",
             toml ->
                 new VariableDeclarationUsageDistanceCheck(
                     TomlValues.optionalInteger(toml, "allowed-distance", DEFAULT_DISTANCE),
                     flag(toml, "ignore-finals", true),
-                    TomlValues.required(toml, MESSAGE))));
+                    TomlValues.required(toml, MESSAGE)
+                )
+        )
+    );
   }
 
   private static boolean flag(
-      final TomlParseResult toml, final String key, final boolean fallback) {
+      final TomlParseResult toml,
+      final String key,
+      final boolean fallback
+  ) {
     return toml.getBoolean(key, () -> fallback);
   }
 
@@ -60,7 +68,9 @@ final class DeclarationChecks {
             TomlValues.optionalStrings(toml, "modifiers"),
             TomlValues.optionalStrings(toml, "absent-modifiers"),
             TomlValues.optionalStrings(toml, "absent-annotations"),
-            Pattern.compile(toml.getString("text", () -> ""))),
-        TomlValues.required(toml, MESSAGE));
+            Pattern.compile(toml.getString("text", () -> ""))
+        ),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 }

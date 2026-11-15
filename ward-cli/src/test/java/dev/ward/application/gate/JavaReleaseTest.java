@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test;
  * The detected Java release flows into the {@code java-release} option of the rules that read it.
  */
 class JavaReleaseTest {
-
   private static final String ACCESSOR = "ward:java/accessor-class-generation";
   private static final String PLAIN = "ward:java/type-name";
   private static final int EIGHT = 8;
@@ -50,8 +49,13 @@ class JavaReleaseTest {
             "ward",
             null,
             new ConfiguredRuleSetup.Choices(
-                List.of(rule(ACCESSOR)), false, List.of(rule(ACCESSOR)), List.of()),
-            new ClasspathRuleSource());
+                List.of(rule(ACCESSOR)),
+                false,
+                List.of(rule(ACCESSOR)),
+                List.of()
+            ),
+            new ClasspathRuleSource()
+        );
 
     final List<RuleDefinition> rules = setup.resolve(Path.of("."), EIGHT).rules();
 
@@ -70,7 +74,8 @@ class JavaReleaseTest {
         Set.of(),
         version,
         null,
-        "");
+        ""
+    );
   }
 
   private static RuleDefinition rule(final String id) {

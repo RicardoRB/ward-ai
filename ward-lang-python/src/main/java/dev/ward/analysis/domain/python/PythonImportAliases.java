@@ -12,7 +12,6 @@ import java.util.Map;
  * module they name is not a library name.
  */
 final class PythonImportAliases {
-
   private static final String DOTTED_NAME = "dotted_name";
   private static final String IMPORT = "import";
   private static final String DOT = ".";

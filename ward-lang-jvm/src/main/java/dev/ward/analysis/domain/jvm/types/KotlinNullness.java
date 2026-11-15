@@ -48,7 +48,8 @@ final class KotlinNullness {
   static Nullness propertyNullness(
       final SyntaxNode property,
       final Optional<SyntaxNode> written,
-      final boolean literalInitializer) {
+      final boolean literalInitializer
+  ) {
     final Nullness declared =
         written.isEmpty() && literalInitializer ? Nullness.NON_NULL : writtenNullness(written);
     final boolean mutable =
@@ -88,7 +89,9 @@ final class KotlinNullness {
   static Nullness useNullness(
       final Nullness declared,
       final SyntaxNode identifier,
-      final Optional<Map<String, Integer>> guards) {
+      final Optional<Map<String,
+      Integer>> guards
+  ) {
     if (declared != Nullness.NULLABLE) {
       return declared;
     }
@@ -133,7 +136,10 @@ final class KotlinNullness {
   }
 
   private static Optional<String> firstGroup(
-      final Pattern pattern, final String text, final int group) {
+      final Pattern pattern,
+      final String text,
+      final int group
+  ) {
     final Matcher matcher = pattern.matcher(text);
     return matcher.find() ? Optional.of(matcher.group(group)) : Optional.empty();
   }

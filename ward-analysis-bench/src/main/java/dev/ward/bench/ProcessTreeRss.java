@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * Sums resident memory over a process and its descendants from `ps -A -o pid=,ppid=,rss=` output.
  */
 final class ProcessTreeRss {
-
   private static final int RSS_GROUP = 3;
   private static final Pattern ROW = Pattern.compile("^\\s*(\\d+)\\s+(\\d+)\\s+(\\d+)\\s*$");
 
@@ -45,8 +44,11 @@ final class ProcessTreeRss {
 
   private static void addRow(
       final String line,
-      final Map<Long, Long> rssByPid,
-      final Map<Long, List<Long>> childrenByParent) {
+      final Map<Long,
+      Long> rssByPid,
+      final Map<Long,
+      List<Long>> childrenByParent
+  ) {
     final Matcher row = ROW.matcher(line);
     if (!row.matches()) {
       return;

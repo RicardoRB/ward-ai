@@ -32,7 +32,8 @@ class NodeStrictAgentRulesTest {
             "the `coverage` check reads `coverage/lcov.info` and requires at least 85% line and 75%"
                 + " branch coverage, set in `ward.toml`",
             "Mutation testing (Stryker): `npx stryker` in `ci`",
-            STRYKER_MINIMUM)
+            STRYKER_MINIMUM
+        )
         .doesNotContain("JaCoCo", "PIT");
   }
 
@@ -45,7 +46,8 @@ class NodeStrictAgentRulesTest {
             "the Ward strict rules selected in `ward-rules.toml`",
             "Tests (Jest)",
             "at least 85% line and 75% branch coverage",
-            STRYKER_MINIMUM)
+            STRYKER_MINIMUM
+        )
         .doesNotContain("tsc", "ESLint");
   }
 
@@ -72,7 +74,8 @@ class NodeStrictAgentRulesTest {
       final Language language,
       final BuildTool manager,
       final QualityPreset preset,
-      final String... ids) {
+      final String... ids
+  ) {
     final List<InitGateOption> gates =
         Stream.concat(List.of(ids).stream(), Stream.of("coverage", "stryker"))
             .map(id -> new InitGateOption(id, id, List.of("npx", id), true, "ok"))
@@ -88,7 +91,8 @@ class NodeStrictAgentRulesTest {
             Set.of(),
             "24",
             TaskRunner.NONE,
-            null);
+            null
+        );
     return AgentRulesTemplate.render(project, gates, preset, List.of()).body();
   }
 }

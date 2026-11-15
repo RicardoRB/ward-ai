@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 
 /** A call of a plain name, such as {@code f(a, b)}, whose text is exactly that call. */
 record PlainCall(String callee, String arguments) {
-
   private static final Pattern START = Pattern.compile("^(\\w+)\\(");
   private static final int NONE = -1;
   private static final char OPEN = '(';

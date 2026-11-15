@@ -25,7 +25,6 @@ import org.antlr.v4.runtime.Token;
  * @param facts the parse-tree rules and the token positions the layout needs
  */
 record JavaFormatParse(List<Token> tokens, OptionalInt errorLine, JavaTreeFacts facts) {
-
   private static final String UNIT_PATH = "format";
   private static final int NO_LINE = Integer.MAX_VALUE;
 
@@ -45,7 +44,10 @@ record JavaFormatParse(List<Token> tokens, OptionalInt errorLine, JavaTreeFacts 
   }
 
   private static JavaFormatParse parse(
-      final String source, final Function<JavaParser, ParserRuleContext> start) {
+      final String source,
+      final Function<JavaParser,
+      ParserRuleContext> start
+  ) {
     final JavaLexer lexer = new JavaLexer(CharStreams.fromString(source));
     lexer.removeErrorListeners();
     lexer.startFindings(UNIT_PATH);
@@ -72,12 +74,13 @@ record JavaFormatParse(List<Token> tokens, OptionalInt errorLine, JavaTreeFacts 
 
   /** Records the line of every parser error and recovers as the default strategy does. */
   private static final class FirstErrorLine extends DefaultErrorStrategy {
-
     private int first = NO_LINE;
 
     @Override
     protected void reportNoViableAlternative(
-        final Parser recognizer, final NoViableAltException e) {
+        final Parser recognizer,
+        final NoViableAltException e
+    ) {
       record(e.getOffendingToken());
       super.reportNoViableAlternative(recognizer, e);
     }
@@ -90,7 +93,9 @@ record JavaFormatParse(List<Token> tokens, OptionalInt errorLine, JavaTreeFacts 
 
     @Override
     protected void reportFailedPredicate(
-        final Parser recognizer, final FailedPredicateException e) {
+        final Parser recognizer,
+        final FailedPredicateException e
+    ) {
       record(e.getOffendingToken());
       super.reportFailedPredicate(recognizer, e);
     }

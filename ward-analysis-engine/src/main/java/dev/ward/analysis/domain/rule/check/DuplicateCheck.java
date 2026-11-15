@@ -16,7 +16,6 @@ import java.util.Set;
  * compared.
  */
 public final class DuplicateCheck implements UnitCheck {
-
   private final NodeFilter filter;
   private final Set<String> items;
   private final Optional<String> keyKind;
@@ -34,7 +33,8 @@ public final class DuplicateCheck implements UnitCheck {
       final NodeFilter filter,
       final Set<String> items,
       final Optional<String> keyKind,
-      final String message) {
+      final String message
+  ) {
     this.filter = Objects.requireNonNull(filter, "filter");
     this.items = Set.copyOf(items);
     this.keyKind = Objects.requireNonNull(keyKind, "keyKind");
@@ -56,8 +56,8 @@ public final class DuplicateCheck implements UnitCheck {
             .filter(key -> !seen.add(key))
             .ifPresent(
                 key ->
-                    matches.add(
-                        CheckSupport.at(child.span(), CheckSupport.fill(message, key, ""))));
+                    matches.add(CheckSupport.at(child.span(), CheckSupport.fill(message, key, "")))
+            );
       }
     }
   }

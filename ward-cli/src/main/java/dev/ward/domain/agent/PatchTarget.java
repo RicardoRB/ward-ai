@@ -9,7 +9,6 @@ import java.util.Objects;
  * @param kind how the patch affects the path
  */
 public record PatchTarget(String path, Kind kind) {
-
   /** How a patch affects a path. */
   public enum Kind {
     WRITE,

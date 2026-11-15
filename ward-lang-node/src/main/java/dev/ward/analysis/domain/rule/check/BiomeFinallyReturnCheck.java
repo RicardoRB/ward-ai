@@ -10,13 +10,18 @@ import java.util.Set;
  * is ignored. A return inside a function nested in the callback is not reported.
  */
 public final class BiomeFinallyReturnCheck implements RuleCheck {
-
   private static final Set<String> FUNCTIONS =
       Set.of("arrowFunctionDeclaration", "anonymousFunction", "functionDeclaration");
   private static final String CALL = "singleExpression";
   private static final Set<String> WRAPPERS =
       Set.of(
-          CALL, "anonymousFunction", "argument", "argumentList", "expressionSequence", "arguments");
+          CALL,
+          "anonymousFunction",
+          "argument",
+          "argumentList",
+          "expressionSequence",
+          "arguments"
+      );
   private static final String RETURN = "returnStatement";
   private static final String ARGUMENTS = "arguments";
   private static final String FINALLY_SUFFIX = ".finally";

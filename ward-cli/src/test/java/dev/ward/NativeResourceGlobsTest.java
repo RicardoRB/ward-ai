@@ -21,7 +21,8 @@ class NativeResourceGlobsTest {
   private static final Path REPOSITORY = Path.of("..");
   private static final Path METADATA =
       Path.of(
-          "src/main/resources/META-INF/native-image/dev.ward/ward-cli/reachability-metadata.json");
+          "src/main/resources/META-INF/native-image/dev.ward/ward-cli/reachability-metadata.json"
+      );
   private static final String RESOURCES = "src/main/resources";
   private static final String NATIVE_IMAGE_CONFIG = "META-INF/native-image/";
   private static final String DOUBLE_STAR = "**";
@@ -80,7 +81,8 @@ class NativeResourceGlobsTest {
         index += DOUBLE_STAR.length();
       } else {
         regex.append(
-            glob.charAt(index) == '*' ? "[^/]*" : Pattern.quote(glob.substring(index, index + 1)));
+            glob.charAt(index) == '*' ? "[^/]*" : Pattern.quote(glob.substring(index, index + 1))
+        );
         index++;
       }
     }

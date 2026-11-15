@@ -32,7 +32,8 @@ import org.junit.jupiter.params.provider.CsvFileSource;
  */
 @EnabledIfSystemProperty(
     named = SwiftCompatibilityMatrixTest.VERSION_PROPERTY,
-    matches = "\\d+\\.\\d+(\\.\\d+)?")
+    matches = "\\d+\\.\\d+(\\.\\d+)?"
+)
 class SwiftCompatibilityMatrixTest {
   static final String VERSION_PROPERTY = "ward.swift.matrix";
   private static final String FIXTURE_PROPERTY = "ward.swift.matrix.fixture";
@@ -62,15 +63,21 @@ class SwiftCompatibilityMatrixTest {
   @ParameterizedTest(name = "xcode {0} {1} {2} {3}")
   @CsvFileSource(resources = "/swift-matrix/cells.csv", numLinesToSkip = 1)
   void cellInitsChecksAndCatchesEveryViolation(
-      final ArgumentsAccessor cell, @TempDir final Path project)
+      final ArgumentsAccessor cell,
+      @TempDir final Path project
+  )
       throws IOException, InterruptedException {
     final String xcode = cell.getString(0);
     final String preset = cell.getString(2);
     final String fixture = cell.getString(FIXTURE_COLUMN);
     Assumptions.assumeTrue(
-        xcode.equals(System.getProperty(VERSION_PROPERTY)), "row is for Xcode " + xcode);
+        xcode.equals(System.getProperty(VERSION_PROPERTY)),
+        "row is for Xcode " + xcode
+    );
     Assumptions.assumeTrue(
-        fixture.equals(System.getProperty(FIXTURE_PROPERTY, fixture)), "row is for " + fixture);
+        fixture.equals(System.getProperty(FIXTURE_PROPERTY, fixture)),
+        "row is for " + fixture
+    );
     final Map<String, String> env = environment(xcode);
     assertSelectedXcode(xcode, env, project);
     copyTree(FIXTURES.resolve(fixture), project);
@@ -86,27 +93,22 @@ class SwiftCompatibilityMatrixTest {
             ARCHITECTURE,
             "--integration",
             "none",
-            "--yes");
+            "--yes"
+        );
     assertThat(init.exit()).as("init output:\n%s", init.output()).isZero();
     final Map<String, String> clean =
         checks(run(env, project, "check", "--profile", "ci", "--format", "json"));
     assertThat(clean).as("clean check").isNotEmpty();
     assertThat(
-            clean.entrySet().stream()
-                .filter(gate -> !"PASSED".equals(gate.getValue()))
-                .map(Map.Entry::getKey)
-                .toList())
+        clean.entrySet().stream()
+            .filter(gate -> !"PASSED".equals(gate.getValue()))
+            .map(Map.Entry::getKey)
+            .toList()
+    )
         .as("gates that fail on the clean project")
         .isEmpty();
 
-    final Path untested = COVERAGE_VIOLATIONS.resolve(fixture);
-    copyTree(untested, project);
-    final Run uncovered = run(env, project, "check", "--profile", "ci", "--format", "json");
-    assertThat(checks(uncovered).get("swift-coverage"))
-        .as("swift-coverage with an untested source file\n%s", uncovered.output())
-        .isEqualTo("FAILED");
-    assertThat(uncovered.output()).as("coverage finding").contains("Line coverage");
-    MatrixFileTrees.restore(untested, FIXTURES.resolve(fixture), project);
+    assertUntestedFileFailsCoverage(env, project, fixture);
     copyTree(VIOLATIONS.resolve(fixture), project);
     final Run violatedReport = run(env, project, "check", "--profile", "ci", "--format", "json");
     final Map<String, String> violated = checks(violatedReport);
@@ -120,7 +122,24 @@ class SwiftCompatibilityMatrixTest {
             gate ->
                 assertThat(violated.get(gate))
                     .as("seeded violation for gate %s", gate)
-                    .isEqualTo("FAILED"));
+                    .isEqualTo("FAILED")
+        );
+  }
+
+  private static void assertUntestedFileFailsCoverage(
+      final Map<String,
+      String> env,
+      final Path project,
+      final String fixture
+  ) throws IOException, InterruptedException {
+    final Path untested = COVERAGE_VIOLATIONS.resolve(fixture);
+    copyTree(untested, project);
+    final Run uncovered = run(env, project, "check", "--profile", "ci", "--format", "json");
+    assertThat(checks(uncovered).get("swift-coverage"))
+        .as("swift-coverage with an untested source file\n%s", uncovered.output())
+        .isEqualTo("FAILED");
+    assertThat(uncovered.output()).as("coverage finding").contains("Line coverage");
+    MatrixFileTrees.restore(untested, FIXTURES.resolve(fixture), project);
   }
 
   /**
@@ -131,12 +150,19 @@ class SwiftCompatibilityMatrixTest {
     return Map.of(
         "DEVELOPER_DIR",
         System.getProperty(
-            DEVELOPER_DIR_PROPERTY, "/Applications/Xcode_" + xcode + ".app/Contents/Developer"));
+            DEVELOPER_DIR_PROPERTY,
+            "/Applications/Xcode_" + xcode + ".app/Contents/Developer"
+        )
+    );
   }
 
   /** Fails when {@code xcodebuild -version} under {@code env} does not report {@code xcode}. */
   private static void assertSelectedXcode(
-      final String xcode, final Map<String, String> env, final Path project)
+      final String xcode,
+      final Map<String,
+      String> env,
+      final Path project
+  )
       throws IOException, InterruptedException {
     final Run version = exec(env, project, List.of("xcodebuild", "-version"));
     final String reported = version.output().lines().findFirst().orElse("").strip();
@@ -152,7 +178,9 @@ class SwiftCompatibilityMatrixTest {
             List.of(
                 "java",
                 "-jar",
-                Path.of(System.getProperty(JAR_PROPERTY)).toAbsolutePath().toString()));
+                Path.of(System.getProperty(JAR_PROPERTY)).toAbsolutePath().toString()
+            )
+        );
     command.addAll(List.of(args));
     return exec(env, project, command);
   }
@@ -165,7 +193,9 @@ class SwiftCompatibilityMatrixTest {
     final Process process = builder.start();
     final String output =
         new String(
-            process.getInputStream().readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
+            process.getInputStream().readAllBytes(),
+            java.nio.charset.StandardCharsets.UTF_8
+        );
     return new Run(process.waitFor(), output);
   }
 

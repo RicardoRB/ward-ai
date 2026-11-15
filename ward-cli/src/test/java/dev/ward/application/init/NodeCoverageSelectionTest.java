@@ -36,22 +36,35 @@ class NodeCoverageSelectionTest {
             Set.of(),
             "24",
             TaskRunner.NONE,
-            null);
+            null
+        );
     final InitSetupCatalog catalog =
         new InitSetupCatalog(
             new FakeEnvironmentInspection("npm"),
             new NodeInputs(
                 directory -> PackageManifest.EMPTY,
                 directory -> true,
-                (directory, gate) -> Optional.empty()),
+                (directory, gate) -> Optional.empty()
+            ),
             null,
             null,
-            "dev");
+            "dev"
+        );
     return SelectedGates.resolve(
         catalog,
         project,
         new InitSelection(
-            List.of("none"), List.of(gates), null, null, List.of(), false, null, false, null));
+            List.of("none"),
+            List.of(gates),
+            null,
+            null,
+            List.of(),
+            false,
+            null,
+            false,
+            null
+        )
+    );
   }
 
   @Test

@@ -35,15 +35,21 @@ public final class PythonPackageCatalog {
           Map.entry(PYTEST_DJANGO, new Package(PYTEST_DJANGO, "4.14.0")),
           Map.entry(DJANGO_STUBS, new Package(DJANGO_STUBS, "6.1.2")),
           Map.entry(HTTPX, new Package(HTTPX, "0.28.1")),
-          Map.entry(PYTEST_FLASK, new Package(PYTEST_FLASK, "1.3.0")));
+          Map.entry(PYTEST_FLASK, new Package(PYTEST_FLASK, "1.3.0"))
+      );
 
   /** The distributions each gate's command runs; pytest runs under coverage. */
   private static final Map<String, List<String>> GATE_TOOLS =
       Map.of(
-          "mypy", List.of(MYPY),
-          "pytest", List.of(PYTEST, COVERAGE),
-          "coverage", List.of(COVERAGE),
-          "mutmut", List.of(MUTMUT));
+          "mypy",
+          List.of(MYPY),
+          "pytest",
+          List.of(PYTEST, COVERAGE),
+          "coverage",
+          List.of(COVERAGE),
+          "mutmut",
+          List.of(MUTMUT)
+      );
 
   /** The extra distributions Django projects need: the test plugin and the type stubs. */
   private static final Map<Framework, Map<String, List<String>>> FRAMEWORK_TOOLS =
@@ -53,7 +59,8 @@ public final class PythonPackageCatalog {
           Framework.FASTAPI,
           Map.of("pytest", List.of(HTTPX)),
           Framework.FLASK,
-          Map.of("pytest", List.of(PYTEST_FLASK)));
+          Map.of("pytest", List.of(PYTEST_FLASK))
+      );
 
   private PythonPackageCatalog() {}
 
@@ -70,7 +77,10 @@ public final class PythonPackageCatalog {
    * checks need: pytest-django and django-stubs.
    */
   static List<Package> missing(
-      final List<InitGateOption> gates, final Set<String> declared, final Framework framework) {
+      final List<InitGateOption> gates,
+      final Set<String> declared,
+      final Framework framework
+  ) {
     final Set<String> names = new LinkedHashSet<>();
     gates.forEach(gate -> names.addAll(GATE_TOOLS.getOrDefault(gate.id(), List.of())));
     final Map<String, List<String>> extra = FRAMEWORK_TOOLS.getOrDefault(framework, Map.of());

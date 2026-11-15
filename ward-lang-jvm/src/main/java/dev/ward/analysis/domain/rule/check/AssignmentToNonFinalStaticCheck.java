@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
  * another class, or one reached through a local that hides it, is not seen.
  */
 public final class AssignmentToNonFinalStaticCheck implements UnitCheck {
-
   private static final Pattern TARGET =
       Pattern.compile("^(?:(\\w+)\\.)?(\\w+)(?:[-+*/%&|^]|<<|>>>?)?=(?!=)");
   private static final String EXPRESSION = "expression";
@@ -57,7 +56,10 @@ public final class AssignmentToNonFinalStaticCheck implements UnitCheck {
   }
 
   private Optional<RuleMatch> reportOf(
-      final SyntaxNode expression, final Set<String> statics, final String className) {
+      final SyntaxNode expression,
+      final Set<String> statics,
+      final String className
+  ) {
     final Matcher target = TARGET.matcher(SyntaxWalk.text(expression));
     if (!target.find() || !statics.contains(target.group(2))) {
       return Optional.empty();
@@ -67,7 +69,8 @@ public final class AssignmentToNonFinalStaticCheck implements UnitCheck {
       return Optional.empty();
     }
     return Optional.of(
-        CheckSupport.at(expression.span(), CheckSupport.fill(message, target.group(2), "")));
+        CheckSupport.at(expression.span(), CheckSupport.fill(message, target.group(2), ""))
+    );
   }
 
   private static boolean isStaticNonFinal(final SyntaxNode member) {

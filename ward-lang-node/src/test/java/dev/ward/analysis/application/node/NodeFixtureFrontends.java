@@ -33,7 +33,6 @@ import java.util.Set;
  * resources.
  */
 final class NodeFixtureFrontends {
-
   private static final String BUILTINS = "/dev/ward/analysis/lang/node/builtins/";
   private static final String TYPESCRIPT_ENVIRONMENT = "typescript";
   private static final String ES = "es2024";
@@ -83,7 +82,8 @@ final class NodeFixtureFrontends {
         Optional.of(
             typesJson
                 .map(NodeFixtureFrontends::fixtureFacts)
-                .orElseGet(NodeFixtureFrontends::nativeFacts));
+                .orElseGet(NodeFixtureFrontends::nativeFacts)
+        );
     final Set<RuleCapability> flow =
         Set.of(
             RuleCapability.SYNTAX,
@@ -91,7 +91,8 @@ final class NodeFixtureFrontends {
             RuleCapability.CFG,
             RuleCapability.DATAFLOW,
             RuleCapability.SCOPES,
-            RuleCapability.TYPES);
+            RuleCapability.TYPES
+        );
     return List.of(
         new FrontendSupport(
             AnalysisLanguage.TYPESCRIPT,
@@ -99,10 +100,12 @@ final class NodeFixtureFrontends {
             flow,
             new NodeControlFlow(),
             new CachedScopes(
-                new NodeScopeAnalysis(names(ES, TYPESCRIPT_ENVIRONMENT, BROWSER, NODE))),
+                new NodeScopeAnalysis(names(ES, TYPESCRIPT_ENVIRONMENT, BROWSER, NODE))
+            ),
             types,
             Set.of(),
-            Set.of()),
+            Set.of()
+        ),
         new FrontendSupport(
             AnalysisLanguage.JAVASCRIPT,
             frontend,
@@ -111,7 +114,9 @@ final class NodeFixtureFrontends {
             new CachedScopes(new NodeScopeAnalysis(names(ES, BROWSER, NODE))),
             types,
             Set.of(),
-            Set.of()));
+            Set.of()
+        )
+    );
   }
 
   /** The facts of a fixture folder's types.json, which answer for every unit as in ward-cli. */
@@ -130,9 +135,13 @@ final class NodeFixtureFrontends {
             DeclarationCache.NONE,
             frontend,
             layout.files(),
-            new NodeModuleResolver(layout)::resolve);
+            new NodeModuleResolver(layout)::resolve
+        );
     return new NativeNodeTypeFacts(
-        program, frontend, new NodeScopeAnalysis(names(ES, TYPESCRIPT_ENVIRONMENT, BROWSER, NODE)));
+        program,
+        frontend,
+        new NodeScopeAnalysis(names(ES, TYPESCRIPT_ENVIRONMENT, BROWSER, NODE))
+    );
   }
 
   /** The names of the given environment files, one name per line; the same set for any request. */

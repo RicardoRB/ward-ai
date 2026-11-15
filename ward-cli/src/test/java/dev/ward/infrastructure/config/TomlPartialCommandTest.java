@@ -18,10 +18,7 @@ class TomlPartialCommandTest {
   @Test
   void parsesNarrowedPartialCommand() throws Exception {
     final WardConfiguration config =
-        read(
-            reader,
-            dir,
-            """
+        read(reader, dir, """
                 version = 2
                 [checks.prettier]
                 command = ["npx", "prettier", "--check", "."]
@@ -38,18 +35,16 @@ class TomlPartialCommandTest {
   @Test
   void rejectsNarrowedCommandWithoutArguments() {
     assertThatThrownBy(
-            () ->
-                read(
-                    reader,
-                    dir,
-                    """
+        () ->
+            read(reader, dir, """
                         version = 2
                         [checks.prettier]
                         command = "npx prettier --check ."
                         [checks.prettier.paths]
                         match = ["**/*.ts"]
                         command = ["npx", "prettier", "--check"]
-                        """))
+                        """)
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("prettier.paths.command")
         .hasMessageContaining("args");
@@ -58,11 +53,8 @@ class TomlPartialCommandTest {
   @Test
   void rejectsNarrowedCommandWithBlankElements() {
     assertThatThrownBy(
-            () ->
-                read(
-                    reader,
-                    dir,
-                    """
+        () ->
+            read(reader, dir, """
                         version = 2
                         [checks.prettier]
                         command = "npx prettier --check ."
@@ -70,7 +62,8 @@ class TomlPartialCommandTest {
                         match = ["**/*.ts"]
                         args = ["{paths}"]
                         command = ["npx", " "]
-                        """))
+                        """)
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("prettier.paths.command");
   }

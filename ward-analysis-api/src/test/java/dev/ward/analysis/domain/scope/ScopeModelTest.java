@@ -7,7 +7,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class ScopeModelTest {
-
   private static final int OFFSET_0 = 0;
   private static final int OFFSET_1 = 1;
   private static final int OFFSET_2 = 2;
@@ -117,13 +116,15 @@ class ScopeModelTest {
         "m",
         at(OFFSET_4),
         new ImportOrigin("pkg", "m", at(OFFSET_4)),
-        Set.of(BindingFlag.TYPE_ONLY));
+        Set.of(BindingFlag.TYPE_ONLY)
+    );
 
     final String dump = ScopeDump.of(builder.build());
 
     assertThat(dump)
         .contains(
-            "module\n  function @1:1\n    parameter a @1:2\n    import m @1:5 [type_only] from pkg")
+            "module\n  function @1:1\n    parameter a @1:2\n    import m @1:5 [type_only] from pkg"
+        )
         .contains("1:3 a read -> function parameter a @1:2")
         .contains("1:4 b read -> unresolved");
   }

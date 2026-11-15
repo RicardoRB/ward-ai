@@ -11,7 +11,6 @@ import java.util.Set;
  * comments, newlines and error nodes, and the expression wrappers that hide a statement's shape.
  */
 final class KotlinFlowSyntax {
-
   static final String THROW = "throw";
 
   private static final Set<String> NOISE = Set.of("comment", "error", "NL");
@@ -36,7 +35,8 @@ final class KotlinFlowSyntax {
           "prefixUnaryExpression",
           "postfixUnaryExpression",
           "atomicExpression",
-          "conditionalExpression");
+          "conditionalExpression"
+      );
   private static final String CALL_SUFFIX = "callSuffix";
   private static final String TEXT = "text";
   private static final int SINGLE = 1;
@@ -132,6 +132,7 @@ final class KotlinFlowSyntax {
         last.endLine(),
         last.endColumn(),
         first.startOffset(),
-        last.endOffset());
+        last.endOffset()
+    );
   }
 }

@@ -12,7 +12,6 @@ import java.util.List;
  * when the lambda names no parameter, else each named one, destructured names included.
  */
 final class KotlinLambdaParameters {
-
   private static final String IT = "it";
   private static final String VARIABLE_DECLARATION = "variableDeclaration";
 
@@ -38,7 +37,10 @@ final class KotlinLambdaParameters {
   }
 
   private static VariableAccess parameter(
-      final String name, final Span declaration, final Span part) {
+      final String name,
+      final Span declaration,
+      final Span part
+  ) {
     return new VariableAccess(
         name,
         AccessKind.WRITE,
@@ -48,8 +50,10 @@ final class KotlinLambdaParameters {
             part.startLine(),
             part.startColumn(),
             part.startOffset(),
-            part.startOffset()),
-        declaration);
+            part.startOffset()
+        ),
+        declaration
+    );
   }
 
   private static List<SyntaxNode> declarations(final SyntaxNode node) {

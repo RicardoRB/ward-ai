@@ -20,7 +20,6 @@ import org.antlr.v4.runtime.tree.TerminalNode;
  * sign.
  */
 final class KotlinTreeWalk {
-
   /** The rule that only matches newlines and semicolons, whose count a blank line changes. */
   private static final String WHITESPACE_RULE = "anysemi";
 

@@ -24,10 +24,12 @@ class ApiSourceSignatureTest {
             false,
             List.of(
                 new ApiTypeParameter("T", List.of(STRING, INT), ""),
-                new ApiTypeParameter("U", List.of(), "")),
+                new ApiTypeParameter("U", List.of(), "")
+            ),
             List.of(new ApiParameter(STRING, true)),
             INT,
-            AT);
+            AT
+        );
 
     assertThat(generic.signature())
         .isEqualTo("public <T extends java.lang.String & int, U> int put(java.lang.String = ...)");

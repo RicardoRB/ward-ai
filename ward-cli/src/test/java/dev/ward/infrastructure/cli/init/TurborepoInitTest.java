@@ -74,6 +74,7 @@ class TurborepoInitTest {
         "--ci",
         "github",
         "--agent-rules",
-        "--yes");
+        "--yes"
+    );
   }
 }

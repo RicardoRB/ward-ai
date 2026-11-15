@@ -46,14 +46,19 @@ class NodeMatrixCellsTest {
                 "24,nestjs,strict,",
                 "24,express,strict,",
                 "24,angular-21,strict,",
-                "24,angular-22,strict,"));
+                "24,angular-22,strict,"
+            )
+        );
   }
 
   @Test
   void standardCellsAreTypeScriptOnNode22() throws IOException {
     assertThat(rowsEndingWith(",standard,"))
         .containsExactlyInAnyOrder(
-            "22,typescript,standard,", "22,angular-21,standard,", "22,angular-22,standard,");
+            "22,typescript,standard,",
+            "22,angular-21,standard,",
+            "22,angular-22,standard,"
+        );
   }
 
   @Test
@@ -63,11 +68,16 @@ class NodeMatrixCellsTest {
             .flatMap(
                 major ->
                     List.of(
-                        "22,angular-" + major + ",standard,", "24,angular-" + major + ",strict,")
-                        .stream())
+                        "22,angular-" + major + ",standard,",
+                        "24,angular-" + major + ",strict,"
+                    )
+                        .stream()
+            )
             .toList();
 
-    assertThat(rows().stream().filter(row -> row.split(",", -1)[1].startsWith("angular-")).toList())
+    assertThat(
+        rows().stream().filter(row -> row.split(",", -1) [1].startsWith("angular-")).toList()
+    )
         .containsExactlyInAnyOrderElementsOf(expected);
     for (final String major : AngularReleases.majors()) {
       final Path fixture = NODE_FIXTURES.resolve("angular-" + major);
@@ -110,7 +120,8 @@ class NodeMatrixCellsTest {
         .anyMatch(
             row ->
                 "24".equals(column(row, NODE_COLUMN))
-                    && "strict".equals(column(row, PRESET_COLUMN)));
+                    && "strict".equals(column(row, PRESET_COLUMN))
+        );
   }
 
   @Test
@@ -123,7 +134,7 @@ class NodeMatrixCellsTest {
   /** The rows of the plain TypeScript and JavaScript fixtures, which the matrix's sets cover. */
   private static List<String> plainRowsEndingWith(final String suffix) throws IOException {
     return rowsEndingWith(suffix).stream()
-        .filter(row -> FIXTURES.contains(row.split(",", -1)[1]))
+        .filter(row -> FIXTURES.contains(row.split(",", -1) [1]))
         .toList();
   }
 }

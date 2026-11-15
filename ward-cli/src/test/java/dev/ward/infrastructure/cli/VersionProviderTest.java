@@ -9,7 +9,6 @@ import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.Test;
 
 class VersionProviderTest {
-
   @Test
   void currentResolvesFilteredBuildVersion() {
     assertThat(VersionProvider.current()).matches("\\d+\\.\\d+\\.\\d+.*");

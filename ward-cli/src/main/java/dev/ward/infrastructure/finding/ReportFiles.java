@@ -31,7 +31,8 @@ public final class ReportFiles {
       final String gateId,
       final Instant gateStart,
       final String mavenFile,
-      final String gradleDirectory) {
+      final String gradleDirectory
+  ) {
     final List<Path> candidates =
         project.buildTool() == BuildTool.GRADLE
             ? xmlFilesIn(project.root().resolve(gradleDirectory))
@@ -41,7 +42,10 @@ public final class ReportFiles {
 
   /** Returns {@code report} when it exists and was modified at or after {@code gateStart}. */
   public static List<Path> fresh(
-      final String gateId, final Instant gateStart, final List<Path> reports) {
+      final String gateId,
+      final Instant gateStart,
+      final List<Path> reports
+  ) {
     // File systems may store modification times at second precision.
     final Instant threshold = gateStart.truncatedTo(ChronoUnit.SECONDS);
     final List<Path> fresh = new ArrayList<>();
@@ -50,13 +54,15 @@ public final class ReportFiles {
         LOGGER.log(
             Level.INFO,
             () ->
-                "event=finding-report-missing gate=" + gateId + " report=" + report.getFileName());
+                "event=finding-report-missing gate=" + gateId + " report=" + report.getFileName()
+        );
         continue;
       }
       if (modified(report).isBefore(threshold)) {
         LOGGER.log(
             Level.INFO,
-            () -> "event=finding-report-stale gate=" + gateId + " report=" + report.getFileName());
+            () -> "event=finding-report-stale gate=" + gateId + " report=" + report.getFileName()
+        );
         continue;
       }
       fresh.add(report);

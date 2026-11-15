@@ -9,7 +9,6 @@ import java.util.Set;
 /** Turns the references of a project's summaries into edges between its files. */
 @FunctionalInterface
 public interface DependencyResolver {
-
   /**
    * Resolves the references of every summary. A reference that matches no file yields no edge.
    *

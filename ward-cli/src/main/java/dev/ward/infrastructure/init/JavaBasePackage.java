@@ -29,7 +29,8 @@ final class JavaBasePackage {
           "model",
           "api",
           "web",
-          "persistence");
+          "persistence"
+      );
 
   private JavaBasePackage() {}
 

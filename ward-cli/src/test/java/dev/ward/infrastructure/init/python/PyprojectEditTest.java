@@ -36,7 +36,13 @@ class PyprojectEditTest {
 
     assertThat(PyprojectDependencies.declared(toml))
         .containsExactlyInAnyOrder(
-            "django", "requests", "sphinx-rtd-theme", "pytest", "httpx", "ruff");
+            "django",
+            "requests",
+            "sphinx-rtd-theme",
+            "pytest",
+            "httpx",
+            "ruff"
+        );
   }
 
   @Test
@@ -44,8 +50,7 @@ class PyprojectEditTest {
     final String toml = "[project]\nname = \"shop\"\n";
 
     assertThat(PyprojectEdit.withGroup(toml, TOOLS))
-        .isEqualTo(
-            """
+        .isEqualTo("""
             [project]
             name = "shop"
 
@@ -62,8 +67,7 @@ class PyprojectEditTest {
     final String toml = "[dependency-groups]\ndev = [\"pytest>=8\"]\n";
 
     assertThat(PyprojectEdit.withGroup(toml, TOOLS))
-        .isEqualTo(
-            """
+        .isEqualTo("""
             [dependency-groups]
             ward = [
                 "ruff==0.17.1",
@@ -78,8 +82,7 @@ class PyprojectEditTest {
     final String toml = "[dependency-groups]\nward = [\"pytest==9.1.1\"]\n";
 
     assertThat(PyprojectEdit.withGroup(toml, List.of("ruff==0.17.1")))
-        .isEqualTo(
-            """
+        .isEqualTo("""
             [dependency-groups]
             ward = [
                 "pytest==9.1.1",

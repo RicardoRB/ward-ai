@@ -12,7 +12,6 @@ import java.util.Objects;
  * does.
  */
 public final class BlockCommentAsteriskCheck implements UnitCheck {
-
   private static final String OPEN = "/*";
   private static final String JAVADOC_OPEN = "/**";
   private static final char ASTERISK = '*';
@@ -36,7 +35,8 @@ public final class BlockCommentAsteriskCheck implements UnitCheck {
         for (final JavadocRows.Row row : JavadocRows.of(node)) {
           if (row.index() > 0 && !startsWithAsterisk(row)) {
             matches.add(
-                CheckSupport.at(row.at(Math.min(row.lead(), row.text().length())), message));
+                CheckSupport.at(row.at(Math.min(row.lead(), row.text().length())), message)
+            );
           }
         }
       }

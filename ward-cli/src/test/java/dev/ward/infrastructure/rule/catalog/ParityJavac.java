@@ -14,19 +14,19 @@ import java.util.stream.Stream;
  * with Error Prone and NullAway on the class path.
  */
 final class ParityJavac {
-
   private static final List<String> EXPORTS =
       Stream.of(
-              "api",
-              "file",
-              "main",
-              "model",
-              "parser",
-              "processing",
-              "tree",
-              "util",
-              "code",
-              "comp")
+          "api",
+          "file",
+          "main",
+          "model",
+          "parser",
+          "processing",
+          "tree",
+          "util",
+          "code",
+          "comp"
+      )
           .map(name -> "--add-exports=jdk.compiler/com.sun.tools.javac." + name + "=ALL-UNNAMED")
           .toList();
   private static final List<String> OPENS =
@@ -59,7 +59,8 @@ final class ParityJavac {
       final String mode,
       final List<String> fixtures,
       final List<String> checks,
-      final Path classes)
+      final Path classes
+  )
       throws IOException, InterruptedException {
     final Path folder = environment.workFolder("javac-" + mode);
     final String classpath = environment.classpath("errorprone");
@@ -75,9 +76,11 @@ final class ParityJavac {
             classpath,
             "-d",
             launcher.toString(),
-            launcher.resolve("ParityJavac.java").toString()),
+            launcher.resolve("ParityJavac.java").toString()
+        ),
         folder.resolve("javac.out"),
-        folder.resolve("javac.err"));
+        folder.resolve("javac.err")
+    );
     final List<String> entries = new ArrayList<>();
     for (final String fixture : fixtures) {
       entries.add(fixture + "\t" + environment.fixtures().resolve(fixture + ".java"));
@@ -98,9 +101,11 @@ final class ParityJavac {
             mode,
             folder.resolve("list.txt").toString(),
             classes.toString(),
-            folder.resolve("checks.txt").toString()),
+            folder.resolve("checks.txt").toString()
+        ),
         output,
-        folder.resolve("run.err"));
+        folder.resolve("run.err")
+    );
     return read(output);
   }
 
@@ -118,7 +123,9 @@ final class ParityJavac {
                 parts[2],
                 Integer.parseInt(parts[LINE_FIELD].trim()),
                 Integer.parseInt(parts[COLUMN_FIELD].trim()),
-                parts[DIAGNOSTIC_FIELDS - 1]));
+                parts[DIAGNOSTIC_FIELDS - 1]
+            )
+        );
       }
     }
     return new Result(failed, diagnostics);

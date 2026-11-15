@@ -13,7 +13,6 @@ import java.util.Set;
  * parameter after it is not reported, as pylint does.
  */
 public final class KeywordArgBeforeVarargCheck implements RuleCheck {
-
   private static final String PARAMETERS = "parameters";
   private final String message;
 

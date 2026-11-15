@@ -17,13 +17,18 @@ final class TomlPlatformParser {
   private TomlPlatformParser() {}
 
   static XcodePlatform parse(
-      final String where, final String type, final TomlTable gate, final List<String> command) {
+      final String where,
+      final String type,
+      final TomlTable gate,
+      final List<String> command
+  ) {
     final String key = where + "." + PLATFORM;
     final boolean xcode = SupportedQualityGates.XCODEBUILD_TEST.equals(type);
     if (!gate.contains(PLATFORM)) {
       if (xcode && !command.contains(DESTINATION)) {
         throw new WardException(
-            "'" + key + "' is required unless the command has " + DESTINATION + allowed());
+            "'" + key + "' is required unless the command has " + DESTINATION + allowed()
+        );
       }
       return null;
     }

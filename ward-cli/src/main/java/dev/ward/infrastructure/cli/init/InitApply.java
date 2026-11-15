@@ -56,7 +56,8 @@ final class InitApply {
     final Predicate<CompatibilityFinding> approval =
         finding -> mode.approved() || confirmations.compatibilityUpdate(finding);
     printer.print(
-        init.initialize(project.root(), selection, mode.overwrite(), replaceScripts, approval));
+        init.initialize(project.root(), selection, mode.overwrite(), replaceScripts, approval)
+    );
     return ExitCodes.OK;
   }
 
@@ -81,7 +82,8 @@ final class InitApply {
     if (plan.hasConflict()) {
       throw new WardException(
           "Cannot initialize: the selected changes conflict with user-owned content. No files"
-              + " were changed.");
+              + " were changed."
+      );
     }
     final List<ScriptReplacement> replacements =
         plans.stream().flatMap(planned -> planned.replacements().stream()).toList();
@@ -97,7 +99,11 @@ final class InitApply {
   }
 
   private void applyAll(
-      final List<Target> targets, final Mode mode, final Path base, final boolean replaceScripts) {
+      final List<Target> targets,
+      final Mode mode,
+      final Path base,
+      final boolean replaceScripts
+  ) {
     final Predicate<CompatibilityFinding> approval =
         finding -> mode.approved() || confirmations.compatibilityUpdate(finding);
     final List<String> configured = new ArrayList<>();
@@ -110,7 +116,9 @@ final class InitApply {
                 target.selection(),
                 target.overwrite(),
                 replaceScripts,
-                approval));
+                approval
+            )
+        );
       } catch (WardException | UncheckedIOException | IllegalStateException failure) {
         throw new WardException(
             "Could not initialize "
@@ -120,7 +128,8 @@ final class InitApply {
                 + (configured.isEmpty()
                     ? ""
                     : " Already configured: " + String.join(", ", configured) + "."),
-            failure);
+            failure
+        );
       }
       configured.add(name);
     }
@@ -134,7 +143,8 @@ final class InitApply {
                 file ->
                     file.details().isEmpty()
                         ? project.root().relativize(file.file()) + " is user-owned"
-                        : String.join("; ", file.details()))
+                        : String.join("; ", file.details())
+            )
             .collect(Collectors.joining(", "));
     return "Cannot initialize "
         + project.root()
@@ -153,7 +163,8 @@ final class InitApply {
       boolean review,
       boolean approved,
       boolean overwrite,
-      boolean replaceScripts) {}
+      boolean replaceScripts
+  ) {}
 
   /** One project of a multi-project run, with the answers it applies and whether it replaces. */
   record Target(Project project, InitSelection selection, boolean overwrite) {}

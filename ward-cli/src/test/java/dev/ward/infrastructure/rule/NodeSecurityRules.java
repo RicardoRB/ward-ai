@@ -12,7 +12,6 @@ import java.util.List;
 
 /** Runs the bundled TypeScript and JavaScript security rules over sources, as the gate does. */
 final class NodeSecurityRules {
-
   /** The security rules of both languages: {@code ward:typescript/xss} and its JavaScript twin. */
   private static final String SECURITY_IDS =
       "ward:(typescript|javascript)/(command-injection|path-traversal|xss)";
@@ -29,15 +28,16 @@ final class NodeSecurityRules {
     final List<RuleDefinition> rules =
         new ClasspathRuleSource()
             .load().rules().stream()
-                .filter(rule -> rule.id().matches(SECURITY_IDS))
-                .filter(rule -> rule.languages().contains(unit.language()))
-                .toList();
+            .filter(rule -> rule.id().matches(SECURITY_IDS))
+            .filter(rule -> rule.languages().contains(unit.language()))
+            .toList();
     final FrontendSupport support =
         new FrontendSupport(
             unit.language(),
             new AntlrLanguageFrontend(),
             DataFlowFixtures.FLOW,
-            new NodeControlFlow());
+            new NodeControlFlow()
+        );
     final RuleRunResult result =
         new RuleEngine(BundledRuleMatchers.create()).run(List.of(unit), List.of(support), rules);
     return result.findings();

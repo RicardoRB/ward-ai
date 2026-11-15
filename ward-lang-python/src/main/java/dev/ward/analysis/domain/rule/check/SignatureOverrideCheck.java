@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * class of this module are compared; the comparison itself is in {@link ParameterComparison}.
  */
 public final class SignatureOverrideCheck implements RuleCheck {
-
   /** The mistakes the check tells apart, one per rule. */
   public enum Problem {
     /** The overriding method has a different number of parameters, or drops {@code *args}. */
@@ -59,7 +58,8 @@ public final class SignatureOverrideCheck implements RuleCheck {
   private List<RuleMatch> checkMethod(
       final PythonClassModel model,
       final PythonClassModel.ClassInfo info,
-      final PythonClassModel.Method method) {
+      final PythonClassModel.Method method
+  ) {
     final List<RuleMatch> found = new ArrayList<>();
     final Optional<PythonClassModel.Method> parent = overridden(model, info, method.name());
     if (parent.isEmpty() || skipped(method) || parent.get().decoratedWith(OVERLOAD)) {
@@ -83,7 +83,10 @@ public final class SignatureOverrideCheck implements RuleCheck {
 
   /** The first method of an ancestor with this name, when every ancestor is known. */
   private static Optional<PythonClassModel.Method> overridden(
-      final PythonClassModel model, final PythonClassModel.ClassInfo info, final String name) {
+      final PythonClassModel model,
+      final PythonClassModel.ClassInfo info,
+      final String name
+  ) {
     final List<String> order = model.order(info.name()).names();
     for (final String ancestor : order.subList(1, order.size())) {
       final PythonClassModel.ClassInfo parent = model.classes().get(ancestor);

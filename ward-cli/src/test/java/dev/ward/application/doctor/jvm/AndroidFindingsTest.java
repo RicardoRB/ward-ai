@@ -64,7 +64,8 @@ class AndroidFindingsTest {
         find(
             PLUGIN,
             facts(Map.of("androidGradlePluginVersion", "8.11.1", "gradleVersion", "8.13")),
-            Optional.of(17));
+            Optional.of(17)
+        );
 
     assertThat(plugin.status()).isEqualTo(Status.OK);
   }
@@ -75,7 +76,8 @@ class AndroidFindingsTest {
         find(
             PLUGIN,
             facts(Map.of("androidGradlePluginVersion", "8.11.1", "gradleVersion", "8.9")),
-            Optional.of(17));
+            Optional.of(17)
+        );
 
     assertThat(plugin.status()).isEqualTo(Status.WARNING);
     assertThat(plugin.message()).contains("Gradle 8.13", "Gradle 8.9");
@@ -90,7 +92,10 @@ class AndroidFindingsTest {
 
   /** The finding named {@code name}, from the SDK and plugin checks for these facts. */
   private static Finding find(
-      final String name, final EnvironmentFacts facts, final Optional<Integer> jdk) {
+      final String name,
+      final EnvironmentFacts facts,
+      final Optional<Integer> jdk
+  ) {
     final ToolchainContext context =
         new ToolchainContext(Optional.of(fakeTools(jdk)), Optional.empty(), List.of());
     return AndroidFindings.findings(PROJECT, facts, context).stream()
@@ -116,7 +121,8 @@ class AndroidFindingsTest {
           final Project project,
           final List<InitGateOption> gates,
           final QualityPreset preset,
-          final boolean approved) {
+          final boolean approved
+      ) {
         throw new UnsupportedOperationException();
       }
 

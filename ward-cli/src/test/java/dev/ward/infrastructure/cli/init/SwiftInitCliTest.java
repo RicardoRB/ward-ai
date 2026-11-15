@@ -32,7 +32,9 @@ class SwiftInitCliTest {
             .withSwiftPorts(
                 new SwiftPorts(
                     new XcodebuildSchemes(new FakeCommandExecutor(), new ForyJsonCodec()),
-                    new FileSystemSwiftSourceDirectories()));
+                    new FileSystemSwiftSourceDirectories()
+                )
+            );
 
     final int exit = init.run("", "--preset", "standard", "--yes");
 
@@ -82,7 +84,9 @@ class SwiftInitCliTest {
         .withSwiftPorts(
             new SwiftPorts(
                 new XcodebuildSchemes(new FakeCommandExecutor(), new ForyJsonCodec()),
-                new FileSystemSwiftSourceDirectories()));
+                new FileSystemSwiftSourceDirectories()
+            )
+        );
   }
 
   @Test
@@ -95,8 +99,11 @@ class SwiftInitCliTest {
                 new SwiftPorts(
                     new XcodebuildSchemes(
                         new FakeCommandExecutor(new CommandResult(0, listing, "", Duration.ZERO)),
-                        new ForyJsonCodec()),
-                    new FileSystemSwiftSourceDirectories()));
+                        new ForyJsonCodec()
+                    ),
+                    new FileSystemSwiftSourceDirectories()
+                )
+            );
 
     final int refused = init.run("", "--preset", "standard", "--yes");
     assertThat(refused).as(init.output()).isEqualTo(ExitCodes.ERROR);

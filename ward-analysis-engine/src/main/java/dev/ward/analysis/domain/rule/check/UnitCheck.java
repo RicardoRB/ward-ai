@@ -9,7 +9,6 @@ import java.util.List;
 /** A check that may read the path and text of the file, besides its syntax tree. */
 @FunctionalInterface
 interface UnitCheck extends RuleCheck {
-
   @Override
   default List<RuleMatch> matches(final SyntaxNode root) {
     return check(root, SourceFile.UNKNOWN);
@@ -17,7 +16,10 @@ interface UnitCheck extends RuleCheck {
 
   @Override
   default List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return check(root, SourceFile.of(unit));
   }
 

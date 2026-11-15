@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
  * imports whose uses have unknown targets, are not reported.
  */
 public final class NonCanonicalStaticImportCheck extends FactsCheck {
-
   private static final Pattern IMPORT = Pattern.compile("^importstatic([\\w.]+)\\.(\\w+);?$");
   private static final String IMPORT_KIND = "importDeclaration";
   private static final String EXPRESSION = "expression";
@@ -47,7 +46,10 @@ public final class NonCanonicalStaticImportCheck extends FactsCheck {
   }
 
   private List<RuleMatch> reportOf(
-      final SyntaxNode node, final List<SyntaxNode> calls, final UnitTypeFacts types) {
+      final SyntaxNode node,
+      final List<SyntaxNode> calls,
+      final UnitTypeFacts types
+  ) {
     final Matcher imported = IMPORT.matcher(SyntaxWalk.text(node));
     if (!imported.matches()) {
       return List.of();
@@ -62,7 +64,10 @@ public final class NonCanonicalStaticImportCheck extends FactsCheck {
         .map(
             target ->
                 CheckSupport.at(
-                    node.span(), CheckSupport.fill(message, target.declaringType().name(), "")))
+                    node.span(),
+                    CheckSupport.fill(message, target.declaringType().name(), "")
+                )
+        )
         .stream()
         .toList();
   }

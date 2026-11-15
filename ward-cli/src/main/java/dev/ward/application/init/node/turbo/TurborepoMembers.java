@@ -40,7 +40,10 @@ public final class TurborepoMembers implements MemberWriter {
 
   /** Returns the member plans of {@code root}, or none when it is not a Turborepo root. */
   public static List<TurborepoPlan.MemberPlan> plan(
-      final Project root, final QualityPreset preset, final InitInputs inputs) {
+      final Project root,
+      final QualityPreset preset,
+      final InitInputs inputs
+  ) {
     return root.taskRunner().isRootRunner()
         ? TurborepoPlan.memberScripts(root, preset, inputs)
         : List.of();
@@ -53,7 +56,8 @@ public final class TurborepoMembers implements MemberWriter {
   static TurboWorkspace workspace(
       final Path root,
       final List<TurborepoPlan.MemberPlan> members,
-      final List<InitGateOption> gates) {
+      final List<InitGateOption> gates
+  ) {
     final List<String> tasks =
         gates.stream()
             .map(gate -> TurborepoPlan.taskOf(gate.id()))
@@ -66,9 +70,14 @@ public final class TurborepoMembers implements MemberWriter {
             .map(
                 member ->
                     new TurboWorkspace.Member(
-                        member.name(), member.project().root(), member.scripts()))
+                        member.name(),
+                        member.project().root(),
+                        member.scripts()
+                    )
+            )
             .toList(),
-        tasks);
+        tasks
+    );
   }
 
   /**
@@ -83,14 +92,18 @@ public final class TurborepoMembers implements MemberWriter {
                     .filter(
                         script ->
                             member.current().containsKey(script.getKey())
-                                && !member.current().get(script.getKey()).equals(script.getValue()))
+                                && !member.current().get(script.getKey()).equals(script.getValue())
+                    )
                     .map(
                         script ->
                             new ScriptReplacement(
                                 member.name(),
                                 script.getKey(),
                                 member.current().get(script.getKey()),
-                                script.getValue())))
+                                script.getValue()
+                            )
+                    )
+        )
         .toList();
   }
 
@@ -103,7 +116,8 @@ public final class TurborepoMembers implements MemberWriter {
       final List<InitGateOption> gates,
       final QualityPreset preset,
       final boolean approved,
-      final MemberPlanning planning) {
+      final MemberPlanning planning
+  ) {
     if (!project.taskRunner().isRootRunner()) {
       return List.of();
     }
@@ -118,7 +132,9 @@ public final class TurborepoMembers implements MemberWriter {
               PlannedFileChange.Action.MODIFY,
               member.scripts().entrySet().stream()
                   .map(script -> scriptDetail(member, script.getKey()))
-                  .toList()));
+                  .toList()
+          )
+      );
     }
     changes.add(
         new PlannedFileChange(
@@ -126,14 +142,16 @@ public final class TurborepoMembers implements MemberWriter {
             PlannedFileChange.Action.MODIFY,
             workspace(project.root(), members, gates).tasks().stream()
                 .map(task -> "add task " + task)
-                .toList()));
+                .toList()
+        )
+    );
     return changes;
   }
 
   /** Names a member script as added, or as a replacement that needs approval. */
   private static String scriptDetail(final TurborepoPlan.MemberPlan member, final String script) {
     return member.current().containsKey(script)
-            && !member.current().get(script).equals(member.scripts().get(script))
+        && !member.current().get(script).equals(member.scripts().get(script))
         ? "replace " + script + " script (requires approval)"
         : "add script " + script;
   }
@@ -154,7 +172,8 @@ public final class TurborepoMembers implements MemberWriter {
       final List<InitGateOption> gates,
       final QualityPreset preset,
       final boolean replaceScripts,
-      final Predicate<? super CompatibilityFinding> approval) {
+      final Predicate<? super CompatibilityFinding> approval
+  ) {
     if (!root.taskRunner().isRootRunner()) {
       return;
     }

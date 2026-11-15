@@ -49,11 +49,13 @@ public final class JacocoXmlLineCoverage implements LineCoverageReport {
             final String element = reader.getLocalName();
             if (collector.first && !ROOT.equals(element)) {
               throw new LineCoverageException(
-                  report.getFileName() + " is not a JaCoCo report: the root is " + element);
+                  report.getFileName() + " is not a JaCoCo report: the root is " + element
+              );
             }
             collector.first = false;
             collector.visit(element, reader.getAttributeValue(null, NAME), reader);
-          });
+          }
+      );
     } catch (FindingExtractionException e) {
       throw new LineCoverageException(report.getFileName() + " is not a readable XML file", e);
     }
@@ -123,7 +125,9 @@ public final class JacocoXmlLineCoverage implements LineCoverageReport {
             new LineHits.Entry(
                 LineHits.Kind.PACKAGE_FILE,
                 name,
-                new FileLines(coverable, covered, branches, coveredBranches)));
+                new FileLines(coverable, covered, branches, coveredBranches)
+            )
+        );
       }
       file = NO_FILE;
       coverable.clear();

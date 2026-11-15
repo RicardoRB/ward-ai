@@ -76,7 +76,9 @@ final class BuildPolicyConfig {
       if (name.startsWith(PREFIX)) {
         final Optional<BuildRule> rule = BuildRule.byName(name.substring(PREFIX.length()));
         rule.ifPresentOrElse(
-            rules::add, () -> problems.add("[select]", key, "unknown rule \"" + name + "\""));
+            rules::add,
+            () -> problems.add("[select]", key, "unknown rule \"" + name + "\"")
+        );
       }
     }
     return rules;

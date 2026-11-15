@@ -12,7 +12,6 @@ import java.util.Optional;
  * target's sources phase or synchronized folder, and the targets it declares as dependencies.
  */
 final class XcodeProjectTargets {
-
   private static final String OBJECTS = "objects";
   private static final String ISA = "isa";
   private static final String NATIVE_TARGET = "PBXNativeTarget";

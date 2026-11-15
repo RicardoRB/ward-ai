@@ -33,7 +33,10 @@ final class RuleConfigResolver {
   private final Map<String, RuleDefinition> configured = new LinkedHashMap<>();
 
   private RuleConfigResolver(
-      final RuleConfigFile file, final List<RuleDefinition> catalog, final int javaRelease) {
+      final RuleConfigFile file,
+      final List<RuleDefinition> catalog,
+      final int javaRelease
+  ) {
     this.file = file;
     this.catalog = catalog;
     this.javaRelease = javaRelease;
@@ -42,7 +45,10 @@ final class RuleConfigResolver {
 
   /** Resolves {@code file} against {@code catalog}; the result has problems or rules, not both. */
   static RuleSet resolve(
-      final RuleConfigFile file, final List<RuleDefinition> catalog, final int javaRelease) {
+      final RuleConfigFile file,
+      final List<RuleDefinition> catalog,
+      final int javaRelease
+  ) {
     return new RuleConfigResolver(file, catalog, javaRelease).run();
   }
 
@@ -54,7 +60,8 @@ final class RuleConfigResolver {
           if (rule.runsOn(javaRelease)) {
             configured.put(id, JavaRelease.withDefault(rule, javaRelease));
           }
-        });
+        }
+    );
     file.rules().forEach((id, table) -> tune(id, table, selected));
     if (problems.isEmpty()) {
       return new RuleSet(new ArrayList<>(configured.values()), excludes, List.of());
@@ -67,8 +74,11 @@ final class RuleConfigResolver {
 
   private void tune(
       final String id,
-      final Map<String, Object> table,
-      final Map<String, RuleDefinition> selected) {
+      final Map<String,
+      Object> table,
+      final Map<String,
+      RuleDefinition> selected
+  ) {
     if (id.startsWith("ward:build/")) {
       return;
     }
@@ -79,14 +89,21 @@ final class RuleConfigResolver {
       tuneSelected(rule.get(), where, table);
     } else if (rule.isPresent()) {
       problems.add(
-          where, "", "the rule is not selected; add it to [select] include or remove this table");
+          where,
+          "",
+          "the rule is not selected; add it to [select] include or remove this table"
+      );
     } else {
       problems.add(where, "", "unknown rule id");
     }
   }
 
   private void tuneSelected(
-      final RuleDefinition rule, final String where, final Map<String, Object> table) {
+      final RuleDefinition rule,
+      final String where,
+      final Map<String,
+      Object> table
+  ) {
     final Map<String, Object> options = new LinkedHashMap<>();
     AnalysisSeverity severity = rule.severity();
     for (final Map.Entry<String, Object> entry : table.entrySet()) {
@@ -107,7 +124,10 @@ final class RuleConfigResolver {
   }
 
   private AnalysisSeverity severity(
-      final String where, final Object value, final AnalysisSeverity current) {
+      final String where,
+      final Object value,
+      final AnalysisSeverity current
+  ) {
     if (ERROR.equals(value)) {
       return AnalysisSeverity.ERROR;
     }
@@ -115,7 +135,10 @@ final class RuleConfigResolver {
       return AnalysisSeverity.WARNING;
     }
     problems.add(
-        where, SEVERITY, "expected \"" + ERROR + "\" or \"" + WARNING + "\", got " + show(value));
+        where,
+        SEVERITY,
+        "expected \"" + ERROR + "\" or \"" + WARNING + "\", got " + show(value)
+    );
     return current;
   }
 
@@ -123,7 +146,7 @@ final class RuleConfigResolver {
     final List<Pattern> matchers = new ArrayList<>();
     if (value instanceof List<?> globs && globs.stream().allMatch(String.class::isInstance)) {
       for (final Object glob : globs) {
-        compile(where, (String) glob).ifPresent(matchers::add);
+        compile(where, (String)glob).ifPresent(matchers::add);
       }
       excludes.put(id, matchers);
     } else {
@@ -142,7 +165,11 @@ final class RuleConfigResolver {
 
   /** Returns whether {@code key} is a declared option whose value is allowed. */
   private boolean option(
-      final RuleDefinition rule, final String where, final String key, final Object value) {
+      final RuleDefinition rule,
+      final String where,
+      final String key,
+      final Object value
+  ) {
     final Optional<RuleOption> option = rule.option(key);
     if (option.isEmpty()) {
       final List<String> declared = rule.options().stream().map(RuleOption::name).toList();
@@ -151,7 +178,8 @@ final class RuleConfigResolver {
           key,
           "unknown option; this rule has "
               + (declared.isEmpty() ? "no options" : "options " + declared)
-              + ", besides severity and exclude-paths");
+              + ", besides severity and exclude-paths"
+      );
       return false;
     }
     final Optional<String> problem = option.get().problem(value);
@@ -163,7 +191,9 @@ final class RuleConfigResolver {
       final RuleDefinition rule,
       final String where,
       final AnalysisSeverity severity,
-      final Map<String, Object> options) {
+      final Map<String,
+      Object> options
+  ) {
     try {
       final RuleDefinition tuned = RuleOptions.apply(rule, options);
       if (!rule.runsOn(javaRelease)) {
@@ -180,7 +210,9 @@ final class RuleConfigResolver {
               tuned.category(),
               tuned.presets(),
               tuned.options(),
-              tuned.minJavaRelease()));
+              tuned.minJavaRelease()
+          )
+      );
     } catch (final IllegalArgumentException exception) {
       problems.add(where, "", exception.getMessage());
     }

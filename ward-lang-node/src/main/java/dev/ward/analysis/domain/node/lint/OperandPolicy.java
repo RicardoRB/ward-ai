@@ -16,4 +16,5 @@ public record OperandPolicy(
     boolean allowNullish,
     boolean allowNumberAndString,
     boolean allowRegExp,
-    boolean skipCompound) {}
+    boolean skipCompound
+) {}

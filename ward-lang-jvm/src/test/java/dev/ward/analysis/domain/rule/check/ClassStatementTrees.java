@@ -6,7 +6,6 @@ import java.util.List;
 
 /** Builds the statements and calls the class-level design check tests read. */
 class ClassStatementTrees extends ClassMemberTrees {
-
   static final String LOOKUP = "get";
   static final String USE = "use";
   static final String COMPUTE = "compute";
@@ -27,7 +26,8 @@ class ClassStatementTrees extends ClassMemberTrees {
         COLUMN,
         node(EXPRESSION, LINE, COLUMN, leaf(TOKEN_IDENTIFIER, receiver, LINE, COLUMN)),
         leaf(DOT_KIND, DOT, LINE, COLUMN),
-        ident(name));
+        ident(name)
+    );
   }
 
   /** A statement {@code receiver.name()}, with the receiver at the shared test position. */
@@ -38,7 +38,8 @@ class ClassStatementTrees extends ClassMemberTrees {
         COLUMN,
         node(EXPRESSION, LINE, COLUMN, leaf(TOKEN_IDENTIFIER, receiver, LINE, COLUMN)),
         leaf(DOT_KIND, DOT, LINE, COLUMN),
-        node(METHOD_CALL, LINE, COLUMN, ident(name)));
+        node(METHOD_CALL, LINE, COLUMN, ident(name))
+    );
   }
 
   /** A statement {@code receiver.get().use()}, with the inner call on the receiver. */
@@ -49,7 +50,8 @@ class ClassStatementTrees extends ClassMemberTrees {
         COLUMN,
         call(receiver, LOOKUP),
         leaf(DOT_KIND, DOT, LINE, COLUMN),
-        node(METHOD_CALL, LINE, COLUMN, ident(USE)));
+        node(METHOD_CALL, LINE, COLUMN, ident(USE))
+    );
   }
 
   SyntaxNode nestedChain() {
@@ -59,7 +61,8 @@ class ClassStatementTrees extends ClassMemberTrees {
         COLUMN,
         chainOn(FOREIGN),
         leaf(DOT_KIND, DOT, LINE, COLUMN),
-        node(METHOD_CALL, LINE, COLUMN, ident("again")));
+        node(METHOD_CALL, LINE, COLUMN, ident("again"))
+    );
   }
 
   SyntaxNode bareExpression() {
@@ -85,7 +88,9 @@ class ClassStatementTrees extends ClassMemberTrees {
       body.add(ident(FIELD_NAME));
     }
     return member(
-        method("branches", 0, DECISIONS_FOR_WMC_47, body.toArray(SyntaxNode[]::new)), PUBLIC);
+        method("branches", 0, DECISIONS_FOR_WMC_47, body.toArray(SyntaxNode[]::new)),
+        PUBLIC
+    );
   }
 
   SyntaxNode usingMethod(final String name) {

@@ -15,7 +15,6 @@ import java.util.List;
  * @param limit the largest allowed number of lines
  */
 public record FunctionLengthRule(RuleDefinition definition, int limit) implements CompiledRule {
-
   @Override
   public List<RuleMatch> matches(final SyntaxNode root) {
     final List<RuleMatch> matches = new ArrayList<>();
@@ -23,8 +22,8 @@ public record FunctionLengthRule(RuleDefinition definition, int limit) implement
       final int lines = SyntaxTrees.lines(function.span());
       if (lines > limit) {
         matches.add(
-            new RuleMatch(
-                function.span(), "Function has " + lines + " lines (limit " + limit + ")"));
+            new RuleMatch(function.span(), "Function has " + lines + " lines (limit " + limit + ")")
+        );
       }
     }
     return matches;

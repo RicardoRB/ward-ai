@@ -9,7 +9,6 @@ import java.util.Optional;
 
 /** The places where an operation has a schema in both documents. */
 final class SchemaSites {
-
   /** A schema of the base and the one at the same place of the revision, in an operation. */
   record Site(Operation operation, DocNode base, DocNode revision) {}
 
@@ -25,7 +24,8 @@ final class SchemaSites {
           return before.isPresent() && after.isPresent()
               ? bodies(pair, now, before.get(), after.get())
               : List.of();
-        });
+        }
+    );
   }
 
   /** The response body schemas of the status codes and media types both documents have. */
@@ -37,9 +37,11 @@ final class SchemaSites {
           responses(pair, base, now)
               .forEach(
                   response ->
-                      sites.addAll(bodies(pair, now, response.base(), response.revision())));
+                      sites.addAll(bodies(pair, now, response.base(), response.revision()))
+              );
           return sites;
-        });
+        }
+    );
   }
 
   /**
@@ -58,9 +60,11 @@ final class SchemaSites {
                       schemas(pair, before, Optional.ofNullable(after.get(key)))
                           .ifPresent(schemas -> sites.add(site(now, schemas)));
                     }
-                  });
+                  }
+              );
           return sites;
-        });
+        }
+    );
   }
 
   /** The schemas of the response headers both documents have. */
@@ -79,13 +83,17 @@ final class SchemaSites {
             }
           }
           return sites;
-        });
+        }
+    );
   }
 
   private record Responses(DocNode base, DocNode revision) {}
 
   private static List<Responses> responses(
-      final DocumentPair pair, final Operation base, final Operation now) {
+      final DocumentPair pair,
+      final Operation base,
+      final Operation now
+  ) {
     final List<Responses> responses = new ArrayList<>();
     for (final DocNode.Entry code : NamedParts.entries(pair.base(), base.node(), "responses")) {
       NamedParts.entry(pair.revision(), now.node(), "responses", code.key())
@@ -93,13 +101,21 @@ final class SchemaSites {
               other ->
                   responses.add(
                       new Responses(
-                          pair.base().resolve(code.value()), pair.revision().resolve(other))));
+                          pair.base().resolve(code.value()),
+                          pair.revision().resolve(other)
+                      )
+                  )
+          );
     }
     return responses;
   }
 
   private static List<Site> bodies(
-      final DocumentPair pair, final Operation now, final DocNode before, final DocNode after) {
+      final DocumentPair pair,
+      final Operation now,
+      final DocNode before,
+      final DocNode after
+  ) {
     final List<Site> sites = new ArrayList<>();
     for (final DocNode.Entry type : Bodies.mediaTypes(pair.base(), before)) {
       final Optional<DocNode> other = Bodies.mediaType(pair.revision(), after, type.key());
@@ -114,7 +130,10 @@ final class SchemaSites {
 
   /** The schemas of two nodes that each have a {@code schema}, with references followed. */
   private static Optional<Schemas> schemas(
-      final DocumentPair pair, final DocNode before, final Optional<DocNode> after) {
+      final DocumentPair pair,
+      final DocNode before,
+      final Optional<DocNode> after
+  ) {
     if (after.isEmpty()) {
       return Optional.empty();
     }

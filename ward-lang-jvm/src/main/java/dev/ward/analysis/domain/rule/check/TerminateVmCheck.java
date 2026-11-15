@@ -12,10 +12,10 @@ import java.util.regex.Pattern;
  * Runtime}, except inside a method named {@code main}, as PMD's DoNotTerminateVM allows.
  */
 public final class TerminateVmCheck implements UnitCheck {
-
   private static final Pattern TERMINATE =
       Pattern.compile(
-          "^(?:(?:java\\.lang\\.)?System|Runtime\\.getRuntime\\(\\))\\.(?:exit|halt)\\(");
+          "^(?:(?:java\\.lang\\.)?System|Runtime\\.getRuntime\\(\\))\\.(?:exit|halt)\\("
+      );
   private static final Set<String> METHODS = Set.of("methodDeclaration");
   private static final String MAIN = "main";
 
@@ -45,7 +45,8 @@ public final class TerminateVmCheck implements UnitCheck {
       if (METHODS.contains(node.kind())) {
         return node.children().stream()
             .anyMatch(
-                child -> "identifier".equals(child.kind()) && MAIN.equals(SyntaxWalk.text(child)));
+                child -> "identifier".equals(child.kind()) && MAIN.equals(SyntaxWalk.text(child))
+            );
       }
     }
     return false;

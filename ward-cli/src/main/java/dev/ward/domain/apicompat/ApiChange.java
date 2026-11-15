@@ -19,8 +19,8 @@ public record ApiChange(
     String member,
     String before,
     String after,
-    ApiLocation location) {
-
+    ApiLocation location
+) {
   /** The text of {@code after} for a declaration that no longer exists. */
   public static final String REMOVED = "removed";
 

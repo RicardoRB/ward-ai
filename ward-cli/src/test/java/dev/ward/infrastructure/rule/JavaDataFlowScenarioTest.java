@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** The Java data-flow scenarios of the intraprocedural spec, on lowered Java sources. */
 final class JavaDataFlowScenarioTest {
-
   @Test
   void twoBranchesReachTheReadAfterThem() {
     final String source =
@@ -62,7 +61,8 @@ final class JavaDataFlowScenarioTest {
         source,
         DataFlowFixtures.reachingWrites(DataFlowFixtures.java(source, "A#f(1)"), "s"),
         "s",
-        "use(s)");
+        "use(s)"
+    );
   }
 
   @Test
@@ -74,7 +74,8 @@ final class JavaDataFlowScenarioTest {
         source,
         DataFlowFixtures.reachingWrites(DataFlowFixtures.java(source, "A#f(0)"), "e"),
         "e",
-        "use(e)");
+        "use(e)"
+    );
   }
 
   /**

@@ -27,7 +27,6 @@ import java.util.regex.PatternSyntaxException;
  * target is unknown.
  */
 public final class RestrictedApiCheck implements RuleCheck {
-
   private static final String ANNOTATION = "com.google.errorprone.annotations.RestrictedApi";
   private static final String PREFIX = ANNOTATION + "#";
   private static final String EXPRESSION = "expression";
@@ -40,7 +39,8 @@ public final class RestrictedApiCheck implements RuleCheck {
           "methodDeclaration",
           "constructorDeclaration",
           "genericMethodDeclaration",
-          "genericConstructorDeclaration");
+          "genericConstructorDeclaration"
+      );
   private static final FactNeed NEED =
       new FactNeed(
           Set.of(
@@ -52,8 +52,10 @@ public final class RestrictedApiCheck implements RuleCheck {
               "methodDeclaration",
               "constructorDeclaration",
               "genericMethodDeclaration",
-              "genericConstructorDeclaration"),
-          Set.of(FactKind.CALL, FactKind.ANNOTATIONS));
+              "genericConstructorDeclaration"
+          ),
+          Set.of(FactKind.CALL, FactKind.ANNOTATIONS)
+      );
 
   private final String message;
 
@@ -83,7 +85,8 @@ public final class RestrictedApiCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(EXPRESSION)).stream()
         .filter(visit -> SyntaxWalk.text(visit.node()).endsWith(")"))
         .filter(visit -> restricted(visit, types, unit))
@@ -91,12 +94,17 @@ public final class RestrictedApiCheck implements RuleCheck {
             visit ->
                 CheckSupport.at(
                     visit.node().span(),
-                    CheckSupport.fill(message, explanation(visit.node(), types), "")))
+                    CheckSupport.fill(message, explanation(visit.node(), types), "")
+                )
+        )
         .toList();
   }
 
   private static boolean restricted(
-      final SyntaxWalk.Visit visit, final UnitTypeFacts types, final SourceUnit unit) {
+      final SyntaxWalk.Visit visit,
+      final UnitTypeFacts types,
+      final SourceUnit unit
+  ) {
     final CallTarget target = types.callTarget(visit.node().span()).orElse(null);
     if (target == null || !target.annotations().contains(ANNOTATION)) {
       return false;
@@ -115,7 +123,8 @@ public final class RestrictedApiCheck implements RuleCheck {
             "allowlistAnnotations",
             "whitelistAnnotations",
             "allowlistWithWarningAnnotations",
-            "whitelistWithWarningAnnotations")) {
+            "whitelistWithWarningAnnotations"
+        )) {
       names.addAll(values.getOrDefault(PREFIX + element, List.of()));
     }
     return names;
@@ -138,12 +147,16 @@ public final class RestrictedApiCheck implements RuleCheck {
   }
 
   private static boolean enclosedBy(
-      final List<SyntaxNode> ancestors, final Set<String> names, final UnitTypeFacts types) {
+      final List<SyntaxNode> ancestors,
+      final Set<String> names,
+      final UnitTypeFacts types
+  ) {
     return !names.isEmpty()
         && ancestors.stream()
             .filter(node -> DECLARATIONS.contains(node.kind()))
             .anyMatch(
-                node -> types.at(node.span()).annotations().stream().anyMatch(names::contains));
+                node -> types.at(node.span()).annotations().stream().anyMatch(names::contains)
+            );
   }
 
   private static String explanation(final SyntaxNode call, final UnitTypeFacts types) {

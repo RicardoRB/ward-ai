@@ -21,7 +21,6 @@ import java.util.stream.Stream;
  * field type is not judged, because a serializable value may stand behind it.
  */
 public final class NonSerializableClassCheck extends FactsCheck {
-
   private static final String SERIALIZABLE = "java.io.Serializable";
   private static final String TYPE_TYPE = "typeType";
   private static final String TRANSIENT = "transient";
@@ -30,7 +29,8 @@ public final class NonSerializableClassCheck extends FactsCheck {
   private static final FactNeed NEED =
       new FactNeed(
           Set.of(MemberDeclarations.CLASS, TYPE_TYPE),
-          Set.of(FactKind.TYPE, FactKind.SHAPE, FactKind.MEMBERS));
+          Set.of(FactKind.TYPE, FactKind.SHAPE, FactKind.MEMBERS)
+      );
 
   private final String message;
 
@@ -67,7 +67,9 @@ public final class NonSerializableClassCheck extends FactsCheck {
         ? List.of(
             CheckSupport.at(
                 field.span(),
-                CheckSupport.fill(message, String.join(", ", ClassMembers.fieldNames(field)), "")))
+                CheckSupport.fill(message, String.join(", ", ClassMembers.fieldNames(field)), "")
+            )
+        )
         : List.of();
   }
 
@@ -80,7 +82,8 @@ public final class NonSerializableClassCheck extends FactsCheck {
         types.typeOf(span).map(TypeRef::name).stream(),
         types.membersOf(span).map(TypeMembers::ancestors).stream()
             .flatMap(List::stream)
-            .map(TypeRef::name));
+            .map(TypeRef::name)
+    );
   }
 
   private static boolean notSerializable(final SyntaxNode type, final UnitTypeFacts types) {

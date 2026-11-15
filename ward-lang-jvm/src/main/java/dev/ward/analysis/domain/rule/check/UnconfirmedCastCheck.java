@@ -65,7 +65,8 @@ public final class UnconfirmedCastCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(EXPRESSION)).stream()
         .filter(visit -> isCast(visit.node()) && operandMatches(visit.node()))
         .filter(visit -> downcast(visit.node(), types) && !confirmed(visit))
@@ -104,6 +105,7 @@ public final class UnconfirmedCastCheck implements RuleCheck {
             node ->
                 node.children().size() > 1
                     && INSTANCEOF.equals(node.children().get(1).kind())
-                    && operand.equals(SyntaxWalk.text(node.children().get(0))));
+                    && operand.equals(SyntaxWalk.text(node.children().get(0)))
+        );
   }
 }

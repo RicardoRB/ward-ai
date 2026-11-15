@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class FormatFileSelectionTest {
-
   private static final int WIDE_WIDTH = 120;
 
   @TempDir Path project;
@@ -37,10 +36,16 @@ class FormatFileSelectionTest {
     final List<FormatTarget> targets =
         select(
             Map.of(
-                AnalysisLanguage.JAVA, EditorConfigTestSupport.TYPESCRIPT_OPTIONS,
-                AnalysisLanguage.TYPESCRIPT, EditorConfigTestSupport.TYPESCRIPT_OPTIONS,
-                AnalysisLanguage.JAVASCRIPT, EditorConfigTestSupport.TYPESCRIPT_OPTIONS,
-                AnalysisLanguage.KOTLIN, EditorConfigTestSupport.TYPESCRIPT_OPTIONS));
+                AnalysisLanguage.JAVA,
+                EditorConfigTestSupport.TYPESCRIPT_OPTIONS,
+                AnalysisLanguage.TYPESCRIPT,
+                EditorConfigTestSupport.TYPESCRIPT_OPTIONS,
+                AnalysisLanguage.JAVASCRIPT,
+                EditorConfigTestSupport.TYPESCRIPT_OPTIONS,
+                AnalysisLanguage.KOTLIN,
+                EditorConfigTestSupport.TYPESCRIPT_OPTIONS
+            )
+        );
 
     assertThat(targets)
         .extracting(FormatTarget::relativePath)
@@ -52,7 +57,8 @@ class FormatFileSelectionTest {
     write("src/App.java", "class App {}");
     write("web/app.ts", "const a = 1;");
     assertThat(
-            select(Map.of(AnalysisLanguage.TYPESCRIPT, EditorConfigTestSupport.TYPESCRIPT_OPTIONS)))
+        select(Map.of(AnalysisLanguage.TYPESCRIPT, EditorConfigTestSupport.TYPESCRIPT_OPTIONS))
+    )
         .extracting(FormatTarget::relativePath)
         .containsExactly("web/app.ts");
   }
@@ -85,11 +91,16 @@ class FormatFileSelectionTest {
     write("App.java", "class App {}");
     write("web/app.ts", "const a = 1;");
     assertThatThrownBy(
-            () ->
-                select(
-                    Map.of(
-                        AnalysisLanguage.JAVA, EditorConfigTestSupport.TYPESCRIPT_OPTIONS,
-                        AnalysisLanguage.TYPESCRIPT, EditorConfigTestSupport.TYPESCRIPT_OPTIONS)))
+        () ->
+            select(
+                Map.of(
+                    AnalysisLanguage.JAVA,
+                    EditorConfigTestSupport.TYPESCRIPT_OPTIONS,
+                    AnalysisLanguage.TYPESCRIPT,
+                    EditorConfigTestSupport.TYPESCRIPT_OPTIONS
+                )
+            )
+    )
         .isInstanceOf(FormatConfigurationException.class)
         .hasMessageContaining("end_of_line");
   }
@@ -100,20 +111,25 @@ class FormatFileSelectionTest {
     write("App.java", "class App {}");
     write("app.ts", "const a = 1;");
     assertThatThrownBy(
-            () ->
-                select(
-                    Map.of(
-                        AnalysisLanguage.JAVA,
-                        EditorConfigTestSupport.JAVA_OPTIONS,
-                        AnalysisLanguage.TYPESCRIPT,
-                        EditorConfigTestSupport.TYPESCRIPT_OPTIONS)))
+        () ->
+            select(
+                Map.of(
+                    AnalysisLanguage.JAVA,
+                    EditorConfigTestSupport.JAVA_OPTIONS,
+                    AnalysisLanguage.TYPESCRIPT,
+                    EditorConfigTestSupport.TYPESCRIPT_OPTIONS
+                )
+            )
+    )
         .isInstanceOf(FormatConfigurationException.class)
         .hasMessageContaining("ward_continuation_indent_size");
   }
 
   private List<FormatTarget> select(final Map<AnalysisLanguage, List<FormatOption>> declared) {
     return new FormatFileSelection(
-            new EditorConfigFormatConfiguration(project), new ProcessCommandExecutor())
+        new EditorConfigFormatConfiguration(project),
+        new ProcessCommandExecutor()
+    )
         .select(project, declared);
   }
 

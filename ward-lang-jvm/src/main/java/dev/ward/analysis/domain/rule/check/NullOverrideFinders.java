@@ -7,7 +7,6 @@ import java.util.function.BiConsumer;
 
 /** The rules that compare a method with the method of a type in the same file that it overrides. */
 final class NullOverrideFinders {
-
   private static final int UNIQUE = 1;
   private static final String REQUIRES = "RequiresNonNull";
   private static final String ENSURES = "EnsuresNonNull";
@@ -19,7 +18,8 @@ final class NullOverrideFinders {
       NullModel.Type type,
       NullModel.Method method,
       NullModel.Type superType,
-      NullModel.Method overridden) {}
+      NullModel.Method overridden
+  ) {}
 
   static List<Pair> pairs(final NullFinder.Unit unit) {
     final List<Pair> pairs = new ArrayList<>();
@@ -35,7 +35,10 @@ final class NullOverrideFinders {
   }
 
   private static void addPairs(
-      final NullModel.Type type, final NullModel.Type parent, final List<Pair> pairs) {
+      final NullModel.Type type,
+      final NullModel.Type parent,
+      final List<Pair> pairs
+  ) {
     for (final NullModel.Method method : type.methods()) {
       final List<NullModel.Method> found =
           parent.methods().stream()

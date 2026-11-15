@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 
 /** Reads metric rule bodies and rejects the ones that are not valid metric rules. */
 final class MetricRuleBodyTest {
-
   private static final int PARAMETER_LIMIT = 5;
 
   private static final String VALID =
@@ -33,13 +32,15 @@ final class MetricRuleBodyTest {
   void parsesTargetsWithStylesAndTheBodyKeys() {
     final MetricRule rule =
         MetricRuleBody.parse(
-            "measure=parameters; node=funcdef:snake,classdef:cap; max=5; name=name; path=parameters/typedargslist/tfpdef; receivers=self,cls; nested=funcdef; decisions=if_stmt; message=m {value}");
+            "measure=parameters; node=funcdef:snake,classdef:cap; max=5; name=name; path=parameters/typedargslist/tfpdef; receivers=self,cls; nested=funcdef; decisions=if_stmt; message=m {value}"
+        );
 
     assertThat(rule.measurement()).isEqualTo(Measurement.PARAMETERS);
     assertThat(rule.targets())
         .containsExactly(
             new MetricRule.Target("funcdef", NameStyle.SNAKE),
-            new MetricRule.Target("classdef", NameStyle.CAP));
+            new MetricRule.Target("classdef", NameStyle.CAP)
+        );
     assertThat(rule.max()).isEqualTo(PARAMETER_LIMIT);
     assertThat(rule.keys().parameterPaths())
         .containsExactly(List.of("parameters", "typedargslist", "tfpdef"));
@@ -90,6 +91,7 @@ final class MetricRuleBodyTest {
         AnalysisLanguage.PYTHON,
         RuleCapability.SYNTAX,
         AnalysisSeverity.ERROR,
-        body);
+        body
+    );
   }
 }

@@ -20,11 +20,12 @@ final class PartialPlans {
 
   static PartialCheckPlan.GatePlan plan(final GateConfiguration gate, final String... paths) {
     return PartialCheckPlan.create(
-            ROOT,
-            Map.of(GATE, gate),
-            List.of(paths).stream().map(ROOT::resolve).toList(),
-            EVERYTHING_EXISTS,
-            path -> Optional.empty())
+        ROOT,
+        Map.of(GATE, gate),
+        List.of(paths).stream().map(ROOT::resolve).toList(),
+        EVERYTHING_EXISTS,
+        path -> Optional.empty()
+    )
         .gates()
         .get(GATE);
   }
@@ -60,7 +61,8 @@ final class PartialPlans {
         null,
         null,
         null,
-        null);
+        null
+    );
   }
 
   static PartialGateConfiguration partial(
@@ -68,7 +70,8 @@ final class PartialPlans {
       final List<String> config,
       final List<String> args,
       final String item,
-      final String separator) {
+      final String separator
+  ) {
     return new PartialGateConfiguration(inputs, config, args, item, separator);
   }
 }

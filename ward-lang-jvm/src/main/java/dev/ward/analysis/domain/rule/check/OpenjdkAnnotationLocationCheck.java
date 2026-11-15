@@ -13,7 +13,6 @@ import java.util.Set;
  * after it is reported unless every annotation and the declaration share one line.
  */
 public final class OpenjdkAnnotationLocationCheck implements RuleCheck {
-
   private static final Set<String> MODIFIER_KINDS = Set.of("modifier", "classOrInterfaceModifier");
 
   private final String message;
@@ -40,7 +39,10 @@ public final class OpenjdkAnnotationLocationCheck implements RuleCheck {
   }
 
   private void checkDeclaration(
-      final SyntaxNode holder, final TokenSequence tokens, final List<RuleMatch> matches) {
+      final SyntaxNode holder,
+      final TokenSequence tokens,
+      final List<RuleMatch> matches
+  ) {
     final List<SyntaxNode> annotations =
         holder.children().stream().filter(child -> SyntaxWalk.text(child).startsWith("@")).toList();
     if (annotations.isEmpty()) {

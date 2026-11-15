@@ -15,7 +15,6 @@ import java.util.Set;
  * element or fragment count.
  */
 public final class BiomeSuspiciousSemicolonCheck implements RuleCheck {
-
   private static final String ELEMENT = "jsxElement";
   private static final String FRAGMENT = "jsxFragment";
   private static final String TEXT = "jsxText";
@@ -41,7 +40,10 @@ public final class BiomeSuspiciousSemicolonCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(ELEMENT, FRAGMENT)).stream()
         .flatMap(visit -> visit.node().children().stream())
         .filter(child -> TEXT.equals(child.kind()))

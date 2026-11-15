@@ -18,7 +18,6 @@ import java.util.Set;
  * takes it.
  */
 public final class NodeUnsafeOptionalChainingCheck implements RuleCheck {
-
   private static final String ITERATION = "iterationStatement";
   private static final String CLASS_TAIL = "classTail";
   private static final String CLASS_EXTENDS = "classExtendsClause";
@@ -55,7 +54,10 @@ public final class NodeUnsafeOptionalChainingCheck implements RuleCheck {
    * @param arithmeticMessage the message for an arithmetic operation on a chain
    */
   public NodeUnsafeOptionalChainingCheck(
-      final boolean disallowArithmetic, final String message, final String arithmeticMessage) {
+      final boolean disallowArithmetic,
+      final String message,
+      final String arithmeticMessage
+  ) {
     this.disallowArithmetic = disallowArithmetic;
     this.message = Objects.requireNonNull(message, "message");
     this.arithmeticMessage = Objects.requireNonNull(arithmeticMessage, "arithmeticMessage");
@@ -123,7 +125,10 @@ public final class NodeUnsafeOptionalChainingCheck implements RuleCheck {
    * chain with an optional access is reported where it starts. Anything else is not checked.
    */
   private void checkOperand(
-      final SyntaxNode operand, final String text, final List<RuleMatch> matches) {
+      final SyntaxNode operand,
+      final String text,
+      final List<RuleMatch> matches
+  ) {
     if (!SINGLE.equals(operand.kind())) {
       return;
     }
@@ -179,7 +184,6 @@ public final class NodeUnsafeOptionalChainingCheck implements RuleCheck {
 
   /** The tree queries of optional chains, patterns and operands. */
   private static final class Shapes {
-
     static final int PREFIX_SIZE = 2;
     static final int BINARY_SIZE = 3;
     private static final int CONDITIONAL_SIZE = 5;
@@ -204,7 +208,8 @@ public final class NodeUnsafeOptionalChainingCheck implements RuleCheck {
         final List<SyntaxNode> children,
         final boolean disallowArithmetic,
         final String message,
-        final String arithmeticMessage) {
+        final String arithmeticMessage
+    ) {
       return children.size() == PREFIX_SIZE
           ? unary(children, disallowArithmetic, message, arithmeticMessage)
           : binary(children, disallowArithmetic, message, arithmeticMessage);
@@ -214,7 +219,8 @@ public final class NodeUnsafeOptionalChainingCheck implements RuleCheck {
         final List<SyntaxNode> children,
         final boolean disallowArithmetic,
         final String message,
-        final String arithmeticMessage) {
+        final String arithmeticMessage
+    ) {
       final String op = LeafText.of(children.get(0));
       final boolean sign = UNARY_MINUS.equals(op) || UNARY_PLUS.equals(op);
       return disallowArithmetic && sign
@@ -226,7 +232,8 @@ public final class NodeUnsafeOptionalChainingCheck implements RuleCheck {
         final List<SyntaxNode> children,
         final boolean disallowArithmetic,
         final String message,
-        final String arithmeticMessage) {
+        final String arithmeticMessage
+    ) {
       final String op = LeafText.of(children.get(1));
       final SyntaxNode left = children.get(0);
       final SyntaxNode right = children.get(2);
@@ -262,7 +269,8 @@ public final class NodeUnsafeOptionalChainingCheck implements RuleCheck {
               child ->
                   isPatternKind(child)
                       || ASSIGNABLE.equals(child.kind())
-                          && child.children().stream().anyMatch(Shapes::isPatternKind));
+                      && child.children().stream().anyMatch(Shapes::isPatternKind)
+          );
     }
 
     private static boolean isPatternKind(final SyntaxNode node) {
@@ -275,7 +283,10 @@ public final class NodeUnsafeOptionalChainingCheck implements RuleCheck {
 
     /** A TypeScript heritage is a type reference; it is reported when its text has an optional. */
     static void reportTypeReference(
-        final SyntaxNode reference, final String text, final List<RuleMatch> matches) {
+        final SyntaxNode reference,
+        final String text,
+        final List<RuleMatch> matches
+    ) {
       if (LeafText.of(reference).contains(OPTIONAL)) {
         matches.add(new RuleMatch(reference.span(), text));
       }

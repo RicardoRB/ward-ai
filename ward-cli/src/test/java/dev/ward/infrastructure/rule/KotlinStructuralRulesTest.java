@@ -25,7 +25,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 /** Runs the packaged Kotlin rules over the fixtures, one violating and one passing set per rule. */
 class KotlinStructuralRulesTest {
-
   private static final String FIXTURES = "analysis/kotlin/";
   private static final String VIOLATING = "violating";
   private static final String PASSING = "passing";
@@ -34,15 +33,16 @@ class KotlinStructuralRulesTest {
   @ParameterizedTest
   @ValueSource(
       strings = {
-        "file-length",
-        "function-length",
-        "parameter-count",
-        "cyclomatic-complexity",
-        "type-name",
-        "function-name",
-        "property-name",
-        "cognitive-complexity"
-      })
+          "file-length",
+          "function-length",
+          "parameter-count",
+          "cyclomatic-complexity",
+          "type-name",
+          "function-name",
+          "property-name",
+          "cognitive-complexity"
+      }
+  )
   void violatingFixtureReportsItsRule(final String rule) throws IOException, URISyntaxException {
     assertThat(findingsOf(rule, VIOLATING)).isNotEmpty();
   }
@@ -50,15 +50,16 @@ class KotlinStructuralRulesTest {
   @ParameterizedTest
   @ValueSource(
       strings = {
-        "file-length",
-        "function-length",
-        "parameter-count",
-        "cyclomatic-complexity",
-        "type-name",
-        "function-name",
-        "property-name",
-        "cognitive-complexity"
-      })
+          "file-length",
+          "function-length",
+          "parameter-count",
+          "cyclomatic-complexity",
+          "type-name",
+          "function-name",
+          "property-name",
+          "cognitive-complexity"
+      }
+  )
   void passingFixtureDoesNotReportItsRule(final String rule)
       throws IOException, URISyntaxException {
     assertThat(findingsOf(rule, PASSING)).isEmpty();
@@ -91,7 +92,10 @@ class KotlinStructuralRulesTest {
     final List<RuleDefinition> rules = new ClasspathRuleSource().load().rules();
     final FrontendSupport kotlin =
         new FrontendSupport(
-            AnalysisLanguage.KOTLIN, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX));
+            AnalysisLanguage.KOTLIN,
+            new AntlrLanguageFrontend(),
+            Set.of(RuleCapability.SYNTAX)
+        );
     return new RuleEngine(new DeclarativeRuleMatcher()).run(units, List.of(kotlin), rules);
   }
 
@@ -128,7 +132,10 @@ class KotlinStructuralRulesTest {
   private static SourceUnit unit(final Path path) {
     try {
       return new SourceUnit(
-          path.getFileName().toString(), AnalysisLanguage.KOTLIN, Files.readString(path));
+          path.getFileName().toString(),
+          AnalysisLanguage.KOTLIN,
+          Files.readString(path)
+      );
     } catch (final IOException exception) {
       throw new IllegalStateException("cannot read fixture " + path, exception);
     }

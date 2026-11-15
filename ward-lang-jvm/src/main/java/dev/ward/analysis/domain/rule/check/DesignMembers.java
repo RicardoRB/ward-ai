@@ -11,7 +11,6 @@ import java.util.Set;
  * annotations of a declaration, its members and the names of its fields.
  */
 final class DesignMembers {
-
   /** The kinds of the declarations of types. */
   static final Set<String> TYPE_KINDS =
       Set.of(
@@ -19,7 +18,8 @@ final class DesignMembers {
           "interfaceDeclaration",
           "enumDeclaration",
           "recordDeclaration",
-          "annotationTypeDeclaration");
+          "annotationTypeDeclaration"
+      );
 
   private static final String TYPE_DECLARATION = "typeDeclaration";
   private static final String CLASS_BODY_DECLARATION = "classBodyDeclaration";
@@ -46,7 +46,6 @@ final class DesignMembers {
    * text.
    */
   record Member(List<String> modifiers, SyntaxNode declaration, String javadoc) {
-
     /** Returns whether the member has the modifier {@code word}. */
     boolean has(final String word) {
       return modifiers.contains(word);
@@ -74,7 +73,8 @@ final class DesignMembers {
         .allMatch(
             ancestor ->
                 "compilationunit".equals(ancestor.kind())
-                    || TYPE_DECLARATION.equals(ancestor.kind()));
+                    || TYPE_DECLARATION.equals(ancestor.kind())
+        );
   }
 
   /** Returns the modifier texts that open the declaration {@code visit}, or none. */
@@ -103,7 +103,10 @@ final class DesignMembers {
   }
 
   private static void addMembers(
-      final SyntaxNode wrapper, final String javadoc, final List<Member> members) {
+      final SyntaxNode wrapper,
+      final String javadoc,
+      final List<Member> members
+  ) {
     final List<String> modifiers = modifierTexts(wrapper);
     for (final SyntaxNode holder : wrapper.children()) {
       if (MEMBER_HOLDERS.contains(holder.kind())) {

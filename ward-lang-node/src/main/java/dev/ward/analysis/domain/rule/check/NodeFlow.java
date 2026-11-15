@@ -19,7 +19,6 @@ import java.util.Set;
  * its function node. Exception edges are not followed: ESLint's rules judge the paths that return.
  */
 final class NodeFlow {
-
   private static final Set<String> JUMPS = Set.of("returnStatement", "throwStatement");
 
   private NodeFlow() {}

@@ -13,7 +13,6 @@ import java.util.Optional;
  * reference that creates the edge. Java, Kotlin and Swift test sources are not checked.
  */
 public final class LayerDependencyRule implements CompiledRule {
-
   /** The id of the rule, the same in every language. */
   public static final String ID = "ward:architecture/layers";
 
@@ -29,7 +28,9 @@ public final class LayerDependencyRule implements CompiledRule {
    * @throws NullPointerException if a field is missing
    */
   public LayerDependencyRule(
-      final RuleDefinition definition, final List<LayerBoundary> boundaries) {
+      final RuleDefinition definition,
+      final List<LayerBoundary> boundaries
+  ) {
     this.definition = Objects.requireNonNull(definition, "definition");
     this.boundaries = List.copyOf(boundaries);
   }
@@ -57,7 +58,9 @@ public final class LayerDependencyRule implements CompiledRule {
   }
 
   private static Optional<RuleMatch> violation(
-      final DependencyEdge edge, final LayerBoundary boundary) {
+      final DependencyEdge edge,
+      final LayerBoundary boundary
+  ) {
     final String source = firstLayer(edge.from(), boundary.from());
     final String target = firstLayer(edge.to(), boundary.forbidden());
     if (source == null || target == null) {
@@ -66,7 +69,9 @@ public final class LayerDependencyRule implements CompiledRule {
     return Optional.of(
         new RuleMatch(
             edge.reference().span(),
-            "Layer " + source + " must not depend on " + target + ": " + edge.to()));
+            "Layer " + source + " must not depend on " + target + ": " + edge.to()
+        )
+    );
   }
 
   private static String firstLayer(final String path, final List<String> layers) {

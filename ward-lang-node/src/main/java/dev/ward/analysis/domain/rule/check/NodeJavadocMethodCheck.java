@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
  * that follows it by position. The findings are placed at the javadoc comment.
  */
 public final class NodeJavadocMethodCheck implements RuleCheck {
-
   private static final String COMMENT = "comment";
   private static final String CALL_SIGNATURE = "callSignature";
   private static final String JAVADOC = "/**";
@@ -40,14 +39,16 @@ public final class NodeJavadocMethodCheck implements RuleCheck {
           "public",
           "private",
           "protected",
-          "readonly");
+          "readonly"
+      );
   private static final Set<String> PARAMETERS =
       Set.of(
           "formalParameterArg",
           "lastFormalParameterArg",
           "requiredParameter",
           "optionalParameter",
-          "restParameter");
+          "restParameter"
+      );
 
   private final boolean allowMissingParamTags;
   private final boolean allowMissingReturnTag;
@@ -63,7 +64,8 @@ public final class NodeJavadocMethodCheck implements RuleCheck {
   public NodeJavadocMethodCheck(
       final boolean allowMissingParamTags,
       final boolean allowMissingReturnTag,
-      final String message) {
+      final String message
+  ) {
     this.allowMissingParamTags = allowMissingParamTags;
     this.allowMissingReturnTag = allowMissingReturnTag;
     this.message = message;
@@ -91,7 +93,9 @@ public final class NodeJavadocMethodCheck implements RuleCheck {
       final SyntaxNode node,
       final List<SyntaxNode> tokens,
       final List<SyntaxNode> javadocs,
-      final Map<Integer, SyntaxNode> methods) {
+      final Map<Integer,
+      SyntaxNode> methods
+  ) {
     if (COMMENT.equals(node.kind())) {
       if (node.fields().getOrDefault("text", "").startsWith(JAVADOC)) {
         javadocs.add(node);
@@ -114,7 +118,9 @@ public final class NodeJavadocMethodCheck implements RuleCheck {
   private static Optional<SyntaxNode> methodAfter(
       final SyntaxNode javadoc,
       final List<SyntaxNode> tokens,
-      final Map<Integer, SyntaxNode> methods) {
+      final Map<Integer,
+      SyntaxNode> methods
+  ) {
     for (int index = 0; index < tokens.size(); index++) {
       if (tokens.get(index).span().startOffset() >= javadoc.span().endOffset()) {
         int at = index;

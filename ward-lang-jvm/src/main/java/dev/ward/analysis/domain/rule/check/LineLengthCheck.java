@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
  * the tab width, and a line that matches the ignore pattern is not measured.
  */
 public final class LineLengthCheck implements UnitCheck {
-
   private static final int MIN_TAB_WIDTH = 1;
 
   private final int max;
@@ -31,7 +30,11 @@ public final class LineLengthCheck implements UnitCheck {
    * @throws IllegalArgumentException if {@code max} is negative or {@code tabWidth} is not positive
    */
   public LineLengthCheck(
-      final int max, final int tabWidth, final String ignorePattern, final String message) {
+      final int max,
+      final int tabWidth,
+      final String ignorePattern,
+      final String message
+  ) {
     this.max = CheckSupport.nonNegative(max, "max");
     if (tabWidth < MIN_TAB_WIDTH) {
       throw new IllegalArgumentException("tab-width must be positive");
@@ -58,11 +61,17 @@ public final class LineLengthCheck implements UnitCheck {
   }
 
   private RuleMatch report(
-      final int number, final String line, final int offset, final int length) {
+      final int number,
+      final String line,
+      final int offset,
+      final int length
+  ) {
     final Span span =
         new Span(number, 1, number, line.length() + 1, offset, offset + line.length());
     return CheckSupport.at(
-        span, CheckSupport.fill(message, String.valueOf(length), String.valueOf(max)));
+        span,
+        CheckSupport.fill(message, String.valueOf(length), String.valueOf(max))
+    );
   }
 
   private int expandedLength(final String line) {

@@ -36,12 +36,14 @@ class BuildPolicyReadersTest {
             "build.gradle.kts",
             "plugins {\n  id(\"org.example.a\") version \"1.0\"\n  kotlin(\"jvm\") version \"2.0.0\"\n"
                 + "  id(\"org.example.b\") version someVariable\n  alias(libs.plugins.tool)\n}\n"
-                + "dependencies {\n  implementation(\"g:a:1.+\")\n  testImplementation(\"g:b:\\$v\")\n}\n");
+                + "dependencies {\n  implementation(\"g:a:1.+\")\n  testImplementation(\"g:b:\\$v\")\n}\n"
+        );
     project()
         .write(
             "gradle/libs.versions.toml",
             "[versions]\nk = \"1.2\"\n[libraries]\nx = { module = \"g:x\", version.ref = \"k\" }\n"
-                + "[plugins]\ntool = { id = \"org.example.tool\" }\n");
+                + "[plugins]\ntool = { id = \"org.example.tool\" }\n"
+        );
     final List<Declaration> all = project().all().declarations();
     assertThat(all)
         .extracting(Declaration::name)
@@ -52,7 +54,8 @@ class BuildPolicyReadersTest {
             "g:a",
             "g:b",
             "g:x",
-            "org.example.tool");
+            "org.example.tool"
+        );
     assertThat(all)
         .filteredOn(d -> "org.example.b".equals(d.name()) || "g:b".equals(d.name()))
         .allSatisfy(d -> assertThat(d.flag()).isEqualTo(Declaration.Flag.UNDETERMINABLE));
@@ -67,13 +70,15 @@ class BuildPolicyReadersTest {
     project()
         .write(
             "package.json",
-            "{\"workspaces\": [\"packages/*\"], \"devDependencies\": {\"a\": \"~1.0.0\"}}");
+            "{\"workspaces\": [\"packages/*\"], \"devDependencies\": {\"a\": \"~1.0.0\"}}"
+        );
     project().write("packages/x/package.json", "{\"dependencies\": {\"b\": \"2.0.0\"}}");
     project()
         .write(
             "pyproject.toml",
             "[project]\ndependencies = [\"Django[argon2]>=4 ; python_version>'3'\", \"flask\"]\n"
-                + "[build-system]\nrequires = [\"hatchling==1.0\"]\n[tool.poetry.dependencies]\npython = \"^3.11\"\nfoo = \"1.2.3\"\n");
+                + "[build-system]\nrequires = [\"hatchling==1.0\"]\n[tool.poetry.dependencies]\npython = \"^3.11\"\nfoo = \"1.2.3\"\n"
+        );
     final List<Declaration> all = project().all().declarations();
     assertThat(all)
         .extracting(Declaration::name)

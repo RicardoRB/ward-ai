@@ -21,7 +21,8 @@ final class EditProfile {
     LOGGER.log(
         Level.WARNING,
         "event=edit-without-paths warning=The edit profile expects edited paths; checks with a"
-            + " paths table are skipped and the others run in full.");
+            + " paths table are skipped and the others run in full."
+    );
     return PartialCheckPlan.withoutPaths(selected.checks());
   }
 
@@ -30,7 +31,9 @@ final class EditProfile {
    * edit checks passes with a warning instead of failing on an unknown profile.
    */
   static List<String> withoutEmptyEdit(
-      final WardConfiguration configuration, final List<String> requested) {
+      final WardConfiguration configuration,
+      final List<String> requested
+  ) {
     if (requested == null) {
       return List.of();
     }
@@ -39,7 +42,8 @@ final class EditProfile {
     }
     LOGGER.log(
         Level.WARNING,
-        "event=edit-profile-empty warning=No check belongs to the edit profile; no check ran.");
+        "event=edit-profile-empty warning=No check belongs to the edit profile; no check ran."
+    );
     return requested.stream().filter(profile -> !NAME.equals(profile)).toList();
   }
 }

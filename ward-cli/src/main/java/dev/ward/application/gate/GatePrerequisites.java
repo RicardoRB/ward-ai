@@ -37,7 +37,9 @@ public final class GatePrerequisites {
   /** Creates the collaborator; the inspections read the runtime JDK of each JVM build tool. */
   @Inject
   public GatePrerequisites(
-      final CompatibilityInspection maven, @Named("gradle") final CompatibilityInspection gradle) {
+      final CompatibilityInspection maven,
+      @Named("gradle") final CompatibilityInspection gradle
+  ) {
     this(Map.of(BuildTool.MAVEN, maven, BuildTool.GRADLE, gradle));
   }
 
@@ -68,7 +70,8 @@ public final class GatePrerequisites {
                 "event=gate-prerequisite gate="
                     + attached.name()
                     + " kind="
-                    + prerequisite.kind().name().toLowerCase(Locale.ROOT));
+                    + prerequisite.kind().name().toLowerCase(Locale.ROOT)
+        );
       }
       return attached;
     }
@@ -100,7 +103,13 @@ public final class GatePrerequisites {
       return unavailable(result, summary)
           .withPrerequisite(
               new GatePrerequisite(
-                  GatePrerequisite.Kind.EXECUTABLE, executable, null, null, remediation));
+                  GatePrerequisite.Kind.EXECUTABLE,
+                  executable,
+                  null,
+                  null,
+                  remediation
+              )
+          );
     }
 
     private GateResult withRuntime(final Project project, final GateResult result) {
@@ -133,7 +142,9 @@ public final class GatePrerequisites {
                   null,
                   String.valueOf(required),
                   String.valueOf(detected),
-                  remediation));
+                  remediation
+              )
+          );
     }
 
     private static boolean runsBuild(final Project project, final GateResult result) {
@@ -161,7 +172,8 @@ public final class GatePrerequisites {
             Level.FINE,
             () ->
                 "event=gate-prerequisite-inspection-failed error="
-                    + exception.getClass().getSimpleName());
+                    + exception.getClass().getSimpleName()
+        );
         return Optional.empty();
       }
     }

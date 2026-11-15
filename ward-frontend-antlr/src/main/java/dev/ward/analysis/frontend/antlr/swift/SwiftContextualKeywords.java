@@ -6,7 +6,6 @@ import org.antlr.v4.runtime.TokenStream;
 
 /** Contextual keywords of the Swift grammar: words that are keywords only in one position. */
 final class SwiftContextualKeywords {
-
   /** Words that are keywords only where a type starts, so they stay identifiers elsewhere. */
   private static final Set<String> CONTEXTUAL_TYPE_KEYWORDS =
       Set.of("any", "some", "borrowing", "consuming", "sending", "each");

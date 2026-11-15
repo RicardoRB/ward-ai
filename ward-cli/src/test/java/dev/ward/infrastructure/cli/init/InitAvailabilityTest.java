@@ -41,19 +41,22 @@ class InitAvailabilityTest {
             new LinePrompt(new BufferedReader(new StringReader("\n"))),
             Optional::empty,
             new PrintWriter(output, true),
-            false);
+            false
+        );
     final InitSetupCatalog catalog = JdkCatalogs.reading(new FormatNeedsJdk11());
 
     final List<String> selected =
         wizard.selectGates(
             catalog,
             new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE),
-            List.of("tests", "mutation"));
+            List.of("tests", "mutation")
+        );
 
     assertThat(output.toString())
         .contains(
             "Unavailable on this JDK: mutation omitted: pitest-maven needs JDK 11+;"
-                + " this project builds on JDK 8")
+                + " this project builds on JDK 8"
+        )
         .doesNotContain("mutation - ");
     assertThat(selected).containsExactly("tests");
   }
@@ -82,7 +85,8 @@ class InitAvailabilityTest {
         final Project project,
         final List<InitGateOption> gates,
         final QualityPreset preset,
-        final boolean approved) {
+        final boolean approved
+    ) {
       throw new UnsupportedOperationException("not planned in this test");
     }
 
@@ -91,7 +95,10 @@ class InitAvailabilityTest {
       return gateIds.contains("mutation")
           ? List.of(
               new GateOmission(
-                  "mutation", "pitest-maven needs JDK 11+; this project builds on JDK 8"))
+                  "mutation",
+                  "pitest-maven needs JDK 11+; this project builds on JDK 8"
+              )
+          )
           : List.of();
     }
 

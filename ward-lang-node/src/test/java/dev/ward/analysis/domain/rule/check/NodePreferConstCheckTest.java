@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the prefer-const check on parsed sources with the scopes of each unit. */
 class NodePreferConstCheckTest {
-
   private static final int WRITE_LINE = 3;
 
   @Test
@@ -66,7 +65,10 @@ class NodePreferConstCheckTest {
   }
 
   private static List<RuleMatch> run(
-      final String source, final boolean allDestructured, final boolean ignoreRead) {
+      final String source,
+      final boolean allDestructured,
+      final boolean ignoreRead
+  ) {
     final SourceUnit unit = new SourceUnit("m", AnalysisLanguage.JAVASCRIPT, source);
     final SyntaxNode root = new AntlrLanguageFrontend().parse(unit).tree();
     final NodeScopeAnalysis analysis = new NodeScopeAnalysis(environments -> Set.of());

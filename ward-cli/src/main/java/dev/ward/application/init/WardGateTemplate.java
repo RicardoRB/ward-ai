@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 /** Writes the {@code ward} gate that enforces the architecture tables of a selection. */
 final class WardGateTemplate {
-
   private WardGateTemplate() {}
 
   /**

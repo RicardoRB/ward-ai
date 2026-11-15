@@ -78,7 +78,8 @@ public final class TurborepoWriter {
       final TurboWorkspace.Member member,
       final boolean replaceScripts,
       final List<Written> written,
-      final List<String> kept) {
+      final List<String> kept
+  ) {
     final Path file = member.directory().resolve(PACKAGE_JSON);
     final String original = read(file);
     String edited = original;
@@ -134,7 +135,11 @@ public final class TurborepoWriter {
   }
 
   private static void replace(
-      final Path file, final String original, final String edited, final List<Written> written) {
+      final Path file,
+      final String original,
+      final String edited,
+      final List<Written> written
+  ) {
     written.add(new Written(file, original));
     try {
       Files.writeString(file, edited);

@@ -17,7 +17,6 @@ import java.util.Set;
  * types are unknown.
  */
 public final class ParameterStringComparisonCheck extends FactsCheck {
-
   private static final String EXPRESSION = "expression";
   private static final String STRING = "java.lang.String";
   private static final Set<String> OPERATORS = Set.of("'=='", "'!='");

@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
  * annotations declared in the same file are known.
  */
 public final class JavaIncompatibleModifiersCheck implements RuleCheck {
-
   private static final Pattern MODIFIER = Pattern.compile("Modifier\\.([A-Z_]+)");
   private static final Set<String> HOLDERS =
       Set.of("classBodyDeclaration", "typeDeclaration", "interfaceBodyDeclaration");
@@ -49,8 +48,10 @@ public final class JavaIncompatibleModifiersCheck implements RuleCheck {
 
   private void check(
       final SyntaxNode holder,
-      final Map<String, Set<String>> forbidden,
-      final List<RuleMatch> matches) {
+      final Map<String,
+      Set<String>> forbidden,
+      final List<RuleMatch> matches
+  ) {
     final List<String> keywords = JavaAnnotations.keywords(holder);
     JavaAnnotations.of(holder)
         .forEach(annotation -> annotated(annotation, keywords, forbidden, matches));
@@ -59,16 +60,19 @@ public final class JavaIncompatibleModifiersCheck implements RuleCheck {
   private void annotated(
       final SyntaxNode annotation,
       final List<String> keywords,
-      final Map<String, Set<String>> forbidden,
-      final List<RuleMatch> matches) {
+      final Map<String,
+      Set<String>> forbidden,
+      final List<RuleMatch> matches
+  ) {
     final String name = JavaAnnotations.simpleName(annotation);
     forbidden.getOrDefault(name, Set.of()).stream()
         .filter(keywords::contains)
         .forEach(
             modifier ->
                 matches.add(
-                    CheckSupport.at(
-                        annotation.span(), CheckSupport.fill(message, name, modifier))));
+                    CheckSupport.at(annotation.span(), CheckSupport.fill(message, name, modifier))
+                )
+        );
   }
 
   private static Map<String, Set<String>> forbidden(final SyntaxNode root) {

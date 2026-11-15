@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the Kotlin complex-condition check over hand-made condition trees. */
 class KotlinComplexConditionCheckTest {
-
   private static final String MESSAGE = "m";
   private static final String IF = "ifExpression";
   private static final String OPERATOR = "'&&'";
@@ -33,16 +32,17 @@ class KotlinComplexConditionCheckTest {
         group(IF, tok("'if'", "if", LINE, OFFSET), condition(THRESHOLD - 1));
 
     assertThat(
-            unitMatches(new KotlinComplexConditionCheck(Set.of(IF), THRESHOLD, MESSAGE), statement))
+        unitMatches(new KotlinComplexConditionCheck(Set.of(IF), THRESHOLD, MESSAGE), statement)
+    )
         .hasSize(1);
     assertThat(
-            unitMatches(
-                new KotlinComplexConditionCheck(Set.of(IF), THRESHOLD + 1, MESSAGE), statement))
+        unitMatches(new KotlinComplexConditionCheck(Set.of(IF), THRESHOLD + 1, MESSAGE), statement)
+    )
         .isEmpty();
     final SyntaxNode twoOperators = group(IF, tok("'if'", "if", LINE, OFFSET), condition(2));
     assertThat(
-            unitMatches(
-                new KotlinComplexConditionCheck(Set.of(IF), THRESHOLD, MESSAGE), twoOperators))
+        unitMatches(new KotlinComplexConditionCheck(Set.of(IF), THRESHOLD, MESSAGE), twoOperators)
+    )
         .isEmpty();
   }
 }

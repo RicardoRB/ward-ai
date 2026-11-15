@@ -61,7 +61,8 @@ interface GateExtensionBindingsModule {
       final RuleMatcher matcher,
       final AnalysisSourceUnits sources,
       final AnalysisResultCodec codec,
-      @Named("ward.version") final String wardVersion) {
+      @Named("ward.version") final String wardVersion
+  ) {
     final AntlrLanguageFrontend frontend = new AntlrLanguageFrontend();
     final List<FrontendSupport> frontends = GateFrontends.create(frontend);
     return new AnalysisPorts(
@@ -77,8 +78,11 @@ interface GateExtensionBindingsModule {
                 new NodeDependencyAdapters(),
                 new PythonDependencyAdapters(),
                 new SwiftDependencyAdapters(),
-                new JvmDependencyAdapters())),
+                new JvmDependencyAdapters()
+            )
+        ),
         (projectRoot, classpathFile) ->
-            NativeTypeFactsBindings.forProject(projectRoot, frontend, classpathFile));
+            NativeTypeFactsBindings.forProject(projectRoot, frontend, classpathFile)
+    );
   }
 }

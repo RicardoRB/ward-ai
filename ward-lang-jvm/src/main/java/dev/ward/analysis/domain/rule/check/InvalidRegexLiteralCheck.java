@@ -20,7 +20,8 @@ public final class InvalidRegexLiteralCheck implements UnitCheck {
   private static final Pattern ESCAPE = Pattern.compile("\\\\(.)");
   private static final Pattern CALL =
       Pattern.compile(
-          "^(compile|matches|split|replaceAll|replaceFirst)\\((\"(?:[^\"\\\\]|\\\\.)*\")");
+          "^(compile|matches|split|replaceAll|replaceFirst)\\((\"(?:[^\"\\\\]|\\\\.)*\")"
+      );
 
   private final String message;
 
@@ -60,7 +61,8 @@ public final class InvalidRegexLiteralCheck implements UnitCheck {
     return ESCAPE
         .matcher(body)
         .replaceAll(
-            found -> Matcher.quoteReplacement(String.valueOf(escaped(found.group(1).charAt(0)))));
+            found -> Matcher.quoteReplacement(String.valueOf(escaped(found.group(1).charAt(0))))
+        );
   }
 
   private static char escaped(final char c) {

@@ -22,7 +22,8 @@ final class CheckTypeFindings {
         ? new Finding(
             name,
             Status.OK,
-            "type command (not a recognized tool; set uses to attach a built-in type)")
+            "type command (not a recognized tool; set uses to attach a built-in type)"
+        )
         : new Finding(name, Status.OK, "type " + check.type());
   }
 
@@ -37,7 +38,8 @@ final class CheckTypeFindings {
       final WardConfigurationReader configurationReader,
       final Path root,
       final EnvironmentFacts facts,
-      final List<Finding> findings) {
+      final List<Finding> findings
+  ) {
     if (configurationReader == null || !DoctorService.flag(facts, "configurationPresent")) {
       return;
     }

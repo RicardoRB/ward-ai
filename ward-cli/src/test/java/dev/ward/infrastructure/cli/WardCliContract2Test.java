@@ -42,7 +42,8 @@ class WardCliContract2Test extends WardCliIntegrationSupport {
             "5",
             "--allow-dirty",
             "-C",
-            project.toString());
+            project.toString()
+        );
 
     assertThat(exit).isZero();
     assertThat(out.toString()).contains("PASSED after 1 iteration(s)");
@@ -63,7 +64,8 @@ class WardCliContract2Test extends WardCliIntegrationSupport {
   void initAsksBeforeOverwritingExistingConfiguration() throws IOException {
     Files.writeString(
         project.resolve(WARD_TOML),
-        "version = 2\n\n[checks.compile]\nenabled = true\ncommand = \"old\"\n");
+        "version = 2\n\n[checks.compile]\nenabled = true\ncommand = \"old\"\n"
+    );
 
     assertThat(runInitWithInput("n\n", "-C", project.toString())).isZero();
     assertThat(Files.readString(project.resolve(WARD_TOML))).contains("command = \"old\"");

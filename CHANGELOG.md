@@ -8,6 +8,10 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Changed
+
+- This repository checks its own Java with the `ward` and `ward-format` gates instead of the Checkstyle, PMD, SpotBugs and Spotless Maven plugins (#347, #470). Its sources are formatted with `ward format`.
+
 ## [0.9.1] - 2026-11-15
 
 ### Added

@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
  * one it calls, and a class with no constructor is reported at its declaration.
  */
 public final class NonNullFieldInitCheck implements RuleCheck {
-
   private static final String CLASS_BODY_DECLARATION = "classBodyDeclaration";
   private static final String MEMBER = "memberDeclaration";
   private static final String BLOCK = "block";
@@ -91,7 +90,8 @@ public final class NonNullFieldInitCheck implements RuleCheck {
       final Set<String> modifiers,
       final SyntaxNode field,
       final Set<String> names,
-      final Set<String> set) {
+      final Set<String> set
+  ) {
     final boolean nonNull =
         NullSyntax.annotations(entry).stream()
             .map(NullSyntax::simpleName)
@@ -113,7 +113,8 @@ public final class NonNullFieldInitCheck implements RuleCheck {
                   declarator.children().stream()
                       .anyMatch(part -> "=".equals(SyntaxWalk.text(part)));
               (initialized ? set : names).add(name);
-            });
+            }
+        );
   }
 
   private static List<SyntaxNode> fields(final SyntaxNode entry) {

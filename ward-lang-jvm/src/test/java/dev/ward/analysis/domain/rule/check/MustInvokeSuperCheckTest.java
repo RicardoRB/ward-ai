@@ -8,7 +8,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class MustInvokeSuperCheckTest {
-
   private static final MustInvokeSuperCheck CHECK = new MustInvokeSuperCheck("message");
   private static final String SILENT = "class C extends B {\n  void close() {\n  }\n}\n";
   private static final String MARKER = "javax.annotation.OverridingMethodsMustInvokeSuper";
@@ -34,9 +33,10 @@ class MustInvokeSuperCheckTest {
     final String calling = "class C extends B {\n  void close() {\n    super.close();\n  }\n}\n";
 
     assertThat(
-            new ParsedFacts(calling)
-                .at("methodDeclaration", "voidclose(){super.close();}", overriding(MARKER))
-                .run(CHECK))
+        new ParsedFacts(calling)
+            .at("methodDeclaration", "voidclose(){super.close();}", overriding(MARKER))
+            .run(CHECK)
+    )
         .isEmpty();
     assertThat(run(SILENT, overriding("javax.annotation.Nullable"))).isEmpty();
     assertThat(run(SILENT, overriding())).isEmpty();

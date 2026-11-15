@@ -12,7 +12,6 @@ import java.util.Objects;
  *     records the reference that this import resolves through
  */
 public record ImportOrigin(String specifier, String member, Span site) {
-
   /**
    * Validates the fields.
    *

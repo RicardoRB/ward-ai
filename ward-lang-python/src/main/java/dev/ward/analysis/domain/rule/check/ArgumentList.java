@@ -5,7 +5,6 @@ import java.util.List;
 
 /** Splits the comma-separated text of an argument, parameter or element list. */
 final class ArgumentList {
-
   private ArgumentList() {}
 
   /** Splits at the commas outside brackets and quotes; empty items are dropped. */

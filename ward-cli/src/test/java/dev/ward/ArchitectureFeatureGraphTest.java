@@ -17,10 +17,10 @@ import org.junit.jupiter.api.Test;
 
 @AnalyzeClasses(packages = "dev.ward", importOptions = ImportOption.DoNotIncludeTests.class)
 class ArchitectureFeatureGraphTest {
-
   @ArchTest
   static void domainAndApplicationFeatureGraphsAreAcyclicAndUseDocumentedEdges(
-      final JavaClasses production) {
+      final JavaClasses production
+  ) {
     SlicesRuleDefinition.slices()
         .matching("dev.ward.domain.(*)..")
         .should()
@@ -32,11 +32,15 @@ class ArchitectureFeatureGraphTest {
         .beFreeOfCycles()
         .check(production);
     assertFeatureAllowlistCoverage(
-        production, "dev.ward.domain.", ArchitectureBoundarySupport.DOMAIN_FEATURE_EDGES.keySet());
+        production,
+        "dev.ward.domain.",
+        ArchitectureBoundarySupport.DOMAIN_FEATURE_EDGES.keySet()
+    );
     assertFeatureAllowlistCoverage(
         production,
         "dev.ward.application.",
-        ArchitectureBoundarySupport.APPLICATION_ENTRY_POINTS.keySet());
+        ArchitectureBoundarySupport.APPLICATION_ENTRY_POINTS.keySet()
+    );
     assertDomainFeatureEdges(production);
     assertApplicationEntryPoints(production);
   }
@@ -44,12 +48,13 @@ class ArchitectureFeatureGraphTest {
   @Test
   void sliceCycleRuleRejectsTheCycleFixture() {
     assertThatThrownBy(
-            () ->
-                SlicesRuleDefinition.slices()
-                    .matching("dev.ward.application.(*)..")
-                    .should()
-                    .beFreeOfCycles()
-                    .check(new ClassFileImporter().importClasses(Alpha.class, CycleBeta.class)))
+        () ->
+            SlicesRuleDefinition.slices()
+                .matching("dev.ward.application.(*)..")
+                .should()
+                .beFreeOfCycles()
+                .check(new ClassFileImporter().importClasses(Alpha.class, CycleBeta.class))
+    )
         .isInstanceOf(AssertionError.class);
   }
 }

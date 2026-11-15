@@ -13,7 +13,6 @@ import java.util.Set;
  * Error Prone's JUnit3TestNotRun does for the plain case.
  */
 public final class JavaJUnit3TestNotRunCheck implements RuleCheck {
-
   private static final String TEST_CASE = "TestCase";
   private static final String VOID = "void";
   private static final String PREFIX = "test";
@@ -43,7 +42,10 @@ public final class JavaJUnit3TestNotRunCheck implements RuleCheck {
                     matches.add(
                         CheckSupport.at(
                             member.node().span(),
-                            CheckSupport.fill(message, JavaNodes.name(member.node()), ""))));
+                            CheckSupport.fill(message, JavaNodes.name(member.node()), "")
+                        )
+                    )
+            );
       }
     }
     return List.copyOf(matches);

@@ -8,7 +8,6 @@ import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 
 class ConventionalCoverageReportsTest {
-
   @Test
   void eachBuildToolHasTheLocationItsCoverageToolWrites() {
     assertThat(ConventionalCoverageReports.of(BuildTool.MAVEN))
@@ -26,7 +25,8 @@ class ConventionalCoverageReportsTest {
             tool ->
                 tool.toolchain() == Toolchain.JVM
                     || tool.toolchain() == Toolchain.NODE
-                    || tool.toolchain() == Toolchain.PYTHON)
+                    || tool.toolchain() == Toolchain.PYTHON
+        )
         .allSatisfy(tool -> assertThat(ConventionalCoverageReports.of(tool)).isPresent());
     assertThat(ConventionalCoverageReports.of(BuildTool.SWIFTPM)).isEmpty();
     assertThat(ConventionalCoverageReports.of(BuildTool.XCODE)).isEmpty();

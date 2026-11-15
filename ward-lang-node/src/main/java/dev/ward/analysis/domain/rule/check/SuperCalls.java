@@ -6,7 +6,6 @@ import java.util.List;
 
 /** Finds the {@code super(...)} calls of a syntax tree, and reads the first token under a node. */
 final class SuperCalls {
-
   private static final String SUPER = "'super'";
   private static final String CALL = "singleExpression";
   private static final String ARGUMENTS = "arguments";

@@ -12,7 +12,6 @@ import java.util.Set;
  * if} stays at the depth of its chain; the statement of a plain {@code else} is one level deeper.
  */
 public final class NestedIfCheck implements UnitCheck {
-
   private static final String STATEMENT = "statement";
   private static final String IF_PREFIX = "if(";
   private static final int MIN_PROBLEM_DEPTH = 1;

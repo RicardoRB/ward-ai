@@ -37,14 +37,16 @@ public record InitInputs(
     PythonToolConfigs pythonConfigs,
     WorkspaceMembers members,
     SwiftPorts swift,
-    BuildModulePlanning modules) {
+    BuildModulePlanning modules
+) {
   /** Inputs that read no Python config of their own. */
   public InitInputs(
       final EnvironmentInspection environment,
       final PackageManifests manifests,
       final NodeSources sources,
       final NodeToolConfigs configs,
-      final Optional<BuildToolConfiguration> buildTools) {
+      final Optional<BuildToolConfiguration> buildTools
+  ) {
     this(
         environment,
         manifests,
@@ -54,7 +56,8 @@ public record InitInputs(
         (root, tool) -> Optional.empty(),
         WorkspaceMembers.none(),
         SwiftPorts.NONE,
-        BuildModulePlanning.none());
+        BuildModulePlanning.none()
+    );
   }
 
   /** Inputs that do not read the runtime JDK. */
@@ -62,7 +65,8 @@ public record InitInputs(
       final EnvironmentInspection environment,
       final PackageManifests manifests,
       final NodeSources sources,
-      final NodeToolConfigs configs) {
+      final NodeToolConfigs configs
+  ) {
     this(environment, manifests, sources, configs, Optional.empty());
   }
 
@@ -70,7 +74,8 @@ public record InitInputs(
   public InitInputs(
       final EnvironmentInspection environment,
       final PackageManifests manifests,
-      final NodeSources sources) {
+      final NodeSources sources
+  ) {
     this(environment, manifests, sources, (root, gate) -> Optional.empty());
   }
 
@@ -80,7 +85,8 @@ public record InitInputs(
         environment,
         root -> PackageManifest.EMPTY,
         root -> false,
-        (root, gate) -> Optional.empty());
+        (root, gate) -> Optional.empty()
+    );
   }
 
   /** Inputs that read Node packages through {@code node}. */
@@ -94,7 +100,8 @@ public record InitInputs(
         (root, tool) -> Optional.empty(),
         node.members(),
         SwiftPorts.NONE,
-        BuildModulePlanning.none());
+        BuildModulePlanning.none()
+    );
   }
 
   /** Inputs that also read the runtime JDK through the build-file adapters of {@code ports}. */
@@ -109,7 +116,8 @@ public record InitInputs(
         ports.python(),
         node.members(),
         ports.toolchains().swift(),
-        ports.toolchains().modulePlanning());
+        ports.toolchains().modulePlanning()
+    );
   }
 
   /** Returns the gates of {@code gateIds} the project's runtime JDK cannot run. */

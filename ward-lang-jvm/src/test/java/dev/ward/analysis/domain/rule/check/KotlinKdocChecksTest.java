@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the Kotlin KDoc checks over real Kotlin source. */
 class KotlinKdocChecksTest {
-
   private static final String MESSAGE = "m";
 
   @Test

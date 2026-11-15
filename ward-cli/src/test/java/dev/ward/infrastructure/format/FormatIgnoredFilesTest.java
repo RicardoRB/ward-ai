@@ -20,7 +20,6 @@ import org.junit.jupiter.api.io.TempDir;
  * Files that Git ignores, whether alone or inside an ignored folder, are not selected to format.
  */
 class FormatIgnoredFilesTest {
-
   private static final String APP = "src/app.ts";
 
   @TempDir Path project;
@@ -44,7 +43,8 @@ class FormatIgnoredFilesTest {
   private List<String> select(final String ignoredOutput) {
     final FakeCommandExecutor git =
         new FakeCommandExecutor(
-            new CommandResult(0, ignoredOutput + "\u0000", "", FakeCommandExecutor.DURATION, null));
+            new CommandResult(0, ignoredOutput + "\u0000", "", FakeCommandExecutor.DURATION, null)
+        );
     final Map<AnalysisLanguage, List<FormatOption>> declared =
         Map.of(AnalysisLanguage.TYPESCRIPT, EditorConfigTestSupport.TYPESCRIPT_OPTIONS);
     return new FormatFileSelection(new EditorConfigFormatConfiguration(project), git)

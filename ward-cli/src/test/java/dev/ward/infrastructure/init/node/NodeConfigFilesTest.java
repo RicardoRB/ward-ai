@@ -29,7 +29,10 @@ class NodeConfigFilesTest {
   private final PresetRuleFileWriter writer =
       new PresetRuleFileWriter(
           RuleFileTargetsFixtures.of(
-              new FileSystemPackageManifests(), new FileSystemNodeToolConfigs()));
+              new FileSystemPackageManifests(),
+              new FileSystemNodeToolConfigs()
+          )
+      );
 
   @Test
   void existingBunfigIsKeptWithAWarning() throws IOException {
@@ -39,7 +42,9 @@ class NodeConfigFilesTest {
     writer.apply(project(BuildTool.BUN), QualityPreset.STANDARD, gates("bun-test"));
     final List<String> warnings =
         new NodeBuildToolConfigurator(
-                new FileSystemPackageManifests(), new FakeCommandExecutor(0, "", ""))
+            new FileSystemPackageManifests(),
+            new FakeCommandExecutor(0, "", "")
+        )
             .apply(project(BuildTool.BUN), gates("bun-test"))
             .warnings();
 
@@ -66,7 +71,8 @@ class NodeConfigFilesTest {
         Set.of(),
         "24",
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 
   private static List<InitGateOption> gates(final String... ids) {

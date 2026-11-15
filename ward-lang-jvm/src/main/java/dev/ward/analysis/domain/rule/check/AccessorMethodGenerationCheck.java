@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
  * name counts.
  */
 public final class AccessorMethodGenerationCheck implements UnitCheck {
-
   private static final String METHOD_CALL = "methodCall";
   private static final String IDENTIFIER = "identifier";
 
@@ -50,8 +49,9 @@ public final class AccessorMethodGenerationCheck implements UnitCheck {
           .forEach(
               call ->
                   matches.add(
-                      CheckSupport.at(
-                          call.span(), CheckSupport.fill(message, calledName(call), ""))));
+                      CheckSupport.at(call.span(), CheckSupport.fill(message, calledName(call), ""))
+                  )
+          );
     }
     return List.copyOf(matches);
   }

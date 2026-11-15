@@ -11,7 +11,6 @@ import java.util.Set;
  * #body(SyntaxNode)} reads. Comment and error nodes are skipped.
  */
 final class NodeFlowSyntax {
-
   private static final String COMMENT = "comment";
   private static final String ERROR = "error";
   private static final String TEXT = "text";
@@ -29,7 +28,8 @@ final class NodeFlowSyntax {
           "constructorDeclaration",
           "getAccessor",
           "setAccessor",
-          "propertyAssignment");
+          "propertyAssignment"
+      );
 
   private NodeFlowSyntax() {}
 

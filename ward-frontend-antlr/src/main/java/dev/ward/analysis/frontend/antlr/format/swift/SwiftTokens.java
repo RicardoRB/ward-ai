@@ -12,20 +12,61 @@ import org.antlr.v4.runtime.Token;
  * adjacent pair is read as one operator.
  */
 final class SwiftTokens {
-
   /** Keywords that introduce an expression or a clause; an operand never ends with one. */
   static final Set<String> KEYWORDS =
       Set.of(
-          "if", "guard", "while", "for", "switch", "return", "in", "case", "let", "var", "else",
-          "throw", "try", "is", "as", "do", "catch", "where", "defer", "repeat");
+          "if",
+          "guard",
+          "while",
+          "for",
+          "switch",
+          "return",
+          "in",
+          "case",
+          "let",
+          "var",
+          "else",
+          "throw",
+          "try",
+          "is",
+          "as",
+          "do",
+          "catch",
+          "where",
+          "defer",
+          "repeat"
+      );
 
   /** Postfix operators that can follow an operand, such as optional chaining and unwrapping. */
   static final Set<String> POSTFIX = Set.of("?", "!");
 
   private static final Set<String> BINARY =
       Set.of(
-          "=", "==", "!=", "===", "!==", "<=", ">=", "&&", "||", "??", "+", "-", "*", "/", "%", "&",
-          "|", "^", "+=", "-=", "*=", "/=", "%=", "->");
+          "=",
+          "==",
+          "!=",
+          "===",
+          "!==",
+          "<=",
+          ">=",
+          "&&",
+          "||",
+          "??",
+          "+",
+          "-",
+          "*",
+          "/",
+          "%",
+          "&",
+          "|",
+          "^",
+          "+=",
+          "-=",
+          "*=",
+          "/=",
+          "%=",
+          "->"
+      );
   private static final Set<String> PREFIX_CAPABLE = Set.of("+", "-", "&", "~", "!");
   private static final Set<String> CLOSERS = Set.of(")", "]");
   private static final Pattern WORD = Pattern.compile("[A-Za-z0-9_]+");
@@ -114,7 +155,7 @@ final class SwiftTokens {
    */
   static boolean endsBinary(final Token before, final Token previous) {
     return (isAdjacentOperator(before, previous)
-            && BINARY.contains(before.getText() + previous.getText()))
+        && BINARY.contains(before.getText() + previous.getText()))
         || isBinaryAt(before, previous.getText());
   }
 

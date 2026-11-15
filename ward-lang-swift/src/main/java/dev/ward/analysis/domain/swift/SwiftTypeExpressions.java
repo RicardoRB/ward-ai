@@ -13,7 +13,6 @@ import java.util.Set;
  * the literal itself stays unknown.
  */
 final class SwiftTypeExpressions {
-
   private static final Set<String> SINGLE_CHILD_WRAPPERS =
       Set.of(
           "expression",
@@ -21,7 +20,8 @@ final class SwiftTypeExpressions {
           "postfix_expression",
           "primary_expression",
           "literal_expression",
-          "literal");
+          "literal"
+      );
   private static final String CALL_ARGUMENTS = "function_call_argument_clause";
   private static final String MEMBER_NAME = "declaration_identifier";
 

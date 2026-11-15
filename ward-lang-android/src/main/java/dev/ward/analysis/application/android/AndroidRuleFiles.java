@@ -8,7 +8,6 @@ import java.util.List;
  * no other module lists it.
  */
 public final class AndroidRuleFiles implements RuleFileProvider {
-
   private static final List<String> FILES =
       List.of("rules/android/manifest.toml", "rules/android/resources.toml");
 

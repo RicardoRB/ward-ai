@@ -32,7 +32,8 @@ public record NodeTools(
     boolean available,
     QualityPreset preset,
     boolean ownTestConfig,
-    boolean checkSyncsSvelteKit) {
+    boolean checkSyncsSvelteKit
+) {
   public static final String VITEST = "vitest";
   public static final String JEST = "jest";
   public static final String BUN_TEST = "bun-test";
@@ -50,7 +51,8 @@ public record NodeTools(
       final Project project,
       final PackageManifest manifest,
       final InitInputs inputs,
-      final QualityPreset preset) {
+      final QualityPreset preset
+  ) {
     final String testGate = testGate(project, manifest);
     return new NodeTools(
         project.buildTool(),
@@ -58,7 +60,8 @@ public record NodeTools(
         inputs.environment().inspect(project.root()).hasExecutable(project.buildExecutable()),
         preset,
         inputs.configs().userConfig(project.root(), testGate).isPresent(),
-        syncsSvelteKit(manifest.check()));
+        syncsSvelteKit(manifest.check())
+    );
   }
 
   /** Returns these tools with {@code gate} as the test runner gate. */
@@ -99,7 +102,7 @@ public record NodeTools(
   static Integer minimum(final QualityPreset preset, final String counter) {
     final Double ratio =
         (preset == null ? QualityPreset.STANDARD : preset).rules().jacocoMinimums().get(counter);
-    return ratio == null ? null : (int) Math.round(ratio * PERCENT);
+    return ratio == null ? null : (int)Math.round(ratio * PERCENT);
   }
 
   /**
@@ -162,8 +165,13 @@ public record NodeTools(
               description,
               ownTestConfig
                   ? command(
-                      JEST, "--coverage", "--coverageReporters=text", "--coverageReporters=lcov")
-                  : command(JEST, "--coverage"));
+                      JEST,
+                      "--coverage",
+                      "--coverageReporters=text",
+                      "--coverageReporters=lcov"
+                  )
+                  : command(JEST, "--coverage")
+          );
       case BUN_TEST ->
           option(
               BUN_TEST,
@@ -173,12 +181,15 @@ public record NodeTools(
                   "test",
                   "--coverage",
                   "--coverage-reporter=text",
-                  "--coverage-reporter=lcov"));
+                  "--coverage-reporter=lcov"
+              )
+          );
       case NG_TEST ->
           option(
               NG_TEST,
               description + " (the project's angular.json sets any coverage threshold.)",
-              command("ng", "test", "--watch=false", "--coverage"));
+              command("ng", "test", "--watch=false", "--coverage")
+          );
       default ->
           option(
               VITEST,
@@ -189,8 +200,10 @@ public record NodeTools(
                       "run",
                       "--coverage",
                       "--coverage.reporter=text",
-                      "--coverage.reporter=lcov")
-                  : command(VITEST, "run", "--coverage"));
+                      "--coverage.reporter=lcov"
+                  )
+                  : command(VITEST, "run", "--coverage")
+          );
     };
   }
 
@@ -216,13 +229,18 @@ public record NodeTools(
             List.of(),
             true,
             "Reads the lcov report that the test gate writes; it runs no command.",
-            settings));
+            settings
+        )
+    );
   }
 
   /** The Stryker mutation gate; its config file sets the minimum score. */
   InitGateOption stryker() {
     return option(
-        "stryker", "Mutation-tests the project with Stryker (ci).", command("stryker", "run"));
+        "stryker",
+        "Mutation-tests the project with Stryker (ci).",
+        command("stryker", "run")
+    );
   }
 
   /** A gate that runs the local tool with {@code command}. */
@@ -235,6 +253,7 @@ public record NodeTools(
         available,
         available
             ? executable + " command available; init adds the tool as a dev dependency."
-            : executable + " is unavailable; install " + executable + " before running this gate.");
+            : executable + " is unavailable; install " + executable + " before running this gate."
+    );
   }
 }

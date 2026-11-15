@@ -22,12 +22,15 @@ public final class JdkCatalogs {
             new NodeInputs(
                 directory -> PackageManifest.EMPTY,
                 directory -> false,
-                (directory, gate) -> Optional.empty()),
-            buildTools),
+                (directory, gate) -> Optional.empty()
+            ),
+            buildTools
+        ),
         new NoQualityHookGeneration(),
         file -> {
           throw new WardException("no configuration");
         },
-        "dev");
+        "dev"
+    );
   }
 }

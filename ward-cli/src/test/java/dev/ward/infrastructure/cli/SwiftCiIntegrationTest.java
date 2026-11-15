@@ -153,7 +153,9 @@ class SwiftCiIntegrationTest {
     Files.createDirectories(project.resolve(".git/hooks"));
     Files.createDirectories(project.resolve(".build/codecov"));
     Files.copy(
-        FIXTURES.resolve("swift").resolve(coverage), project.resolve(".build/codecov/shop.json"));
+        FIXTURES.resolve("swift").resolve(coverage),
+        project.resolve(".build/codecov/shop.json")
+    );
     Files.createDirectories(root.resolve("stubs"));
     Files.copy(FIXTURES.resolve("swift").resolve(coverage), root.resolve("stubs/xccov.json"));
     return project;
@@ -192,7 +194,9 @@ class SwiftCiIntegrationTest {
         new ProcessBuilder(command).directory(project.toFile()).redirectErrorStream(true);
     final Map<String, String> environment = builder.environment();
     environment.put(
-        "PATH", project.resolve("bin") + java.io.File.pathSeparator + environment.get("PATH"));
+        "PATH",
+        project.resolve("bin") + java.io.File.pathSeparator + environment.get("PATH")
+    );
     environment.put("WARD_STUB_DIR", root.resolve("stubs").toString());
     final Process process = builder.start();
     final String output =

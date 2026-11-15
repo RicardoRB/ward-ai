@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 
 /** The members of this module's classes: methods, properties, final methods and attributes. */
 final class PythonClassMembers {
-
   private static final Pattern BASES =
       Pattern.compile("^(?:async\\s*)?class\\s*\\w+\\s*\\(([^)]*)\\)");
 

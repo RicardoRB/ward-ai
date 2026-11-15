@@ -21,7 +21,6 @@ import java.util.Set;
  * the places that dereference it.
  */
 final class NullDoomed {
-
   private static final int SEVERAL = 1;
 
   private final NullSolved body;
@@ -67,7 +66,8 @@ final class NullDoomed {
         note(
             NullStates.refined(state, test, edge.kind()),
             body.backward().in(edge.target()),
-            NullTestWindow.last(body.graph().events().get(block.id())));
+            NullTestWindow.last(body.graph().events().get(block.id()))
+        );
       }
     }
   }
@@ -76,7 +76,11 @@ final class NullDoomed {
    * Notes the null variables that the dereferences after {@code at} need; {@code at} may be null.
    */
   private void note(
-      final Map<Span, Nullity> state, final NullBackward.Fact fact, final SyntaxNode at) {
+      final Map<Span,
+      Nullity> state,
+      final NullBackward.Fact fact,
+      final SyntaxNode at
+  ) {
     if (fact.everything()) {
       return;
     }
@@ -90,7 +94,8 @@ final class NullDoomed {
               origin.merge(variable, at.span(), NullTestWindow::earlier);
             }
           }
-        });
+        }
+    );
   }
 
   /** Notes what the variables an event dereferences, passes, returns or stores held before it. */
@@ -105,7 +110,11 @@ final class NullDoomed {
   }
 
   private void keep(
-      final Span at, final NullEvent.Operand operand, final Map<Span, Nullity> state) {
+      final Span at,
+      final NullEvent.Operand operand,
+      final Map<Span,
+      Nullity> state
+  ) {
     if (operand.variable() != null) {
       atSite.put(at, state.get(operand.variable()));
     }
@@ -132,13 +141,15 @@ final class NullDoomed {
     return new NullAnalysis.Finding(
         pattern(sites, first, exceptional),
         first.at(),
-        source == null ? List.of() : List.of(source));
+        source == null ? List.of() : List.of(source)
+    );
   }
 
   private static NullAnalysis.Pattern pattern(
       final Set<NullBackward.Site> sites,
       final NullBackward.Site first,
-      final boolean exceptional) {
+      final boolean exceptional
+  ) {
     if (sites.size() > SEVERAL) {
       return exceptional
           ? NullAnalysis.Pattern.GUARANTEED_DEREF_ON_EXCEPTION_PATH

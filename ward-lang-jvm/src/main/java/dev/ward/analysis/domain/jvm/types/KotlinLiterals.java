@@ -17,7 +17,8 @@ final class KotlinLiterals {
       final boolean plain = !text.contains("$") && !text.startsWith(TRIPLE_QUOTE);
       return Typed.of(JType.ClassType.of(Types.STRING))
           .withConstant(
-              plain ? Optional.of(text.substring(1, text.length() - 1)) : Optional.empty());
+              plain ? Optional.of(text.substring(1, text.length() - 1)) : Optional.empty()
+          );
     }
     return switch (text) {
       case "true", "false" ->

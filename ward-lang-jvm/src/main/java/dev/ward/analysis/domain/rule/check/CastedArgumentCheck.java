@@ -47,7 +47,8 @@ public final class CastedArgumentCheck implements RuleCheck {
       final String method,
       final String cast,
       final Set<String> operandTypes,
-      final String message) {
+      final String message
+  ) {
     this.receiver = Objects.requireNonNull(receiver, "receiver");
     this.method = Objects.requireNonNull(method, "method");
     this.cast = Objects.requireNonNull(cast, "cast");
@@ -71,7 +72,8 @@ public final class CastedArgumentCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(EXPRESSION)).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(call -> castsArgument(call, types))

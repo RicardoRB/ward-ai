@@ -21,7 +21,9 @@ public record InitGateOption(
     List<String> command,
     boolean available,
     String availabilityMessage,
-    Map<String, String> settings) {
+    Map<String,
+    String> settings
+) {
   /** Copies the command and settings. */
   public InitGateOption {
     command = List.copyOf(command);
@@ -34,7 +36,8 @@ public record InitGateOption(
       final String description,
       final List<String> command,
       final boolean available,
-      final String availabilityMessage) {
+      final String availabilityMessage
+  ) {
     this(id, description, command, available, availabilityMessage, Map.of());
   }
 
@@ -43,7 +46,8 @@ public record InitGateOption(
       final String id,
       final List<String> command,
       final boolean available,
-      final String availabilityMessage) {
+      final String availabilityMessage
+  ) {
     this(id, id, command, available, availabilityMessage);
   }
 }

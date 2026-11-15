@@ -8,7 +8,6 @@ import java.util.Map;
 
 /** The checks of the NullAway-style nullness rules of Java, one per rule name. */
 final class NullnessChecks {
-
   private NullnessChecks() {}
 
   /** The checks this class provides, by name. */

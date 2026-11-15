@@ -30,7 +30,8 @@ class InitGeneratedFilesCliTest {
             "strict",
             "--ci",
             "github",
-            "--agent-rules");
+            "--agent-rules"
+        );
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(init.output())
@@ -46,7 +47,15 @@ class InitGeneratedFilesCliTest {
 
     final int exit =
         init.run(
-            "", "--integration", "none", "--preset", "strict", "--ci", "github", "--agent-rules");
+            "",
+            "--integration",
+            "none",
+            "--preset",
+            "strict",
+            "--ci",
+            "github",
+            "--agent-rules"
+        );
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(Files.readString(root.resolve(WORKFLOW)))

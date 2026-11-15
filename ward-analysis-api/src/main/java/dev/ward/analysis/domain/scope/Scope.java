@@ -18,8 +18,13 @@ import java.util.Objects;
  *     import or {@code exec}; a name that resolves nowhere in an open scope is not undefined
  */
 public record Scope(
-    int id, ScopeKind kind, int parent, Span span, List<Binding> bindings, boolean open) {
-
+    int id,
+    ScopeKind kind,
+    int parent,
+    Span span,
+    List<Binding> bindings,
+    boolean open
+) {
   /** The parent of the outermost scope. */
   public static final int NO_PARENT = -1;
 

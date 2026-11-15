@@ -15,7 +15,6 @@ import java.util.Map;
  * lambda or a branching value by {@link KotlinValueLowering}.
  */
 final class KotlinBodyLowering implements KotlinStatements {
-
   private static final String EXPRESSION = "expression";
   private static final String BLOCK = "block";
   private static final List<String> LEAVING_DECLARATIONS =
@@ -35,7 +34,10 @@ final class KotlinBodyLowering implements KotlinStatements {
    * @param view narrows what the finders report for the part of a statement being lowered
    */
   KotlinBodyLowering(
-      final KotlinAccesses accesses, final KotlinFlowSites sites, final KotlinView view) {
+      final KotlinAccesses accesses,
+      final KotlinFlowSites sites,
+      final KotlinView view
+  ) {
     this.sites = sites;
     this.flow = new ControlFlowBuilder(accesses, sites);
     this.values = new KotlinValueLowering(flow, view, this);
@@ -58,7 +60,8 @@ final class KotlinBodyLowering implements KotlinStatements {
       final List<VariableAccess> entry,
       final SyntaxNode parameters,
       final SyntaxNode body,
-      final Span span) {
+      final Span span
+  ) {
     flow.record(entry, parameters == null ? List.of() : sites.of(parameters));
     if (body != null) {
       lowerBody(body);
@@ -77,7 +80,8 @@ final class KotlinBodyLowering implements KotlinStatements {
             "returnStatement",
             body.span(),
             Map.of(),
-            List.of(KotlinFlowSyntax.parts(body).get(0), value));
+            List.of(KotlinFlowSyntax.parts(body).get(0), value)
+        );
     values.expression(returned, KotlinFlowSyntax.mayThrow(value), null);
     flow.tries().returnFrom();
   }

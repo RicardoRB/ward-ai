@@ -19,14 +19,17 @@ import java.util.List;
 
 /** Runs one rule over one fixture file, with its per-file and its project-wide matches. */
 final class PythonRuleRun {
-
   private PythonRuleRun() {}
 
   /**
    * The findings of {@code rule} on {@code file}, asserting that the engine ran the rule cleanly.
    */
   static List<AnalysisFinding> findings(
-      final RuleMatcher matcher, final RuleDefinition rule, final Path file, final Path directory)
+      final RuleMatcher matcher,
+      final RuleDefinition rule,
+      final Path file,
+      final Path directory
+  )
       throws IOException {
     final AnalysisLanguage language = rule.languages().iterator().next();
     final RuleEngine engine = new RuleEngine(matcher);
@@ -35,7 +38,9 @@ final class PythonRuleRun {
             new SourceUnit(
                 file.getFileName().toString(),
                 language,
-                Files.readString(file, StandardCharsets.UTF_8)));
+                Files.readString(file, StandardCharsets.UTF_8)
+            )
+        );
     final List<FrontendSupport> frontends =
         PythonFixtureFrontends.forRule(rule, language, directory);
     final RuleRunResult result = engine.run(units, frontends, List.of(rule));

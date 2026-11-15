@@ -16,7 +16,6 @@ import java.util.Set;
  * variables and calls other than {@code Boolean}, {@code String} and {@code Number} are not judged.
  */
 public final class NodeConstantBinaryExpressionCheck implements RuleCheck {
-
   private static final String SINGLE = "singleExpression";
   private static final String LITERAL = "literal";
   private static final String NULL = "null";
@@ -58,7 +57,8 @@ public final class NodeConstantBinaryExpressionCheck implements RuleCheck {
           "<=",
           ">=",
           "in",
-          "instanceof");
+          "instanceof"
+      );
   private static final int BINARY_SIZE = 3;
   private static final int SINGLE_CHILD = 1;
   private static final int PREFIX_SIZE = 2;
@@ -77,7 +77,9 @@ public final class NodeConstantBinaryExpressionCheck implements RuleCheck {
    * @param shortCircuitMessage the message for a constant left side of a short-circuit operator
    */
   public NodeConstantBinaryExpressionCheck(
-      final String operandMessage, final String shortCircuitMessage) {
+      final String operandMessage,
+      final String shortCircuitMessage
+  ) {
     this.operandMessage = Objects.requireNonNull(operandMessage, "operandMessage");
     this.shortCircuitMessage = Objects.requireNonNull(shortCircuitMessage, "shortCircuitMessage");
   }
@@ -112,7 +114,6 @@ public final class NodeConstantBinaryExpressionCheck implements RuleCheck {
 
   /** The constant-value queries of operands, which read only the shape of an expression. */
   private static final class Values {
-
     /**
      * An equality is constant when one side is {@code null} or {@code undefined} and the other is
      * never nullish.

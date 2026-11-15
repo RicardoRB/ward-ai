@@ -12,7 +12,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class NodeChecksTest {
-
   private static final String STATIC = "static";
   private static final String UNIT = "unit";
   private static final String FIELD = "field";
@@ -26,7 +25,14 @@ class NodeChecksTest {
 
   private NodeFilter fields() {
     return new NodeFilter(
-        Set.of(FIELD), TABLE, Set.of(STATIC, "final"), Set.of(), Set.of(), Set.of(), Sources.ALL);
+        Set.of(FIELD),
+        TABLE,
+        Set.of(STATIC, "final"),
+        Set.of(),
+        Set.of(),
+        Set.of(),
+        Sources.ALL
+    );
   }
 
   private SyntaxNode member(final String name, final String... modifiers) {
@@ -40,7 +46,12 @@ class NodeChecksTest {
 
   private IdentifierPatternCheck constants(final NodeFilter filter) {
     return new IdentifierPatternCheck(
-        filter, NAME, Set.of(), "^[A-Z][A-Z0-9_]*$", "bad constant {value}");
+        filter,
+        NAME,
+        Set.of(),
+        "^[A-Z][A-Z0-9_]*$",
+        "bad constant {value}"
+    );
   }
 
   @Test
@@ -63,7 +74,14 @@ class NodeChecksTest {
   void modifierNamesAreReadThroughTheLanguageTable() {
     final NodeFilter staticOnly =
         new NodeFilter(
-            Set.of(FIELD), TABLE, Set.of(STATIC), Set.of("final"), Set.of(), Set.of(), Sources.ALL);
+            Set.of(FIELD),
+            TABLE,
+            Set.of(STATIC),
+            Set.of("final"),
+            Set.of(),
+            Set.of(),
+            Sources.ALL
+        );
     final SyntaxNode root = gen.node(UNIT, member("a1", "class"), member("b1", STATIC, "final"));
 
     assertThat(TreeLayout.messages(constants(staticOnly).matches(root)))
@@ -84,7 +102,8 @@ class NodeChecksTest {
             Set.of(),
             Set.of("class"),
             Set.of("iface"),
-            Sources.ALL);
+            Sources.ALL
+        );
 
     assertThat(TreeLayout.messages(constants(notInInterface).matches(root)))
         .containsExactly("bad constant also");
@@ -98,7 +117,15 @@ class NodeChecksTest {
     final IdentifierPatternCheck onlyTests =
         constants(
             new NodeFilter(
-                Set.of(FIELD), TABLE, Set.of(), Set.of(), Set.of(), Set.of(), Sources.TEST));
+                Set.of(FIELD),
+                TABLE,
+                Set.of(),
+                Set.of(),
+                Set.of(),
+                Set.of(),
+                Sources.TEST
+            )
+        );
 
     assertThat(onlyTests.matches(root, FlowView.NONE, test)).hasSize(1);
     assertThat(onlyTests.matches(root, FlowView.NONE, main)).isEmpty();

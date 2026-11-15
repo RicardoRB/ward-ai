@@ -66,7 +66,8 @@ final class Literals {
     final String body = unescape(text.substring(1, text.length() - 1));
     return new Literal(
         new JType.Primitive("char"),
-        body.isEmpty() ? Optional.empty() : Optional.of(body.substring(0, 1)));
+        body.isEmpty() ? Optional.empty() : Optional.of(body.substring(0, 1))
+    );
   }
 
   private static int radix(final String kind) {
@@ -93,7 +94,7 @@ final class Literals {
     final String name = isLong ? LONG_KIND : INTEGER_KIND;
     try {
       final long value = Long.parseUnsignedLong(digits.isEmpty() ? "0" : digits, radix);
-      return Optional.of(primitive(name, isLong ? value : (long) (int) value));
+      return Optional.of(primitive(name, isLong ? value : (long)(int)value));
     } catch (NumberFormatException tooLarge) {
       return Optional.of(new Literal(new JType.Primitive(name), Optional.empty()));
     }
@@ -142,7 +143,8 @@ final class Literals {
     if (start + UNICODE_DIGITS <= body.length()) {
       try {
         text.append(
-            (char) Integer.parseInt(body.substring(start, start + UNICODE_DIGITS), HEX_RADIX));
+            (char)Integer.parseInt(body.substring(start, start + UNICODE_DIGITS), HEX_RADIX)
+        );
         return start + UNICODE_DIGITS;
       } catch (NumberFormatException malformed) {
         text.append(UNICODE_ESCAPE);

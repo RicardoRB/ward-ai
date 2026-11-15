@@ -17,7 +17,8 @@ final class NodePaths {
           new SubstitutedExtension(".js", List.of(".ts", ".tsx", ".d.ts")),
           new SubstitutedExtension(".jsx", List.of(".tsx")),
           new SubstitutedExtension(".mjs", List.of(".mts", ".d.mts")),
-          new SubstitutedExtension(".cjs", List.of(".cts", ".d.cts")));
+          new SubstitutedExtension(".cjs", List.of(".cts", ".d.cts"))
+      );
 
   private static final String INDEX = "/index";
   private static final String SEPARATOR = "/";

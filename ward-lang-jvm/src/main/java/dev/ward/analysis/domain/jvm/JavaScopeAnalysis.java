@@ -15,7 +15,6 @@ import java.util.Set;
  * rules that report undefined names.
  */
 public final class JavaScopeAnalysis implements ScopeAnalysis {
-
   private final BuiltinNames builtins;
 
   /** Creates the analysis over the names {@code java.lang} provides. */

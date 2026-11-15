@@ -27,7 +27,10 @@ final class InitResultPrinter {
   }
 
   void printSelectedGates(
-      final InitSetupCatalog catalog, final Project project, final List<String> selectedGates) {
+      final InitSetupCatalog catalog,
+      final Project project,
+      final List<String> selectedGates
+  ) {
     for (final String selectedGate : selectedGates) {
       final InitGateOption gateOption = catalog.gate(project, selectedGate);
       out.printf(
@@ -35,14 +38,16 @@ final class InitResultPrinter {
           gateOption.id(),
           gateOption.available()
               ? "AVAILABLE"
-              : "UNAVAILABLE - " + gateOption.availabilityMessage());
+              : "UNAVAILABLE - " + gateOption.availabilityMessage()
+      );
       LOGGER.log(
           Level.INFO,
           () ->
               "event=init-gate-availability gate="
                   + gateOption.id()
                   + " status="
-                  + (gateOption.available() ? "available" : "unavailable"));
+                  + (gateOption.available() ? "available" : "unavailable")
+      );
     }
   }
 
@@ -112,7 +117,7 @@ final class InitResultPrinter {
       return "Updated the Python ward dependency group with tools:";
     }
     return executables.stream()
-            .anyMatch(executable -> executable.endsWith("gradlew") || "gradle".equals(executable))
+        .anyMatch(executable -> executable.endsWith("gradlew") || "gradle".equals(executable))
         ? "Updated the Gradle build with tools:"
         : "Updated pom.xml with Maven tools:";
   }

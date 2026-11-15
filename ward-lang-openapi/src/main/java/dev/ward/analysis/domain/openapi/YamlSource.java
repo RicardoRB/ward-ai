@@ -7,7 +7,6 @@ import java.util.List;
 
 /** The text of one document with the mapping from offsets to lines and columns. */
 final class YamlSource {
-
   private static final char BYTE_ORDER_MARK = '﻿';
 
   private final String text;

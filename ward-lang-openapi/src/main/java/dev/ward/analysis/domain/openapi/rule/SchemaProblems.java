@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 
 /** What ajv says about a schema before it uses it: that it is not a schema, or cannot compile. */
 final class SchemaProblems {
-
   private final OpenApiDocument document;
 
   SchemaProblems(final OpenApiDocument document) {
@@ -42,7 +41,8 @@ final class SchemaProblems {
         resolved.span(),
         resolved.keySpan(),
         resolved.entries().stream().map(entry -> entry.withValue(inlined(entry.value()))).toList(),
-        resolved.items().stream().map(this::inlined).toList());
+        resolved.items().stream().map(this::inlined).toList()
+    );
   }
 
   /** What ajv throws while compiling a schema whose keyword has a value it cannot use. */
@@ -63,7 +63,8 @@ final class SchemaProblems {
           Pattern.compile(pattern.get());
         } catch (final PatternSyntaxException exception) {
           return Optional.of(
-              "Invalid regular expression: /" + pattern.get() + "/: " + describe(exception));
+              "Invalid regular expression: /" + pattern.get() + "/: " + describe(exception)
+          );
         }
       }
     }
@@ -89,11 +90,15 @@ final class SchemaProblems {
     final boolean current = document.isVersion31();
     final List<SchemaError> problems =
         new JsonSchemaValidator(
-                current ? Dialect.DRAFT2020 : Dialect.DRAFT4, false, BundledSchemas.resolver())
+            current ? Dialect.DRAFT2020 : Dialect.DRAFT4,
+            false,
+            BundledSchemas.resolver()
+        )
             .withoutFormats()
             .validate(
                 current ? BundledSchemas.jsonSchema2020() : BundledSchemas.jsonSchemaDraft4(),
-                schema);
+                schema
+            );
     return problems.stream()
         .map(problem -> "data" + problem.instancePath() + " " + problem.message())
         .collect(Collectors.joining(", "));

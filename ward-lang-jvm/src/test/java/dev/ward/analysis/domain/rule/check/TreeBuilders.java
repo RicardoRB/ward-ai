@@ -6,7 +6,6 @@ import java.util.List;
 
 /** Shared builders and constants for the review check tests; the tests extend it. */
 class TreeBuilders {
-
   static final String IDENTIFIER = "identifier";
   static final String TOKEN_IDENTIFIER = "IDENTIFIER";
   static final String CLASS_BODY = "classBody";
@@ -59,7 +58,8 @@ class TreeBuilders {
         EXPRESSION,
         n(EXPRESSION, n(PRIMARY, id(target))),
         t(TOKEN_EQUALS, "="),
-        n(EXPRESSION, n(PRIMARY, id(value))));
+        n(EXPRESSION, n(PRIMARY, id(value)))
+    );
   }
 
   static SyntaxNode argument(final String text) {
@@ -67,7 +67,8 @@ class TreeBuilders {
         "arguments",
         t(TOKEN_OPEN, "("),
         n(EXPRESSION, t(TOKEN_IDENTIFIER, text)),
-        t(TOKEN_CLOSE, ")"));
+        t(TOKEN_CLOSE, ")")
+    );
   }
 
   static SyntaxNode catchWithThrow(final SyntaxNode arguments) {
@@ -81,7 +82,10 @@ class TreeBuilders {
                 STATEMENT,
                 t("'throw'", "throw"),
                 n(EXPRESSION, n("creator", id("IllegalStateException"), arguments)),
-                t(TOKEN_SEMICOLON, ";"))));
+                t(TOKEN_SEMICOLON, ";")
+            )
+        )
+    );
   }
 
   static List<SyntaxNode> append(final List<SyntaxNode> list, final SyntaxNode node) {

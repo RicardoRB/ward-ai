@@ -20,7 +20,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** A taint flow that crosses a file boundary is found between Kotlin files and Java files. */
 class KotlinCrossFileTaintTest {
-
   private static final String END_METHOD = "  }\n";
   private static final String END_CLASS = "}\n";
   private static final String KOTLIN_RULE = "ward:kotlin/cross-site-scripting";
@@ -111,10 +110,11 @@ class KotlinCrossFileTaintTest {
         new ClasspathRuleSource()
             .load().rules().stream().filter(candidate -> rule.equals(candidate.id())).toList();
     return new UnitResultCache(
-            new RuleEngine(new DeclarativeRuleMatcher()),
-            AnalysisCacheFixtures.codec(),
-            "test",
-            new JvmDependencyAdapters().forProject(root, units))
+        new RuleEngine(new DeclarativeRuleMatcher()),
+        AnalysisCacheFixtures.codec(),
+        "test",
+        new JvmDependencyAdapters().forProject(root, units)
+    )
         .run(AnalysisCacheFixtures.NO_CACHE, units, frontends, rules)
         .findings();
   }
@@ -135,7 +135,8 @@ class KotlinCrossFileTaintTest {
         kotlin("KotlinSink", KOTLIN_SINK),
         java("JavaSink", JAVA_SINK),
         java("JavaSource", JAVA_SOURCE),
-        java("JavaPage", JAVA_PAGE));
+        java("JavaPage", JAVA_PAGE)
+    );
   }
 
   @Test
@@ -175,7 +176,8 @@ class KotlinCrossFileTaintTest {
             kotlin("Middle", safeSink),
             kotlin("Source", SOURCE),
             java("JavaSink", JAVA_SINK),
-            java("JavaSource", JAVA_SOURCE));
+            java("JavaSource", JAVA_SOURCE)
+        );
 
     assertThat(run(KOTLIN_RULE, safe)).hasSize(2);
   }
@@ -196,11 +198,14 @@ class KotlinCrossFileTaintTest {
         .extracting(AnalysisFinding::line)
         .containsExactly(SHOW_LINE);
     assertThat(
-            run(
-                KOTLIN_RULE,
-                List.of(
-                    kotlin("Held", held.replace("val middle", "var middle")),
-                    kotlin("Middle", MIDDLE))))
+        run(
+            KOTLIN_RULE,
+            List.of(
+                kotlin("Held", held.replace("val middle", "var middle")),
+                kotlin("Middle", MIDDLE)
+            )
+        )
+    )
         .isEmpty();
   }
 }

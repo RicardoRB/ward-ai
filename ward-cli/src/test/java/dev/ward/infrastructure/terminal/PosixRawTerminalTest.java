@@ -51,7 +51,8 @@ class PosixRawTerminalTest {
             (fileDescriptor, action, attributes) -> {
               restorations.incrementAndGet();
               return 0;
-            })) {
+            }
+        )) {
       assertThat(session.read()).isEqualTo(KEY_A);
       session.close();
       session.close();
@@ -71,7 +72,8 @@ class PosixRawTerminalTest {
             (fileDescriptor, action, attributes) -> {
               restorations.incrementAndGet();
               return 0;
-            })) {
+            }
+        )) {
       session.restoreOnShutdown();
       session.close();
     }
@@ -82,18 +84,20 @@ class PosixRawTerminalTest {
   @Test
   void restorationFailurePreservesCause() {
     assertThatThrownBy(
-            () -> {
-              try (PosixRawTerminal.Session session =
-                  new PosixRawTerminal.Session(
-                      Arena.ofConfined(),
-                      new byte[] {1, 2},
-                      (fileDescriptor, buffer, count) -> -1,
-                      (fileDescriptor, action, attributes) -> {
-                        throw new IllegalStateException("restore failed");
-                      })) {
-                assertThat(session).isNotNull();
-              }
-            })
+        () -> {
+          try (PosixRawTerminal.Session session =
+              new PosixRawTerminal.Session(
+                  Arena.ofConfined(),
+                  new byte[] {1, 2},
+                  (fileDescriptor, buffer, count) -> -1,
+                  (fileDescriptor, action, attributes) -> {
+                    throw new IllegalStateException("restore failed");
+                  }
+              )) {
+            assertThat(session).isNotNull();
+          }
+        }
+    )
         .isInstanceOf(IllegalStateException.class)
         .hasMessage("restore failed");
   }

@@ -77,7 +77,8 @@ class ClaudeCodeLegacyGuardTest {
               assertThat(change.file()).isEqualTo(guard());
               assertThat(change.action())
                   .isEqualTo(dev.ward.domain.agent.PlannedFileChange.Action.REMOVE);
-            });
+            }
+        );
   }
 
   @Test

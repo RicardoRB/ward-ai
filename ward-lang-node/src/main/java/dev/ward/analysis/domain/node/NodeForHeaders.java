@@ -6,7 +6,6 @@ import java.util.List;
 
 /** Reads the header of a TypeScript or JavaScript {@code for} loop. */
 final class NodeForHeaders {
-
   private static final String KEYWORD_IN = "in";
   private static final String KEYWORD_OF = "of";
   private static final String SEMICOLON = ";";

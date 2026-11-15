@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** Every built-in type is either inferable from a command or written with {@code uses}. */
 class CommandTypeContractTest {
-
   @Test
   void everyRegistryTypeIsInferableOrUsesOnly() {
     final Set<String> covered = new HashSet<>(CommandTypeInference.inferable());

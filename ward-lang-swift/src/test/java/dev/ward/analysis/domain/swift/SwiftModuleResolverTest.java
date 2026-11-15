@@ -11,15 +11,15 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class SwiftModuleResolverTest {
-
   private static final Span AT = new Span(1, 1, 1, 10, 0, 9);
   private static final SwiftProjectLayout LAYOUT =
       new SwiftProjectLayout(
           List.of(
               new SwiftTarget("Shop", List.of("Sources/Shop"), List.of(), List.of("Domain")),
               new SwiftTarget("Domain", List.of("Sources/Domain"), List.of(), List.of()),
-              new SwiftTarget(
-                  "ShopTests", List.of("Tests/ShopTests"), List.of(), List.of("Shop"))));
+              new SwiftTarget("ShopTests", List.of("Tests/ShopTests"), List.of(), List.of("Shop"))
+          )
+      );
 
   @Test
   void aFileReportsTheModuleOfItsTargetOrNothingWhenItIsImplicit() {
@@ -37,12 +37,15 @@ class SwiftModuleResolverTest {
                 List.of(
                     summary("Tests/ShopTests/ShopTests.swift", "Shop"),
                     summary("Sources/Shop/Cart.swift"),
-                    summary("Sources/Shop/Order.swift")));
+                    summary("Sources/Shop/Order.swift")
+                )
+            );
 
     assertThat(edges.stream().map(edge -> edge.from() + " -> " + edge.to()))
         .containsExactly(
             "Tests/ShopTests/ShopTests.swift -> Sources/Shop/Cart.swift",
-            "Tests/ShopTests/ShopTests.swift -> Sources/Shop/Order.swift");
+            "Tests/ShopTests/ShopTests.swift -> Sources/Shop/Order.swift"
+        );
   }
 
   @Test
@@ -70,7 +73,9 @@ class SwiftModuleResolverTest {
             .resolve(
                 List.of(
                     usingNames("Sources/Shop/Controller.swift", "OrderService"),
-                    declaring("Sources/Shop/Service.swift", "OrderService")));
+                    declaring("Sources/Shop/Service.swift", "OrderService")
+                )
+            );
 
     assertThat(edges.stream().map(edge -> edge.from() + " -> " + edge.to()))
         .containsExactly("Sources/Shop/Controller.swift -> Sources/Shop/Service.swift");
@@ -83,7 +88,9 @@ class SwiftModuleResolverTest {
             .resolve(
                 List.of(
                     usingNames("Sources/Shop/Cart.swift", "Line"),
-                    declaring("Sources/Shop/Order.swift", "Order", "Order.Line")));
+                    declaring("Sources/Shop/Order.swift", "Order", "Order.Line")
+                )
+            );
 
     assertThat(edges.stream().map(edge -> edge.from() + " -> " + edge.to()))
         .containsExactly("Sources/Shop/Cart.swift -> Sources/Shop/Order.swift");
@@ -96,7 +103,9 @@ class SwiftModuleResolverTest {
             .resolve(
                 List.of(
                     usingNames("Tests/ShopTests/ShopTests.swift", "Cart"),
-                    declaring("Sources/Domain/Order.swift", "Cart")));
+                    declaring("Sources/Domain/Order.swift", "Cart")
+                )
+            );
 
     assertThat(edges).isEmpty();
   }

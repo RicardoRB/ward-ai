@@ -60,7 +60,8 @@ class OpenApiPresetGatesTest {
         .anySatisfy(
             note ->
                 assertThat(note)
-                    .contains("Spring Boot project serves HTTP", "openapi.yml", "openapi.json"));
+                    .contains("Spring Boot project serves HTTP", "openapi.yml", "openapi.json")
+        );
   }
 
   @Test

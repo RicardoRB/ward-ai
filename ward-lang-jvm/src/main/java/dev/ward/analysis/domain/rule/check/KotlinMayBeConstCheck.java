@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * open or annotated property is left alone.
  */
 public final class KotlinMayBeConstCheck implements RuleCheck {
-
   private static final String PROPERTY = "propertyDeclaration";
 
   /** The ancestors of a member of an object: its class member, its body and the object. */
@@ -30,7 +29,8 @@ public final class KotlinMayBeConstCheck implements RuleCheck {
       Pattern.compile(
           "(?:(?:public|internal|protected|private))?val\\w+"
               + "(?::(?:String|Int|Long|Short|Byte|Double|Float|Boolean))?"
-              + "=(?:\"[^\"$\\n]*\"|-?\\d[\\w.]*|true|false)");
+              + "=(?:\"[^\"$\\n]*\"|-?\\d[\\w.]*|true|false)"
+      );
 
   private final String message;
 
@@ -59,8 +59,8 @@ public final class KotlinMayBeConstCheck implements RuleCheck {
     final int size = ancestors.size();
     return size >= 1 && TOP_LEVEL.equals(ancestors.get(size - 1).kind())
         || size >= OBJECT_MEMBER_DEPTH
-            && MEMBER.equals(ancestors.get(size - 1).kind())
-            && CLASS_BODY.equals(ancestors.get(size - 2).kind())
-            && OBJECT_KINDS.contains(ancestors.get(size - OBJECT_MEMBER_DEPTH).kind());
+        && MEMBER.equals(ancestors.get(size - 1).kind())
+        && CLASS_BODY.equals(ancestors.get(size - 2).kind())
+        && OBJECT_KINDS.contains(ancestors.get(size - OBJECT_MEMBER_DEPTH).kind());
   }
 }

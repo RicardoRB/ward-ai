@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class DetectedLineCoverageTest {
-
   @TempDir Path temp;
 
   private final DetectedLineCoverage reader =
@@ -27,7 +26,8 @@ class DetectedLineCoverageTest {
     final Path xml =
         Files.writeString(
             temp.resolve("report.info"),
-            "﻿<?xml version=\"1.0\"?><report><package name=\"p\"><sourcefile name=\"A.java\"/></package></report>");
+            "﻿<?xml version=\"1.0\"?><report><package name=\"p\"><sourcefile name=\"A.java\"/></package></report>"
+        );
 
     assertThat(reader.read(lcov).entries())
         .extracting(LineHits.Entry::name)

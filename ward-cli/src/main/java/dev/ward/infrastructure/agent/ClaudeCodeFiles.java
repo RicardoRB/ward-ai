@@ -32,7 +32,8 @@ record ClaudeCodeFiles(String projectPath) {
       throw new WardException(
           "Cannot install the Claude Code integration: the project path '"
               + projectPath.strip()
-              + "' contains a quote or line break.");
+              + "' contains a quote or line break."
+      );
     }
   }
 
@@ -63,7 +64,8 @@ record ClaudeCodeFiles(String projectPath) {
             (projectPath.isEmpty() ? "(\\$\\{CLAUDE_PROJECT_DIR}/)?" : "\\$\\{CLAUDE_PROJECT_DIR}/")
                 + Pattern.quote(HOOKS_DIRECTORY + "/")
                 + GUARD_NAME
-                + Pattern.quote(suffix()));
+                + Pattern.quote(suffix())
+        );
     return command -> current.contains(command) || guard.matcher(command).matches();
   }
 
@@ -72,7 +74,8 @@ record ClaudeCodeFiles(String projectPath) {
     return new LegacyFiles(
         root.resolve(HOOKS_DIRECTORY),
         Pattern.compile(GUARD_NAME + Pattern.quote(suffix())),
-        Pattern.compile(GUARD_MARKER));
+        Pattern.compile(GUARD_MARKER)
+    );
   }
 
   /** Points a settings template at this project's hook files. */

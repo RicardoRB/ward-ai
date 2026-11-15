@@ -6,7 +6,6 @@ import java.util.Map;
 
 /** Hand-made statements and definitions for the tree-based check tests. */
 final class Shapes {
-
   private Shapes() {}
 
   /** {@code not <operand>}, where the operand is a comparison with the given operator. */
@@ -29,7 +28,8 @@ final class Shapes {
         Nodes.leaf(base),
         Nodes.leaf(")"),
         Nodes.leaf(":"),
-        member);
+        member
+    );
   }
 
   /** A set or dictionary display with the given text. */
@@ -46,7 +46,8 @@ final class Shapes {
         Nodes.leaf("in"),
         Nodes.leaf(iterable),
         Nodes.leaf(":"),
-        body);
+        body
+    );
   }
 
   /** {@code import <module>}. */
@@ -62,7 +63,9 @@ final class Shapes {
             Nodes.leaf("from"),
             Nodes.leaf("__future__"),
             Nodes.leaf("import"),
-            Nodes.leaf("annotations")));
+            Nodes.leaf("annotations")
+        )
+    );
   }
 
   /** A call expression with the given text. */

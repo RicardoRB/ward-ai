@@ -13,14 +13,25 @@ import java.util.Map;
 public final class NoRuleFileGeneration implements RuleFileGeneration {
   @Override
   public RuleFileChange apply(
-      final Project project, final QualityPreset preset, final List<InitGateOption> gates) {
+      final Project project,
+      final QualityPreset preset,
+      final List<InitGateOption> gates
+  ) {
     return new RuleFileChange(
-        project.root().resolve("config"), false, Map.of(), List.of(), List.of());
+        project.root().resolve("config"),
+        false,
+        Map.of(),
+        List.of(),
+        List.of()
+    );
   }
 
   @Override
   public List<PlannedFileChange> plan(
-      final Project project, final QualityPreset preset, final List<InitGateOption> gates) {
+      final Project project,
+      final QualityPreset preset,
+      final List<InitGateOption> gates
+  ) {
     return List.of();
   }
 

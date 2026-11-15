@@ -31,7 +31,6 @@ import org.tomlj.TomlParseResult;
  * a rule declares needs at least one case, so each option is checked at a non-default value.
  */
 class RuleOptionFixturesTest {
-
   private static final Map<String, RuleDefinition> RULES =
       CatalogRuleDefinitions.all().stream()
           .collect(Collectors.toMap(RuleDefinition::id, rule -> rule));
@@ -82,9 +81,12 @@ class RuleOptionFixturesTest {
             tuned,
             directory.resolve("violating." + extension),
             expected(directory),
-            typeFacts));
+            typeFacts
+        )
+    );
     problems.addAll(
-        check(runner, tuned, directory.resolve("passing." + extension), List.of(), typeFacts));
+        check(runner, tuned, directory.resolve("passing." + extension), List.of(), typeFacts)
+    );
     assertThat(problems).isEmpty();
   }
 
@@ -146,7 +148,8 @@ class RuleOptionFixturesTest {
       final RuleDefinition rule,
       final Path file,
       final List<String> expected,
-      final TypeFacts typeFacts)
+      final TypeFacts typeFacts
+  )
       throws IOException {
     final List<AnalysisFinding> findings =
         runner.run(rule, file.getFileName().toString(), Files.readString(file), typeFacts);
@@ -155,6 +158,7 @@ class RuleOptionFixturesTest {
         rule.languages().iterator().next(),
         file.getFileName().toString(),
         expected,
-        findings);
+        findings
+    );
   }
 }

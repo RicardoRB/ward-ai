@@ -13,15 +13,16 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 /** Every Python gate type named in {@code uses} is a known type the factory builds. */
 class PythonGatesTest {
-
   @ParameterizedTest
   @ValueSource(strings = {"mypy", "pytest", "mutmut"})
   void pythonTypeIsAcceptedAndBuilt(final String type) {
     final QualityGateFactory factory = new QualityGateFactory(new FakeCommandExecutor(0, "", ""));
 
     assertThat(
-            factory.create(
-                new WardConfiguration(1, Map.of(type, MutationGateFixtures.gate(type, null)))))
+        factory.create(
+            new WardConfiguration(1, Map.of(type, MutationGateFixtures.gate(type, null)))
+        )
+    )
         .as("gate for %s", type)
         .singleElement();
   }
@@ -31,10 +32,11 @@ class PythonGatesTest {
     final QualityGateFactory factory = new QualityGateFactory(new FakeCommandExecutor(0, "", ""));
 
     assertThatThrownBy(
-            () ->
-                factory.create(
-                    new WardConfiguration(
-                        1, Map.of("ruff", MutationGateFixtures.gate("ruff", null)))))
+        () ->
+            factory.create(
+                new WardConfiguration(1, Map.of("ruff", MutationGateFixtures.gate("ruff", null)))
+            )
+    )
         .isInstanceOf(WardException.class);
   }
 }

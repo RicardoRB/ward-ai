@@ -39,7 +39,8 @@ final class SourceModel {
       Optional<JvmMethod> method,
       List<JvmField> field,
       List<Variable> variables,
-      Optional<SyntaxNode> body) {}
+      Optional<SyntaxNode> body
+  ) {}
 
   /**
    * A class with the syntax of its declaration.
@@ -57,5 +58,6 @@ final class SourceModel {
       SyntaxNode outer,
       TypeScope scope,
       List<Member> members,
-      List<ClassDecl> nested) {}
+      List<ClassDecl> nested
+  ) {}
 }

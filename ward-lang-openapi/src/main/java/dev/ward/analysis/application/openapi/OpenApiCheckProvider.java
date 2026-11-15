@@ -11,13 +11,13 @@ import java.util.Map;
  * followed by the rule name, so a rule body is {@code check = "openapi-operation-operation-id"}.
  */
 public final class OpenApiCheckProvider implements CheckProvider {
-
   @Override
   public Map<String, CheckFactory> checks() {
     final Map<String, CheckFactory> checks = new HashMap<>();
     OpenApiRules.all()
         .forEach(
-            (name, rule) -> checks.put("openapi-" + name, toml -> new OpenApiProjectCheck(rule)));
+            (name, rule) -> checks.put("openapi-" + name, toml -> new OpenApiProjectCheck(rule))
+        );
     return Map.copyOf(checks);
   }
 }

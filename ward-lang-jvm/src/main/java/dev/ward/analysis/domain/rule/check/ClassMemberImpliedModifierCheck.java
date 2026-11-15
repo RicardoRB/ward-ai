@@ -13,7 +13,6 @@ import java.util.Set;
  * modifier. Each kind is checked only when its flag holds, as Checkstyle's options do.
  */
 public final class ClassMemberImpliedModifierCheck implements RuleCheck {
-
   private static final String CLASS_BODY = "classBodyDeclaration";
   private static final Set<String> MODIFIER_KINDS = Set.of("modifier", "classOrInterfaceModifier");
   private static final String STATIC = "static";
@@ -33,12 +32,17 @@ public final class ClassMemberImpliedModifierCheck implements RuleCheck {
       final boolean enumFlag,
       final boolean interfaceFlag,
       final boolean recordFlag,
-      final String message) {
+      final String message
+  ) {
     this.flags =
         Map.of(
-            "enumDeclaration", enumFlag,
-            "interfaceDeclaration", interfaceFlag,
-            "recordDeclaration", recordFlag);
+            "enumDeclaration",
+            enumFlag,
+            "interfaceDeclaration",
+            interfaceFlag,
+            "recordDeclaration",
+            recordFlag
+        );
     this.message = Objects.requireNonNull(message, "message");
   }
 

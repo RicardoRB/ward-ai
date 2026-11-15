@@ -7,7 +7,6 @@ import javax.inject.Inject;
 
 /** The Java architecture tables: the cycle check covers the base package of the main sources. */
 public final class JavaArchitectureTables implements ArchitectureTables {
-
   /** Creates the stateless adapter that Dagger injects. */
   @Inject
   public JavaArchitectureTables() {}

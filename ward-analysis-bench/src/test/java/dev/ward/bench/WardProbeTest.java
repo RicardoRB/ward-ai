@@ -23,7 +23,8 @@ class WardProbeTest {
         .contains(
             "[checks.ward-gate-edit]\nuses = \"ward\"\nprofiles = [\"ward-gate-edit\"]\n",
             "[checks.ward-gate-edit.paths]\n",
-            "full = [\"ward.toml\"]\n");
+            "full = [\"ward.toml\"]\n"
+        );
   }
 
   @Test
@@ -33,10 +34,17 @@ class WardProbeTest {
             "ward-gate-edit",
             List.of(GateJob.WARD, "check", "--profile", WardProbe.CHECK, "--path", GateJob.EDITED),
             true,
-            true);
+            true
+        );
 
     assertThat(job.executable(Path.of("/bin/ward"), "src/Alpha.java"))
         .containsExactly(
-            "/bin/ward", "check", "--profile", WardProbe.CHECK, "--path", "src/Alpha.java");
+            "/bin/ward",
+            "check",
+            "--profile",
+            WardProbe.CHECK,
+            "--path",
+            "src/Alpha.java"
+        );
   }
 }

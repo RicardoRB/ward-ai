@@ -23,7 +23,8 @@ final class MutationScoreGate implements QualityGate {
       final QualityGate command,
       final MutationReport report,
       final int minimum,
-      final String reportHint) {
+      final String reportHint
+  ) {
     this.command = command;
     this.report = report;
     this.minimum = minimum;
@@ -45,18 +46,22 @@ final class MutationScoreGate implements QualityGate {
     final MutationCounts counts = report.read(project, start);
     if (!counts.usable()) {
       LOGGER.log(
-          Level.INFO, () -> "event=mutation-report-unusable gate=" + name() + " reason=unreadable");
+          Level.INFO,
+          () -> "event=mutation-report-unusable gate=" + name() + " reason=unreadable"
+      );
       return with(result, GateStatus.EXECUTION_ERROR, counts.problem() + " " + reportHint);
     }
     if (counts.valid() == 0) {
       LOGGER.log(
           Level.INFO,
-          () -> "event=mutation-report-unusable gate=" + name() + " reason=no-valid-mutants");
+          () -> "event=mutation-report-unusable gate=" + name() + " reason=no-valid-mutants"
+      );
       return with(
           result,
           GateStatus.EXECUTION_ERROR,
           "The mutation report has no valid mutants, so no mutation score can be computed. "
-              + reportHint);
+              + reportHint
+      );
     }
     LOGGER.log(
         Level.INFO,
@@ -70,21 +75,27 @@ final class MutationScoreGate implements QualityGate {
                 + " score="
                 + counts.score()
                 + " minimum="
-                + minimum);
+                + minimum
+    );
     if (counts.below(minimum)) {
       return with(
           result,
           GateStatus.FAILED,
-          "Mutation score " + counts.score() + "% is below the minimum of " + minimum + "%.");
+          "Mutation score " + counts.score() + "% is below the minimum of " + minimum + "%."
+      );
     }
     return with(
         result,
         GateStatus.PASSED,
-        "Mutation score " + counts.score() + "% meets the minimum of " + minimum + "%.");
+        "Mutation score " + counts.score() + "% meets the minimum of " + minimum + "%."
+    );
   }
 
   private static GateResult with(
-      final GateResult result, final GateStatus status, final String summary) {
+      final GateResult result,
+      final GateStatus status,
+      final String summary
+  ) {
     return GateResult.builder(result.name(), status)
         .command(result.command())
         .exitCode(result.exitCode())

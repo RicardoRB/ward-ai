@@ -14,7 +14,6 @@ import java.util.Set;
  * bases, or one from another module, is not reported.
  */
 public final class RaiseNonExceptionCheck implements RuleCheck {
-
   private static final int MIN_PARTS = 2;
 
   private final String message;
@@ -37,7 +36,8 @@ public final class RaiseNonExceptionCheck implements RuleCheck {
           if ("classdef".equals(definition.kind()) && !ModuleDefinitions.hasBases(definition)) {
             plain.add(name);
           }
-        });
+        }
+    );
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("raise_stmt"))) {
       final String operand = operandName(visit.node());

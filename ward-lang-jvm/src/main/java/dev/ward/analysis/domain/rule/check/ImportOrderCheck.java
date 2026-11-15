@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
  * ordered with the others.
  */
 public final class ImportOrderCheck implements RuleCheck {
-
   private static final String REGEX_DELIMITER = "/";
 
   private final List<String> groups;
@@ -41,7 +40,8 @@ public final class ImportOrderCheck implements RuleCheck {
       final boolean ordered,
       final boolean separated,
       final boolean caseSensitive,
-      final String message) {
+      final String message
+  ) {
     this.groups = List.copyOf(groups);
     this.ordered = ordered;
     this.separated = separated;
@@ -57,7 +57,10 @@ public final class ImportOrderCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return check(root, ImportLines.of(unit));
   }
 
@@ -70,7 +73,10 @@ public final class ImportOrderCheck implements RuleCheck {
       if (previous != null && misplaced(previous, previousGroup, declaration, group, lines)) {
         matches.add(
             CheckSupport.at(
-                declaration.span(), CheckSupport.fill(message, declaration.fullName(), "")));
+                declaration.span(),
+                CheckSupport.fill(message, declaration.fullName(), "")
+            )
+        );
       }
       previous = declaration;
       previousGroup = group;
@@ -83,7 +89,8 @@ public final class ImportOrderCheck implements RuleCheck {
       final int previousGroup,
       final ImportDeclaration current,
       final int group,
-      final List<String> lines) {
+      final List<String> lines
+  ) {
     if (group != previousGroup) {
       return group < previousGroup || (separated && unseparated(previous, current, lines));
     }
@@ -91,10 +98,13 @@ public final class ImportOrderCheck implements RuleCheck {
   }
 
   private static boolean unseparated(
-      final ImportDeclaration previous, final ImportDeclaration current, final List<String> lines) {
+      final ImportDeclaration previous,
+      final ImportDeclaration current,
+      final List<String> lines
+  ) {
     return !lines.isEmpty()
         && ImportLines.blankBetween(lines, previous.span().endLine(), current.span().startLine())
-            == 0;
+        == 0;
   }
 
   private int compare(final String left, final String right) {

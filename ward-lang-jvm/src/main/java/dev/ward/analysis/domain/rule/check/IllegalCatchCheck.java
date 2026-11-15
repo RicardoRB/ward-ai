@@ -12,7 +12,6 @@ import java.util.Set;
  * the clause, at the {@code catch} keyword. The user option is {@code illegal-classes}.
  */
 public final class IllegalCatchCheck implements UnitCheck {
-
   private static final String CATCH_TYPE = "catchType";
   private static final String QUALIFIED_NAME = "qualifiedName";
 
@@ -44,7 +43,10 @@ public final class IllegalCatchCheck implements UnitCheck {
   }
 
   private void addIllegal(
-      final SyntaxNode clause, final SyntaxNode catchType, final List<RuleMatch> matches) {
+      final SyntaxNode clause,
+      final SyntaxNode catchType,
+      final List<RuleMatch> matches
+  ) {
     for (final SyntaxNode name : catchType.children()) {
       final String text = SyntaxWalk.text(name);
       if (QUALIFIED_NAME.equals(name.kind()) && illegalClasses.contains(text)) {

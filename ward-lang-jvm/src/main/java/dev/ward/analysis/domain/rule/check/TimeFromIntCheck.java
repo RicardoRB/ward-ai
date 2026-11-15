@@ -55,7 +55,8 @@ public final class TimeFromIntCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(EXPRESSION)).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(time -> argument(time).filter(arg -> intProduct(arg, types)).isPresent())
@@ -74,7 +75,8 @@ public final class TimeFromIntCheck implements RuleCheck {
                   node ->
                       "createdName".equals(node.kind())
                           && SyntaxWalk.text(node).endsWith("Date")
-                          && !SyntaxWalk.text(node).endsWith("SqlDate"));
+                          && !SyntaxWalk.text(node).endsWith("SqlDate")
+              );
       return date ? onlyArgument(creator.get()) : Optional.empty();
     }
     return time.children().stream()
@@ -85,7 +87,9 @@ public final class TimeFromIntCheck implements RuleCheck {
                     .anyMatch(
                         id ->
                             "identifier".equals(id.kind())
-                                && TIME_METHODS.contains(SyntaxWalk.text(id))))
+                                && TIME_METHODS.contains(SyntaxWalk.text(id))
+                    )
+        )
         .findFirst()
         .flatMap(TimeFromIntCheck::onlyArgument);
   }

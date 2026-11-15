@@ -64,7 +64,7 @@ final class AnnotationReader {
 
   /** Reads an element value, adding its constants, class names and enum names to {@code into}. */
   private void value(final List<String> into) {
-    final char tag = (char) in.get();
+    final char tag = (char)in.get();
     switch (tag) {
       case 's' -> into.add(pool.utf8(in.getShort() & UNSIGNED_SHORT));
       case 'c' -> into.add(className(pool.utf8(in.getShort() & UNSIGNED_SHORT)));
@@ -118,7 +118,8 @@ final class AnnotationReader {
       final List<String> compatibleWith,
       final int index,
       final List<String> names,
-      final String value) {
+      final String value
+  ) {
     if (index < compatibleWith.size()) {
       if (!value.isEmpty()) {
         compatibleWith.set(index, value);

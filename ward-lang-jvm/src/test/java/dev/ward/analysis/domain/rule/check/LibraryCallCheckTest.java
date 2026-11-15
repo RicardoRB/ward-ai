@@ -11,7 +11,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class LibraryCallCheckTest {
-
   private static final LibraryCallCheck DOH =
       new LibraryCallCheck(LibraryCallCheck.Mode.NULL_CHECK_OF_CONSTANT, "message");
   private static final LibraryCallCheck MOCKS =
@@ -20,7 +19,10 @@ class LibraryCallCheckTest {
   private static final String PRECONDITIONS = "com.google.common.base.Preconditions";
 
   private static SpanFacts call(
-      final String owner, final String name, final List<TypeRef> parameters) {
+      final String owner,
+      final String name,
+      final List<TypeRef> parameters
+  ) {
     return new SpanFacts(
         null,
         null,
@@ -40,13 +42,15 @@ class LibraryCallCheckTest {
             null,
             Map.of(),
             Map.of(),
-            null),
+            null
+        ),
         List.of(),
         List.of(),
         List.of(),
         List.of(),
         null,
-        null);
+        null
+    );
   }
 
   private static List<String> doh(final String call, final SpanFacts facts) {
@@ -65,9 +69,11 @@ class LibraryCallCheckTest {
     assertThat(doh("Preconditions.checkNotNull(\"o\")", check)).containsExactly("3:5");
     assertThat(doh("Preconditions.checkNotNull(\"o\", \"m\")", check2)).hasSize(1);
     assertThat(
-            doh(
-                "Strings.nullToEmpty(\"s\")",
-                call("com.google.common.base.Strings", "nullToEmpty", List.of(OBJECT))))
+        doh(
+            "Strings.nullToEmpty(\"s\")",
+            call("com.google.common.base.Strings", "nullToEmpty", List.of(OBJECT))
+        )
+    )
         .hasSize(1);
     assertThat(doh("Assert.assertNotNull(\"o\")", assertion)).hasSize(1);
     assertThat(doh("Assert.assertNotNull(\"m\", \"o\")", assertion2)).hasSize(1);
@@ -80,16 +86,14 @@ class LibraryCallCheckTest {
     assertThat(doh("Preconditions.checkNotNull(\"m\", o)", check2)).isEmpty();
     assertThat(doh("Preconditions.checkNotNull(\"o\" + o)", check2)).isEmpty();
     assertThat(
-            doh(
-                "Assert.assertNotNull(\"m\", o)",
-                call("org.junit.Assert", "assertNotNull", List.of())))
+        doh("Assert.assertNotNull(\"m\", o)", call("org.junit.Assert", "assertNotNull", List.of()))
+    )
         .isEmpty();
     assertThat(doh("Assert.assertNull(\"o\")", call("org.junit.Assert", "assertNull", List.of())))
         .isEmpty();
     assertThat(
-            doh(
-                "Strings.repeat(\"s\")",
-                call("com.google.common.base.Strings", "repeat", List.of())))
+        doh("Strings.repeat(\"s\")", call("com.google.common.base.Strings", "repeat", List.of()))
+    )
         .isEmpty();
     assertThat(doh("Other.checkNotNull(\"o\")", call("a.Other", "checkNotNull", List.of())))
         .isEmpty();
@@ -110,9 +114,11 @@ class LibraryCallCheckTest {
     assertThat(mocks("EasyMock.replay()", call("org.easymock.EasyMock", "replay", List.of(array))))
         .containsExactly("3:5");
     assertThat(
-            mocks(
-                "EasyMock.resetToStrict()",
-                call("org.easymock.EasyMock", "resetToStrict", List.of(array))))
+        mocks(
+            "EasyMock.resetToStrict()",
+            call("org.easymock.EasyMock", "resetToStrict", List.of(array))
+        )
+    )
         .hasSize(1);
     assertThat(mocks("EasyMock.replay(m)", call("org.easymock.EasyMock", "replay", List.of(array))))
         .isEmpty();

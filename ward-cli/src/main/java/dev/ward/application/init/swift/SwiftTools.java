@@ -25,7 +25,8 @@ record SwiftTools(
     List<String> sourceDirectories,
     Optional<String> workspace,
     String scheme,
-    String platform) {
+    String platform
+) {
   static final String STANDARD_COVERAGE = "80";
   static final String STRICT_COVERAGE = "85";
   static final String XCRESULT = ".ward/reports/xcode/tests.xcresult";

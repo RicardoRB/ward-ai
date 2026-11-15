@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
  * file. A type parameter cannot qualify a nested type; the name is meant to be written alone.
  */
 public final class TypeParameterQualifierCheck implements RuleCheck {
-
   private static final String TYPE_PARAMETER = "typeParameter";
   private static final String CLASS_TYPE = "classOrInterfaceType";
   private static final String IDENTIFIER = "identifier";
@@ -38,7 +37,8 @@ public final class TypeParameterQualifierCheck implements RuleCheck {
                         .filter(child -> IDENTIFIER.equals(child.kind()))
                         .findFirst()
                         .map(SyntaxWalk::text)
-                        .orElse(""))
+                        .orElse("")
+            )
             .filter(name -> !name.isEmpty())
             .distinct()
             .map(Pattern::quote)

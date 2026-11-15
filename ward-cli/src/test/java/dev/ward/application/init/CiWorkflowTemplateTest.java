@@ -67,7 +67,8 @@ class CiWorkflowTemplateTest {
             section -> {
               assertThat(section.wholeFile()).isTrue();
               assertThat(section.file()).isEqualTo(Path.of("/p/.github/workflows/ward.yml"));
-            });
+            }
+        );
   }
 
   @Test
@@ -102,7 +103,8 @@ class CiWorkflowTemplateTest {
             "run: ward check --profile ci --format sarif --output ward.sarif\n",
             "hashFiles('apps/api/ward.sarif')",
             "sarif_file: apps/api/ward.sarif\n",
-            "category: ward-apps-api\n");
+            "category: ward-apps-api\n"
+        );
   }
 
   @Test
@@ -124,6 +126,7 @@ class CiWorkflowTemplateTest {
         Set.of(),
         "",
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 }

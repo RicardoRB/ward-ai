@@ -7,7 +7,6 @@ import java.util.Optional;
 
 /** Reads the shape of Python blocks: statement counts and the keywords a statement carries. */
 final class StatementShapes {
-
   private static final int SOLE = 1;
 
   private static final String BLOCK = "block";

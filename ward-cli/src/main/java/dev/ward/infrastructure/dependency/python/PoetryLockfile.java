@@ -40,7 +40,8 @@ final class PoetryLockfile {
     }
     final Map<String, List<PackageId>> byName = new LinkedHashMap<>();
     tables.forEach(
-        table -> byName.computeIfAbsent(nameOf(table), key -> new ArrayList<>()).add(id(table)));
+        table -> byName.computeIfAbsent(nameOf(table), key -> new ArrayList<>()).add(id(table))
+    );
     final PythonLock.Collector collector = new PythonLock.Collector();
     tables.forEach(table -> collector.add(id(table), released(table), required(table, byName)));
     final Map<String, PythonLock.Resolved> directs = new LinkedHashMap<>();
@@ -61,7 +62,10 @@ final class PoetryLockfile {
   }
 
   private static Set<PackageId> required(
-      final TomlTable table, final Map<String, List<PackageId>> byName) {
+      final TomlTable table,
+      final Map<String,
+      List<PackageId>> byName
+  ) {
     final Set<PackageId> required = new HashSet<>();
     final TomlTable dependencies = table.getTable("dependencies");
     if (dependencies != null) {
@@ -70,7 +74,9 @@ final class PoetryLockfile {
           .forEach(
               dependency ->
                   required.addAll(
-                      byName.getOrDefault(PyprojectDependencies.normalize(dependency), List.of())));
+                      byName.getOrDefault(PyprojectDependencies.normalize(dependency), List.of())
+                  )
+          );
     }
     return required;
   }

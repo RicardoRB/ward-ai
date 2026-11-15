@@ -16,7 +16,6 @@ import java.util.Set;
  * with {@code super.}, is allowed. A call whose target is unknown is never reported.
  */
 public final class ForOverrideCheck extends FactsCheck {
-
   private static final String ANNOTATION = "com.google.errorprone.annotations.ForOverride";
   private static final String EXPRESSION = "expression";
   private static final String SUPER_CALL = "super.";
@@ -50,7 +49,8 @@ public final class ForOverrideCheck extends FactsCheck {
         .filter(target -> !declaredAround(target, visit.ancestors()))
         .map(
             target ->
-                CheckSupport.at(visit.node().span(), CheckSupport.fill(message, target.name(), "")))
+                CheckSupport.at(visit.node().span(), CheckSupport.fill(message, target.name(), ""))
+        )
         .stream()
         .toList();
   }
@@ -64,6 +64,7 @@ public final class ForOverrideCheck extends FactsCheck {
 
   private static String simpleName(final String qualified) {
     return qualified.substring(
-        Math.max(qualified.lastIndexOf('.'), qualified.lastIndexOf('$')) + 1);
+        Math.max(qualified.lastIndexOf('.'), qualified.lastIndexOf('$')) + 1
+    );
   }
 }

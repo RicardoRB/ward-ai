@@ -10,7 +10,6 @@ import java.util.List;
  * column it is at.
  */
 final class PythonChunker {
-
   private static final int ROOT_COLUMNS = 1;
 
   private final String source;

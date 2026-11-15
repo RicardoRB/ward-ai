@@ -16,7 +16,6 @@ import java.util.stream.Stream;
  * {@code filename.txt} path beside its {@code project} folder.
  */
 final class AndroidLintProject {
-
   static final String UNUSED_RESOURCES = "unused-resources";
   private static final String MANIFEST = "AndroidManifest.xml";
   private static final String NAMESPACE =
@@ -34,7 +33,11 @@ final class AndroidLintProject {
    * @return the project-relative path of the fixture file
    */
   static String place(
-      final String rule, final Path directory, final Path fixture, final Path project)
+      final String rule,
+      final Path directory,
+      final Path fixture,
+      final Path project
+  )
       throws IOException {
     final String text = Files.readString(fixture, StandardCharsets.UTF_8);
     if (UNUSED_RESOURCES.equals(rule)) {

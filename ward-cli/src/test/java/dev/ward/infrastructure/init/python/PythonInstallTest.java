@@ -20,7 +20,8 @@ class PythonInstallTest {
     assertThat(PythonInstall.commands(pip(), true, true, GROUP))
         .containsExactly(
             List.of(".venv/bin/python", "-m", "pip", "install", "--group", GROUP),
-            List.of(".venv/bin/python", "-m", "pip", "install", "-e", "."));
+            List.of(".venv/bin/python", "-m", "pip", "install", "-e", ".")
+        );
   }
 
   @Test
@@ -33,7 +34,8 @@ class PythonInstallTest {
   void pipWithoutPyprojectInstallsTheRequirementsFile() {
     assertThat(PythonInstall.commands(pip(), false, false, GROUP))
         .containsExactly(
-            List.of(".venv/bin/python", "-m", "pip", "install", "-r", "requirements-ward.txt"));
+            List.of(".venv/bin/python", "-m", "pip", "install", "-r", "requirements-ward.txt")
+        );
   }
 
   @Test

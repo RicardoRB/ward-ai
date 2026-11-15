@@ -5,7 +5,6 @@ package dev.ward.analysis.domain.jvm.types;
  * {@code open}, {@code abstract} or {@code override}, and members of an interface are open.
  */
 record KotlinApiModality(boolean inInterface) {
-
   boolean isFinal(final KotlinApiModifiers modifiers) {
     if (inInterface) {
       return false;

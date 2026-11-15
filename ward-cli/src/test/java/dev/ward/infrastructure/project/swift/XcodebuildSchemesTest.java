@@ -45,7 +45,8 @@ class XcodebuildSchemesTest {
     shareScheme(root, SHOP_PROJECT, SHOP);
 
     assertThat(
-            schemesRunning("{\"project\": {\"schemes\": [\"Shop\", \"ShopTests\"]}}").schemes(root))
+        schemesRunning("{\"project\": {\"schemes\": [\"Shop\", \"ShopTests\"]}}").schemes(root)
+    )
         .containsExactly(SHOP);
   }
 
@@ -89,7 +90,8 @@ class XcodebuildSchemesTest {
     final XcodeSchemes schemes =
         new XcodebuildSchemes(
             new FakeCommandExecutor(new CommandResult(70, "", "boom", Duration.ZERO)),
-            new ForyJsonCodec());
+            new ForyJsonCodec()
+        );
 
     assertThatThrownBy(() -> schemes.schemes(root)).isInstanceOf(WardException.class);
   }

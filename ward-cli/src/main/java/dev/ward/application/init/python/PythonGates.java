@@ -29,30 +29,40 @@ final class PythonGates implements SourceLanguageGates<PythonTools> {
           python.option(
               "django-check",
               "Runs Django's system checks, failing on warnings.",
-              python.command("python", "manage.py", "check", "--fail-level", "WARNING")));
+              python.command("python", "manage.py", "check", "--fail-level", "WARNING")
+          )
+      );
     }
     gates.add(
         python.option(
             "mypy",
             "Type-checks the project with mypy, in strict mode when strict.",
-            mypy(python)));
+            mypy(python)
+        )
+    );
     gates.add(
         python.option(
             "pytest",
             "Runs the tests under coverage, measuring branches when strict.",
-            pytest(python)));
+            pytest(python)
+        )
+    );
     gates.add(
         python.option(
             "coverage",
             "Writes the lcov report that Ward checks against the minimums in ward.toml.",
             python.command("coverage", "lcov", "-o", REPORT),
-            coverageSettings(python)));
+            coverageSettings(python)
+        )
+    );
     gates.add(
         python.option(
             "mutmut",
             "Runs mutation testing with mutmut; strict fails below a 60% mutation score.",
             python.command("mutmut", "run"),
-            mutationSettings(python)));
+            mutationSettings(python)
+        )
+    );
     return List.copyOf(gates);
   }
 

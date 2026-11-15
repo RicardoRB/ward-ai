@@ -30,7 +30,6 @@ import java.util.stream.IntStream;
 
 /** In-memory sources, fake report ports and the {@code crap} gate over them. */
 final class CrapGateFixture {
-
   static final int FIVE = 5;
   static final int SIX = 6;
   static final int NINE = 9;
@@ -68,7 +67,8 @@ final class CrapGateFixture {
     return new LineHits.Entry(
         LineHits.Kind.PACKAGE_FILE,
         JACOCO_NAME,
-        new FileLines(new TreeSet<>(range(first, last)), new TreeSet<>(covered)));
+        new FileLines(new TreeSet<>(range(first, last)), new TreeSet<>(covered))
+    );
   }
 
   static Set<Integer> range(final int first, final int last) {
@@ -134,12 +134,15 @@ final class CrapGateFixture {
                 new FrontendSupport(
                     AnalysisLanguage.JAVA,
                     new AntlrLanguageFrontend(),
-                    Set.of(RuleCapability.SYNTAX))),
+                    Set.of(RuleCapability.SYNTAX)
+                )
+            ),
             root -> AnalysisCacheFixtures.NO_CACHE,
             AnalysisCacheFixtures.codec(),
             "test",
             DependencyAdapters.none(),
-            (unused, classpath) -> Map.of());
+            (unused, classpath) -> Map.of()
+        );
     return new CrapGate("crap", options, ports, new CrapPorts(reader, fake))
         .execute(new Project(ROOT, Language.JAVA, BuildTool.MAVEN, Framework.NONE));
   }

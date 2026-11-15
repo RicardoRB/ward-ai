@@ -13,7 +13,6 @@ import java.util.Set;
  * pyflakes {@code F707}: the later handler can never run.
  */
 public final class ExceptOrderCheck implements RuleCheck {
-
   private static final Set<String> TRIES = Set.of("try_stmt");
   private static final String EXCEPT = "except_clause";
   private static final String BARE = "except";

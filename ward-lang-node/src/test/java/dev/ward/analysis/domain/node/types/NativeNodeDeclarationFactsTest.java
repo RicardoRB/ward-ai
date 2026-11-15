@@ -18,10 +18,12 @@ class NativeNodeDeclarationFactsTest {
         TypeScenarios.project(unit)
             .file(
                 "node_modules/pkg/package.json",
-                "{\"name\":\"pkg\",\"types\":\"./dist/index.d.ts\"}")
+                "{\"name\":\"pkg\",\"types\":\"./dist/index.d.ts\"}"
+            )
             .file(
                 "node_modules/pkg/dist/index.d.ts",
-                "export declare function load(id: number): Promise<string>;\n");
+                "export declare function load(id: number): Promise<string>;\n"
+            );
 
     assertThat(TypeScenarios.type(project, "load(1)")).isEqualTo("Promise<string>");
     final CallTarget target =
@@ -42,10 +44,12 @@ class NativeNodeDeclarationFactsTest {
             .file("node_modules/two/package.json", "{\"main\":\"./lib/main.js\"}")
             .file(
                 "node_modules/two/lib/main.d.ts",
-                "declare function f(): string;\nexport default f;\n")
+                "declare function f(): string;\nexport default f;\n"
+            )
             .file(
                 "node_modules/@types/three/index.d.ts",
-                "declare function f(): boolean;\nexport default f;\n");
+                "declare function f(): boolean;\nexport default f;\n"
+            );
 
     assertThat(TypeScenarios.type(project, "a()")).isEqualTo(NUMBER);
     assertThat(TypeScenarios.type(project, "b()")).isEqualTo("string");
@@ -61,7 +65,8 @@ class NativeNodeDeclarationFactsTest {
             .file("src/lib.ts", "export * from \"./inner\";\n")
             .file(
                 "src/inner.ts",
-                "export const total: number = 3;\nexport class Box { size: number = 1; }\n");
+                "export const total: number = 3;\nexport class Box { size: number = 1; }\n"
+            );
 
     assertThat(TypeScenarios.type(project, "total")).isEqualTo(NUMBER);
     assertThat(TypeScenarios.type(project, "new Box().size")).isEqualTo(NUMBER);
@@ -73,7 +78,9 @@ class NativeNodeDeclarationFactsTest {
     final TypeProject project =
         TypeScenarios.project(unit)
             .file(
-                "types/a.d.ts", "interface Shared { one: string }\ndeclare const shared: Shared;\n")
+                "types/a.d.ts",
+                "interface Shared { one: string }\ndeclare const shared: Shared;\n"
+            )
             .file("types/b.d.ts", "interface Shared { two: number }\ndeclare var flag: boolean;\n");
 
     assertThat(TypeScenarios.type(project, "shared.one")).isEqualTo("string");
@@ -87,9 +94,7 @@ class NativeNodeDeclarationFactsTest {
         "import { read } from \"fake\";\nconst a = read();\nconst b = Util.size;\nconst c = augmented;\n";
     final TypeProject project =
         TypeScenarios.project(unit)
-            .file(
-                "types/env.d.ts",
-                """
+            .file("types/env.d.ts", """
                 declare module "fake" { export function read(): string; }
                 declare namespace Util { const size: number; }
                 """)
@@ -106,9 +111,7 @@ class NativeNodeDeclarationFactsTest {
         "import { pick, Mode, Pair, Opts } from \"./types\";\nconst a = pick(\"x\");\nconst mode: Mode = null as any;\nconst copy = mode;\nconst d: Pair<string> = null as any;\nconst e = d.first;\nconst o: Opts = null as any;\nconst depth = o.depth;\n";
     final TypeProject project =
         TypeScenarios.project(unit)
-            .file(
-                "src/types.d.ts",
-                """
+            .file("src/types.d.ts", """
                 export type Mode = "fast" | "slow";
                 export type Opts = { depth: number } & { name?: string };
                 export interface Pair<T> { first: T; second: T[] }
@@ -129,7 +132,8 @@ class NativeNodeDeclarationFactsTest {
             .file("node_modules/pkg/package.json", "{\"types\":\"index.d.ts\"}")
             .file(
                 "node_modules/pkg/index.d.ts",
-                "export declare function load(id: number): Promise<string>;\n");
+                "export declare function load(id: number): Promise<string>;\n"
+            );
 
     final String first = TypeScenarios.type(project, "load(1)");
     final int stored = project.cacheEntries();

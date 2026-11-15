@@ -47,19 +47,27 @@ class DoctorCommandUpdateTest {
   private final StringWriter out = new StringWriter();
 
   private int doctor(
-      final Optional<ReleaseVersion> latest, final Map<String, String> env, final Path start) {
+      final Optional<ReleaseVersion> latest,
+      final Map<String,
+      String> env,
+      final Path start
+  ) {
     final DoctorService diagnostics =
         new DoctorService(
             new ProjectDetector(new FileSystemProjectInspection()),
             root ->
                 new EnvironmentFacts(
-                    Set.of(), Map.of("mavenWrapperAvailable", TRUE, "configurationPresent", TRUE)));
+                    Set.of(),
+                    Map.of("mavenWrapperAvailable", TRUE, "configurationPresent", TRUE)
+                )
+        );
     final UpdateNoticeService updates =
         new UpdateNoticeService(
             "0.3.1",
             () -> latest,
             NO_CACHE,
-            new UpdateContext(InstantSource.system(), env::get, false));
+            new UpdateContext(InstantSource.system(), env::get, false)
+        );
     final CommandLine cli = new CommandLine(new DoctorCommand(diagnostics, updates));
     cli.setOut(new PrintWriter(out, true));
     return cli.execute("-C", start.toString());

@@ -11,11 +11,11 @@ import picocli.CommandLine.Option;
 
 /** Options of the commands that write a document from the dependency inventory. */
 public class DocumentOptions {
-
   @Option(
       names = {"-o", "--output"},
       paramLabel = "<file>",
-      description = "Write the document to <file> instead of standard output.")
+      description = "Write the document to <file> instead of standard output."
+  )
   private Path output;
 
   @Option(
@@ -24,7 +24,8 @@ public class DocumentOptions {
       paramLabel = "<scope>",
       description =
           "Only include packages of these scopes: runtime, provided, test, development"
-              + " (default: every scope).")
+              + " (default: every scope)."
+  )
   private final Set<String> scopes = new LinkedHashSet<>();
 
   /** Returns the {@code --output} file, or {@code null} for standard output. */
@@ -46,7 +47,8 @@ public class DocumentOptions {
       final String name = scope.strip().toLowerCase(Locale.ROOT);
       if (!valid.contains(name)) {
         throw new WardException(
-            "--scopes must name scopes from " + valid + ", not '" + scope + "'");
+            "--scopes must name scopes from " + valid + ", not '" + scope + "'"
+        );
       }
       chosen.add(name);
     }

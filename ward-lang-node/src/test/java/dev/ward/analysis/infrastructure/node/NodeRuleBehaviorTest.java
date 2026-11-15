@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** Behavior of the structural rules on inline sources, for the edge cases the spec names. */
 class NodeRuleBehaviorTest {
-
   private static final AnalysisLanguage TS = AnalysisLanguage.TYPESCRIPT;
   private static final AnalysisLanguage JS = AnalysisLanguage.JAVASCRIPT;
   private static final int BLOCK_LINE = 3;

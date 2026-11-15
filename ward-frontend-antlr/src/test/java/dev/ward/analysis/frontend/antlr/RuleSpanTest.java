@@ -8,7 +8,6 @@ import dev.ward.analysis.domain.port.ParseResult;
 import org.junit.jupiter.api.Test;
 
 class RuleSpanTest {
-
   private static final int LINES = 3;
 
   @Test

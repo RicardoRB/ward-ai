@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 /** Measures tight class cohesion: the share of method pairs that use a common field. */
 final class ClassCohesion {
-
   private static final String METHOD = "methodDeclaration";
 
   private ClassCohesion() {}
@@ -35,7 +34,7 @@ final class ClassCohesion {
 
   private static double share(final List<Set<String>> usage) {
     final int methods = usage.size();
-    final long pairs = (long) methods * (methods - 1) / 2;
+    final long pairs = (long)methods * (methods - 1) / 2;
     if (pairs == 0) {
       return 0;
     }

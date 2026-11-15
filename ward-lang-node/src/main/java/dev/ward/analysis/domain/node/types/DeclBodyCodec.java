@@ -7,7 +7,6 @@ import java.util.List;
 
 /** Helpers split out of {@link DeclCodec}. */
 final class DeclBodyCodec {
-
   private DeclBodyCodec() {}
 
   static void declList(final DataOutputStream out, final List<Decl> decls) throws IOException {
@@ -29,7 +28,7 @@ final class DeclBodyCodec {
   }
 
   static Decl readDecl(final DataInputStream in) throws IOException {
-    final Decl.Kind kind = Decl.Kind.values()[in.readInt()];
+    final Decl.Kind kind = Decl.Kind.values() [in.readInt()];
     final String name = in.readUTF();
     final Decl.Header header = MemberCodec.readHeader(in);
     final List<Member> members = CodecIo.read(in, MemberCodec::readMember);

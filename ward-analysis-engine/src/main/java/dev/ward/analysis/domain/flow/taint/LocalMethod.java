@@ -35,8 +35,13 @@ import java.util.stream.Collectors;
  *     so a call that names it without a package can reach it
  */
 record LocalMethod(
-    String name, String owner, int arity, ControlFlowGraph graph, boolean external, boolean bare) {
-
+    String name,
+    String owner,
+    int arity,
+    ControlFlowGraph graph,
+    boolean external,
+    boolean bare
+) {
   private static final Pattern BODY =
       Pattern.compile("^(?:(?<scope>.*)#)?(?<name>[\\w$]+)(?:\\((?<arity>\\d+)\\))?$");
   private static final String THIS = "this";
@@ -49,7 +54,8 @@ record LocalMethod(
       final String owner,
       final int arity,
       final ControlFlowGraph graph,
-      final boolean external) {
+      final boolean external
+  ) {
     this(name, owner, arity, graph, external, false);
   }
 
@@ -125,7 +131,8 @@ record LocalMethod(
     return parse(graph)
         .filter(method -> !method.owner().isEmpty())
         .map(
-            method -> new LocalMethod(method.name, method.owner, method.arity, graph, true, false));
+            method -> new LocalMethod(method.name, method.owner, method.arity, graph, true, false)
+        );
   }
 
   private static Optional<LocalMethod> parse(final ControlFlowGraph graph) {
@@ -207,7 +214,9 @@ record LocalMethod(
             Optional.empty(),
             List.of(MARK),
             List.of(),
-            access.get().span()));
+            access.get().span()
+        )
+    );
     return new BasicBlock(block.id(), block.nodes(), block.successors(), block.accesses(), sites);
   }
 }

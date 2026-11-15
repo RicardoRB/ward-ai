@@ -49,7 +49,10 @@ final class InitCommandFixture {
 
   /** {@code executables} are the commands the fake environment reports on the PATH. */
   InitCommandFixture(
-      final Path root, final BuildToolConfiguration buildTools, final String... executables)
+      final Path root,
+      final BuildToolConfiguration buildTools,
+      final String... executables
+  )
       throws IOException {
     this(root, true, buildTools, executables);
   }
@@ -58,7 +61,8 @@ final class InitCommandFixture {
       final Path root,
       final boolean rootProject,
       final BuildToolConfiguration buildTools,
-      final String... executables)
+      final String... executables
+  )
       throws IOException {
     this.root = root;
     this.buildTools = buildTools;
@@ -67,7 +71,8 @@ final class InitCommandFixture {
       Files.writeString(
           root.resolve("pom.xml"),
           "<project><modelVersion>4.0.0</modelVersion><groupId>example</groupId>"
-              + "<artifactId>demo</artifactId><version>1.0.0</version></project>");
+              + "<artifactId>demo</artifactId><version>1.0.0</version></project>"
+      );
     }
     Files.createDirectories(root.resolve(".git/hooks"));
   }
@@ -87,7 +92,10 @@ final class InitCommandFixture {
    * Runs init in a repository whose root is not a project, with {@code executables} on the PATH.
    */
   static InitCommandFixture repository(
-      final Path root, final BuildToolConfiguration tools, final String... executables)
+      final Path root,
+      final BuildToolConfiguration tools,
+      final String... executables
+  )
       throws IOException {
     return new InitCommandFixture(root, false, tools, executables);
   }
@@ -105,45 +113,11 @@ final class InitCommandFixture {
 
   /** Runs init; {@code terminal} makes the input behave like an interactive terminal. */
   int run(final boolean terminal, final String input, final String... args) {
-    final InitService service =
-        new InitService(
-            new ProjectDetector(new FileSystemProjectInspection()),
-            Set.of(new ClaudeCodeIntegration()),
-            new InitSetupCatalog(
-                new dev.ward.application.init.InitPorts(
-                    new FakeEnvironmentInspection(executables) {
-                      @Override
-                      public Optional<String> openApiSpec(final Path projectRoot) {
-                        return Files.exists(projectRoot.resolve("openapi.yml"))
-                            ? Optional.of("openapi.yml")
-                            : Optional.empty();
-                      }
-                    },
-                    new NodeInputs(
-                        new dev.ward.infrastructure.project.node.FileSystemPackageManifests(),
-                        new FileSystemNodeSources(),
-                        new FileSystemNodeToolConfigs()),
-                    buildTools,
-                    new dev.ward.infrastructure.project.python.FileSystemPythonToolConfigs(),
-                    new dev.ward.application.init.ToolchainPorts(
-                        swiftPorts, dev.ward.domain.init.BuildModulePlanning.none())),
-                new QualityHookInstaller(),
-                new TomlConfigurationReader(),
-                "1.2.3"),
-            new InitProjectFiles(
-                buildTools,
-                new PresetRuleFileWriter(
-                    RuleFileTargetsFixtures.of(
-                        new dev.ward.infrastructure.project.node.FileSystemPackageManifests(),
-                        new FileSystemNodeToolConfigs(),
-                        new dev.ward.infrastructure.project.python.FileSystemPythonToolConfigs())),
-                ArchitectureTablesFixtures.create(),
-                new FileConfigurationStorage(),
-                new OwnedSectionWriter()));
+    final InitService service = service();
     final CommandLine command =
         new CommandLine(
-            new InitCommand(
-                service, new TerminalLikeInputStream(input), Optional::empty, terminal));
+            new InitCommand(service, new TerminalLikeInputStream(input), Optional::empty, terminal)
+        );
     command.setOut(new PrintWriter(output, true));
     command.setErr(new PrintWriter(output, true));
     // Mirrors the production handler: Ward errors print their message and exit with 2.
@@ -151,12 +125,63 @@ final class InitCommandFixture {
         (exception, commandLine, parseResult) -> {
           commandLine.getErr().println(exception.getMessage());
           return exception instanceof WardException ? ExitCodes.ERROR : 1;
-        });
+        }
+    );
     final String[] withDirectory = new String[args.length + 2];
     withDirectory[0] = "--directory";
     withDirectory[1] = root.toString();
     System.arraycopy(args, 0, withDirectory, 2, args.length);
     return command.execute(withDirectory);
+  }
+
+  private InitService service() {
+    return new InitService(
+        new ProjectDetector(new FileSystemProjectInspection()),
+        Set.of(new ClaudeCodeIntegration()),
+        new InitSetupCatalog(
+            new dev.ward.application.init.InitPorts(
+                new FakeEnvironmentInspection(executables) {
+                  @Override
+                  public Optional<String> openApiSpec(final Path projectRoot) {
+                    return Files.exists(projectRoot.resolve("openapi.yml"))
+                        ? Optional.of("openapi.yml")
+                        : Optional.empty();
+                  }
+                },
+                new NodeInputs(
+                    new dev.ward.infrastructure.project.node.FileSystemPackageManifests(),
+                    new FileSystemNodeSources(),
+                    new FileSystemNodeToolConfigs()
+                ),
+                buildTools,
+                new dev.ward.infrastructure.project.python.FileSystemPythonToolConfigs(),
+                new dev.ward.application.init.ToolchainPorts(
+                    swiftPorts,
+                    dev.ward.domain.init.BuildModulePlanning.none()
+                )
+            ),
+            new QualityHookInstaller(),
+            new TomlConfigurationReader(),
+            "1.2.3"
+        ),
+        projectFiles()
+    );
+  }
+
+  private InitProjectFiles projectFiles() {
+    return new InitProjectFiles(
+        buildTools,
+        new PresetRuleFileWriter(
+            RuleFileTargetsFixtures.of(
+                new dev.ward.infrastructure.project.node.FileSystemPackageManifests(),
+                new FileSystemNodeToolConfigs(),
+                new dev.ward.infrastructure.project.python.FileSystemPythonToolConfigs()
+            )
+        ),
+        ArchitectureTablesFixtures.create(),
+        new FileConfigurationStorage(),
+        new OwnedSectionWriter()
+    );
   }
 
   String output() {

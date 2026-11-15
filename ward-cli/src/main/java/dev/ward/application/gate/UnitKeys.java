@@ -23,7 +23,8 @@ final class UnitKeys {
       final List<RuleDefinition> rules,
       final DependencySnapshot snapshot,
       final AnalysisCache cache,
-      final List<FrontendSupport> frontends) {
+      final List<FrontendSupport> frontends
+  ) {
     this.engineVersion = engineVersion;
     this.rules = List.copyOf(rules);
     this.snapshot = snapshot;
@@ -48,6 +49,8 @@ final class UnitKeys {
 
   private String ruleSet(final AnalysisLanguage language) {
     return AnalysisCacheKey.ruleSet(
-        engineVersion, rules.stream().filter(rule -> rule.covers(language)).toList());
+        engineVersion,
+        rules.stream().filter(rule -> rule.covers(language)).toList()
+    );
   }
 }

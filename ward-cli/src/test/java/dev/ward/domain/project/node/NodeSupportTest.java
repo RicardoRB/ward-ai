@@ -23,7 +23,8 @@ class NodeSupportTest {
                 assertThat(message)
                     .contains("Node " + version)
                     .contains("Node 22 and 24")
-                    .contains("may not work"));
+                    .contains("may not work")
+        );
   }
 
   @ParameterizedTest
@@ -40,8 +41,10 @@ class NodeSupportTest {
   @Test
   void projectWithoutVersionDoesNotWarn() {
     assertThat(
-            NodeSupport.warning(
-                new Project(Path.of("app"), Language.TYPESCRIPT, BuildTool.NPM, Framework.NONE)))
+        NodeSupport.warning(
+            new Project(Path.of("app"), Language.TYPESCRIPT, BuildTool.NPM, Framework.NONE)
+        )
+    )
         .isEmpty();
   }
 
@@ -57,6 +60,7 @@ class NodeSupportTest {
         Set.of(),
         version,
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 }

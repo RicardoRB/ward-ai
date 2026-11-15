@@ -40,7 +40,8 @@ class TypeRuleGateTest {
           Set.of(AnalysisLanguage.JAVA),
           RuleCapability.TYPES,
           AnalysisSeverity.ERROR,
-          "body");
+          "body"
+      );
 
   @Test
   void typeRuleWithoutNativeResolverIsNotRunAndTheGateIsUnavailable() {
@@ -63,7 +64,11 @@ class TypeRuleGateTest {
   }
 
   private static AnalysisGate gate(
-      final BiFunction<Path, Optional<Path>, Map<AnalysisLanguage, TypeFacts>> nativeTypeFacts) {
+      final BiFunction<Path,
+      Optional<Path>,
+      Map<AnalysisLanguage,
+      TypeFacts>> nativeTypeFacts
+  ) {
     final AnalysisPorts ports =
         new AnalysisPorts(
             () -> new AnalysisRuleLoad(List.of(TYPED), List.of()),
@@ -85,12 +90,15 @@ class TypeRuleGateTest {
                     AnalysisLanguage.JAVA,
                     unit ->
                         new ParseResult(new SyntaxNode("file", AT, Map.of(), List.of()), List.of()),
-                    Set.of(RuleCapability.SYNTAX))),
+                    Set.of(RuleCapability.SYNTAX)
+                )
+            ),
             root -> AnalysisCacheFixtures.NO_CACHE,
             AnalysisCacheFixtures.codec(),
             "test",
             DependencyAdapters.none(),
-            nativeTypeFacts);
+            nativeTypeFacts
+        );
     return new AnalysisGate("ward", List.of(TYPED), ports);
   }
 }

@@ -22,7 +22,6 @@ import java.util.Set;
  * buffer message. Equal strings are distinct objects there, so the comparison must use equals.
  */
 public final class ProtoStringEqualityCheck implements RuleCheck {
-
   private static final String EXPRESSION = "expression";
   private static final int COMPARISON_PARTS = 3;
   private static final String STRING = "java.lang.String";
@@ -34,7 +33,8 @@ public final class ProtoStringEqualityCheck implements RuleCheck {
           "com.google.protobuf.MessageLite",
           "com.google.protobuf.Message",
           "com.google.protobuf.GeneratedMessageLite",
-          "com.google.protobuf.GeneratedMessageV3");
+          "com.google.protobuf.GeneratedMessageV3"
+      );
   private static final FactNeed NEED =
       new FactNeed(Set.of(EXPRESSION), Set.of(FactKind.CALL, FactKind.TYPE, FactKind.MEMBERS));
 
@@ -65,7 +65,8 @@ public final class ProtoStringEqualityCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(EXPRESSION))) {
       final List<SyntaxNode> parts = visit.node().children();

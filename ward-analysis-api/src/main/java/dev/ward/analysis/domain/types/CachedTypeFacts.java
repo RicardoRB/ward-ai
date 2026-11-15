@@ -38,7 +38,10 @@ public final class CachedTypeFacts implements TypeFacts {
 
   @Override
   public UnitTypeFacts factsOf(
-      final SourceUnit unit, final List<Span> spans, final Set<FactKind> kinds) {
+      final SourceUnit unit,
+      final List<Span> spans,
+      final Set<FactKind> kinds
+  ) {
     final String key =
         unit.path() + '|' + sha256(unit.text()) + '|' + classpathHash + '|' + spans + '|' + kinds;
     final UnitTypeFacts known = answers.get(key);
@@ -58,7 +61,8 @@ public final class CachedTypeFacts implements TypeFacts {
     try {
       return HexFormat.of()
           .formatHex(
-              MessageDigest.getInstance("SHA-256").digest(text.getBytes(StandardCharsets.UTF_8)));
+              MessageDigest.getInstance("SHA-256").digest(text.getBytes(StandardCharsets.UTF_8))
+          );
     } catch (NoSuchAlgorithmException missing) {
       throw new IllegalStateException("SHA-256 is always available", missing);
     }

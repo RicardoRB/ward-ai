@@ -4,7 +4,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 
 /** The node kinds of the Python grammar that the type resolver reads. */
 final class PythonTypeKinds {
-
   /** The kind of a token node for an identifier. */
   static final String TOKEN_NAME = "NAME";
 

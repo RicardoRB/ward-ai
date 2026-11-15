@@ -9,7 +9,6 @@ import java.util.Set;
  * complexity of each method, and which methods are accessors.
  */
 final class ClassMetrics {
-
   private static final String EXPRESSION = "expression";
   private static final String IDENTIFIER = "identifier";
   private static final String FORMAL_PARAMETER = "formalParameter";
@@ -89,7 +88,10 @@ final class ClassMetrics {
   }
 
   private static int leafDecision(
-      final SyntaxNode parent, final SyntaxNode leaf, final boolean condition) {
+      final SyntaxNode parent,
+      final SyntaxNode leaf,
+      final boolean condition
+  ) {
     final String text = SyntaxWalk.text(leaf);
     final boolean conditional = CONDITIONAL.equals(text) && isExpression(parent);
     final boolean operator = condition && BOOLEAN_OPERATORS.contains(text);

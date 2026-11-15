@@ -15,7 +15,6 @@ import java.util.TreeMap;
  * rules err toward silence.
  */
 public final class NullnessCheck implements RuleCheck {
-
   private static final Map<String, NullFinder> FINDERS = finders();
 
   private final NullFinder finder;

@@ -15,7 +15,6 @@ import java.util.Optional;
 
 /** The JSON Schemas of OpenAPI documents that ship with Ward, read once and found by their id. */
 public final class BundledSchemas {
-
   private static final String DIRECTORY = "/openapi/schemas/";
   private static final String OAS30 = "oas-3.0.json";
   private static final String OAS31 = "oas-3.1.json";
@@ -35,7 +34,8 @@ public final class BundledSchemas {
           "json-schema-2020-12-unevaluated.json",
           "json-schema-2020-12-meta-data.json",
           "json-schema-2020-12-format-annotation.json",
-          "json-schema-2020-12-content.json");
+          "json-schema-2020-12-content.json"
+      );
 
   private BundledSchemas() {}
 
@@ -66,7 +66,6 @@ public final class BundledSchemas {
 
   /** Finds a reference by the id of a resource and a pointer into it. */
   private static final class Resolver implements JsonSchemaValidator.RefResolver {
-
     @Override
     public Optional<DocNode> resolve(final DocNode holder) {
       return holder.get("$ref").map(DocNode::text).flatMap(ref -> find(holder.file(), ref));
@@ -128,7 +127,10 @@ public final class BundledSchemas {
       return DocNodeParser.parse(
           resource,
           new String(
-              Optional.ofNullable(stream).orElseThrow().readAllBytes(), StandardCharsets.UTF_8));
+              Optional.ofNullable(stream).orElseThrow().readAllBytes(),
+              StandardCharsets.UTF_8
+          )
+      );
     } catch (final IOException exception) {
       throw new UncheckedIOException(exception);
     }

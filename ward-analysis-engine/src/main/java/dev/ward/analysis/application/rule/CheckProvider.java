@@ -8,7 +8,6 @@ import java.util.Map;
  */
 @FunctionalInterface
 public interface CheckProvider {
-
   /** Returns the factories of this provider's checks, by the {@code check} name of a rule body. */
   Map<String, CheckFactory> checks();
 }

@@ -11,7 +11,6 @@ import org.tomlj.Toml;
 
 /** The {@code cycles} and {@code independence} tables of a {@code ward} check. */
 class TomlArchitectureCheckTest {
-
   @Test
   void parsesCycleRootsAndNormalizesThem() {
     final GateConfiguration check =
@@ -25,7 +24,8 @@ class TomlArchitectureCheckTest {
     final GateConfiguration check =
         check(
             "[[checks.ward.independence]]\nmodules = [\"shop/orders\", \"shop/billing\"]\n"
-                + "[[checks.ward.independence]]\nmodules = [\"a\", \"b\", \"c\"]");
+                + "[[checks.ward.independence]]\nmodules = [\"a\", \"b\", \"c\"]"
+        );
 
     assertThat(check.independence())
         .containsExactly(List.of("shop/orders", "shop/billing"), List.of("a", "b", "c"));
@@ -70,7 +70,8 @@ class TomlArchitectureCheckTest {
   @Test
   void rejectsUnknownIndependenceKey() {
     assertThatThrownBy(
-            () -> check("[[checks.ward.independence]]\nmodules = [\"a\", \"b\"]\nsoft = true"))
+        () -> check("[[checks.ward.independence]]\nmodules = [\"a\", \"b\"]\nsoft = true")
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("checks.ward.independence.soft");
   }

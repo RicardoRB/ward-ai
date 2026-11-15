@@ -11,7 +11,6 @@ import java.util.Objects;
  * reports Javadoc in such places.
  */
 public final class KotlinKdocPositionCheck implements UnitCheck {
-
   private final String message;
 
   /**

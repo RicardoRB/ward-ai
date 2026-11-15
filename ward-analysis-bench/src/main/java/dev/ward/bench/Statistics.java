@@ -4,8 +4,14 @@ import java.util.List;
 
 /** Median, spread and percentiles of repeated measurements. */
 record Statistics(
-    int count, double min, double max, double median, double spread, double p50, double p95) {
-
+    int count,
+    double min,
+    double max,
+    double median,
+    double spread,
+    double p50,
+    double p95
+) {
   private static final int P50 = 50;
   private static final int P95 = 95;
 
@@ -26,7 +32,8 @@ record Statistics(
         median,
         spread,
         nearestRank(sorted, P50),
-        nearestRank(sorted, P95));
+        nearestRank(sorted, P95)
+    );
   }
 
   private static double median(final double... sorted) {
@@ -38,7 +45,7 @@ record Statistics(
   }
 
   private static double nearestRank(final double[] sorted, final int percentile) {
-    final int rank = (int) Math.ceil(percentile / 100.0 * sorted.length);
+    final int rank = (int)Math.ceil(percentile / 100.0 * sorted.length);
     return sorted[Math.max(rank, 1) - 1];
   }
 }

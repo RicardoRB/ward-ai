@@ -12,7 +12,12 @@ import java.util.Map;
  * @param scripts the command of each script in the member's package.json, by script name
  */
 public record WorkspaceMember(
-    String name, Path directory, Project project, Map<String, String> scripts) {
+    String name,
+    Path directory,
+    Project project,
+    Map<String,
+    String> scripts
+) {
   /** Creates a member whose package.json has no scripts. */
   public WorkspaceMember(final String name, final Path directory, final Project project) {
     this(name, directory, project, Map.of());

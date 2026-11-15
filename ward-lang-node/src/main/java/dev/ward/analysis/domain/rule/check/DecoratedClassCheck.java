@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * set must hold for the node to be reported.
  */
 public final class DecoratedClassCheck implements RuleCheck {
-
   private final Set<String> kinds;
   private final DecoratedFilters conditions;
   private final String message;
@@ -30,8 +29,11 @@ public final class DecoratedClassCheck implements RuleCheck {
    * @param implementsNot the interface name the class must not implement, if present
    */
   public record ClassCondition(
-      Optional<Pattern> decorator, Map<Pattern, Pattern> entries, Optional<String> implementsNot) {
-
+      Optional<Pattern> decorator,
+      Map<Pattern,
+      Pattern> entries,
+      Optional<String> implementsNot
+  ) {
     /** Copies the entries. */
     public ClassCondition {
       entries = Map.copyOf(entries);
@@ -46,8 +48,10 @@ public final class DecoratedClassCheck implements RuleCheck {
    * @param notText a pattern the member's text must not match, if present
    */
   public record MemberCondition(
-      Optional<Pattern> decorator, Set<String> has, Optional<Pattern> notText) {
-
+      Optional<Pattern> decorator,
+      Set<String> has,
+      Optional<Pattern> notText
+  ) {
     /** Copies the kinds. */
     public MemberCondition {
       has = Set.copyOf(has);
@@ -66,7 +70,8 @@ public final class DecoratedClassCheck implements RuleCheck {
       Optional<Pattern> text,
       Optional<Pattern> exempt,
       boolean inClassDecorator,
-      Optional<Pattern> notInsideText) {}
+      Optional<Pattern> notInsideText
+  ) {}
 
   /**
    * The conditions on the place of the node in the tree.
@@ -76,7 +81,6 @@ public final class DecoratedClassCheck implements RuleCheck {
    * @param notChild kinds of which the node must have no direct child
    */
   public record ScopeCondition(Set<String> inside, Set<String> parent, Set<String> notChild) {
-
     /** Copies the sets. */
     public ScopeCondition {
       inside = Set.copyOf(inside);
@@ -95,11 +99,12 @@ public final class DecoratedClassCheck implements RuleCheck {
    * @param aria whether an {@code aria-*} alias is allowed when it names the member in camel case
    */
   public record NameCondition(
-      Map<String, String> heritageMissing,
+      Map<String,
+      String> heritageMissing,
       Optional<Pattern> alias,
       Set<String> allowed,
-      boolean aria) {
-
+      boolean aria
+  ) {
     /** Copies the maps and sets. */
     public NameCondition {
       heritageMissing = Map.copyOf(heritageMissing);
@@ -121,7 +126,8 @@ public final class DecoratedClassCheck implements RuleCheck {
       MemberCondition member,
       NodeCondition node,
       ScopeCondition scope,
-      NameCondition name) {}
+      NameCondition name
+  ) {}
 
   /**
    * Creates the check.

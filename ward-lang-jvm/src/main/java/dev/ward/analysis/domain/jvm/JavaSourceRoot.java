@@ -11,7 +11,6 @@ import java.util.Objects;
  * @param test whether the root holds test sources
  */
 public record JavaSourceRoot(String directory, String module, boolean test) {
-
   /**
    * Validates the required fields.
    *

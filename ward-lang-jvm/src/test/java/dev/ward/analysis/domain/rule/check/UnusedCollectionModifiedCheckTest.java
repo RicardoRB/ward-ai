@@ -6,16 +6,16 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class UnusedCollectionModifiedCheckTest {
-
   private static final UnusedCollectionModifiedCheck CHECK =
       new UnusedCollectionModifiedCheck("message");
 
   private static List<String> run(final String body) {
     return new ParsedFacts(
-            "import java.util.*;\nclass A {\n  void f(int x) {\n"
-                + "    Set<Integer> seen = new HashSet<>();\n"
-                + body
-                + "\n  }\n}\n")
+        "import java.util.*;\nclass A {\n  void f(int x) {\n"
+            + "    Set<Integer> seen = new HashSet<>();\n"
+            + body
+            + "\n  }\n}\n"
+    )
         .run(CHECK);
   }
 

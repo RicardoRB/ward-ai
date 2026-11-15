@@ -10,7 +10,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class OrderLiteralDuplicateTest {
-
   private static final String NUMBER = "number";
   private static final String UNIT = "unit";
   private static final String NAME = "name";
@@ -24,13 +23,19 @@ class OrderLiteralDuplicateTest {
         gen.node(
             UNIT,
             gen.node(
-                "mods", gen.leaf("m", "static"), gen.leaf("m", "public"), gen.leaf("m", "final")));
+                "mods",
+                gen.leaf("m", "static"),
+                gen.leaf("m", "public"),
+                gen.leaf("m", "final")
+            )
+        );
     final OrderCheck check =
         new OrderCheck(
             NodeFilter.of(Set.of("mods")),
             List.of("public", "protected", "private", "abstract", "static", "final"),
             Optional.empty(),
-            "{value} is out of order");
+            "{value} is out of order"
+        );
 
     assertThat(TreeLayout.messages(check.matches(root))).containsExactly("public is out of order");
   }
@@ -44,16 +49,20 @@ class OrderLiteralDuplicateTest {
                 "body",
                 gen.leaf("method", "m"),
                 gen.leaf("other", "o"),
-                gen.node("wrap", gen.leaf("field", "f"))));
+                gen.node("wrap", gen.leaf("field", "f"))
+            )
+        );
     final NodeFilter body = NodeFilter.of(Set.of("body"));
 
     assertThat(
-            new OrderCheck(body, List.of("wrap>field", "method"), Optional.empty(), "late")
-                .matches(root))
+        new OrderCheck(body, List.of("wrap>field", "method"), Optional.empty(), "late")
+            .matches(root)
+    )
         .hasSize(1);
     assertThat(
-            new OrderCheck(body, List.of("method", "wrap>field"), Optional.empty(), "late")
-                .matches(root))
+        new OrderCheck(body, List.of("method", "wrap>field"), Optional.empty(), "late")
+            .matches(root)
+    )
         .isEmpty();
   }
 
@@ -63,7 +72,8 @@ class OrderLiteralDuplicateTest {
         Set.of("0", "1"),
         Set.of("constant"),
         repeats,
-        "magic {value}");
+        "magic {value}"
+    );
   }
 
   @Test
@@ -73,7 +83,8 @@ class OrderLiteralDuplicateTest {
             UNIT,
             gen.node("expr", gen.leaf(NUMBER, "60")),
             gen.node("constant", gen.leaf(NUMBER, "24")),
-            gen.leaf(NUMBER, "1"));
+            gen.leaf(NUMBER, "1")
+        );
 
     assertThat(TreeLayout.messages(magic(LiteralCheck.NO_REPEAT_LIMIT).matches(root)))
         .containsExactly("magic 60");
@@ -87,7 +98,8 @@ class OrderLiteralDuplicateTest {
             gen.leaf(NUMBER, "7"),
             gen.leaf(NUMBER, "7"),
             gen.leaf(NUMBER, "7"),
-            gen.leaf(NUMBER, "8"));
+            gen.leaf(NUMBER, "8")
+        );
 
     assertThat(magic(1).matches(root)).hasSize(2);
   }
@@ -123,12 +135,14 @@ class OrderLiteralDuplicateTest {
             NodeFilter.of(Set.of("body")),
             List.of(),
             Optional.of(new OrderCheck.GroupBy(NAME, Set.of())),
-            "split {value}");
+            "split {value}"
+        );
 
     assertThat(TreeLayout.messages(check.matches(root))).containsExactly("split a");
     assertThat(TreeLayout.starts(check.matches(root))).containsExactly(a3.span().startOffset());
     assertThatThrownBy(
-            () -> new OrderCheck(NodeFilter.of(Set.of()), List.of(), Optional.empty(), "m"))
+        () -> new OrderCheck(NodeFilter.of(Set.of()), List.of(), Optional.empty(), "m")
+    )
         .isInstanceOf(IllegalArgumentException.class);
   }
 }

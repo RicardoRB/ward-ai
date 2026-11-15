@@ -86,10 +86,13 @@ final class ApiCompatGateFixtures {
                       frontend,
                       name ->
                           ClassLoader.getSystemResource(name.replace('.', '/') + ".class")
-                              != null));
+                              != null
+                  )
+              );
             }
           }
           return found;
-        });
+        }
+    );
   }
 }

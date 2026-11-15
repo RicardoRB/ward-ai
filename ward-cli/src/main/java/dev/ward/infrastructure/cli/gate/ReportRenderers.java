@@ -8,4 +8,7 @@ package dev.ward.infrastructure.cli.gate;
  * @param sarif the SARIF 2.1.0 log
  */
 public record ReportRenderers(
-    TextReportRenderer text, JsonReportRenderer json, SarifReportRenderer sarif) {}
+    TextReportRenderer text,
+    JsonReportRenderer json,
+    SarifReportRenderer sarif
+) {}

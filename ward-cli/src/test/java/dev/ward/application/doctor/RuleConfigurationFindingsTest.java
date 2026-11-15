@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class RuleConfigurationFindingsTest {
-
   @TempDir Path root;
 
   @Test
@@ -37,13 +36,15 @@ class RuleConfigurationFindingsTest {
   void eachProblemIsAFailingFinding() throws IOException {
     Files.writeString(
         root.resolve("ward-rules.toml"),
-        "version = 1\n[rules.java.method-length]\nmax = 0\n[rules.java.zzz]\n");
+        "version = 1\n[rules.java.method-length]\nmax = 0\n[rules.java.zzz]\n"
+    );
 
     assertThat(diagnose())
         .hasSize(2)
         .allSatisfy(f -> assertThat(f.status()).isEqualTo(Status.ERROR))
         .anyMatch(
-            f -> f.message().contains("not selected") || f.message().contains("max: expected"))
+            f -> f.message().contains("not selected") || f.message().contains("max: expected")
+        )
         .anyMatch(f -> f.message().contains("unknown rule id"));
   }
 
@@ -51,7 +52,8 @@ class RuleConfigurationFindingsTest {
   void aTableNamedByTheQuotedRuleIdIsAFailingFinding() throws IOException {
     Files.writeString(
         root.resolve("ward-rules.toml"),
-        "version = 1\n[rules.\"ward:java/method-length\"]\nmax = 80\n");
+        "version = 1\n[rules.\"ward:java/method-length\"]\nmax = 80\n"
+    );
 
     assertThat(diagnose())
         .singleElement()
@@ -59,7 +61,8 @@ class RuleConfigurationFindingsTest {
             f -> {
               assertThat(f.status()).isEqualTo(Status.ERROR);
               assertThat(f.message()).contains("write [rules.java.method-length]");
-            });
+            }
+        );
   }
 
   private List<Finding> diagnose() throws IOException {
@@ -69,7 +72,8 @@ class RuleConfigurationFindingsTest {
         new TomlConfigurationReader(),
         new ProjectRuleSource(new ClasspathRuleSource()),
         root,
-        findings);
+        findings
+    );
     return findings;
   }
 }

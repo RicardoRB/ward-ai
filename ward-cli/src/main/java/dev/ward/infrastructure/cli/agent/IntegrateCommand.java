@@ -28,7 +28,8 @@ import picocli.CommandLine.Spec;
     name = "integrate",
     description = "Configure a supported coding-agent integration.",
     mixinStandardHelpOptions = true,
-    subcommands = {})
+    subcommands = {}
+)
 public final class IntegrateCommand implements Callable<Integer> {
   @Spec private CommandSpec spec;
 
@@ -38,7 +39,8 @@ public final class IntegrateCommand implements Callable<Integer> {
   @Parameters(
       index = "0",
       arity = "0..1",
-      description = "Supported agent ID (prompts when omitted)")
+      description = "Supported agent ID (prompts when omitted)"
+  )
   private String agent;
 
   @Option(names = "--remove", description = "Remove only Ward-owned integration content.")
@@ -71,7 +73,8 @@ public final class IntegrateCommand implements Callable<Integer> {
       output()
           .printf(
               "Capabilities: %s%n",
-              result.capabilities().stream().map(Enum::name).sorted().toList());
+              result.capabilities().stream().map(Enum::name).sorted().toList()
+          );
     }
     result.changed().forEach(output()::println);
     return result.status() == IntegrationResult.Status.CONFLICT ? ExitCodes.ERROR : ExitCodes.OK;
@@ -90,7 +93,8 @@ public final class IntegrateCommand implements Callable<Integer> {
           new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8)).readLine();
       if (selection == null) {
         throw new WardException(
-            "No agent selected. Pass an agent argument or choose one interactively.");
+            "No agent selected. Pass an agent argument or choose one interactively."
+        );
       }
       final int selected = parseSelection(selection, agents.size());
       if (selected < 1 || selected > agents.size()) {
@@ -115,10 +119,14 @@ public final class IntegrateCommand implements Callable<Integer> {
   }
 
   private static WardException invalidSelection(
-      final String selection, final int size, final Throwable cause) {
+      final String selection,
+      final int size,
+      final Throwable cause
+  ) {
     return new WardException(
         "Invalid agent selection '" + selection + "'. Choose a number from 1 to " + size + ".",
-        cause);
+        cause
+    );
   }
 
   private PrintWriter output() {

@@ -8,7 +8,6 @@ import java.util.function.Consumer;
 
 /** Lowers the {@code while} and {@code for} loops of a Python body, with their else clauses. */
 final class PythonLoopLowering {
-
   private static final String NAMED_EXPR = "namedexpr_test";
   private static final String BLOCK = "block";
   private static final String ITERABLE = "testlist_star_expr";
@@ -30,7 +29,8 @@ final class PythonLoopLowering {
   PythonLoopLowering(
       final ControlFlowBuilder flow,
       final PythonAccesses accesses,
-      final Consumer<SyntaxNode> statements) {
+      final Consumer<SyntaxNode> statements
+  ) {
     this.flow = flow;
     this.accesses = accesses;
     this.statements = statements;

@@ -8,7 +8,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class ControlFlowBuilderTest {
-
   private static final Span SPAN = new Span(1, 1, 1, 2, 0, 1);
 
   @Test
@@ -31,7 +30,8 @@ class ControlFlowBuilderTest {
 
     assertThat(ControlFlowDump.render(builder.build("m", SPAN)))
         .isEqualTo(
-            "graph m\nB0 [call@1] -> B2\nB1 [exit]\nB2 [call@1] -> B1 B3\nB3 [empty] -> B1\n");
+            "graph m\nB0 [call@1] -> B2\nB1 [exit]\nB2 [call@1] -> B1 B3\nB3 [empty] -> B1\n"
+        );
   }
 
   @Test
@@ -63,7 +63,8 @@ class ControlFlowBuilderTest {
                 + "B2 [empty] -> B4 B1:exception\n"
                 + "B3 [call@1] -> B2:exception B5\n"
                 + "B4 [empty] -> B5\n"
-                + "B5 [empty] -> B1\n");
+                + "B5 [empty] -> B1\n"
+        );
   }
 
   @Test

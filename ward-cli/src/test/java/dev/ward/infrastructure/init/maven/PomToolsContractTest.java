@@ -15,7 +15,8 @@ class PomToolsContractTest {
             tool ->
                 assertThat(QualityGateDefinitions.find(tool.gate()))
                     .as("Maven tool %s for undefined gate %s", tool.artifact(), tool.gate())
-                    .isPresent());
+                    .isPresent()
+        );
   }
 
   @Test
@@ -27,7 +28,10 @@ class PomToolsContractTest {
                 assertThat(ManagedPluginCatalog.entries())
                     .as(
                         "gate %s: %s has no ManagedPluginCatalog entry",
-                        tool.gate(), tool.artifact())
-                    .containsKey(tool.artifact()));
+                        tool.gate(),
+                        tool.artifact()
+                    )
+                    .containsKey(tool.artifact())
+        );
   }
 }

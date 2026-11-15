@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * {@code Nullable} the check stays silent.
  */
 public final class NullableOnContainingClassCheck implements RuleCheck {
-
   private static final String TYPE_TYPE = "typeType";
   private static final String ANNOTATION = "annotation";
   private static final String CLASS_TYPE = "classOrInterfaceType";
@@ -30,7 +29,8 @@ public final class NullableOnContainingClassCheck implements RuleCheck {
   private static final Pattern TYPE_USE_IMPORT =
       Pattern.compile(
           "^import(?:org\\.jspecify\\.annotations|org\\.checkerframework\\.checker\\.nullness\\.qual)"
-              + "\\.Nullable;$");
+              + "\\.Nullable;$"
+      );
   private static final Pattern NESTED = Pattern.compile("^[A-Z]\\w*(?:<[^>]*>)?\\.[A-Z]");
 
   private final String message;

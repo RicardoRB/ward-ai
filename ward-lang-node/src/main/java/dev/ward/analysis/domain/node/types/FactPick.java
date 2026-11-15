@@ -16,7 +16,10 @@ final class FactPick {
   }
 
   static <T> List<T> list(
-      final Set<FactKind> kinds, final FactKind kind, final Supplier<List<T>> facts) {
+      final Set<FactKind> kinds,
+      final FactKind kind,
+      final Supplier<List<T>> facts
+  ) {
     return kinds.contains(kind) ? facts.get() : List.of();
   }
 
@@ -31,7 +34,10 @@ final class FactPick {
   }
 
   static <T> List<T> firstList(
-      final List<SyntaxNode> nodes, final Function<SyntaxNode, List<T>> facts) {
+      final List<SyntaxNode> nodes,
+      final Function<SyntaxNode,
+      List<T>> facts
+  ) {
     for (final SyntaxNode node : nodes) {
       final List<T> found = facts.apply(node);
       if (!found.isEmpty()) {

@@ -13,7 +13,6 @@ import java.util.Set;
  * declaration is compared.
  */
 public final class UselessQualifiedThisCheck implements RuleCheck {
-
   private static final String THIS = "'this'";
   private static final String ANONYMOUS = "classCreatorRest";
   private static final int QUALIFIED_CHILDREN = 3;

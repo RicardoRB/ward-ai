@@ -17,7 +17,12 @@ public interface EnvironmentInspection {
   default ExecutableObservation inspectExecutable(final Path projectRoot, final String executable) {
     final boolean available = inspect(projectRoot).hasExecutable(executable);
     return new ExecutableObservation(
-        executable, Path.of(executable), available, available, available);
+        executable,
+        Path.of(executable),
+        available,
+        available,
+        available
+    );
   }
 
   /**

@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
  * application layer reads the resource files and passes their lines here.
  */
 public final class AriaTableParser {
-
   private static final int ROLE_COLUMNS = 11;
   private static final int NAME = 0;
   private static final int ABSTRACT = 1;
@@ -54,7 +53,9 @@ public final class AriaTableParser {
             Collectors.groupingBy(
                 row -> row[0],
                 HashMap::new,
-                Collectors.mapping(row -> row[1], Collectors.toUnmodifiableSet())));
+                Collectors.mapping(row -> row[1], Collectors.toUnmodifiableSet())
+            )
+        );
   }
 
   /**
@@ -65,7 +66,8 @@ public final class AriaTableParser {
    * @throws IllegalArgumentException if a row has the wrong number of columns
    */
   public static Map<String, List<AriaRoleTable.ElementConcept>> parseSemantic(
-      final List<String> lines) {
+      final List<String> lines
+  ) {
     return data(lines).stream()
         .map(line -> columns(line, SEMANTIC_COLUMNS))
         .collect(
@@ -75,8 +77,13 @@ public final class AriaTableParser {
                 Collectors.mapping(
                     row ->
                         AriaRoleTable.ElementConcept.of(
-                            row[SEMANTIC_ELEMENT], row[SEMANTIC_ATTRIBUTES]),
-                    Collectors.toList())));
+                            row[SEMANTIC_ELEMENT],
+                            row[SEMANTIC_ATTRIBUTES]
+                        ),
+                    Collectors.toList()
+                )
+            )
+        );
   }
 
   /**
@@ -86,16 +93,26 @@ public final class AriaTableParser {
    * @throws IllegalArgumentException if a row has the wrong number of columns
    */
   public static Map<String, AriaRoleTable.AriaAttributeRow> parseAttributes(
-      final List<String> lines) {
+      final List<String> lines
+  ) {
     return data(lines).stream()
         .map(line -> columns(line, ATTRIBUTE_COLUMNS))
         .map(
             c ->
                 new AriaRoleTable.AriaAttributeRow(
-                    c[ATTRIBUTE_NAME], c[ATTRIBUTE_VALUE_TYPE], words(c[ATTRIBUTE_VALUES])))
+                    c[ATTRIBUTE_NAME],
+                    c[ATTRIBUTE_VALUE_TYPE],
+                    words(c[ATTRIBUTE_VALUES])
+                )
+        )
         .collect(
             Collectors.toMap(
-                AriaRoleTable.AriaAttributeRow::name, row -> row, (a, b) -> a, HashMap::new));
+                AriaRoleTable.AriaAttributeRow::name,
+                row -> row,
+                (a, b) -> a,
+                HashMap::new
+            )
+        );
   }
 
   /**
@@ -108,8 +125,8 @@ public final class AriaTableParser {
     return data(lines).stream()
         .map(AriaTableParser::roleRow)
         .collect(
-            Collectors.toMap(
-                AriaRoleTable.AriaRoleRow::name, row -> row, (a, b) -> a, HashMap::new));
+            Collectors.toMap(AriaRoleTable.AriaRoleRow::name, row -> row, (a, b) -> a, HashMap::new)
+        );
   }
 
   /**
@@ -124,7 +141,11 @@ public final class AriaTableParser {
         .map(
             c ->
                 new AriaRoleTable.ImplicitRow(
-                    c[ELEMENT], c[CONDITION], "-".equals(c[ROLE]) ? "" : c[ROLE]))
+                    c[ELEMENT],
+                    c[CONDITION],
+                    "-".equals(c[ROLE]) ? "" : c[ROLE]
+                )
+        )
         .toList();
   }
 
@@ -141,7 +162,8 @@ public final class AriaTableParser {
         words(c[SUPPORTED]),
         words(c[REQUIRED]),
         words(c[PROHIBITED]),
-        words(c[DEPRECATED]));
+        words(c[DEPRECATED])
+    );
   }
 
   private static String[] columns(final String line, final int expected) {
@@ -159,7 +181,8 @@ public final class AriaTableParser {
             line ->
                 !line.startsWith("element\t")
                     && !line.startsWith("attribute\t")
-                    && !line.startsWith("group\t"))
+                    && !line.startsWith("group\t")
+        )
         .toList();
   }
 

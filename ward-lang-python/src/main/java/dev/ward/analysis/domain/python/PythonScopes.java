@@ -16,7 +16,6 @@ import java.util.Set;
  * make a scope open, because they can bring in names that this file does not spell.
  */
 public final class PythonScopes implements ScopeAnalysis {
-
   private final BuiltinNames builtins;
 
   /** Creates the analysis over the builtin names of Python. */

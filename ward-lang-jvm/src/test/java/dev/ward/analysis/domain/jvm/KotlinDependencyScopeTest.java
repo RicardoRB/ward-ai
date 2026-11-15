@@ -21,7 +21,10 @@ class KotlinDependencyScopeTest {
                     KotlinResolverFixtures.PACKAGE_SERVICE,
                     "name:List",
                     "name:println",
-                    "name:String")));
+                    "name:String"
+                )
+            )
+        );
 
     assertThat(edges).isEmpty();
   }
@@ -36,7 +39,10 @@ class KotlinDependencyScopeTest {
                 List.of(
                     KotlinResolverFixtures.PACKAGE_SERVICE,
                     "import:kotlinx.coroutines.launch",
-                    "import:org.slf4j.Logger")));
+                    "import:org.slf4j.Logger"
+                )
+            )
+        );
 
     assertThat(edges).isEmpty();
   }
@@ -48,7 +54,9 @@ class KotlinDependencyScopeTest {
             file(
                 KotlinResolverFixtures.SERVICE_CART,
                 List.of("shop.service.Cart"),
-                List.of(KotlinResolverFixtures.PACKAGE_SERVICE, "name:Cart")));
+                List.of(KotlinResolverFixtures.PACKAGE_SERVICE, "name:Cart")
+            )
+        );
 
     assertThat(edges).isEmpty();
   }
@@ -62,7 +70,9 @@ class KotlinDependencyScopeTest {
             file(
                 KotlinResolverFixtures.SERVICE_CHECKOUT,
                 List.of(KotlinResolverFixtures.CHECKOUT_DECLARATION),
-                List.of(KotlinResolverFixtures.PACKAGE_SERVICE, "import:shop.util.formatPrice")));
+                List.of(KotlinResolverFixtures.PACKAGE_SERVICE, "import:shop.util.formatPrice")
+            )
+        );
 
     assertThat(targets(edges, KotlinResolverFixtures.SERVICE_CHECKOUT))
         .containsExactly(KotlinResolverFixtures.UTIL_FORMAT, KotlinResolverFixtures.UTIL_OTHER);
@@ -76,7 +86,9 @@ class KotlinDependencyScopeTest {
             file(
                 KotlinResolverFixtures.SERVICE_CHECKOUT,
                 List.of(KotlinResolverFixtures.CHECKOUT_DECLARATION),
-                List.of(KotlinResolverFixtures.PACKAGE_SERVICE, "import:shop.domain.Order")));
+                List.of(KotlinResolverFixtures.PACKAGE_SERVICE, "import:shop.domain.Order")
+            )
+        );
 
     assertThat(targets(edges, KotlinResolverFixtures.SERVICE_CHECKOUT))
         .containsExactly(KotlinResolverFixtures.JAVA_ORDER);
@@ -89,11 +101,14 @@ class KotlinDependencyScopeTest {
             file(
                 KotlinResolverFixtures.UTIL_FORMAT,
                 List.of("shop.util.formatPrice", "shop.util.FormatKt"),
-                List.of()),
+                List.of()
+            ),
             file(
                 KotlinResolverFixtures.JAVA_REPORT,
                 List.of("shop.legacy.Report"),
-                List.of("package:shop.legacy", "import:shop.util.FormatKt")));
+                List.of("package:shop.legacy", "import:shop.util.FormatKt")
+            )
+        );
 
     assertThat(targets(edges, KotlinResolverFixtures.JAVA_REPORT))
         .containsExactly(KotlinResolverFixtures.UTIL_FORMAT);
@@ -106,11 +121,14 @@ class KotlinDependencyScopeTest {
             file(
                 KotlinResolverFixtures.TEST_FIXTURE,
                 List.of("shop.service.Fixture"),
-                List.of(KotlinResolverFixtures.PACKAGE_SERVICE)),
+                List.of(KotlinResolverFixtures.PACKAGE_SERVICE)
+            ),
             file(
                 KotlinResolverFixtures.SERVICE_CHECKOUT,
                 List.of(KotlinResolverFixtures.CHECKOUT_DECLARATION),
-                List.of(KotlinResolverFixtures.PACKAGE_SERVICE, "name:Fixture")));
+                List.of(KotlinResolverFixtures.PACKAGE_SERVICE, "name:Fixture")
+            )
+        );
 
     assertThat(edges).isEmpty();
   }

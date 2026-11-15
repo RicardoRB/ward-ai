@@ -30,7 +30,6 @@ import org.junit.jupiter.params.provider.MethodSource;
  * passing fixture must report nothing. A later step adds fixtures and no test code.
  */
 class RuleCatalogFixturesTest {
-
   private static final RuleCatalog CATALOG = new RuleCatalogReader().load();
   private static final Map<String, RuleDefinition> RULES =
       CatalogRuleDefinitions.all().stream()
@@ -69,10 +68,13 @@ class RuleCatalogFixturesTest {
               configured,
               fixtures.violating(caseName),
               fixtures.expected(caseName),
-              typeFacts));
+              typeFacts
+          )
+      );
       if (Files.isRegularFile(fixtures.passing(caseName))) {
         problems.addAll(
-            check(runner, configured, fixtures.passing(caseName), List.of(), typeFacts));
+            check(runner, configured, fixtures.passing(caseName), List.of(), typeFacts)
+        );
       }
     }
     assertThat(problems).isEmpty();
@@ -85,7 +87,8 @@ class RuleCatalogFixturesTest {
   @ParameterizedTest(name = "{0}")
   @MethodSource("textRows")
   void textViolatingFixtureReportsExactlyTheExpectedPositionsAndPassingReportsNone(
-      final CatalogRow row) throws IOException {
+      final CatalogRow row
+  ) throws IOException {
     final RuleDefinition rule = RULES.get(row.textId());
     assertThat(rule).as("rule definition %s", row.textId()).isNotNull();
     final RuleFixtureSet fixtures = RuleFixtureSet.ofText(RuleFixtureSet.root(), row);
@@ -97,7 +100,10 @@ class RuleCatalogFixturesTest {
   }
 
   private static List<String> checkText(
-      final RuleDefinition rule, final Path file, final List<String> expected) throws IOException {
+      final RuleDefinition rule,
+      final Path file,
+      final List<String> expected
+  ) throws IOException {
     final RuleRunResult result =
         new TextRules(BundledRuleMatchers.create(), List.of(rule))
             .run(List.of(new TextFile(file.getFileName().toString(), Files.readString(file))));
@@ -111,7 +117,8 @@ class RuleCatalogFixturesTest {
                 finding ->
                     (finding.line() == null ? 0 : finding.line())
                         + ":"
-                        + (finding.column() == null ? 0 : finding.column()))
+                        + (finding.column() == null ? 0 : finding.column())
+            )
             .toList();
     if (!found.equals(expected)) {
       problems.add(file.getFileName() + " expected " + expected + " but found " + found);
@@ -146,7 +153,8 @@ class RuleCatalogFixturesTest {
       final RuleDefinition rule,
       final Path file,
       final List<String> expected,
-      final TypeFacts typeFacts)
+      final TypeFacts typeFacts
+  )
       throws IOException {
     final List<AnalysisFinding> findings =
         GraphRules.isGraphRule(rule)
@@ -156,13 +164,15 @@ class RuleCatalogFixturesTest {
                 unitName(file),
                 Files.readString(file),
                 typeFacts,
-                FixtureProjects.fixtureProject(file, rule));
+                FixtureProjects.fixtureProject(file, rule)
+            );
     return FixtureComparison.problems(
         rule.id(),
         rule.languages().iterator().next(),
         file.getFileName().toString(),
         expected,
-        findings);
+        findings
+    );
   }
 
   /** The path the rule sees: the first line of {@code filename.txt} beside the fixture, if any. */

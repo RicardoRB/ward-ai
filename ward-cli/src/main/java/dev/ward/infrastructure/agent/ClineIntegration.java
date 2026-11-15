@@ -24,7 +24,8 @@ public final class ClineIntegration implements NativeHarnessAdapter {
           "",
           "PostToolUse",
           Set.of(IntegrationCapability.POST_EDIT, IntegrationCapability.FEEDBACK),
-          List.of(".cline/hooks/PreToolUse"));
+          List.of(".cline/hooks/PreToolUse")
+      );
 
   @Override
   public NativeAgentIntegration.Definition definition() {
@@ -88,7 +89,8 @@ public final class ClineIntegration implements NativeHarnessAdapter {
         parameters.input,
         null,
         false,
-        false);
+        false
+    );
   }
 
   /** run_commands sends a list of command lines, serialized as JSON in the parameters. */

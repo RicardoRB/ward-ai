@@ -12,10 +12,12 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class BiomeJsxHandlerPairCheckTest {
-
   private static final BiomeJsxHandlerPairCheck CLICK =
       new BiomeJsxHandlerPairCheck(
-          List.of("onClick:onKeyDown|onKeyUp"), List.of("button", "a[href]"), "message");
+          List.of("onClick:onKeyDown|onKeyUp"),
+          List.of("button", "a[href]"),
+          "message"
+      );
 
   @Test
   void reportsAClickHandlerWithoutAKeyboardPartnerAtTheElement() {

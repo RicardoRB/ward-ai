@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 /** The scope of one file, of one ambient module declared in a file, or of global declarations. */
 final class Module implements Lookup {
-
   /** What a module scope stands for. */
   enum Kind {
     /** A source or declaration file. */
@@ -38,7 +37,8 @@ final class Module implements Lookup {
       final String path,
       final FileDecls file,
       final List<Decl> decls,
-      final Kind kind) {
+      final Kind kind
+  ) {
     this.program = program;
     this.path = path;
     this.file = file;
@@ -86,7 +86,8 @@ final class Module implements Lookup {
       }
       return STAR.equals(origin.member())
           ? new Sym(
-              List.of(new Sym.Located(ModuleSyms.namespaceOf(origin.specifier(), target), target)))
+              List.of(new Sym.Located(ModuleSyms.namespaceOf(origin.specifier(), target), target))
+          )
           : target.exported(origin.member());
     } finally {
       resolving.remove(name);

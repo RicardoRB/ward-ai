@@ -56,7 +56,8 @@ class SarifNestedLocationsTest {
             LINE,
             null,
             null,
-            List.of());
+            List.of()
+        );
     final GateResult result =
         GateResult.builder("pmd", GateStatus.FAILED)
             .command(List.of("x"))
@@ -67,8 +68,9 @@ class SarifNestedLocationsTest {
             .build()
             .withFindings(GateFindings.of(List.of(finding)));
     return JsonTree.parse(
-            new SarifReportRenderer(new ForyJsonCodec())
-                .render(new CheckReport(project, List.of(result))))
+        new SarifReportRenderer(new ForyJsonCodec())
+            .render(new CheckReport(project, List.of(result)))
+    )
         .get("runs")
         .get(0)
         .get("results")
@@ -92,6 +94,7 @@ class SarifNestedLocationsTest {
         Set.of(),
         "",
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 }

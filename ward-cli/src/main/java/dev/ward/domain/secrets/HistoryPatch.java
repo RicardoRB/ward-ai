@@ -11,7 +11,6 @@ import java.util.Objects;
  * @param lines the added lines, in order
  */
 public record HistoryPatch(String commit, String path, List<AddedLine> lines) {
-
   /**
    * One added line.
    *
@@ -19,7 +18,6 @@ public record HistoryPatch(String commit, String path, List<AddedLine> lines) {
    * @param text the text of the line, without its terminator
    */
   public record AddedLine(int number, String text) {
-
     private static final int FIRST_LINE = 1;
 
     /** Validates the line. */

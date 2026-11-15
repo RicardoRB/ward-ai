@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
  * counts as used: the extended, plugin, JSX and builder packages, and tslib.
  */
 final class NodeConfigImplicitUseCheckTest {
-
   private static final String MESSAGE = "unused {value}";
   private static final String PACKAGE = "package.json";
   private static final String DEV_DEPENDENCIES = "devDependencies";
@@ -29,7 +28,10 @@ final class NodeConfigImplicitUseCheckTest {
                         "tsconfig.json",
                         "{\"compilerOptions\": {\"importHelpers\": true}}",
                         PACKAGE,
-                        "{\"devDependencies\":{\"tslib\":\"^2\"}}")));
+                        "{\"devDependencies\":{\"tslib\":\"^2\"}}"
+                    )
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }
@@ -45,7 +47,10 @@ final class NodeConfigImplicitUseCheckTest {
                         "tsconfig.json",
                         "{\"compilerOptions\": {\"importHelpers\": false}}",
                         PACKAGE,
-                        "{\"devDependencies\":{\"tslib\":\"^2\"}}")));
+                        "{\"devDependencies\":{\"tslib\":\"^2\"}}"
+                    )
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).containsExactly("package.json:1:21");
   }
@@ -63,7 +68,10 @@ final class NodeConfigImplicitUseCheckTest {
                         PACKAGE,
                         "{\"dependencies\":{\"next\":\"^16\",\"react\":\"^19\",\"react-dom\":\"^19\"}}",
                         "node_modules/next/package.json",
-                        "{\"name\":\"next\",\"peerDependencies\":{\"react\":\"^19\",\"react-dom\":\"^19\"}}")));
+                        "{\"name\":\"next\",\"peerDependencies\":{\"react\":\"^19\",\"react-dom\":\"^19\"}}"
+                    )
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }
@@ -79,7 +87,10 @@ final class NodeConfigImplicitUseCheckTest {
                         "tsconfig.app.json",
                         "{\"extends\": \"@vue/tsconfig/tsconfig.dom.json\"}",
                         PACKAGE,
-                        "{\"devDependencies\":{\"@vue/tsconfig\":\"^0.9\"}}")));
+                        "{\"devDependencies\":{\"@vue/tsconfig\":\"^0.9\"}}"
+                    )
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }
@@ -95,7 +106,10 @@ final class NodeConfigImplicitUseCheckTest {
                         "tsconfig.json",
                         "{\"compilerOptions\": {\"jsxImportSource\": \"@emotion/react\"}}",
                         PACKAGE,
-                        "{\"dependencies\":{\"@emotion/react\":\"^11\"}}")));
+                        "{\"dependencies\":{\"@emotion/react\":\"^11\"}}"
+                    )
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }
@@ -111,7 +125,10 @@ final class NodeConfigImplicitUseCheckTest {
                         "tsconfig.json",
                         "{\"extends\": \"./tsconfig.base.json\"}",
                         PACKAGE,
-                        "{\"devDependencies\":{\"left-over\":\"^1\"}}")));
+                        "{\"devDependencies\":{\"left-over\":\"^1\"}}"
+                    )
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).containsExactly("package.json:1:21");
   }
@@ -129,7 +146,10 @@ final class NodeConfigImplicitUseCheckTest {
                         PACKAGE,
                         "{\"devDependencies\":{\"@angular/build\":\"^21\",\"vitest\":\"^4\"}}",
                         "node_modules/@angular/build/package.json",
-                        "{\"name\":\"@angular/build\",\"peerDependencies\":{\"vitest\":\"^4\"}}")));
+                        "{\"name\":\"@angular/build\",\"peerDependencies\":{\"vitest\":\"^4\"}}"
+                    )
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }
@@ -145,7 +165,10 @@ final class NodeConfigImplicitUseCheckTest {
                         "ward.toml",
                         "[checks.astro]\ncommand = \"npx astro check\"\n",
                         PACKAGE,
-                        "{\"devDependencies\":{\"@astrojs/check\":\"^0.9\"}}")));
+                        "{\"devDependencies\":{\"@astrojs/check\":\"^0.9\"}}"
+                    )
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }
@@ -161,7 +184,10 @@ final class NodeConfigImplicitUseCheckTest {
                         "ward.toml",
                         "[checks.test]\ncommand = \"npx vitest run --coverage\"\n",
                         PACKAGE,
-                        "{\"devDependencies\":{\"@vitest/coverage-v8\":\"^4\"}}")));
+                        "{\"devDependencies\":{\"@vitest/coverage-v8\":\"^4\"}}"
+                    )
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }
@@ -177,7 +203,10 @@ final class NodeConfigImplicitUseCheckTest {
                         "apps/web/ward.toml",
                         "[checks.astro]\ncommand = \"npx astro check\"\n",
                         "apps/web/package.json",
-                        "{\"devDependencies\":{\"@astrojs/check\":\"^0.9\"}}")));
+                        "{\"devDependencies\":{\"@astrojs/check\":\"^0.9\"}}"
+                    )
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).containsExactly("apps/web/package.json:1:21");
   }

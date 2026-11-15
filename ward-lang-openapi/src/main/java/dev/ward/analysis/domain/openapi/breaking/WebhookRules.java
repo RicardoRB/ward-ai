@@ -6,7 +6,6 @@ import java.util.List;
 
 /** The rule about {@code webhooks} that went away. */
 final class WebhookRules {
-
   private WebhookRules() {}
 
   /** The webhook rules. */
@@ -27,7 +26,9 @@ final class WebhookRules {
                 "webhook " + webhook.key() + " was removed",
                 "",
                 "",
-                at));
+                at
+            )
+        );
       }
     }
     return findings;

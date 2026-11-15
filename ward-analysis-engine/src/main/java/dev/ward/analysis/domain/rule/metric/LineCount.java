@@ -10,19 +10,20 @@ import java.util.Optional;
  * not counted.
  */
 final class LineCount implements Measure {
-
   @Override
   public Optional<Violation> check(
       final SyntaxNode node,
       final MetricRule.Target target,
       final boolean method,
-      final MetricRule rule) {
+      final MetricRule rule
+  ) {
     final int lines = lines(node);
     if (lines <= rule.max()) {
       return Optional.empty();
     }
     return Optional.of(
-        new Violation(node.span(), SyntaxTrees.nameOf(node, rule.keys().name()), lines, ""));
+        new Violation(node.span(), SyntaxTrees.nameOf(node, rule.keys().name()), lines, "")
+    );
   }
 
   private static int lines(final SyntaxNode node) {

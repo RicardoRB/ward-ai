@@ -22,7 +22,6 @@ import org.junit.jupiter.api.Test;
 
 /** A unit whose frontend reports syntax errors is an execution error, never checked. */
 final class RuleEngineDiagnosticsTest {
-
   @Test
   void unitWithSyntaxErrorsIsNotCheckedAndIsReportedAsAnError() {
     final SyntaxNode tree =
@@ -31,7 +30,8 @@ final class RuleEngineDiagnosticsTest {
         new FrontendSupport(
             AnalysisLanguage.PYTHON,
             unit -> new ParseResult(tree, List.of(diagnostic())),
-            Set.of(RuleCapability.SYNTAX));
+            Set.of(RuleCapability.SYNTAX)
+        );
     final RuleMatcher matcher = definition -> new Everything(definition);
     final RuleDefinition rule =
         new RuleDefinition(
@@ -39,14 +39,16 @@ final class RuleEngineDiagnosticsTest {
             AnalysisLanguage.PYTHON,
             RuleCapability.SYNTAX,
             AnalysisSeverity.ERROR,
-            "body");
+            "body"
+        );
 
     final RuleRunResult result =
         new RuleEngine(matcher)
             .run(
                 List.of(new SourceUnit("broken.py", AnalysisLanguage.PYTHON, "def (:\n")),
                 List.of(frontend),
-                List.of(rule));
+                List.of(rule)
+            );
 
     assertThat(result.findings()).isEmpty();
     assertThat(result.executionErrors()).hasSize(1);
@@ -62,7 +64,8 @@ final class RuleEngineDiagnosticsTest {
         1,
         1,
         null,
-        List.of());
+        List.of()
+    );
   }
 
   /** A rule that reports one match on every tree it sees. */

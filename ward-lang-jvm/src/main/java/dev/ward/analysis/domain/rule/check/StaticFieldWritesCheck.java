@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * refactoring; in {@code mutable} mode its type is mutable, so it should be final and not exposed.
  */
 public final class StaticFieldWritesCheck implements RuleCheck {
-
   private static final String BLOCK = "block";
   private static final String STATIC_KEYWORD = "'static'";
   private static final int TWICE = 2;
@@ -65,7 +64,8 @@ public final class StaticFieldWritesCheck implements RuleCheck {
       final SyntaxNode clazz,
       final SyntaxNode field,
       final String name,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     int inInitializers = SyntaxWalk.text(field).contains("=") ? 1 : 0;
     int elsewhere = 0;
     for (final SyntaxNode member : ClassMembers.members(clazz)) {

@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
  * the same lock, such as a private {@code tryLock()} helper, counts as acquiring it.
  */
 public final class UnlockWithoutLockCheck implements RuleCheck {
-
   private static final String METHOD = "methodDeclaration";
   private static final String EXPRESSION = "expression";
   private static final String METHOD_CALL = "methodCall";
@@ -65,7 +64,8 @@ public final class UnlockWithoutLockCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     final List<SyntaxWalk.Visit> methods = SyntaxWalk.visits(root, Set.of(METHOD));
     final Map<String, Set<String>> acquiredByName =
@@ -74,7 +74,9 @@ public final class UnlockWithoutLockCheck implements RuleCheck {
                 Collectors.toMap(
                     visit -> JavaNodes.name(visit.node()),
                     visit -> acquires(visit.node()),
-                    UnlockWithoutLockCheck::union));
+                    UnlockWithoutLockCheck::union
+                )
+            );
     for (final SyntaxWalk.Visit visit : methods) {
       if (!JavaNodes.name(visit.node()).toLowerCase(Locale.ROOT).contains(LOCK_WORD)) {
         inMethod(visit.node(), acquiredByName, types, matches);
@@ -85,9 +87,11 @@ public final class UnlockWithoutLockCheck implements RuleCheck {
 
   private void inMethod(
       final SyntaxNode method,
-      final Map<String, Set<String>> acquiredByName,
+      final Map<String,
+      Set<String>> acquiredByName,
       final UnitTypeFacts types,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     final List<SyntaxNode> calls =
         SyntaxWalk.descendants(method).stream()
             .filter(UnlockWithoutLockCheck::isQualified)

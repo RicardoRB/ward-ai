@@ -24,7 +24,6 @@ import org.tomlj.TomlParseResult;
 
 /** The typescript-eslint checks that read the native type facts (issue #327). */
 final class TypeScriptEslintTypedChecks {
-
   private TypeScriptEslintTypedChecks() {}
 
   /** The typed checks this family provides, by name. */
@@ -33,19 +32,24 @@ final class TypeScriptEslintTypedChecks {
     checks.put("node-await-thenable", TypeScriptEslintTypedChecks::awaitThenable);
     checks.put(
         "node-unbound-method",
-        toml -> new UnboundMethodCheck(TypeScriptEslintChecks.message(toml)));
+        toml -> new UnboundMethodCheck(TypeScriptEslintChecks.message(toml))
+    );
     checks.put(
         "node-no-base-to-string",
-        toml -> new BaseToStringCheck(TypeScriptEslintChecks.message(toml)));
+        toml -> new BaseToStringCheck(TypeScriptEslintChecks.message(toml))
+    );
     checks.put(
         "node-no-unsafe-enum-comparison",
-        toml -> new EnumComparisonCheck(TypeScriptEslintChecks.message(toml)));
+        toml -> new EnumComparisonCheck(TypeScriptEslintChecks.message(toml))
+    );
     checks.put(
         "node-no-for-in-array",
-        toml -> new NoForInArrayCheck(TypeScriptEslintChecks.message(toml)));
+        toml -> new NoForInArrayCheck(TypeScriptEslintChecks.message(toml))
+    );
     checks.put(
         "node-no-array-delete",
-        toml -> new NoArrayDeleteCheck(TypeScriptEslintChecks.message(toml)));
+        toml -> new NoArrayDeleteCheck(TypeScriptEslintChecks.message(toml))
+    );
     checks.put("node-no-floating-promises", TypeScriptEslintTypedChecks::floatingPromises);
     checks.put("node-no-misused-promises", TypeScriptEslintTypedChecks::misusedPromises);
     checks.put("node-only-throw-error", TypeScriptEslintTypedChecks::onlyThrowError);
@@ -56,12 +60,14 @@ final class TypeScriptEslintTypedChecks {
     checks.put("node-no-unsafe-argument", toml -> unsafe(UnsafeAnyCheck.Site.ARGUMENT, toml));
     checks.put(
         "node-no-unsafe-unary-minus",
-        toml -> new UnaryMinusCheck(TypeScriptEslintChecks.message(toml)));
+        toml -> new UnaryMinusCheck(TypeScriptEslintChecks.message(toml))
+    );
     checks.put("node-restrict-plus-operands", TypeScriptEslintTypedChecks::restrictOperands);
     checks.put("node-restrict-template-expressions", TypeScriptEslintTypedChecks::restrictTemplate);
     checks.put(
         "node-no-unnecessary-type-assertion",
-        toml -> new UnnecessaryAssertionCheck(TypeScriptEslintChecks.message(toml)));
+        toml -> new UnnecessaryAssertionCheck(TypeScriptEslintChecks.message(toml))
+    );
     return checks;
   }
 
@@ -72,7 +78,8 @@ final class TypeScriptEslintTypedChecks {
   private static AwaitThenableCheck awaitThenable(final TomlParseResult toml) {
     return new AwaitThenableCheck(
         TypeScriptEslintChecks.flag(toml, "allow-mixed-promise-arrays", false),
-        TypeScriptEslintChecks.message(toml));
+        TypeScriptEslintChecks.message(toml)
+    );
   }
 
   private static MisusedPromiseCheck misusedPromises(final TomlParseResult toml) {
@@ -80,7 +87,8 @@ final class TypeScriptEslintTypedChecks {
         TypeScriptEslintChecks.flag(toml, "checks-conditionals", true),
         TypeScriptEslintChecks.flag(toml, "checks-spreads", true),
         TypeScriptEslintChecks.flag(toml, "checks-void-return", true),
-        TypeScriptEslintChecks.message(toml));
+        TypeScriptEslintChecks.message(toml)
+    );
   }
 
   private static OnlyThrowErrorCheck onlyThrowError(final TomlParseResult toml) {
@@ -89,7 +97,8 @@ final class TypeScriptEslintTypedChecks {
         TypeScriptEslintChecks.flag(toml, "allow-throwing-any", true),
         TypeScriptEslintChecks.flag(toml, "allow-throwing-unknown", true),
         TomlValues.optionalStrings(toml, "allow"),
-        TypeScriptEslintChecks.message(toml));
+        TypeScriptEslintChecks.message(toml)
+    );
   }
 
   private static RestrictOperandsCheck restrictOperands(final TomlParseResult toml) {
@@ -100,7 +109,8 @@ final class TypeScriptEslintTypedChecks {
             TypeScriptEslintChecks.flag(toml, "allow-nullish", true),
             TypeScriptEslintChecks.flag(toml, "allow-number-and-string", true),
             TypeScriptEslintChecks.flag(toml, "allow-regexp", true),
-            TypeScriptEslintChecks.flag(toml, "skip-compound-assignments", false));
+            TypeScriptEslintChecks.flag(toml, "skip-compound-assignments", false)
+        );
     return new RestrictOperandsCheck(policy, TypeScriptEslintChecks.message(toml));
   }
 
@@ -114,7 +124,8 @@ final class TypeScriptEslintTypedChecks {
             TypeScriptEslintChecks.flag(toml, "allow-number", true),
             TypeScriptEslintChecks.flag(toml, "allow-regexp", true),
             TypeScriptEslintChecks.flag(toml, "allow-never", false),
-            TomlValues.optionalStrings(toml, "allow"));
+            TomlValues.optionalStrings(toml, "allow")
+        );
     return new RestrictTemplateCheck(policy, TypeScriptEslintChecks.message(toml));
   }
 
@@ -122,6 +133,7 @@ final class TypeScriptEslintTypedChecks {
     return new FloatingPromiseCheck(
         !Boolean.FALSE.equals(toml.getBoolean("ignore-void")),
         Boolean.TRUE.equals(toml.getBoolean("ignore-iife")),
-        TypeScriptEslintChecks.message(toml));
+        TypeScriptEslintChecks.message(toml)
+    );
   }
 }

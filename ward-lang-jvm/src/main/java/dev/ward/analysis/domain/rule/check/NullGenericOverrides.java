@@ -9,7 +9,6 @@ import java.util.function.BiConsumer;
  * The rules that compare the type arguments of an override with those of the method it overrides.
  */
 final class NullGenericOverrides {
-
   private static final String TYPE_TYPE = "typeType";
 
   private NullGenericOverrides() {}
@@ -57,7 +56,9 @@ final class NullGenericOverrides {
   /** Runs {@code action} for each rule of this class. */
   static void each(final BiConsumer<String, NullFinder> action) {
     action.accept(
-        "wrong-override-return-generic", NullGenericOverrides::wrongOverrideReturnGeneric);
+        "wrong-override-return-generic",
+        NullGenericOverrides::wrongOverrideReturnGeneric
+    );
     action.accept("wrong-override-param-generic", NullGenericOverrides::wrongOverrideParamGeneric);
   }
 }

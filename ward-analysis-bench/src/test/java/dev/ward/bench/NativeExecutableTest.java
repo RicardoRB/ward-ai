@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class NativeExecutableTest {
-
   private static final byte[] ELF_FILE = {0x7F, 'E', 'L', 'F', 1, 2, 3};
   private static final byte[] JAR_FILE = {'P', 'K', 3, 4};
   private static final long ELF_FILE_SIZE = ELF_FILE.length;

@@ -8,12 +8,12 @@ import java.util.Optional;
 
 /** Reads the components of a type for the {@code MEMBERS} fact: its type arguments or element. */
 final class FactComponents {
-
   private static final List<TypeRef> ARRAY_SUPERTYPES =
       List.of(
           TypeRef.of("java.lang.Object"),
           TypeRef.of("java.lang.Cloneable"),
-          TypeRef.of("java.io.Serializable"));
+          TypeRef.of("java.io.Serializable")
+      );
 
   private final Hierarchy hierarchy;
   private final FactTypeMembers owner;
@@ -26,13 +26,16 @@ final class FactComponents {
   /** The members of an array type: nothing of its own, only its element type as a component. */
   Optional<TypeMembers> arrayOnly(final Typed typed, final Optional<DeclInfo> declaration) {
     return declaration.isEmpty()
-            && typed.type().filter(JType.ArrayType.class::isInstance).isPresent()
+        && typed.type().filter(JType.ArrayType.class::isInstance).isPresent()
         ? Optional.of(new TypeMembers(List.of(), List.of(), ARRAY_SUPERTYPES, List.of()))
         : Optional.empty();
   }
 
   TypeMembers add(
-      final TypeMembers members, final Typed typed, final Optional<DeclInfo> declaration) {
+      final TypeMembers members,
+      final Typed typed,
+      final Optional<DeclInfo> declaration
+  ) {
     final List<JType> parts =
         declaration.isPresent()
             ? List.of()
@@ -48,7 +51,8 @@ final class FactComponents {
         members.inheritedMethods(),
         members.inheritedFields(),
         members.annotationValues(),
-        parts.stream().map(this::component).toList());
+        parts.stream().map(this::component).toList()
+    );
   }
 
   /** The type arguments of a class type, or the element type of an array type. */
@@ -66,7 +70,8 @@ final class FactComponents {
         return new TypeComponent(
             TypeRef.of(FactRefs.display(classType.name())),
             FactMembers.shape(found.get()),
-            new TypeMembers(List.of(), List.of(), owner.ancestors(found.get()), List.of()));
+            new TypeMembers(List.of(), List.of(), owner.ancestors(found.get()), List.of())
+        );
       }
     }
     return TypeComponent.UNKNOWN;

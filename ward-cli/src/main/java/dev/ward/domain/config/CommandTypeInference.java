@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
  * plain {@code command} check. Types that no command can imply are listed in {@link #USES_ONLY}.
  */
 public final class CommandTypeInference {
-
   /** The type of a command Ward does not recognize. */
   public static final String COMMAND = "command";
 
@@ -35,7 +34,8 @@ public final class CommandTypeInference {
           "openapi-compat",
           "swift-coverage",
           "android-coverage",
-          COMMAND);
+          COMMAND
+      );
 
   private static final String MAVEN = "mvn";
   private static final String MAVEN_WRAPPER = "mvnw";
@@ -51,7 +51,9 @@ public final class CommandTypeInference {
               anyOf(
                   sequence("jacoco:report"),
                   sequence("jacocoTestReport"),
-                  sequence("coverage", "lcov"))),
+                  sequence("coverage", "lcov")
+              )
+          ),
           new Rule("mutation", anyOf(sequence("pitest:mutationCoverage"), sequence("pitest"))),
           new Rule("stryker", sequence("stryker", "run")),
           new Rule("tests", CommandTypeInference::isUnfilteredBuildTest),
@@ -72,7 +74,8 @@ public final class CommandTypeInference {
           new Rule("swift-test", sequence("swift", "test")),
           new Rule("xcodebuild-test", sequence("xcodebuild", "test")),
           new Rule("android-lint", sequence("lintDebug")),
-          new Rule("android-unit-test", sequence("testDebugUnitTest")));
+          new Rule("android-unit-test", sequence("testDebugUnitTest"))
+      );
 
   /** One row: the type a command gets when {@code matches} accepts it. */
   private record Rule(String type, Predicate<List<String>> matches) {}
@@ -110,7 +113,8 @@ public final class CommandTypeInference {
         && command.stream()
             .noneMatch(
                 token ->
-                    token.startsWith(TEST_FILTER_MAVEN) || token.startsWith(TEST_FILTER_GRADLE));
+                    token.startsWith(TEST_FILTER_MAVEN) || token.startsWith(TEST_FILTER_GRADLE)
+            );
   }
 
   /** Accepts a command whose first token is a Maven or Gradle executable and which matches. */
@@ -140,7 +144,10 @@ public final class CommandTypeInference {
   }
 
   private static boolean runMatches(
-      final List<String> command, final int start, final String... tokens) {
+      final List<String> command,
+      final int start,
+      final String... tokens
+  ) {
     for (int i = 0; i < tokens.length; i++) {
       if (!tokenMatches(command.get(start + i), tokens[i])) {
         return false;

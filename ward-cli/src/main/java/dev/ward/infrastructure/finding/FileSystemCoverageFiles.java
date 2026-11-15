@@ -11,7 +11,6 @@ import javax.inject.Inject;
 
 /** Answers the {@code crap} gate's file questions from the file system. */
 public final class FileSystemCoverageFiles implements CoverageFiles {
-
   /** Creates the stateless adapter that Dagger injects. */
   @Inject
   public FileSystemCoverageFiles() {}

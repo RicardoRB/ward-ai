@@ -11,7 +11,6 @@ import java.util.Set;
  * as Biome 2.5.15's {@code useAriaActivedescendantWithTabindex} does.
  */
 public final class BiomeActivedescendantTabindexCheck implements RuleCheck {
-
   private static final String ACTIVEDESCENDANT = "aria-activedescendant";
   private static final String TABINDEX = "tabIndex";
 
@@ -42,7 +41,10 @@ public final class BiomeActivedescendantTabindexCheck implements RuleCheck {
     final List<String> names = JsxAttributes.of(element).stream().map(JsxAttributes::name).toList();
     return JsxAttributes.isDomElement(element)
         && AriaElements.isNotInteractive(
-            table, JsxAttributes.elementName(element), AriaElements.Attributes.of(element))
+            table,
+            JsxAttributes.elementName(element),
+            AriaElements.Attributes.of(element)
+        )
         && names.contains(ACTIVEDESCENDANT)
         && !names.contains(TABINDEX);
   }

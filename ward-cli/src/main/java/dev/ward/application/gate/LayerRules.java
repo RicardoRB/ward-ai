@@ -14,7 +14,6 @@ import java.util.List;
  * every language whose dependencies the engine resolves, and the boundaries travel in its body.
  */
 final class LayerRules {
-
   private LayerRules() {}
 
   /** Returns the rule that enforces {@code boundaries}. */
@@ -24,6 +23,7 @@ final class LayerRules {
         ArchitectureLayers.ENGINE_LANGUAGES,
         RuleCapability.SCOPES,
         AnalysisSeverity.ERROR,
-        LayerRuleBody.encode(boundaries));
+        LayerRuleBody.encode(boundaries)
+    );
   }
 }

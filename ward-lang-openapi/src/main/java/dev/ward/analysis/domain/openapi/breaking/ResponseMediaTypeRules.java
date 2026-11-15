@@ -11,7 +11,6 @@ import java.util.Optional;
  * became a more general name, changed its parameters.
  */
 final class ResponseMediaTypeRules {
-
   private ResponseMediaTypeRules() {}
 
   /** The response media type rules. */
@@ -19,11 +18,18 @@ final class ResponseMediaTypeRules {
     return List.of(
         ResponseScope.rule("response-media-type-removed", (pair, scope) -> names(scope, false)),
         ResponseScope.rule(
-            "response-media-type-name-generalized", (pair, scope) -> names(scope, true)),
+            "response-media-type-name-generalized",
+            (pair, scope) -> names(scope, true)
+        ),
         ResponseScope.rule(
-            "response-media-type-parameter-changed", (pair, scope) -> parameters(scope, true)),
+            "response-media-type-parameter-changed",
+            (pair, scope) -> parameters(scope, true)
+        ),
         ResponseScope.rule(
-            "response-media-type-parameter-removed", (pair, scope) -> parameters(scope, false)));
+            "response-media-type-parameter-removed",
+            (pair, scope) -> parameters(scope, false)
+        )
+    );
   }
 
   /** The media types of the base that the revision lacks, or that it only has in a general name. */
@@ -41,7 +47,9 @@ final class ResponseMediaTypeRules {
           findings.add(
               scope.at(
                   answer.revision().get("content").orElse(answer.revision()),
-                  "the response " + answer.code() + " no longer has the media type " + type.key()));
+                  "the response " + answer.code() + " no longer has the media type " + type.key()
+              )
+          );
         }
       }
     }
@@ -57,7 +65,9 @@ final class ResponseMediaTypeRules {
   }
 
   private static List<BreakingFinding> parameters(
-      final ResponseScope scope, final boolean changed) {
+      final ResponseScope scope,
+      final boolean changed
+  ) {
     final DocumentPair pair = scope.pair();
     final List<BreakingFinding> findings = new ArrayList<>();
     for (final Answer answer : ResponseScope.answers(scope)) {
@@ -68,7 +78,8 @@ final class ResponseMediaTypeRules {
                 other ->
                     !other.key().equals(type.key())
                         && MediaTypeNames.essence(other.key())
-                            .equals(MediaTypeNames.essence(type.key())))
+                            .equals(MediaTypeNames.essence(type.key()))
+            )
             .filter(other -> MediaTypeNames.differs(type.key(), other.key(), changed))
             .findFirst()
             .ifPresent(
@@ -79,7 +90,10 @@ final class ResponseMediaTypeRules {
                             "the media type parameters of "
                                 + type.key()
                                 + " are now "
-                                + other.key())));
+                                + other.key()
+                        )
+                    )
+            );
       }
     }
     return findings;

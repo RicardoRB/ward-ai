@@ -39,7 +39,8 @@ final class RequireUpperBound implements BuildPolicyRule {
             .filter(request -> ORDER.compare(resolved, request.written()) < 0)
             .sorted(
                 Comparator.comparing(RequestedVersion::written, ORDER::compare)
-                    .thenComparing(RequestedVersion::requester))
+                    .thenComparing(RequestedVersion::requester)
+            )
             .toList();
     if (higher.isEmpty()) {
       return Stream.empty();
@@ -58,7 +59,9 @@ final class RequireUpperBound implements BuildPolicyRule {
                 + asked
                 + ".",
             dependency.source(),
-            0));
+            0
+        )
+    );
   }
 
   private static String requester(final RequestedVersion request) {

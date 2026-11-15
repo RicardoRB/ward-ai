@@ -5,7 +5,6 @@ import java.util.List;
 
 /** An SPDX license expression: identifiers, {@code WITH} exceptions, {@code AND} and {@code OR}. */
 public sealed interface LicenseExpression {
-
   /** Returns the expression in SPDX syntax, with parentheses only where precedence needs them. */
   String render();
 

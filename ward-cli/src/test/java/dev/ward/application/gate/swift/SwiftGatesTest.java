@@ -48,8 +48,11 @@ class SwiftGatesTest {
             new PlatformGatePorts(
                 root -> Simulator.ready("device"),
                 (project, stdout) -> LineCoverage.of(1, 1),
-                (project, stdout) -> LineCoverage.of(1, 1))),
-        null);
+                (project, stdout) -> LineCoverage.of(1, 1)
+            )
+        ),
+        null
+    );
   }
 
   private static GateConfiguration check(final String type, final List<String> command) {
@@ -75,7 +78,8 @@ class SwiftGatesTest {
         null,
         null,
         null,
-        null);
+        null
+    );
   }
 
   @Test

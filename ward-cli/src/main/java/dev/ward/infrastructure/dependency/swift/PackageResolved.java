@@ -42,7 +42,7 @@ final class PackageResolved {
     return pins instanceof List<?> list
         ? list.stream()
             .filter(Map.class::isInstance)
-            .map(item -> pin((Map<?, ?>) item, number))
+            .map(item -> pin((Map<?, ?>)item, number))
             .toList()
         : List.of();
   }
@@ -74,7 +74,8 @@ final class PackageResolved {
     return new Pin(
         new PackageId(Ecosystem.SWIFT_URL, name, exact.isEmpty() ? LOCAL : exact),
         release,
-        identity.toLowerCase(java.util.Locale.ROOT));
+        identity.toLowerCase(java.util.Locale.ROOT)
+    );
   }
 
   private static boolean local(final String kind) {

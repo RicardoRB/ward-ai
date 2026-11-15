@@ -11,7 +11,6 @@ import java.util.function.Function;
 
 /** Pure decision model for selecting and narrowing gates for an edit. */
 public final class PartialCheckPlan {
-
   private final Map<String, GatePlan> gates;
 
   /** How a partial check runs one gate. */
@@ -49,16 +48,20 @@ public final class PartialCheckPlan {
    */
   public static PartialCheckPlan create(
       final Path root,
-      final Map<String, GateConfiguration> configurations,
+      final Map<String,
+      GateConfiguration> configurations,
       final List<Path> editedPaths,
       final PathExistence existence,
-      final Function<Path, Optional<String>> packages) {
+      final Function<Path,
+      Optional<String>> packages
+  ) {
     final List<EditedPath> paths = normalize(root, editedPaths, existence);
     final boolean noPaths = editedPaths == null || editedPaths.isEmpty();
     final Map<String, GatePlan> plans = new LinkedHashMap<>();
     configurations.forEach(
         (name, configuration) ->
-            plans.put(name, decide(name, configuration, paths, noPaths, packages)));
+            plans.put(name, decide(name, configuration, paths, noPaths, packages))
+    );
     return new PartialCheckPlan(plans);
   }
 
@@ -73,7 +76,12 @@ public final class PartialCheckPlan {
             plans.put(
                 name,
                 new GatePlan(
-                    name, configuration.partial() == null ? Scope.FULL : Scope.SKIP, List.of())));
+                    name,
+                    configuration.partial() == null ? Scope.FULL : Scope.SKIP,
+                    List.of()
+                )
+            )
+    );
     return new PartialCheckPlan(plans);
   }
 
@@ -92,7 +100,9 @@ public final class PartialCheckPlan {
       final GateConfiguration configuration,
       final List<EditedPath> paths,
       final boolean noPaths,
-      final Function<Path, Optional<String>> packages) {
+      final Function<Path,
+      Optional<String>> packages
+  ) {
     final PartialGateConfiguration partial = configuration.partial();
     if (partial == null || noPaths) {
       return new GatePlan(name, Scope.FULL, List.of());
@@ -107,7 +117,11 @@ public final class PartialCheckPlan {
     }
     if (runsInProcess(configuration.type())) {
       return new GatePlan(
-          name, Scope.NARROW, List.of(), relevant.stream().map(EditedPath::relative).toList());
+          name,
+          Scope.NARROW,
+          List.of(),
+          relevant.stream().map(EditedPath::relative).toList()
+      );
     }
     final List<EditedPath> existing = relevant.stream().filter(EditedPath::exists).toList();
     final List<String> items = PartialArguments.items(partial.item(), existing, packages);
@@ -125,7 +139,10 @@ public final class PartialCheckPlan {
   }
 
   private static List<EditedPath> normalize(
-      final Path root, final List<Path> paths, final PathExistence existence) {
+      final Path root,
+      final List<Path> paths,
+      final PathExistence existence
+  ) {
     if (paths == null) {
       return List.of();
     }
@@ -140,7 +157,9 @@ public final class PartialCheckPlan {
                     absoluteRoot.relativize(path).toString().replace('\\', '/'),
                     String.valueOf(path.getFileName()),
                     existence.exists(path),
-                    path))
+                    path
+                )
+        )
         .toList();
   }
 

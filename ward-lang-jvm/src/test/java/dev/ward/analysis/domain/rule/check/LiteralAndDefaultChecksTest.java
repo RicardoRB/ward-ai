@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** The magic-number and explicit-initialization checks on small trees. */
 class LiteralAndDefaultChecksTest extends TreeBuilders {
-
   private static final double HEX_VALUE = 31;
   private static final double BINARY_VALUE = 5;
   private static final double OCTAL_VALUE = 15;
@@ -40,13 +39,15 @@ class LiteralAndDefaultChecksTest extends TreeBuilders {
             CLASS_BODY_DECLARATION,
             n(MODIFIER, t("'static'", "static")),
             n(MODIFIER, t("'final'", "final")),
-            n(FIELD, n(DECLARATOR, t(DECIMAL, "42"))));
+            n(FIELD, n(DECLARATOR, t(DECIMAL, "42")))
+        );
     assertThat(magic(List.of(), false, false, false).check(unit(staticFinal), FILE)).isEmpty();
     final SyntaxNode plain =
         n(
             CLASS_BODY_DECLARATION,
             n(MODIFIER, t("'static'", "static")),
-            n(FIELD, n(DECLARATOR, t(DECIMAL, "42"))));
+            n(FIELD, n(DECLARATOR, t(DECIMAL, "42")))
+        );
     assertThat(magic(List.of(), false, false, false).check(unit(plain), FILE)).hasSize(1);
   }
 
@@ -105,7 +106,8 @@ class LiteralAndDefaultChecksTest extends TreeBuilders {
       final List<String> ignored,
       final boolean fields,
       final boolean annotations,
-      final boolean hashCode) {
+      final boolean hashCode
+  ) {
     return new MagicNumberCheck(ignored, fields, annotations, hashCode, MESSAGE);
   }
 
@@ -115,6 +117,9 @@ class LiteralAndDefaultChecksTest extends TreeBuilders {
 
   private static SyntaxNode field(final String type, final SyntaxNode value) {
     return n(
-        FIELD, n(TYPE, t(TOKEN_IDENTIFIER, type)), n(DECLARATOR, id("x"), n(INITIALIZER, value)));
+        FIELD,
+        n(TYPE, t(TOKEN_IDENTIFIER, type)),
+        n(DECLARATOR, id("x"), n(INITIALIZER, value))
+    );
   }
 }

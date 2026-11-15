@@ -71,7 +71,8 @@ class QualityGateRunnerTest {
         project,
         List.of(
             new CommandQualityGate("a", executor, List.of("first")),
-            new CommandQualityGate("b", executor, List.of("second"))),
+            new CommandQualityGate("b", executor, List.of("second"))
+        ),
         new CheckProgressListener() {
           @Override
           public void gateStarted(final String name) {
@@ -82,7 +83,8 @@ class QualityGateRunnerTest {
           public void gateFinished(final GateResult result) {
             events.add("finish:" + result.name());
           }
-        });
+        }
+    );
     assertThat(events).containsExactly("start:a", "finish:a", "start:b", "finish:b");
     assertThat(executor.commands).containsExactly(List.of("first"), List.of("second"));
   }
@@ -98,14 +100,16 @@ class QualityGateRunnerTest {
             List.of(
                 recordingGate("a", GateStatus.PASSED, executed),
                 failure,
-                recordingGate("c", GateStatus.PASSED, executed)),
+                recordingGate("c", GateStatus.PASSED, executed)
+            ),
             new CheckProgressListener() {
               @Override
               public void gateFinished(final GateResult result) {
                 events.add(result.name() + ":" + result.status());
               }
             },
-            true);
+            true
+        );
 
     assertThat(executed).containsExactly("a", "b");
     assertThat(report.results())
@@ -123,8 +127,10 @@ class QualityGateRunnerTest {
         project,
         List.of(
             recordingGate("a", GateStatus.PASSED, executed),
-            recordingGate("b", GateStatus.PASSED, executed)),
-        true);
+            recordingGate("b", GateStatus.PASSED, executed)
+        ),
+        true
+    );
     assertThat(executed).containsExactly("a", "b");
   }
 
@@ -136,8 +142,10 @@ class QualityGateRunnerTest {
             project,
             List.of(
                 recordingGate("a", GateStatus.EXECUTION_ERROR, executed),
-                recordingGate("b", GateStatus.PASSED, executed)),
-            true);
+                recordingGate("b", GateStatus.PASSED, executed)
+            ),
+            true
+        );
 
     assertThat(executed).containsExactly("a");
     assertThat(report.results())
@@ -146,7 +154,10 @@ class QualityGateRunnerTest {
   }
 
   private static QualityGate recordingGate(
-      final String name, final GateStatus status, final List<String> executed) {
+      final String name,
+      final GateStatus status,
+      final List<String> executed
+  ) {
     return new QualityGate() {
       @Override
       public String name() {
@@ -197,7 +208,8 @@ class QualityGateRunnerTest {
           public void gateStep(final String name, final String step) {
             events.add(name + ":" + step);
           }
-        });
+        }
+    );
 
     assertThat(events).containsExactly("ward:reading sources");
   }

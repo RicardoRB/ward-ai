@@ -12,7 +12,6 @@ import java.util.Objects;
  * @param defaultValue the value the body sets, as text; a list is comma-separated
  */
 public record CheckOption(String name, RuleOptionType type, String defaultValue) {
-
   /**
    * Validates the fields.
    *

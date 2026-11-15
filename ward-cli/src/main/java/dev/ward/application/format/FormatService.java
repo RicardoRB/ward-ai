@@ -33,7 +33,8 @@ public final class FormatService {
       final FormatterRegistry registry,
       final FormatTargets targets,
       final FormatCaches caches,
-      final FormatFileEvaluator evaluator) {
+      final FormatFileEvaluator evaluator
+  ) {
     this.registry = registry;
     this.targets = targets;
     this.caches = caches;
@@ -52,7 +53,10 @@ public final class FormatService {
    *     file, or the configuration is invalid
    */
   public List<FormatFileOutcome> format(
-      final Path root, final List<Path> paths, final boolean write) {
+      final Path root,
+      final List<Path> paths,
+      final boolean write
+  ) {
     final List<FormatTarget> all = targets.select(root, declaredOptions());
     final List<FormatTarget> selected =
         paths.isEmpty() ? all : FormatTargetPaths.select(root, all, paths);

@@ -13,7 +13,6 @@ import java.util.List;
 
 /** Lowers TypeScript and JavaScript sources and looks up their accesses for the access tests. */
 final class NodeAccessFixtures {
-
   private NodeAccessFixtures() {}
 
   static List<VariableAccess> accessesOf(final ControlFlowGraph graph) {
@@ -37,7 +36,10 @@ final class NodeAccessFixtures {
   }
 
   static ControlFlowGraph lower(
-      final String source, final AnalysisLanguage language, final String name) {
+      final String source,
+      final AnalysisLanguage language,
+      final String name
+  ) {
     final String path = language == AnalysisLanguage.JAVASCRIPT ? "src/a.js" : "src/a.ts";
     final SourceUnit unit = new SourceUnit(path, language, source);
     final ParseResult parsed = new AntlrLanguageFrontend().parse(unit);

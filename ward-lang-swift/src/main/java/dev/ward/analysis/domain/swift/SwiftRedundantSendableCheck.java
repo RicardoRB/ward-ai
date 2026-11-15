@@ -14,7 +14,6 @@ import java.util.Set;
  * redundant_sendable}. The name of the type is reported.
  */
 public final class SwiftRedundantSendableCheck implements RuleCheck {
-
   private static final Set<String> TYPES =
       Set.of("class_declaration", "struct_declaration", "enum_declaration", "actor_declaration");
   private static final String ACTOR = "actor_declaration";

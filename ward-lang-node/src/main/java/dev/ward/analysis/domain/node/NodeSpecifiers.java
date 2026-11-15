@@ -56,7 +56,8 @@ final class NodeSpecifiers {
           "vm",
           "wasi",
           "worker_threads",
-          "zlib");
+          "zlib"
+      );
 
   private final NodeProjectLayout layout;
   private final NodePackageResolver packages;

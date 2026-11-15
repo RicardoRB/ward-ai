@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /** Reports an else-if condition that an earlier condition of the chain makes unreachable. */
 class NodeDupeElseIfCheckTest {
-
   private static final int LINE = 3;
   private static final int COLUMN = 12;
   private static final String MESSAGE = "unreachable branch";

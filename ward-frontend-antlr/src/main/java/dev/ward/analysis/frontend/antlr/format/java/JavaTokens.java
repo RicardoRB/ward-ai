@@ -5,7 +5,6 @@ import java.util.Set;
 
 /** Token-text predicates the Java spacing rules share: words, literals, types and casts. */
 final class JavaTokens {
-
   static final Set<String> KEYWORD_PAREN =
       Set.of("if", "for", "while", "switch", "catch", "synchronized", "try", "return", "throw");
   static final Set<String> PRIMITIVES =
@@ -56,7 +55,8 @@ final class JavaTokens {
           "yield",
           "true",
           "false",
-          "null");
+          "null"
+      );
   private static final Set<String> OPERAND_WORDS = Set.of("this", "super", "true", "false", "null");
   private static final Set<String> TYPE_SYMBOLS = Set.of(".", "<", ">", ",", "[", "]", "?", "&");
   private static final Set<String> TYPE_WORDS = Set.of("extends", "super");
@@ -100,7 +100,7 @@ final class JavaTokens {
   static boolean isTypeToken(final JavaAtom atom) {
     final String text = atom.text();
     return isWord(text)
-            && (!RESERVED.contains(text) || PRIMITIVES.contains(text) || TYPE_WORDS.contains(text))
+        && (!RESERVED.contains(text) || PRIMITIVES.contains(text) || TYPE_WORDS.contains(text))
         || TYPE_SYMBOLS.contains(text);
   }
 

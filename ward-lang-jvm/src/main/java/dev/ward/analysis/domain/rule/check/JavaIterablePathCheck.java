@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * java.nio.file.Path}.
  */
 public final class JavaIterablePathCheck implements RuleCheck {
-
   private static final String PATH = "java.nio.file.Path";
   private static final Pattern SIMPLE = Pattern.compile("^(?:java\\.lang\\.)?Iterable<Path>$");
   private static final Pattern QUALIFIED =

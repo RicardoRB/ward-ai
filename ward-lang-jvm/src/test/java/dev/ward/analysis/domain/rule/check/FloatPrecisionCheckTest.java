@@ -10,7 +10,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class FloatPrecisionCheckTest {
-
   private static final FloatPrecisionCheck CHECK = new FloatPrecisionCheck("message");
   private static final TypeRef FLOAT = new TypeRef("float", List.of(), 0, true);
   private static final String SOURCE =
@@ -25,9 +24,10 @@ class FloatPrecisionCheckTest {
     assertThat(CHECK.needs().facts()).containsExactlyInAnyOrder(FactKind.TYPE, FactKind.CONSTANT);
     assertThat(run(SOURCE, ParsedFacts.type(FLOAT))).containsExactly("3:12");
     assertThat(
-            new ParsedFacts(SOURCE.replace("a * 2", "a *= 2"))
-                .at("expression", "a*=2", ParsedFacts.type(FLOAT))
-                .run(CHECK))
+        new ParsedFacts(SOURCE.replace("a * 2", "a *= 2"))
+            .at("expression", "a*=2", ParsedFacts.type(FLOAT))
+            .run(CHECK)
+    )
         .hasSize(1);
   }
 
@@ -50,7 +50,8 @@ class FloatPrecisionCheckTest {
             List.of(),
             List.of(),
             new ConstantValue(2L),
-            null);
+            null
+        );
     assertThat(run(SOURCE, folded)).isEmpty();
     assertThat(run(SOURCE, SpanFacts.UNKNOWN)).isEmpty();
     assertThat(new ParsedFacts(SOURCE).plain(CHECK)).isEmpty();

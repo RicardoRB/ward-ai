@@ -18,7 +18,6 @@ import java.util.Set;
  * {@code F704} and {@code F706}: a {@code yield} or {@code return} outside any function.
  */
 public final class OutsideScopeCheck implements RuleCheck {
-
   private final Set<String> kinds;
   private final Set<ScopeKind> within;
   private final String message;
@@ -31,7 +30,10 @@ public final class OutsideScopeCheck implements RuleCheck {
    * @param message the message of each finding
    */
   public OutsideScopeCheck(
-      final Set<String> kinds, final Set<ScopeKind> within, final String message) {
+      final Set<String> kinds,
+      final Set<ScopeKind> within,
+      final String message
+  ) {
     this.kinds = Set.copyOf(kinds);
     this.within = Set.copyOf(within);
     this.message = Objects.requireNonNull(message, "message");
@@ -50,7 +52,11 @@ public final class OutsideScopeCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final List<Span> enclosing =
         view.scopes().scopes().stream()
             .filter(scope -> within.contains(scope.kind()))

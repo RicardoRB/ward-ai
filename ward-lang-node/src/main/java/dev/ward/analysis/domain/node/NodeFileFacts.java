@@ -15,7 +15,6 @@ import java.util.Set;
  * imports. The scans stay package-private; checks in other packages use this facade.
  */
 public final class NodeFileFacts {
-
   private static final String STRING_LITERAL = "StringLiteral";
 
   private NodeFileFacts() {}
@@ -36,7 +35,8 @@ public final class NodeFileFacts {
         .map(
             reference ->
                 NodeReference.parse(reference.specifier())
-                    .map(parsed -> new ModuleSpecifier(parsed.specifier(), reference.span())))
+                    .map(parsed -> new ModuleSpecifier(parsed.specifier(), reference.span()))
+        )
         .flatMap(Optional::stream)
         .toList();
   }
@@ -80,7 +80,6 @@ public final class NodeFileFacts {
    * @param escaped whether the name is used in any other way, which uses every member
    */
   public record MemberUsage(Set<String> members, boolean escaped) {
-
     /** Copies the members in and out. */
     public MemberUsage {
       members = Set.copyOf(members);
@@ -108,7 +107,10 @@ public final class NodeFileFacts {
 
   /** Returns the members the file declares for the enum or namespace {@code name}. */
   public static List<Symbol> declaredMembers(
-      final SyntaxNode tree, final String name, final String keyword) {
+      final SyntaxNode tree,
+      final String name,
+      final String keyword
+  ) {
     return new NodeMemberScan(new NodeTokens(NodeLeaves.of(tree))).declaredMembers(name, keyword);
   }
 
@@ -121,18 +123,24 @@ public final class NodeFileFacts {
   public static List<ImportedName> importedNames(final SyntaxNode tree) {
     return new NodeImportScan(tree)
         .bindings().stream()
-            .map(
-                binding ->
-                    new ImportedName(
-                        binding.member(), NodeLeaves.text(binding.local()), binding.specifier()))
-            .toList();
+        .map(
+            binding ->
+                new ImportedName(
+                    binding.member(),
+                    NodeLeaves.text(binding.local()),
+                    binding.specifier()
+                )
+        )
+        .toList();
   }
 
   /**
    * Tells whether a specifier names a Node built-in module, such as {@code fs} or {@code node:fs}.
    */
   public static boolean isNodeBuiltin(final String specifier) {
-    return specifier.startsWith("node:") || NodeBuiltins.NAMES.contains(specifier.split("/", 2)[0]);
+    return specifier.startsWith("node:") || NodeBuiltins.NAMES.contains(
+        specifier.split("/", 2) [0]
+    );
   }
 
   /** Returns the string literals of the file, without their quotes, in source order. */
@@ -157,7 +165,7 @@ public final class NodeFileFacts {
         || specifier.startsWith("/")
         || specifier.startsWith("#")
         || specifier.startsWith("node:")
-        || NodeBuiltins.NAMES.contains(specifier.split("/", 2)[0])) {
+        || NodeBuiltins.NAMES.contains(specifier.split("/", 2) [0])) {
       return "";
     }
     final String[] parts = specifier.split("/");

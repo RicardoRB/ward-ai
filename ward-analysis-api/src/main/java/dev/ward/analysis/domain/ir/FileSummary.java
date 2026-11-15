@@ -23,8 +23,8 @@ public record FileSummary(
     List<Reference> imports,
     List<Symbol> declared,
     Set<String> usedNames,
-    Set<String> assignedNames) {
-
+    Set<String> assignedNames
+) {
   /**
    * Copies the collections.
    *
@@ -45,7 +45,8 @@ public record FileSummary(
       final List<Symbol> exports,
       final List<Reference> imports,
       final List<Symbol> declared,
-      final Set<String> usedNames) {
+      final Set<String> usedNames
+  ) {
     this(path, exports, imports, declared, usedNames, Set.of());
   }
 
@@ -54,7 +55,8 @@ public record FileSummary(
       final String path,
       final List<Symbol> exports,
       final List<Reference> imports,
-      final List<Symbol> declared) {
+      final List<Symbol> declared
+  ) {
     this(path, exports, imports, declared, Set.of(), Set.of());
   }
 }

@@ -22,7 +22,6 @@ import org.tomlj.TomlTable;
  * absent says nothing about its language.
  */
 final class CatalogStatusFiles {
-
   private static final String ROOT = "catalog/status/";
 
   /** One status line: the status text and the issue of a planned row. */
@@ -76,20 +75,27 @@ final class CatalogStatusFiles {
             "Catalog status file '"
                 + resource
                 + "' is not valid TOML: "
-                + toml.errors().getFirst());
+                + toml.errors().getFirst()
+        );
       }
       for (final String name : toml.keySet()) {
         entries.put(name, entry(resource, name, toml));
       }
     } catch (final IOException exception) {
       throw new RuleConfigurationException(
-          "Catalog status file '" + resource + "' could not be read", exception);
+          "Catalog status file '" + resource + "' could not be read",
+          exception
+      );
     }
     return entries;
   }
 
   private static Map<AnalysisLanguage, Entry> languageRows(
-      final Map<String, Map<AnalysisLanguage, Entry>> rows, final String name) {
+      final Map<String,
+      Map<AnalysisLanguage,
+      Entry>> rows,
+      final String name
+  ) {
     return rows.computeIfAbsent(name, key -> new EnumMap<>(AnalysisLanguage.class));
   }
 
@@ -110,6 +116,7 @@ final class CatalogStatusFiles {
             + resource
             + "', row '"
             + name
-            + "' must be a status text or { status, issue }");
+            + "' must be a status text or { status, issue }"
+    );
   }
 }

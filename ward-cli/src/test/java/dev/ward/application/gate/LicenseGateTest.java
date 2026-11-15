@@ -17,7 +17,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class LicenseGateTest {
-
   private static final String PACKAGE_JSON = "package.json";
 
   private static LicenseSettings deny(final boolean unknownFails, final Set<String> scopes) {
@@ -26,7 +25,8 @@ class LicenseGateTest {
         LicenseSettings.DEFAULT_DENY,
         LicenseSettings.DEFAULT_EXCEPTIONS,
         scopes,
-        unknownFails);
+        unknownFails
+    );
   }
 
   private static GateResult run(final LicenseService service, final LicenseSettings settings) {
@@ -39,8 +39,15 @@ class LicenseGateTest {
         LicenseFixtures.service(
             LicenseFixtures.inventory(
                 LicenseFixtures.dependency(
-                    Ecosystem.NPM, "left-pad", "1.3.0", DependencyScope.RUNTIME, PACKAGE_JSON)),
-            Map.of("left-pad", LicenseFixtures.declared("MIT")));
+                    Ecosystem.NPM,
+                    "left-pad",
+                    "1.3.0",
+                    DependencyScope.RUNTIME,
+                    PACKAGE_JSON
+                )
+            ),
+            Map.of("left-pad", LicenseFixtures.declared("MIT"))
+        );
 
     final GateResult result = run(service, LicenseSettings.defaults());
 
@@ -59,8 +66,11 @@ class LicenseGateTest {
                     "com.example:gpl-lib",
                     "1.0",
                     DependencyScope.RUNTIME,
-                    "pom.xml")),
-            Map.of("com.example:gpl-lib", LicenseFixtures.declared("GPL-3.0-only")));
+                    "pom.xml"
+                )
+            ),
+            Map.of("com.example:gpl-lib", LicenseFixtures.declared("GPL-3.0-only"))
+        );
 
     final GateResult result = run(service, LicenseSettings.defaults());
 
@@ -79,11 +89,23 @@ class LicenseGateTest {
         LicenseFixtures.service(
             LicenseFixtures.inventory(
                 LicenseFixtures.dependency(
-                    Ecosystem.NPM, "lib", "1.0.0", DependencyScope.RUNTIME, PACKAGE_JSON)),
-            Map.of("lib", LicenseFixtures.declared("EPL-2.0")));
+                    Ecosystem.NPM,
+                    "lib",
+                    "1.0.0",
+                    DependencyScope.RUNTIME,
+                    PACKAGE_JSON
+                )
+            ),
+            Map.of("lib", LicenseFixtures.declared("EPL-2.0"))
+        );
     final LicenseSettings allow =
         new LicenseSettings(
-            LicenseSettings.Mode.ALLOW, List.of("Apache-2.0", "MIT"), List.of(), Set.of(), true);
+            LicenseSettings.Mode.ALLOW,
+            List.of("Apache-2.0", "MIT"),
+            List.of(),
+            Set.of(),
+            true
+        );
 
     final GateResult result = run(service, allow);
 
@@ -97,8 +119,15 @@ class LicenseGateTest {
         LicenseFixtures.service(
             LicenseFixtures.inventory(
                 LicenseFixtures.dependency(
-                    Ecosystem.NPM, "gpl-test", "1.0.0", DependencyScope.TEST, PACKAGE_JSON)),
-            Map.of("gpl-test", LicenseFixtures.declared("GPL-3.0-only")));
+                    Ecosystem.NPM,
+                    "gpl-test",
+                    "1.0.0",
+                    DependencyScope.TEST,
+                    PACKAGE_JSON
+                )
+            ),
+            Map.of("gpl-test", LicenseFixtures.declared("GPL-3.0-only"))
+        );
 
     assertThat(run(service, deny(true, Set.of("runtime"))).status()).isEqualTo(GateStatus.PASSED);
     assertThat(run(service, deny(true, Set.of())).status()).isEqualTo(GateStatus.FAILED);
@@ -110,8 +139,15 @@ class LicenseGateTest {
         LicenseFixtures.service(
             LicenseFixtures.inventory(
                 LicenseFixtures.dependency(
-                    Ecosystem.NPM, "dual", "1.0.0", DependencyScope.RUNTIME, PACKAGE_JSON)),
-            Map.of("dual", LicenseFixtures.declared("MIT OR GPL-3.0-only")));
+                    Ecosystem.NPM,
+                    "dual",
+                    "1.0.0",
+                    DependencyScope.RUNTIME,
+                    PACKAGE_JSON
+                )
+            ),
+            Map.of("dual", LicenseFixtures.declared("MIT OR GPL-3.0-only"))
+        );
 
     assertThat(run(service, LicenseSettings.defaults()).status()).isEqualTo(GateStatus.PASSED);
   }
@@ -122,14 +158,27 @@ class LicenseGateTest {
         LicenseFixtures.service(
             LicenseFixtures.inventory(
                 LicenseFixtures.dependency(
-                    Ecosystem.NPM, "b-gpl", "1.0.0", DependencyScope.RUNTIME, PACKAGE_JSON),
+                    Ecosystem.NPM,
+                    "b-gpl",
+                    "1.0.0",
+                    DependencyScope.RUNTIME,
+                    PACKAGE_JSON
+                ),
                 LicenseFixtures.dependency(
-                    Ecosystem.NPM, "a-gpl", "1.0.0", DependencyScope.RUNTIME, PACKAGE_JSON)),
+                    Ecosystem.NPM,
+                    "a-gpl",
+                    "1.0.0",
+                    DependencyScope.RUNTIME,
+                    PACKAGE_JSON
+                )
+            ),
             Map.of(
                 "a-gpl",
                 LicenseFixtures.declared("GPL-3.0-only"),
                 "b-gpl",
-                LicenseFixtures.declared("AGPL-3.0-only")));
+                LicenseFixtures.declared("AGPL-3.0-only")
+            )
+        );
 
     final List<Finding> first = run(service, LicenseSettings.defaults()).findings().items();
     final List<Finding> second = run(service, LicenseSettings.defaults()).findings().items();

@@ -11,7 +11,6 @@ import java.util.Set;
 
 /** Reports a {@code next()} call on a {@code ResultSet} whose boolean result is dropped. */
 public final class CheckResultSetCheck implements RuleCheck {
-
   private static final String RESULT_SET = "java.sql.ResultSet";
   private static final String NEXT = "next";
   private static final String STATEMENT = "statement";
@@ -45,7 +44,8 @@ public final class CheckResultSetCheck implements RuleCheck {
       final dev.ward.analysis.domain.rule.FlowView flow,
       final dev.ward.analysis.domain.rule.ScopeView scopes,
       final UnitTypeFacts types,
-      final dev.ward.analysis.domain.ir.SourceUnit unit) {
+      final dev.ward.analysis.domain.ir.SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(STATEMENT))) {
       if (!isExpressionStatement(visit.node())) {

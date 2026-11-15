@@ -22,7 +22,8 @@ class IntegrationResultTest {
             IntegrationResult.Status.CHANGED,
             List.of("hook"),
             "installed",
-            Set.of(IntegrationCapability.POST_EDIT, IntegrationCapability.FEEDBACK));
+            Set.of(IntegrationCapability.POST_EDIT, IntegrationCapability.FEEDBACK)
+        );
 
     assertThat(result.capabilities())
         .containsExactlyInAnyOrder(IntegrationCapability.POST_EDIT, IntegrationCapability.FEEDBACK);

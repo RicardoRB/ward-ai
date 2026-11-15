@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
  * The shapes of the TypeScript and JavaScript expressions that member writes and constructors use.
  */
 final class NodeCallShapes {
-
   private static final String NEW = "new";
   private static final String ARGUMENTS = "arguments";
   private static final String ARGUMENT = "argument";

@@ -32,17 +32,23 @@ public final class NativeIntegrationSupport {
     final long existing = files.stream().filter(Files::exists).count();
     if (!anyExists) {
       return new IntegrationHealth(
-          IntegrationHealth.Status.MISSING, "Integration is not configured.");
+          IntegrationHealth.Status.MISSING,
+          "Integration is not configured."
+      );
     }
     if (owned != existing) {
       return new IntegrationHealth(
-          IntegrationHealth.Status.CONFLICT, "User-owned integration content requires review.");
+          IntegrationHealth.Status.CONFLICT,
+          "User-owned integration content requires review."
+      );
     }
     if (owned == files.size()) {
       return new IntegrationHealth(IntegrationHealth.Status.INSTALLED, "Integration is installed.");
     }
     return new IntegrationHealth(
-        IntegrationHealth.Status.PARTIAL, "Integration is partially installed; re-run integrate.");
+        IntegrationHealth.Status.PARTIAL,
+        "Integration is partially installed; re-run integrate."
+    );
   }
 
   /**
@@ -50,16 +56,22 @@ public final class NativeIntegrationSupport {
    * user-owned files.
    */
   public static IntegrationResult integrate(
-      final Path projectRoot, final IntegrationRequest request, final NativeArtifactPlan plan) {
+      final Path projectRoot,
+      final IntegrationRequest request,
+      final NativeArtifactPlan plan
+  ) {
     final NativeIntegrationTransaction transaction;
     try {
       transaction =
           NativeIntegrationTransaction.capture(
               Stream.concat(plan.files().stream(), plan.legacyPaths().stream())
-                  .toArray(Path[]::new));
+                  .toArray(Path[]::new)
+          );
     } catch (IOException exception) {
       throw new UncheckedIOException(
-          "Could not snapshot " + plan.id() + " integration: " + exception.getMessage(), exception);
+          "Could not snapshot " + plan.id() + " integration: " + exception.getMessage(),
+          exception
+      );
     }
     try {
       final IntegrationResult conflict = firstConflict(plan);
@@ -77,7 +89,9 @@ public final class NativeIntegrationSupport {
         exception.addSuppressed(rollbackException);
       }
       throw new UncheckedIOException(
-          "Could not update " + plan.id() + " integration: " + exception.getMessage(), exception);
+          "Could not update " + plan.id() + " integration: " + exception.getMessage(),
+          exception
+      );
     }
   }
 
@@ -91,7 +105,10 @@ public final class NativeIntegrationSupport {
                 config,
                 plan.marker(),
                 plan.configContent(),
-                "Updated Ward " + plan.id() + " hooks.")));
+                "Updated Ward " + plan.id() + " hooks."
+            )
+        )
+    );
     if (plan.hasHook()) {
       final Path hook = plan.hookPath();
       results.add(
@@ -101,7 +118,10 @@ public final class NativeIntegrationSupport {
                   hook,
                   plan.marker(),
                   plan.hookContent(),
-                  "Updated Ward " + plan.id() + " hook.")));
+                  "Updated Ward " + plan.id() + " hook."
+              )
+          )
+      );
       if (Files.exists(hook)) {
         IntegrationArtifacts.makeExecutable(hook);
       }
@@ -114,13 +134,17 @@ public final class NativeIntegrationSupport {
                 new IntegrationResult(
                     IntegrationResult.Status.REMOVED,
                     List.of(old.toString()),
-                    "Removed the Ward-owned " + plan.id() + " file of an earlier version.")));
+                    "Removed the Ward-owned " + plan.id() + " file of an earlier version."
+                )
+            )
+        );
       }
     }
     return IntegrationArtifacts.combine(
-            results,
-            "Ward " + plan.id() + " integration is already present.",
-            "Created Ward " + plan.id() + " native hook integration.")
+        results,
+        "Ward " + plan.id() + " integration is already present.",
+        "Created Ward " + plan.id() + " native hook integration."
+    )
         .withCapabilities(plan.capabilities());
   }
 
@@ -128,9 +152,10 @@ public final class NativeIntegrationSupport {
     final boolean legacyPresent = legacyPresent(plan);
     if (plan.files().stream().noneMatch(Files::exists) && !legacyPresent) {
       return new IntegrationResult(
-              IntegrationResult.Status.NOT_FOUND,
-              List.of(),
-              "No Ward " + plan.id() + " integration found.")
+          IntegrationResult.Status.NOT_FOUND,
+          List.of(),
+          "No Ward " + plan.id() + " integration found."
+      )
           .withCapabilities(plan.capabilities());
     }
     final List<String> removed = new ArrayList<>();
@@ -145,9 +170,10 @@ public final class NativeIntegrationSupport {
       plan.legacy(legacy).delete().forEach(old -> removed.add(old.toString()));
     }
     return new IntegrationResult(
-            IntegrationResult.Status.REMOVED,
-            removed,
-            "Removed Ward " + plan.id() + " integration.")
+        IntegrationResult.Status.REMOVED,
+        removed,
+        "Removed Ward " + plan.id() + " integration."
+    )
         .withCapabilities(plan.capabilities());
   }
 

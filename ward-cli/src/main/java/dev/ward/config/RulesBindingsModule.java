@@ -10,7 +10,6 @@ import dev.ward.infrastructure.rules.TomlRuleBodyReader;
 /** Binds the adapters of the {@code ward rules} command. */
 @Module
 interface RulesBindingsModule {
-
   @Binds
   RuleSelectionFile ruleSelectionFile(FileRuleSelectionFile implementation);
 

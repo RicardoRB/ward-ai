@@ -10,7 +10,6 @@ import java.util.List;
  * of a condition, and a conditional operator, each with its own blocks.
  */
 final class JavaBranches {
-
   private static final String AND = "&&";
   private static final int RIGHT_INDEX = 2;
   private static final int TERNARY_ELSE_INDEX = 4;
@@ -29,7 +28,10 @@ final class JavaBranches {
    * statement is an assignment or a return.
    */
   void valueStatement(
-      final SyntaxNode statement, final SyntaxNode expression, final boolean wholeStatement) {
+      final SyntaxNode statement,
+      final SyntaxNode expression,
+      final boolean wholeStatement
+  ) {
     final SyntaxNode value = JavaFlowSyntax.unwrap(expression);
     final SyntaxNode split = JavaFlowSyntax.assignedValue(value);
     if (!JavaFlowSyntax.isLogical(split) && !JavaFlowSyntax.isTernary(split)) {

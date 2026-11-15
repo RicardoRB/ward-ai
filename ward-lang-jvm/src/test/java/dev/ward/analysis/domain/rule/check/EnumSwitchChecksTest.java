@@ -20,7 +20,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the enum switch checks over switches on an enum declared in the same unit. */
 class EnumSwitchChecksTest {
-
   private static final SourceUnit UNIT = new SourceUnit("x.java", AnalysisLanguage.JAVA, "");
   private static final String MESSAGE = "message";
   private static final String IDENTIFIER = "identifier";
@@ -53,7 +52,8 @@ class EnumSwitchChecksTest {
     assertThat(run(new NonExhaustiveSwitchCheck(MESSAGE), scene(List.of("RED"), true, false)))
         .isEmpty();
     assertThat(
-            run(new NonExhaustiveSwitchCheck(MESSAGE), scene(List.of("RED", "BLUE"), false, false)))
+        run(new NonExhaustiveSwitchCheck(MESSAGE), scene(List.of("RED", "BLUE"), false, false))
+    )
         .isEmpty();
   }
 
@@ -72,7 +72,10 @@ class EnumSwitchChecksTest {
    * selector's type is {@code Other} when {@code elsewhere}, which declares no constants here.
    */
   private static Scene scene(
-      final List<String> cases, final boolean withDefault, final boolean elsewhere) {
+      final List<String> cases,
+      final boolean withDefault,
+      final boolean elsewhere
+  ) {
     final Layout layout = new Layout();
     final SyntaxNode enumDeclaration = enumDeclaration(layout);
     final SyntaxNode selector = node(EXPRESSION, layout.token(TOKEN_IDENTIFIER, "color"));
@@ -83,7 +86,9 @@ class EnumSwitchChecksTest {
                 layout.token("'('", "("),
                 selector,
                 layout.token("')'", ")"),
-                layout.token("'{'", "{")));
+                layout.token("'{'", "{")
+            )
+        );
     for (final String constant : cases) {
       parts.add(
           node(
@@ -92,7 +97,10 @@ class EnumSwitchChecksTest {
                   LABEL,
                   layout.token("'case'", "case"),
                   node(EXPRESSION, layout.token(TOKEN_IDENTIFIER, constant)),
-                  layout.token("':'", ":"))));
+                  layout.token("':'", ":")
+              )
+          )
+      );
     }
     if (withDefault) {
       parts.add(node(LABEL, layout.token("'default'", "default"), layout.token("':'", ":")));
@@ -117,7 +125,13 @@ class EnumSwitchChecksTest {
         node("enumConstant", node(IDENTIFIER, layout.token(TOKEN_IDENTIFIER, "BLUE")));
     final SyntaxNode close = layout.token("'}'", "}");
     return node(
-        "enumDeclaration", keyword, name, open, node("enumConstants", red, comma, blue), close);
+        "enumDeclaration",
+        keyword,
+        name,
+        open,
+        node("enumConstants", red, comma, blue),
+        close
+    );
   }
 
   private static SpanFacts fact(final String typeName) {
@@ -130,7 +144,8 @@ class EnumSwitchChecksTest {
         List.of(),
         List.of(),
         null,
-        null);
+        null
+    );
   }
 
   /** A unit, its facts, and the root that a check runs over. */

@@ -36,13 +36,22 @@ final class GradleTsv {
    * @throws DependencyInventoryException on an unresolved dependency or a line it cannot read
    */
   static DependencyInventory read(
-      final String project, final List<String> files, final Function<String, String> buildFile) {
+      final String project,
+      final List<String> files,
+      final Function<String,
+      String> buildFile
+  ) {
     return new DependencyInventory(
-        files.stream().map(text -> module(project, text, buildFile)).toList());
+        files.stream().map(text -> module(project, text, buildFile)).toList()
+    );
   }
 
   private static ModuleDependencies module(
-      final String project, final String text, final Function<String, String> buildFile) {
+      final String project,
+      final String text,
+      final Function<String,
+      String> buildFile
+  ) {
     final List<String> lines = text.lines().toList();
     if (lines.isEmpty() || !lines.getFirst().startsWith(PATH_PREFIX)) {
       throw unreadable(project, "a result file has no path line");
@@ -61,7 +70,8 @@ final class GradleTsv {
       final String path,
       final ModuleBuilder builder,
       final String[] fields,
-      final String declaringFile) {
+      final String declaringFile
+  ) {
     switch (fields[0]) {
       case "EDGE" -> edge(project, builder, fields, declaringFile);
       case "PROJECT" -> {
@@ -75,7 +85,8 @@ final class GradleTsv {
                   + field(fields, PARENT)
                   + " could not be resolved: "
                   + field(fields, CHILD),
-              "fix the dependency or the repositories, then run again");
+              "fix the dependency or the repositories, then run again"
+          );
       default -> throw unreadable(project, "an unknown result line");
     }
   }
@@ -84,7 +95,8 @@ final class GradleTsv {
       final String project,
       final ModuleBuilder builder,
       final String[] fields,
-      final String declaringFile) {
+      final String declaringFile
+  ) {
     if (fields.length != EDGE_FIELDS) {
       throw unreadable(project, "an edge line has " + fields.length + " fields");
     }
@@ -123,8 +135,14 @@ final class GradleTsv {
   }
 
   private static DependencyInventoryException unreadable(
-      final String project, final String reason) {
+      final String project,
+      final String reason
+  ) {
     return new DependencyInventoryException(
-        project, "the Gradle dependency listing", reason, "run the Gradle build to see why");
+        project,
+        "the Gradle dependency listing",
+        reason,
+        "run the Gradle build to see why"
+    );
   }
 }

@@ -19,7 +19,6 @@ import java.util.Set;
  * reported as well.
  */
 public final class BiomeUnreachableSuperCheck implements RuleCheck {
-
   private static final String CONSTRUCTOR = "constructorDeclaration";
   private static final String METHOD = "methodDefinition";
   private static final String CLASS_TAIL = "classTail";
@@ -69,9 +68,9 @@ public final class BiomeUnreachableSuperCheck implements RuleCheck {
   private static boolean isConstructor(final SyntaxNode node) {
     return CONSTRUCTOR.equals(node.kind())
         || METHOD.equals(node.kind())
-            && node.children().stream()
-                .filter(child -> NAME.equals(child.kind()))
-                .anyMatch(name -> "constructor".equals(SyntaxWalk.text(name)));
+        && node.children().stream()
+            .filter(child -> NAME.equals(child.kind()))
+            .anyMatch(name -> "constructor".equals(SyntaxWalk.text(name)));
   }
 
   /** The nearest enclosing class lists an {@code extends} clause, in either grammar's shape. */

@@ -10,60 +10,76 @@ class PartialCheckPlanRenderingTest {
   @Test
   void withoutSeparatorEachPathIsItsOwnArgument() {
     assertThat(
-            PartialPlans.plan(
-                PartialPlans.gate(
-                    PartialPlans.partial(List.of("**"), List.of(), List.of("{paths}"), null, null)),
-                "src/A.java",
-                "src/B.java"))
+        PartialPlans.plan(
+            PartialPlans.gate(
+                PartialPlans.partial(List.of("**"), List.of(), List.of("{paths}"), null, null)
+            ),
+            "src/A.java",
+            "src/B.java"
+        )
+    )
         .isEqualTo(PartialPlans.narrowed("src/A.java", "src/B.java"));
   }
 
   @Test
   void separatorJoinsTheRenderedItemsIntoOneArgument() {
     assertThat(
-            PartialPlans.plan(
-                PartialPlans.gate(
-                    PartialPlans.partial(
-                        PartialPlans.JAVA,
-                        PartialPlans.RULES,
-                        PartialPlans.INCLUDES,
-                        "**/{name}",
-                        ",")),
-                "src/main/java/a/A.java",
-                "src/main/java/b/B.java"))
+        PartialPlans.plan(
+            PartialPlans.gate(
+                PartialPlans.partial(
+                    PartialPlans.JAVA,
+                    PartialPlans.RULES,
+                    PartialPlans.INCLUDES,
+                    "**/{name}",
+                    ","
+                )
+            ),
+            "src/main/java/a/A.java",
+            "src/main/java/b/B.java"
+        )
+    )
         .isEqualTo(PartialPlans.narrowed("-Dlint.includes=**/A.java,**/B.java"));
   }
 
   @Test
   void pathItemsAreRootRelativeWithForwardSlashes() {
     assertThat(
-            PartialPlans.plan(
-                PartialPlans.gate(
-                    PartialPlans.partial(
-                        PartialPlans.JAVA,
-                        List.of(),
-                        List.of("-DspotlessFiles={paths}"),
-                        ".*/{path}",
-                        ",")),
-                PartialPlans.ORDER))
+        PartialPlans.plan(
+            PartialPlans.gate(
+                PartialPlans.partial(
+                    PartialPlans.JAVA,
+                    List.of(),
+                    List.of("-DspotlessFiles={paths}"),
+                    ".*/{path}",
+                    ","
+                )
+            ),
+            PartialPlans.ORDER
+        )
+    )
         .isEqualTo(PartialPlans.narrowed("-DspotlessFiles=.*/" + PartialPlans.ORDER));
   }
 
   @Test
   void argumentsWithoutThePlaceholderAreAppendedUnchanged() {
     assertThat(
-            PartialPlans.plan(
-                PartialPlans.gate(
-                    PartialPlans.partial(
-                        PartialPlans.JAVA,
-                        List.of(),
-                        List.of("-Pward.partial=true", "-PwardPaths={paths}"),
-                        null,
-                        ",")),
-                "src/A.java",
-                "src/B.java"))
+        PartialPlans.plan(
+            PartialPlans.gate(
+                PartialPlans.partial(
+                    PartialPlans.JAVA,
+                    List.of(),
+                    List.of("-Pward.partial=true", "-PwardPaths={paths}"),
+                    null,
+                    ","
+                )
+            ),
+            "src/A.java",
+            "src/B.java"
+        )
+    )
         .isEqualTo(
-            PartialPlans.narrowed("-Pward.partial=true", "-PwardPaths=src/A.java,src/B.java"));
+            PartialPlans.narrowed("-Pward.partial=true", "-PwardPaths=src/A.java,src/B.java")
+        );
   }
 
   @Test
@@ -71,11 +87,13 @@ class PartialCheckPlanRenderingTest {
     final String path = "src/odd name;$HOME.java";
 
     assertThat(
-            PartialPlans.plan(
-                PartialPlans.gate(
-                    PartialPlans.partial(
-                        PartialPlans.JAVA, List.of(), List.of("{paths}"), null, null)),
-                path))
+        PartialPlans.plan(
+            PartialPlans.gate(
+                PartialPlans.partial(PartialPlans.JAVA, List.of(), List.of("{paths}"), null, null)
+            ),
+            path
+        )
+    )
         .isEqualTo(PartialPlans.narrowed(path));
   }
 
@@ -84,7 +102,13 @@ class PartialCheckPlanRenderingTest {
     final GateConfiguration gate =
         PartialPlans.gate(
             PartialPlans.partial(
-                List.of("src/**/*.java", "docs/?.md"), List.of(), List.of(), null, null));
+                List.of("src/**/*.java", "docs/?.md"),
+                List.of(),
+                List.of(),
+                null,
+                null
+            )
+        );
 
     assertThat(PartialPlans.plan(gate, "src/A.java").scope())
         .isEqualTo(PartialCheckPlan.Scope.FULL);

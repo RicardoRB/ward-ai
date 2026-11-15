@@ -21,13 +21,18 @@ class NodeProjectInspectionTest {
   @TempDir Path dir;
 
   @ParameterizedTest
-  @CsvSource({
-    "pnpm@9.12.0, package-lock.json, PNPM",
-    "bun, package-lock.json, BUN",
-    "deno@2.0.0, yarn.lock, YARN"
-  })
+  @CsvSource(
+      {
+          "pnpm@9.12.0, package-lock.json, PNPM",
+          "bun, package-lock.json, BUN",
+          "deno@2.0.0, yarn.lock, YARN"
+      }
+  )
   void packageManagerFieldWinsUnlessUnknown(
-      final String declared, final String lockFile, final BuildTool tool) throws IOException {
+      final String declared,
+      final String lockFile,
+      final BuildTool tool
+  ) throws IOException {
     write(PACKAGE_JSON, "{\"packageManager\": \"" + declared + "\"}");
     write(lockFile, "");
 
@@ -35,13 +40,15 @@ class NodeProjectInspectionTest {
   }
 
   @ParameterizedTest
-  @CsvSource({
-    "bun.lock, BUN",
-    "bun.lockb, BUN",
-    "pnpm-lock.yaml, PNPM",
-    "yarn.lock, YARN",
-    "package-lock.json, NPM"
-  })
+  @CsvSource(
+      {
+          "bun.lock, BUN",
+          "bun.lockb, BUN",
+          "pnpm-lock.yaml, PNPM",
+          "yarn.lock, YARN",
+          "package-lock.json, NPM"
+      }
+  )
   void lockFileDecidesTheManager(final String lockFile, final BuildTool tool) throws IOException {
     write(PACKAGE_JSON, "{}");
     write(lockFile, "");

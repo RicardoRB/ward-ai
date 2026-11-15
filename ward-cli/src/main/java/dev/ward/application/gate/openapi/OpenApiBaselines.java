@@ -23,7 +23,9 @@ final class OpenApiBaselines {
                     OpenApiBaseline.stop(
                         GateStatus.PASSED,
                         "No baseline: the repository has no commits yet, so the spec is new.",
-                        "no-head"));
+                        "no-head"
+                    )
+            );
   }
 
   /**
@@ -31,7 +33,9 @@ final class OpenApiBaselines {
    * {@code HEAD} is that merge base.
    */
   static Function<Path, OpenApiBaseline> baseBranch(
-      final RevisionFiles revisions, final String base) {
+      final RevisionFiles revisions,
+      final String base
+  ) {
     return root -> {
       final Optional<String> head = revisions.resolve(root, HEAD);
       final Optional<String> mergeBase = revisions.mergeBase(root, base, HEAD);
@@ -41,7 +45,8 @@ final class OpenApiBaselines {
             "No merge base between HEAD and "
                 + base
                 + ": fetch the base branch history (for example, a full-depth CI checkout).",
-            "no-merge-base");
+            "no-merge-base"
+        );
       }
       if (!mergeBase.get().equals(head.get())) {
         return OpenApiBaseline.at(mergeBase.get());
@@ -54,7 +59,9 @@ final class OpenApiBaselines {
                   OpenApiBaseline.stop(
                       GateStatus.PASSED,
                       "No earlier revision to compare with: HEAD is the first commit.",
-                      "no-parent"));
+                      "no-parent"
+                  )
+          );
     };
   }
 }

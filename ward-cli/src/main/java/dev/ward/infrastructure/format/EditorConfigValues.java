@@ -8,14 +8,12 @@ import java.util.regex.Pattern;
  * Reads the typed values of merged EditorConfig settings and builds errors that name their origin.
  */
 final class EditorConfigValues {
-
   private static final Pattern DIGITS = Pattern.compile("\\d{1,9}");
 
   private EditorConfigValues() {}
 
   /** A value that a section set, kept with its origin for error messages. */
   record Setting(String value, String path, String section) {
-
     /**
      * Builds the error for this value.
      *
@@ -38,7 +36,11 @@ final class EditorConfigValues {
    * @return the exception to throw
    */
   static FormatConfigurationException invalid(
-      final String path, final String section, final String key, final String reason) {
+      final String path,
+      final String section,
+      final String key,
+      final String reason
+  ) {
     return new FormatConfigurationException(
         "Invalid formatting option in "
             + path
@@ -48,7 +50,8 @@ final class EditorConfigValues {
             + key
             + ": "
             + reason
-            + ".");
+            + "."
+    );
   }
 
   /**
@@ -60,7 +63,11 @@ final class EditorConfigValues {
    * @return the flag
    */
   static boolean flag(
-      final Map<String, Setting> effective, final String key, final boolean fallback) {
+      final Map<String,
+      Setting> effective,
+      final String key,
+      final boolean fallback
+  ) {
     final Setting setting = effective.get(key);
     if (setting == null) {
       return fallback;
@@ -82,10 +89,12 @@ final class EditorConfigValues {
    * @return the number
    */
   static int numberOr(
-      final Map<String, Setting> effective,
+      final Map<String,
+      Setting> effective,
       final String key,
       final int minimum,
-      final int fallback) {
+      final int fallback
+  ) {
     final Setting setting = effective.get(key);
     return setting == null ? fallback : whole(setting, key, minimum);
   }

@@ -33,7 +33,10 @@ public final class NoticeService {
   /** Creates the service. */
   @Inject
   public NoticeService(
-      final ProjectDetector detector, final LicenseService licenses, final LicenseTexts texts) {
+      final ProjectDetector detector,
+      final LicenseService licenses,
+      final LicenseTexts texts
+  ) {
     this.detector = detector;
     this.licenses = licenses;
     this.texts = texts;
@@ -54,7 +57,9 @@ public final class NoticeService {
                 Collectors.groupingBy(
                     entry -> entry.expression().map(LicenseExpression::render).orElse(UNKNOWN),
                     TreeMap::new,
-                    Collectors.mapping(NoticeService::label, Collectors.toList())));
+                    Collectors.mapping(NoticeService::label, Collectors.toList())
+                )
+            );
     final Set<String> used =
         all.stream()
             .flatMap(entry -> entry.expression().stream())
@@ -68,7 +73,8 @@ public final class NoticeService {
                     "ward licenses: "
                         + entry.dependency().purl()
                         + " has an unknown license: "
-                        + entry.unknownReason())
+                        + entry.unknownReason()
+            )
             .toList();
     return new Document(render(all.size(), byLicense, used), warnings);
   }
@@ -79,7 +85,11 @@ public final class NoticeService {
   }
 
   private String render(
-      final int count, final Map<String, List<String>> byLicense, final Set<String> used) {
+      final int count,
+      final Map<String,
+      List<String>> byLicense,
+      final Set<String> used
+  ) {
     if (count == 0) {
       return "The project has no dependencies.\n";
     }
@@ -89,7 +99,8 @@ public final class NoticeService {
         (license, packages) -> {
           out.append('\n').append(license).append('\n');
           packages.stream().sorted().forEach(name -> out.append("    ").append(name).append('\n'));
-        });
+        }
+    );
     for (final String id : used) {
       out.append('\n')
           .append(RULE)
@@ -100,8 +111,9 @@ public final class NoticeService {
           .append("\n\n");
       final Optional<String> text = texts.text(id);
       out.append(
-              text.map(NoticeService::trimmed)
-                  .orElse("The text of " + id + " is not bundled with Ward."))
+          text.map(NoticeService::trimmed)
+              .orElse("The text of " + id + " is not bundled with Ward.")
+      )
           .append('\n');
     }
     return out.toString();

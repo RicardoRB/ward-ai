@@ -6,7 +6,6 @@ import java.util.Set;
 
 /** Reads the names, keywords and operators of TypeScript and JavaScript syntax nodes. */
 final class NodeSyntax {
-
   /** Nodes whose contents are types, which name no variable. */
   static final Set<String> SKIPPED = Set.of("typeAnnotation", "typeArguments", "typeParameters");
 

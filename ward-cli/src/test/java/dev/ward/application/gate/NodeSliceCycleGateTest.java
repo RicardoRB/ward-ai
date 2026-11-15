@@ -25,7 +25,6 @@ import org.junit.jupiter.params.provider.CsvSource;
  * two slices is reported, and a cycle inside one folder is not, as the design documents.
  */
 class NodeSliceCycleGateTest {
-
   private static final Path FIXTURES = Path.of("src/test/resources/fixtures/node-slice-cycles");
   private static final Path SAME_FOLDER =
       Path.of("src/test/resources/fixtures/node-architecture/typescript/violations/cycle");
@@ -58,7 +57,8 @@ class NodeSliceCycleGateTest {
         new Project(root, Language.TYPESCRIPT, BuildTool.NPM, Framework.NONE),
         List.of(ArchitectureGraphRules.cycles(List.of("src"))),
         new ProjectDependencyAdapters(List.of(new NodeDependencyAdapters())),
-        SliceCycleRule.ID);
+        SliceCycleRule.ID
+    );
   }
 
   /** Copies the files under {@code folder} to their paths relative to {@code base}, in the root. */

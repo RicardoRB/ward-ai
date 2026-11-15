@@ -28,7 +28,9 @@ public final class SwiftInitSupport implements ToolchainInitSupport {
 
   @Override
   public Optional<String> gitignoreEntries(
-      final Project project, final List<InitGateOption> gates) {
+      final Project project,
+      final List<InitGateOption> gates
+  ) {
     return Optional.of(".ward/reports/\n");
   }
 
@@ -40,7 +42,10 @@ public final class SwiftInitSupport implements ToolchainInitSupport {
 
   @Override
   public List<String> presetGates(
-      final Project project, final QualityPreset preset, final InitInputs inputs) {
+      final Project project,
+      final QualityPreset preset,
+      final InitInputs inputs
+  ) {
     return SourceLanguages.of(LANGUAGES, project).presetGates(preset).stream()
         .filter(gate -> SwiftGates.appliesTo(project.buildTool(), gate))
         .toList();
@@ -61,7 +66,8 @@ public final class SwiftInitSupport implements ToolchainInitSupport {
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final Set<String> owned) {
+      final Set<String> owned
+  ) {
     return SwiftAgentRules.lines(gates, preset);
   }
 

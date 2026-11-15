@@ -7,7 +7,6 @@ import dev.ward.analysis.domain.format.FormatToken;
 import org.junit.jupiter.api.Test;
 
 class JavaFormatSyntaxTest {
-
   private static final String CLEAN_SOURCE = "class A {\n  // note\n  int x; /* y */\n}\n";
 
   @Test

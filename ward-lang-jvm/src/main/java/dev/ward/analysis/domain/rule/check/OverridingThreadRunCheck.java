@@ -16,7 +16,6 @@ import java.util.Set;
  * by the name {@code Thread} or {@code java.lang.Thread} as written.
  */
 public final class OverridingThreadRunCheck implements UnitCheck {
-
   private static final String CLASS = "classDeclaration";
   private static final String METHOD = "methodDeclaration";
   private static final String PARAMETER = "formalParameter";

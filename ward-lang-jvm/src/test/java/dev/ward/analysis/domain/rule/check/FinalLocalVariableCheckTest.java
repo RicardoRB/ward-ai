@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 /** The final-local-variable check on blocks: initialized locals, reassignments and finals. */
 class FinalLocalVariableCheckTest extends TreeBuilders {
-
   private static final String MESSAGE = "final {value}";
   private static final String STATEMENT = "statement";
   private static final String BLOCK_STATEMENT = "blockStatement";
@@ -23,10 +22,10 @@ class FinalLocalVariableCheckTest extends TreeBuilders {
     assertThat(findings(block(initialized(false, "x"), n(STATEMENT, assignment("x", "y")))))
         .isEmpty();
     assertThat(
-            findings(
-                block(
-                    initialized(false, "x"),
-                    n(STATEMENT, n(EXPRESSION, id("x"), t("'++'", "++"))))))
+        findings(
+            block(initialized(false, "x"), n(STATEMENT, n(EXPRESSION, id("x"), t("'++'", "++"))))
+        )
+    )
         .isEmpty();
   }
 
@@ -37,7 +36,8 @@ class FinalLocalVariableCheckTest extends TreeBuilders {
   }
 
   private static java.util.List<dev.ward.analysis.domain.rule.RuleMatch> findings(
-      final SyntaxNode block) {
+      final SyntaxNode block
+  ) {
     return new FinalLocalVariableCheck(MESSAGE).check(unit(block), FILE);
   }
 
@@ -53,7 +53,9 @@ class FinalLocalVariableCheckTest extends TreeBuilders {
     final SyntaxNode[] children =
         isFinal
             ? new SyntaxNode[] {
-              n("variableModifier", t("'final'", "final")), t("int", "int"), declarator(name, true)
+                n("variableModifier", t("'final'", "final")),
+                t("int", "int"),
+                declarator(name, true)
             }
             : new SyntaxNode[] {t("int", "int"), declarator(name, true)};
     return n("localVariableDeclaration", children);
@@ -68,7 +70,8 @@ class FinalLocalVariableCheckTest extends TreeBuilders {
         ? n(
             "variableDeclarator",
             t(TOKEN_IDENTIFIER, name),
-            n("variableInitializer", t("INT", "1")))
+            n("variableInitializer", t("INT", "1"))
+        )
         : n("variableDeclarator", t(TOKEN_IDENTIFIER, name));
   }
 

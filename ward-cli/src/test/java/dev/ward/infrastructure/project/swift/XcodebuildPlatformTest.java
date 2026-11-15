@@ -46,6 +46,7 @@ class XcodebuildPlatformTest {
   private static XcodebuildSchemes schemesRunning(final String json) {
     return new XcodebuildSchemes(
         new FakeCommandExecutor(new CommandResult(0, json, "", Duration.ZERO)),
-        new ForyJsonCodec());
+        new ForyJsonCodec()
+    );
   }
 }

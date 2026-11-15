@@ -37,7 +37,8 @@ public final class UnnecessaryConstructorCheck implements UnitCheck {
                 body(visit.node()).stream()
                     .flatMap(body -> only(body).stream())
                     .filter(member -> isDefault(member, visit))
-                    .map(member -> CheckSupport.at(member.span(), message)))
+                    .map(member -> CheckSupport.at(member.span(), message))
+        )
         .toList();
   }
 
@@ -45,7 +46,8 @@ public final class UnnecessaryConstructorCheck implements UnitCheck {
     return type.children().stream()
         .filter(
             child ->
-                "classBody".equals(child.kind()) || "enumBodyDeclarations".equals(child.kind()))
+                "classBody".equals(child.kind()) || "enumBodyDeclarations".equals(child.kind())
+        )
         .findFirst();
   }
 
@@ -85,7 +87,9 @@ public final class UnnecessaryConstructorCheck implements UnitCheck {
         access(
             MemberDeclarations.wrapper(type.ancestors())
                 .map(MemberDeclarations::modifiers)
-                .orElse(List.of())));
+                .orElse(List.of())
+        )
+    );
   }
 
   private static String access(final List<String> modifiers) {

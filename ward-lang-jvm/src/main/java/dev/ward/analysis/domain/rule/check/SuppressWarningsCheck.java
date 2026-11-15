@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
  * matches the empty name, so an empty suppression is reported.
  */
 public final class SuppressWarningsCheck implements RuleCheck {
-
   private static final String ANNOTATION = "annotation";
   private static final String NAME = "SuppressWarnings";
   private static final String QUOTE = "\"";

@@ -16,7 +16,6 @@ import java.util.Set;
  * of a conditional's extends.
  */
 public final class BiomeConfusingVoidTypeCheck implements RuleCheck {
-
   private static final String PREDEFINED = "predefinedType";
   private static final String VOID = "void";
   private static final String UNION_OR_INTERSECTION = "unionOrIntersectionOrPrimaryType";
@@ -53,7 +52,10 @@ public final class BiomeConfusingVoidTypeCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(PREDEFINED)).stream()
         .filter(visit -> VOID.equals(SyntaxWalk.text(visit.node())))
         .filter(visit -> confusing(visit.node(), visit.ancestors()))

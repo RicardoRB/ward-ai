@@ -21,7 +21,11 @@ final class JavaMatrixFixtures {
    * named fixture brings its own sources and build files over the shared build tool files.
    */
   static void copyFixture(
-      final Path project, final int jdk, final String build, final String fixture)
+      final Path project,
+      final int jdk,
+      final String build,
+      final String fixture
+  )
       throws IOException {
     if (fixture.isEmpty()) {
       JavaMatrixProcesses.copyTree(FIXTURES.resolve("sources/base"), project);
@@ -70,7 +74,9 @@ final class JavaMatrixFixtures {
           Files.readString(VIOLATIONS.resolve("maven/dependency.xml"))
               + Files.readString(VIOLATIONS.resolve("maven/convergence.xml"));
       Files.writeString(
-          pom, Files.readString(pom).replaceFirst("(?s)(\\s*</dependencies>)", dependency + "$1"));
+          pom,
+          Files.readString(pom).replaceFirst("(?s)(\\s*</dependencies>)", dependency + "$1")
+      );
     } else {
       seedGradle(project);
     }
@@ -85,6 +91,8 @@ final class JavaMatrixFixtures {
             ? "implementation(\"junit:junit:4.+\")"
             : "implementation 'junit:junit:4.+'";
     Files.writeString(
-        script, Files.readString(script) + "\ndependencies {\n    " + dependency + "\n}\n");
+        script,
+        Files.readString(script) + "\ndependencies {\n    " + dependency + "\n}\n"
+    );
   }
 }

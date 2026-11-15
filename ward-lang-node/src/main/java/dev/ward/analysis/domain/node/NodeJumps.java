@@ -9,7 +9,6 @@ import java.util.List;
  * continue.
  */
 final class NodeJumps {
-
   private static final String IDENTIFIER = "identifier";
   private static final String EXPRESSION_SEQUENCE = "expressionSequence";
   private static final int VALUE_INDEX = 1;

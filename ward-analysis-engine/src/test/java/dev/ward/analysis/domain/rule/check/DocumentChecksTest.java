@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** The checks that read comments: unused imports and missing documentation. */
 class DocumentChecksTest {
-
   private static final String DECLARATION_KIND = "methodDeclaration";
 
   @Test
@@ -62,13 +61,17 @@ class DocumentChecksTest {
                     9,
                     1,
                     Trees.leaf("'@'", "@", 0),
-                    Trees.leaf(Trees.IDENTIFIER, "Override", 1))),
-            Trees.node(DECLARATION_KIND, 12, 30, 1, Trees.leaf(Trees.IDENTIFIER, "run", 20)));
+                    Trees.leaf(Trees.IDENTIFIER, "Override", 1)
+                )
+            ),
+            Trees.node(DECLARATION_KIND, 12, 30, 1, Trees.leaf(Trees.IDENTIFIER, "run", 20))
+        );
     final PrecedingCommentCheck check =
         new PrecedingCommentCheck(
             Trees.filter(Set.of(DECLARATION_KIND), Optional.empty(), Optional.empty()),
             Optional.of("Override"),
-            "missing");
+            "missing"
+        );
 
     assertThat(check.matches(Trees.unit(overriding))).isEmpty();
   }
@@ -77,6 +80,7 @@ class DocumentChecksTest {
     return new PrecedingCommentCheck(
         Trees.filter(Set.of("classDeclaration"), Optional.of("public"), Optional.empty()),
         exempt,
-        "missing");
+        "missing"
+    );
   }
 }

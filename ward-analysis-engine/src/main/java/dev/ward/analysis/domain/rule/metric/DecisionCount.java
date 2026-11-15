@@ -9,7 +9,6 @@ import java.util.Set;
  * an inner function, are skipped; they are measured as nodes of their own.
  */
 final class DecisionCount implements Measure {
-
   private static final int BASE = 1;
   private static final String TEXT_SEPARATOR = "#";
 
@@ -18,10 +17,12 @@ final class DecisionCount implements Measure {
       final SyntaxNode node,
       final MetricRule.Target target,
       final boolean method,
-      final MetricRule rule) {
+      final MetricRule rule
+  ) {
     final int complexity = BASE + decisions(node, rule);
     return Optional.of(
-        new Violation(node.span(), SyntaxTrees.nameOf(node, rule.keys().name()), complexity, ""));
+        new Violation(node.span(), SyntaxTrees.nameOf(node, rule.keys().name()), complexity, "")
+    );
   }
 
   @Override
@@ -29,7 +30,8 @@ final class DecisionCount implements Measure {
       final SyntaxNode node,
       final MetricRule.Target target,
       final boolean method,
-      final MetricRule rule) {
+      final MetricRule rule
+  ) {
     return measured(node, target, method, rule).filter(violation -> violation.value() > rule.max());
   }
 
@@ -48,7 +50,10 @@ final class DecisionCount implements Measure {
    * a kind, a {@code parent>token} pair, or a {@code kind#text} pair that matches the child's text.
    */
   private static int counts(
-      final SyntaxNode parent, final SyntaxNode child, final Set<String> decisions) {
+      final SyntaxNode parent,
+      final SyntaxNode child,
+      final Set<String> decisions
+  ) {
     if (decisions.contains(child.kind())
         || decisions.contains(child.kind() + TEXT_SEPARATOR + SyntaxTrees.text(child))) {
       return 1;

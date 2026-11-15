@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
  * positional name arguments only, to a function with positional parameters only, are checked.
  */
 public final class ArgumentOrderCheck implements RuleCheck {
-
   private static final Set<String> CALLS = Set.of("atom_expr");
   private static final Pattern NAME = Pattern.compile("^[A-Za-z_]\\w*$");
 

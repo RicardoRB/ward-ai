@@ -34,7 +34,8 @@ public final class RepositoryProjectScan {
         candidates.stream().filter(project -> !isModule(project, candidates)).toList();
     return projects.stream()
         .sorted(
-            Comparator.comparing(Project::root).thenComparing(project -> project.language().name()))
+            Comparator.comparing(Project::root).thenComparing(project -> project.language().name())
+        )
         .map(project -> new DiscoveredProject(project, moduleCount(project, candidates, projects)))
         .toList();
   }
@@ -49,7 +50,9 @@ public final class RepositoryProjectScan {
           new SimpleFileVisitor<>() {
             @Override
             public FileVisitResult preVisitDirectory(
-                final Path dir, final BasicFileAttributes attributes) {
+                final Path dir,
+                final BasicFileAttributes attributes
+            ) {
               if (!dir.equals(root) && skipped(dir)) {
                 return FileVisitResult.SKIP_SUBTREE;
               }
@@ -60,7 +63,9 @@ public final class RepositoryProjectScan {
             /** Directories at the depth limit arrive here instead of in preVisitDirectory. */
             @Override
             public FileVisitResult visitFile(
-                final Path file, final BasicFileAttributes attributes) {
+                final Path file,
+                final BasicFileAttributes attributes
+            ) {
               if (attributes.isDirectory() && !skipped(file)) {
                 found.addAll(projectsAt(file));
               }
@@ -71,7 +76,8 @@ public final class RepositoryProjectScan {
             public FileVisitResult visitFileFailed(final Path file, final IOException failure) {
               return FileVisitResult.CONTINUE;
             }
-          });
+          }
+      );
     } catch (IOException e) {
       throw new IllegalStateException("Could not scan project roots: " + e.getMessage(), e);
     }
@@ -112,7 +118,10 @@ public final class RepositoryProjectScan {
 
   /** Counts grouped modules whose nearest kept project is {@code project}. */
   private static int moduleCount(
-      final Project project, final List<Project> candidates, final List<Project> projects) {
+      final Project project,
+      final List<Project> candidates,
+      final List<Project> projects
+  ) {
     return (int)
         candidates.stream()
             .filter(candidate -> !projects.contains(candidate))

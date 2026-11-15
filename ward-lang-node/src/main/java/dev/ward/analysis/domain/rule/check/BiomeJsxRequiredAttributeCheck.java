@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * silent.
  */
 public final class BiomeJsxRequiredAttributeCheck implements RuleCheck {
-
   private final List<JsxElementSpec> elements;
   private final String attribute;
   private final ValueRule rule;
@@ -31,7 +30,6 @@ public final class BiomeJsxRequiredAttributeCheck implements RuleCheck {
    * @param silentOnSpread whether a spread attribute on the element silences the check
    */
   public record ValueRule(Set<String> values, Pattern invalid, boolean silentOnSpread) {
-
     /** Copies the allowed values. */
     public ValueRule {
       values = Set.copyOf(values);
@@ -55,7 +53,8 @@ public final class BiomeJsxRequiredAttributeCheck implements RuleCheck {
       final Set<String> elements,
       final String attribute,
       final ValueRule rule,
-      final String message) {
+      final String message
+  ) {
     this.elements = elements.stream().map(JsxElementSpec::parse).toList();
     this.attribute = Objects.requireNonNull(attribute, "attribute");
     this.rule = Objects.requireNonNull(rule, "rule");

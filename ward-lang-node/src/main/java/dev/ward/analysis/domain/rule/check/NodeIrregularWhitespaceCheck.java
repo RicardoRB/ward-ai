@@ -19,13 +19,14 @@ import java.util.regex.Pattern;
  * regular expression, template, comment or JSX text is dropped when that kind is skipped.
  */
 public final class NodeIrregularWhitespaceCheck implements RuleCheck {
-
   private static final Pattern RUN =
       Pattern.compile(
-          "[\\f\\u000B\\u0085\\uFEFF\\u00A0\\u1680\\u180E\\u2000-\\u200B\\u202F\\u205F\\u3000]+");
+          "[\\f\\u000B\\u0085\\uFEFF\\u00A0\\u1680\\u180E\\u2000-\\u200B\\u202F\\u205F\\u3000]+"
+      );
   private static final Pattern IRREGULAR =
       Pattern.compile(
-          "[\\f\\u000B\\u0085\\uFEFF\\u00A0\\u1680\\u180E\\u2000-\\u200B\\u202F\\u205F\\u3000\\u2028\\u2029]");
+          "[\\f\\u000B\\u0085\\uFEFF\\u00A0\\u1680\\u180E\\u2000-\\u200B\\u202F\\u205F\\u3000\\u2028\\u2029]"
+      );
   private static final Pattern LINE_BREAK = Pattern.compile("\\r\\n|[\\n\\r\\u2028\\u2029]");
   private static final String STRING = "StringLiteral";
   private static final String REGEX = "RegularExpressionLiteral";
@@ -43,18 +44,26 @@ public final class NodeIrregularWhitespaceCheck implements RuleCheck {
 
   /** Which kinds of text a finding may be dropped in. */
   public record Skips(
-      boolean comments, boolean jsxText, boolean regexps, boolean strings, boolean templates) {}
+      boolean comments,
+      boolean jsxText,
+      boolean regexps,
+      boolean strings,
+      boolean templates
+  ) {}
 
   /** A finding: its line, and its column counted from zero, as ESLint reports it. */
   private record Finding(int line, int column) {}
 
   /** A range in ESLint's coordinates: lines from one, columns from zero, end exclusive. */
   private record Range(int startLine, int startColumn, int endLine, int endColumn) {
-
     /** The range from the start of the first span to the end of the last one. */
     static Range of(final Span first, final Span last) {
       return new Range(
-          first.startLine(), first.startColumn() - ONE, last.endLine(), last.endColumn() - ONE);
+          first.startLine(),
+          first.startColumn() - ONE,
+          last.endLine(),
+          last.endColumn() - ONE
+      );
     }
 
     boolean keeps(final Finding finding) {
@@ -67,7 +76,6 @@ public final class NodeIrregularWhitespaceCheck implements RuleCheck {
 
   /** The lines of a source text and the offset where each starts. */
   private record Lines(List<String> text, List<Integer> starts, List<String> breaks) {
-
     /** Splits the source at its line breaks, keeping each break and the offset of each line. */
     static Lines of(final String source) {
       final List<String> text = new ArrayList<>();
@@ -105,7 +113,10 @@ public final class NodeIrregularWhitespaceCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     final String source = unit.text();
     if (!IRREGULAR.matcher(source).find()) {
       return List.of();
@@ -183,7 +194,10 @@ public final class NodeIrregularWhitespaceCheck implements RuleCheck {
   }
 
   private List<RuleMatch> toMatches(
-      final List<Finding> findings, final List<Range> ignored, final Lines lines) {
+      final List<Finding> findings,
+      final List<Range> ignored,
+      final Lines lines
+  ) {
     final List<Finding> kept =
         findings.stream()
             .filter(finding -> ignored.stream().allMatch(range -> range.keeps(finding)))
@@ -200,8 +214,11 @@ public final class NodeIrregularWhitespaceCheck implements RuleCheck {
                   finding.line(),
                   finding.column() + TWO,
                   offset,
-                  offset + ONE),
-              message));
+                  offset + ONE
+              ),
+              message
+          )
+      );
     }
     return List.copyOf(matches);
   }

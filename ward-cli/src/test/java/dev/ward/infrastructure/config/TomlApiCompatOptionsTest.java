@@ -34,7 +34,8 @@ class TomlApiCompatOptionsTest {
         read(
             reader,
             dir,
-            HEADER + "base = \"origin/main\"\ninclude = [\"com.acme.api\", \"com.acme.spi\"]\n");
+            HEADER + "base = \"origin/main\"\ninclude = [\"com.acme.api\", \"com.acme.spi\"]\n"
+        );
 
     assertThat(configuration.checks().get("api-compat").apiCompat())
         .isEqualTo(new ApiCompatOptions("origin/main", List.of("com.acme.api", "com.acme.spi")));
@@ -43,11 +44,12 @@ class TomlApiCompatOptionsTest {
   @Test
   void readsModulesAndRejectsBadOnes() throws IOException {
     assertThat(
-            read(reader, dir, HEADER + "modules = [\"core\", \"api/spi\"]\n")
-                .checks()
-                .get("api-compat")
-                .apiCompat()
-                .modules())
+        read(reader, dir, HEADER + "modules = [\"core\", \"api/spi\"]\n")
+            .checks()
+            .get("api-compat")
+            .apiCompat()
+            .modules()
+    )
         .containsExactly("core", "api/spi");
     assertThatThrownBy(() -> read(reader, dir, HEADER + "modules = []\n"))
         .isInstanceOf(WardException.class)

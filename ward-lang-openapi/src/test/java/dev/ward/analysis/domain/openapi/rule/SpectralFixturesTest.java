@@ -23,7 +23,6 @@ import org.junit.jupiter.params.provider.MethodSource;
  * the positions through the real engine; this test counts the rules in this module's coverage.
  */
 class SpectralFixturesTest {
-
   private static final Path FIXTURES =
       Path.of("..", "ward-cli", "src", "test", "resources", "rules", "openapi");
 
@@ -47,7 +46,8 @@ class SpectralFixturesTest {
               .containsExactlyElementsOf(
                   Files.readAllLines(directory.resolve("messages" + suffix + ".txt")).stream()
                       .sorted()
-                      .toList());
+                      .toList()
+              );
         } else if (fileName.startsWith("passing")) {
           assertThat(run(name, file)).as(fileName).isEmpty();
         }
@@ -63,7 +63,8 @@ class SpectralFixturesTest {
                     + ":"
                     + finding.span().startColumn()
                     + "\t"
-                    + finding.message())
+                    + finding.message()
+        )
         .sorted()
         .toList();
   }
@@ -79,7 +80,9 @@ class SpectralFixturesTest {
   private static List<OpenApiFinding> run(final String name, final Path file) throws IOException {
     final LoadResult loaded =
         OpenApiDocuments.fromTrees(
-            "api.yaml", Map.of("api.yaml", YamlParser.parse(Files.readString(file)).tree()));
+            "api.yaml",
+            Map.of("api.yaml", YamlParser.parse(Files.readString(file)).tree())
+        );
     return OpenApiRules.all().get(name).check(loaded.document().orElseThrow());
   }
 }

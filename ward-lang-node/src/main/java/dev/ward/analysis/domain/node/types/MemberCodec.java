@@ -6,7 +6,6 @@ import java.io.IOException;
 
 /** Helpers split out of {@link TypeCodec}. */
 final class MemberCodec {
-
   private MemberCodec() {}
 
   static void header(final DataOutputStream out, final Decl.Header header) throws IOException {
@@ -25,7 +24,8 @@ final class MemberCodec {
         CodecIo.read(in, TypeCodec::readTy),
         CodecIo.read(in, TypeCodec::readSig),
         CodecIo.read(in, TypeCodec::readSig),
-        CodecIo.read(in, CodecIo::readText));
+        CodecIo.read(in, CodecIo::readText)
+    );
   }
 
   static void member(final DataOutputStream out, final Member member) throws IOException {
@@ -42,6 +42,7 @@ final class MemberCodec {
         TypeCodec.readTy(in),
         CodecIo.read(in, TypeCodec::readSig),
         in.readInt(),
-        CodecIo.read(in, CodecIo::readText));
+        CodecIo.read(in, CodecIo::readText)
+    );
   }
 }

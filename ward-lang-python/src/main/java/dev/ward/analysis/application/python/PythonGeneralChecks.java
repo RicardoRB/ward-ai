@@ -19,7 +19,6 @@ import java.util.Map;
  * The declarative checks of the Ruff general rules that mirror Pylint: loops, returns and scopes.
  */
 final class PythonGeneralChecks {
-
   private static final String MESSAGE = "message";
 
   private PythonGeneralChecks() {}
@@ -29,31 +28,42 @@ final class PythonGeneralChecks {
     return Map.ofEntries(
         entry(
             "useless-else-on-loop",
-            toml -> new UselessElseOnLoopCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new UselessElseOnLoopCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry("useless-return", toml -> new UselessReturnCheck(TomlValues.required(toml, MESSAGE))),
         entry("import-self", toml -> new ImportSelfCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "global-variable-not-assigned",
-            toml -> new GlobalVariableNotAssignedCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new GlobalVariableNotAssignedCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "stop-iteration-return",
-            toml -> new StopIterationReturnCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new StopIterationReturnCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "redefined-argument-from-local",
-            toml -> new RedefinedArgumentFromLocalCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new RedefinedArgumentFromLocalCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "redefined-slots-in-subclass",
-            toml -> new RedefinedSlotsInSubclassCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new RedefinedSlotsInSubclassCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "too-many-locals",
             toml ->
                 new TooManyLocalsCheck(
-                    TomlValues.integer(toml, "max-locals"), TomlValues.required(toml, MESSAGE))),
+                    TomlValues.integer(toml, "max-locals"),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "too-many-public-methods",
             toml ->
                 new TooManyPublicMethodsCheck(
                     TomlValues.integer(toml, "max-public-methods"),
-                    TomlValues.required(toml, MESSAGE))));
+                    TomlValues.required(toml, MESSAGE)
+                )
+        )
+    );
   }
 }

@@ -9,7 +9,6 @@ import java.util.List;
 
 /** A formatter that returns one fixed text, to test what the safety checks do with it. */
 final class FixedFormatter implements SourceFormatter {
-
   private final SourceFormatter delegate;
   private final String output;
 

@@ -27,7 +27,6 @@ import java.util.Set;
  * names a body binds itself are checked, so a global or a builtin is never reported.
  */
 public final class UsedBeforeAssignmentCheck implements RuleCheck {
-
   /** The mistakes the check tells apart, one per rule. */
   public enum Problem {
     /** No path binds the name before the read. */
@@ -94,7 +93,8 @@ public final class UsedBeforeAssignmentCheck implements RuleCheck {
       final BasicBlock block,
       final State start,
       final Set<String> locals,
-      final Set<Span> loopTargets) {
+      final Set<Span> loopTargets
+  ) {
     final State state = start.copy();
     final List<RuleMatch> found = new ArrayList<>();
     for (final VariableAccess access : block.accesses()) {
@@ -126,7 +126,6 @@ public final class UsedBeforeAssignmentCheck implements RuleCheck {
    * that is not a loop target (plain).
    */
   static final class State {
-
     private final Set<String> must;
     private final Set<String> may;
     private final Set<String> plain;
@@ -190,7 +189,6 @@ public final class UsedBeforeAssignmentCheck implements RuleCheck {
 
   /** The fixed point of the binding states over the blocks of one graph. */
   private static final class Bindings {
-
     /** Returns the entry state of each block, or null for a block no path reaches. */
     static List<State> solve(final ControlFlowGraph graph, final Set<Span> loopTargets) {
       final List<State> entry = new ArrayList<>();
@@ -216,7 +214,8 @@ public final class UsedBeforeAssignmentCheck implements RuleCheck {
         final BasicBlock block,
         final State start,
         final List<State> entry,
-        final Set<Span> loopTargets) {
+        final Set<Span> loopTargets
+    ) {
       final State exit = start.copy();
       for (final VariableAccess access : block.accesses()) {
         exit.apply(access, loopTargets);

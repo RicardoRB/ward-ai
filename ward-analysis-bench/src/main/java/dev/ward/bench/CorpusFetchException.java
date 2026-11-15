@@ -2,7 +2,6 @@ package dev.ward.bench;
 
 /** A pinned corpus commit could not be fetched or did not resolve to the pinned SHA. */
 final class CorpusFetchException extends RuntimeException {
-
   private static final long serialVersionUID = 1L;
 
   CorpusFetchException(final String name, final String commit, final String reason) {
@@ -13,6 +12,7 @@ final class CorpusFetchException extends RuntimeException {
             + commit
             + ": "
             + reason
-            + ". The run does not fall back to another revision.");
+            + ". The run does not fall back to another revision."
+    );
   }
 }

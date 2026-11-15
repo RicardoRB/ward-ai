@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * for this purpose, and a {@code __future__} import must come before every other statement.
  */
 public final class ModuleOrderCheck implements RuleCheck {
-
   /** The mistakes the check tells apart, one per rule. */
   public enum Problem {
     /** An import after a statement that is not an import or a docstring. */
@@ -69,7 +68,11 @@ public final class ModuleOrderCheck implements RuleCheck {
 
   /** Whether the statement breaks the order that {@link #problem} checks. */
   private boolean report(
-      final boolean future, final boolean imported, final boolean statement, final boolean code) {
+      final boolean future,
+      final boolean imported,
+      final boolean statement,
+      final boolean code
+  ) {
     return switch (problem) {
       case FUTURE_AFTER_STATEMENT -> future && statement;
       case IMPORT_AFTER_CODE -> imported && code;
@@ -87,6 +90,7 @@ public final class ModuleOrderCheck implements RuleCheck {
         .anyMatch(
             child ->
                 "import_from".equals(child.kind())
-                    && FUTURE.matcher(SyntaxWalk.text(child)).find());
+                    && FUTURE.matcher(SyntaxWalk.text(child)).find()
+        );
   }
 }

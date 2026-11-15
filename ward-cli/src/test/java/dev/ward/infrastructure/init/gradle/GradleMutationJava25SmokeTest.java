@@ -71,9 +71,16 @@ class GradleMutationJava25SmokeTest {
             new Project(root, Language.JAVA, BuildTool.GRADLE, Framework.NONE),
             List.of(
                 new InitGateOption(
-                    "mutation", "mutation", List.of("gradle", "pitest"), true, "available")),
+                    "mutation",
+                    "mutation",
+                    List.of("gradle", "pitest"),
+                    true,
+                    "available"
+                )
+            ),
             QualityPreset.STRICT,
-            finding -> false);
+            finding -> false
+        );
 
     final Path log = root.resolve("pitest.log");
     final Process process =
@@ -96,7 +103,8 @@ class GradleMutationJava25SmokeTest {
     Files.writeString(test.resolve("PriceTest.java"), TEST);
     Files.writeString(
         root.resolve(kotlin ? "settings.gradle.kts" : "settings.gradle"),
-        kotlin ? "rootProject.name = \"shop\"\n" : "rootProject.name = 'shop'\n");
+        kotlin ? "rootProject.name = \"shop\"\n" : "rootProject.name = 'shop'\n"
+    );
     Files.writeString(root.resolve(buildFile), kotlin ? kotlinBuild() : groovyBuild());
   }
 

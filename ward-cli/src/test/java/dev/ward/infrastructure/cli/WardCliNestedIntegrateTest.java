@@ -52,7 +52,10 @@ class WardCliNestedIntegrateTest extends WardCliIntegrationSupport {
   @ParameterizedTest
   @CsvSource({"codex,.codex/hooks.json,.codex", "junie,.junie/config.json,.junie"})
   void nativeHarnessIsSharedByEveryNestedProject(
-      final String id, final String config, final String directory) throws IOException {
+      final String id,
+      final String config,
+      final String directory
+  ) throws IOException {
     final Path billing = Files.createDirectories(repository.resolve("services/billing"));
     Files.copy(project.resolve("pom.xml"), billing.resolve("pom.xml"));
 

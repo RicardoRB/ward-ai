@@ -28,7 +28,8 @@ final class TomlVulnerabilitiesParser {
   private static void rejectOn(final String where, final TomlTable gate, final String key) {
     if (gate.contains(key)) {
       throw new WardException(
-          "'" + where + "." + key + "' is only supported for the vulnerabilities check");
+          "'" + where + "." + key + "' is only supported for the vulnerabilities check"
+      );
     }
   }
 
@@ -39,7 +40,8 @@ final class TomlVulnerabilitiesParser {
     final String value = gate.isString(SEVERITY) ? gate.getString(SEVERITY) : null;
     if (value == null || Severity.parse(value).isEmpty()) {
       throw new WardException(
-          "'" + where + "." + SEVERITY + "' must be one of low, moderate, high and critical");
+          "'" + where + "." + SEVERITY + "' must be one of low, moderate, high and critical"
+      );
     }
     return value.strip().toLowerCase(java.util.Locale.ROOT);
   }

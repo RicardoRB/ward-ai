@@ -9,7 +9,6 @@ import java.util.Set;
 
 /** Fails each node of the given kinds that spans more lines than the limit. */
 public final class LinesCheck implements RuleCheck {
-
   private final Set<String> kinds;
   private final int max;
   private final String message;
@@ -37,7 +36,11 @@ public final class LinesCheck implements RuleCheck {
    * @throws IllegalArgumentException if {@code max} is negative
    */
   public LinesCheck(
-      final Set<String> kinds, final int max, final String message, final boolean countEmpty) {
+      final Set<String> kinds,
+      final int max,
+      final String message,
+      final boolean countEmpty
+  ) {
     this.kinds = Set.copyOf(kinds);
     this.max = CheckSupport.nonNegative(max, "max");
     this.message = Objects.requireNonNull(message, "message");
@@ -54,7 +57,9 @@ public final class LinesCheck implements RuleCheck {
         matches.add(
             new RuleMatch(
                 node.span(),
-                CheckSupport.fill(message, String.valueOf(lines), String.valueOf(max))));
+                CheckSupport.fill(message, String.valueOf(lines), String.valueOf(max))
+            )
+        );
       }
     }
     return List.copyOf(matches);

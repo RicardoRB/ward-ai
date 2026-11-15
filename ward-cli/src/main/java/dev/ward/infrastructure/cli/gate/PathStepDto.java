@@ -14,7 +14,6 @@ import org.apache.fory.json.annotation.JsonType;
  */
 @JsonType
 public record PathStepDto(String file, int line, int column, String message) {
-
   /**
    * Converts the steps of a path, in order.
    *

@@ -40,7 +40,8 @@ class SwiftToolsDirectoryRemovalTest {
             change -> {
               assertThat(change.file()).isEqualTo(root.resolve(".ward/swift-tools"));
               assertThat(change.action()).isEqualTo(Action.REMOVE);
-            });
+            }
+        );
 
     WRITER.apply(swift(root), QualityPreset.STANDARD, List.of());
 

@@ -32,14 +32,19 @@ class StrykerCombinedReportTest {
     final Path web = root.resolve("apps/web");
     final Path ui = root.resolve("packages/ui");
     FindingFixtures.write(
-        web.resolve(StrykerJsonMutationReport.REPORT), report(WEB_KILLED, WEB_SURVIVED));
+        web.resolve(StrykerJsonMutationReport.REPORT),
+        report(WEB_KILLED, WEB_SURVIVED)
+    );
     FindingFixtures.write(
-        ui.resolve(StrykerJsonMutationReport.REPORT), report(WEB_SURVIVED, WEB_KILLED));
+        ui.resolve(StrykerJsonMutationReport.REPORT),
+        report(WEB_SURVIVED, WEB_KILLED)
+    );
 
     final MutationCounts counts =
         combined(
-                new WorkspaceMember("web", web, FindingFixtures.typescript(web)),
-                new WorkspaceMember("ui", ui, FindingFixtures.typescript(ui)))
+            new WorkspaceMember("web", web, FindingFixtures.typescript(web)),
+            new WorkspaceMember("ui", ui, FindingFixtures.typescript(ui))
+        )
             .read(turbo(), FindingFixtures.justBefore());
 
     assertThat(counts.detected()).isEqualTo(COMBINED_HALF);
@@ -53,12 +58,15 @@ class StrykerCombinedReportTest {
     final Path web = root.resolve("apps/web");
     final Path ui = root.resolve("packages/ui");
     FindingFixtures.write(
-        web.resolve(StrykerJsonMutationReport.REPORT), report(WEB_KILLED, WEB_SURVIVED));
+        web.resolve(StrykerJsonMutationReport.REPORT),
+        report(WEB_KILLED, WEB_SURVIVED)
+    );
 
     final MutationCounts counts =
         combined(
-                new WorkspaceMember("web", web, FindingFixtures.typescript(web)),
-                new WorkspaceMember("ui", ui, FindingFixtures.typescript(ui)))
+            new WorkspaceMember("web", web, FindingFixtures.typescript(web)),
+            new WorkspaceMember("ui", ui, FindingFixtures.typescript(ui))
+        )
             .read(turbo(), FindingFixtures.justBefore());
 
     assertThat(counts.detected()).isEqualTo(WEB_KILLED);
@@ -76,8 +84,9 @@ class StrykerCombinedReportTest {
   private static String report(final int killed, final int survived) {
     final String mutants =
         Stream.concat(
-                Collections.nCopies(killed, "{\"status\":\"Killed\"}").stream(),
-                Collections.nCopies(survived, "{\"status\":\"Survived\"}").stream())
+            Collections.nCopies(killed, "{\"status\":\"Killed\"}").stream(),
+            Collections.nCopies(survived, "{\"status\":\"Survived\"}").stream()
+        )
             .reduce((first, second) -> first + "," + second)
             .orElse("");
     return "{\"files\":{\"src/a.ts\":{\"mutants\":[" + mutants + "]}}}";

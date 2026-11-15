@@ -20,7 +20,6 @@ import java.util.Set;
 
 /** Shared helpers for the control-flow tests: lowering, dumps and graph queries. */
 final class NodeFlowFixtures {
-
   private NodeFlowFixtures() {}
 
   static ControlFlowResult lower(final String source) {
@@ -60,7 +59,11 @@ final class NodeFlowFixtures {
   }
 
   static boolean hasEdge(
-      final ControlFlowGraph graph, final int from, final int to, final FlowEdgeKind kind) {
+      final ControlFlowGraph graph,
+      final int from,
+      final int to,
+      final FlowEdgeKind kind
+  ) {
     return graph.blocks().get(from).successors().contains(new FlowEdge(to, kind));
   }
 

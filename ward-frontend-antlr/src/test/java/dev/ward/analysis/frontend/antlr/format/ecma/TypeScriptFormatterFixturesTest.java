@@ -19,7 +19,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 /** Runs every typescript fixture folder through the shared format checks. */
 class TypeScriptFormatterFixturesTest {
-
   private static final Path ROOT = Path.of("src/test/resources/format/typescript");
 
   private static final SourceFormatter FORMATTER = new TypeScriptFormatter();

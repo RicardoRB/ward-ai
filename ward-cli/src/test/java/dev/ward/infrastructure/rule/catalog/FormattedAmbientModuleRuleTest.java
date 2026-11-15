@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 
 /** The formatter's output for a multi-statement ambient module passes one-statement-per-line. */
 class FormattedAmbientModuleRuleTest {
-
   private static final String RULE_ID = "ward:typescript/one-statement-per-line";
   private static final String SHIM =
       """

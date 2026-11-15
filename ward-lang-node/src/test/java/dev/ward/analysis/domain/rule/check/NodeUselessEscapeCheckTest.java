@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 /** Reports an escape that a string, template or regular expression does not need. */
 class NodeUselessEscapeCheckTest {
-
   private static final String MESSAGE = "unnecessary escape character: \\{value}";
   private static final int COLUMN = 12;
 
@@ -43,9 +42,8 @@ class NodeUselessEscapeCheckTest {
   @Test
   void validEscapesAreNotReported() {
     assertThat(
-            run(
-                "const a = \"\\n\\\\\\\"\";\nconst b = `\\${x}`;\nconst c = /[\\]\\-]/;\n",
-                Set.of()))
+        run("const a = \"\\n\\\\\\\"\";\nconst b = `\\${x}`;\nconst c = /[\\]\\-]/;\n", Set.of())
+    )
         .isEmpty();
   }
 

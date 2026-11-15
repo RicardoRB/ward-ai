@@ -33,7 +33,8 @@ public record SwiftPorts(XcodeSchemes xcode, SwiftSourceDirectories sources) {
               throw unavailable();
             }
           },
-          root -> List.of());
+          root -> List.of()
+      );
 
   private static WardException unavailable() {
     return new WardException("Swift projects need the Xcode and source ports, which are not set.");

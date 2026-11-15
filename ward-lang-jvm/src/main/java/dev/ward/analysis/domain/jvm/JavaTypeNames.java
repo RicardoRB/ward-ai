@@ -14,7 +14,6 @@ import java.util.Set;
  * file's package, and a few {@code java.lang} names are known by name.
  */
 final class JavaTypeNames {
-
   private static final String IMPORT_DECLARATION = "importDeclaration";
   private static final String PACKAGE_DECLARATION = "packageDeclaration";
   private static final String QUALIFIED_NAME = "qualifiedName";
@@ -46,7 +45,8 @@ final class JavaTypeNames {
           "IllegalArgumentException",
           "IllegalStateException",
           "NullPointerException",
-          "ProcessBuilder");
+          "ProcessBuilder"
+      );
   private static final Set<String> PRIMITIVES =
       Set.of("boolean", "byte", "char", "short", "int", "long", "float", "double", "void");
 
@@ -55,7 +55,11 @@ final class JavaTypeNames {
   private final String packageName;
 
   private JavaTypeNames(
-      final Map<String, String> imports, final List<String> wildcards, final String packageName) {
+      final Map<String,
+      String> imports,
+      final List<String> wildcards,
+      final String packageName
+  ) {
     this.imports = imports;
     this.wildcards = wildcards;
     this.packageName = packageName;
@@ -92,7 +96,11 @@ final class JavaTypeNames {
    * @return the names of the file
    */
   static JavaTypeNames of(
-      final Map<String, String> imports, final List<String> wildcards, final String packageName) {
+      final Map<String,
+      String> imports,
+      final List<String> wildcards,
+      final String packageName
+  ) {
     return new JavaTypeNames(Map.copyOf(imports), List.copyOf(wildcards), packageName);
   }
 
@@ -157,7 +165,11 @@ final class JavaTypeNames {
   }
 
   private static void addImport(
-      final SyntaxNode node, final Map<String, String> imports, final List<String> wildcards) {
+      final SyntaxNode node,
+      final Map<String,
+      String> imports,
+      final List<String> wildcards
+  ) {
     final List<String> texts =
         JavaFlowSyntax.parts(node).stream().map(JavaFlowSyntax::text).toList();
     final String name = nameOf(node);

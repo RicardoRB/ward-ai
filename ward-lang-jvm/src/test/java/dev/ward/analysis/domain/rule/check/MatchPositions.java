@@ -7,7 +7,6 @@ import java.util.List;
 
 /** The positions of matches, and the matches of a check on a source read as a file. */
 final class MatchPositions {
-
   static final int LINE_3 = 3;
   static final int LINE_4 = 4;
   static final int LINE_5 = 5;
@@ -32,8 +31,14 @@ final class MatchPositions {
 
   /** Returns the matches of {@code check} on {@code source}, read as the file {@code path}. */
   static List<RuleMatch> textMatches(
-      final RuleCheck check, final String path, final String source) {
+      final RuleCheck check,
+      final String path,
+      final String source
+  ) {
     return check.matches(
-        ImportTrees.unit(source), null, new SourceUnit(path, AnalysisLanguage.JAVA, source));
+        ImportTrees.unit(source),
+        null,
+        new SourceUnit(path, AnalysisLanguage.JAVA, source)
+    );
   }
 }

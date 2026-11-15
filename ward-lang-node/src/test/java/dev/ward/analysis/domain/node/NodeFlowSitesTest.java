@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks the flow sites that the TypeScript and JavaScript lowerings record on each block. */
 class NodeFlowSitesTest {
-
   private static final String POOL =
       """
       import { Pool } from 'pg';
@@ -84,7 +83,8 @@ class NodeFlowSitesTest {
       final ControlFlowGraph graph,
       final FlowSiteKind kind,
       final String name,
-      final String qualifier) {
+      final String qualifier
+  ) {
     return sites(graph, kind).stream()
         .filter(site -> site.name().equals(name) && site.qualifier().equals(qualifier))
         .findFirst()

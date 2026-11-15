@@ -22,7 +22,8 @@ final class ReportingGates {
       final List<String> focus,
       final CommandExecutor executor,
       final GateReportPorts reports,
-      final GateExtensions extensions) {
+      final GateExtensions extensions
+  ) {
     if (SupportedQualityGates.SECRETS.equals(check.type())) {
       if (extensions.secrets() == null) {
         throw new WardException("Secrets gate dependencies are unavailable.");

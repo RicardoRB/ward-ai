@@ -20,7 +20,6 @@ import org.junit.jupiter.api.io.TempDir;
  * and Java, end to end on the offline fixtures.
  */
 class InitWardTablesTest {
-
   @TempDir Path project;
 
   @Test
@@ -37,7 +36,8 @@ class InitWardTablesTest {
             "none",
             "--architecture",
             "hexagonal",
-            "--yes");
+            "--yes"
+        );
 
     assertThat(init.exit()).as(init.output()).isZero();
     assertThat(fixture.read("ward.toml"))
@@ -52,7 +52,10 @@ class InitWardTablesTest {
     writeUvProject(python);
     final InitCommandFixture init =
         InitCommandFixture.repository(
-            python, new PythonBuildToolConfigurator(new FakeCommandExecutor(0, "", "")), "uv");
+            python,
+            new PythonBuildToolConfigurator(new FakeCommandExecutor(0, "", "")),
+            "uv"
+        );
 
     final int exit =
         init.run(
@@ -63,7 +66,8 @@ class InitWardTablesTest {
             "none",
             "--architecture",
             "layered",
-            "--yes");
+            "--yes"
+        );
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(python.resolve(".importlinter")).doesNotExist();
@@ -77,11 +81,14 @@ class InitWardTablesTest {
     Files.writeString(project.resolve("build.gradle.kts"), "plugins { java }\n");
     Files.createDirectories(project.resolve("src/main/java/shop"));
     Files.writeString(
-        project.resolve("src/main/java/shop/App.java"), "package shop;\nclass App {}\n");
+        project.resolve("src/main/java/shop/App.java"),
+        "package shop;\nclass App {}\n"
+    );
     final InitCommandFixture init =
         InitCommandFixture.repository(
             project,
-            new JvmBuildToolConfigurator(new PomToolConfigurator(), new GradleToolConfigurator()));
+            new JvmBuildToolConfigurator(new PomToolConfigurator(), new GradleToolConfigurator())
+        );
 
     final int exit =
         init.run(
@@ -92,7 +99,8 @@ class InitWardTablesTest {
             "none",
             "--architecture",
             "hexagonal",
-            "--yes");
+            "--yes"
+        );
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     try (Stream<Path> files = Files.walk(project)) {
@@ -109,7 +117,10 @@ class InitWardTablesTest {
     writeUvProject(python);
     final InitCommandFixture init =
         InitCommandFixture.repository(
-            python, new PythonBuildToolConfigurator(new FakeCommandExecutor(0, "", "")), "uv");
+            python,
+            new PythonBuildToolConfigurator(new FakeCommandExecutor(0, "", "")),
+            "uv"
+        );
 
     final int exit =
         init.run(
@@ -121,7 +132,8 @@ class InitWardTablesTest {
             "--architecture",
             "layered",
             "--dry-run",
-            "--yes");
+            "--yes"
+        );
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(python.resolve("ward.toml")).doesNotExist();
@@ -130,7 +142,8 @@ class InitWardTablesTest {
   private static void writeUvProject(final Path root) throws IOException {
     Files.writeString(
         root.resolve("pyproject.toml"),
-        "[project]\nname = \"shop\"\nversion = \"0.1.0\"\nrequires-python = \">=3.11\"\ndependencies = []\n");
+        "[project]\nname = \"shop\"\nversion = \"0.1.0\"\nrequires-python = \">=3.11\"\ndependencies = []\n"
+    );
     Files.writeString(root.resolve("uv.lock"), "version = 1\n");
     Files.createDirectories(root.resolve("src/shop"));
     Files.writeString(root.resolve("src/shop/__init__.py"), "");

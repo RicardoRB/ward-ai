@@ -17,7 +17,6 @@ import java.util.Set;
  * in a {@code throw} and the edges that statements take when they throw do not count against it.
  */
 final class NullBackward {
-
   private final NullGraph graph;
   private final Needs needs;
   private final Map<Integer, Fact> in = new HashMap<>();
@@ -164,7 +163,8 @@ final class NullBackward {
     if (needed && event.operand().variable() != null) {
       sites.put(
           event.operand().variable(),
-          site(event.node().span(), returned ? Use.RETURN : Use.FIELD, block));
+          site(event.node().span(), returned ? Use.RETURN : Use.FIELD, block)
+      );
     }
   }
 

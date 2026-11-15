@@ -13,7 +13,6 @@ import java.util.Objects;
  * @param diagnostics the problems found; empty when the text was read completely
  */
 public record YamlResult(SyntaxNode tree, List<YamlDiagnostic> diagnostics) {
-
   /**
    * Copies the diagnostics.
    *
@@ -29,9 +28,15 @@ public record YamlResult(SyntaxNode tree, List<YamlDiagnostic> diagnostics) {
     final int at = Math.min(offset, source.text().length());
     final SyntaxNode empty =
         new SyntaxNode(
-            YamlSyntax.DOCUMENT, source.span(source.start(), source.start()), Map.of(), List.of());
+            YamlSyntax.DOCUMENT,
+            source.span(source.start(), source.start()),
+            Map.of(),
+            List.of()
+        );
     return new YamlResult(
-        empty, List.of(new YamlDiagnostic(message, source.line(at), source.column(at))));
+        empty,
+        List.of(new YamlDiagnostic(message, source.line(at), source.column(at)))
+    );
   }
 
   /** Tells whether the text was read without a problem. */

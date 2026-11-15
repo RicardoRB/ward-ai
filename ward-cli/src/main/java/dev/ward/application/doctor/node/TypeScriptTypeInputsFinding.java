@@ -23,12 +23,14 @@ public final class TypeScriptTypeInputsFinding {
           NAME,
           Status.OK,
           "typescript resolves from node_modules, so native TypeScript type resolution has its"
-              + " declarations.");
+              + " declarations."
+      );
     }
     return new Finding(
         NAME,
         Status.WARNING,
         "hint: native TypeScript type resolution reads node_modules; declare typescript in the"
-            + " project and install its dependencies.");
+            + " project and install its dependencies."
+    );
   }
 }

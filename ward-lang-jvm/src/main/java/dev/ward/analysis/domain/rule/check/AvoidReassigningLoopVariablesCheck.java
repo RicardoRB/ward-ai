@@ -14,7 +14,6 @@ import java.util.Set;
  * first statement of the body.
  */
 public final class AvoidReassigningLoopVariablesCheck implements UnitCheck {
-
   private static final String FOR_CONTROL = "forControl";
 
   private static final String DENY = "deny";
@@ -33,7 +32,10 @@ public final class AvoidReassigningLoopVariablesCheck implements UnitCheck {
    * @param message the message; {@code {value}} is the variable
    */
   public AvoidReassigningLoopVariablesCheck(
-      final String forReassign, final String foreachReassign, final String message) {
+      final String forReassign,
+      final String foreachReassign,
+      final String message
+  ) {
     this.forReassign = Objects.requireNonNull(forReassign, "forReassign");
     this.foreachReassign = Objects.requireNonNull(foreachReassign, "foreachReassign");
     this.message = Objects.requireNonNull(message, "message");
@@ -50,7 +52,10 @@ public final class AvoidReassigningLoopVariablesCheck implements UnitCheck {
   }
 
   private void checkLoop(
-      final SyntaxNode loop, final SyntaxLoop variable, final List<RuleMatch> matches) {
+      final SyntaxNode loop,
+      final SyntaxLoop variable,
+      final List<RuleMatch> matches
+  ) {
     final String mode = variable.enhanced() ? foreachReassign : forReassign;
     if (!DENY.equals(mode) && !FIRST_ONLY.equals(mode)) {
       return;
@@ -60,7 +65,8 @@ public final class AvoidReassigningLoopVariablesCheck implements UnitCheck {
       if (variable.name().equals(Assignments.target(assignment))
           && !(FIRST_ONLY.equals(mode) && isFirstStatement(body, assignment))) {
         matches.add(
-            CheckSupport.at(assignment.span(), CheckSupport.fill(message, variable.name(), "")));
+            CheckSupport.at(assignment.span(), CheckSupport.fill(message, variable.name(), ""))
+        );
       }
     }
   }
@@ -94,7 +100,8 @@ public final class AvoidReassigningLoopVariablesCheck implements UnitCheck {
             declarator ->
                 SyntaxWalk.descendants(declarator).stream()
                     .filter(node -> "identifier".equals(node.kind()))
-                    .findFirst())
+                    .findFirst()
+        )
         .map(id -> new SyntaxLoop(SyntaxWalk.text(id), false));
   }
 

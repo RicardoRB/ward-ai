@@ -16,7 +16,6 @@ import java.util.Set;
  * with an {@code @Override} annotation or {@code {@inheritDoc}} is not checked.
  */
 public final class JavadocMethodTagsCheck implements UnitCheck {
-
   private static final Set<String> MODIFIER_KINDS =
       Set.of("modifier", "classOrInterfaceModifier", "variableModifier", "annotation");
   private static final Set<String> METHODS = Set.of("methodDeclaration", "constructorDeclaration");
@@ -61,7 +60,10 @@ public final class JavadocMethodTagsCheck implements UnitCheck {
   }
 
   private void checkTags(
-      final SyntaxNode method, final SyntaxNode comment, final List<RuleMatch> matches) {
+      final SyntaxNode method,
+      final SyntaxNode comment,
+      final List<RuleMatch> matches
+  ) {
     final Span name =
         SyntaxWalk.firstDescendant(method, "identifier", NAME_SKIPPED)
             .map(SyntaxNode::span)
@@ -97,7 +99,8 @@ public final class JavadocMethodTagsCheck implements UnitCheck {
             formals ->
                 SyntaxWalk.descendants(formals).stream()
                     .filter(node -> "variableDeclaratorId".equals(node.kind()))
-                    .forEach(node -> names.add(SyntaxWalk.text(node))));
+                    .forEach(node -> names.add(SyntaxWalk.text(node)))
+        );
     return names;
   }
 

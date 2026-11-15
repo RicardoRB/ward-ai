@@ -12,7 +12,6 @@ import java.util.Map;
  * family to {@link #checks()}.
  */
 public final class PythonCheckProvider implements CheckProvider {
-
   @Override
   public Map<String, CheckFactory> checks() {
     final Map<String, CheckFactory> checks =
@@ -26,7 +25,10 @@ public final class PythonCheckProvider implements CheckProvider {
                     PythonShapeChecks.checks(),
                     PylintPartAChecks.checks(),
                     PylintPartA2Checks.checks(),
-                    PythonFlowChecks.checks())));
+                    PythonFlowChecks.checks()
+                )
+            )
+        );
     // A whole-run check: UnusedDefinitionFindings reports it, so no unit has a match here.
     checks.put("unused-definition", toml -> root -> List.of());
     // A whole-run graph check: CyclicImportRule reports it, so no unit has a match here.

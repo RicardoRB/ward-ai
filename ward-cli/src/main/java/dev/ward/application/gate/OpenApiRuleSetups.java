@@ -6,7 +6,6 @@ import java.util.List;
 
 /** Builds the rule setup of the {@code openapi-lint} gate. */
 public final class OpenApiRuleSetups {
-
   private OpenApiRuleSetups() {}
 
   /**
@@ -19,7 +18,10 @@ public final class OpenApiRuleSetups {
    * @throws WardException if the rule files are unusable
    */
   public static RuleSetup create(
-      final String checkName, final String rulesFile, final AnalysisPorts analysis) {
+      final String checkName,
+      final String rulesFile,
+      final AnalysisPorts analysis
+  ) {
     final AnalysisRuleLoad loaded = analysis.rules().load();
     if (!loaded.configurationErrors().isEmpty()) {
       throw new WardException(String.join(" ", loaded.configurationErrors()));
@@ -30,7 +32,8 @@ public final class OpenApiRuleSetups {
             checkName,
             rulesFile,
             new ConfiguredRuleSetup.Choices(available, false, available, List.of()),
-            analysis.rules());
+            analysis.rules()
+        );
     return LanguageFilteredSetup.onlyOpenApi(configured);
   }
 }

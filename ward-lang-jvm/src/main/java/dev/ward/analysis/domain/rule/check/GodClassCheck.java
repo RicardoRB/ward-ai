@@ -19,7 +19,6 @@ import java.util.Set;
  * A foreign access needs the type of its receiver, so an unknown receiver counts as nothing.
  */
 public final class GodClassCheck implements RuleCheck {
-
   private static final String EXPRESSION = "expression";
   private static final int ACCESS_PARTS = 3;
   private static final String METHOD_CALL = "methodCall";
@@ -63,7 +62,8 @@ public final class GodClassCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(MemberDeclarations.CLASS)).stream()
         .flatMap(visit -> reportOf(visit.node(), types).stream())
         .toList();
@@ -100,7 +100,10 @@ public final class GodClassCheck implements RuleCheck {
   }
 
   private static boolean isForeignAccess(
-      final SyntaxNode expression, final String own, final UnitTypeFacts types) {
+      final SyntaxNode expression,
+      final String own,
+      final UnitTypeFacts types
+  ) {
     final List<SyntaxNode> parts = expression.children();
     if (parts.size() < ACCESS_PARTS
         || !EXPRESSION.equals(parts.get(0).kind())

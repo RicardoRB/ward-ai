@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
  * folder; a glob with a slash is relative to the folder of its {@code .editorconfig}.
  */
 final class EditorConfigGlob {
-
   private static final int ALTERNATIVE_MINIMUM = 1;
   private static final String ANY_NAME = "[^/]*";
   private static final String ANY_CHARACTER = "[^/]";
@@ -67,7 +66,10 @@ final class EditorConfigGlob {
   }
 
   private static int translateEscape(
-      final String glob, final int index, final StringBuilder regex) {
+      final String glob,
+      final int index,
+      final StringBuilder regex
+  ) {
     final int next = index + 1;
     if (next >= glob.length()) {
       return appendLiteral(regex, '\\', index);
@@ -97,7 +99,10 @@ final class EditorConfigGlob {
 
   /** Translates {@code {a,b}}, {@code {n..m}}, or a literal {@code {single}}. */
   private static int translateBraces(
-      final String glob, final int index, final StringBuilder regex) {
+      final String glob,
+      final int index,
+      final StringBuilder regex
+  ) {
     final int close = GlobSyntax.matchingBrace(glob, index);
     if (close < 0) {
       return appendLiteral(regex, '{', index);
@@ -111,7 +116,8 @@ final class EditorConfigGlob {
       regex.append(
           parts.stream()
               .map(EditorConfigGlob::translate)
-              .collect(Collectors.joining("|", "(?:", ")")));
+              .collect(Collectors.joining("|", "(?:", ")"))
+      );
     } else {
       regex.append("\\{").append(translate(inner)).append("\\}");
     }

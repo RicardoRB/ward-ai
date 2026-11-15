@@ -16,7 +16,6 @@ import java.util.Set;
  * }} and opens a brace block, optionally after a parenthesised name.
  */
 public final class SwiftUnusedSetterValueCheck implements RuleCheck {
-
   private static final String SET = "set";
   private static final String VARIABLE = "variable_declaration";
   private static final String NEW_VALUE = "newValue";

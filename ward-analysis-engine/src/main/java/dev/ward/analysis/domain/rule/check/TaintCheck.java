@@ -16,7 +16,6 @@ import java.util.List;
  * {@code {source}} for the source name and {@code {sink}} for the sink name.
  */
 public final class TaintCheck implements RuleCheck {
-
   private static final String SOURCE = "{source}";
   private static final String SINK = "{sink}";
 

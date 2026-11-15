@@ -25,7 +25,6 @@ import java.util.stream.Stream;
  * OpenApiDocuments}.
  */
 public final class OpenApiDocument {
-
   /** The key of a reference object. */
   public static final String REF = "$ref";
 
@@ -37,8 +36,11 @@ public final class OpenApiDocument {
   OpenApiDocument(
       final DocNode root,
       final String version,
-      final Map<String, DocNode> files,
-      final Map<DocNode, DocNode> targets) {
+      final Map<String,
+      DocNode> files,
+      final Map<DocNode,
+      DocNode> targets
+  ) {
     this.root = root;
     this.version = version;
     this.files = Collections.unmodifiableSortedMap(new TreeMap<>(files));

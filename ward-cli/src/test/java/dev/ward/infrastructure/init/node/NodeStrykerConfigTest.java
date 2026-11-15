@@ -34,7 +34,10 @@ class NodeStrykerConfigTest {
   private final PresetRuleFileWriter writer =
       new PresetRuleFileWriter(
           RuleFileTargetsFixtures.of(
-              new FileSystemPackageManifests(), new FileSystemNodeToolConfigs()));
+              new FileSystemPackageManifests(),
+              new FileSystemNodeToolConfigs()
+          )
+      );
 
   @BeforeEach
   void manifest() throws IOException {
@@ -47,8 +50,7 @@ class NodeStrykerConfigTest {
         writer.apply(project(BuildTool.NPM), QualityPreset.STRICT, gates("vitest", "stryker"));
 
     assertThat(Files.readString(root.resolve(CONFIG)))
-        .isEqualTo(
-            """
+        .isEqualTo("""
             // managed-by: ward preset=strict
             export default {
               testRunner: "vitest",
@@ -78,8 +80,7 @@ class NodeStrykerConfigTest {
     writer.apply(project(BuildTool.BUN), QualityPreset.STRICT, gates("bun-test", "stryker"));
 
     assertThat(Files.readString(root.resolve(CONFIG)))
-        .isEqualTo(
-            """
+        .isEqualTo("""
             // managed-by: ward preset=strict
             export default {
               testRunner: "command",
@@ -110,9 +111,11 @@ class NodeStrykerConfigTest {
             Set.of(),
             "24",
             TaskRunner.NONE,
-            null),
+            null
+        ),
         QualityPreset.STRICT,
-        gates("vitest", "stryker"));
+        gates("vitest", "stryker")
+    );
 
     assertThat(Files.readString(root.resolve(CONFIG)))
         .contains("mutate: [\"src/**/*.{js,ts,jsx,tsx,mjs,mts,cts,cjs}\"],")
@@ -132,13 +135,17 @@ class NodeStrykerConfigTest {
 
     final List<PlannedFileChange> plan =
         RuleFilePlans.tools(
-            writer.plan(project(BuildTool.NPM), QualityPreset.STRICT, gates("stryker")));
+            writer.plan(project(BuildTool.NPM), QualityPreset.STRICT, gates("stryker"))
+        );
     writer.apply(project(BuildTool.NPM), QualityPreset.STRICT, gates("stryker"));
 
     assertThat(plan)
         .containsExactly(
             new PlannedFileChange(
-                root.resolve("stryker.conf.json"), PlannedFileChange.Action.PRESERVE_USER_OWNED));
+                root.resolve("stryker.conf.json"),
+                PlannedFileChange.Action.PRESERVE_USER_OWNED
+            )
+        );
     assertThat(root.resolve(CONFIG)).doesNotExist();
     assertThat(Files.readString(root.resolve("stryker.conf.json")))
         .isEqualTo("{\"testRunner\": \"vitest\"}\n");
@@ -155,7 +162,8 @@ class NodeStrykerConfigTest {
         Set.of(),
         "24",
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 
   private static List<InitGateOption> gates(final String... ids) {

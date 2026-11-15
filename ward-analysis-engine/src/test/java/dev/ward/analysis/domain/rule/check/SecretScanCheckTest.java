@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 /** The secret-scan evaluation order, built from rule data without any TOML. */
 class SecretScanCheckTest extends SecretScanCheckSupport {
-
   private static final double THRESHOLD = 3.0;
   private static final double IMPOSSIBLE = 9.0;
   private static final int BODY = 20;
@@ -52,7 +51,8 @@ class SecretScanCheckTest extends SecretScanCheckSupport {
             2,
             false,
             List.of(),
-            "m");
+            "m"
+        );
     final SecretRule first =
         new SecretRule(
             Optional.of(regex("(x)?(tok_[0-9a-zA-Z]{20})")),
@@ -62,7 +62,8 @@ class SecretScanCheckTest extends SecretScanCheckSupport {
             0,
             false,
             List.of(),
-            "m");
+            "m"
+        );
 
     assertThat(run(group, "a", "user=" + TOKEN)).hasSize(1);
     assertThat(run(group, "a", "user=tok_" + "a".repeat(BODY))).isEmpty();
@@ -80,7 +81,8 @@ class SecretScanCheckTest extends SecretScanCheckSupport {
             0,
             false,
             List.of(),
-            "m");
+            "m"
+        );
 
     final List<RuleMatch> matches = run(pathOnly, "certs/a.p12", "binary");
 
@@ -100,7 +102,8 @@ class SecretScanCheckTest extends SecretScanCheckSupport {
             0,
             false,
             List.of(),
-            "m");
+            "m"
+        );
 
     assertThat(run(onPath, "a.yml", TOKEN)).hasSize(1);
     assertThat(run(onPath, "a.txt", TOKEN)).isEmpty();
@@ -159,7 +162,8 @@ class SecretScanCheckTest extends SecretScanCheckSupport {
             0,
             false,
             List.of(),
-            "m");
+            "m"
+        );
 
     assertThatThrownBy(() -> run(evil, "a", "a".repeat(RUN)))
         .isInstanceOf(AnalysisFailedException.class)
@@ -172,31 +176,36 @@ class SecretScanCheckTest extends SecretScanCheckSupport {
     final List<SecretAllowlist> lists = List.of();
 
     assertThatThrownBy(
-            () -> new SecretRule(none, none, List.of(), Optional.empty(), 0, false, lists, "m"))
+        () -> new SecretRule(none, none, List.of(), Optional.empty(), 0, false, lists, "m")
+    )
         .isInstanceOf(IllegalArgumentException.class);
     assertThatThrownBy(
-            () ->
-                new SecretRule(
-                    Optional.of(regex("a")),
-                    none,
-                    List.of(),
-                    Optional.empty(),
-                    -1,
-                    false,
-                    lists,
-                    "m"))
+        () ->
+            new SecretRule(
+                Optional.of(regex("a")),
+                none,
+                List.of(),
+                Optional.empty(),
+                -1,
+                false,
+                lists,
+                "m"
+            )
+    )
         .isInstanceOf(IllegalArgumentException.class);
     assertThatThrownBy(
-            () ->
-                new SecretRule(
-                    Optional.of(regex("a")),
-                    none,
-                    List.of(),
-                    Optional.of(-1.0),
-                    0,
-                    false,
-                    lists,
-                    "m"))
+        () ->
+            new SecretRule(
+                Optional.of(regex("a")),
+                none,
+                List.of(),
+                Optional.of(-1.0),
+                0,
+                false,
+                lists,
+                "m"
+            )
+    )
         .isInstanceOf(IllegalArgumentException.class);
   }
 }

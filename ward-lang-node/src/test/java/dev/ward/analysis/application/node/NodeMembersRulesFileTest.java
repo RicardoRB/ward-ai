@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** The class-member and type-parameter naming rules are listed and name both languages. */
 class NodeMembersRulesFileTest {
-
   private static final String FILE = "rules/node/naming.toml";
 
   @Test
@@ -32,7 +31,8 @@ class NodeMembersRulesFileTest {
         .contains(
             "ward:typescript/class-type-parameter-name",
             "ward:typescript/interface-type-parameter-name",
-            "ward:typescript/method-type-parameter-name")
+            "ward:typescript/method-type-parameter-name"
+        )
         .noneMatch(id -> id.startsWith("ward:javascript/") && id.contains("type-parameter"));
   }
 

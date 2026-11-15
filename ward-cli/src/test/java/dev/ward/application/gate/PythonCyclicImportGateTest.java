@@ -24,7 +24,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** The cyclic-import rule through the ward gate on a project with no architecture configuration. */
 class PythonCyclicImportGateTest {
-
   @TempDir Path root;
 
   @Test
@@ -45,7 +44,8 @@ class PythonCyclicImportGateTest {
     write(
         "app/b.py",
         "from typing import TYPE_CHECKING\n\nif TYPE_CHECKING:\n    from app import a\n\n\n"
-            + "def b():\n    return 1\n");
+            + "def b():\n    return 1\n"
+    );
 
     assertThat(findings()).isEmpty();
   }
@@ -57,12 +57,14 @@ class PythonCyclicImportGateTest {
             Set.of(AnalysisLanguage.PYTHON),
             RuleCapability.SYMBOLS,
             AnalysisSeverity.ERROR,
-            "check = \"cyclic-import\"");
+            "check = \"cyclic-import\""
+        );
     return LayerPorts.ruleFindings(
         new Project(root, Language.PYTHON, BuildTool.PIP, Framework.NONE),
         List.of(rule),
         new ProjectDependencyAdapters(List.of(new PythonDependencyAdapters())),
-        CyclicImportRule.ID);
+        CyclicImportRule.ID
+    );
   }
 
   private void write(final String path, final String text) throws IOException {

@@ -15,7 +15,6 @@ import java.util.Objects;
  * nothing; {@code return None} has a value. The check reads the syntax tree, as Pylint does.
  */
 public final class InconsistentReturnCheck implements RuleCheck {
-
   private static final String RETURN = "return_stmt";
   private static final String FUNCTION = "funcdef";
   private static final String BLOCK = "block";

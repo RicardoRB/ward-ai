@@ -15,7 +15,6 @@ import java.util.Optional;
 
 /** {@code oas3-schema}: the document, as written, follows the schema of its OpenAPI version. */
 final class DocumentSchemaRules {
-
   private DocumentSchemaRules() {}
 
   /** Validates the entry file against the bundled schema of its OpenAPI version. */
@@ -28,7 +27,8 @@ final class DocumentSchemaRules {
     for (final SchemaMessages.Message message :
         DocumentSchemaMessages.format(errors, document.root())) {
       findings.add(
-          Findings.atValue(closest(document.root(), message.path()), message.text() + "."));
+          Findings.atValue(closest(document.root(), message.path()), message.text() + ".")
+      );
     }
     return findings;
   }

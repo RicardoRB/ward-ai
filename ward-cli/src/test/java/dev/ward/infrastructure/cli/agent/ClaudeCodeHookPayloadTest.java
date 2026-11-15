@@ -41,7 +41,8 @@ class ClaudeCodeHookPayloadTest extends ClaudeCodeHookTestSupport {
              "tool_input":{"file_path":"%s","content":"# P\\n","replace_all":false,"edits":[{"a":1}]},
              "tool_response":{"filePath":"x","success":true},"tool_use_id":"t1"}
             """
-                .formatted(root, root.resolve("src/main/java/App.java")));
+                .formatted(root, root.resolve("src/main/java/App.java"))
+        );
 
     assertThat(exit).isEqualTo(ExitCodes.ERROR);
     assertThat(err.toString()).contains("tests: ");

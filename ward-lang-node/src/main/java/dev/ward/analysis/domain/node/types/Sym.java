@@ -9,7 +9,6 @@ import java.util.List;
  * @param parts the declarations
  */
 record Sym(List<Located> parts) {
-
   /** One declaration and the scope it was declared in. */
   record Located(Decl decl, Lookup scope) {}
 

@@ -14,7 +14,6 @@ import java.util.stream.Stream;
 
 /** Copies and deletes corpus working trees. Symbolic links are recreated, never followed. */
 final class FileTrees {
-
   private FileTrees() {}
 
   static void copy(final Path source, final Path target) {
@@ -41,7 +40,8 @@ final class FileTrees {
               }
               return FileVisitResult.CONTINUE;
             }
-          });
+          }
+      );
     } catch (IOException e) {
       throw new UncheckedIOException("Could not copy a corpus tree", e);
     }

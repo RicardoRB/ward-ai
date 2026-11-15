@@ -11,7 +11,6 @@ import java.util.function.Predicate;
  * {@code alt-nonblank}, {@code select-single}, joined by {@code +} when several must hold.
  */
 final class Condition {
-
   private static final String ALWAYS = "-";
   private static final String JOIN = "\\+";
   private static final String OR = "\\|";
@@ -43,7 +42,11 @@ final class Condition {
   }
 
   private static boolean part(
-      final String part, final Predicate<String> has, final Map<String, String> literals) {
+      final String part,
+      final Predicate<String> has,
+      final Map<String,
+      String> literals
+  ) {
     if (part.startsWith(HAS)) {
       return has.test(part.substring(HAS.length()));
     }
@@ -60,7 +63,11 @@ final class Condition {
   }
 
   private static boolean keyword(
-      final String part, final Predicate<String> has, final Map<String, String> literals) {
+      final String part,
+      final Predicate<String> has,
+      final Map<String,
+      String> literals
+  ) {
     return switch (part) {
       case "alt-blank" -> literals.containsKey(ALT) && literals.get(ALT).isBlank();
       case "alt-nonblank" -> literals.containsKey(ALT) && !literals.get(ALT).isBlank();
@@ -81,7 +88,10 @@ final class Condition {
   }
 
   private static boolean selectSingle(
-      final Predicate<String> has, final Map<String, String> literals) {
+      final Predicate<String> has,
+      final Map<String,
+      String> literals
+  ) {
     if (has.test(MULTIPLE)) {
       return false;
     }

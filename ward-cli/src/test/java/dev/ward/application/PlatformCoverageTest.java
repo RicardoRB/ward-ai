@@ -20,8 +20,9 @@ class PlatformCoverageTest {
     final Path rust = Files.createDirectories(root.resolve("rust"));
     Files.writeString(rust.resolve("Cargo.toml"), "[package]");
     assertThat(
-            new ProjectDiscovery(new FileSystemProjectInspection())
-                .discover(root).stream().map(discovered -> discovered.project().language()))
+        new ProjectDiscovery(new FileSystemProjectInspection())
+            .discover(root).stream().map(discovered -> discovered.project().language())
+    )
         .containsExactly(Language.JAVASCRIPT, Language.PYTHON, Language.RUST);
   }
 

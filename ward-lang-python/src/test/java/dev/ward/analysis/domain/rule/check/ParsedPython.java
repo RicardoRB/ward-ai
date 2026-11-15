@@ -7,7 +7,6 @@ import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 
 /** Parses Python source with the real frontend for the tests of the rule checks. */
 final class ParsedPython {
-
   private static final String PATH = "module.py";
 
   private ParsedPython() {}

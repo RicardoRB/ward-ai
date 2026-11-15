@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 /** The percent, str.format and logging checks, on hand-built trees of each operator and call. */
 final class FormatChecksTest {
-
   private static final Span SPAN = new Span(1, 1, 1, 2, 0, 1);
   private static final String PERCENT = "%";
   private static final String TEXT = "text";
@@ -46,8 +45,9 @@ final class FormatChecksTest {
     final SyntaxNode notModulo =
         new SyntaxNode("expr", SPAN, Map.of(), List.of(leaf("a"), leaf("+"), leaf("b")));
     assertThat(
-            new PercentFormatCheck(PercentFormatCheck.Problem.INVALID, "message")
-                .matches(notModulo))
+        new PercentFormatCheck(PercentFormatCheck.Problem.INVALID, "message")
+            .matches(notModulo)
+    )
         .isEmpty();
     assertThat(percent(PercentFormatCheck.Problem.INVALID, "name", "1")).isEmpty();
     assertThat(percent(PercentFormatCheck.Problem.INVALID, "\"a\"\"b\"", "1")).isEmpty();
@@ -77,7 +77,10 @@ final class FormatChecksTest {
   }
 
   private static List<RuleMatch> percent(
-      final PercentFormatCheck.Problem problem, final String left, final String right) {
+      final PercentFormatCheck.Problem problem,
+      final String left,
+      final String right
+  ) {
     final SyntaxNode operation =
         new SyntaxNode(
             "expr",
@@ -86,7 +89,9 @@ final class FormatChecksTest {
             List.of(
                 new SyntaxNode("expr", SPAN, Map.of(), List.of(leaf(left))),
                 leaf(PERCENT),
-                new SyntaxNode("expr", SPAN, Map.of(), List.of(leaf(right)))));
+                new SyntaxNode("expr", SPAN, Map.of(), List.of(leaf(right)))
+            )
+        );
     return new PercentFormatCheck(problem, "message").matches(operation);
   }
 
@@ -95,7 +100,9 @@ final class FormatChecksTest {
   }
 
   private static List<RuleMatch> logging(
-      final LoggingArgsCheck.Problem problem, final String text) {
+      final LoggingArgsCheck.Problem problem,
+      final String text
+  ) {
     return new LoggingArgsCheck(problem, "message").matches(call(text));
   }
 

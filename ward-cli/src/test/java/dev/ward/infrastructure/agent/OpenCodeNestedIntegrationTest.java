@@ -29,7 +29,8 @@ class OpenCodeNestedIntegrationTest {
             "const PROJECT = join(dirname(fileURLToPath(import.meta.url)), \"..\", \"..\", \"apps/api\");",
             "cwd: PROJECT,",
             ".map((path) => (isAbsolute(path) ? path : join(directory, path)))",
-            "id: \"ward.edit-write.apps-api\"")
+            "id: \"ward.edit-write.apps-api\""
+        )
         .doesNotContain(SESSION_CWD);
     assertThat(Files.readString(repository.resolve(".opencode/commands/ward-check-apps-api.md")))
         .contains("`ward check -C apps/api --format json");

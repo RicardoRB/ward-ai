@@ -16,8 +16,8 @@ final class Containing {
     T best = null;
     long width = Long.MAX_VALUE;
     for (final Map.Entry<Long, T> entry : entries.entrySet()) {
-      final int start = (int) (entry.getKey() >> Integer.SIZE);
-      final int end = (int) (long) entry.getKey();
+      final int start = (int)(entry.getKey() >> Integer.SIZE);
+      final int end = (int)(long)entry.getKey();
       if (start <= span.startOffset() && end >= span.endOffset() && end - start < width) {
         width = end - start;
         best = entry.getValue();

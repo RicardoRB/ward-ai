@@ -31,7 +31,10 @@ class TurborepoMemberScriptsTest {
                 List.of(astro),
                 Map.of(
                     astro.directory(),
-                    new PackageManifest(Map.of("astro", "^5.0.0"), null, null))));
+                    new PackageManifest(Map.of("astro", "^5.0.0"), null, null)
+                )
+            )
+        );
 
     assertThat(scripts).hasSize(1);
     assertThat(scripts.getFirst().scripts().get("check-types")).isEqualTo("astro check");
@@ -43,10 +46,12 @@ class TurborepoMemberScriptsTest {
         TurborepoFixtures.memberOf(root, "packages/eslint-config", Framework.NONE);
 
     assertThat(
-            TurborepoPlan.memberScripts(
-                TurborepoFixtures.rootProject(root, BuildTool.PNPM),
-                QualityPreset.STANDARD,
-                TurborepoFixtures.inputs(root, List.of(config), Map.of(), Set.of())))
+        TurborepoPlan.memberScripts(
+            TurborepoFixtures.rootProject(root, BuildTool.PNPM),
+            QualityPreset.STANDARD,
+            TurborepoFixtures.inputs(root, List.of(config), Map.of(), Set.of())
+        )
+    )
         .isEmpty();
   }
 }

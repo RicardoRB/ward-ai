@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.tomlj.Toml;
 
 class TomlRulesFileKeyTest {
-
   private static String config(final String value) {
     return "version = 2\n[checks.ward]\nuses = \"ward\"\nrules-file = " + value + "\n";
   }

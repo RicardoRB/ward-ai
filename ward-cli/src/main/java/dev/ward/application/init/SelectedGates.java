@@ -25,15 +25,21 @@ final class SelectedGates {
    * the other selected gates. Unselected preset gates are not added.
    */
   static List<InitGateOption> resolve(
-      final InitSetupCatalog catalog, final Project project, final InitSelection selection) {
+      final InitSetupCatalog catalog,
+      final Project project,
+      final InitSelection selection
+  ) {
     final List<String> ids =
         Stream.concat(
-                (selection.preset() == null
-                        ? selection.gates()
-                        : PresetGateOrder.orderSelected(
-                            catalog.presetGates(project, selection.preset()), selection.gates()))
-                    .stream(),
-                Stream.of(FormatGates.WARD_FORMAT))
+            (selection.preset() == null
+                ? selection.gates()
+                : PresetGateOrder.orderSelected(
+                    catalog.presetGates(project, selection.preset()),
+                    selection.gates()
+                ))
+                .stream(),
+            Stream.of(FormatGates.WARD_FORMAT)
+        )
             .distinct()
             .toList();
     final List<InitGateOption> gates =
@@ -56,7 +62,8 @@ final class SelectedGates {
         && ids.stream().noneMatch(NODE_TEST_GATES::contains)) {
       throw new WardException(
           "The coverage gate needs the vitest, jest or bun-test gate, which writes the report it"
-              + " reads. Select both gates.");
+              + " reads. Select both gates."
+      );
     }
   }
 
@@ -68,7 +75,8 @@ final class SelectedGates {
         List.of(),
         true,
         null,
-        Map.of());
+        Map.of()
+    );
   }
 
   /** Returns the configured gate for {@code id}, with the {@code ward-format} gate built here. */
@@ -76,7 +84,8 @@ final class SelectedGates {
       final InitSetupCatalog catalog,
       final Project project,
       final InitSelection selection,
-      final String id) {
+      final String id
+  ) {
     if (FormatGates.WARD_FORMAT.equals(id)) {
       return wardFormat();
     }
@@ -88,7 +97,8 @@ final class SelectedGates {
       final InitSetupCatalog catalog,
       final Project project,
       final String id,
-      final QualityPreset preset) {
+      final QualityPreset preset
+  ) {
     final InitGateOption offered = catalog.gate(project, id);
     return preset == null
         ? offered

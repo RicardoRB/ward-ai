@@ -30,14 +30,16 @@ final class GatePrerequisiteFixtures {
       new Project(Path.of("/p"), Language.JAVA, BuildTool.GRADLE, Framework.NONE);
   static final CommandExecutor MISSING =
       (command, directory) ->
-          new CommandResult(
-              -1, "", "", Duration.ZERO, "PROCESS_START_FAILURE: could not start tool");
+      new CommandResult(-1, "", "", Duration.ZERO, "PROCESS_START_FAILURE: could not start tool");
 
   private GatePrerequisiteFixtures() {}
 
   /** Reports {@code declared} as the release and {@code runtime} as the JDK, counting calls. */
   static CompatibilityInspection jdk(
-      final Integer declared, final Integer runtime, final AtomicInteger calls) {
+      final Integer declared,
+      final Integer runtime,
+      final AtomicInteger calls
+  ) {
     return project -> {
       calls.incrementAndGet();
       return new CompatibilityProjectSnapshot(
@@ -46,8 +48,10 @@ final class GatePrerequisiteFixtures {
               Optional.ofNullable(runtime),
               Optional.ofNullable(declared),
               Optional.empty(),
-              Framework.NONE),
-          Map.of());
+              Framework.NONE
+          ),
+          Map.of()
+      );
     };
   }
 
@@ -59,7 +63,9 @@ final class GatePrerequisiteFixtures {
   }
 
   static QualityGateRunner runner(
-      final CompatibilityInspection maven, final CompatibilityInspection gradle) {
+      final CompatibilityInspection maven,
+      final CompatibilityInspection gradle
+  ) {
     return new QualityGateRunner(FindingExtractor.NONE, new GatePrerequisites(maven, gradle));
   }
 

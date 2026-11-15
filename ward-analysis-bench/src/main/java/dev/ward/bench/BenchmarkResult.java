@@ -8,8 +8,8 @@ record BenchmarkResult(
     NativeExecutable binary,
     int fullRepeats,
     int editRepeats,
-    boolean completed) {
-
+    boolean completed
+) {
   record EntryResult(CorpusEntry entry, List<JobResult> jobs) {}
 
   /** Metrics for one gate job; {@code edit} is null for jobs that are not edit-hook jobs. */
@@ -21,5 +21,6 @@ record BenchmarkResult(
       Statistics cold,
       Statistics warm,
       Statistics peakRssKb,
-      Statistics edit) {}
+      Statistics edit
+  ) {}
 }

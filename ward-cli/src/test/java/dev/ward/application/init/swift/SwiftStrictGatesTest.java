@@ -26,7 +26,8 @@ class SwiftStrictGatesTest {
             "-Xswiftc",
             "-warnings-as-errors",
             "-Xswiftc",
-            "-strict-concurrency=complete");
+            "-strict-concurrency=complete"
+        );
     assertThat(command(gates, "swift-test"))
         .containsExactly(
             "swift",
@@ -35,7 +36,8 @@ class SwiftStrictGatesTest {
             "-Xswiftc",
             "-warnings-as-errors",
             "-Xswiftc",
-            "-strict-concurrency=complete");
+            "-strict-concurrency=complete"
+        );
     assertThat(command(gates, "swift-coverage"))
         .containsExactly(
             "swift",
@@ -44,7 +46,8 @@ class SwiftStrictGatesTest {
             "-Xswiftc",
             "-warnings-as-errors",
             "-Xswiftc",
-            "-strict-concurrency=complete");
+            "-strict-concurrency=complete"
+        );
     assertThat(setting(gates, "swift-coverage", "minimum")).isEqualTo("85");
   }
 
@@ -62,7 +65,8 @@ class SwiftStrictGatesTest {
             "-enableCodeCoverage",
             "YES",
             "SWIFT_TREAT_WARNINGS_AS_ERRORS=YES",
-            "SWIFT_STRICT_CONCURRENCY=complete");
+            "SWIFT_STRICT_CONCURRENCY=complete"
+        );
     assertThat(setting(gates, "swift-coverage", "minimum")).isEqualTo("85");
   }
 
@@ -78,7 +82,10 @@ class SwiftStrictGatesTest {
 
   /** Returns the setting {@code key} of the gate {@code id}. */
   private static String setting(
-      final List<InitGateOption> gates, final String id, final String key) {
+      final List<InitGateOption> gates,
+      final String id,
+      final String key
+  ) {
     final Map<String, String> settings =
         gates.stream().filter(gate -> gate.id().equals(id)).findFirst().orElseThrow().settings();
     return settings.get(key);

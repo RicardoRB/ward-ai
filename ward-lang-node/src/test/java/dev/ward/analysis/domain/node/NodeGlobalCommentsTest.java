@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 /** The names that global comments declare, read as ESLint reads them. */
 final class NodeGlobalCommentsTest {
-
   @Test
   void globalCommentDeclaresEachName() {
     assertThat(NodeGlobalComments.of("/* global test, expect */\ntest(1);"))

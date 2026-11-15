@@ -53,7 +53,8 @@ public final class MutmutMetaMutationReport implements MutationReport {
     }
     if (ReportFiles.fresh(SupportedQualityGates.MUTMUT, since, files).isEmpty()) {
       return MutationCounts.unusable(
-          "mutmut's results under " + RESULTS + "/ were written before the gate started.");
+          "mutmut's results under " + RESULTS + "/ were written before the gate started."
+      );
     }
     int detected = 0;
     int undetected = 0;
@@ -64,17 +65,20 @@ public final class MutmutMetaMutationReport implements MutationReport {
       } catch (IOException | JsonCodecException | IllegalArgumentException exception) {
         if (LOGGER.isLoggable(Level.INFO)) {
           LOGGER.log(
-              Level.INFO, "event=findings-parse-failed gate=" + SupportedQualityGates.MUTMUT);
+              Level.INFO,
+              "event=findings-parse-failed gate=" + SupportedQualityGates.MUTMUT
+          );
         }
         return MutationCounts.unusable(
             "mutmut's result file "
                 + RESULTS
                 + "/"
                 + directory.relativize(file)
-                + " cannot be parsed.");
+                + " cannot be parsed."
+        );
       }
-      detected += (int) exitCodes.stream().filter(DETECTED::contains).count();
-      undetected += (int) exitCodes.stream().filter(UNDETECTED::contains).count();
+      detected += (int)exitCodes.stream().filter(DETECTED::contains).count();
+      undetected += (int)exitCodes.stream().filter(UNDETECTED::contains).count();
     }
     return MutationCounts.of(detected, undetected);
   }
@@ -92,7 +96,9 @@ public final class MutmutMetaMutationReport implements MutationReport {
     } catch (IOException exception) {
       if (LOGGER.isLoggable(Level.INFO)) {
         LOGGER.log(
-            Level.INFO, "event=mutmut-results-unreadable gate=" + SupportedQualityGates.MUTMUT);
+            Level.INFO,
+            "event=mutmut-results-unreadable gate=" + SupportedQualityGates.MUTMUT
+        );
       }
       return List.of();
     }

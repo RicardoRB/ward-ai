@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * store through it, before the lock is released. Primitive and {@code String} fields are skipped.
  */
 public final class PartialConstructionCheck implements RuleCheck {
-
   private static final String STATEMENT = "statement";
   private static final String BLOCK = "block";
   private static final String BLOCK_STATEMENT = "blockStatement";
@@ -98,7 +97,8 @@ public final class PartialConstructionCheck implements RuleCheck {
                 block ->
                     block.children().stream()
                         .filter(c -> BLOCK_STATEMENT.equals(c.kind()))
-                        .toList())
+                        .toList()
+            )
             .orElse(List.of());
     final Pattern assign = Pattern.compile("^(?:this\\.)?" + field + "=[^=]");
     final Pattern store = Pattern.compile("^(?:this\\.)?" + field + "(?:\\.\\w+|\\[.*\\])=[^=]");

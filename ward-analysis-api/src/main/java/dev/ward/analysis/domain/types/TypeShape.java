@@ -13,8 +13,12 @@ import java.util.Objects;
  * @param supertypes the direct superclass and interfaces that resolved
  */
 public record TypeShape(
-    Kind kind, boolean isAbstract, boolean isFinal, boolean isSealed, List<TypeRef> supertypes) {
-
+    Kind kind,
+    boolean isAbstract,
+    boolean isFinal,
+    boolean isSealed,
+    List<TypeRef> supertypes
+) {
   /** The kinds of type declaration. */
   public enum Kind {
     /** A class. */

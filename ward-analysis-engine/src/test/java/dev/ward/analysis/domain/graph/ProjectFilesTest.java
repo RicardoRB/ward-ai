@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** The file universe of a run copies its sets, so a later change to them does not leak in. */
 class ProjectFilesTest {
-
   @Test
   void copiesItsSets() {
     final Set<String> files = new HashSet<>(Set.of("a.ts"));

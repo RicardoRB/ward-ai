@@ -27,7 +27,10 @@ final class TextResultCache {
   private final String engineVersion;
 
   TextResultCache(
-      final RuleMatcher matcher, final AnalysisResultCodec codec, final String engineVersion) {
+      final RuleMatcher matcher,
+      final AnalysisResultCodec codec,
+      final String engineVersion
+  ) {
     this.matcher = matcher;
     this.codec = codec;
     this.engineVersion = engineVersion;
@@ -35,7 +38,10 @@ final class TextResultCache {
 
   /** Returns the findings of every file, reused or analyzed, in the stable report order. */
   RuleRunResult run(
-      final AnalysisCache cache, final List<TextFile> files, final List<RuleDefinition> rules) {
+      final AnalysisCache cache,
+      final List<TextFile> files,
+      final List<RuleDefinition> rules
+  ) {
     final String ruleSet = AnalysisCacheKey.ruleSet(engineVersion, rules);
     final Map<TextFile, String> misses = new LinkedHashMap<>();
     final List<AnalysisFinding> findings = new ArrayList<>();
@@ -60,12 +66,15 @@ final class TextResultCache {
 
   private void store(
       final AnalysisCache cache,
-      final Map<TextFile, String> misses,
-      final List<AnalysisFinding> analyzed) {
+      final Map<TextFile,
+      String> misses,
+      final List<AnalysisFinding> analyzed
+  ) {
     final Map<String, List<AnalysisFinding>> byFile =
         analyzed.stream().collect(Collectors.groupingBy(AnalysisFinding::file));
     misses.forEach(
         (file, key) ->
-            cache.write(key, codec.encode(key, byFile.getOrDefault(file.path(), List.of()))));
+            cache.write(key, codec.encode(key, byFile.getOrDefault(file.path(), List.of())))
+    );
   }
 }

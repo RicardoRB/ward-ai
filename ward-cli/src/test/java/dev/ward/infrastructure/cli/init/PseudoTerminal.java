@@ -25,7 +25,11 @@ final class PseudoTerminal implements AutoCloseable {
   private final Thread reader;
 
   private PseudoTerminal(
-      final Arena arena, final TerminalLibc libc, final int master, final String devicePath) {
+      final Arena arena,
+      final TerminalLibc libc,
+      final int master,
+      final String devicePath
+  ) {
     this.arena = arena;
     this.libc = libc;
     this.master = master;
@@ -89,7 +93,8 @@ final class PseudoTerminal implements AutoCloseable {
       while (count > 0) {
         output.accumulateAndGet(
             StandardCharsets.UTF_8.decode(buffer.asSlice(0, count).asByteBuffer()).toString(),
-            String::concat);
+            String::concat
+        );
         count = libc.read(master, buffer, buffer.byteSize());
       }
     }

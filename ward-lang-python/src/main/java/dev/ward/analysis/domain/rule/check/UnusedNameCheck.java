@@ -16,7 +16,6 @@ import java.util.Set;
  * _}, {@code ignored_} or {@code unused_} are ignored, as in Pylint's defaults.
  */
 public final class UnusedNameCheck implements RuleCheck {
-
   /** The problem a name is reported for. */
   public enum Problem {
     /** A parameter the function body never uses. */
@@ -99,11 +98,15 @@ public final class UnusedNameCheck implements RuleCheck {
     return ancestors.stream()
         .skip(1)
         .noneMatch(
-            a -> FUNCTION.equals(a.kind()) || CLASS.equals(a.kind()) || DECORATED.equals(a.kind()));
+            a -> FUNCTION.equals(a.kind()) || CLASS.equals(a.kind()) || DECORATED.equals(a.kind())
+        );
   }
 
   private void privateMethod(
-      final SyntaxNode definition, final SyntaxNode method, final List<RuleMatch> found) {
+      final SyntaxNode definition,
+      final SyntaxNode method,
+      final List<RuleMatch> found
+  ) {
     final String name = ModuleDefinitions.definedName(method).orElse("");
     if (name.startsWith("__") && !name.endsWith("__")) {
       final long mentions =

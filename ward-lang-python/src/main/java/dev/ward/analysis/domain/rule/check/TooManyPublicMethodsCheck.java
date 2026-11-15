@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 
 /** Reports a class that defines more public methods than {@code max}, like Pylint R0904. */
 public final class TooManyPublicMethodsCheck implements RuleCheck {
-
   private static final Set<String> CLASSES = Set.of("classdef");
   private static final Set<String> METHODS = Set.of("funcdef");
   private static final Pattern METHOD_NAME = Pattern.compile("^def(\\w+)");

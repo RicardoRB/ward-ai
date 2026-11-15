@@ -13,12 +13,19 @@ import java.util.Set;
  * overload-order rules of Checkstyle and typescript-eslint.
  */
 public final class NodeOverloadGroupingCheck implements RuleCheck {
-
   private static final String BODY = "classTail";
   private static final String MEMBER = "classElement";
   private static final Set<String> MODIFIERS =
       Set.of(
-          "public", "private", "protected", "static", "readonly", "abstract", "override", "async");
+          "public",
+          "private",
+          "protected",
+          "static",
+          "readonly",
+          "abstract",
+          "override",
+          "async"
+      );
 
   private final String message;
 

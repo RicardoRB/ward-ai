@@ -25,7 +25,8 @@ class JvmDependencyResolverTest {
     final List<DependencyEdge> edges =
         resolve(
             file(ORDER, List.of(), List.of(PACKAGE_A, "import:shop.domain.Price")),
-            file(PRICE, List.of("shop.domain.Price"), List.of()));
+            file(PRICE, List.of("shop.domain.Price"), List.of())
+        );
 
     assertThat(targets(edges, ORDER)).containsExactly(PRICE);
   }
@@ -36,7 +37,8 @@ class JvmDependencyResolverTest {
         resolve(
             file(ORDER, List.of(), List.of(PACKAGE_A, "on-demand:shop.domain", "name:Price")),
             file(PRICE, List.of("shop.domain.Price"), List.of()),
-            file(MAIN + "shop/domain/Discount.java", List.of("shop.domain.Discount"), List.of()));
+            file(MAIN + "shop/domain/Discount.java", List.of("shop.domain.Discount"), List.of())
+        );
 
     assertThat(targets(edges, ORDER)).containsExactly(PRICE);
   }
@@ -46,7 +48,8 @@ class JvmDependencyResolverTest {
     final List<DependencyEdge> edges =
         resolve(
             file(CHECKOUT, List.of(), List.of(PACKAGE_SERVICE, "static:shop.domain.Prices.ZERO")),
-            file(MAIN + "shop/domain/Prices.java", List.of("shop.domain.Prices"), List.of()));
+            file(MAIN + "shop/domain/Prices.java", List.of("shop.domain.Prices"), List.of())
+        );
 
     assertThat(targets(edges, CHECKOUT)).containsExactly(MAIN + "shop/domain/Prices.java");
   }
@@ -56,7 +59,8 @@ class JvmDependencyResolverTest {
     final List<DependencyEdge> edges =
         resolve(
             file(CHECKOUT, List.of(), List.of(PACKAGE_SERVICE, "name:Cart")),
-            file(CART, List.of("shop.service.Cart"), List.of()));
+            file(CART, List.of("shop.service.Cart"), List.of())
+        );
 
     assertThat(targets(edges, CHECKOUT)).containsExactly(CART);
   }
@@ -68,9 +72,11 @@ class JvmDependencyResolverTest {
             file(
                 CHECKOUT,
                 List.of(),
-                List.of(PACKAGE_SERVICE, "import:shop.domain.Cart", "name:Cart")),
+                List.of(PACKAGE_SERVICE, "import:shop.domain.Cart", "name:Cart")
+            ),
             file(MAIN + "shop/domain/Cart.java", List.of("shop.domain.Cart"), List.of()),
-            file(CART, List.of("shop.service.Cart"), List.of()));
+            file(CART, List.of("shop.service.Cart"), List.of())
+        );
 
     assertThat(targets(edges, CHECKOUT)).containsExactly(MAIN + "shop/domain/Cart.java");
   }
@@ -82,8 +88,10 @@ class JvmDependencyResolverTest {
             file(
                 CHECKOUT,
                 List.of("shop.service.Checkout.Cart"),
-                List.of(PACKAGE_SERVICE, "name:Cart")),
-            file(CART, List.of("shop.service.Cart"), List.of()));
+                List.of(PACKAGE_SERVICE, "name:Cart")
+            ),
+            file(CART, List.of("shop.service.Cart"), List.of())
+        );
 
     assertThat(targets(edges, CHECKOUT)).isEmpty();
   }
@@ -93,7 +101,8 @@ class JvmDependencyResolverTest {
     final List<DependencyEdge> edges =
         resolve(
             file(MAIN + "a/Pricing.java", List.of(), List.of(PACKAGE_A, "name:shop.domain.Price")),
-            file(PRICE, List.of("shop.domain.Price"), List.of()));
+            file(PRICE, List.of("shop.domain.Price"), List.of())
+        );
 
     assertThat(targets(edges, MAIN + "a/Pricing.java")).containsExactly(PRICE);
   }
@@ -105,8 +114,10 @@ class JvmDependencyResolverTest {
             file(
                 CHECKOUT,
                 List.of(),
-                List.of(PACKAGE_SERVICE, "import:shop.domain.Order", "name:Order.Line")),
-            file(ORDER_DOMAIN, List.of("shop.domain.Order", "shop.domain.Order.Line"), List.of()));
+                List.of(PACKAGE_SERVICE, "import:shop.domain.Order", "name:Order.Line")
+            ),
+            file(ORDER_DOMAIN, List.of("shop.domain.Order", "shop.domain.Order.Line"), List.of())
+        );
 
     assertThat(targets(edges, CHECKOUT)).containsExactly(ORDER_DOMAIN);
   }
@@ -116,7 +127,8 @@ class JvmDependencyResolverTest {
     final List<DependencyEdge> edges =
         resolve(
             file(CHECKOUT, List.of(), List.of(PACKAGE_SERVICE, "import:shop.domain.Order.Line")),
-            file(ORDER_DOMAIN, List.of("shop.domain.Order", "shop.domain.Order.Line"), List.of()));
+            file(ORDER_DOMAIN, List.of("shop.domain.Order", "shop.domain.Order.Line"), List.of())
+        );
 
     assertThat(targets(edges, CHECKOUT)).containsExactly(ORDER_DOMAIN);
   }
@@ -128,8 +140,9 @@ class JvmDependencyResolverTest {
             file(
                 ORDER,
                 List.of(),
-                List.of(
-                    PACKAGE_A, "import:java.util.List", "import:org.slf4j.Logger", "name:List")));
+                List.of(PACKAGE_A, "import:java.util.List", "import:org.slf4j.Logger", "name:List")
+            )
+        );
 
     assertThat(edges).isEmpty();
   }

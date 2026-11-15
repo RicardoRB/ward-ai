@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the Kotlin empty-block check over hand-made trees of the shapes the grammar produces. */
 class KotlinEmptyBlockCheckTest {
-
   private static final String MESSAGE = "m";
   private static final String IF = "ifExpression";
   private static final String BLOCK = "block";
@@ -51,26 +50,33 @@ class KotlinEmptyBlockCheckTest {
     final SyntaxNode body = group(BODY, group("expression", literal));
 
     assertThat(
-            unitMatches(new KotlinEmptyBlockCheck(Set.of(IF), RPAREN, MESSAGE), ifWithBody(body)))
+        unitMatches(new KotlinEmptyBlockCheck(Set.of(IF), RPAREN, MESSAGE), ifWithBody(body))
+    )
         .hasSize(1);
   }
 
   @Test
   void reportsAnEmptyBodyWhenItIsOwnBlockOrOwnerWhenItHasNone() {
     assertThat(
-            unitMatches(
-                new KotlinEmptyBlockCheck(Set.of("anonymousInitializer"), "", MESSAGE),
-                group("anonymousInitializer", leaf("'init'", "init"), emptyBlock())))
+        unitMatches(
+            new KotlinEmptyBlockCheck(Set.of("anonymousInitializer"), "", MESSAGE),
+            group("anonymousInitializer", leaf("'init'", "init"), emptyBlock())
+        )
+    )
         .hasSize(1);
     assertThat(
-            unitMatches(
-                new KotlinEmptyBlockCheck(Set.of("kotlinFile"), "", MESSAGE),
-                group("kotlinFile", leaf("EOF", "<EOF>"))))
+        unitMatches(
+            new KotlinEmptyBlockCheck(Set.of("kotlinFile"), "", MESSAGE),
+            group("kotlinFile", leaf("EOF", "<EOF>"))
+        )
+    )
         .hasSize(1);
     assertThat(
-            unitMatches(
-                new KotlinEmptyBlockCheck(Set.of("kotlinFile"), "", MESSAGE),
-                group("kotlinFile", leaf("'package'", "package"))))
+        unitMatches(
+            new KotlinEmptyBlockCheck(Set.of("kotlinFile"), "", MESSAGE),
+            group("kotlinFile", leaf("'package'", "package"))
+        )
+    )
         .isEmpty();
   }
 
@@ -82,7 +88,8 @@ class KotlinEmptyBlockCheckTest {
             leaf("'if'", "if"),
             leaf(RPAREN, ")"),
             leaf(ELSE, "else"),
-            group(BODY, emptyBlock()));
+            group(BODY, emptyBlock())
+        );
 
     assertThat(unitMatches(new KotlinEmptyBlockCheck(Set.of(IF), RPAREN, MESSAGE), owner))
         .isEmpty();

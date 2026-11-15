@@ -19,7 +19,6 @@ import java.util.Set;
  *     declaration's modifiers inside the declaration rather than around it
  */
 record Declaration(SyntaxNode node, SyntaxNode outer, SyntaxNode parent, List<String> leading) {
-
   /**
    * Finds the wrapper of {@code visit}. The root never counts as a wrapper, and a wrapper counts
    * only when every token before the node lies inside one of {@code modifierKinds}.
@@ -42,7 +41,9 @@ record Declaration(SyntaxNode node, SyntaxNode outer, SyntaxNode parent, List<St
    * children counts, so a modifier kind further down the node is not read as a modifier.
    */
   private static List<String> leadingModifiers(
-      final SyntaxNode node, final Set<String> modifierKinds) {
+      final SyntaxNode node,
+      final Set<String> modifierKinds
+  ) {
     final List<String> texts = new ArrayList<>();
     for (final SyntaxNode child : node.children()) {
       if (!modifierKinds.contains(child.kind())) {
@@ -58,7 +59,8 @@ record Declaration(SyntaxNode node, SyntaxNode outer, SyntaxNode parent, List<St
       final SyntaxNode candidate,
       final SyntaxNode node,
       final boolean inModifier,
-      final Set<String> modifierKinds) {
+      final Set<String> modifierKinds
+  ) {
     final boolean inside = inModifier || modifierKinds.contains(candidate.kind());
     if (!candidate.children().isEmpty()) {
       return candidate.children().stream()

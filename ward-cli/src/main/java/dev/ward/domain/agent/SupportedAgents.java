@@ -17,7 +17,8 @@ public final class SupportedAgents {
           new Definition("cline", "Cline"),
           new Definition("factory-droid", "Factory Droid"),
           new Definition("amp", "Amp"),
-          new Definition("junie", "Junie CLI"));
+          new Definition("junie", "Junie CLI")
+      );
 
   /**
    * One supported agent.

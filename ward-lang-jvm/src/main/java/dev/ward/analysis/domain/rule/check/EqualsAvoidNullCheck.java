@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
  * that holds a literal is not reported.
  */
 public final class EqualsAvoidNullCheck implements UnitCheck {
-
   private static final String DOT = "'.'";
   private static final String METHOD_CALL = "methodCall";
   private static final String ARGUMENTS = "arguments";
@@ -26,7 +25,8 @@ public final class EqualsAvoidNullCheck implements UnitCheck {
   private static final Pattern CALL =
       Pattern.compile(
           "[^\"]*\\.(equals|equalsIgnoreCase)\\((?:\"(?:[^\"\\\\]|\\\\.)*\"\\+?)+\\)",
-          Pattern.DOTALL);
+          Pattern.DOTALL
+      );
   private static final Set<String> EXPRESSION = Set.of("expression");
 
   private final boolean ignoreEqualsIgnoreCase;

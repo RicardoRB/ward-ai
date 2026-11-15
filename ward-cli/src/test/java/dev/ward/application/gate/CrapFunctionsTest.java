@@ -13,7 +13,6 @@ import java.util.TreeSet;
 import org.junit.jupiter.api.Test;
 
 class CrapFunctionsTest {
-
   private static final int TEN = 10;
   private static final int TWENTY = 20;
   private static final int THREE = 3;
@@ -52,7 +51,9 @@ class CrapFunctionsTest {
 
     final List<CrapFunctions.Scored> scored =
         CrapFunctions.score(
-            List.of(function(1, TWENTY, FOUR), function(FIVE, TEN, 2)), Optional.of(file));
+            List.of(function(1, TWENTY, FOUR), function(FIVE, TEN, 2)),
+            Optional.of(file)
+        );
 
     assertThat(scored.get(0).score().coverage()).isEqualTo(OptionalDouble.of(0));
     assertThat(scored.get(1).score().coverage()).isEqualTo(OptionalDouble.of(TWO_THIRDS));
@@ -63,16 +64,18 @@ class CrapFunctionsTest {
     final FileLines file = lines(ints("30"), ints("30"));
 
     assertThat(
-            CrapFunctions.score(List.of(function(1, FIVE, THREE)), Optional.of(file))
-                .get(0)
-                .score()
-                .coverage())
+        CrapFunctions.score(List.of(function(1, FIVE, THREE)), Optional.of(file))
+            .get(0)
+            .score()
+            .coverage()
+    )
         .isEmpty();
     assertThat(
-            CrapFunctions.score(List.of(function(1, FIVE, THREE)), Optional.empty())
-                .get(0)
-                .score()
-                .score())
+        CrapFunctions.score(List.of(function(1, FIVE, THREE)), Optional.empty())
+            .get(0)
+            .score()
+            .score()
+    )
         .isEqualTo(THREE);
   }
 }

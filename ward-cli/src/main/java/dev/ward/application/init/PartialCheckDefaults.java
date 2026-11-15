@@ -35,7 +35,8 @@ public final class PartialCheckDefaults {
               "**/*.mjs",
               "**/*.cjs",
               "**/*.py",
-              "**/*.swift"),
+              "**/*.swift"
+          ),
           List.of(
               "ward.toml",
               "pom.xml",
@@ -43,10 +44,12 @@ public final class PartialCheckDefaults {
               "settings.gradle*",
               "package.json",
               "pyproject.toml",
-              "Package.swift"),
+              "Package.swift"
+          ),
           List.of(),
           null,
-          null);
+          null
+      );
 
   private static final Map<String, Table> NEUTRAL_TABLES =
       Map.of(
@@ -54,7 +57,8 @@ public final class PartialCheckDefaults {
           WARD,
           // Ward scans the edited files itself, so the table names no argument.
           SupportedQualityGates.SECRETS,
-          new Table(WHOLE_PROJECT, List.of("ward-rules.toml"), List.of(), null, null));
+          new Table(WHOLE_PROJECT, List.of("ward-rules.toml"), List.of(), null, null)
+      );
 
   /**
    * The table's keys; {@code item} and {@code separator} are omitted when {@code null}, and {@code
@@ -66,7 +70,8 @@ public final class PartialCheckDefaults {
       List<String> args,
       String item,
       String separator,
-      List<String> command) {
+      List<String> command
+  ) {
     /** Copies the lists, so the table keeps none that its caller can still change. */
     public Table {
       match = List.copyOf(match);
@@ -81,7 +86,8 @@ public final class PartialCheckDefaults {
         final List<String> full,
         final List<String> args,
         final String item,
-        final String separator) {
+        final String separator
+    ) {
       this(match, full, args, item, separator, List.of());
     }
 
@@ -100,13 +106,15 @@ public final class PartialCheckDefaults {
       final String gate,
       final Project project,
       final QualityPreset preset,
-      final List<String> command) {
+      final List<String> command
+  ) {
     if (FormatGates.WARD_FORMAT.equals(gate)) {
       final List<String> match = EditorConfigTemplate.sourceGlobs(project.languages());
       return match.isEmpty()
           ? Optional.empty()
           : Optional.of(
-              new Table(match, List.of(EditorConfigTemplate.FILE_NAME), List.of(), null, null));
+              new Table(match, List.of(EditorConfigTemplate.FILE_NAME), List.of(), null, null)
+          );
     }
     return InitToolchains.find(project)
         .flatMap(support -> support.partialTable(gate, project, preset, command))
@@ -127,7 +135,7 @@ public final class PartialCheckDefaults {
   static Optional<Table> forOpenApi(final String gate, final String spec) {
     if (spec == null
         || !SupportedQualityGates.OPENAPI_LINT.equals(gate)
-            && !SupportedQualityGates.OPENAPI_DIFF.equals(gate)) {
+        && !SupportedQualityGates.OPENAPI_DIFF.equals(gate)) {
       return Optional.empty();
     }
     return Optional.of(Table.whole(List.of(spec), List.of()));

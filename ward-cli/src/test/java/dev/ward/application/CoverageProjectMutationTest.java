@@ -53,12 +53,16 @@ class CoverageProjectMutationTest {
                 Set.of(),
                 "",
                 dev.ward.domain.project.TaskRunner.NONE,
-                null),
-            null);
+                null
+            ),
+            null
+        );
     final PomToolConfigurator configurator = new PomToolConfigurator();
     final BuildFileChange change =
         configurator.apply(
-            new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE), gates);
+            new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE),
+            gates
+        );
     assertThat(change.tools()).containsExactly("jacoco-maven-plugin", "pitest-maven");
     assertThat(Files.readString(root.resolve("pom.xml")))
         .contains("jacoco-maven-plugin", "pitest-maven")
@@ -99,7 +103,8 @@ class CoverageProjectMutationTest {
         new PomToolConfigurator()
             .apply(
                 project,
-                List.of(catalog.gate(project, "coverage"), catalog.gate(project, "mutation")));
+                List.of(catalog.gate(project, "coverage"), catalog.gate(project, "mutation"))
+            );
     assertThat(change.changed()).isTrue();
     assertThat(Files.readString(root.resolve("pom.xml"))).contains("<plugins>", "<dependencies>");
   }
@@ -108,25 +113,31 @@ class CoverageProjectMutationTest {
   void gateDomainCoversPassFailureSkippedAndExecutionError() {
     final CommandExecutor executor =
         (command, root) ->
-            new CommandResult(
-                "fail".equals(command.getFirst()) ? 1 : 0, "out", "err", Duration.ofMillis(2));
+        new CommandResult(
+            "fail".equals(command.getFirst()) ? 1 : 0,
+            "out",
+            "err",
+            Duration.ofMillis(2)
+        );
     assertThat(new CommandQualityGate("custom", executor, List.of("ok")).execute(PROJECT).status())
         .isEqualTo(GateStatus.PASSED);
     assertThat(
-            new CommandQualityGate("custom", executor, List.of("fail")).execute(PROJECT).status())
+        new CommandQualityGate("custom", executor, List.of("fail")).execute(PROJECT).status()
+    )
         .isEqualTo(GateStatus.FAILED);
     assertThat(new MavenTestGate(executor, List.of("test")).name()).isEqualTo("tests");
     assertThat(new SkippedQualityGate("skip").execute(PROJECT).status())
         .isEqualTo(GateStatus.SKIPPED);
     assertThat(
-            GateResult.builder("x", GateStatus.PASSED)
-                .command(List.of("x"))
-                .exitCode(0)
-                .duration(Duration.ZERO)
-                .stdout("")
-                .stderr("")
-                .build()
-                .passed())
+        GateResult.builder("x", GateStatus.PASSED)
+            .command(List.of("x"))
+            .exitCode(0)
+            .duration(Duration.ZERO)
+            .stdout("")
+            .stderr("")
+            .build()
+            .passed()
+    )
         .isTrue();
   }
 }

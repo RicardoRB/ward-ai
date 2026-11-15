@@ -36,7 +36,8 @@ final class TypeScope {
       final Imports imports,
       final List<String> enclosing,
       final Set<String> typeVariables,
-      final Predicate<String> exists) {
+      final Predicate<String> exists
+  ) {
     this.imports = imports;
     this.enclosing = List.copyOf(enclosing);
     this.typeVariables = Set.copyOf(typeVariables);

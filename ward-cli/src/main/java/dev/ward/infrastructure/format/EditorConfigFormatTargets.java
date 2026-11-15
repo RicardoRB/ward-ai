@@ -13,7 +13,6 @@ import javax.inject.Inject;
 
 /** Selects the project's files and resolves their settings from the {@code .editorconfig} files. */
 public final class EditorConfigFormatTargets implements FormatTargets {
-
   private final CommandExecutor executor;
 
   /**
@@ -28,7 +27,10 @@ public final class EditorConfigFormatTargets implements FormatTargets {
 
   @Override
   public List<FormatTarget> select(
-      final Path root, final Map<AnalysisLanguage, List<FormatOption>> declared) {
+      final Path root,
+      final Map<AnalysisLanguage,
+      List<FormatOption>> declared
+  ) {
     final FormatConfiguration configuration = new EditorConfigFormatConfiguration(root);
     return new FormatFileSelection(configuration, executor).select(root, declared);
   }

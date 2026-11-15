@@ -26,7 +26,9 @@ public final class InitToolchains {
               Toolchain.PYTHON,
               new PythonInitSupport(),
               Toolchain.SWIFT,
-              new SwiftInitSupport()));
+              new SwiftInitSupport()
+          )
+      );
 
   private InitToolchains() {}
 

@@ -71,7 +71,7 @@ final class Session {
     final List<JType> arguments =
         hierarchy.find(binary).stream()
             .flatMap(owner -> owner.typeParameters().stream())
-            .map(parameter -> (JType) new JType.TypeVariable(parameter.name()))
+            .map(parameter -> (JType)new JType.TypeVariable(parameter.name()))
             .toList();
     return new JType.ClassType(binary, arguments);
   }

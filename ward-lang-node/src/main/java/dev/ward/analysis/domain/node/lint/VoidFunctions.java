@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 
 /** Finds the values that a function declared to return void returns, for the void-return check. */
 final class VoidFunctions {
-
   private static final String FUNCTION_DECLARATION = "functionDeclaration";
   private static final String ARROW_FUNCTION = "arrowFunctionDeclaration";
   private static final String ANONYMOUS_FUNCTION = "anonymousFunction";

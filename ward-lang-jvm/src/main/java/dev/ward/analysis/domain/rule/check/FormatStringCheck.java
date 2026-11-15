@@ -22,7 +22,6 @@ import java.util.regex.Pattern;
  * literal, or whose only argument is an array is never reported.
  */
 public final class FormatStringCheck extends FactsCheck {
-
   private static final Pattern LITERAL = Pattern.compile("^\"((?:[^\"\\\\]|\\\\.)*)\"$");
   private static final String EXPRESSION = "expression";
   private static final int FORMAT_POSITIONS = 2;
@@ -41,7 +40,10 @@ public final class FormatStringCheck extends FactsCheck {
    * @param message the message reported at the call; {@code {value}} is the fault
    */
   public FormatStringCheck(
-      final Set<String> declaringTypes, final Set<String> names, final String message) {
+      final Set<String> declaringTypes,
+      final Set<String> names,
+      final String message
+  ) {
     super(NEED);
     this.declaringTypes = Set.copyOf(declaringTypes);
     this.names = Set.copyOf(names);

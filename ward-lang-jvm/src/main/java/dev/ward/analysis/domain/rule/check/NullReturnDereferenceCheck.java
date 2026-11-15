@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
  * none is annotated non-null.
  */
 public final class NullReturnDereferenceCheck implements RuleCheck {
-
   private static final String RETURNS_NULL = "returnnull;";
   private static final Pattern NON_NULL = Pattern.compile("@(?:Nonnull|NonNull|NotNull)\\b");
   private static final String OPEN = "(";
@@ -67,12 +66,16 @@ public final class NullReturnDereferenceCheck implements RuleCheck {
           if (nullable) {
             names.add(name);
           }
-        });
+        }
+    );
     return names;
   }
 
   private void chained(
-      final SyntaxNode clazz, final Set<String> nullable, final List<RuleMatch> matches) {
+      final SyntaxNode clazz,
+      final Set<String> nullable,
+      final List<RuleMatch> matches
+  ) {
     final List<SyntaxNode> tokens = NullTokens.tokens(List.of(clazz));
     for (int index = 0; index + 1 < tokens.size(); index++) {
       final String name = SyntaxWalk.text(tokens.get(index));
@@ -85,7 +88,8 @@ public final class NullReturnDereferenceCheck implements RuleCheck {
           && close + 1 < tokens.size()
           && DOT.equals(SyntaxWalk.text(tokens.get(close + 1)))) {
         matches.add(
-            CheckSupport.at(tokens.get(index).span(), CheckSupport.fill(message, name, "")));
+            CheckSupport.at(tokens.get(index).span(), CheckSupport.fill(message, name, ""))
+        );
       }
     }
   }
@@ -103,7 +107,10 @@ public final class NullReturnDereferenceCheck implements RuleCheck {
   }
 
   private void locals(
-      final SyntaxNode clazz, final Set<String> nullable, final List<RuleMatch> matches) {
+      final SyntaxNode clazz,
+      final Set<String> nullable,
+      final List<RuleMatch> matches
+  ) {
     for (final SyntaxNode block : SyntaxWalk.descendants(clazz)) {
       if (!BLOCK.equals(block.kind())) {
         continue;
@@ -113,7 +120,11 @@ public final class NullReturnDereferenceCheck implements RuleCheck {
         for (final SyntaxNode declarator : SyntaxWalk.descendants(statements.get(index))) {
           if (DECLARATOR.equals(declarator.kind())) {
             fromCall(
-                declarator, nullable, statements.subList(index + 1, statements.size()), matches);
+                declarator,
+                nullable,
+                statements.subList(index + 1, statements.size()),
+                matches
+            );
           }
         }
       }
@@ -124,7 +135,8 @@ public final class NullReturnDereferenceCheck implements RuleCheck {
       final SyntaxNode declarator,
       final Set<String> nullable,
       final List<SyntaxNode> rest,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     final String text = SyntaxWalk.text(declarator);
     final int equals = text.indexOf('=');
     final int open = text.indexOf('(');
@@ -140,7 +152,8 @@ public final class NullReturnDereferenceCheck implements RuleCheck {
         && !NullTokens.assigns(tokens, variable)
         && uses.stream().allMatch(use -> use.use() == NullTokens.Use.RECEIVER)) {
       matches.add(
-          CheckSupport.at(uses.get(0).token().span(), CheckSupport.fill(message, method, "")));
+          CheckSupport.at(uses.get(0).token().span(), CheckSupport.fill(message, method, ""))
+      );
     }
   }
 }

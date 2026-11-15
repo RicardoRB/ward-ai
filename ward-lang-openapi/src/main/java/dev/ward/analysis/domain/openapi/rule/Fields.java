@@ -9,7 +9,6 @@ import java.util.Optional;
 
 /** How Spectral reads a field of an object and where it reports a result about it. */
 final class Fields {
-
   private Fields() {}
 
   /** JavaScript truthiness of a scalar; an object and an array are always truthy. */
@@ -25,7 +24,10 @@ final class Fields {
 
   /** The field at {@code path} below {@code base} in the resolved view, if every step exists. */
   static Optional<DocNode> at(
-      final OpenApiDocument document, final DocNode base, final String... path) {
+      final OpenApiDocument document,
+      final DocNode base,
+      final String... path
+  ) {
     DocNode current = document.resolve(base);
     for (final String key : path) {
       final Optional<DocNode> next = document.get(current, key, View.RESOLVED);
@@ -46,7 +48,8 @@ final class Fields {
       final OpenApiDocument document,
       final DocNode base,
       final String message,
-      final String... path) {
+      final String... path
+  ) {
     final List<DocNode> chain = new ArrayList<>();
     DocNode current = document.resolve(base);
     if (current.isScalar() && current.kind() != DocNode.Kind.NULL) {

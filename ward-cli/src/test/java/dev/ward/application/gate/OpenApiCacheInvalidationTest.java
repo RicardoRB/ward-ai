@@ -20,7 +20,6 @@ import org.junit.jupiter.api.Test;
 
 /** An OpenAPI rule can depend on a referenced file, so its result is never served from a unit. */
 class OpenApiCacheInvalidationTest {
-
   private static final String SPEC = "api.yaml";
   private static final String PART = "pets.yaml";
   private static final String SPEC_TEXT =
@@ -38,13 +37,15 @@ class OpenApiCacheInvalidationTest {
           new RuleEngine(new DeclarativeRuleMatcher()),
           AnalysisCacheFixtures.codec(),
           "test",
-          List.of());
+          List.of()
+      );
 
   private List<AnalysisFinding> run(final String partText) {
     final List<SourceUnit> units =
         List.of(
             new SourceUnit(SPEC, AnalysisLanguage.OPENAPI, SPEC_TEXT),
-            new SourceUnit(PART, AnalysisLanguage.OPENAPI, partText));
+            new SourceUnit(PART, AnalysisLanguage.OPENAPI, partText)
+        );
     return results.run(cache, units, frontends, rules).findings();
   }
 
@@ -70,7 +71,8 @@ class OpenApiCacheInvalidationTest {
     final List<SourceUnit> units =
         List.of(
             new SourceUnit(SPEC, AnalysisLanguage.OPENAPI, "openapi: 3.0.0\npaths: {}\n"),
-            new SourceUnit(PART, AnalysisLanguage.OPENAPI, "get:\n  summary: x\n"));
+            new SourceUnit(PART, AnalysisLanguage.OPENAPI, "get:\n  summary: x\n")
+        );
 
     assertThat(results.run(cache, units, frontends, rules).findings()).isEmpty();
   }

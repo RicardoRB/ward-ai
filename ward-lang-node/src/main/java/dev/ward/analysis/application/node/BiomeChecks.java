@@ -29,7 +29,6 @@ import org.tomlj.TomlParseResult;
 
 /** The TypeScript and JavaScript checks that only the Biome lint rules use (issue #329). */
 final class BiomeChecks {
-
   private static final String MESSAGE = "message";
 
   private BiomeChecks() {}
@@ -40,66 +39,91 @@ final class BiomeChecks {
     checks.putAll(BiomeJsxChecks.checks());
     checks.putAll(BiomeTypeChecks.checks());
     checks.putAll(BiomeStatementChecks.checks());
-    checks.putAll(
-        Map.ofEntries(
-            entry(
-                "node-constant-clamp",
-                toml -> new BiomeConstantClampCheck(TomlValues.required(toml, MESSAGE))),
-            entry(
-                "node-finally-return",
-                toml -> new BiomeFinallyReturnCheck(TomlValues.required(toml, MESSAGE))),
-            entry("node-member-property", BiomeChecks::memberProperty),
-            entry(
-                "node-namespace-access",
-                toml -> new BiomeNamespaceAccessCheck(TomlValues.required(toml, MESSAGE))),
-            entry("node-unused-parameter", BiomeChecks::unusedParameter),
-            entry(
-                "node-unreachable-super",
-                toml -> new BiomeUnreachableSuperCheck(TomlValues.required(toml, MESSAGE))),
-            entry(
-                "node-autofocus",
-                toml -> new BiomeAutofocusCheck(TomlValues.required(toml, MESSAGE))),
-            entry("node-jsx-blank-target", BiomeChecks::blankTarget),
-            entry("node-jsx-required-attribute", BiomeChecks::requiredAttribute),
-            entry("node-jsx-handler-pair", BiomeChecks::handlerPair),
-            entry(
-                "node-jsx-empty-element",
-                toml ->
-                    new BiomeJsxEmptyElementCheck(
-                        TomlValues.optionalStrings(toml, "elements"),
-                        TomlValues.optionalStrings(toml, "exempt"),
-                        TomlValues.required(toml, MESSAGE))),
-            entry(
-                "node-media-caption",
-                toml -> new BiomeMediaCaptionCheck(TomlValues.required(toml, MESSAGE))),
-            entry(
-                "node-useless-fragments",
-                toml -> new BiomeUselessFragmentsCheck(TomlValues.required(toml, MESSAGE))),
-            entry(
-                "node-void-element-children",
-                toml ->
-                    new BiomeVoidElementChildrenCheck(
-                        TomlValues.optionalStrings(toml, "elements"),
-                        TomlValues.required(toml, MESSAGE))),
-            entry(
-                "node-jsx-duplicate-props",
-                toml -> new BiomeDuplicatePropsCheck(TomlValues.required(toml, MESSAGE))),
-            entry(
-                "node-jsx-attribute-value",
-                toml ->
-                    new BiomeJsxAttributeValueCheck(
-                        toml.getString("attribute"),
-                        "expression".equals(toml.getString("at")),
-                        Pattern.compile(TomlValues.required(toml, "text")),
-                        TomlValues.required(toml, MESSAGE)))));
+    checks.putAll(scriptRuleChecks());
+    checks.putAll(jsxRuleChecks());
     return Map.copyOf(checks);
+  }
+
+  private static Map<String, CheckFactory> scriptRuleChecks() {
+    return Map.ofEntries(
+        entry(
+            "node-constant-clamp",
+            toml -> new BiomeConstantClampCheck(TomlValues.required(toml, MESSAGE))
+        ),
+        entry(
+            "node-finally-return",
+            toml -> new BiomeFinallyReturnCheck(TomlValues.required(toml, MESSAGE))
+        ),
+        entry("node-member-property", BiomeChecks::memberProperty),
+        entry(
+            "node-namespace-access",
+            toml -> new BiomeNamespaceAccessCheck(TomlValues.required(toml, MESSAGE))
+        ),
+        entry("node-unused-parameter", BiomeChecks::unusedParameter),
+        entry(
+            "node-unreachable-super",
+            toml -> new BiomeUnreachableSuperCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
+  }
+
+  private static Map<String, CheckFactory> jsxRuleChecks() {
+    return Map.ofEntries(
+        entry(
+            "node-autofocus",
+            toml -> new BiomeAutofocusCheck(TomlValues.required(toml, MESSAGE))
+        ),
+        entry("node-jsx-blank-target", BiomeChecks::blankTarget),
+        entry("node-jsx-required-attribute", BiomeChecks::requiredAttribute),
+        entry("node-jsx-handler-pair", BiomeChecks::handlerPair),
+        entry(
+            "node-jsx-empty-element",
+            toml ->
+                new BiomeJsxEmptyElementCheck(
+                    TomlValues.optionalStrings(toml, "elements"),
+                    TomlValues.optionalStrings(toml, "exempt"),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
+        entry(
+            "node-media-caption",
+            toml -> new BiomeMediaCaptionCheck(TomlValues.required(toml, MESSAGE))
+        ),
+        entry(
+            "node-useless-fragments",
+            toml -> new BiomeUselessFragmentsCheck(TomlValues.required(toml, MESSAGE))
+        ),
+        entry(
+            "node-void-element-children",
+            toml ->
+                new BiomeVoidElementChildrenCheck(
+                    TomlValues.optionalStrings(toml, "elements"),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
+        entry(
+            "node-jsx-duplicate-props",
+            toml -> new BiomeDuplicatePropsCheck(TomlValues.required(toml, MESSAGE))
+        ),
+        entry(
+            "node-jsx-attribute-value",
+            toml ->
+                new BiomeJsxAttributeValueCheck(
+                    toml.getString("attribute"),
+                    "expression".equals(toml.getString("at")),
+                    Pattern.compile(TomlValues.required(toml, "text")),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        )
+    );
   }
 
   private static RuleCheck handlerPair(final TomlParseResult toml) {
     return new BiomeJsxHandlerPairCheck(
         List.copyOf(TomlValues.optionalStrings(toml, "pairs")),
         List.copyOf(TomlValues.optionalStrings(toml, "exempt")),
-        TomlValues.required(toml, MESSAGE));
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static RuleCheck requiredAttribute(final TomlParseResult toml) {
@@ -110,26 +134,32 @@ final class BiomeChecks {
         new BiomeJsxRequiredAttributeCheck.ValueRule(
             TomlValues.optionalStrings(toml, "values"),
             invalid == null ? null : Pattern.compile(invalid),
-            toml.getBoolean("silent-on-spread", () -> false)),
-        TomlValues.required(toml, MESSAGE));
+            toml.getBoolean("silent-on-spread", () -> false)
+        ),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static RuleCheck blankTarget(final TomlParseResult toml) {
     return new BiomeBlankTargetCheck(
         TomlValues.optionalStrings(toml, "allow-domains"),
         toml.getBoolean("allow-no-referrer", () -> true),
-        TomlValues.required(toml, MESSAGE));
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static RuleCheck unusedParameter(final TomlParseResult toml) {
     return new BiomeUnusedParameterCheck(
-        toml.getBoolean("ignore-rest-siblings", () -> true), TomlValues.required(toml, MESSAGE));
+        toml.getBoolean("ignore-rest-siblings", () -> true),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static RuleCheck memberProperty(final TomlParseResult toml) {
     return new BiomeMemberPropertyCheck(
         TomlValues.strings(toml, "kinds"),
         Pattern.compile(TomlValues.required(toml, "text")),
-        TomlValues.required(toml, MESSAGE));
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 }

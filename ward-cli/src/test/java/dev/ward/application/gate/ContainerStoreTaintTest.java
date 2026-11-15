@@ -94,10 +94,11 @@ class ContainerStoreTaintTest {
         List.of(unit("Box", BOX), unit("Sink", SINK), unit("Page", PAGE_TEXT));
     final List<AnalysisFinding> found =
         new UnitResultCache(
-                new RuleEngine(new DeclarativeRuleMatcher()),
-                AnalysisCacheFixtures.codec(),
-                "test",
-                new JvmDependencyAdapters().forProject(root, units))
+            new RuleEngine(new DeclarativeRuleMatcher()),
+            AnalysisCacheFixtures.codec(),
+            "test",
+            new JvmDependencyAdapters().forProject(root, units)
+        )
             .run(AnalysisCacheFixtures.NO_CACHE, units, frontends, rules)
             .findings();
 
@@ -109,7 +110,8 @@ class ContainerStoreTaintTest {
             lineOf("fromArray(a, r);"),
             lineOf("fromBox(b, r)"),
             lineOf("fromList(l, r)"),
-            lineOf("println(sb.toString())"));
+            lineOf("println(sb.toString())")
+        );
   }
 
   private static int lineOf(final String text) {

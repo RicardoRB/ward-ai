@@ -6,7 +6,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class FormatSafetyRefusalTest {
-
   private static final FormatOptions NO_OPTIONS = new FormatOptions(Map.of());
   private static final int LINE_TWO = 2;
   private static final int LINE_THREE = 3;
@@ -78,12 +77,13 @@ class FormatSafetyRefusalTest {
             s ->
                 "a".equals(s)
                     ? new FormatResult.Formatted("a ")
-                    : new FormatResult.Refused("boom", LINE_THREE));
+                    : new FormatResult.Refused("boom", LINE_THREE)
+        );
 
     assertThat(run("a", formatter))
         .isEqualTo(
-            new FormatResult.Refused(
-                "formatted output cannot be formatted again: boom", LINE_THREE));
+            new FormatResult.Refused("formatted output cannot be formatted again: boom", LINE_THREE)
+        );
   }
 
   @Test

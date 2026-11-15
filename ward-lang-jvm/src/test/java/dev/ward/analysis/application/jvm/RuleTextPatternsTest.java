@@ -25,7 +25,8 @@ class RuleTextPatternsTest {
             "\"" + "x".repeat(LONG) + "\"",
             "a=\"" + "x".repeat(LONG) + "\";",
             "f(" + "(a)".repeat(LONG) + ")",
-            "class A{" + "int x;".repeat(LONG) + "}");
+            "class A{" + "int x;".repeat(LONG) + "}"
+        );
     final List<String> overflowing = new ArrayList<>();
     for (final String file : new JvmRuleFiles().ruleFiles()) {
       for (final RuleDefinition rule : RuleFileReader.read(file)) {

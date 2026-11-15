@@ -5,7 +5,6 @@ import java.nio.file.Path;
 /** Port to the simulators installed with Xcode. */
 @FunctionalInterface
 public interface Simulators {
-
   /**
    * Picks an iPhone of the newest installed iOS runtime, boots it unless it is booted, and waits
    * until it has finished booting.
@@ -19,7 +18,6 @@ public interface Simulators {
    * @param problem why no simulator is ready, or {@code null} when one is
    */
   record Simulator(String deviceId, String problem) {
-
     /** Returns the ready device {@code deviceId}. */
     public static Simulator ready(final String deviceId) {
       return new Simulator(deviceId, null);

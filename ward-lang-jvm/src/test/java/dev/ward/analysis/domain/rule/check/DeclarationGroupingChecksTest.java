@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 /** The constructor-grouping and overload-order checks on small class bodies. */
 class DeclarationGroupingChecksTest extends TreeBuilders {
-
   private static final String CONSTRUCTOR = "constructorDeclaration";
   private static final String COMPACT = "compactConstructorDeclaration";
   private static final String RUN = "run";
@@ -31,7 +30,8 @@ class DeclarationGroupingChecksTest extends TreeBuilders {
             n(CLASS_BODY_DECLARATION, t("';'", ";")),
             t("comment", "//"),
             t("';'", ";"),
-            n(COMPACT));
+            n(COMPACT)
+        );
     assertThat(new ConstructorsDeclarationGroupingCheck(false, MESSAGE).check(unit(body), FILE))
         .isEmpty();
   }

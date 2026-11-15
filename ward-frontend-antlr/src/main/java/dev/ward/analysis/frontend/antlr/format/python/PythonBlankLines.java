@@ -11,7 +11,6 @@ import java.util.OptionalInt;
  * capped by the blank line option.
  */
 final class PythonBlankLines {
-
   private static final int TOP_LEVEL_BLANKS = 2;
   private static final int METHOD_BLANKS = 1;
 
@@ -47,7 +46,10 @@ final class PythonBlankLines {
 
   /** Caps a blank run inside a body at one line, unless a definition rule already sets it. */
   private static OptionalInt bodyTarget(
-      final List<PythonChunk> run, final PythonChunk chunk, final OptionalInt target) {
+      final List<PythonChunk> run,
+      final PythonChunk chunk,
+      final OptionalInt target
+  ) {
     if (target.isPresent() || chunk.depth() == 0 || blankCount(run) <= METHOD_BLANKS) {
       return target;
     }
@@ -62,7 +64,8 @@ final class PythonBlankLines {
       final PythonChunk previous,
       final PythonChunk chunk,
       final boolean topDef,
-      final int maxBlank) {
+      final int maxBlank
+  ) {
     if (previous == null) {
       return OptionalInt.of(0);
     }
@@ -80,7 +83,8 @@ final class PythonBlankLines {
       final PythonChunk previous,
       final PythonChunk chunk,
       final boolean topDef,
-      final int maxBlank) {
+      final int maxBlank
+  ) {
     final int twoBlanks = Math.min(TOP_LEVEL_BLANKS, maxBlank);
     if (chunk.isDef() || chunk.isClass() || chunk.isDecorator()) {
       return OptionalInt.of(previous.isDecorator() ? 0 : twoBlanks);

@@ -35,12 +35,16 @@ class ClaudeCodeHookPostToolUseTest extends ClaudeCodeHookTestSupport {
             LearningState.FAILING,
             seen,
             seen,
-            false);
+            false
+        );
     new JsonLearningStore(new ForyJsonCodec())
         .save(
             root,
             new LearningLedger(
-                LearningLedger.CURRENT_FORMAT_VERSION, Map.of(failing.key(), failing)));
+                LearningLedger.CURRENT_FORMAT_VERSION,
+                Map.of(failing.key(), failing)
+            )
+        );
 
     assertThat(hook(postToolUse("src/main/java/App.java"))).isEqualTo(ExitCodes.OK);
     assertThat(out.toString()).contains("AGENTS.md", "FinalParameters");

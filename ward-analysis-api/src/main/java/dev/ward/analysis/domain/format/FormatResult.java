@@ -5,14 +5,12 @@ import java.util.Objects;
 /** The outcome of formatting one source text. */
 public sealed interface FormatResult
     permits FormatResult.Formatted, FormatResult.Unchanged, FormatResult.Refused {
-
   /**
    * The formatted text, which differs from the input.
    *
    * @param text the new source text
    */
   record Formatted(String text) implements FormatResult {
-
     /**
      * Checks the text.
      *
@@ -33,7 +31,6 @@ public sealed interface FormatResult
    * @param line the first line that differs, or 1 when no line applies
    */
   record Refused(String reason, int line) implements FormatResult {
-
     /**
      * Checks the reason.
      *

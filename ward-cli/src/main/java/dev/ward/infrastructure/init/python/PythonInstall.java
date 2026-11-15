@@ -43,7 +43,8 @@ final class PythonInstall {
     if (project.buildTool() == BuildTool.PIP && !Files.isDirectory(project.root().resolve(VENV))) {
       problems.add(
           "pip installs into .venv, which this project does not have. Create it with `python -m venv"
-              + " .venv`, then run init again.");
+              + " .venv`, then run init again."
+      );
     }
     managerTooOld(project, executor).ifPresent(problems::add);
     problems.addAll(declaredOutsideRange(project));
@@ -70,7 +71,8 @@ final class PythonInstall {
         .filter(
             tool ->
                 !declaredMajor(declared.get(PyprojectDependencies.normalize(tool.name())))
-                    .equals(String.valueOf(tool.major())))
+                    .equals(String.valueOf(tool.major()))
+        )
         .map(
             tool ->
                 "INCOMPATIBLE "
@@ -81,7 +83,8 @@ final class PythonInstall {
                     + tool.version()
                     + "; declare a "
                     + tool.major()
-                    + ".x version, or remove the requirement so init can pin one.")
+                    + ".x version, or remove the requirement so init can pin one."
+        )
         .toList();
   }
 
@@ -93,14 +96,21 @@ final class PythonInstall {
 
   /** Returns the reason when the manager\'s version is below the minimum it can install. */
   private static Optional<String> managerTooOld(
-      final Project project, final CommandExecutor executor) {
+      final Project project,
+      final CommandExecutor executor
+  ) {
     final Path root = project.root();
     if (project.buildTool() == BuildTool.POETRY) {
       return tooOld(executor, root, List.of("poetry", "--version"), "Poetry", POETRY_MINIMUM);
     }
     if (project.buildTool() == BuildTool.PIP && Files.isRegularFile(root.resolve(PYPROJECT))) {
       return tooOld(
-          executor, root, List.of(VENV_PYTHON, "-m", "pip", "--version"), "pip", PIP_MINIMUM);
+          executor,
+          root,
+          List.of(VENV_PYTHON, "-m", "pip", "--version"),
+          "pip",
+          PIP_MINIMUM
+      );
     }
     return Optional.empty();
   }
@@ -111,7 +121,8 @@ final class PythonInstall {
       final Path root,
       final List<String> command,
       final String manager,
-      final String minimum) {
+      final String minimum
+  ) {
     final CommandResult result = executor.execute(command, root);
     if (!result.succeeded()) {
       return Optional.empty();
@@ -132,7 +143,8 @@ final class PythonInstall {
             + PyprojectEdit.GROUP
             + " group. Upgrade "
             + manager
-            + " and run init again.");
+            + " and run init again."
+    );
   }
 
   /** Returns whether the matched {@code major.minor} is at least {@code minimum}. */
@@ -155,7 +167,8 @@ final class PythonInstall {
       final Project project,
       final boolean pyproject,
       final boolean buildSystem,
-      final String group) {
+      final String group
+  ) {
     return switch (project.buildTool()) {
       case POETRY ->
           List.of(List.of("poetry", "lock"), List.of("poetry", "install", "--with", group));
@@ -170,11 +183,21 @@ final class PythonInstall {
    * requirements file is the install.
    */
   private static List<List<String>> pipCommands(
-      final boolean pyproject, final boolean buildSystem, final String group) {
+      final boolean pyproject,
+      final boolean buildSystem,
+      final String group
+  ) {
     if (!pyproject) {
       return List.of(
           List.of(
-              VENV_PYTHON, "-m", "pip", "install", "-r", PythonBuildToolConfigurator.REQUIREMENTS));
+              VENV_PYTHON,
+              "-m",
+              "pip",
+              "install",
+              "-r",
+              PythonBuildToolConfigurator.REQUIREMENTS
+          )
+      );
     }
     final List<List<String>> commands = new ArrayList<>();
     commands.add(List.of(VENV_PYTHON, "-m", "pip", "install", "--group", group));
@@ -201,6 +224,7 @@ final class PythonInstall {
             + String.join(" ", command)
             + "` failed with exit code "
             + exitCode
-            + "; the files init changed were restored.");
+            + "; the files init changed were restored."
+    );
   }
 }

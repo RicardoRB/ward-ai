@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 
 /** The rule data and runners that the secret-scan tests share. */
 class SecretScanCheckSupport {
-
   static final String TOKEN = "tok_" + "aB3dE5gH7jK9mN1pQ3sT";
   static final int TOKEN_COLUMN = 8;
 
@@ -25,7 +24,8 @@ class SecretScanCheckSupport {
         0,
         false,
         List.of(),
-        "m");
+        "m"
+    );
   }
 
   List<RuleMatch> run(final SecretRule rule, final String path, final String text) {
@@ -37,17 +37,19 @@ class SecretScanCheckSupport {
       final List<String> regexes,
       final List<String> stopwords,
       final SecretAllowlist.Target target,
-      final boolean all) {
+      final boolean all
+  ) {
     return new SecretAllowlist(
         paths.stream().map(this::regex).toList(),
         regexes.stream().map(this::regex).toList(),
         stopwords,
         target,
-        all);
+        all
+    );
   }
 
   SecretAllowlist.Target target(final int index) {
-    return SecretAllowlist.Target.values()[index];
+    return SecretAllowlist.Target.values() [index];
   }
 
   SecretRule withList(final SecretRule base, final SecretAllowlist list) {
@@ -59,7 +61,8 @@ class SecretScanCheckSupport {
         base.secretGroup(),
         base.multiline(),
         List.of(list),
-        base.message());
+        base.message()
+    );
   }
 
   /** Whether the list allows the token on the second line of a file with a comment first. */

@@ -2,7 +2,6 @@ package dev.ward.analysis.domain.openapi;
 
 /** Stops the parser at the first problem; it never leaves the parser. */
 final class YamlSyntaxException extends RuntimeException {
-
   private static final long serialVersionUID = 1L;
 
   private final int offset;

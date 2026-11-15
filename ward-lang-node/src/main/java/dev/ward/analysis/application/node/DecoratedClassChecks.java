@@ -20,7 +20,6 @@ import org.tomlj.TomlParseResult;
 
 /** The declarative checks of decorated classes, such as TypeScript's Angular decorators. */
 final class DecoratedClassChecks {
-
   private static final String MESSAGE = "message";
 
   private DecoratedClassChecks() {}
@@ -34,25 +33,31 @@ final class DecoratedClassChecks {
     final Filters filters =
         new Filters(enclosing(toml), member(toml), node(toml), scope(toml), name(toml));
     return new DecoratedClassCheck(
-        TomlValues.strings(toml, "kinds"), filters, TomlValues.required(toml, MESSAGE));
+        TomlValues.strings(toml, "kinds"),
+        filters,
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static ClassCondition enclosing(final TomlParseResult toml) {
     final Map<Pattern, Pattern> entries = new LinkedHashMap<>();
     TomlValues.kindMap(toml, "classes")
         .forEach(
-            (decorator, text) -> entries.put(Pattern.compile(decorator), Pattern.compile(text)));
+            (decorator, text) -> entries.put(Pattern.compile(decorator), Pattern.compile(text))
+        );
     return new ClassCondition(
         pattern(toml, "class-decorator"),
         entries,
-        Optional.ofNullable(toml.getString("implements-not")));
+        Optional.ofNullable(toml.getString("implements-not"))
+    );
   }
 
   private static MemberCondition member(final TomlParseResult toml) {
     return new MemberCondition(
         pattern(toml, "member-decorator"),
         TomlValues.optionalStrings(toml, "member-has"),
-        pattern(toml, "member-not-text"));
+        pattern(toml, "member-not-text")
+    );
   }
 
   private static NodeCondition node(final TomlParseResult toml) {
@@ -63,14 +68,16 @@ final class DecoratedClassChecks {
         pattern(toml, "text"),
         exemptActive ? pattern(toml, "exempt") : Optional.empty(),
         Boolean.TRUE.equals(toml.getBoolean("in-class-decorator")),
-        pattern(toml, "not-inside-text"));
+        pattern(toml, "not-inside-text")
+    );
   }
 
   private static ScopeCondition scope(final TomlParseResult toml) {
     return new ScopeCondition(
         TomlValues.optionalStrings(toml, "inside"),
         TomlValues.optionalStrings(toml, "parent"),
-        TomlValues.optionalStrings(toml, "not-child"));
+        TomlValues.optionalStrings(toml, "not-child")
+    );
   }
 
   private static NameCondition name(final TomlParseResult toml) {
@@ -78,7 +85,8 @@ final class DecoratedClassChecks {
         TomlValues.kindMap(toml, "heritage-missing"),
         pattern(toml, "alias"),
         TomlValues.optionalStrings(toml, "allowed-names"),
-        Boolean.TRUE.equals(toml.getBoolean("aria")));
+        Boolean.TRUE.equals(toml.getBoolean("aria"))
+    );
   }
 
   private static Optional<Pattern> pattern(final TomlParseResult toml, final String key) {

@@ -36,7 +36,9 @@ class InitCrapRejectionTest {
               new PresetRuleFileWriter(RuleFileTargetsFixtures.defaults()),
               ArchitectureTablesFixtures.create(),
               new FileConfigurationStorage(),
-              new OwnedSectionWriter()));
+              new OwnedSectionWriter()
+          )
+      );
 
   @Test
   void writesNothingWhenCoverageIsMissing(@TempDir final Path dir) throws Exception {
@@ -44,10 +46,12 @@ class InitCrapRejectionTest {
     final String pom = Files.readString(dir.resolve("pom.xml"));
 
     assertThatThrownBy(
-            () ->
-                service.initialize(
-                    dir,
-                    new InitSelection(List.of("none"), List.of("compile", "crap"), null, null)))
+        () ->
+            service.initialize(
+                dir,
+                new InitSelection(List.of("none"), List.of("compile", "crap"), null, null)
+            )
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("crap")
         .hasMessageContaining("coverage");

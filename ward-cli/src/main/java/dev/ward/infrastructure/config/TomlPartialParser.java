@@ -42,7 +42,8 @@ final class TomlPartialParser {
         strings(table, key, ARGS),
         item(table, key),
         string(table, key, SEPARATOR),
-        strings(table, key, COMMAND));
+        strings(table, key, COMMAND)
+    );
   }
 
   /** Names the replacement of a renamed key, and rejects any other unknown key. */
@@ -61,7 +62,11 @@ final class TomlPartialParser {
   }
 
   private static void requires(
-      final TomlTable table, final String key, final String name, final String required) {
+      final TomlTable table,
+      final String key,
+      final String name,
+      final String required
+  ) {
     if (table.contains(name) && !table.contains(required)) {
       throw new WardException("'" + key + "." + name + "' requires '" + key + "." + required + "'");
     }

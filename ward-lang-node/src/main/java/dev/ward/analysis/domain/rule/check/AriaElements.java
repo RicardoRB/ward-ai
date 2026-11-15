@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
  * names with no concept, then the element's implicit role from the mirrored table.
  */
 final class AriaElements {
-
   private static final Set<String> NULL_VALUES = Set.of("{null}", "{undefined}");
   private static final Set<String> STATIC_BY_NAME =
       Set.of(
@@ -32,7 +31,8 @@ final class AriaElements {
           "ruby",
           "pre",
           "figcaption",
-          "br");
+          "br"
+      );
   private static final Set<String> NOT_STATIC_BY_NAME =
       Set.of(
           "s",
@@ -45,7 +45,8 @@ final class AriaElements {
           "script",
           "noscript",
           "template",
-          "style");
+          "style"
+      );
   private static final Set<String> NO_CONCEPT =
       Set.of(
           "body",
@@ -62,13 +63,13 @@ final class AriaElements {
           "optgroup",
           "pre",
           "progress",
-          "ruby");
+          "ruby"
+      );
 
   private AriaElements() {}
 
   /** The attributes an element has, and the static value of each one that has one. */
   record Attributes(Set<String> present, Map<String, String> literals) {
-
     static Attributes of(final SyntaxNode element) {
       final Map<String, String> literals = new HashMap<>();
       final Set<String> present =
@@ -77,7 +78,8 @@ final class AriaElements {
           .forEach(
               attribute ->
                   JsxAttributes.literal(attribute)
-                      .ifPresent(value -> literals.put(JsxAttributes.name(attribute), value)));
+                      .ifPresent(value -> literals.put(JsxAttributes.name(attribute), value))
+          );
       return new Attributes(present, literals);
     }
 
@@ -88,7 +90,10 @@ final class AriaElements {
 
   /** Tells whether the element named {@code name}, with these attributes, is non-interactive. */
   static boolean isNotInteractive(
-      final AriaRoleTable table, final String name, final Attributes attributes) {
+      final AriaRoleTable table,
+      final String name,
+      final Attributes attributes
+  ) {
     return switch (name) {
       case "header", "a", "area" -> false;
       case "svg" -> true;
@@ -105,7 +110,10 @@ final class AriaElements {
 
   /** The role an element has: its first concrete role token, else its implicit role. */
   static Optional<String> roleOf(
-      final AriaRoleTable table, final SyntaxNode element, final String source) {
+      final AriaRoleTable table,
+      final SyntaxNode element,
+      final String source
+  ) {
     final Optional<SyntaxNode> role = attributeNamed(element, "role");
     final Optional<String> explicit =
         role.flatMap(attribute -> table.firstConcrete(JsxAttributes.tokens(attribute, source)));
@@ -113,7 +121,11 @@ final class AriaElements {
     return explicit.or(
         () ->
             table.implicitRole(
-                JsxAttributes.elementName(element), attributes.has(), attributes.literals()));
+                JsxAttributes.elementName(element),
+                attributes.has(),
+                attributes.literals()
+            )
+    );
   }
 
   /** Whether the element is hidden from assistive technology: a truthy aria-hidden or an input. */
@@ -124,7 +136,7 @@ final class AriaElements {
             && truthy(attributes.literals().get("aria-hidden"));
     return ariaHidden
         || "input".equals(JsxAttributes.elementName(element))
-            && "hidden".equals(attributes.literals().get("type"));
+        && "hidden".equals(attributes.literals().get("type"));
   }
 
   /** A static value is truthy unless empty or false; a dynamic or missing value is truthy. */
@@ -152,13 +164,18 @@ final class AriaElements {
    * Whether the element has an event handler of one of the groups, with a value other than null.
    */
   static boolean hasEventHandler(
-      final AriaRoleTable table, final List<String> groups, final SyntaxNode element) {
+      final AriaRoleTable table,
+      final List<String> groups,
+      final SyntaxNode element
+  ) {
     return JsxAttributes.of(element).stream()
         .filter(attribute -> table.isHandler(groups, JsxAttributes.name(attribute)))
         .anyMatch(
             attribute ->
                 !NULL_VALUES.contains(
-                    JsxAttributes.value(attribute).map(SyntaxWalk::text).orElse("")));
+                    JsxAttributes.value(attribute).map(SyntaxWalk::text).orElse("")
+                )
+        );
   }
 
   /**
@@ -166,7 +183,10 @@ final class AriaElements {
    * static" element by name, and by role either absent, presentation or generic.
    */
   static boolean staticElement(
-      final AriaRoleTable table, final SyntaxNode element, final String source) {
+      final AriaRoleTable table,
+      final SyntaxNode element,
+      final String source
+  ) {
     final String name = JsxAttributes.elementName(element);
     return !STATIC_BY_NAME.contains(name)
         && (NOT_STATIC_BY_NAME.contains(name)

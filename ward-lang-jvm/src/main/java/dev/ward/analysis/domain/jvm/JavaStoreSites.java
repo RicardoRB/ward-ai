@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * assignment to a variable is not a store.
  */
 final class JavaStoreSites {
-
   private static final Pattern TARGET = Pattern.compile("^([A-Za-z_$][\\w$]*)[.\\[].*$");
   private static final String ELEMENT = "[]";
 
@@ -46,6 +45,8 @@ final class JavaStoreSites {
             Optional.empty(),
             List.of(),
             List.of(value.span()),
-            span));
+            span
+        )
+    );
   }
 }

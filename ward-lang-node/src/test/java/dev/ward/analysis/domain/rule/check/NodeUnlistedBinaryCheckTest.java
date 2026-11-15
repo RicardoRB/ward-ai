@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** The unlisted binary check: a script command whose installed provider is not listed. */
 final class NodeUnlistedBinaryCheckTest {
-
   private static final String MESSAGE = "unlisted {value}";
   private static final String ESLINT_BIN = "node_modules/eslint/package.json";
   private static final String ESLINT_PACKAGE =
@@ -22,7 +21,8 @@ final class NodeUnlistedBinaryCheckTest {
         new NodeUnlistedBinaryCheck(MESSAGE)
             .project(
                 ProjectFixtures.trees(Map.of("index.ts", "export const a = 1;")),
-                project("{\"scripts\":{\"lint\":\"eslint .\"}}"));
+                project("{\"scripts\":{\"lint\":\"eslint .\"}}")
+            );
 
     assertThat(ProjectFixtures.positions(found)).containsExactly("package.json:1:13");
     assertThat(ProjectFixtures.messages(found)).containsExactly("unlisted eslint");
@@ -35,7 +35,9 @@ final class NodeUnlistedBinaryCheckTest {
             .project(
                 ProjectFixtures.trees(Map.of("index.ts", "export const a = 1;")),
                 project(
-                    "{\"scripts\":{\"lint\":\"eslint .\"},\"devDependencies\":{\"eslint\":\"^9\"}}"));
+                    "{\"scripts\":{\"lint\":\"eslint .\"},\"devDependencies\":{\"eslint\":\"^9\"}}"
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }
@@ -47,7 +49,9 @@ final class NodeUnlistedBinaryCheckTest {
             .project(
                 ProjectFixtures.trees(Map.of("index.ts", "export const a = 1;")),
                 ProjectFixtures.manifests(
-                    Map.of("package.json", "{\"scripts\":{\"lint\":\"eslint .\"}}")));
+                    Map.of("package.json", "{\"scripts\":{\"lint\":\"eslint .\"}}")
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }
@@ -58,7 +62,8 @@ final class NodeUnlistedBinaryCheckTest {
         new NodeUnlistedBinaryCheck(MESSAGE)
             .project(
                 ProjectFixtures.trees(Map.of("index.ts", "export const a = 1;")),
-                project("{\"scripts\":{\"run\":\"npm run build && node scripts/x.js\"}}"));
+                project("{\"scripts\":{\"run\":\"npm run build && node scripts/x.js\"}}")
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }
@@ -71,9 +76,13 @@ final class NodeUnlistedBinaryCheckTest {
                 ProjectFixtures.trees(Map.of("index.ts", "export const a = 1;")),
                 ProjectFixtures.manifests(
                     Map.of(
-                        "package.json", "{\"scripts\":{\"run\":\"cli x\"}}",
+                        "package.json",
+                        "{\"scripts\":{\"run\":\"cli x\"}}",
                         "node_modules/@acme/cli/package.json",
-                            "{\"name\":\"@acme/cli\",\"bin\":\"./bin.js\"}")));
+                        "{\"name\":\"@acme/cli\",\"bin\":\"./bin.js\"}"
+                    )
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).containsExactly("package.json:1:13");
   }
@@ -91,7 +100,10 @@ final class NodeUnlistedBinaryCheckTest {
                         "packages/app/package.json",
                         "{\"scripts\":{\"lint\":\"eslint .\"}}",
                         ESLINT_BIN,
-                        ESLINT_PACKAGE)));
+                        ESLINT_PACKAGE
+                    )
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }

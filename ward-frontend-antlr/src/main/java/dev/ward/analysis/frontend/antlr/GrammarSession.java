@@ -22,7 +22,6 @@ import org.antlr.v4.runtime.ParserRuleContext;
  * @param <P> the generated parser type
  */
 final class GrammarSession<L extends WardLexerBase, P extends Parser> implements LanguageFrontend {
-
   private static final Logger LOG = Logger.getLogger(GrammarSession.class.getName());
 
   private final L lexer;
@@ -57,14 +56,16 @@ final class GrammarSession<L extends WardLexerBase, P extends Parser> implements
     final List<AnalysisFinding> diagnostics = new ArrayList<>(lexer.findings());
     diagnostics.addAll(findings.findings());
     diagnostics.sort(
-        Comparator.comparingInt(AnalysisFinding::line).thenComparingInt(AnalysisFinding::column));
+        Comparator.comparingInt(AnalysisFinding::line).thenComparingInt(AnalysisFinding::column)
+    );
     final ParseResult result = new ParseResult(SyntaxTreeMapper.map(root, parser), diagnostics);
     LOG.fine(
         () ->
             "parse finished: "
                 + parser.getClass().getSimpleName()
                 + " diagnostics="
-                + result.diagnostics().size());
+                + result.diagnostics().size()
+    );
     return result;
   }
 }

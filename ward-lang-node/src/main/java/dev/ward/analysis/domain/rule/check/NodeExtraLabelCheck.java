@@ -15,7 +15,6 @@ import java.util.Set;
  * switch, which the same jump reaches without the label, like ESLint {@code no-extra-label}.
  */
 public final class NodeExtraLabelCheck implements RuleCheck {
-
   private static final String LABELLED = "labelledStatement";
   private static final String STATEMENT = "statement";
   private static final String IDENTIFIER = "identifier";
@@ -49,7 +48,8 @@ public final class NodeExtraLabelCheck implements RuleCheck {
       final SyntaxNode node,
       final String pending,
       final Deque<Frame> stack,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     if (LABELLED.equals(node.kind())) {
       labelled(node, stack, matches);
     } else if (BREAKABLE.contains(node.kind())) {
@@ -67,7 +67,10 @@ public final class NodeExtraLabelCheck implements RuleCheck {
   }
 
   private void labelled(
-      final SyntaxNode node, final Deque<Frame> stack, final List<RuleMatch> matches) {
+      final SyntaxNode node,
+      final Deque<Frame> stack,
+      final List<RuleMatch> matches
+  ) {
     final Optional<SyntaxNode> label = identifier(node);
     if (label.isEmpty()) {
       children(node, null, stack, matches);
@@ -85,7 +88,10 @@ public final class NodeExtraLabelCheck implements RuleCheck {
 
   /** The reported label is the nearest enclosing breakable statement's own label, and only that. */
   private void jump(
-      final SyntaxNode node, final Deque<Frame> stack, final List<RuleMatch> matches) {
+      final SyntaxNode node,
+      final Deque<Frame> stack,
+      final List<RuleMatch> matches
+  ) {
     final Optional<SyntaxNode> label = identifier(node);
     if (label.isEmpty()) {
       return;
@@ -116,7 +122,8 @@ public final class NodeExtraLabelCheck implements RuleCheck {
       final SyntaxNode node,
       final String pending,
       final Deque<Frame> stack,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     for (final SyntaxNode child : node.children()) {
       walk(child, pending, stack, matches);
     }

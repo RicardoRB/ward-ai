@@ -17,7 +17,6 @@ import java.util.Set;
  * it is reported instead.
  */
 public final class PythonUnreachableStatementCheck implements RuleCheck {
-
   private static final Set<String> JUMPS =
       Set.of("return_stmt", "raise_stmt", "break_stmt", "continue_stmt");
   private static final Set<String> LISTS = Set.of("file_input", "block");

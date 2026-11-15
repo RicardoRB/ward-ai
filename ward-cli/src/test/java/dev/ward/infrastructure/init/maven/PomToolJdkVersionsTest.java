@@ -37,7 +37,8 @@ class PomToolJdkVersionsTest {
         .contains(
             "<artifactId>jacoco-maven-plugin</artifactId>",
             "<version>0.8.13</version>",
-            "<version>1.17.4</version>")
+            "<version>1.17.4</version>"
+        )
         .doesNotContain("ENGINE_VERSION");
   }
 
@@ -49,12 +50,15 @@ class PomToolJdkVersionsTest {
         .contains(
             "<artifactId>jacoco-maven-plugin</artifactId>",
             "<version>0.8.13</version>",
-            "<version>1.30.1</version>");
+            "<version>1.30.1</version>"
+        );
   }
 
   @Test
   void jdkAbove25IsConfiguredAsJdk25WithAWarning(
-      @TempDir final Path jdk25, @TempDir final Path jdk27) throws IOException {
+      @TempDir final Path jdk25,
+      @TempDir final Path jdk27
+  ) throws IOException {
     final PomToolConfigurator configurator =
         new PomToolConfigurator(ignored -> snapshot(JAVA_27, Map.of()));
     writePom(jdk27, EMPTY_POM);
@@ -64,13 +68,15 @@ class PomToolJdkVersionsTest {
             project(jdk27),
             STRICT_GATES.stream().map(PomToolJdkVersionsTest::gate).toList(),
             QualityPreset.STRICT,
-            finding -> true);
+            finding -> true
+        );
 
     assertThat(Files.readString(jdk27.resolve(POM))).isEqualTo(strictPom(jdk25, JAVA_25));
     assertThat(change.warnings())
         .containsExactly(
             "Ward has not been tested on JDK 27 and does not support it; it is configured as"
-                + " JDK 25.");
+                + " JDK 25."
+        );
   }
 
   private static String strictPom(final Path root, final int jdk) throws IOException {
@@ -80,17 +86,26 @@ class PomToolJdkVersionsTest {
             project(root),
             STRICT_GATES.stream().map(PomToolJdkVersionsTest::gate).toList(),
             QualityPreset.STRICT,
-            finding -> true);
+            finding -> true
+        );
     return Files.readString(root.resolve(POM));
   }
 
   private static CompatibilityProjectSnapshot snapshot(
-      final int javaVersion, final Map<String, String> plugins) {
+      final int javaVersion,
+      final Map<String,
+      String> plugins
+  ) {
     return new CompatibilityProjectSnapshot(
         new Project(Path.of("."), Language.JAVA, BuildTool.MAVEN, Framework.NONE),
         new ToolchainSnapshot(
-            Optional.of(javaVersion), Optional.empty(), Optional.of("3.9.0"), Framework.NONE),
-        plugins);
+            Optional.of(javaVersion),
+            Optional.empty(),
+            Optional.of("3.9.0"),
+            Framework.NONE
+        ),
+        plugins
+    );
   }
 
   private static Project project(final Path root) {

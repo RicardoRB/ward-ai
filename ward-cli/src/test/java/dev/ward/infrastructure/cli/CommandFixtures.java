@@ -31,10 +31,22 @@ public final class CommandFixtures {
     return LicenseFixtures.service(
         LicenseFixtures.inventory(
             LicenseFixtures.dependency(
-                Ecosystem.NPM, "left-pad", "1.3.0", DependencyScope.RUNTIME, "package.json"),
+                Ecosystem.NPM,
+                "left-pad",
+                "1.3.0",
+                DependencyScope.RUNTIME,
+                "package.json"
+            ),
             LicenseFixtures.dependency(
-                Ecosystem.NPM, "mystery", "1.0.0", DependencyScope.TEST, "package.json")),
-        Map.of("left-pad", LicenseFixtures.declared("MIT")));
+                Ecosystem.NPM,
+                "mystery",
+                "1.0.0",
+                DependencyScope.TEST,
+                "package.json"
+            )
+        ),
+        Map.of("left-pad", LicenseFixtures.declared("MIT"))
+    );
   }
 
   /** Executes {@code command} with {@code args} and returns its exit code. */

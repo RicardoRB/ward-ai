@@ -12,7 +12,11 @@ final class NumberedChoice {
    * ids come first, followed by ids turned on in the order they were entered.
    */
   static List<String> toggle(
-      final List<String> ids, final List<String> initial, final String line, final String label) {
+      final List<String> ids,
+      final List<String> initial,
+      final String line,
+      final String label
+  ) {
     final List<String> selected = new ArrayList<>(initial.stream().filter(ids::contains).toList());
     for (final String token : line.trim().split("[ ,]+")) {
       if (!token.isBlank()) {
@@ -40,9 +44,14 @@ final class NumberedChoice {
   }
 
   private static InvalidAnswerException invalid(
-      final String token, final int size, final String label, final Throwable cause) {
+      final String token,
+      final int size,
+      final String label,
+      final Throwable cause
+  ) {
     return new InvalidAnswerException(
         "Invalid " + label + " selection '" + token + "'. Choose numbers from 1 to " + size + ".",
-        cause);
+        cause
+    );
   }
 }

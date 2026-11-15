@@ -9,7 +9,6 @@ import java.util.List;
  * Lowers the {@code do}, {@code while} and {@code for} loops of a TypeScript or JavaScript body.
  */
 final class NodeLoops {
-
   private static final int CONDITION_INDEX = 2;
   private static final int BODY_INDEX = 4;
   private static final int DO_BODY_INDEX = 1;
@@ -26,7 +25,8 @@ final class NodeLoops {
       final ControlFlowBuilder flow,
       final NodeBranches branches,
       final NodeStatements statements,
-      final NodeAccesses accesses) {
+      final NodeAccesses accesses
+  ) {
     this.flow = flow;
     this.branches = branches;
     this.statements = statements;
@@ -105,7 +105,10 @@ final class NodeLoops {
   }
 
   private void forClassic(
-      final List<SyntaxNode> header, final String label, final SyntaxNode body) {
+      final List<SyntaxNode> header,
+      final String label,
+      final SyntaxNode body
+  ) {
     final List<List<SyntaxNode>> clauses = NodeForHeaders.splitOnSemicolons(header);
     if (!clauses.get(0).isEmpty()) {
       final SyntaxNode init = NodeForHeaders.last(clauses.get(0));
@@ -138,7 +141,8 @@ final class NodeLoops {
       final SyntaxNode body,
       final int bodyBlock,
       final int after,
-      final int continueBlock) {
+      final int continueBlock
+  ) {
     flow.jumps().pushLoop(label, after, continueBlock);
     flow.moveTo(bodyBlock);
     statements.statement(body, null);

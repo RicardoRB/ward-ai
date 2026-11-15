@@ -15,7 +15,6 @@ import java.util.function.BiFunction;
  * @param id the check id
  */
 record ResponseScope(DocumentPair pair, Operation base, Operation now, String id) {
-
   private static final String RESPONSES = "responses";
 
   /** A response of the base and the one with the same status in the revision. */
@@ -23,12 +22,19 @@ record ResponseScope(DocumentPair pair, Operation base, Operation now, String id
 
   /** A rule that runs {@code check} on every operation both documents have. */
   static BreakingRule rule(
-      final String id, final BiFunction<DocumentPair, ResponseScope, List<BreakingFinding>> check) {
+      final String id,
+      final BiFunction<DocumentPair,
+      ResponseScope,
+      List<BreakingFinding>> check
+  ) {
     return RowRule.of(
         id,
         pair ->
             OperationPairs.each(
-                pair, (base, now) -> check.apply(pair, new ResponseScope(pair, base, now, id))));
+                pair,
+                (base, now) -> check.apply(pair, new ResponseScope(pair, base, now, id))
+            )
+    );
   }
 
   /** The responses of the base that the revision also has, by status. */
@@ -43,7 +49,10 @@ record ResponseScope(DocumentPair pair, Operation base, Operation now, String id
                       new Answer(
                           code.key(),
                           scope.pair().base().resolve(code.value()),
-                          scope.pair().revision().resolve(other))));
+                          scope.pair().revision().resolve(other)
+                      )
+                  )
+          );
     }
     return answers;
   }
@@ -55,6 +64,7 @@ record ResponseScope(DocumentPair pair, Operation base, Operation now, String id
         OperationIndex.method(now) + " " + now.path() + ": " + message,
         OperationIndex.method(now),
         now.path(),
-        node);
+        node
+    );
   }
 }

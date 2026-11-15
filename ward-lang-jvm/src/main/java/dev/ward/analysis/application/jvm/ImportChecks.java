@@ -27,7 +27,6 @@ import org.tomlj.TomlParseResult;
  * parameter is a rule option, named after the Checkstyle property in kebab-case.
  */
 final class ImportChecks {
-
   private static final String MESSAGE = "message";
   private static final String EXCLUDES = "excludes";
   private static final String TOP = "top";
@@ -45,7 +44,8 @@ final class ImportChecks {
         entry(
             "static-import",
             toml ->
-                new StaticImportCheck(TomlValues.optionalStrings(toml, EXCLUDES), message(toml))),
+                new StaticImportCheck(TomlValues.optionalStrings(toml, EXCLUDES), message(toml))
+        ),
         entry(
             "illegal-import",
             toml ->
@@ -53,11 +53,14 @@ final class ImportChecks {
                     TomlLists.optional(toml, "illegal-pkgs"),
                     TomlLists.optional(toml, "illegal-classes"),
                     flag(toml, "regexp", false),
-                    message(toml))),
+                    message(toml)
+                )
+        ),
         entry("redundant-import", toml -> new RedundantImportCheck(message(toml))),
         entry(
             "unnecessary-qualified-type",
-            toml -> new UnnecessaryFullyQualifiedTypeCheck(message(toml))),
+            toml -> new UnnecessaryFullyQualifiedTypeCheck(message(toml))
+        ),
         entry(
             "import-order",
             toml ->
@@ -66,7 +69,9 @@ final class ImportChecks {
                     flag(toml, "ordered", true),
                     flag(toml, "separated", false),
                     flag(toml, "case-sensitive", true),
-                    message(toml))),
+                    message(toml)
+                )
+        ),
         entry("custom-import-order", ImportChecks::customImportOrder),
         entry(
             "import-control",
@@ -74,7 +79,10 @@ final class ImportChecks {
                 new ImportControlCheck(
                     TomlLists.optional(toml, "rules"),
                     Pattern.compile(TomlValues.required(toml, "path")),
-                    message(toml))));
+                    message(toml)
+                )
+        )
+    );
   }
 
   /** Builds the checks of module declarations and module imports. */
@@ -86,19 +94,28 @@ final class ImportChecks {
                 new ModuleDirectiveOrderCheck(
                     TomlLists.optional(toml, "order"),
                     flag(toml, "validate-block-separation", true),
-                    message(toml))),
+                    message(toml)
+                )
+        ),
         entry(
             "module-import-order",
             toml ->
                 new ModuleImportOrderCheck(
-                    topOrBottom(toml), flag(toml, "separated", false), message(toml))),
+                    topOrBottom(toml),
+                    flag(toml, "separated", false),
+                    message(toml)
+                )
+        ),
         entry(
             "avoid-module-import",
             toml ->
                 new AvoidModuleImportCheck(
                     TomlValues.optionalStrings(toml, EXCLUDES),
                     TomlValues.optionalInteger(toml, "max-allowed-module-imports", 0),
-                    message(toml))));
+                    message(toml)
+                )
+        )
+    );
   }
 
   private static CustomImportOrderCheck customImportOrder(final TomlParseResult toml) {
@@ -107,10 +124,12 @@ final class ImportChecks {
             TomlValues.required(toml, "custom-import-order-rules"),
             TomlValues.required(toml, "special-imports-regexp"),
             TomlValues.required(toml, "standard-package-regexp"),
-            TomlValues.required(toml, "third-party-package-regexp")),
+            TomlValues.required(toml, "third-party-package-regexp")
+        ),
         flag(toml, "sort-imports-in-group-alphabetically", false),
         flag(toml, "separate-line-between-groups", true),
-        message(toml));
+        message(toml)
+    );
   }
 
   /** The module import position: {@code top} or {@code bottom}. */
@@ -126,7 +145,10 @@ final class ImportChecks {
   }
 
   private static boolean flag(
-      final TomlParseResult toml, final String key, final boolean fallback) {
+      final TomlParseResult toml,
+      final String key,
+      final boolean fallback
+  ) {
     return Optional.ofNullable(toml.getBoolean(key)).orElse(fallback);
   }
 

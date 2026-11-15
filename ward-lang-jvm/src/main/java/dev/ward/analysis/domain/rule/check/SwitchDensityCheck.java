@@ -11,7 +11,6 @@ import java.util.Set;
  * switch density does. Statements and labels are counted in the switch's own groups.
  */
 public final class SwitchDensityCheck implements UnitCheck {
-
   private static final String STATEMENT = "statement";
   private static final String SWITCH_PREFIX = "switch(";
   private static final String GROUP = "switchBlockStatementGroup";
@@ -51,7 +50,12 @@ public final class SwitchDensityCheck implements UnitCheck {
         CheckSupport.at(
             node.span(),
             CheckSupport.fill(
-                message, String.valueOf(statements / labels), String.valueOf(threshold))));
+                message,
+                String.valueOf(statements / labels),
+                String.valueOf(threshold)
+            )
+        )
+    );
   }
 
   private static int countIn(final SyntaxNode node, final String kind) {

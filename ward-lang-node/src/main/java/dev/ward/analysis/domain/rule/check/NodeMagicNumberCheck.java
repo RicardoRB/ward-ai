@@ -18,14 +18,14 @@ import java.util.Set;
  * never reported, as in Checkstyle's defaults.
  */
 public final class NodeMagicNumberCheck implements RuleCheck {
-
   private static final Set<String> LITERALS =
       Set.of(
           "DecimalLiteral",
           "HexIntegerLiteral",
           "OctalIntegerLiteral",
           "OctalIntegerLiteral2",
-          "BinaryIntegerLiteral");
+          "BinaryIntegerLiteral"
+      );
   private static final List<BigDecimal> BUILT_IN =
       List.of(BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.valueOf(2));
 
@@ -47,7 +47,8 @@ public final class NodeMagicNumberCheck implements RuleCheck {
       final List<BigDecimal> ignore,
       final NodeMagicNumberFlags flags,
       final String message,
-      final String constMessage) {
+      final String constMessage
+  ) {
     this.ignore = List.copyOf(ignore);
     this.flags = flags;
     this.message = message;
@@ -63,7 +64,10 @@ public final class NodeMagicNumberCheck implements RuleCheck {
   }
 
   private void literals(
-      final SyntaxNode node, final List<RuleMatch> found, final NodeMagicNumberRoles roles) {
+      final SyntaxNode node,
+      final List<RuleMatch> found,
+      final NodeMagicNumberRoles roles
+  ) {
     if (LITERALS.contains(node.kind())) {
       literal(node, roles).ifPresent(found::add);
       return;

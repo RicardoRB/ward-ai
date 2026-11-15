@@ -18,7 +18,8 @@ public final class MavenLifecyclePlugins {
           new Plugin("maven-jar-plugin", "3.5.0"),
           new Plugin("maven-install-plugin", "3.1.4"),
           new Plugin("maven-deploy-plugin", "3.1.4"),
-          new Plugin("maven-site-plugin", "3.12.1"));
+          new Plugin("maven-site-plugin", "3.12.1")
+      );
 
   private static final Plugin WAR = new Plugin("maven-war-plugin", "3.4.0");
 
@@ -42,7 +43,8 @@ public final class MavenLifecyclePlugins {
         .filter(
             plugin ->
                 List.of("clean", "install", "deploy", "site").stream()
-                    .anyMatch(name -> plugin.artifact().startsWith("maven-" + name)))
+                    .anyMatch(name -> plugin.artifact().startsWith("maven-" + name))
+        )
         .toList();
   }
 

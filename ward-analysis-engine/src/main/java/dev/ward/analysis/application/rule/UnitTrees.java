@@ -37,8 +37,11 @@ final class UnitTrees {
    * run, by language, merged into one request per unit.
    */
   UnitTrees(
-      final Map<AnalysisLanguage, FrontendSupport> support,
-      final Map<AnalysisLanguage, List<FactNeed>> needs) {
+      final Map<AnalysisLanguage,
+      FrontendSupport> support,
+      final Map<AnalysisLanguage,
+      List<FactNeed>> needs
+  ) {
     this.support = support;
     this.needs = Map.copyOf(needs);
   }
@@ -52,13 +55,15 @@ final class UnitTrees {
       final ParseResult result = support.get(unit.language()).frontend().parse(unit);
       if (!result.diagnostics().isEmpty()) {
         collector.recordError(
-            new RuleExecutionError(null, unit.path(), "the unit has syntax errors"));
+            new RuleExecutionError(null, unit.path(), "the unit has syntax errors")
+        );
         return Optional.empty();
       }
       return Optional.of(result.tree());
     } catch (final AnalysisFailedException exception) {
       collector.recordError(
-          new RuleExecutionError(null, unit.path(), "the unit could not be parsed"));
+          new RuleExecutionError(null, unit.path(), "the unit could not be parsed")
+      );
       return Optional.empty();
     }
   }
@@ -68,7 +73,8 @@ final class UnitTrees {
       final CompiledRule rule,
       final SourceUnit unit,
       final SyntaxNode root,
-      final RuleRunCollector collector) {
+      final RuleRunCollector collector
+  ) {
     final RuleCapability capability = rule.definition().capability();
     if (capability != RuleCapability.CFG
         && capability != RuleCapability.DATAFLOW
@@ -89,7 +95,8 @@ final class UnitTrees {
       final SourceUnit unit,
       final SyntaxNode root,
       final String ruleId,
-      final RuleRunCollector collector) {
+      final RuleRunCollector collector
+  ) {
     try {
       final ControlFlowResult result = support.get(unit.language()).lowering().lower(unit, root);
       result
@@ -97,11 +104,14 @@ final class UnitTrees {
           .forEach(
               failure ->
                   collector.recordError(
-                      new RuleExecutionError(ruleId, unit.path(), failure.message())));
+                      new RuleExecutionError(ruleId, unit.path(), failure.message())
+                  )
+          );
       return new FlowView(result.graphs());
     } catch (final AnalysisFailedException exception) {
       collector.recordError(
-          new RuleExecutionError(ruleId, unit.path(), "the control flow could not be lowered"));
+          new RuleExecutionError(ruleId, unit.path(), "the control flow could not be lowered")
+      );
       return FlowView.NONE;
     }
   }
@@ -115,7 +125,8 @@ final class UnitTrees {
       final SourceUnit unit,
       final SyntaxNode root,
       final DependencyView dependencies,
-      final RuleRunCollector collector) {
+      final RuleRunCollector collector
+  ) {
     if (rule.definition().capability() != RuleCapability.SCOPES) {
       return ScopeView.NONE;
     }
@@ -126,7 +137,11 @@ final class UnitTrees {
     } catch (final AnalysisFailedException exception) {
       collector.recordError(
           new RuleExecutionError(
-              rule.definition().id(), unit.path(), "the scopes could not be built"));
+              rule.definition().id(),
+              unit.path(),
+              "the scopes could not be built"
+          )
+      );
       return ScopeView.NONE;
     }
   }
@@ -139,7 +154,8 @@ final class UnitTrees {
       final CompiledRule rule,
       final SourceUnit unit,
       final SyntaxNode root,
-      final RuleRunCollector collector) {
+      final RuleRunCollector collector
+  ) {
     if (rule.definition().capability() != RuleCapability.TYPES) {
       return UnitTypeFacts.none();
     }
@@ -156,7 +172,8 @@ final class UnitTrees {
       final CompiledRule rule,
       final SourceUnit unit,
       final SyntaxNode root,
-      final RuleRunCollector collector) {
+      final RuleRunCollector collector
+  ) {
     try {
       return support
           .get(unit.language())
@@ -164,12 +181,17 @@ final class UnitTrees {
           .map(
               facts ->
                   new TypeFactsPrePass(facts)
-                      .run(unit, root, needs.getOrDefault(unit.language(), List.of())))
+                      .run(unit, root, needs.getOrDefault(unit.language(), List.of()))
+          )
           .orElseGet(UnitTypeFacts::none);
     } catch (final AnalysisFailedException exception) {
       collector.recordError(
           new RuleExecutionError(
-              rule.definition().id(), unit.path(), "the type facts could not be computed"));
+              rule.definition().id(),
+              unit.path(),
+              "the type facts could not be computed"
+          )
+      );
       return UnitTypeFacts.none();
     }
   }

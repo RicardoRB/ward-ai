@@ -19,7 +19,8 @@ class WardCliContract6Test extends WardCliIntegrationSupport {
   private void useTscGate() throws IOException {
     Files.writeString(
         project.resolve(WARD_TOML),
-        "version = 2\n\n[checks.tsc]\nenabled = true\nuses = \"tsc\"\ncommand = \"./mvnw tsc:check\"\n");
+        "version = 2\n\n[checks.tsc]\nenabled = true\nuses = \"tsc\"\ncommand = \"./mvnw tsc:check\"\n"
+    );
   }
 
   @Test

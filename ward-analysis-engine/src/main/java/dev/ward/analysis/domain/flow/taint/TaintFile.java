@@ -27,7 +27,6 @@ import java.util.logging.Logger;
  * while its text and the specification are unchanged.
  */
 public final class TaintFile {
-
   private static final Logger LOG = Logger.getLogger(TaintFile.class.getName());
   private static final int MAX_ROUNDS = 4;
 
@@ -60,7 +59,8 @@ public final class TaintFile {
   public static List<TaintFinding> run(
       final List<ControlFlowGraph> graphs,
       final List<ControlFlowGraph> related,
-      final TaintSpec spec) {
+      final TaintSpec spec
+  ) {
     final Set<String> known = new HashSet<>(LocalMethod.owned(graphs));
     known.addAll(LocalMethod.owned(related));
     final List<ControlFlowGraph> own = DispatchedCalls.apply(graphs, known, spec);
@@ -81,18 +81,25 @@ public final class TaintFile {
       final List<ControlFlowGraph> own,
       final List<ControlFlowGraph> related,
       final Set<String> known,
-      final TaintSpec spec) {
+      final TaintSpec spec
+  ) {
     final Map<String, LocalMethod> methods = CalledMethods.local(own, LocalMethod.index(own));
     CalledMethods.reachable(own, LocalMethod.indexExternal(related))
         .forEach(
             (key, method) ->
                 methods.put(
-                    key, method.withGraph(DispatchedCalls.apply(method.graph(), known, spec))));
+                    key,
+                    method.withGraph(DispatchedCalls.apply(method.graph(), known, spec))
+                )
+        );
     return methods;
   }
 
   private static TaintSpec summarized(
-      final TaintSpec spec, final Map<String, LocalMethod> methods) {
+      final TaintSpec spec,
+      final Map<String,
+      LocalMethod> methods
+  ) {
     Map<String, Summary> known = Map.of();
     for (int round = 0; round < MAX_ROUNDS; round++) {
       final Map<String, Summary> next = summarize(derived(spec, methods, known), methods);
@@ -108,7 +115,10 @@ public final class TaintFile {
   }
 
   private static Map<String, Summary> summarize(
-      final TaintSpec spec, final Map<String, LocalMethod> methods) {
+      final TaintSpec spec,
+      final Map<String,
+      LocalMethod> methods
+  ) {
     final Map<String, Summary> found = new HashMap<>();
     final TaintSpec seeded = withParameterSource(spec);
     for (final LocalMethod method : methods.values()) {
@@ -149,15 +159,20 @@ public final class TaintFile {
             LocalMethod.mark(),
             Optional.empty(),
             Optional.empty(),
-            List.of()));
+            List.of()
+        )
+    );
     return new TaintSpec(sources, spec.sinks(), spec.sanitizers(), spec.propagators());
   }
 
   /** The specification plus a source or sink entry per summarized method, for each qualifier. */
   private static TaintSpec derived(
       final TaintSpec spec,
-      final Map<String, LocalMethod> methods,
-      final Map<String, Summary> summaries) {
+      final Map<String,
+      LocalMethod> methods,
+      final Map<String,
+      Summary> summaries
+  ) {
     final List<TaintEntry> sources = new ArrayList<>(spec.sources());
     final List<TaintEntry> sinks = new ArrayList<>(spec.sinks());
     summaries.forEach(
@@ -171,13 +186,22 @@ public final class TaintFile {
               sinks.add(entry(method, qualifier, List.copyOf(summary.sinkParameters())));
             }
           }
-        });
+        }
+    );
     return new TaintSpec(sources, sinks, spec.sanitizers(), spec.propagators());
   }
 
   private static TaintEntry entry(
-      final LocalMethod method, final String qualifier, final List<Integer> arguments) {
+      final LocalMethod method,
+      final String qualifier,
+      final List<Integer> arguments
+  ) {
     return new TaintEntry(
-        FlowSiteKind.CALL, method.name(), Optional.empty(), Optional.of(qualifier), arguments);
+        FlowSiteKind.CALL,
+        method.name(),
+        Optional.empty(),
+        Optional.of(qualifier),
+        arguments
+    );
   }
 }

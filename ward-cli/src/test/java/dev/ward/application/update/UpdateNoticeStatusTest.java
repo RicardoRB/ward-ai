@@ -47,11 +47,11 @@ class UpdateNoticeStatusTest {
     assertThat(fixtures.service(Optional.empty()).freshStatus().state())
         .isEqualTo(UpdateStatus.State.UNKNOWN);
     assertThat(
-            fixtures
-                .service(
-                    "0.3.1", Optional.of(NEWER), Map.of(UpdateNoticeService.OPT_OUT, "1"), false)
-                .freshStatus()
-                .state())
+        fixtures
+            .service("0.3.1", Optional.of(NEWER), Map.of(UpdateNoticeService.OPT_OUT, "1"), false)
+            .freshStatus()
+            .state()
+    )
         .isEqualTo(UpdateStatus.State.SKIPPED);
     assertThat(fixtures.lookups).hasValue(2);
   }
@@ -96,6 +96,7 @@ class UpdateNoticeStatusTest {
         .containsExactly(
             "event=update-check status=looked-up result=unknown",
             "event=update-check status=cached",
-            "event=update-check status=skipped reason=ci");
+            "event=update-check status=skipped reason=ci"
+        );
   }
 }

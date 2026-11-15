@@ -28,7 +28,10 @@ final class AnalysisGates {
    * root-relative changed paths, or every finding when {@code focus} is empty.
    */
   static QualityGate create(
-      final GateConfiguration check, final AnalysisPorts analysis, final List<String> focus) {
+      final GateConfiguration check,
+      final AnalysisPorts analysis,
+      final List<String> focus
+  ) {
     if (analysis == null) {
       throw new WardException("Analysis gate dependencies are unavailable.");
     }
@@ -44,11 +47,14 @@ final class AnalysisGates {
                 selectRules(check, loaded.rules()),
                 !check.rules().isEmpty(),
                 loaded.rules(),
-                architectureRules(check)),
-            analysis.rules());
+                architectureRules(check)
+            ),
+            analysis.rules()
+        );
     final RuleSetup setup =
         LanguageFilteredSetup.withoutOpenApi(
-            new ArchitectureFileSetup(configured, check.architectureFile(), analysis.rules()));
+            new ArchitectureFileSetup(configured, check.architectureFile(), analysis.rules())
+        );
     return new AnalysisGate(check.name(), setup, analysis, check.javaClasspath(), focus);
   }
 
@@ -75,7 +81,9 @@ final class AnalysisGates {
 
   /** Returns the rules the check names, in its order, or every loaded rule when it names none. */
   private static List<RuleDefinition> selectRules(
-      final GateConfiguration check, final List<RuleDefinition> available) {
+      final GateConfiguration check,
+      final List<RuleDefinition> available
+  ) {
     if (check.rules().isEmpty()) {
       return available;
     }
@@ -85,13 +93,17 @@ final class AnalysisGates {
           available.stream()
               .filter(rule -> rule.id().equals(id))
               .findFirst()
-              .orElseThrow(() -> unknownRule(check, id, available)));
+              .orElseThrow(() -> unknownRule(check, id, available))
+      );
     }
     return selected;
   }
 
   private static WardException unknownRule(
-      final GateConfiguration check, final String id, final List<RuleDefinition> available) {
+      final GateConfiguration check,
+      final String id,
+      final List<RuleDefinition> available
+  ) {
     final String known =
         available.isEmpty()
             ? "No analysis rules are installed."
@@ -102,6 +114,7 @@ final class AnalysisGates {
             + "' of check '"
             + check.name()
             + "' is not a known analysis rule. "
-            + known);
+            + known
+    );
   }
 }

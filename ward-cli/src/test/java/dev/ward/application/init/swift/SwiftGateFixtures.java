@@ -23,7 +23,10 @@ final class SwiftGateFixtures {
 
   /** Returns Xcode tools for {@code preset} on {@code platform}, in {@code workspace} if any. */
   static SwiftTools xcode(
-      final QualityPreset preset, final String platform, final Optional<String> workspace) {
+      final QualityPreset preset,
+      final String platform,
+      final Optional<String> workspace
+  ) {
     return new SwiftTools(BuildTool.XCODE, true, preset, SOURCES, workspace, "Shop", platform);
   }
 }

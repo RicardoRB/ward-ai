@@ -16,7 +16,6 @@ import org.tomlj.TomlParseResult;
  * text and its block tags sit.
  */
 final class JavadocLayoutChecks {
-
   private static final String MESSAGE = "message";
 
   private JavadocLayoutChecks() {}
@@ -26,35 +25,47 @@ final class JavadocLayoutChecks {
     return Map.ofEntries(
         entry(
             "javadoc-leading-asterisk-align",
-            toml -> asterisk(JavadocAsteriskCheck.Mode.ALIGN, toml)),
+            toml -> asterisk(JavadocAsteriskCheck.Mode.ALIGN, toml)
+        ),
         entry(
             "javadoc-missing-leading-asterisk",
-            toml -> asterisk(JavadocAsteriskCheck.Mode.MISSING, toml)),
+            toml -> asterisk(JavadocAsteriskCheck.Mode.MISSING, toml)
+        ),
         entry(
             "javadoc-missing-whitespace-after-asterisk",
-            toml -> asterisk(JavadocAsteriskCheck.Mode.WHITESPACE, toml)),
+            toml -> asterisk(JavadocAsteriskCheck.Mode.WHITESPACE, toml)
+        ),
         entry(
             "multiline-comment-leading-asterisk-presence",
-            toml -> new BlockCommentAsteriskCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new BlockCommentAsteriskCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "outer-type-filename",
-            toml -> new OuterTypeFilenameCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new OuterTypeFilenameCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry("single-line-javadoc", toml -> layout(JavadocLayoutCheck.Mode.SINGLE_LINE, toml)),
         entry(
             "javadoc-content-location",
-            toml -> layout(JavadocLayoutCheck.Mode.CONTENT_LOCATION, toml)),
+            toml -> layout(JavadocLayoutCheck.Mode.CONTENT_LOCATION, toml)
+        ),
         entry(
             "require-empty-line-before-block-tag-group",
-            toml -> layout(JavadocLayoutCheck.Mode.EMPTY_LINE_BEFORE_TAGS, toml)));
+            toml -> layout(JavadocLayoutCheck.Mode.EMPTY_LINE_BEFORE_TAGS, toml)
+        )
+    );
   }
 
   private static JavadocAsteriskCheck asterisk(
-      final JavadocAsteriskCheck.Mode mode, final TomlParseResult toml) {
+      final JavadocAsteriskCheck.Mode mode,
+      final TomlParseResult toml
+  ) {
     return new JavadocAsteriskCheck(mode, TomlValues.required(toml, MESSAGE));
   }
 
   private static JavadocLayoutCheck layout(
-      final JavadocLayoutCheck.Mode mode, final TomlParseResult toml) {
+      final JavadocLayoutCheck.Mode mode,
+      final TomlParseResult toml
+  ) {
     return new JavadocLayoutCheck(mode, TomlValues.required(toml, MESSAGE));
   }
 }

@@ -23,7 +23,8 @@ class KotlinApiSurfaceReaderTest {
         .read(
             units,
             new AntlrLanguageFrontend(),
-            name -> ClassLoader.getSystemResource(name.replace('.', '/') + ".class") != null);
+            name -> ClassLoader.getSystemResource(name.replace('.', '/') + ".class") != null
+        );
   }
 
   private static ApiType type(final List<ApiType> types, final String name) {
@@ -38,7 +39,8 @@ class KotlinApiSurfaceReaderTest {
                 + "open class A {\n fun shown() {}\n internal fun hidden() {}\n"
                 + " private fun secret() {}\n protected fun guarded() {}\n}\n"
                 + "internal class B {\n fun m() {}\n}\n"
-                + "private class C\n");
+                + "private class C\n"
+        );
 
     assertThat(type(types, "p.A").visibility()).isEqualTo(ApiVisibility.PUBLIC);
     assertThat(type(types, "p.B").isVisible()).isFalse();
@@ -56,7 +58,8 @@ class KotlinApiSurfaceReaderTest {
             PACKAGE
                 + "class Closed\nopen class Open\nabstract class Abstract\nsealed class Sealed\n"
                 + "interface Face\nobject Single\nenum class Color { RED, GREEN }\n"
-                + "data class Pair2(val a: Int, val b: String?)\n");
+                + "data class Pair2(val a: Int, val b: String?)\n"
+        );
 
     assertThat(type(types, "p.Closed").isFinal()).isTrue();
     assertThat(type(types, "p.Open").extendable()).isTrue();

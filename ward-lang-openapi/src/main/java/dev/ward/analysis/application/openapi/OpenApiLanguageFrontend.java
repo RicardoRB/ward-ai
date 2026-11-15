@@ -15,7 +15,6 @@ import java.util.List;
  * a syntax problem as a diagnostic next to an empty tree. The text, not the extension, decides.
  */
 public final class OpenApiLanguageFrontend implements LanguageFrontend {
-
   private static final String RULE_ID = "syntax";
 
   @Override
@@ -35,6 +34,7 @@ public final class OpenApiLanguageFrontend implements LanguageFrontend {
         problem.line(),
         problem.column(),
         null,
-        List.of());
+        List.of()
+    );
   }
 }

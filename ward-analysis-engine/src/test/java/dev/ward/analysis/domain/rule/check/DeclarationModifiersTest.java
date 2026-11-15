@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** Modifiers that open a declaration, as Kotlin puts them inside the declaration node. */
 class DeclarationModifiersTest {
-
   private static final Set<String> MODIFIER_KINDS = Set.of("modifierList", "modifier");
   private static final String NAME = "simpleIdentifier";
   private static final String LOWER_CAMEL = "[a-z][a-zA-Z0-9]*";
@@ -43,13 +42,16 @@ class DeclarationModifiersTest {
   }
 
   private static TextPatternCheck check(
-      final Optional<String> required, final Optional<String> excluded) {
+      final Optional<String> required,
+      final Optional<String> excluded
+  ) {
     return new TextPatternCheck(
         new DeclarationFilter(Set.of("propertyDeclaration"), MODIFIER_KINDS, required, excluded),
         NAME,
         Set.of("modifierList"),
         LOWER_CAMEL,
-        "bad {value}");
+        "bad {value}"
+    );
   }
 
   /** A property whose modifier list holds one modifier token, then its name. */
@@ -62,7 +64,13 @@ class DeclarationModifiersTest {
     final SyntaxNode identifier = Trees.leaf(NAME, name, nameStart);
     final SyntaxNode property =
         Trees.node(
-            "propertyDeclaration", 0, nameStart + name.length(), 1, modifierList, identifier);
+            "propertyDeclaration",
+            0,
+            nameStart + name.length(),
+            1,
+            modifierList,
+            identifier
+        );
     return Trees.unit(property);
   }
 }

@@ -9,7 +9,6 @@ import java.util.Map;
 
 /** The statement checks of the Biome lint rules, which read labels and their bodies. */
 final class BiomeStatementChecks {
-
   private static final String MESSAGE = "message";
 
   private BiomeStatementChecks() {}
@@ -22,6 +21,9 @@ final class BiomeStatementChecks {
             toml ->
                 new BiomeConfusingLabelsCheck(
                     TomlValues.strings(toml, "allowed-labels"),
-                    TomlValues.required(toml, MESSAGE))));
+                    TomlValues.required(toml, MESSAGE)
+                )
+        )
+    );
   }
 }

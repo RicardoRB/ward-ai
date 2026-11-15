@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks the collapsible {@code if} and the handler body checks over hand-built Python trees. */
 final class PythonBlockChecksTest {
-
   private static final String MESSAGE = "found";
   private static final String PASS = PythonTrees.PASS;
 
@@ -39,7 +38,8 @@ final class PythonBlockChecksTest {
   void ignoresAnIfWithMoreThanOneStatementOrAStatementThatIsNotAnIf() {
     final SyntaxNode two =
         trees.ifStmt(
-            List.of(trees.compound(trees.ifStmt(List.of(trees.simple(PASS)))), trees.simple(PASS)));
+            List.of(trees.compound(trees.ifStmt(List.of(trees.simple(PASS)))), trees.simple(PASS))
+        );
     final SyntaxNode plain = trees.ifStmt(List.of(trees.simple(PASS)));
 
     assertThat(collapsible(two)).isEmpty();
@@ -59,7 +59,9 @@ final class PythonBlockChecksTest {
   void reportsEachMatchingHandlerUnlessSole() {
     final SyntaxNode attempt =
         trees.attempt(
-            List.of(trees.simple("f()")), List.of(trees.handler(PASS), trees.handler(PASS)));
+            List.of(trees.simple("f()")),
+            List.of(trees.handler(PASS), trees.handler(PASS))
+        );
 
     assertThat(handlers(attempt, PASS, false)).hasSize(2);
     assertThat(handlers(attempt, PASS, true)).isEmpty();
@@ -71,13 +73,19 @@ final class PythonBlockChecksTest {
         trees.attempt(List.of(trees.simple("f()")), List.of(trees.handler(PASS)));
     final SyntaxNode two =
         trees.attempt(
-            List.of(trees.simple("f()"), trees.simple("g()")), List.of(trees.handler(PASS)));
+            List.of(trees.simple("f()"), trees.simple("g()")),
+            List.of(trees.handler(PASS))
+        );
     final SyntaxNode withElse =
         trees.attempt(
-            List.of(trees.simple("f()")), List.of(trees.handler(PASS), trees.clause("else")));
+            List.of(trees.simple("f()")),
+            List.of(trees.handler(PASS), trees.clause("else"))
+        );
     final SyntaxNode withFinally =
         trees.attempt(
-            List.of(trees.simple("f()")), List.of(trees.handler(PASS), trees.clause("finally")));
+            List.of(trees.simple("f()")),
+            List.of(trees.handler(PASS), trees.clause("finally"))
+        );
 
     assertThat(handlers(plain, PASS, true)).hasSize(1);
     assertThat(handlers(two, PASS, true)).isEmpty();
@@ -89,7 +97,11 @@ final class PythonBlockChecksTest {
   void readsTheStatementsOfAOneLineBlock() {
     final SyntaxNode both =
         Layout.node(
-            "simple_stmts", trees.simple("a"), trees.layout().token(";", ";"), trees.simple("b"));
+            "simple_stmts",
+            trees.simple("a"),
+            trees.layout().token(";", ";"),
+            trees.simple("b")
+        );
     final SyntaxNode block = Layout.node(PythonTrees.BLOCK, both);
 
     assertThat(StatementShapes.statements(block)).hasSize(2);
@@ -101,7 +113,10 @@ final class PythonBlockChecksTest {
   }
 
   private static List<RuleMatch> handlers(
-      final SyntaxNode root, final String body, final boolean sole) {
+      final SyntaxNode root,
+      final String body,
+      final boolean sole
+  ) {
     return new HandlerBodyCheck(Pattern.compile(body), sole, MESSAGE).matches(root);
   }
 }

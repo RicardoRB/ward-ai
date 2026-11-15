@@ -22,7 +22,6 @@ import org.junit.jupiter.params.provider.MethodSource;
  * nothing, and an entry in the reference; a row that is not implemented says why.
  */
 class BreakingRulesCatalogTest {
-
   private static final String ISSUE = "#523";
   private static final String ID_PREFIX = "ward:openapi/";
   private static final RuleCatalog CATALOG = new RuleCatalogReader().load();

@@ -9,7 +9,6 @@ import java.util.List;
  * *args}, and how many positional parameters have a default value.
  */
 record Parameters(List<String> positional, boolean varargs, int defaults) {
-
   private static final String STAR = "*";
   private static final String PARAMETERS = "parameters";
   private static final String TYPED_LIST = "typedargslist";

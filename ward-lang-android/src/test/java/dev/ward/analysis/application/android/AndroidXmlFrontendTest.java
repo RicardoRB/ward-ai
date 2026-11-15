@@ -12,7 +12,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class AndroidXmlFrontendTest {
-
   @Test
   void aWellFormedFileIsATreeWithoutDiagnostics() {
     final ParseResult result =
@@ -37,7 +36,8 @@ class AndroidXmlFrontendTest {
               assertThat(finding.file()).isEqualTo("res/layout/a.xml");
               assertThat(finding.line()).isEqualTo(2);
               assertThat(finding.ruleId()).isEqualTo("syntax");
-            });
+            }
+        );
   }
 
   @Test
@@ -52,11 +52,13 @@ class AndroidXmlFrontendTest {
             "android-allow-backup",
             "android-hardcoded-text",
             "android-content-description",
-            "android-unused-resources");
+            "android-unused-resources"
+        );
     assertThat(
-            checks
-                .get("android-application-flag")
-                .create(TomlValues.parse("attribute = \"debuggable\"\nmessage = \"m\"")))
+        checks
+            .get("android-application-flag")
+            .create(TomlValues.parse("attribute = \"debuggable\"\nmessage = \"m\""))
+    )
         .isNotNull();
     assertThat(new AndroidRuleFiles().ruleFiles())
         .containsExactly("rules/android/manifest.toml", "rules/android/resources.toml");

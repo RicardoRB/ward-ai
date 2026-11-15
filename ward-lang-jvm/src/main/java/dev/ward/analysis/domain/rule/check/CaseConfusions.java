@@ -13,7 +13,6 @@ import java.util.Set;
  * confusion is "intentional" when either of the two methods is deprecated.
  */
 final class CaseConfusions {
-
   private static final String DEPRECATED = "@Deprecated";
   private static final String JAVA_DEPRECATED = "java.lang.Deprecated";
 
@@ -24,7 +23,10 @@ final class CaseConfusions {
 
   /** Returns the declared methods that are confusable with a visible one. */
   static List<DeclaredMethods.Method> of(
-      final SyntaxNode type, final TypeMembers inherited, final boolean intentional) {
+      final SyntaxNode type,
+      final TypeMembers inherited,
+      final boolean intentional
+  ) {
     final List<Seen> visible = new ArrayList<>();
     inherited.inheritedMethods().stream()
         .map(method -> new Seen(method.name(), isDeprecated(method)))
@@ -39,7 +41,8 @@ final class CaseConfusions {
                   seen ->
                       seen.name().equalsIgnoreCase(method.name())
                           && !seen.name().equals(method.name())
-                          && intentional == (own || seen.deprecated()));
+                          && intentional == (own || seen.deprecated())
+              );
       if (confusing) {
         found.add(method);
       }

@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * initializer must be assigned a constructor parameter.
  */
 public final class ProperLoggerCheck implements UnitCheck {
-
   private static final Pattern CLASS_LITERAL = Pattern.compile("(\\w+)\\.class");
   private static final String INITIALIZER = "=";
 
@@ -36,7 +35,8 @@ public final class ProperLoggerCheck implements UnitCheck {
       final String loggerClass,
       final String staticName,
       final String instanceName,
-      final String message) {
+      final String message
+  ) {
     this.loggerClass = Objects.requireNonNull(loggerClass, "loggerClass");
     this.staticName = Objects.requireNonNull(staticName, "staticName");
     this.instanceName = Objects.requireNonNull(instanceName, "instanceName");
@@ -63,12 +63,16 @@ public final class ProperLoggerCheck implements UnitCheck {
   private boolean isLogger(final SyntaxNode member) {
     return ClassMembers.typeText(ClassMembers.declarationOf(member))
         .filter(
-            type -> type.equals(loggerClass) || type.equals(ClassMembers.simpleName(loggerClass)))
+            type -> type.equals(loggerClass) || type.equals(ClassMembers.simpleName(loggerClass))
+        )
         .isPresent();
   }
 
   private boolean improper(
-      final SyntaxNode member, final SyntaxNode clazz, final String className) {
+      final SyntaxNode member,
+      final SyntaxNode clazz,
+      final String className
+  ) {
     final SyntaxNode field = ClassMembers.declarationOf(member);
     final List<String> modifiers = MemberDeclarations.modifiers(member);
     final boolean isStatic = modifiers.contains(MemberDeclarations.STATIC);
@@ -103,7 +107,8 @@ public final class ProperLoggerCheck implements UnitCheck {
               return SyntaxWalk.visits(constructor, Set.of("expression")).stream()
                   .map(visit -> assignment.matcher(SyntaxWalk.text(visit.node())))
                   .anyMatch(match -> match.matches() && parameters.contains(match.group(1)));
-            });
+            }
+        );
   }
 
   private static List<String> parameterNames(final SyntaxNode constructor) {

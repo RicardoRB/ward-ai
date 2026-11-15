@@ -9,7 +9,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class IndependenceRuleTest {
-
   private static final int IMPORT_LINE = 7;
   private static final List<List<String>> TABLE = List.of(List.of("shop/orders", "shop/billing"));
 
@@ -22,7 +21,8 @@ class IndependenceRuleTest {
     final List<GraphMatch> matches =
         rule()
             .matches(
-                graph(edge("shop/orders/Order.java", "shop/billing/Invoice.java", IMPORT_LINE)));
+                graph(edge("shop/orders/Order.java", "shop/billing/Invoice.java", IMPORT_LINE))
+            );
 
     assertThat(matches).hasSize(1);
     assertThat(matches.getFirst().file()).isEqualTo("shop/orders/Order.java");
@@ -39,7 +39,9 @@ class IndependenceRuleTest {
             .matches(
                 graph(
                     edge("shop/orders/Order.java", "shop/common/Money.java", 1),
-                    edge("shop/billing/Invoice.java", "shop/common/Money.java", 1)));
+                    edge("shop/billing/Invoice.java", "shop/common/Money.java", 1)
+                )
+            );
 
     assertThat(matches).isEmpty();
   }
@@ -57,7 +59,8 @@ class IndependenceRuleTest {
     final IndependenceRule rule =
         new IndependenceRule(
             definition(IndependenceRule.ID, "shop,shop/orders/core,shop/billing"),
-            List.of(List.of("shop", "shop/orders/core", "shop/billing")));
+            List.of(List.of("shop", "shop/orders/core", "shop/billing"))
+        );
 
     final List<GraphMatch> matches =
         rule.matches(graph(edge("shop/orders/core/A.java", "shop/billing/B.java", 1)));

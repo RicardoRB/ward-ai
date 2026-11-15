@@ -44,7 +44,8 @@ final class CoverageReportGate implements QualityGate {
       final GateConfiguration check,
       final QualityGate command,
       final CrapPorts ports,
-      final AnalysisPorts analysis) {
+      final AnalysisPorts analysis
+  ) {
     this.name = check.name();
     this.command = command;
     this.minimum = check.minimum();
@@ -87,14 +88,16 @@ final class CoverageReportGate implements QualityGate {
     final CoverageTotals totals = CoverageTotals.of(project.root(), hits, ports);
     if (totals.lines().executable() == 0) {
       throw new CrapReportException(
-          "The coverage reports have no coverable line." + CrapReports.TESTS_FIRST);
+          "The coverage reports have no coverable line." + CrapReports.TESTS_FIRST
+      );
     }
     final Integer branchMinimum = options.minimumBranches();
     if (branchMinimum != null && hits.stream().noneMatch(LineHits::recordsBranches)) {
       throw new CrapReportException(
           "The coverage reports record no branches, so the branch minimum cannot be checked."
               + " The tool did not measure branches; enable branch coverage in it."
-              + " coverage.py also writes no branch record for code that has no branch.");
+              + " coverage.py also writes no branch record for code that has no branch."
+      );
     }
     return compare(ran, totals, branchMinimum);
   }
@@ -107,7 +110,8 @@ final class CoverageReportGate implements QualityGate {
     if (fresh.isEmpty()) {
       throw new CrapReportException(
           "No coverage report was written after the command started; the reports that exist are left"
-              + " from an earlier run.");
+              + " from an earlier run."
+      );
     }
     return fresh;
   }
@@ -119,12 +123,16 @@ final class CoverageReportGate implements QualityGate {
         CoverageMatching.of(
             project.root(),
             hits,
-            units.stream().map(SourceUnit::path).collect(Collectors.toUnmodifiableSet()));
+            units.stream().map(SourceUnit::path).collect(Collectors.toUnmodifiableSet())
+        );
     reports.requireFresh(project.root(), matching.namedBy());
   }
 
   private GateResult compare(
-      final GateResult ran, final CoverageTotals totals, final Integer branchMin) {
+      final GateResult ran,
+      final CoverageTotals totals,
+      final Integer branchMin
+  ) {
     LOGGER.log(
         Level.INFO,
         () ->
@@ -137,7 +145,8 @@ final class CoverageReportGate implements QualityGate {
                 + " branches="
                 + totals.branches().covered()
                 + "/"
-                + totals.branches().executable());
+                + totals.branches().executable()
+    );
     final boolean linesBelow = totals.lines().below(minimum);
     final boolean branchesBelow = branchMin != null && totals.branches().below(branchMin);
     final StringBuilder summary =
@@ -150,7 +159,11 @@ final class CoverageReportGate implements QualityGate {
   }
 
   private static String describe(
-      final String kind, final LineCoverage coverage, final int limit, final boolean below) {
+      final String kind,
+      final LineCoverage coverage,
+      final int limit,
+      final boolean below
+  ) {
     return kind
         + " coverage "
         + coverage.percent()

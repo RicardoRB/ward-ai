@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
  * not read, and neither is a constructor.
  */
 public final class JavaGuardedByCheck implements RuleCheck {
-
   private static final String FIELD = "fieldDeclaration";
   private static final Pattern LOCK = Pattern.compile("\"([^\"]*)\"");
   private static final Set<String> LOCK_CALLS =
@@ -79,7 +78,11 @@ public final class JavaGuardedByCheck implements RuleCheck {
   }
 
   private static void register(
-      final SyntaxNode field, final SyntaxNode annotation, final Map<String, String> guarded) {
+      final SyntaxNode field,
+      final SyntaxNode annotation,
+      final Map<String,
+      String> guarded
+  ) {
     final Matcher lock = LOCK.matcher(SyntaxWalk.text(annotation));
     if (lock.find()) {
       SyntaxWalk.descendants(field).stream()
@@ -95,7 +98,8 @@ public final class JavaGuardedByCheck implements RuleCheck {
                 annotation -> {
                   final String name = JavaAnnotations.simpleName(annotation);
                   return "GuardedBy".equals(name) || "HoldsLock".equals(name);
-                });
+                }
+            );
     return !annotated
         && !method.has("synchronized")
         && SyntaxWalk.leaves(method.node()).stream()
@@ -103,7 +107,11 @@ public final class JavaGuardedByCheck implements RuleCheck {
   }
 
   private void accesses(
-      final SyntaxNode method, final Map<String, String> guarded, final List<RuleMatch> matches) {
+      final SyntaxNode method,
+      final Map<String,
+      String> guarded,
+      final List<RuleMatch> matches
+  ) {
     final List<SyntaxNode> leaves = SyntaxWalk.leaves(method);
     final Set<String> declared = new java.util.HashSet<>();
     SyntaxWalk.descendants(method).stream()
@@ -117,7 +125,10 @@ public final class JavaGuardedByCheck implements RuleCheck {
           && ownAccess(leaves, index)) {
         matches.add(
             CheckSupport.at(
-                leaves.get(index).span(), CheckSupport.fill(message, name, guarded.get(name))));
+                leaves.get(index).span(),
+                CheckSupport.fill(message, name, guarded.get(name))
+            )
+        );
       }
     }
   }

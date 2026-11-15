@@ -13,7 +13,6 @@ import java.util.Optional;
  * @param body the body statement
  */
 record JavaLoopParts(SyntaxNode condition, List<SyntaxNode> update, SyntaxNode body) {
-
   private static final String WHILE = "'while'";
   private static final String FOR = "'for'";
   private static final String EXPRESSION = "expression";
@@ -39,7 +38,9 @@ record JavaLoopParts(SyntaxNode condition, List<SyntaxNode> update, SyntaxNode b
   }
 
   private static Optional<JavaLoopParts> forLoop(
-      final List<SyntaxNode> parts, final SyntaxNode body) {
+      final List<SyntaxNode> parts,
+      final SyntaxNode body
+  ) {
     return parts.stream()
         .filter(part -> "forControl".equals(part.kind()))
         .findFirst()

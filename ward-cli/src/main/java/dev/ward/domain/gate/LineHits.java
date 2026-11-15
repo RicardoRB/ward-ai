@@ -13,7 +13,6 @@ import java.util.Objects;
  *     cover
  */
 public record LineHits(Path report, List<Entry> entries, boolean recordsBranches) {
-
   /** Requires the report and copies the entries. */
   public LineHits {
     Objects.requireNonNull(report, "report");

@@ -27,7 +27,8 @@ class OpenApiCompatGateTest {
     fixtures.committedFiles.add(OpenApiGateFixtures.BASE_SHA + ":" + OpenApiGateFixtures.SPEC);
     fixtures.committedContents.put(
         OpenApiGateFixtures.BASE_SHA + ":" + OpenApiGateFixtures.SPEC,
-        OpenApiGateFixtures.DOCUMENT);
+        OpenApiGateFixtures.DOCUMENT
+    );
     return fixtures;
   }
 
@@ -36,9 +37,12 @@ class OpenApiCompatGateTest {
     final OpenApiGateFixtures fixtures = branch();
     fixtures.committedContents.put(
         OpenApiGateFixtures.BASE_SHA + ":" + OpenApiGateFixtures.SPEC,
-        OpenApiGateFixtures.DOCUMENT.replace("    post:\n", "    put:\n"));
+        OpenApiGateFixtures.DOCUMENT.replace("    post:\n", "    put:\n")
+    );
     fixtures.committedContents.put(
-        OpenApiGateFixtures.HEAD_SHA + ":" + OpenApiGateFixtures.SPEC, "not: used\n");
+        OpenApiGateFixtures.HEAD_SHA + ":" + OpenApiGateFixtures.SPEC,
+        "not: used\n"
+    );
 
     final GateResult result =
         fixtures.gate(COMPAT, OpenApiGateFixtures.NO_COMMAND).execute(OpenApiGateFixtures.PROJECT);
@@ -66,7 +70,8 @@ class OpenApiCompatGateTest {
     fixtures.committedFiles.add(OpenApiGateFixtures.PARENT_SHA + ":" + OpenApiGateFixtures.SPEC);
     fixtures.committedContents.put(
         OpenApiGateFixtures.PARENT_SHA + ":" + OpenApiGateFixtures.SPEC,
-        OpenApiGateFixtures.DOCUMENT.replace("    post:\n", "    put:\n"));
+        OpenApiGateFixtures.DOCUMENT.replace("    post:\n", "    put:\n")
+    );
 
     final GateResult result =
         fixtures.gate(COMPAT, OpenApiGateFixtures.NO_COMMAND).execute(OpenApiGateFixtures.PROJECT);
@@ -158,7 +163,8 @@ class OpenApiCompatGateTest {
                 + OpenApiGateFixtures.BASE_SHA,
             "event=openapi-diff-done gate=openapi-compat findings=0",
             "event=openapi-baseline gate=openapi-compat status=none reason=new-spec revision="
-                + OpenApiGateFixtures.BASE_SHA)
+                + OpenApiGateFixtures.BASE_SHA
+        )
         .noneMatch(message -> message.contains("openapi: 3.0.3"));
     assertThat(records).extracting(LogRecord::getLevel).containsOnly(Level.INFO);
   }

@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 /** Helpers split out of {@link TsType}. */
 final class TypePrinter {
-
   private TypePrinter() {}
 
   static String printNamed(final TsType.Named named) {
@@ -20,7 +19,8 @@ final class TypePrinter {
             type ->
                 type instanceof TsType.Fn && !",".equals(separator.trim())
                     ? "(" + type.print() + ")"
-                    : type.print())
+                    : type.print()
+        )
         .collect(Collectors.joining(separator));
   }
 

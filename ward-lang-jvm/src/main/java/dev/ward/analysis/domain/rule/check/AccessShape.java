@@ -6,7 +6,6 @@ import java.util.Set;
 
 /** How a field reference is used by the expression around it. */
 record AccessShape(FieldAccessScan.Kind kind, boolean arithmetic, boolean receiver) {
-
   private static final Set<String> UNARY = Set.of("'++'", "'--'");
   private static final Set<String> ARITHMETIC =
       Set.of("'+'", "'-'", "'*'", "'/'", "'%'", "'&'", "'|'", "'^'", "'<<'", "'>>'", "'>>>'");
@@ -32,11 +31,15 @@ record AccessShape(FieldAccessScan.Kind kind, boolean arithmetic, boolean receiv
     return new AccessShape(
         write ? FieldAccessScan.Kind.WRITE : FieldAccessScan.Kind.READ,
         write && arithmetic(parts, name),
-        receiver);
+        receiver
+    );
   }
 
   private static boolean writes(
-      final SyntaxNode outer, final List<SyntaxNode> parts, final SyntaxNode wrapper) {
+      final SyntaxNode outer,
+      final List<SyntaxNode> parts,
+      final SyntaxNode wrapper
+  ) {
     if (parts.isEmpty()) {
       return false;
     }
@@ -66,6 +69,8 @@ record AccessShape(FieldAccessScan.Kind kind, boolean arithmetic, boolean receiv
             node ->
                 SyntaxWalk.descendants(node).stream()
                     .anyMatch(
-                        id -> "identifier".equals(id.kind()) && name.equals(SyntaxWalk.text(id))));
+                        id -> "identifier".equals(id.kind()) && name.equals(SyntaxWalk.text(id))
+                    )
+        );
   }
 }

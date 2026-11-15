@@ -20,7 +20,6 @@ import java.util.regex.Pattern;
  * whose target or argument types are unknown is never reported.
  */
 public final class UnnecessaryTypeArgumentCheck extends FactsCheck {
-
   private static final Pattern EXPLICIT = Pattern.compile("^[\\w.]*\\.<([\\w.]+)>\\w+\\(");
   private static final String EXPRESSION = "expression";
   private static final String EXPRESSION_LIST = "expressionList";
@@ -72,7 +71,8 @@ public final class UnnecessaryTypeArgumentCheck extends FactsCheck {
             invocation ->
                 SyntaxWalk.descendants(invocation).stream()
                     .filter(node -> EXPRESSION_LIST.equals(node.kind()))
-                    .findFirst())
+                    .findFirst()
+        )
         .map(SyntaxNode::children)
         .orElse(List.of())
         .stream()
@@ -85,7 +85,8 @@ public final class UnnecessaryTypeArgumentCheck extends FactsCheck {
       final String variable,
       final List<SyntaxNode> arguments,
       final String written,
-      final UnitTypeFacts types) {
+      final UnitTypeFacts types
+  ) {
     for (int index = 0; index < arguments.size(); index++) {
       final TypeRef parameter = target.parameters().get(index);
       if (variable.equals(parameter.name()) && parameter.arrayDepth() == 0) {

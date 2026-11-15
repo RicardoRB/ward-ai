@@ -10,7 +10,6 @@ import java.util.Set;
 
 /** The formatter and its parser for each language, immutable after construction. */
 public final class FormatterRegistry {
-
   private final Map<AnalysisLanguage, FormatterEntry> formatters;
 
   /**
@@ -48,12 +47,15 @@ public final class FormatterRegistry {
   }
 
   private static FormatterEntry checkLanguage(
-      final AnalysisLanguage key, final FormatterEntry entry) {
+      final AnalysisLanguage key,
+      final FormatterEntry entry
+  ) {
     Objects.requireNonNull(key, "language");
     Objects.requireNonNull(entry, "entry");
     if (entry.formatter().language() != key) {
       throw new IllegalArgumentException(
-          "formatter for " + key + " handles " + entry.formatter().language());
+          "formatter for " + key + " handles " + entry.formatter().language()
+      );
     }
     return entry;
   }

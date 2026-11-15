@@ -11,7 +11,6 @@ import java.util.Map;
 
 /** The ESLint core checks that read the syntax tree or the text of the source (issue #326). */
 final class EslintSyntaxChecks {
-
   private static final String MESSAGE = "message";
 
   private EslintSyntaxChecks() {}
@@ -23,24 +22,31 @@ final class EslintSyntaxChecks {
             "node-no-constant-binary-expression",
             (CheckFactory)
                 toml ->
-                    new NodeConstantBinaryExpressionCheck(
-                        TomlValues.required(toml, "operand-message"),
-                        TomlValues.required(toml, "short-circuit-message"))),
+                new NodeConstantBinaryExpressionCheck(
+                    TomlValues.required(toml, "operand-message"),
+                    TomlValues.required(toml, "short-circuit-message")
+                )
+        ),
         Map.entry(
             "node-no-this-before-super",
             (CheckFactory)
-                toml -> new NodeThisBeforeSuperCheck(TomlValues.required(toml, MESSAGE))),
+                toml -> new NodeThisBeforeSuperCheck(TomlValues.required(toml, MESSAGE))
+        ),
         Map.entry(
             "node-no-misleading-character-class",
             (CheckFactory)
-                toml -> new NodeMisleadingCharacterClassCheck(TomlValues.required(toml, MESSAGE))),
+                toml -> new NodeMisleadingCharacterClassCheck(TomlValues.required(toml, MESSAGE))
+        ),
         Map.entry("node-strict-directive", EslintScriptChecks::strictDirective),
         Map.entry(
             "node-no-useless-backreference",
             (CheckFactory)
-                toml -> new NodeUselessBackreferenceCheck(TomlValues.required(toml, "message"))),
+                toml -> new NodeUselessBackreferenceCheck(TomlValues.required(toml, "message"))
+        ),
         Map.entry(
             "node-no-extra-label",
-            (CheckFactory) toml -> new NodeExtraLabelCheck(TomlValues.required(toml, MESSAGE))));
+            (CheckFactory)toml -> new NodeExtraLabelCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 }

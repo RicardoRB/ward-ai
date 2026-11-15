@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
  * check. Each parameter is a rule option, named after the PMD property in kebab-case.
  */
 final class ClassDesignChecks {
-
   private static final String MESSAGE = "message";
   private static final String PACKAGES = "packages";
 
@@ -36,15 +35,21 @@ final class ClassDesignChecks {
                     TomlValues.required(toml, MESSAGE),
                     TomlValues.optionalStrings(toml, "trusted-types").stream()
                         .map(Pattern::compile)
-                        .toList())),
+                        .toList()
+                )
+        ),
         entry(
             "invalid-java-bean",
             toml ->
                 new InvalidJavaBeanCheck(
                     List.copyOf(TomlValues.optionalStrings(toml, PACKAGES)),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "internal-api-usage",
-            toml -> new InternalApiUsageCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new InternalApiUsageCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 }

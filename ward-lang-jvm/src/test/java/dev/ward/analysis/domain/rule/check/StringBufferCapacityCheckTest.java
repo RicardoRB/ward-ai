@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 /** The capacity check: a default-sized builder that literal appends fill past its capacity. */
 class StringBufferCapacityCheckTest extends TreeBuilders {
-
   private static final String VARIABLE = "bad";
   private static final String LITERAL = "STRING_LITERAL";
   private static final int CAPACITY = 16;
@@ -39,7 +38,8 @@ class StringBufferCapacityCheckTest extends TreeBuilders {
             t(TOKEN_OPEN, "("),
             t("DECIMAL_LITERAL", "41"),
             t(TOKEN_CLOSE, ")"),
-            t(TOKEN_SEMICOLON, ";"));
+            t(TOKEN_SEMICOLON, ";")
+        );
 
     assertThat(check.check(unit(block(sized, appendOf(PRESIZED))), FILE)).isEmpty();
   }
@@ -55,7 +55,8 @@ class StringBufferCapacityCheckTest extends TreeBuilders {
             t(TOKEN_OPEN, "("),
             t(TOKEN_IDENTIFIER, "value"),
             t(TOKEN_CLOSE, ")"),
-            t(TOKEN_SEMICOLON, ";"));
+            t(TOKEN_SEMICOLON, ";")
+        );
 
     assertThat(check.check(unit(block(declaration(), other)), FILE)).isEmpty();
   }
@@ -70,7 +71,8 @@ class StringBufferCapacityCheckTest extends TreeBuilders {
         t(TOKEN_IDENTIFIER, "StringBuilder"),
         t(TOKEN_OPEN, "("),
         t(TOKEN_CLOSE, ")"),
-        t(TOKEN_SEMICOLON, ";"));
+        t(TOKEN_SEMICOLON, ";")
+    );
   }
 
   private static SyntaxNode appendOf(final int characters) {
@@ -83,7 +85,8 @@ class StringBufferCapacityCheckTest extends TreeBuilders {
         t(TOKEN_OPEN, "("),
         t(LITERAL, literal),
         t(TOKEN_CLOSE, ")"),
-        t(TOKEN_SEMICOLON, ";"));
+        t(TOKEN_SEMICOLON, ";")
+    );
   }
 
   private static SyntaxNode block(final SyntaxNode... statements) {

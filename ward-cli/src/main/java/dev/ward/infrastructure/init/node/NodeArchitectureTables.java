@@ -8,7 +8,6 @@ import javax.inject.Inject;
 
 /** The Node architecture tables: the cycle check covers {@code src}, or the project root. */
 public final class NodeArchitectureTables implements ArchitectureTables {
-
   /** Creates the stateless adapter that Dagger injects. */
   @Inject
   public NodeArchitectureTables() {}

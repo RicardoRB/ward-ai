@@ -14,15 +14,14 @@ import org.junit.jupiter.api.Test;
 
 /** The flow sites that the Python lowering records for the taint rules. */
 class PythonFlowSitesTest {
-
   private static List<FlowSite> sites(final String source, final String body) {
     final SourceUnit unit = new SourceUnit("m.py", AnalysisLanguage.PYTHON, source);
     final ControlFlowGraph graph =
         new PythonControlFlow()
             .lower(unit, new AntlrLanguageFrontend().parse(unit).tree()).graphs().stream()
-                .filter(candidate -> candidate.body().equals(body))
-                .findFirst()
-                .orElseThrow();
+            .filter(candidate -> candidate.body().equals(body))
+            .findFirst()
+            .orElseThrow();
     return graph.blocks().stream().map(BasicBlock::sites).flatMap(List::stream).toList();
   }
 

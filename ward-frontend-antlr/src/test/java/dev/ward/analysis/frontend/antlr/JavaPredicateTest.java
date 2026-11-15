@@ -11,7 +11,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 /** Grammar predicates and actions for JavaPredicate, exercised through the frontend. */
 class JavaPredicateTest {
-
   private static ParseResult parse(final AnalysisLanguage language, final String text) {
     return new AntlrLanguageFrontend().parse(new SourceUnit("sample", language, text));
   }
@@ -31,18 +30,19 @@ class JavaPredicateTest {
   @Test
   void javaAnnotationWithNamedValueParses() {
     assertThat(
-            parse(AnalysisLanguage.JAVA, "@SuppressWarnings(value = \"x\") class A {}")
-                .diagnostics())
+        parse(AnalysisLanguage.JAVA, "@SuppressWarnings(value = \"x\") class A {}")
+            .diagnostics()
+    )
         .isEmpty();
   }
 
   @Test
   void validJavaConstructsParseWithoutDiagnostics() {
     final String[] snippets = {
-      "record R() {}",
-      "record R(int a, int... b) {}",
-      "@Deprecated(since = \"1\") class A {}",
-      "class A { @Override public String toString() { return \"\"; } }",
+        "record R() {}",
+        "record R(int a, int... b) {}",
+        "@Deprecated(since = \"1\") class A {}",
+        "class A { @Override public String toString() { return \"\"; } }",
     };
     for (final String snippet : snippets) {
       assertThat(parse(AnalysisLanguage.JAVA, snippet).diagnostics()).as(snippet).isEmpty();

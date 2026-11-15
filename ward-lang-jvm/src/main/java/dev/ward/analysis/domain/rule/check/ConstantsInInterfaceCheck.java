@@ -13,7 +13,6 @@ import java.util.Set;
  * constants belong to the contract of those methods.
  */
 public final class ConstantsInInterfaceCheck implements UnitCheck {
-
   private static final Set<String> METHODS =
       Set.of("interfaceMethodDeclaration", "genericInterfaceMethodDeclaration");
 

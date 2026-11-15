@@ -60,14 +60,18 @@ class IntegrationServiceTest {
 
           @Override
           public IntegrationResult integrate(
-              final Path projectRoot, final IntegrationRequest request) {
+              final Path projectRoot,
+              final IntegrationRequest request
+          ) {
             requests.add(request);
             return new IntegrationResult(IntegrationResult.Status.CHANGED, List.of(), "ok");
           }
         };
     final IntegrationService service =
         new IntegrationService(
-            new ProjectDetector(new FileSystemProjectInspection()), List.of(recording, legacy));
+            new ProjectDetector(new FileSystemProjectInspection()),
+            List.of(recording, legacy)
+        );
 
     service.integrate("recording", root, IntegrationRequest.INSTALL);
     service.integrate("recording", root, true);

@@ -10,8 +10,12 @@ package dev.ward.domain.gate;
  * @param remediation the instruction that fixes the problem
  */
 public record GatePrerequisite(
-    Kind kind, String executable, String required, String detected, String remediation) {
-
+    Kind kind,
+    String executable,
+    String required,
+    String detected,
+    String remediation
+) {
   /** What is missing from the environment. */
   public enum Kind {
     /** The gate's executable could not be started. */

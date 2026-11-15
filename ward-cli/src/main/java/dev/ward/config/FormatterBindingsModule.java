@@ -69,7 +69,9 @@ interface FormatterBindingsModule {
             AnalysisLanguage.PYTHON,
             new FormatterEntry(new PythonFormatter(), new PythonFormatSyntax()),
             AnalysisLanguage.SWIFT,
-            new FormatterEntry(new SwiftFormatter(), new SwiftFormatSyntax())));
+            new FormatterEntry(new SwiftFormatter(), new SwiftFormatSyntax())
+        )
+    );
   }
 
   /** Opens the format cache of a project, under the project root. */

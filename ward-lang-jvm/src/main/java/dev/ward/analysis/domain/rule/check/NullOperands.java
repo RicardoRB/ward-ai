@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * expression names, whether it is null or never null, and what a null test says about a variable.
  */
 final class NullOperands {
-
   private static final String EXPRESSION = "expression";
   private static final String NULL = "null";
   private static final String EQUALS = "==";

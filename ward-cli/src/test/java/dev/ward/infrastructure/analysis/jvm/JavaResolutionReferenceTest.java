@@ -41,11 +41,12 @@ class JavaResolutionReferenceTest {
   @ParameterizedTest
   @ValueSource(
       strings = {
-        "java-resolution",
-        "java-matrix/sources/base",
-        "java-matrix/sources/java17",
-        "java-matrix/sources/java21"
-      })
+          "java-resolution",
+          "java-matrix/sources/base",
+          "java-matrix/sources/java17",
+          "java-matrix/sources/java21"
+      }
+  )
   void wardEdgesWithoutClasspathEqualTheArchUnitDependencies(final String fixture)
       throws IOException {
     final Path project = Path.of(FIXTURES, fixture);
@@ -59,12 +60,13 @@ class JavaResolutionReferenceTest {
   @ParameterizedTest
   @ValueSource(
       strings = {
-        "java-resolution",
-        "java-resolution-inferred",
-        "java-matrix/sources/base",
-        "java-matrix/sources/java17",
-        "java-matrix/sources/java21"
-      })
+          "java-resolution",
+          "java-resolution-inferred",
+          "java-matrix/sources/base",
+          "java-matrix/sources/java17",
+          "java-matrix/sources/java21"
+      }
+  )
   void wardEdgesWithClasspathEqualTheArchUnitDependencies(final String fixture) throws IOException {
     final Path project = Path.of(FIXTURES, fixture);
     final Set<String> archUnit = archUnitEdges(project, projectFiles(project));
@@ -91,7 +93,8 @@ class JavaResolutionReferenceTest {
   private static Set<String> withGap(final Set<String> ward) {
     final Set<String> edges = new TreeSet<>(ward);
     edges.add(
-        "src/main/java/shop/service/Report.java" + ARROW + "src/main/java/shop/domain/Order.java");
+        "src/main/java/shop/service/Report.java" + ARROW + "src/main/java/shop/domain/Order.java"
+    );
     return edges;
   }
 
@@ -152,7 +155,9 @@ class JavaResolutionReferenceTest {
                 classes.toString(),
                 "-nowarn",
                 "-classpath",
-                System.getProperty("java.class.path")));
+                System.getProperty("java.class.path")
+            )
+        );
     for (final String file : files) {
       arguments.add(project.resolve(file).toString());
     }

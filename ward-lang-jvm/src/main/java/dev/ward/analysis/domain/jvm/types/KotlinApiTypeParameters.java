@@ -41,19 +41,25 @@ final class KotlinApiTypeParameters {
                     new ApiTypeParameter(
                         nameOf(node),
                         bounds(node, owner).stream().map(inner::of).toList(),
-                        variance(node)))
+                        variance(node)
+                    )
+            )
             .toList();
     return new Declared(inner, found);
   }
 
   private static TypeParameter resolved(
-      final SyntaxNode node, final SyntaxNode owner, final KotlinApiRefs outer) {
+      final SyntaxNode node,
+      final SyntaxNode owner,
+      final KotlinApiRefs outer
+  ) {
     return new TypeParameter(
         nameOf(node),
         bounds(node, owner).stream()
             .map(bound -> KotlinTypes.type(bound, outer.scope()))
             .flatMap(Optional::stream)
-            .toList());
+            .toList()
+    );
   }
 
   private static List<SyntaxNode> nodes(final SyntaxNode owner) {
@@ -76,7 +82,8 @@ final class KotlinApiTypeParameters {
                 Syntax.child(constraint, NAME)
                     .map(Syntax::text)
                     .filter(nameOf(parameter)::equals)
-                    .isPresent())
+                    .isPresent()
+        )
         .forEach(constraint -> found.addAll(Syntax.children(constraint, TYPE)));
     return found;
   }

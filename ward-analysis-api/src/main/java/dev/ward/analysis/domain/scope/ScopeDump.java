@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
  * </pre>
  */
 public final class ScopeDump {
-
   private static final String INDENT = "  ";
   private static final int DUMP_CAPACITY = 256;
 
@@ -45,7 +44,11 @@ public final class ScopeDump {
   }
 
   private static void scope(
-      final UnitScopes unit, final Scope scope, final int depth, final StringBuilder out) {
+      final UnitScopes unit,
+      final Scope scope,
+      final int depth,
+      final StringBuilder out
+  ) {
     if (scope.kind() != ScopeKind.BUILTIN || !scope.bindings().isEmpty()) {
       out.append(INDENT.repeat(depth)).append(label(scope)).append('\n');
       scope.bindings().forEach(binding -> binding(binding, depth + 1, out));
@@ -74,7 +77,8 @@ public final class ScopeDump {
           .append(
               flags.stream()
                   .map(flag -> flag.name().toLowerCase(Locale.ROOT))
-                  .collect(Collectors.joining(",")))
+                  .collect(Collectors.joining(","))
+          )
           .append(']');
     }
     binding.origin().ifPresent(origin -> out.append(" from ").append(origin.specifier()));

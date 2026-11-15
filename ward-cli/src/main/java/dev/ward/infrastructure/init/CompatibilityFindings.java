@@ -26,7 +26,9 @@ public final class CompatibilityFindings {
   /** Creates the findings that read {@code inspection} and resolve against {@code catalog}. */
   public CompatibilityFindings(
       final CompatibilityInspection inspection,
-      final Map<String, List<ManagedPluginCandidate>> catalog) {
+      final Map<String,
+      List<ManagedPluginCandidate>> catalog
+  ) {
     this.inspection = inspection;
     this.catalog = Map.copyOf(catalog);
   }
@@ -36,7 +38,9 @@ public final class CompatibilityFindings {
    * safely. Tools with no version for the runtime JDK are returned as {@code UNAVAILABLE_ON_JDK}.
    */
   public Map<String, CompatibilityFinding> resolve(
-      final Project project, final List<String> tools) {
+      final Project project,
+      final List<String> tools
+  ) {
     final CompatibilityPlan plan = plan(project, tools);
     if (plan.hasUnresolvableFindings()) {
       throw new WardException(
@@ -45,10 +49,12 @@ public final class CompatibilityFindings {
                   finding ->
                       finding.outcome() == CompatibilityOutcome.UNKNOWN
                           || finding.outcome() == CompatibilityOutcome.UNRESOLVABLE
-                          || finding.outcome() == CompatibilityOutcome.INCOMPATIBLE)
+                          || finding.outcome() == CompatibilityOutcome.INCOMPATIBLE
+              )
               .map(CompatibilityFinding::message)
               .distinct()
-              .collect(Collectors.joining(" ")));
+              .collect(Collectors.joining(" "))
+      );
     }
     return plan.findings().stream()
         .collect(Collectors.toMap(CompatibilityFinding::artifactId, finding -> finding));
@@ -59,7 +65,10 @@ public final class CompatibilityFindings {
    * toolchain that cannot be checked omits nothing here; resolving reports it.
    */
   public List<GateOmission> omissions(
-      final Project project, final Map<String, List<String>> toolsByGate) {
+      final Project project,
+      final Map<String,
+      List<String>> toolsByGate
+  ) {
     if (toolsByGate.isEmpty()) {
       return List.of();
     }
@@ -77,7 +86,8 @@ public final class CompatibilityFindings {
                     .filter(finding -> finding.outcome() == CompatibilityOutcome.UNAVAILABLE_ON_JDK)
                     .findFirst()
                     .map(finding -> new GateOmission(entry.getKey(), finding.message()))
-                    .stream())
+                    .stream()
+        )
         .toList();
   }
 
@@ -86,7 +96,10 @@ public final class CompatibilityFindings {
    * runtime JDK. Pins outside the catalog, and an unknown JDK, report nothing.
    */
   public List<GateOmission> unsupportedPins(
-      final Project project, final Map<String, List<String>> toolsByGate) {
+      final Project project,
+      final Map<String,
+      List<String>> toolsByGate
+  ) {
     final CompatibilityProjectSnapshot snapshot = inspection.inspect(project);
     final Optional<Integer> jdk = snapshot.toolchain().runtimeJdk();
     if (jdk.isEmpty()) {
@@ -111,20 +124,26 @@ public final class CompatibilityFindings {
                                     + " to "
                                     + row.maximumJdk()
                                     + "; this project builds on JDK "
-                                    + jdk.get()))
-                    .stream())
+                                    + jdk.get()
+                            )
+                    )
+                    .stream()
+        )
         .toList();
   }
 
   private Optional<ManagedPluginCandidate> pinnedRow(
-      final CompatibilityProjectSnapshot snapshot, final String tool) {
+      final CompatibilityProjectSnapshot snapshot,
+      final String tool
+  ) {
     return snapshot
         .pluginVersion(tool)
         .flatMap(
             version ->
                 catalog.getOrDefault(tool, List.of()).stream()
                     .filter(row -> row.version().equals(version))
-                    .findFirst());
+                    .findFirst()
+        );
   }
 
   /** Returns the JDK that runs the project's build, when the build tool reports it. */
@@ -134,6 +153,9 @@ public final class CompatibilityFindings {
 
   private CompatibilityPlan plan(final Project project, final List<String> tools) {
     return resolver.resolve(
-        inspection.inspect(project), catalog, tools.stream().filter(catalog::containsKey).toList());
+        inspection.inspect(project),
+        catalog,
+        tools.stream().filter(catalog::containsKey).toList()
+    );
   }
 }

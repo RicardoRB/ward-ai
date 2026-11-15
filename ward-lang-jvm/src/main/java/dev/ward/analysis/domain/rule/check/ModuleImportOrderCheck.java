@@ -14,7 +14,6 @@ import java.util.Objects;
  * name; and with {@code separated} a blank line divides the module block from the other imports.
  */
 public final class ModuleImportOrderCheck implements RuleCheck {
-
   private final boolean top;
   private final boolean separated;
   private final String message;
@@ -39,7 +38,10 @@ public final class ModuleImportOrderCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return check(root, ImportLines.of(unit));
   }
 
@@ -56,8 +58,8 @@ public final class ModuleImportOrderCheck implements RuleCheck {
           || unsorted(previousModule, declaration)
           || (previous != null && splitUnseparated(previous, declaration, lines))) {
         matches.add(
-            CheckSupport.at(
-                declaration.span(), CheckSupport.fill(message, declaration.name(), "")));
+            CheckSupport.at(declaration.span(), CheckSupport.fill(message, declaration.name(), ""))
+        );
       }
       sawType |= !declaration.isModule();
       previousModule = declaration.isModule() ? declaration : previousModule;
@@ -71,12 +73,15 @@ public final class ModuleImportOrderCheck implements RuleCheck {
       final ImportDeclaration declaration,
       final int index,
       final int lastType,
-      final boolean sawType) {
+      final boolean sawType
+  ) {
     return declaration.isModule() && (top ? sawType : index < lastType);
   }
 
   private static boolean unsorted(
-      final ImportDeclaration previousModule, final ImportDeclaration declaration) {
+      final ImportDeclaration previousModule,
+      final ImportDeclaration declaration
+  ) {
     return declaration.isModule()
         && previousModule != null
         && previousModule.name().compareTo(declaration.name()) > 0;
@@ -94,11 +99,14 @@ public final class ModuleImportOrderCheck implements RuleCheck {
   }
 
   private boolean splitUnseparated(
-      final ImportDeclaration previous, final ImportDeclaration current, final List<String> lines) {
+      final ImportDeclaration previous,
+      final ImportDeclaration current,
+      final List<String> lines
+  ) {
     return separated
         && previous.isModule() != current.isModule()
         && !lines.isEmpty()
         && ImportLines.blankBetween(lines, previous.span().endLine(), current.span().startLine())
-            == 0;
+        == 0;
   }
 }

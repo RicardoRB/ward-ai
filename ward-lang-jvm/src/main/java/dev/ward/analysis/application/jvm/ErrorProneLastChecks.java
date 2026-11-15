@@ -12,7 +12,6 @@ import java.util.Map;
 
 /** The checks of the last Error Prone standard ports for Java: calls that always fail, orders. */
 final class ErrorProneLastChecks {
-
   private static final String MESSAGE = "message";
 
   private ErrorProneLastChecks() {}
@@ -21,15 +20,21 @@ final class ErrorProneLastChecks {
   static Map<String, CheckFactory> checks() {
     return Map.ofEntries(
         entry(
-            "always-throws", toml -> new JavaAlwaysThrowsCheck(TomlValues.required(toml, MESSAGE))),
+            "always-throws",
+            toml -> new JavaAlwaysThrowsCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "auto-value-order",
-            toml -> new JavaAutoValueOrderCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new JavaAutoValueOrderCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "bundle-deserialization-cast",
-            toml -> new JavaBundleCastCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new JavaBundleCastCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "chaining-constructor",
-            toml -> new JavaChainingConstructorCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new JavaChainingConstructorCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 }

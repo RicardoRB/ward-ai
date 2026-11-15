@@ -30,10 +30,16 @@ class CompatibilityResolverJdkTest {
             new CompatibilityProjectSnapshot(
                 CompatibilityResolverTest.PROJECT,
                 new ToolchainSnapshot(
-                    Optional.empty(), Optional.of(JAVA_17), Optional.of(MAVEN), Framework.NONE),
-                Map.of()),
+                    Optional.empty(),
+                    Optional.of(JAVA_17),
+                    Optional.of(MAVEN),
+                    Framework.NONE
+                ),
+                Map.of()
+            ),
             Map.of(ARTIFACT, List.of(candidate(ARTIFACT, "1.0.0", JAVA_8, "3.6"))),
-            List.of(ARTIFACT));
+            List.of(ARTIFACT)
+        );
 
     assertThat(plan.findings())
         .singleElement()
@@ -41,7 +47,8 @@ class CompatibilityResolverJdkTest {
             finding -> {
               assertThat(finding.outcome()).isEqualTo(CompatibilityOutcome.UNKNOWN);
               assertThat(finding.message()).contains("Runtime JDK could not be determined");
-            });
+            }
+        );
   }
 
   @Test
@@ -50,7 +57,8 @@ class CompatibilityResolverJdkTest {
         RESOLVER.resolve(
             snapshot(JAVA_17, Optional.of(MAVEN), Optional.of(JAVA_21), Map.of()),
             Map.of(ARTIFACT, List.of(candidate(ARTIFACT, "1.0.0", JAVA_8, "3.6"))),
-            List.of(ARTIFACT));
+            List.of(ARTIFACT)
+        );
 
     assertThat(plan.findings())
         .singleElement()
@@ -58,7 +66,8 @@ class CompatibilityResolverJdkTest {
             finding -> {
               assertThat(finding.outcome()).isEqualTo(CompatibilityOutcome.UNKNOWN);
               assertThat(finding.message()).contains("release 21", "runtime JDK 17");
-            });
+            }
+        );
   }
 
   @Test
@@ -67,7 +76,8 @@ class CompatibilityResolverJdkTest {
         RESOLVER.resolve(
             snapshot(JAVA_8, Optional.of(MAVEN), Optional.of(JAVA_8), Map.of()),
             ManagedPluginCatalog.entries(),
-            List.of(PITEST));
+            List.of(PITEST)
+        );
 
     assertThat(plan.findings())
         .singleElement()
@@ -81,7 +91,8 @@ class CompatibilityResolverJdkTest {
         RESOLVER.resolve(
             snapshot(JAVA_21, Optional.of(MAVEN), Optional.of(JAVA_8), Map.of()),
             ManagedPluginCatalog.entries(),
-            List.of(PITEST));
+            List.of(PITEST)
+        );
 
     assertThat(plan.findings())
         .extracting(CompatibilityFinding::selectedVersion)
@@ -94,7 +105,8 @@ class CompatibilityResolverJdkTest {
         RESOLVER.resolve(
             snapshot(JAVA_27, Optional.of(MAVEN), Optional.empty(), Map.of()),
             ManagedPluginCatalog.entries(),
-            List.of(PITEST));
+            List.of(PITEST)
+        );
 
     assertThat(plan.findings())
         .extracting(CompatibilityFinding::selectedVersion)
@@ -107,7 +119,8 @@ class CompatibilityResolverJdkTest {
         RESOLVER.resolve(
             snapshot(JAVA_8, Optional.of(MAVEN), Optional.empty(), Map.of()),
             Map.of(ARTIFACT, List.of(candidate(ARTIFACT, "2.0.0", 11, "3.6"))),
-            List.of(ARTIFACT));
+            List.of(ARTIFACT)
+        );
 
     assertThat(plan.hasUnresolvableFindings()).isFalse();
     assertThat(plan.findings())
@@ -118,7 +131,8 @@ class CompatibilityResolverJdkTest {
               assertThat(finding.selectedVersion()).isNull();
               assertThat(finding.message())
                   .isEqualTo(ARTIFACT + " needs JDK 11+; this project builds on JDK 8");
-            });
+            }
+        );
   }
 
   @Test
@@ -128,18 +142,22 @@ class CompatibilityResolverJdkTest {
             ARTIFACT,
             List.of(
                 candidate(ARTIFACT, "1.0.0", JAVA_8, "7.0"),
-                new ManagedPluginCandidate(ARTIFACT, "2.0.0", JAVA_8, NEWEST_JAVA, "8.4", "new")));
+                new ManagedPluginCandidate(ARTIFACT, "2.0.0", JAVA_8, NEWEST_JAVA, "8.4", "new")
+            )
+        );
 
     final CompatibilityPlan older =
         RESOLVER.resolve(
             snapshot(JAVA_17, Optional.of("8.0"), Optional.empty(), Map.of()),
             catalog,
-            List.of(ARTIFACT));
+            List.of(ARTIFACT)
+        );
     final CompatibilityPlan omitted =
         RESOLVER.resolve(
             snapshot(JAVA_17, Optional.of("6.9"), Optional.empty(), Map.of()),
             catalog,
-            List.of(ARTIFACT));
+            List.of(ARTIFACT)
+        );
 
     assertThat(older.findings())
         .singleElement()
@@ -151,6 +169,7 @@ class CompatibilityResolverJdkTest {
             finding -> {
               assertThat(finding.outcome()).isEqualTo(CompatibilityOutcome.UNAVAILABLE_ON_JDK);
               assertThat(finding.message()).contains("needs build tool version 7.0+", "6.9");
-            });
+            }
+        );
   }
 }

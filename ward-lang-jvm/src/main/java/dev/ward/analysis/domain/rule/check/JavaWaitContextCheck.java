@@ -15,7 +15,6 @@ import java.util.Set;
  * call sits in a lock with no branch or loop before it, as UW_UNCOND_WAIT does.
  */
 public final class JavaWaitContextCheck implements RuleCheck {
-
   /** What the check reports. */
   public enum Mode {
     /** A wait with two different locks held. */
@@ -74,7 +73,10 @@ public final class JavaWaitContextCheck implements RuleCheck {
   }
 
   private static SyntaxNode blockLock(
-      final SyntaxNode node, final Set<String> locks, final SyntaxNode region) {
+      final SyntaxNode node,
+      final Set<String> locks,
+      final SyntaxNode region
+  ) {
     final List<SyntaxNode> parts = node.children();
     if (STATEMENT.equals(node.kind())
         && parts.size() > 2
@@ -89,7 +91,8 @@ public final class JavaWaitContextCheck implements RuleCheck {
       final List<SyntaxNode> ancestors,
       final int index,
       final Set<String> locks,
-      final SyntaxNode region) {
+      final SyntaxNode region
+  ) {
     final SyntaxNode stop = ancestors.get(index);
     if (index < 2 || !"methodDeclaration".equals(stop.kind())) {
       return region;

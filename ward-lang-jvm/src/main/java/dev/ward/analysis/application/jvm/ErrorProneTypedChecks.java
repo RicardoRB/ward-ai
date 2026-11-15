@@ -3,6 +3,7 @@ package dev.ward.analysis.application.jvm;
 import static java.util.Map.entry;
 
 import dev.ward.analysis.application.rule.CheckFactory;
+import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.ArrayArgumentCastCheck;
 import dev.ward.analysis.domain.rule.check.ComparisonContractCheck;
@@ -18,59 +19,84 @@ import dev.ward.analysis.domain.rule.check.JavaNonFinalConstantCheck;
 import dev.ward.analysis.domain.rule.check.JavaProtoNullComparisonCheck;
 import dev.ward.analysis.domain.rule.check.JavaStaticQualifiedCheck;
 import dev.ward.analysis.domain.rule.check.JavaVarargsConditionalCheck;
+import java.util.List;
 import java.util.Map;
 
 /** Builds the checks of Error Prone rules that read the call targets and types of expressions. */
 final class ErrorProneTypedChecks {
-
   private static final String MESSAGE = "message";
 
   private ErrorProneTypedChecks() {}
 
   /** The checks this class provides, by name. */
   static Map<String, CheckFactory> checks() {
+    return CheckRegistry.union(List.of(typeContractChecks(), apiUsageChecks()));
+  }
+
+  private static Map<String, CheckFactory> typeContractChecks() {
     return Map.ofEntries(
         entry(
             "array-argument-cast",
-            toml -> new ArrayArgumentCastCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new ArrayArgumentCastCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "comparison-contract",
-            toml -> new ComparisonContractCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new ComparisonContractCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "compute-if-absent-reference",
-            toml -> new ComputeIfAbsentReferenceCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new ComputeIfAbsentReferenceCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "incomparable-element",
-            toml -> new JavaIncomparableCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new JavaIncomparableCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "is-instance-incompatible-type",
-            toml -> new JavaIsInstanceIncompatibleCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new JavaIsInstanceIncompatibleCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "non-final-compile-time-constant",
-            toml -> new JavaNonFinalConstantCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new JavaNonFinalConstantCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
+  }
+
+  private static Map<String, CheckFactory> apiUsageChecks() {
+    return Map.ofEntries(
         entry(
             "static-qualified-using-expression",
-            toml -> new JavaStaticQualifiedCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new JavaStaticQualifiedCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "proto-null-comparison",
-            toml -> new JavaProtoNullComparisonCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new JavaProtoNullComparisonCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "is-instance-of-class",
-            toml -> new JavaIsInstanceClassCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new JavaIsInstanceClassCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "jdk8-api",
             toml ->
                 new JavaJdk8ApiCheck(
-                    TomlValues.integer(toml, "java-release"), TomlValues.required(toml, MESSAGE))),
+                    TomlValues.integer(toml, "java-release"),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry("joda-to-self", toml -> new JavaJodaToSelfCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "lenient-format",
-            toml -> new JavaLenientFormatCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new JavaLenientFormatCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "lossy-primitive-compare",
-            toml -> new JavaLossyCompareCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new JavaLossyCompareCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "varargs-conditional",
-            toml -> new JavaVarargsConditionalCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new JavaVarargsConditionalCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 }

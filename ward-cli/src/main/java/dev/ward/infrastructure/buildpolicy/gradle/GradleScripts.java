@@ -24,7 +24,8 @@ final class GradleScripts {
               + QUOTED
               + "\\s*\\)?\\s+version\\s+(\\(?\\s*"
               + QUOTED
-              + "|[^\\s)]+)");
+              + "|[^\\s)]+)"
+      );
   private static final Pattern DEPENDENCY =
       Pattern.compile("^\\s*(\\w+)\\s*\\(?\\s*" + QUOTED + "\\s*\\)?\\s*$");
   private static final List<String> CONFIGURATIONS =
@@ -40,7 +41,8 @@ final class GradleScripts {
           "kapt",
           "ksp",
           "developmentOnly",
-          "classpath");
+          "classpath"
+      );
   private static final int COORDINATE_PARTS = 3;
 
   private GradleScripts() {}
@@ -58,7 +60,11 @@ final class GradleScripts {
   }
 
   private static void plugin(
-      final String text, final String file, final int line, final List<Declaration> out) {
+      final String text,
+      final String file,
+      final int line,
+      final List<Declaration> out
+  ) {
     final Matcher matcher = PLUGIN.matcher(text);
     if (!matcher.find()) {
       return;
@@ -81,7 +87,9 @@ final class GradleScripts {
             "",
             file,
             line,
-            version == null ? Declaration.Flag.UNDETERMINABLE : Declaration.Flag.NONE));
+            version == null ? Declaration.Flag.UNDETERMINABLE : Declaration.Flag.NONE
+        )
+    );
   }
 
   private static void dependency(
@@ -89,7 +97,8 @@ final class GradleScripts {
       final String file,
       final int line,
       final boolean locked,
-      final List<Declaration> out) {
+      final List<Declaration> out
+  ) {
     final Matcher matcher = DEPENDENCY.matcher(text);
     if (!matcher.find() || !CONFIGURATIONS.contains(matcher.group(1))) {
       return;
@@ -110,7 +119,9 @@ final class GradleScripts {
             "",
             file,
             line,
-            flag(literal, locked && !classpath)));
+            flag(literal, locked && !classpath)
+        )
+    );
   }
 
   private static Declaration.Flag flag(final boolean literal, final boolean locked) {

@@ -9,7 +9,6 @@ import java.util.Map;
 
 /** The supertypes of each declared type: its own inheritance clause plus the extensions of it. */
 final class SwiftSupertypes {
-
   private final Map<SwiftTypeDecl, List<TypeRef>> byDecl = new HashMap<>();
 
   /** Returns the supertypes that resolved for {@code decl}, empty when none did. */
@@ -21,7 +20,8 @@ final class SwiftSupertypes {
   void link(
       final SwiftTypeIndex index,
       final List<SwiftTypeIndex.Declaration> declarations,
-      final List<SwiftTypeIndex.Extension> extensions) {
+      final List<SwiftTypeIndex.Extension> extensions
+  ) {
     for (final SwiftTypeIndex.Declaration declaration : declarations) {
       final SwiftTypeDecl decl = declaration.decl();
       add(decl, refsOf(index, decl.file(), decl.parentScope(), declaration.inherits()));
@@ -33,7 +33,9 @@ final class SwiftSupertypes {
               target ->
                   add(
                       target,
-                      refsOf(index, extension.file(), extension.scope(), extension.inherits())));
+                      refsOf(index, extension.file(), extension.scope(), extension.inherits())
+                  )
+          );
     }
   }
 
@@ -45,7 +47,8 @@ final class SwiftSupertypes {
       final SwiftTypeIndex index,
       final String file,
       final String scope,
-      final List<SyntaxNode> types) {
+      final List<SyntaxNode> types
+  ) {
     final List<TypeRef> refs = new ArrayList<>();
     for (final SyntaxNode type : types) {
       index

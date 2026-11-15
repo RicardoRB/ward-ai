@@ -13,7 +13,6 @@ import java.util.Objects;
  * when its second argument, if any, is a string.
  */
 public final class PreferRegexLiteralsCheck implements RuleCheck {
-
   private static final String CALL = "singleExpression";
   private static final String IDENTIFIER = "identifier";
   private static final String ARGUMENTS = "arguments";

@@ -8,7 +8,6 @@ import java.util.Set;
  * Collects the source of one JSX element, from its opening {@code <} to the end that matches it.
  */
 final class EcmaJsxText {
-
   /** The token that opens an element. */
   static final String OPEN = "JsxOpenLt";
 

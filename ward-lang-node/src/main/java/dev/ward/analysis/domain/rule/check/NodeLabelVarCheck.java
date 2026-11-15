@@ -20,7 +20,6 @@ import java.util.Optional;
  * no-label-var}. The variables of the enclosing scopes count, not those of sibling blocks.
  */
 public final class NodeLabelVarCheck implements RuleCheck {
-
   private static final String LABELLED = "labelledStatement";
   private static final String IDENTIFIER = "identifier";
 
@@ -42,7 +41,11 @@ public final class NodeLabelVarCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes();
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxNode labelled : labelled(root)) {
@@ -90,7 +93,10 @@ public final class NodeLabelVarCheck implements RuleCheck {
 
   /** Whether a scope or one of its enclosing scopes declares the name. */
   private static boolean declares(
-      final UnitScopes scopes, final Optional<Scope> start, final String name) {
+      final UnitScopes scopes,
+      final Optional<Scope> start,
+      final String name
+  ) {
     Optional<Scope> current = start;
     while (current.isPresent()) {
       if (current.get().bindings().stream().anyMatch(binding -> name.equals(binding.name()))) {

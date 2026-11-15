@@ -10,7 +10,6 @@ import java.util.Set;
  * reads the source type from the configuration; Ward reads it from the source.
  */
 final class SourceKind {
-
   private static final Set<String> MODULE_STATEMENTS = Set.of("importStatement", "exportStatement");
 
   private SourceKind() {}

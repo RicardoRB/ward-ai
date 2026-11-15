@@ -12,18 +12,19 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 class AnalysisPortsTest {
-
   @Test
   void fakeFrontendBuildsTreeWithoutAdapter() {
     final LanguageFrontend frontend =
         unit ->
-            new ParseResult(
-                new SyntaxNode(
-                    "file",
-                    new Span(1, 1, 1, 1, 0, 0),
-                    Map.of("path", unit.path()),
-                    java.util.List.of()),
-                java.util.List.of());
+        new ParseResult(
+            new SyntaxNode(
+                "file",
+                new Span(1, 1, 1, 1, 0, 0),
+                Map.of("path", unit.path()),
+                java.util.List.of()
+            ),
+            java.util.List.of()
+        );
 
     final SyntaxNode root =
         frontend.parse(new SourceUnit("a.ts", AnalysisLanguage.TYPESCRIPT, "")).tree();

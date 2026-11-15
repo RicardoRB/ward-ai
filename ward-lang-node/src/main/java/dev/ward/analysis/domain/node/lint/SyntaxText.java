@@ -6,7 +6,6 @@ import java.util.List;
 
 /** Reads the text and the tokens of TypeScript syntax nodes for the typescript-eslint checks. */
 final class SyntaxText {
-
   /** The parts of an infix expression: left, operator, right. */
   static final int INFIX_PARTS = 3;
 
@@ -55,7 +54,10 @@ final class SyntaxText {
   }
 
   private static void collect(
-      final SyntaxNode node, final String kind, final List<SyntaxNode> out) {
+      final SyntaxNode node,
+      final String kind,
+      final List<SyntaxNode> out
+  ) {
     if (kind.equals(node.kind())) {
       out.add(node);
     }

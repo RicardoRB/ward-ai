@@ -10,7 +10,6 @@ import java.util.List;
  * Fetches one pinned commit into a cache checkout, using only argument vectors and never a branch.
  */
 final class CorpusFetcher {
-
   private final CommandRunner runner;
 
   CorpusFetcher(final CommandRunner runner) {
@@ -31,12 +30,15 @@ final class CorpusFetcher {
         entry,
         runner.run(
             List.of("git", "fetch", "--depth", "1", "--quiet", entry.url(), entry.commit()),
-            checkout),
-        "fetch failed");
+            checkout
+        ),
+        "fetch failed"
+    );
     requireSuccess(
         entry,
         runner.run(List.of("git", "checkout", "--quiet", "FETCH_HEAD"), checkout),
-        "checkout failed");
+        "checkout failed"
+    );
     final String head = runner.capture(List.of("git", "rev-parse", "HEAD"), checkout).strip();
     if (!head.equals(entry.commit())) {
       throw new CorpusFetchException(entry.name(), entry.commit(), "checkout resolved to " + head);
@@ -45,7 +47,10 @@ final class CorpusFetcher {
   }
 
   private static void requireSuccess(
-      final CorpusEntry entry, final CommandResult result, final String reason) {
+      final CorpusEntry entry,
+      final CommandResult result,
+      final String reason
+  ) {
     if (result.exitCode() != 0) {
       throw new CorpusFetchException(entry.name(), entry.commit(), reason);
     }

@@ -12,7 +12,6 @@ import java.util.List;
  * and its raw source lines; the finding is placed at the comment.
  */
 public final class NodeJavadocAlignCheck implements RuleCheck {
-
   private static final String COMMENT = "comment";
   private static final String JAVADOC = "/**";
 
@@ -67,7 +66,11 @@ public final class NodeJavadocAlignCheck implements RuleCheck {
 
   /** The one-character span of the asterisk, on its own line of the source. */
   private RuleMatch at(
-      final Span comment, final int lineIndex, final int offsetInText, final int column) {
+      final Span comment,
+      final int lineIndex,
+      final int offsetInText,
+      final int column
+  ) {
     final int line = comment.startLine() + lineIndex;
     final int start = comment.startOffset() + offsetInText;
     return new RuleMatch(new Span(line, column + 1, line, column + 2, start, start + 1), message);

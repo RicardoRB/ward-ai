@@ -19,7 +19,6 @@ import java.util.stream.Stream;
  * runs; a module with no stub is unknown.
  */
 public final class PythonStubFiles {
-
   private static final String BUNDLED = "/dev/ward/analysis/lang/python/stubs/";
   private static final String SUFFIX = ".pyi";
   private static final String INIT = "__init__";

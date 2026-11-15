@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 
 /** A {@code TEXT} rule runs over files with no frontend and no language. */
 final class TextRulesTest {
-
   private static final String BAD = "bad.txt";
 
   @Test
@@ -48,10 +47,11 @@ final class TextRulesTest {
   void aRuleThatCannotBeCompiledIsAnExecutionErrorWithNoPath() {
     final RuleRunResult result =
         new TextRules(
-                definition -> {
-                  throw new AnalysisFailedException("bad");
-                },
-                List.of(rule("ward:secrets/one")))
+            definition -> {
+              throw new AnalysisFailedException("bad");
+            },
+            List.of(rule("ward:secrets/one"))
+        )
             .run(List.of(new TextFile("a.txt", "x")));
 
     assertThat(result.executionErrors()).hasSize(1);

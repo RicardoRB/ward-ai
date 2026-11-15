@@ -14,7 +14,12 @@ class WardPartialPlanTest {
   private static final String WARD = SupportedQualityGates.ANALYSIS;
   private static final PartialGateConfiguration WARD_PARTIAL =
       new PartialGateConfiguration(
-          List.of("src/**/*.java"), List.of("config/ward.rules"), List.of(), "{path}", ",");
+          List.of("src/**/*.java"),
+          List.of("config/ward.rules"),
+          List.of(),
+          "{path}",
+          ","
+      );
 
   @Test
   void wardSourceEditNarrowsToTheChangedPathWithoutArguments() {
@@ -24,7 +29,9 @@ class WardPartialPlanTest {
                 WARD,
                 PartialCheckPlan.Scope.NARROW,
                 List.of(),
-                List.of("src/main/java/com/acme/Order.java")));
+                List.of("src/main/java/com/acme/Order.java")
+            )
+        );
   }
 
   @Test
@@ -47,7 +54,9 @@ class WardPartialPlanTest {
 
   /** Plans one {@code ward} check for the paths relative to the project root. */
   private static PartialCheckPlan.GatePlan wardPlan(
-      final PartialGateConfiguration partial, final String... paths) {
+      final PartialGateConfiguration partial,
+      final String... paths
+  ) {
     final GateConfiguration gate =
         new GateConfiguration(
             WARD,
@@ -71,13 +80,15 @@ class WardPartialPlanTest {
             null,
             null,
             null,
-            null);
+            null
+        );
     return PartialCheckPlan.create(
-            PartialPlans.ROOT,
-            Map.of(WARD, gate),
-            List.of(paths).stream().map(PartialPlans.ROOT::resolve).toList(),
-            PartialPlans.EVERYTHING_EXISTS,
-            path -> Optional.empty())
+        PartialPlans.ROOT,
+        Map.of(WARD, gate),
+        List.of(paths).stream().map(PartialPlans.ROOT::resolve).toList(),
+        PartialPlans.EVERYTHING_EXISTS,
+        path -> Optional.empty()
+    )
         .gates()
         .get(WARD);
   }

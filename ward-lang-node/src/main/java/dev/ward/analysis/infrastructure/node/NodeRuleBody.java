@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
  * empty body, which means its default. The naming rule takes an empty body only.
  */
 final class NodeRuleBody {
-
   private static final Pattern MAX = Pattern.compile("max=(\\d+)");
   private static final int SMALLEST_LIMIT = 1;
 
@@ -58,12 +57,15 @@ final class NodeRuleBody {
   }
 
   private static AnalysisFailedException malformed(
-      final RuleDefinition definition, final Throwable cause) {
+      final RuleDefinition definition,
+      final Throwable cause
+  ) {
     final AnalysisFailedException failure =
         new AnalysisFailedException(
             "rule "
                 + definition.id()
-                + " has a body it cannot read; use max=<positive integer> or leave it empty");
+                + " has a body it cannot read; use max=<positive integer> or leave it empty"
+        );
     if (cause != null) {
       failure.initCause(cause);
     }

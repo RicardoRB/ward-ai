@@ -9,14 +9,14 @@ import org.junit.jupiter.api.Test;
 
 /** The duplicate export check: one local binding under two export names in one module. */
 final class NodeDuplicateExportCheckTest {
-
   @Test
   void reportsALocalBindingExportedUnderASecondName() {
     final List<ProjectMatch> found =
         new NodeDuplicateExportCheck("'{value}' is exported twice")
             .project(
                 ProjectFixtures.trees(Map.of("index.ts", "const a = 1;\nexport { a, a as b };\n")),
-                ProjectFixtures.manifests(Map.of()));
+                ProjectFixtures.manifests(Map.of())
+            );
 
     assertThat(ProjectFixtures.positions(found)).containsExactly("index.ts:2:18");
     assertThat(ProjectFixtures.messages(found)).containsExactly("'a' is exported twice");
@@ -28,8 +28,10 @@ final class NodeDuplicateExportCheckTest {
         new NodeDuplicateExportCheck("'{value}' is exported twice")
             .project(
                 ProjectFixtures.trees(
-                    Map.of("index.ts", "const a = 1;\nexport default a;\nexport { a };\n")),
-                ProjectFixtures.manifests(Map.of()));
+                    Map.of("index.ts", "const a = 1;\nexport default a;\nexport { a };\n")
+                ),
+                ProjectFixtures.manifests(Map.of())
+            );
 
     assertThat(ProjectFixtures.positions(found)).containsExactly("index.ts:3:10");
   }
@@ -40,7 +42,8 @@ final class NodeDuplicateExportCheckTest {
         new NodeDuplicateExportCheck("'{value}' is exported twice")
             .project(
                 ProjectFixtures.trees(Map.of("index.ts", "export { a, a as b } from './lib';\n")),
-                ProjectFixtures.manifests(Map.of()));
+                ProjectFixtures.manifests(Map.of())
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }

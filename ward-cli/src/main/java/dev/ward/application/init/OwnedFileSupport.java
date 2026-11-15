@@ -17,7 +17,8 @@ interface OwnedFileSupport {
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final Set<String> owned) {
+      final Set<String> owned
+  ) {
     return List.of();
   }
 
@@ -29,7 +30,8 @@ interface OwnedFileSupport {
       final String gate,
       final Project project,
       final QualityPreset preset,
-      final List<String> command) {
+      final List<String> command
+  ) {
     return Optional.empty();
   }
 
@@ -38,7 +40,9 @@ interface OwnedFileSupport {
    * toolchain writes none for {@code gates}.
    */
   default Optional<String> gitignoreEntries(
-      final Project project, final List<InitGateOption> gates) {
+      final Project project,
+      final List<InitGateOption> gates
+  ) {
     return Optional.empty();
   }
 

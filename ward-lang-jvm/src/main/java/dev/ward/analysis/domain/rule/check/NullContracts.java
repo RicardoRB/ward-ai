@@ -9,7 +9,6 @@ import java.util.function.BiConsumer;
 
 /** The rules about {@code @RequiresNonNull} and {@code @EnsuresNonNull} contracts of one file. */
 final class NullContracts {
-
   private static final String REQUIRES = "RequiresNonNull";
   private static final String ENSURES = "EnsuresNonNull";
   private static final String THIS = "this.";
@@ -99,7 +98,10 @@ final class NullContracts {
   }
 
   private static void checkCalls(
-      final NullModel.Type type, final NullModel.Method caller, final List<NullHit> hits) {
+      final NullModel.Type type,
+      final NullModel.Method caller,
+      final List<NullHit> hits
+  ) {
     final Set<String> guarded = NullFlow.guarded(caller);
     final Set<String> nullable = fieldNames(type, true);
     final Set<String> held = values(caller.notes(), REQUIRES);
@@ -114,7 +116,8 @@ final class NullContracts {
                       .flatMap(callee -> values(callee.notes(), REQUIRES).stream())
                       .filter(field -> nullable.contains(field) && !guarded.contains(field))
                       .filter(field -> !held.contains(field))
-                      .forEach(field -> hits.add(NullHit.at(expression, field))));
+                      .forEach(field -> hits.add(NullHit.at(expression, field)))
+          );
     }
   }
 

@@ -16,7 +16,6 @@ import java.util.Set;
  * <p>An instance validates one value at a time and is not thread-safe.
  */
 public final class JsonSchemaValidator {
-
   private final Dialect dialect;
   private final boolean allErrors;
   private final RefResolver refs;
@@ -34,7 +33,10 @@ public final class JsonSchemaValidator {
    * @param refs how to follow a {@code $ref}
    */
   public JsonSchemaValidator(
-      final Dialect dialect, final boolean allErrors, final RefResolver refs) {
+      final Dialect dialect,
+      final boolean allErrors,
+      final RefResolver refs
+  ) {
     this.dialect = dialect;
     this.allErrors = allErrors;
     this.refs = refs;
@@ -142,7 +144,11 @@ public final class JsonSchemaValidator {
 
   /** Validates one value; {@code evaluated} collects the names of the properties a schema read. */
   boolean check(
-      final DocNode schema, final DocNode data, final String path, final Set<String> evaluated) {
+      final DocNode schema,
+      final DocNode data,
+      final String path,
+      final Set<String> evaluated
+  ) {
     if (schema.kind() == DocNode.Kind.BOOLEAN) {
       return booleanSchema(schema, path);
     }
@@ -168,7 +174,8 @@ public final class JsonSchemaValidator {
                     || check(target(schema, reference.get()), data, path, evaluated),
             () -> dynamicRef(schema, data, path, evaluated),
             () -> Combinators.check(this, schema, data, path, evaluated),
-            () -> Keywords.check(this, schema, data, path, evaluated));
+            () -> Keywords.check(this, schema, data, path, evaluated)
+        );
     if (allErrors) {
       ErrorMessages.apply(this, schema, path, before);
     }
@@ -187,7 +194,11 @@ public final class JsonSchemaValidator {
   }
 
   private boolean dynamicRef(
-      final DocNode schema, final DocNode data, final String path, final Set<String> evaluated) {
+      final DocNode schema,
+      final DocNode data,
+      final String path,
+      final Set<String> evaluated
+  ) {
     final Optional<DocNode> reference =
         schema.get("$dynamicRef").filter(ref -> ref.text().startsWith("#"));
     if (reference.isEmpty() || dialect != Dialect.DRAFT2020) {
@@ -199,7 +210,8 @@ public final class JsonSchemaValidator {
         target.orElseThrow(() -> new UnresolvedReferenceException(reference.get().text())),
         data,
         path,
-        evaluated);
+        evaluated
+    );
   }
 
   private DocNode target(final DocNode holder, final DocNode reference) {

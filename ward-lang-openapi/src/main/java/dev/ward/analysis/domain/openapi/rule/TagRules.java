@@ -14,7 +14,6 @@ import java.util.Set;
 
 /** The rules about tags: the global list and the tags of the operations. */
 final class TagRules {
-
   private static final String TAGS = "tags";
   private static final String NAME = "name";
   private static final int SINGLE = 1;
@@ -24,7 +23,10 @@ final class TagRules {
   /** {@code openapi-tags}: the top-level {@code tags} is a non-empty array. */
   static List<OpenApiFinding> openapiTags(final OpenApiDocument document) {
     return nonEmptyArray(
-        document, document.root(), "OpenAPI object must have non-empty \"tags\" array.");
+        document,
+        document.root(),
+        "OpenAPI object must have non-empty \"tags\" array."
+    );
   }
 
   /** {@code operation-tags}: every operation has a non-empty {@code tags} array. */
@@ -32,15 +34,18 @@ final class TagRules {
     final List<OpenApiFinding> findings = new ArrayList<>();
     for (final Operation operation : document.parts().operations()) {
       findings.addAll(
-          nonEmptyArray(
-              document, operation.node(), "Operation must have non-empty \"tags\" array."));
+          nonEmptyArray(document, operation.node(), "Operation must have non-empty \"tags\" array.")
+      );
     }
     return findings;
   }
 
   /** Spectral's schema {@code {type: array, minItems: 1}} on the {@code tags} of {@code owner}. */
   private static List<OpenApiFinding> nonEmptyArray(
-      final OpenApiDocument document, final DocNode owner, final String message) {
+      final OpenApiDocument document,
+      final DocNode owner,
+      final String message
+  ) {
     final Optional<DocNode> tags = document.get(owner, TAGS, View.RESOLVED);
     if (tags.isEmpty()) {
       return List.of(Findings.atValue(document.resolve(owner), message));
@@ -64,7 +69,8 @@ final class TagRules {
       final DocNode tag = document.resolve(item);
       if (tag.kind() != DocNode.Kind.OBJECT) {
         return List.of(
-            Findings.atValue(tags.get(), "OpenAPI object must have alphabetical \"tags\"."));
+            Findings.atValue(tags.get(), "OpenAPI object must have alphabetical \"tags\".")
+        );
       }
       names.add(tag.get(NAME).map(DocNode::text).orElse(""));
     }
@@ -72,7 +78,8 @@ final class TagRules {
     for (int index = 0; index + 1 < names.size(); index++) {
       if (collator.compare(names.get(index), names.get(index + 1)) > 0) {
         return List.of(
-            Findings.atValue(tags.get(), "OpenAPI object must have alphabetical \"tags\"."));
+            Findings.atValue(tags.get(), "OpenAPI object must have alphabetical \"tags\".")
+        );
       }
     }
     return List.of();
@@ -98,7 +105,10 @@ final class TagRules {
       if (!seen.add(name.text())) {
         findings.add(
             Findings.atValue(
-                name, "\"tags\" object contains duplicate tag name \"" + name.text() + "\"."));
+                name,
+                "\"tags\" object contains duplicate tag name \"" + name.text() + "\"."
+            )
+        );
       }
     }
     return findings;
@@ -110,7 +120,12 @@ final class TagRules {
     for (final DocNode tag : document.parts().tags()) {
       findings.addAll(
           Fields.requireTruthy(
-              document, tag, "Tag object must have \"description\".", "description"));
+              document,
+              tag,
+              "Tag object must have \"description\".",
+              "description"
+          )
+      );
     }
     return findings;
   }
@@ -125,7 +140,9 @@ final class TagRules {
           .ifPresent(
               tags ->
                   findings.add(
-                      Findings.atValue(tags, "Operation must not have more than a single tag.")));
+                      Findings.atValue(tags, "Operation must not have more than a single tag.")
+                  )
+          );
     }
     return findings;
   }

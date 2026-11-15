@@ -10,7 +10,6 @@ import java.util.Objects;
  * is line based and reads only the two-level shape pnpm documents; any other line is ignored.
  */
 public final class NodeCatalogs {
-
   /** The name of the catalog that the {@code catalog:} section declares. */
   public static final String DEFAULT = "default";
 
@@ -29,8 +28,12 @@ public final class NodeCatalogs {
    * @param column the 1-based column where the dependency name starts
    */
   public record CatalogEntry(
-      String catalog, String dependency, String version, int line, int column) {
-
+      String catalog,
+      String dependency,
+      String version,
+      int line,
+      int column
+  ) {
     /** Validates the parts. @throws NullPointerException if a text part is missing */
     public CatalogEntry {
       Objects.requireNonNull(catalog, "catalog");
@@ -109,7 +112,8 @@ public final class NodeCatalogs {
       final String catalog,
       final String content,
       final int line,
-      final int indent) {
+      final int indent
+  ) {
     final int colon = content.indexOf(COLON);
     if (colon <= 0) {
       return;

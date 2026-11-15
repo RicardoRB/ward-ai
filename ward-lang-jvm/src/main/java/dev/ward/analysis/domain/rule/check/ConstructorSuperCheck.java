@@ -12,7 +12,6 @@ import java.util.Set;
  * nor {@code this(...)}, as PMD's CallSuperInConstructor does.
  */
 public final class ConstructorSuperCheck implements RuleCheck {
-
   private static final String CONSTRUCTOR = "constructorDeclaration";
   private static final String EXTENDS = "'extends'";
   private static final String INVOCATION = "^\\{(?:this|super)\\(.*";

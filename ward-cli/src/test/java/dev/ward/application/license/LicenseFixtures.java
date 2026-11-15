@@ -41,7 +41,8 @@ public final class LicenseFixtures {
       final String name,
       final String version,
       final DependencyScope scope,
-      final String declaredIn) {
+      final String declaredIn
+  ) {
     return new Dependency(
         new PackageId(ecosystem, name, version),
         declaredIn.isEmpty() ? DependencyRelation.TRANSITIVE : DependencyRelation.DIRECT,
@@ -50,7 +51,8 @@ public final class LicenseFixtures {
         "package-lock.json",
         declaredIn,
         Set.of(),
-        Set.of());
+        Set.of()
+    );
   }
 
   /** An inventory with one root module of {@code dependencies}. */
@@ -65,18 +67,25 @@ public final class LicenseFixtures {
 
   /** A license service whose inventory is {@code inventory} and whose metadata is by name. */
   public static LicenseService service(
-      final DependencyInventory inventory, final Map<String, LicenseLookup> byName) {
+      final DependencyInventory inventory,
+      final Map<String,
+      LicenseLookup> byName
+  ) {
     return service(project -> inventory, byName);
   }
 
   /** A license service over {@code source}. */
   public static LicenseService service(
-      final DependencySource source, final Map<String, LicenseLookup> byName) {
+      final DependencySource source,
+      final Map<String,
+      LicenseLookup> byName
+  ) {
     final LicenseMetadata metadata =
         (project, modulePath, dependency) ->
-            byName.getOrDefault(
-                dependency.id().name(),
-                LicenseLookup.missing(LicenseLookup.Reason.NOT_INSTALLED, "not installed"));
+        byName.getOrDefault(
+            dependency.id().name(),
+            LicenseLookup.missing(LicenseLookup.Reason.NOT_INSTALLED, "not installed")
+        );
     final Map<Ecosystem, LicenseMetadata> readers = new EnumMap<>(Ecosystem.class);
     for (final Ecosystem ecosystem : Ecosystem.values()) {
       readers.put(ecosystem, metadata);
@@ -84,7 +93,8 @@ public final class LicenseFixtures {
     return new LicenseService(
         new DependencyInventoryService(Map.of(BuildTool.NPM, source)),
         readers,
-        new BundledLicenseCatalog());
+        new BundledLicenseCatalog()
+    );
   }
 
   /** A detector that always finds {@link #NPM}. */
@@ -100,7 +110,8 @@ public final class LicenseFixtures {
           public List<DiscoveredProject> discover(final Path start) {
             return List.of();
           }
-        });
+        }
+    );
   }
 
   /** A license service over a mixed inventory: known, dual, excepted, unbundled and unknown. */
@@ -108,16 +119,28 @@ public final class LicenseFixtures {
     return service(
         inventory(
             dependency(
-                Ecosystem.NPM, "@scope/pkg", "1.0.0", DependencyScope.RUNTIME, "package.json"),
+                Ecosystem.NPM,
+                "@scope/pkg",
+                "1.0.0",
+                DependencyScope.RUNTIME,
+                "package.json"
+            ),
             dependency(Ecosystem.NPM, "left-pad", "1.3.0", DependencyScope.TEST, ""),
             dependency(Ecosystem.NPM, "mystery", "2.0.0", DependencyScope.RUNTIME, "package.json"),
             dependency(Ecosystem.MAVEN, "com.example:lib", "1.0", DependencyScope.RUNTIME, ""),
-            dependency(Ecosystem.MAVEN, "com.example:epl", "1.0", DependencyScope.RUNTIME, "")),
+            dependency(Ecosystem.MAVEN, "com.example:epl", "1.0", DependencyScope.RUNTIME, "")
+        ),
         Map.of(
-            "@scope/pkg", declared("Apache-2.0"),
-            "left-pad", declared("MIT OR GPL-3.0-only"),
-            "com.example:lib", declared("GPL-2.0-only WITH Classpath-exception-2.0"),
-            "com.example:epl", declared("Eclipse Public License 1.0")));
+            "@scope/pkg",
+            declared("Apache-2.0"),
+            "left-pad",
+            declared("MIT OR GPL-3.0-only"),
+            "com.example:lib",
+            declared("GPL-2.0-only WITH Classpath-exception-2.0"),
+            "com.example:epl",
+            declared("Eclipse Public License 1.0")
+        )
+    );
   }
 
   /** A license service whose inventory fails as an unresolvable project does. */
@@ -126,6 +149,7 @@ public final class LicenseFixtures {
         project -> {
           throw new DependencyInventoryException("/work/app", "lock", "is stale", "npm install");
         },
-        Map.of());
+        Map.of()
+    );
   }
 }

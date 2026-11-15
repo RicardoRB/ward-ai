@@ -37,7 +37,8 @@ final class JavaTyper {
             Optional.empty(),
             Optional.empty(),
             Optional.empty(),
-            outer.annotations());
+            outer.annotations()
+        );
     session.declare(declaration.outer(), info);
     session.declare(declaration.node(), info);
     final Ctx inside =
@@ -60,7 +61,8 @@ final class JavaTyper {
               member.method(),
               member.field().stream().findFirst(),
               Optional.of(owner),
-              ctx.annotations());
+              ctx.annotations()
+          );
       session.declare(member.outer(), info);
       session.declare(member.node(), info);
     }

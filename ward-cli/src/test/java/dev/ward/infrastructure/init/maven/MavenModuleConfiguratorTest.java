@@ -93,7 +93,8 @@ class MavenModuleConfiguratorTest {
     assumeFalse(Files.isWritable(domain), "read-only files are writable for this user");
 
     assertThatThrownBy(
-            () -> new PomToolConfigurator().apply(project, ModuleFixtures.gates(COVERAGE)))
+        () -> new PomToolConfigurator().apply(project, ModuleFixtures.gates(COVERAGE))
+    )
         .isInstanceOf(WardException.class);
 
     assertThat(read(POM)).isEqualTo(ROOT_POM);

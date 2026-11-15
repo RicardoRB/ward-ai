@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the Kotlin file-text checks over small texts. */
 class KotlinTextChecksTest {
-
   private static final String MESSAGE = "m";
 
   private static List<RuleMatch> newLine(final String text) {

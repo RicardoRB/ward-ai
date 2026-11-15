@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the javadoc position check on parsed TypeScript. */
 class NodeJavadocPositionCheckTest {
-
   @Test
   void javadocBeforeADeclarationIsValid() {
     assertThat(run("/** Doc. */\nexport class A {}\n")).isEmpty();

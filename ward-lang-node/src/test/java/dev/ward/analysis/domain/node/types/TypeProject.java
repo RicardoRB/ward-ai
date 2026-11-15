@@ -58,15 +58,25 @@ final class TypeProject {
     final NodeProjectLayout layout =
         new NodeProjectLayout(
             Set.copyOf(
-                files.paths().stream().filter(path -> !path.contains("node_modules/")).toList()),
+                files.paths().stream().filter(path -> !path.contains("node_modules/")).toList()
+            ),
             List.of(),
-            List.of());
+            List.of()
+        );
     final AntlrLanguageFrontend frontend = new AntlrLanguageFrontend();
     final Program program =
         new Program(
-            files, cache(), frontend, layout.files(), new NodeModuleResolver(layout)::resolve);
+            files,
+            cache(),
+            frontend,
+            layout.files(),
+            new NodeModuleResolver(layout)::resolve
+        );
     return new NativeNodeTypeFacts(
-        program, frontend, new NodeScopeAnalysis(environments -> Set.of()));
+        program,
+        frontend,
+        new NodeScopeAnalysis(environments -> Set.of())
+    );
   }
 
   /** Answers the facts of {@code path} for the spans of {@code tokens}, the last match of each. */
@@ -86,11 +96,11 @@ final class TypeProject {
     if (offset < 0) {
       throw new IllegalArgumentException("not in the text: " + token);
     }
-    final int line = (int) text.substring(0, offset).chars().filter(c -> c == '\n').count() + 1;
+    final int line = (int)text.substring(0, offset).chars().filter(c -> c == '\n').count() + 1;
     final int column = offset - text.lastIndexOf('\n', offset - 1);
     final int end = offset + token.length();
     final int last = end - 1;
-    final int endLine = (int) text.substring(0, last).chars().filter(c -> c == '\n').count() + 1;
+    final int endLine = (int)text.substring(0, last).chars().filter(c -> c == '\n').count() + 1;
     final int endColumn = last - text.lastIndexOf('\n', last - 1);
     return new Span(line, column, endLine, endColumn, offset, end);
   }

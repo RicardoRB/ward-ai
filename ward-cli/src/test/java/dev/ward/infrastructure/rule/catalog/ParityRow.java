@@ -15,7 +15,6 @@ import java.util.TreeSet;
  * @param note the reason, for every outcome but an agreement
  */
 record ParityRow(String rule, String tool, String id, String outcome, String note) {
-
   static final String AGREE = "agree";
   static final String AGREE_LINES = "agree-lines";
   static final String APPROXIMATION = "approximation";
@@ -37,7 +36,9 @@ record ParityRow(String rule, String tool, String id, String outcome, String not
       final ParityTool tool,
       final String id,
       final ParityRun run,
-      final Map<String, String> approximations) {
+      final Map<String,
+      String> approximations
+  ) {
     final String violatingFixture = target.name() + VIOLATING;
     final String passingFixture = target.name() + PASSING;
     final Optional<String> reason =
@@ -68,11 +69,19 @@ record ParityRow(String rule, String tool, String id, String outcome, String not
       return new ParityRow(target.name(), tool.name(), id, APPROXIMATION, documented);
     }
     return new ParityRow(
-        target.name(), tool.name(), id, outcome, TOOL_SILENT.equals(outcome) ? SILENT : detail);
+        target.name(),
+        tool.name(),
+        id,
+        outcome,
+        TOOL_SILENT.equals(outcome) ? SILENT : detail
+    );
   }
 
   private static String classify(
-      final Set<String> violating, final Set<String> passing, final Set<String> expectedLines) {
+      final Set<String> violating,
+      final Set<String> passing,
+      final Set<String> expectedLines
+  ) {
     if (violating.isEmpty() && passing.isEmpty()) {
       return TOOL_SILENT;
     }

@@ -22,7 +22,6 @@ import org.tomlj.TomlParseResult;
  * TypeScriptEslintTypedChecks}.
  */
 final class TypeScriptEslintChecks {
-
   private static final String MESSAGE = "message";
 
   private TypeScriptEslintChecks() {}
@@ -35,24 +34,34 @@ final class TypeScriptEslintChecks {
         List.of(
             syntax,
             TypeScriptEslintSyntaxOptionChecks.checks(),
-            TypeScriptEslintTypedChecks.checks()));
+            TypeScriptEslintTypedChecks.checks()
+        )
+    );
   }
 
   private static void putSyntax(final Map<String, CheckFactory> checks) {
     checks.put(
-        "node-no-extra-non-null-assertion", toml -> new ExtraNonNullAssertionCheck(message(toml)));
+        "node-no-extra-non-null-assertion",
+        toml -> new ExtraNonNullAssertionCheck(message(toml))
+    );
     checks.put(
         "node-no-non-null-asserted-optional-chain",
-        toml -> new NonNullOptionalChainCheck(message(toml)));
+        toml -> new NonNullOptionalChainCheck(message(toml))
+    );
     checks.put("node-no-useless-empty-export", toml -> new UselessEmptyExportCheck(message(toml)));
     checks.put("node-prefer-as-const", toml -> new PreferAsConstCheck(message(toml)));
     checks.put(
-        "node-no-duplicate-enum-values", toml -> new DuplicateEnumValuesCheck(message(toml)));
+        "node-no-duplicate-enum-values",
+        toml -> new DuplicateEnumValuesCheck(message(toml))
+    );
     checks.put(
-        "node-no-unsafe-declaration-merging", toml -> new DeclarationMergingCheck(message(toml)));
+        "node-no-unsafe-declaration-merging",
+        toml -> new DeclarationMergingCheck(message(toml))
+    );
     checks.put(
         "node-no-redundant-type-constituents",
-        toml -> new RedundantConstituentsCheck(message(toml)));
+        toml -> new RedundantConstituentsCheck(message(toml))
+    );
   }
 
   static String message(final TomlParseResult toml) {

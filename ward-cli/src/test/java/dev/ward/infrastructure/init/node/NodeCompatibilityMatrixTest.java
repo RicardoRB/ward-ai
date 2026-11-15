@@ -33,7 +33,8 @@ import org.junit.jupiter.params.provider.CsvFileSource;
  */
 @EnabledIfSystemProperty(
     named = NodeCompatibilityMatrixTest.NODE_PROPERTY,
-    matches = "\\d+(\\.\\d+)?")
+    matches = "\\d+(\\.\\d+)?"
+)
 class NodeCompatibilityMatrixTest {
   static final String NODE_PROPERTY = "ward.node.matrix";
   private static final String FIXTURE_PROPERTY = "ward.node.matrix.fixture";
@@ -57,7 +58,9 @@ class NodeCompatibilityMatrixTest {
   @ParameterizedTest(name = "node {0} {1} {2}")
   @CsvFileSource(resources = "/node-matrix/cells.csv", numLinesToSkip = 1)
   void cellInitsChecksAndCatchesEveryViolation(
-      final ArgumentsAccessor cell, @TempDir final Path project)
+      final ArgumentsAccessor cell,
+      @TempDir final Path project
+  )
       throws IOException, InterruptedException {
     final String node = cell.getString(0);
     final String fixture = cell.getString(1);
@@ -70,10 +73,13 @@ class NodeCompatibilityMatrixTest {
             : "";
     final Map<String, String> packages = NodeMatrixFixtureEdits.parsePackages(packageSpec);
     Assumptions.assumeTrue(
-        node.equals(System.getProperty(NODE_PROPERTY)), "row is for Node " + node);
+        node.equals(System.getProperty(NODE_PROPERTY)),
+        "row is for Node " + node
+    );
     Assumptions.assumeTrue(
         fixture.equals(System.getProperty(FIXTURE_PROPERTY, fixture)),
-        "row is for fixture " + fixture);
+        "row is for fixture " + fixture
+    );
     final String runtime = runtimeVersion();
     assertThat(runtime.equals(node) || runtime.startsWith(node + "."))
         .as("Wrong runtime: the cell needs Node %s, node --version reports %s", node, runtime)
@@ -93,7 +99,8 @@ class NodeCompatibilityMatrixTest {
     final Map<String, String> clean = statuses(cleanCheck);
     assertThat(clean).as("selected gates").isNotEmpty();
     clean.forEach(
-        (gate, status) -> assertThat(status).as("clean gate %s", gate).isEqualTo("PASSED"));
+        (gate, status) -> assertThat(status).as("clean gate %s", gate).isEqualTo("PASSED")
+    );
 
     if (!fixture.startsWith(ANGULAR)) {
       assertUntestedSourceFailsCoverage(project, fixture);

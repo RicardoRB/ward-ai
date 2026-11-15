@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** The variable accesses of Kotlin bodies, which come from the scope analysis of the file. */
 class KotlinAccessesTest {
-
   private static final String PARAM_A = "p:a";
   private static final String READ_A = "r:a";
 

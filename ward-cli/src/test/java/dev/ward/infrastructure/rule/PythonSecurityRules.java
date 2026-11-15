@@ -12,7 +12,6 @@ import java.util.List;
 
 /** Runs the bundled Python taint rules over a source, as the gate does. */
 final class PythonSecurityRules {
-
   private static final String TAINT_IDS =
       "ward:python/(sql-injection|command-injection|code-injection|untrusted-deserialization"
           + "|path-injection|untrusted-request-url|untrusted-redirect|template-injection)";
@@ -30,7 +29,8 @@ final class PythonSecurityRules {
             AnalysisLanguage.PYTHON,
             new AntlrLanguageFrontend(),
             DataFlowFixtures.FLOW,
-            new PythonControlFlow());
+            new PythonControlFlow()
+        );
     return new RuleEngine(BundledRuleMatchers.create())
         .run(List.of(unit), List.of(support), rules)
         .findings();

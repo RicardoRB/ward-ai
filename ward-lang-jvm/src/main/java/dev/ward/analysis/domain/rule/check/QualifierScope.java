@@ -14,10 +14,14 @@ import java.util.Map;
  * @param fields what each field is declared as, by {@code Type#name}
  */
 record QualifierScope(
-    Map<String, Qualifier> qualifiers,
-    Map<String, Method> methods,
-    Map<String, Map<String, QualWhen>> fields) {
-
+    Map<String,
+    Qualifier> qualifiers,
+    Map<String,
+    Method> methods,
+    Map<String,
+    Map<String,
+    QualWhen>> fields
+) {
   /**
    * A type qualifier.
    *
@@ -55,6 +59,7 @@ record QualifierScope(
     return new QualifierScope(
         qualifiers,
         QualifierMembers.methods(root, qualifiers),
-        QualifierMembers.fields(root, qualifiers));
+        QualifierMembers.fields(root, qualifiers)
+    );
   }
 }

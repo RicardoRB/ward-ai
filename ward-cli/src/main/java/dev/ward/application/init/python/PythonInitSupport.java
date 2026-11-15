@@ -34,13 +34,17 @@ public final class PythonInitSupport implements ToolchainInitSupport {
                 .environment()
                 .inspect(project.root())
                 .hasExecutable(PythonTools.executable(project)),
-            preset);
+            preset
+        );
     return new Gates(SourceLanguages.of(LANGUAGES, project).analysisGates(python), List.of());
   }
 
   @Override
   public List<String> presetGates(
-      final Project project, final QualityPreset preset, final InitInputs inputs) {
+      final Project project,
+      final QualityPreset preset,
+      final InitInputs inputs
+  ) {
     final List<String> gates =
         SourceLanguages.of(LANGUAGES, project)
             .presetGates(preset == null ? QualityPreset.STANDARD : preset);
@@ -51,7 +55,9 @@ public final class PythonInitSupport implements ToolchainInitSupport {
   /** Django's system checks run in both presets, after the gates of the language. */
   private static List<String> withDjangoCheck(final List<String> gates) {
     return java.util.stream.Stream.concat(
-            gates.stream(), java.util.stream.Stream.of("django-check"))
+        gates.stream(),
+        java.util.stream.Stream.of("django-check")
+    )
         .toList();
   }
 
@@ -64,7 +70,9 @@ public final class PythonInitSupport implements ToolchainInitSupport {
                 "pytest",
                 List.of("coverage"),
                 List.of(),
-                Map.of("report", PythonGates.REPORT)));
+                Map.of("report", PythonGates.REPORT)
+            )
+    );
   }
 
   @Override
@@ -84,7 +92,8 @@ public final class PythonInitSupport implements ToolchainInitSupport {
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final Set<String> owned) {
+      final Set<String> owned
+  ) {
     return project.toolchain() == Toolchain.PYTHON
         ? PythonAgentRules.lines(project, gates, preset, owned)
         : List.of();

@@ -75,7 +75,9 @@ class GradleToolConfiguratorModulesTest {
   void singleModuleKotlinRootKeepsEveryBlockInTheRoot() throws IOException {
     Files.writeString(root.resolve("settings.gradle.kts"), "rootProject.name = \"solo\"\n");
     Files.writeString(
-        root.resolve("build.gradle.kts"), "plugins {\n    kotlin(\"jvm\") version \"2.1.0\"\n}\n");
+        root.resolve("build.gradle.kts"),
+        "plugins {\n    kotlin(\"jvm\") version \"2.1.0\"\n}\n"
+    );
     final Project project = new Project(root, Language.KOTLIN, BuildTool.GRADLE, Framework.NONE);
 
     final BuildFileChange change =
@@ -126,9 +128,10 @@ class GradleToolConfiguratorModulesTest {
     assumeFalse(Files.isWritable(domain), "read-only files are writable for this user");
 
     assertThatThrownBy(
-            () ->
-                new GradleToolConfigurator()
-                    .apply(project, ModuleFixtures.gates(COVERAGE), null, finding -> false))
+        () ->
+            new GradleToolConfigurator()
+                .apply(project, ModuleFixtures.gates(COVERAGE), null, finding -> false)
+    )
         .isInstanceOf(WardException.class);
 
     assertThat(ModuleFixtures.read(root, API)).isEqualTo(api);

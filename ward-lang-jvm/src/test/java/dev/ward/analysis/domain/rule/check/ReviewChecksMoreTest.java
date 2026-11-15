@@ -10,19 +10,22 @@ import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
 
 class ReviewChecksMoreTest extends TreeBuilders {
-
   @Test
   void storingAnArrayParameterInAFieldIsReported() {
     final SyntaxNode stored =
         unit(
             Declarations.classWith(
                 Declarations.intField("values"),
-                Declarations.constructorStoring("values", "input", "input")));
+                Declarations.constructorStoring("values", "input", "input")
+            )
+        );
     final SyntaxNode copied =
         unit(
             Declarations.classWith(
                 Declarations.intField("values"),
-                Declarations.constructorStoring("values", "input", "input.clone()")));
+                Declarations.constructorStoring("values", "input", "input.clone()")
+            )
+        );
     assertThat(run(new ArrayIsStoredDirectlyCheck(MESSAGE), stored)).hasSize(1);
     assertThat(run(new ArrayIsStoredDirectlyCheck(MESSAGE), copied)).isEmpty();
   }
@@ -32,11 +35,13 @@ class ReviewChecksMoreTest extends TreeBuilders {
     final SyntaxNode holder = unit(MethodTrees.typeNamed("Holder"));
     final SyntaxNode matching = unit(MethodTrees.typeNamed("violating"));
     assertThat(
-            new TypeNameMismatchCheck(MESSAGE).check(holder, new SourceFile("violating.java", "")))
+        new TypeNameMismatchCheck(MESSAGE).check(holder, new SourceFile("violating.java", ""))
+    )
         .hasSize(1);
     assertThat(
-            new TypeNameMismatchCheck(MESSAGE)
-                .check(matching, new SourceFile("violating.java", "")))
+        new TypeNameMismatchCheck(MESSAGE)
+            .check(matching, new SourceFile("violating.java", ""))
+    )
         .isEmpty();
     assertThat(new TypeNameMismatchCheck(MESSAGE).check(holder, new SourceFile("", ""))).isEmpty();
   }
@@ -53,7 +58,11 @@ class ReviewChecksMoreTest extends TreeBuilders {
                     n(
                         METHOD_CALL,
                         id("used"),
-                        n("arguments", t(TOKEN_OPEN, "("), t(TOKEN_CLOSE, ")"))))));
+                        n("arguments", t(TOKEN_OPEN, "("), t(TOKEN_CLOSE, ")"))
+                    )
+                )
+            )
+        );
     assertThat(run(new UnusedPrivateMethodCheck(MESSAGE), unused)).hasSize(1);
     assertThat(run(new UnusedPrivateMethodCheck(MESSAGE), called)).isEmpty();
   }
@@ -107,15 +116,16 @@ class ReviewChecksMoreTest extends TreeBuilders {
     final SyntaxNode other =
         unit(MethodTrees.namedClass("Helpers", List.of(MethodTrees.publicTestMethod(false))));
     assertThat(
-            run(new UnitTestMissingAnnotationCheck(Pattern.compile("Test"), MESSAGE, false), bare))
+        run(new UnitTestMissingAnnotationCheck(Pattern.compile("Test"), MESSAGE, false), bare)
+    )
         .hasSize(1);
     assertThat(
-            run(
-                new UnitTestMissingAnnotationCheck(Pattern.compile("Test"), MESSAGE, false),
-                annotated))
+        run(new UnitTestMissingAnnotationCheck(Pattern.compile("Test"), MESSAGE, false), annotated)
+    )
         .isEmpty();
     assertThat(
-            run(new UnitTestMissingAnnotationCheck(Pattern.compile("Test"), MESSAGE, false), other))
+        run(new UnitTestMissingAnnotationCheck(Pattern.compile("Test"), MESSAGE, false), other)
+    )
         .isEmpty();
   }
 
@@ -124,25 +134,28 @@ class ReviewChecksMoreTest extends TreeBuilders {
     final SyntaxNode bare =
         unit(
             MethodTrees.testClass(
-                List.of(MethodTrees.testMethod(1), MethodTrees.lifecycle("tearDown", false))));
+                List.of(MethodTrees.testMethod(1), MethodTrees.lifecycle("tearDown", false))
+            )
+        );
     final SyntaxNode annotated =
         unit(
             MethodTrees.testClass(
-                List.of(MethodTrees.testMethod(1), MethodTrees.lifecycle("tearDown", true))));
+                List.of(MethodTrees.testMethod(1), MethodTrees.lifecycle("tearDown", true))
+            )
+        );
     final SyntaxNode noTests =
         unit(MethodTrees.testClass(List.of(MethodTrees.lifecycle("tearDown", false))));
     assertThat(
-            run(new UnitTestLifecycleCheck("tearDown", Set.of("AfterEach"), MESSAGE, false), bare))
+        run(new UnitTestLifecycleCheck("tearDown", Set.of("AfterEach"), MESSAGE, false), bare)
+    )
         .hasSize(1);
     assertThat(
-            run(
-                new UnitTestLifecycleCheck("tearDown", Set.of("AfterEach"), MESSAGE, false),
-                annotated))
+        run(new UnitTestLifecycleCheck("tearDown", Set.of("AfterEach"), MESSAGE, false), annotated)
+    )
         .isEmpty();
     assertThat(
-            run(
-                new UnitTestLifecycleCheck("tearDown", Set.of("AfterEach"), MESSAGE, false),
-                noTests))
+        run(new UnitTestLifecycleCheck("tearDown", Set.of("AfterEach"), MESSAGE, false), noTests)
+    )
         .isEmpty();
   }
 

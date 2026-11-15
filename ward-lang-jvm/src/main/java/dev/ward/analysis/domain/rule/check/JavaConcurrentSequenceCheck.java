@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
  * map is known by its declared type, so a {@code ConcurrentMap} variable is not reported.
  */
 public final class JavaConcurrentSequenceCheck implements RuleCheck {
-
   private static final String MAP = "ConcurrentHashMap";
   private static final String QUALIFIED = "java.util.concurrent.ConcurrentHashMap";
   private static final int CONDITION = 2;
@@ -52,7 +51,10 @@ public final class JavaConcurrentSequenceCheck implements RuleCheck {
   }
 
   private static Optional<SyntaxNode> branchPut(
-      final SyntaxNode statement, final Pattern test, final Set<String> maps) {
+      final SyntaxNode statement,
+      final Pattern test,
+      final Set<String> maps
+  ) {
     final List<SyntaxNode> parts = statement.children();
     if (parts.size() <= BRANCH
         || !"'if'".equals(parts.get(0).kind())
@@ -88,7 +90,8 @@ public final class JavaConcurrentSequenceCheck implements RuleCheck {
             + map
             + "\\.get\\(.*\\)(?:==|!=)null$|^null(?:==|!=)"
             + map
-            + "\\.get\\(.*\\)$");
+            + "\\.get\\(.*\\)$"
+    );
   }
 
   private static Set<String> maps(final SyntaxNode root) {
@@ -111,7 +114,8 @@ public final class JavaConcurrentSequenceCheck implements RuleCheck {
         .filter(
             type ->
                 QUALIFIED.equals(type)
-                    || MAP.equals(type) && JavaAnnotations.resolves(imports, MAP, QUALIFIED))
+                    || MAP.equals(type) && JavaAnnotations.resolves(imports, MAP, QUALIFIED)
+        )
         .isPresent();
   }
 }

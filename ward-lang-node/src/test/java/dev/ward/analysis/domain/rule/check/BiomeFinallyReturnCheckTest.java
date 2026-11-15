@@ -12,7 +12,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class BiomeFinallyReturnCheckTest {
-
   private static final BiomeFinallyReturnCheck CHECK = new BiomeFinallyReturnCheck("message");
 
   @Test

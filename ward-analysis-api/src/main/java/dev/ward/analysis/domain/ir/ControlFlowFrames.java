@@ -11,7 +11,6 @@ import java.util.Set;
  * share one stack.
  */
 final class ControlFlowFrames {
-
   static final int NO_BLOCK = -1;
 
   private final ControlFlowBuilder builder;
@@ -123,13 +122,11 @@ final class ControlFlowFrames {
    * at {@code depth}, or, when {@code raise} is set, the propagation of an exception.
    */
   record Continuation(int target, int depth, boolean raise) {
-
     static final Continuation RAISE = new Continuation(NO_BLOCK, NO_BLOCK, true);
   }
 
   /** An entry of the frame stack. Only the fields of its kind are meaningful. */
   static final class Frame {
-
     private final FrameKind kind;
     private final String label;
     private final int breakBlock;
@@ -141,7 +138,11 @@ final class ControlFlowFrames {
     private Phase phase = Phase.BODY;
 
     private Frame(
-        final FrameKind kind, final String label, final int breakBlock, final int continueBlock) {
+        final FrameKind kind,
+        final String label,
+        final int breakBlock,
+        final int continueBlock
+    ) {
       this.kind = kind;
       this.label = label;
       this.breakBlock = breakBlock;
@@ -153,7 +154,11 @@ final class ControlFlowFrames {
     }
 
     static Frame target(
-        final FrameKind kind, final String label, final int breakBlock, final int continueBlock) {
+        final FrameKind kind,
+        final String label,
+        final int breakBlock,
+        final int continueBlock
+    ) {
       return new Frame(kind, label, breakBlock, continueBlock);
     }
 

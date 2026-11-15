@@ -7,7 +7,6 @@ import java.util.function.Function;
 
 /** The results of one check run for a project, with the edited paths of a partial check. */
 public record CheckReport(Project project, List<GateResult> results, List<String> partialPaths) {
-
   /** Creates the report of a full check. */
   public CheckReport(final Project project, final List<GateResult> results) {
     this(project, results, List.of());
@@ -34,8 +33,8 @@ public record CheckReport(Project project, List<GateResult> results, List<String
    */
   public GateStatus status() {
     return results.stream()
-            .filter(result -> result.status() != GateStatus.SKIPPED)
-            .allMatch(GateResult::passed)
+        .filter(result -> result.status() != GateStatus.SKIPPED)
+        .allMatch(GateResult::passed)
         ? GateStatus.PASSED
         : GateStatus.FAILED;
   }
@@ -54,7 +53,8 @@ public record CheckReport(Project project, List<GateResult> results, List<String
   public long failedCount() {
     return results.stream()
         .filter(
-            result -> result.status() != GateStatus.PASSED && result.status() != GateStatus.SKIPPED)
+            result -> result.status() != GateStatus.PASSED && result.status() != GateStatus.SKIPPED
+        )
         .count();
   }
 

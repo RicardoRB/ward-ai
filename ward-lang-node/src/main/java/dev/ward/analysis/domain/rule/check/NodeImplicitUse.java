@@ -23,7 +23,6 @@ import java.util.regex.Pattern;
  * are silent here; upgrade by reading each config's imports as knip's plugin does.
  */
 public final class NodeImplicitUse {
-
   /**
    * A glob for every tsconfig variant, such as {@code tsconfig.app.json}, that a manifest read
    * names.
@@ -81,7 +80,8 @@ public final class NodeImplicitUse {
           // knip tailwind plugin
           Map.entry("tailwind.config.js", "tailwindcss"),
           Map.entry("tailwind.config.ts", "tailwindcss"),
-          Map.entry("tailwind.config.mjs", "tailwindcss"));
+          Map.entry("tailwind.config.mjs", "tailwindcss")
+      );
 
   /** The vitest coverage provider named in a vitest config, and the package that implements it. */
   private static final Map<String, String> VITEST_PROVIDERS =
@@ -137,7 +137,9 @@ public final class NodeImplicitUse {
   static Set<String> of(
       final NodeManifests.Manifest owner,
       final ProjectFiles files,
-      final Map<String, NodeManifests.Manifest> installed) {
+      final Map<String,
+      NodeManifests.Manifest> installed
+  ) {
     final Set<String> implied = new HashSet<>();
     configs(owner.directory(), files, implied);
     scripts(owner.manifest(), installed, implied);
@@ -147,7 +149,10 @@ public final class NodeImplicitUse {
 
   /** The tool each config file in the workspace's directory configures, read from its text. */
   private static void configs(
-      final String directory, final ProjectFiles files, final Set<String> implied) {
+      final String directory,
+      final ProjectFiles files,
+      final Set<String> implied
+  ) {
     for (final String path : files.paths()) {
       final String name = path.substring(path.lastIndexOf('/') + 1);
       if (NodeManifests.directoryOf(path).equals(directory) && isConfigFile(name)) {
@@ -166,7 +171,10 @@ public final class NodeImplicitUse {
     }
     Optional.ofNullable(CONFIG_PACKAGES.get(name)).ifPresent(implied::add);
     addLiterals(
-        name, QUOTED.matcher(text).results().map(match -> match.group(1)).toList(), implied);
+        name,
+        QUOTED.matcher(text).results().map(match -> match.group(1)).toList(),
+        implied
+    );
   }
 
   /**
@@ -174,7 +182,10 @@ public final class NodeImplicitUse {
    * or a jest package.
    */
   private static void addLiterals(
-      final String name, final List<String> literals, final Set<String> implied) {
+      final String name,
+      final List<String> literals,
+      final Set<String> implied
+  ) {
     for (final String literal : literals) {
       if (name.startsWith(VITEST_CONFIG)) {
         Optional.ofNullable(VITEST_PROVIDERS.get(literal)).ifPresent(implied::add);
@@ -192,8 +203,10 @@ public final class NodeImplicitUse {
    */
   private static void scripts(
       final NodeManifest manifest,
-      final Map<String, NodeManifests.Manifest> installed,
-      final Set<String> implied) {
+      final Map<String,
+      NodeManifests.Manifest> installed,
+      final Set<String> implied
+  ) {
     final Map<String, String> providers = NodeCommands.binaryProviders(installed);
     NodeManifests.texts(manifest, "scripts")
         .forEach(script -> implied.addAll(NodeCommands.packagesOf(script, providers)));
@@ -207,8 +220,10 @@ public final class NodeImplicitUse {
   private static void gateCommands(
       final String directory,
       final ProjectFiles files,
-      final Map<String, NodeManifests.Manifest> installed,
-      final Set<String> implied) {
+      final Map<String,
+      NodeManifests.Manifest> installed,
+      final Set<String> implied
+  ) {
     if (!directory.isEmpty()) {
       return;
     }
@@ -218,8 +233,8 @@ public final class NodeImplicitUse {
         .ifPresent(
             text ->
                 NodeConfigText.gateCommands(text)
-                    .forEach(
-                        command -> implied.addAll(NodeCommands.packagesOf(command, providers))));
+                    .forEach(command -> implied.addAll(NodeCommands.packagesOf(command, providers)))
+        );
   }
 
   /**
@@ -227,7 +242,10 @@ public final class NodeImplicitUse {
    * the peers of those peers: a peer that is installed is used as far as it names peers in turn.
    */
   static Set<String> peersOf(
-      final Set<String> used, final Map<String, NodeManifests.Manifest> installed) {
+      final Set<String> used,
+      final Map<String,
+      NodeManifests.Manifest> installed
+  ) {
     final Set<String> peers = new HashSet<>();
     final Deque<String> pending = new ArrayDeque<>(used);
     final Set<String> visited = new HashSet<>(used);

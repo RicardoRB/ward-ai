@@ -58,7 +58,8 @@ public final class JvmSourceLayouts {
                 + javaRoots
                 + " Java and "
                 + (roots.size() - javaRoots)
-                + " Kotlin source roots");
+                + " Kotlin source roots"
+    );
     return List.copyOf(roots);
   }
 
@@ -68,13 +69,16 @@ public final class JvmSourceLayouts {
     final Directories dirs =
         directoriesOf(
             Files.isRegularFile(pom) ? Optional.of(read(pom)) : Optional.empty(),
-            gradleScript(module).map(JvmSourceLayouts::read));
+            gradleScript(module).map(JvmSourceLayouts::read)
+        );
     final String moduleId = relative(projectRoot, module);
     final List<JavaSourceRoot> roots = new ArrayList<>();
     roots.add(
-        new JavaSourceRoot(relative(projectRoot, module.resolve(dirs.main())), moduleId, false));
+        new JavaSourceRoot(relative(projectRoot, module.resolve(dirs.main())), moduleId, false)
+    );
     roots.add(
-        new JavaSourceRoot(relative(projectRoot, module.resolve(dirs.test())), moduleId, true));
+        new JavaSourceRoot(relative(projectRoot, module.resolve(dirs.test())), moduleId, true)
+    );
     for (final String dir : dirs.kotlinMain()) {
       roots.add(new JavaSourceRoot(relative(projectRoot, module.resolve(dir)), moduleId, false));
     }
@@ -85,20 +89,24 @@ public final class JvmSourceLayouts {
   }
 
   private static Directories directoriesOf(
-      final Optional<String> pomText, final Optional<String> gradleText) {
+      final Optional<String> pomText,
+      final Optional<String> gradleText
+  ) {
     if (pomText.isPresent()) {
       final String build = firstGroup(pomText.get(), MAVEN_BUILD).orElse("");
       return directories(
           firstGroup(build, MAVEN_MAIN).orElse(MAIN_DEFAULT),
           firstGroup(build, MAVEN_TEST).orElse(TEST_DEFAULT),
-          KotlinSourceDirs.maven(build));
+          KotlinSourceDirs.maven(build)
+      );
     }
     if (gradleText.isPresent()) {
       final String text = gradleText.get();
       return directories(
           firstGroup(text, GRADLE_MAIN).orElse(MAIN_DEFAULT),
           firstGroup(text, GRADLE_TEST).orElse(TEST_DEFAULT),
-          KotlinSourceDirs.gradle(text));
+          KotlinSourceDirs.gradle(text)
+      );
     }
     return directories(MAIN_DEFAULT, TEST_DEFAULT, List.of());
   }
@@ -111,7 +119,9 @@ public final class JvmSourceLayouts {
    * @param gradleText the text of {@code build.gradle.kts} or {@code build.gradle}, if it has one
    */
   public static List<String> mainRoots(
-      final Optional<String> pomText, final Optional<String> gradleText) {
+      final Optional<String> pomText,
+      final Optional<String> gradleText
+  ) {
     final Directories dirs = directoriesOf(pomText, gradleText);
     final List<String> roots = new ArrayList<>();
     roots.add(dirs.main());
@@ -121,7 +131,10 @@ public final class JvmSourceLayouts {
 
   /** Adds the Kotlin defaults to the literal Kotlin directories of a build file. */
   private static Directories directories(
-      final String main, final String test, final List<KotlinSourceDirs.KotlinDir> extra) {
+      final String main,
+      final String test,
+      final List<KotlinSourceDirs.KotlinDir> extra
+  ) {
     final List<String> kotlinMain = new ArrayList<>(List.of(KotlinSourceDirs.MAIN_DEFAULT));
     final List<String> kotlinTest = new ArrayList<>(List.of(KotlinSourceDirs.TEST_DEFAULT));
     for (final KotlinSourceDirs.KotlinDir dir : extra) {
@@ -143,7 +156,8 @@ public final class JvmSourceLayouts {
   /** Matches a literal {@code srcDir} inside the java block of a source set, Groovy or Kotlin. */
   private static Pattern sourceSetDirectory(final String sourceSet) {
     return Pattern.compile(
-        sourceSet + "\\s*\\{\\s*java\\s*\\{\\s*srcDirs?\\s*[(=]?\\s*\\[?\\s*['\"]([^'\"$]+)['\"]");
+        sourceSet + "\\s*\\{\\s*java\\s*\\{\\s*srcDirs?\\s*[(=]?\\s*\\[?\\s*['\"]([^'\"$]+)['\"]"
+    );
   }
 
   private static String relative(final Path projectRoot, final Path path) {
@@ -160,5 +174,9 @@ public final class JvmSourceLayouts {
 
   /** The source directories of one module, relative to the module. */
   private record Directories(
-      String main, String test, List<String> kotlinMain, List<String> kotlinTest) {}
+      String main,
+      String test,
+      List<String> kotlinMain,
+      List<String> kotlinTest
+  ) {}
 }

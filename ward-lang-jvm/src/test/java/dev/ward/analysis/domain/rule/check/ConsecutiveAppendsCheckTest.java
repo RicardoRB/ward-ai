@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 /** The consecutive-appends check: two appends to the same builder on adjacent statements. */
 class ConsecutiveAppendsCheckTest extends TreeBuilders {
-
   private static final String LITERAL = "STRING_LITERAL";
   private static final String BUF = "buf";
 
@@ -43,7 +42,8 @@ class ConsecutiveAppendsCheckTest extends TreeBuilders {
             t(TOKEN_OPEN, "("),
             t(TOKEN_IDENTIFIER, "foo"),
             t(TOKEN_CLOSE, ")"),
-            t(TOKEN_SEMICOLON, ";"));
+            t(TOKEN_SEMICOLON, ";")
+        );
 
     assertThat(check.check(unit(block(chain, append(BUF, "\"World\""))), FILE)).isEmpty();
   }
@@ -73,6 +73,7 @@ class ConsecutiveAppendsCheckTest extends TreeBuilders {
         t(TOKEN_OPEN, "("),
         t(kind, argument),
         t(TOKEN_CLOSE, ")"),
-        t(TOKEN_SEMICOLON, ";"));
+        t(TOKEN_SEMICOLON, ";")
+    );
   }
 }

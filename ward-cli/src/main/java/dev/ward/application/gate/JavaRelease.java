@@ -11,7 +11,6 @@ import java.util.Map;
  * and such a rule reports nothing.
  */
 final class JavaRelease {
-
   /** The rule option that carries the release. */
   static final String OPTION = "java-release";
 
@@ -47,6 +46,6 @@ final class JavaRelease {
   static RuleDefinition withDefault(final RuleDefinition rule, final int release) {
     return rule.option(OPTION).isEmpty()
         ? rule
-        : RuleOptions.apply(rule, Map.<String, Object>of(OPTION, Long.valueOf(release)));
+        : RuleOptions.apply(rule, Map.<String, Object> of(OPTION, Long.valueOf(release)));
   }
 }

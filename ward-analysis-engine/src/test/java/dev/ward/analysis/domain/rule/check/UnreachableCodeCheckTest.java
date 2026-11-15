@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test;
 
 /** The unreachable-code check on hand-built graphs: entry 0 and exit 1, then the other blocks. */
 class UnreachableCodeCheckTest {
-
   private static final String MESSAGE = "unreachable code";
   private static final int LINE_WIDTH = 10;
   private static final int THIRD_LINE = 3;
@@ -30,7 +29,8 @@ class UnreachableCodeCheckTest {
         "statement",
         new Span(line, 1, line, 2, line * LINE_WIDTH, line * LINE_WIDTH + 1),
         Map.of(),
-        List.of());
+        List.of()
+    );
   }
 
   private static BasicBlock block(final int id, final SyntaxNode node, final int... targets) {
@@ -66,7 +66,8 @@ class UnreachableCodeCheckTest {
             block(1, null),
             block(2, statement(2), 1),
             block(3, statement(3), 4),
-            block(4, statement(4), 1));
+            block(4, statement(4), 1)
+        );
 
     final List<RuleMatch> found = check(graph);
 
@@ -81,7 +82,8 @@ class UnreachableCodeCheckTest {
             block(0, statement(1), 2),
             block(1, null),
             block(2, statement(2), 1),
-            block(3, null, 1));
+            block(3, null, 1)
+        );
 
     assertThat(check(graph)).isEmpty();
   }

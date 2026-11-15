@@ -24,7 +24,6 @@ import org.junit.jupiter.params.provider.MethodSource;
  * refused.
  */
 class JavaFormatterFixturesTest {
-
   private static final String FIXTURE_ROOT = "/format/java";
   private static final String INPUT = "input.java";
   private static final String EXPECTED = "expected.java";
@@ -41,7 +40,8 @@ class JavaFormatterFixturesTest {
         new FormatFixtureChecks(
             formatter,
             new FormatSafety(new JavaFormatSyntax()),
-            FormatOptions.defaults(formatter.options()));
+            FormatOptions.defaults(formatter.options())
+        );
 
     assertThat(checks.problems(input, expected)).isEmpty();
   }

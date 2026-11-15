@@ -13,14 +13,14 @@ import java.util.Set;
  * noHideDescendants}.
  */
 public final class ContentDescriptionCheck implements RuleCheck {
-
   private static final Set<String> VIEWS =
       Set.of(
           "ImageView",
           "ImageButton",
           "androidx.appcompat.widget.AppCompatImageView",
           "androidx.appcompat.widget.AppCompatImageButton",
-          "com.google.android.material.imageview.ShapeableImageView");
+          "com.google.android.material.imageview.ShapeableImageView"
+      );
   private static final Set<String> HIDDEN = Set.of("no", "noHideDescendants");
   private static final String MESSAGE =
       "Image view has no content description: add android:contentDescription, or mark it with"

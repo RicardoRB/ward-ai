@@ -10,7 +10,6 @@ import java.util.Set;
 
 /** Finds the calls of overridable methods on the parameters of a method. */
 final class ParameterUses {
-
   private static final int PARTS = 3;
   private static final String EXPRESSION = "expression";
 
@@ -32,12 +31,16 @@ final class ParameterUses {
             list ->
                 SyntaxWalk.descendants(list).stream()
                     .filter(node -> "variableDeclaratorId".equals(node.kind()))
-                    .forEach(node -> names.add(SyntaxWalk.text(node))));
+                    .forEach(node -> names.add(SyntaxWalk.text(node)))
+        );
     return names;
   }
 
   static List<Use> in(
-      final SyntaxNode scope, final Set<String> parameters, final UnitTypeFacts types) {
+      final SyntaxNode scope,
+      final Set<String> parameters,
+      final UnitTypeFacts types
+  ) {
     return SyntaxWalk.descendants(scope).stream()
         .map(node -> use(node, parameters, types))
         .flatMap(Optional::stream)
@@ -45,7 +48,10 @@ final class ParameterUses {
   }
 
   private static Optional<Use> use(
-      final SyntaxNode node, final Set<String> parameters, final UnitTypeFacts types) {
+      final SyntaxNode node,
+      final Set<String> parameters,
+      final UnitTypeFacts types
+  ) {
     final List<SyntaxNode> parts = node.children();
     if (!EXPRESSION.equals(node.kind())
         || parts.size() != PARTS
@@ -62,7 +68,9 @@ final class ParameterUses {
                     SyntaxWalk.text(parts.get(0)),
                     target.name(),
                     target.declaringType().name(),
-                    node));
+                    node
+                )
+        );
   }
 
   private static boolean overridableValue(final CallTarget target) {

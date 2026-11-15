@@ -11,7 +11,6 @@ import java.util.Set;
 
 /** Builds layer rules and edges for the layer rule tests. */
 final class LayerRuleFixtures {
-
   private LayerRuleFixtures() {}
 
   static List<RuleMatch> match(final List<LayerBoundary> boundaries, final DependencyEdge edge) {
@@ -25,7 +24,8 @@ final class LayerRuleFixtures {
             Set.of(AnalysisLanguage.JAVA, AnalysisLanguage.PYTHON),
             RuleCapability.SYMBOLS,
             AnalysisSeverity.ERROR,
-            LayerRuleBody.encode(boundaries));
+            LayerRuleBody.encode(boundaries)
+        );
     return new LayerDependencyRule(definition, boundaries);
   }
 

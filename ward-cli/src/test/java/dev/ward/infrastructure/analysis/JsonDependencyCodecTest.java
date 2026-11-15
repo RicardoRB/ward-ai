@@ -22,7 +22,8 @@ class JsonDependencyCodecTest {
           List.of(new Symbol("N", AT)),
           List.of(new Reference("B", AT)),
           List.of(new Symbol("Q", AT, "function")),
-          Set.of("used", "other"));
+          Set.of("used", "other")
+      );
 
   private final AnalysisResultCodec codec = new JsonAnalysisResultCodec(new ForyJsonCodec());
 
@@ -52,7 +53,9 @@ class JsonDependencyCodecTest {
         new DependencyGraph(
             List.of(
                 new DependencyEdge("B.kt", "A.kt", new Reference("A", AT)),
-                new DependencyEdge("C.kt", "A.kt", new Reference("A", AT))));
+                new DependencyEdge("C.kt", "A.kt", new Reference("A", AT))
+            )
+        );
 
     final String index = codec.encodeIndex(graph);
 

@@ -51,7 +51,8 @@ public final class InventoryFixtures {
                 + " from="
                 + entry.source()
                 + (entry.declaredIn().isEmpty() ? "" : " in=" + entry.declaredIn())
-                + requiredBy(entry));
+                + requiredBy(entry)
+        );
       }
       if (module.dependencies().isEmpty()) {
         lines.add("[" + module.modulePath() + "] (none)");
@@ -72,7 +73,10 @@ public final class InventoryFixtures {
 
   /** Asserts that {@code inventory} equals {@code <fixture>/<file>}, or writes it on request. */
   public static void assertMatches(
-      final DependencyInventory inventory, final Path fixture, final String file) {
+      final DependencyInventory inventory,
+      final Path fixture,
+      final String file
+  ) {
     final Path expected = fixture.resolve(file);
     final String actual = render(inventory);
     try {

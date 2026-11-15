@@ -8,7 +8,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class RelatedTypesCheckTest {
-
   private static final String EXPRESSION = "expression";
 
   private static final String EQUALS_SOURCE =
@@ -21,12 +20,16 @@ class RelatedTypesCheckTest {
   private static final TypeRef RIGHT = TypeRef.of("app.B");
 
   private static List<String> equalsRun(
-      final RelatedTypesCheck.Pair pair, final boolean isFinal, final TypeRef... tokenAbove) {
+      final RelatedTypesCheck.Pair pair,
+      final boolean isFinal,
+      final TypeRef... tokenAbove
+  ) {
     return new ParsedFacts(EQUALS_SOURCE)
         .at(
             EXPRESSION,
             "token",
-            ParsedFacts.typed(TOKEN, TypeShape.Kind.CLASS, isFinal, tokenAbove))
+            ParsedFacts.typed(TOKEN, TypeShape.Kind.CLASS, isFinal, tokenAbove)
+        )
         .at(EXPRESSION, "task", ParsedFacts.typed(TASK, TypeShape.Kind.INTERFACE, false))
         .run(new RelatedTypesCheck(RelatedTypesCheck.Comparison.EQUALS, pair, "message"));
   }
@@ -39,7 +42,9 @@ class RelatedTypesCheckTest {
             new RelatedTypesCheck(
                 RelatedTypesCheck.Comparison.POINTER,
                 RelatedTypesCheck.Pair.INTERFACES,
-                "message"));
+                "message"
+            )
+        );
   }
 
   @Test
@@ -59,7 +64,9 @@ class RelatedTypesCheckTest {
             new RelatedTypesCheck(
                 RelatedTypesCheck.Comparison.EQUALS,
                 RelatedTypesCheck.Pair.CLASS_AND_INTERFACE,
-                "message"));
+                "message"
+            )
+        );
   }
 
   @Test
@@ -73,14 +80,17 @@ class RelatedTypesCheckTest {
     assertThat(pointerRun()).containsExactly("3:12");
     assertThat(pointerRun(RIGHT)).isEmpty();
     assertThat(
-            new ParsedFacts(EQUALS_SOURCE)
-                .at(EXPRESSION, "token", ParsedFacts.typed(TOKEN, TypeShape.Kind.INTERFACE, false))
-                .at(EXPRESSION, "task", ParsedFacts.typed(TASK, TypeShape.Kind.INTERFACE, false))
-                .run(
-                    new RelatedTypesCheck(
-                        RelatedTypesCheck.Comparison.EQUALS,
-                        RelatedTypesCheck.Pair.INTERFACES,
-                        "message")))
+        new ParsedFacts(EQUALS_SOURCE)
+            .at(EXPRESSION, "token", ParsedFacts.typed(TOKEN, TypeShape.Kind.INTERFACE, false))
+            .at(EXPRESSION, "task", ParsedFacts.typed(TASK, TypeShape.Kind.INTERFACE, false))
+            .run(
+                new RelatedTypesCheck(
+                    RelatedTypesCheck.Comparison.EQUALS,
+                    RelatedTypesCheck.Pair.INTERFACES,
+                    "message"
+                )
+            )
+    )
         .hasSize(1);
   }
 
@@ -90,41 +100,50 @@ class RelatedTypesCheckTest {
         new RelatedTypesCheck(
             RelatedTypesCheck.Comparison.EQUALS,
             RelatedTypesCheck.Pair.CLASS_AND_INTERFACE,
-            "message");
+            "message"
+        );
 
     assertThat(new ParsedFacts(EQUALS_SOURCE).run(check)).isEmpty();
     assertThat(new ParsedFacts(EQUALS_SOURCE).plain(check)).isEmpty();
     assertThat(
-            new ParsedFacts(EQUALS_SOURCE)
-                .at(EXPRESSION, "token", ParsedFacts.typed(TASK, TypeShape.Kind.CLASS, true))
-                .at(EXPRESSION, "task", ParsedFacts.typed(TASK, TypeShape.Kind.INTERFACE, false))
-                .run(check))
+        new ParsedFacts(EQUALS_SOURCE)
+            .at(EXPRESSION, "token", ParsedFacts.typed(TASK, TypeShape.Kind.CLASS, true))
+            .at(EXPRESSION, "task", ParsedFacts.typed(TASK, TypeShape.Kind.INTERFACE, false))
+            .run(check)
+    )
         .isEmpty();
     assertThat(
-            new ParsedFacts(EQUALS_SOURCE)
-                .at(EXPRESSION, "token", ParsedFacts.type(TOKEN))
-                .at(EXPRESSION, "task", ParsedFacts.type(TASK))
-                .run(check))
+        new ParsedFacts(EQUALS_SOURCE)
+            .at(EXPRESSION, "token", ParsedFacts.type(TOKEN))
+            .at(EXPRESSION, "task", ParsedFacts.type(TASK))
+            .run(check)
+    )
         .isEmpty();
     assertThat(
-            new ParsedFacts(
-                    "class C {\n  boolean t(Token a, Task b) {\n    return a.same(b);\n  }\n}\n")
-                .at(EXPRESSION, "a", ParsedFacts.typed(TOKEN, TypeShape.Kind.CLASS, true))
-                .at(EXPRESSION, "b", ParsedFacts.typed(TASK, TypeShape.Kind.INTERFACE, false))
-                .run(check))
+        new ParsedFacts(
+            "class C {\n  boolean t(Token a, Task b) {\n    return a.same(b);\n  }\n}\n"
+        )
+            .at(EXPRESSION, "a", ParsedFacts.typed(TOKEN, TypeShape.Kind.CLASS, true))
+            .at(EXPRESSION, "b", ParsedFacts.typed(TASK, TypeShape.Kind.INTERFACE, false))
+            .run(check)
+    )
         .isEmpty();
     assertThat(
-            new ParsedFacts(EQUALS_SOURCE.replace("equals(task)", "equals(task, task)")).run(check))
+        new ParsedFacts(EQUALS_SOURCE.replace("equals(task)", "equals(task, task)")).run(check)
+    )
         .isEmpty();
     assertThat(
-            new ParsedFacts(POINTER_SOURCE.replace("==", "+"))
-                .at(EXPRESSION, "left", ParsedFacts.typed(LEFT, TypeShape.Kind.INTERFACE, false))
-                .at(EXPRESSION, "right", ParsedFacts.typed(RIGHT, TypeShape.Kind.INTERFACE, false))
-                .run(
-                    new RelatedTypesCheck(
-                        RelatedTypesCheck.Comparison.POINTER,
-                        RelatedTypesCheck.Pair.INTERFACES,
-                        "message")))
+        new ParsedFacts(POINTER_SOURCE.replace("==", "+"))
+            .at(EXPRESSION, "left", ParsedFacts.typed(LEFT, TypeShape.Kind.INTERFACE, false))
+            .at(EXPRESSION, "right", ParsedFacts.typed(RIGHT, TypeShape.Kind.INTERFACE, false))
+            .run(
+                new RelatedTypesCheck(
+                    RelatedTypesCheck.Comparison.POINTER,
+                    RelatedTypesCheck.Pair.INTERFACES,
+                    "message"
+                )
+            )
+    )
         .isEmpty();
   }
 }

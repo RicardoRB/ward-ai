@@ -7,7 +7,6 @@ import java.nio.file.Path;
  * when the file is kept, moved or removed. {@code detail} is a note for the plan and the output.
  */
 public record ConfigTarget(Path file, Disposition disposition, String content, String detail) {
-
   /** What init does with one config file of the plan. */
   public enum Disposition {
     /** Writes Ward's content, unless the file already holds it or the user owns it. */
@@ -40,6 +39,7 @@ public record ConfigTarget(Path file, Disposition disposition, String content, S
         base,
         Disposition.CONFLICT,
         null,
-        base.getFileName() + " already exists, and Ward did not write it");
+        base.getFileName() + " already exists, and Ward did not write it"
+    );
   }
 }

@@ -9,7 +9,6 @@ import javax.inject.Inject;
 
 /** Reads {@code package.json} leniently, as project detection does. */
 public final class FileSystemPackageManifests implements PackageManifests {
-
   /** Creates the adapter. */
   @Inject
   public FileSystemPackageManifests() {
@@ -27,7 +26,8 @@ public final class FileSystemPackageManifests implements PackageManifests {
         text(manifest.get("type")),
         text(manifest.get("packageManager")),
         text(scripts(manifest).get("prepare")),
-        text(scripts(manifest).get("check")));
+        text(scripts(manifest).get("check"))
+    );
   }
 
   private static Map<?, ?> scripts(final Map<?, ?> manifest) {
@@ -41,7 +41,8 @@ public final class FileSystemPackageManifests implements PackageManifests {
             if (name instanceof String key && version instanceof String range) {
               into.put(key, range);
             }
-          });
+          }
+      );
     }
   }
 

@@ -27,7 +27,6 @@ import java.util.SortedMap;
  * is reported in a workspace package; a workspace-aware check would read the root manifest too.
  */
 public final class NodeUnlistedImportCheck implements RuleCheck, ProjectCheck {
-
   private static final String MANIFEST = "package.json";
   private static final String NAME = "name";
   private static final String VALUE = "{value}";
@@ -57,7 +56,10 @@ public final class NodeUnlistedImportCheck implements RuleCheck, ProjectCheck {
 
   @Override
   public List<ProjectMatch> project(
-      final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
+      final SortedMap<String,
+      SyntaxNode> trees,
+      final ProjectFiles files
+  ) {
     final Map<String, Set<String>> listed = listedByDirectory(files);
     final List<ProjectMatch> found = new ArrayList<>();
     trees.forEach(
@@ -70,11 +72,12 @@ public final class NodeUnlistedImportCheck implements RuleCheck, ProjectCheck {
             final String name = NodeFileFacts.packageName(module.specifier());
             if (!name.isEmpty() && !declared.get().contains(name)) {
               found.add(
-                  new ProjectMatch(
-                      path, new RuleMatch(module.span(), message.replace(VALUE, name))));
+                  new ProjectMatch(path, new RuleMatch(module.span(), message.replace(VALUE, name)))
+              );
             }
           }
-        });
+        }
+    );
     return List.copyOf(found);
   }
 
@@ -106,7 +109,10 @@ public final class NodeUnlistedImportCheck implements RuleCheck, ProjectCheck {
 
   /** The listed names of the nearest manifest at or above {@code path}, or empty when none. */
   private static Optional<Set<String>> nearest(
-      final String path, final Map<String, Set<String>> listed) {
+      final String path,
+      final Map<String,
+      Set<String>> listed
+  ) {
     String directory = directoryOf(path);
     while (true) {
       final Set<String> names = listed.get(directory);

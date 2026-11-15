@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * operands are names or dotted names, matched by their text.
  */
 public final class MinMaxBuiltinCheck implements RuleCheck {
-
   private static final Set<String> IFS = Set.of("if_stmt");
   private static final Pattern IF_ASSIGN =
       Pattern.compile("^if([\\w.]+)(<=?|>=?)([\\w.]+):\\s*([\\w.]+)=([\\w.]+)\\s*$");

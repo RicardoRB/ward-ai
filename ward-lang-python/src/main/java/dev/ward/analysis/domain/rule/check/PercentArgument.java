@@ -14,7 +14,6 @@ import java.util.Optional;
  * @param keys the string keys of a dictionary, or empty when a key is not a string literal
  */
 record PercentArgument(Kind kind, int count, Optional<List<String>> keys) {
-
   /** The kinds of operand that the checks tell apart. */
   enum Kind {
     TUPLE,
@@ -129,7 +128,6 @@ record PercentArgument(Kind kind, int count, Optional<List<String>> keys) {
 
   /** Tracks brackets and string literals while a text is read from left to right. */
   private static final class Nesting {
-
     private static final String OPENERS = "({[";
     private static final String CLOSERS = ")}]";
 

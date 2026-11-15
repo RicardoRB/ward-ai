@@ -12,7 +12,6 @@ import java.util.Set;
  * neither final, nor volatile, nor annotated {@code @GuardedBy}.
  */
 public final class ThreadSafeFieldsCheck implements RuleCheck {
-
   private static final Set<String> TYPES =
       Set.of("classDeclaration", "enumDeclaration", "recordDeclaration");
   private static final String THREAD_SAFE = "ThreadSafe";
