@@ -11,9 +11,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 class FileSystemNodeToolConfigsTest {
-  private final FileSystemNodeToolConfigs configs = new FileSystemNodeToolConfigs();
-
   @TempDir Path root;
+  private final FileSystemNodeToolConfigs configs = new FileSystemNodeToolConfigs();
 
   @ParameterizedTest
   @CsvSource({

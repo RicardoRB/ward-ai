@@ -20,10 +20,10 @@ import org.junit.jupiter.api.io.TempDir;
 @DisabledOnOs(OS.WINDOWS)
 class GitRevisionFilesReadTest {
   private static final String SPEC = "api/openapi.yml";
-  private final ProcessCommandExecutor executor = new ProcessCommandExecutor();
-  private final GitRevisionFiles files = new GitRevisionFiles(executor);
 
   @TempDir Path root;
+  private final ProcessCommandExecutor executor = new ProcessCommandExecutor();
+  private final GitRevisionFiles files = new GitRevisionFiles(executor);
 
   @Test
   void readsTheFileAsCommittedNotAsEdited() throws IOException {

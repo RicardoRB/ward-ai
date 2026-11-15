@@ -25,7 +25,6 @@ public final class ClaudeCodeIntegration implements AgentIntegration {
   public static final String HOOK_MARKER = "ward-owned: edit-write-guard v1";
   private static final String SETTINGS_FILE = ".claude/settings.json";
   private static final String UPDATED = "Updated Ward Claude Code integration.";
-  private final ClaudeSettingsDocument settingsDocument;
 
   private static final String SETTINGS =
       """
@@ -70,6 +69,8 @@ public final class ClaudeCodeIntegration implements AgentIntegration {
             exec ward hook claude-code --learn-after 3 --event-stdin -C "${CLAUDE_PROJECT_DIR:-.}"
             """
           .replace("%s", HOOK_MARKER);
+
+  private final ClaudeSettingsDocument settingsDocument;
 
   /** Creates the integration with the default JSON codec. */
   public ClaudeCodeIntegration() {

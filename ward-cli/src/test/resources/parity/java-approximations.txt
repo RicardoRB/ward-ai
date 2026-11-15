@@ -57,3 +57,6 @@ final-parameters	checkstyle	FinalParameters	Checkstyle also reports a parameter 
 simplify-boolean-expression	pmd	SimplifyBooleanExpressions	PMD reports only the comparison with a boolean literal (line 3); Ward and Checkstyle also report && true, !false and the ternary of literals
 unnecessary-parentheses	errorprone	UnnecessaryParentheses	Error Prone does not report the parentheses around an initializer (line 4); Ward and PMD do
 unused-private-field	checkstyle	UnusedPrivateField	Checkstyle also reports an annotated private field (line 4 of the passing fixture); Ward and PMD leave it alone
+singular-field	pmd	SingularField	Ward skips a field a picocli annotation fills; PMD without picocli on its classpath reports it
+unused-local-variable	checkstyle	UnusedLocalVariable	Ward skips the bindings of case patterns, as PMD's UnusedLocalVariable does; Checkstyle reports them
+unused-local-variable	pmd	UnusedLocalVariable	PMD reports nothing on the fixture's unused local; Ward reports it and skips the case-pattern bindings, as PMD does

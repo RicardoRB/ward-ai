@@ -50,12 +50,12 @@ final class SwiftScopeWalk {
   private static final String PATTERN = "pattern";
 
   final ScopeBuilder builder;
-  private final Map<String, Consumer<SyntaxNode>> handlers = new HashMap<>();
   BindingKind declaring = BindingKind.CONSTANT;
   final SwiftScopeTypes types;
   final SwiftScopeClosures closures;
   final SwiftScopePatterns patterns;
   final SwiftScopeExpressions expressions;
+  private final Map<String, Consumer<SyntaxNode>> handlers = new HashMap<>();
 
   SwiftScopeWalk(final ScopeBuilder builder) {
     this.types = new SwiftScopeTypes(this);

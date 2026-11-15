@@ -15,10 +15,10 @@ import org.junit.jupiter.api.io.TempDir;
 @DisabledOnOs(OS.WINDOWS)
 class OpenApiSpecInspectionTest {
   private static final String RESOURCES_SPEC = "src/main/resources/openapi.yml";
-  private final ProcessCommandExecutor executor = new ProcessCommandExecutor();
-  private final SystemEnvironmentInspection inspection = new SystemEnvironmentInspection(executor);
 
   @TempDir Path root;
+  private final ProcessCommandExecutor executor = new ProcessCommandExecutor();
+  private final SystemEnvironmentInspection inspection = new SystemEnvironmentInspection(executor);
 
   @Test
   void detectsTrackedSpecUnderResources() throws IOException {

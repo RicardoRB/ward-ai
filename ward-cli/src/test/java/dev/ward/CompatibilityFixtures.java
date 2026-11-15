@@ -9,11 +9,11 @@ import java.util.Optional;
 
 /** A Maven project whose declared Spotless version needs a compatibility update. */
 public final class CompatibilityFixtures {
-  private static final int JAVA_17 = 17;
   public static final String OUTDATED_SPOTLESS_POM =
       "<project><modelVersion>4.0.0</modelVersion><build><plugins><plugin>"
           + "<artifactId>spotless-maven-plugin</artifactId><version>1.0.0</version>"
           + "</plugin></plugins></build></project>";
+  private static final int JAVA_17 = 17;
 
   private CompatibilityFixtures() {}
 

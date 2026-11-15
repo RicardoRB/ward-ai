@@ -13,7 +13,8 @@ import java.util.Set;
  * Reports each field that is initialized to the default value of its declared type: null for an
  * object reference, zero for a numeric type, false for boolean and the null character for char. As
  * Checkstyle's ExplicitInitialization does, the default is read from the declared type's text, so a
- * type alias that means a primitive is not recognized. With the user option, only null is reported.
+ * type alias that means a primitive is not recognized. A {@code final} field is skipped, since its
+ * initializer is its value. With the user option, only null is reported.
  */
 public final class ExplicitInitializationCheck implements UnitCheck {
 
@@ -42,6 +43,9 @@ public final class ExplicitInitializationCheck implements UnitCheck {
   public List<RuleMatch> check(final SyntaxNode root, final SourceFile file) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("fieldDeclaration"))) {
+      if (DeclaredModifiers.has(visit.ancestors(), "final")) {
+        continue;
+      }
       final String type = typeOf(visit.node());
       for (final SyntaxNode declarator : declarators(visit.node())) {
         final Optional<String> value = initializer(declarator);

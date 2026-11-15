@@ -39,6 +39,9 @@ public abstract class TypeScriptLexerBase extends WardLexerBase {
               Stream.of(TypeScriptLexer.JsxSelfCloseEnd, TypeScriptLexer.JsxClosingTagEnd))
           .collect(Collectors.toUnmodifiableSet());
 
+  /** The template literals the lexer is inside, and the braces inside their substitutions. */
+  protected final TemplateNesting templates = new TemplateNesting();
+
   /**
    * Stores values of nested modes. By default mode is strict or defined externally
    * (useStrictDefault)
@@ -55,9 +58,6 @@ public abstract class TypeScriptLexerBase extends WardLexerBase {
    * StringGlobal.js samples
    */
   private boolean useStrictCurrent;
-
-  /** The template literals the lexer is inside, and the braces inside their substitutions. */
-  protected final TemplateNesting templates = new TemplateNesting();
 
   /**
    * Counts every open brace of the default mode, so a JSX container knows its own closing brace.

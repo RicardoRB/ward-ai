@@ -42,10 +42,10 @@ class WardCliIntegrationSupport {
   protected final WardComponent component = DaggerWardComponent.create();
   protected final DaggerCommandFactory factory = new DaggerCommandFactory(component.commands());
 
-  @TempDir Path project;
-
   protected final StringWriter out = new StringWriter();
   protected final StringWriter err = new StringWriter();
+
+  @TempDir Path project;
 
   @BeforeEach
   void copyFixture() throws IOException {

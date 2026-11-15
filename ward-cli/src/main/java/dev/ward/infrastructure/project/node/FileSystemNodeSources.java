@@ -23,10 +23,6 @@ import javax.inject.Inject;
  * other build tools, packages that are not workspace members, and root-level tool configs.
  */
 public final class FileSystemNodeSources implements NodeSources {
-  private static final Logger LOGGER = Logger.getLogger(FileSystemNodeSources.class.getName());
-  private static final Pattern SOURCE = Pattern.compile(".*\\.(js|jsx|mjs|cjs|ts|tsx|mts|cts)$");
-  private static final Pattern TOOL_CONFIG =
-      Pattern.compile(".*\\.config\\.(js|mjs|cjs|ts|mts|cts)$");
   static final Set<String> OTHER_BUILD_FILES =
       Set.of(
           FileSystemProjectInspection.POM,
@@ -40,6 +36,10 @@ public final class FileSystemNodeSources implements NodeSources {
           "Cargo.toml",
           "go.mod",
           "Package.swift");
+  private static final Logger LOGGER = Logger.getLogger(FileSystemNodeSources.class.getName());
+  private static final Pattern SOURCE = Pattern.compile(".*\\.(js|jsx|mjs|cjs|ts|tsx|mts|cts)$");
+  private static final Pattern TOOL_CONFIG =
+      Pattern.compile(".*\\.config\\.(js|mjs|cjs|ts|mts|cts)$");
 
   /** Creates the stateless adapter that Dagger injects. */
   @Inject

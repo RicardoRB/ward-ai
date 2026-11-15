@@ -27,6 +27,17 @@ class NodeDependencyEdgesTest {
   private static final Set<String> TYPESCRIPT_EXTENSIONS = Set.of("ts", "tsx", "mts", "cts");
   private static final Set<String> JAVASCRIPT_EXTENSIONS = Set.of("js", "jsx", "mjs", "cjs");
 
+  private static final FileSummaryCache NO_CACHE =
+      new FileSummaryCache() {
+        @Override
+        public Optional<FileSummary> read(final SourceUnit unit) {
+          return Optional.empty();
+        }
+
+        @Override
+        public void write(final SourceUnit unit, final FileSummary summary) {}
+      };
+
   @Test
   void resolvesExtensionsIndexPathsExportsAndCommonJsOfTheResolutionFixture() throws Exception {
     assertThat(edgesOf("node-resolution"))
@@ -121,15 +132,4 @@ class NodeDependencyEdgesTest {
       throw new IllegalStateException(e);
     }
   }
-
-  private static final FileSummaryCache NO_CACHE =
-      new FileSummaryCache() {
-        @Override
-        public Optional<FileSummary> read(final SourceUnit unit) {
-          return Optional.empty();
-        }
-
-        @Override
-        public void write(final SourceUnit unit, final FileSummary summary) {}
-      };
 }

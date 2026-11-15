@@ -18,12 +18,12 @@ import org.junit.jupiter.api.Test;
 /** Runs the type-aware checks over trees whose nodes carry facts keyed by their start. */
 class TypedChecksTest {
 
-  private final TypedTrees trees = new TypedTrees();
-
   private static final String LOGGER = "org.slf4j.Logger";
   private static final String RESULT_SET = "java.sql.ResultSet";
   private static final String MESSAGE = "message {value}";
   private static final SourceUnit UNIT = new SourceUnit("x.java", AnalysisLanguage.JAVA, "");
+
+  private final TypedTrees trees = new TypedTrees();
 
   @Test
   void aConcatenatedDebugMessageOutsideAnIfIsReported() {

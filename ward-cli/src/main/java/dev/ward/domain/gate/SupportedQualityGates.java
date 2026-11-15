@@ -29,9 +29,9 @@ public final class SupportedQualityGates {
   public static final List<String> IDS =
       QualityGateDefinitions.all().stream().map(QualityGateDefinitions.Definition::id).toList();
 
-  private static final Set<String> OPENAPI_IDS = Set.of(OPENAPI_LINT, OPENAPI_DIFF, OPENAPI_COMPAT);
-
   public static final List<String> LEGACY_IDS = List.of("architecture");
+
+  private static final Set<String> OPENAPI_IDS = Set.of(OPENAPI_LINT, OPENAPI_DIFF, OPENAPI_COMPAT);
 
   private SupportedQualityGates() {}
 

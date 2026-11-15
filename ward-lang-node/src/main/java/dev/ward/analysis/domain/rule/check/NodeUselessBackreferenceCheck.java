@@ -107,13 +107,14 @@ public final class NodeUselessBackreferenceCheck implements RuleCheck {
   /** A single pass over a pattern: its groups, and the backreferences with their paths. */
   private static final class ReferenceScan {
 
+    private static final int NONE = -1;
+    private static final int ROOT_FRAMES = 1;
+
     private final String pattern;
     private final Map<Integer, Group> groups = new HashMap<>();
     private final List<Reference> references = new ArrayList<>();
     private final List<Frame> frames = new ArrayList<>();
     private int count;
-    private static final int NONE = -1;
-    private static final int ROOT_FRAMES = 1;
 
     /** A parenthesis frame: its index, the alternative currently open, and its group number. */
     private record Frame(int index, int group, int alternative) {}

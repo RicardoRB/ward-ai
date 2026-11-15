@@ -464,7 +464,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["classDeclaration"]
-text = '(?s)^(?!.*serialVersionUID)class\w+[^{]*Serializable'
+text = '(?s)^(?!.*serialVersionUID)class\w+[^{]*implements[^{]*Serializable'
 message = "Serializable class has no serialVersionUID field"
 '''
 
@@ -532,9 +532,7 @@ severity = "error"
 category = "correctness"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["expression"]
-text = '^[\w.\[\]]+=null$'
+check = "null-assignment"
 message = "assigning null outside a declaration; reconsider the design"
 '''
 

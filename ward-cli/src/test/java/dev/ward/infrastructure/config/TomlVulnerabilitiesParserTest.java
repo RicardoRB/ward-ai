@@ -15,9 +15,9 @@ import org.junit.jupiter.api.io.TempDir;
 class TomlVulnerabilitiesParserTest {
   private static final int AGE = 3;
   private static final String HEAD = "version = 2\n\n[checks.vulnerabilities]\n";
-  private final TomlConfigurationReader reader = new TomlConfigurationReader();
 
   @TempDir Path dir;
+  private final TomlConfigurationReader reader = new TomlConfigurationReader();
 
   private GateConfiguration check(final String body) throws IOException {
     return read(reader, dir, HEAD + body).checks().get("vulnerabilities");

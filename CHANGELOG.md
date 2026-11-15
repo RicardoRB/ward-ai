@@ -8,6 +8,20 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Fixed
+
+- `ward:java/constants-in-interface` leaves an interface that declares a method alone, as PMD's `ignoreIfHasMethods` does.
+- `ward:java/explicit-initialization` skips `final` fields, as Checkstyle's `ExplicitInitialization` does.
+- `ward:java/unused-local-variable` no longer reports the binding of a `case` pattern such as `case Str str -> 1;`, which Checkstyle's `UnusedLocalVariable` does not support either.
+- `ward:java/uwf-field-not-initialized-in-constructor` has the severity `note`: SpotBugs always reports `UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR` at low priority, so the Medium threshold never shows it.
+- `ward:java/singular-field` skips fields a picocli annotation fills, requires that the method assigns the field unconditionally before it reads it, and skips a field the enclosing class of a nested class mentions.
+- `ward:java/immutable-field` skips a private field of a nested class that the enclosing class assigns, as PMD reads every use in the file.
+- `ward:java/missing-serial-version-uid` reports only a class that implements `Serializable`, not a class whose name contains it.
+- `ward:java/hidden-field` does not report a parameter where no instance of the class is in reach: in an anonymous class of a static method, or in a nested interface, enum or record.
+- `ward:java/null-assignment` skips the assignment of `null` to a `final` field, as PMD does.
+- `ward:java/si-instance-before-finals-assigned` reports only when a constructor or instance initializer reads the static final field assigned late, as SpotBugs does.
+- `ward:java/array-is-stored-directly` skips private methods and constructors, as PMD's default `allowPrivate` does.
+
 ## [0.9.0] - 2026-11-14
 
 ### Added

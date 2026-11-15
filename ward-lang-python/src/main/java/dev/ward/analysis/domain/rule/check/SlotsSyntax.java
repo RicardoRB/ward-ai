@@ -11,11 +11,12 @@ import java.util.regex.Pattern;
 /** Reads the parts of a class body that the slot checks need: slots, class names and bases. */
 final class SlotsSyntax {
 
-  private static final int ASSIGNMENT_PARTS = 3;
-  private static final String EXPR_STMT = "expr_stmt";
   static final String SLOTS = "__slots__";
   static final String DICT = "__dict__";
   static final Set<String> SCOPES = Set.of("funcdef", "async_funcdef", "lambdef", "classdef");
+
+  private static final int ASSIGNMENT_PARTS = 3;
+  private static final String EXPR_STMT = "expr_stmt";
   private static final Pattern STRING =
       Pattern.compile("^(?:[rRbBuU]?)(['\"])(.*)\\1$", Pattern.DOTALL);
   private static final String STMT = "stmt";

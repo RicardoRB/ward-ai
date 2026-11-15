@@ -22,6 +22,17 @@ import java.util.TreeSet;
 final class WardJavaEdges {
   private static final String ARROW = " -> ";
 
+  private static final FileSummaryCache NO_SUMMARIES =
+      new FileSummaryCache() {
+        @Override
+        public Optional<FileSummary> read(final SourceUnit unit) {
+          return Optional.empty();
+        }
+
+        @Override
+        public void write(final SourceUnit unit, final FileSummary summary) {}
+      };
+
   private WardJavaEdges() {}
 
   /** Returns the {@code from -> to} edges of {@code project} for Java sources and the classpath. */
@@ -57,15 +68,4 @@ final class WardJavaEdges {
     }
     return result;
   }
-
-  private static final FileSummaryCache NO_SUMMARIES =
-      new FileSummaryCache() {
-        @Override
-        public Optional<FileSummary> read(final SourceUnit unit) {
-          return Optional.empty();
-        }
-
-        @Override
-        public void write(final SourceUnit unit, final FileSummary summary) {}
-      };
 }

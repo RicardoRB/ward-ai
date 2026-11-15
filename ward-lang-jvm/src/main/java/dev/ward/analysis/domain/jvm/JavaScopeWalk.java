@@ -29,12 +29,13 @@ final class JavaScopeWalk {
   private static final String PRIMARY = "primary";
 
   final ScopeBuilder builder;
-  private final Map<String, Consumer<SyntaxNode>> handlers = new HashMap<>();
   boolean finalMember;
   boolean finalLocal;
+  boolean inPattern;
   final JavaScopeTypes types;
   final JavaScopeBodies bodies;
   final JavaScopeExpressions expressions;
+  private final Map<String, Consumer<SyntaxNode>> handlers = new HashMap<>();
 
   JavaScopeWalk(final ScopeBuilder builder) {
     this.types = new JavaScopeTypes(this);
@@ -61,6 +62,7 @@ final class JavaScopeWalk {
     handlers.put(EXPRESSION, expressions::expression);
     handlers.put(PRIMARY, expressions::primary);
     handlers.put("methodCall", expressions::methodCall);
+    handlers.put("pattern", expressions::pattern);
     handlers.put("switchLabeledRule", expressions::switchRule);
     handlers.put("switchLabel", expressions::switchRule);
     TYPE_DECLARATIONS.forEach(kind -> handlers.put(kind, types::typeDeclaration));

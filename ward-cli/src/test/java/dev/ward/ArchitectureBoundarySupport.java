@@ -12,9 +12,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 final class ArchitectureBoundarySupport {
-  // dev.ward.domain.<feature>: the feature is the fourth package segment.
-  private static final int FEATURE_SEGMENT = 3;
-
   /** The config package's modules, which wire the Dagger graph and may be placed there. */
   static final Set<String> CONFIG_MODULES =
       Set.of(
@@ -157,6 +154,8 @@ final class ArchitectureBoundarySupport {
                   "dev.ward.application.gate.RuleConfigFile$Select",
                   "dev.ward.application.gate.RuleSelection",
                   "dev.ward.application.gate.RuleSelection$Result")));
+  // dev.ward.domain.<feature>: the feature is the fourth package segment.
+  private static final int FEATURE_SEGMENT = 3;
 
   private ArchitectureBoundarySupport() {}
 

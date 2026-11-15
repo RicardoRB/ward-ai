@@ -16,14 +16,14 @@ import java.util.logging.Logger;
 
 /** Finds, reads and checks the coverage reports of a {@code crap} or {@code coverage} check. */
 final class CrapReports {
-  private static final Logger LOGGER = Logger.getLogger(CrapReports.class.getName());
-
   /** The advice of a {@code crap} check whose report is missing. */
   static final String CRAP_FIRST =
       " The coverage check must run first, so that it writes the report.";
 
   /** The advice of a {@code coverage} check whose report is missing. */
   static final String TESTS_FIRST = " Run the test gate first, so that the tests write the report.";
+
+  private static final Logger LOGGER = Logger.getLogger(CrapReports.class.getName());
 
   private final CrapPorts ports;
   private final String first;

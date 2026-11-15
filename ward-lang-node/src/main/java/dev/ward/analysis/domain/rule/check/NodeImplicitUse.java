@@ -24,6 +24,12 @@ import java.util.regex.Pattern;
  */
 public final class NodeImplicitUse {
 
+  /**
+   * A glob for every tsconfig variant, such as {@code tsconfig.app.json}, that a manifest read
+   * names.
+   */
+  public static final String TSCONFIG_VARIANTS = "tsconfig.*.json";
+
   /** Config file names and the package each configures; knip's plugin of that tool reads them. */
   private static final Map<String, String> CONFIG_PACKAGES =
       Map.ofEntries(
@@ -95,12 +101,6 @@ public final class NodeImplicitUse {
   private static final String TSCONFIG = "tsconfig.json";
   private static final String ANGULAR_CONFIG = "angular.json";
   private static final String WARD_CONFIG = "ward.toml";
-
-  /**
-   * A glob for every tsconfig variant, such as {@code tsconfig.app.json}, that a manifest read
-   * names.
-   */
-  public static final String TSCONFIG_VARIANTS = "tsconfig.*.json";
 
   private static final String TSCONFIG_PREFIX = "tsconfig.";
   private static final String JSON_SUFFIX = ".json";

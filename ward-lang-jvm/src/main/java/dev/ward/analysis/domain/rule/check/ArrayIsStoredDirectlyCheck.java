@@ -10,7 +10,8 @@ import java.util.stream.Collectors;
 
 /**
  * Reports an array parameter stored directly into a field, so the caller keeps write access to the
- * field's array. A field is named bare or as {@code this.name}.
+ * field's array. A field is named bare or as {@code this.name}. A private method or constructor is
+ * not checked, as PMD's default {@code allowPrivate} asks: only the class itself can call it.
  */
 public final class ArrayIsStoredDirectlyCheck implements UnitCheck {
 
@@ -35,6 +36,9 @@ public final class ArrayIsStoredDirectlyCheck implements UnitCheck {
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("classBody"))) {
       final Set<String> fields = ClassFields.names(visit.node());
       for (final SyntaxNode member : JUnitMembers.members(visit.node())) {
+        if (MemberDeclarations.modifiers(member).contains(MemberDeclarations.PRIVATE)) {
+          continue;
+        }
         for (final SyntaxNode body : callables(member)) {
           checkCallable(body, fields, matches);
         }

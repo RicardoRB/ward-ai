@@ -12,9 +12,8 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** The narrowed base command a partial table may set. */
 class TomlPartialCommandTest {
-  private final TomlConfigurationReader reader = new TomlConfigurationReader();
-
   @TempDir Path dir;
+  private final TomlConfigurationReader reader = new TomlConfigurationReader();
 
   @Test
   void parsesNarrowedPartialCommand() throws Exception {

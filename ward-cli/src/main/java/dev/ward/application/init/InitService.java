@@ -24,8 +24,6 @@ import javax.inject.Inject;
  * hooks, and integrations, rolling back on failure.
  */
 public class InitService {
-  private static final Logger LOGGER = Logger.getLogger(InitService.class.getName());
-
   static final String DEFAULT_CONFIGURATION =
       """
             version = 2
@@ -34,6 +32,7 @@ public class InitService {
             enabled = true
             command = "./mvnw test"
             """;
+  private static final Logger LOGGER = Logger.getLogger(InitService.class.getName());
 
   private final ProjectDetector detector;
   private final IntegrationInstaller installer;

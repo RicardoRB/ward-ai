@@ -12,6 +12,8 @@ import java.util.Set;
  */
 final class KotlinFlowSyntax {
 
+  static final String THROW = "throw";
+
   private static final Set<String> NOISE = Set.of("comment", "error", "NL");
   private static final Set<String> WRAPPERS =
       Set.of(
@@ -38,7 +40,6 @@ final class KotlinFlowSyntax {
   private static final String CALL_SUFFIX = "callSuffix";
   private static final String TEXT = "text";
   private static final int SINGLE = 1;
-  static final String THROW = "throw";
 
   private KotlinFlowSyntax() {}
 

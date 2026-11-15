@@ -19,8 +19,8 @@ import javax.inject.Inject;
 
 /** Runs the quality gates configured in {@code ward.toml} for a project. */
 public class CheckService {
-  private static final Logger LOGGER = Logger.getLogger(CheckService.class.getName());
   static final String OUTSIDE_PROJECT = "The edited files are outside this project";
+  private static final Logger LOGGER = Logger.getLogger(CheckService.class.getName());
 
   private final ProjectDetector detector;
   private final WardConfigurationReader configurationReader;

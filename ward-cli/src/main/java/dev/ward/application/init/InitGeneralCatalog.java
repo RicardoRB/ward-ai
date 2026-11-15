@@ -25,10 +25,11 @@ import javax.inject.Inject;
 /** Stable choices and project-aware defaults used by the interactive init flow. */
 public class InitGeneralCatalog {
   public static final String NO_INTEGRATION = "none";
-  private final EnvironmentInspection environment;
 
   /** What the toolchain supports read, such as the runtime JDK of a JVM project. */
   public final InitInputs inputs;
+
+  private final EnvironmentInspection environment;
 
   /** Creates the catalog; {@code environment} resolves which executables are on the path. */
   @Inject

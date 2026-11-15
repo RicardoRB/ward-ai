@@ -20,13 +20,13 @@ import javax.inject.Inject;
  * then reads the commits in batches so that the output of one call stays bounded.
  */
 public final class GitCliHistory implements GitHistory {
-  private static final Logger LOGGER = Logger.getLogger(GitCliHistory.class.getName());
-
   /** Commits per {@code git log} call. */
   static final int BATCH = 200;
 
   /** The most characters of patch text one batch may hold. */
   static final int BATCH_LIMIT = 64 * 1024 * 1024;
+
+  private static final Logger LOGGER = Logger.getLogger(GitCliHistory.class.getName());
 
   private static final String MARKER = "\u0001ward-commit ";
   private static final int SHORT_ID = 8;

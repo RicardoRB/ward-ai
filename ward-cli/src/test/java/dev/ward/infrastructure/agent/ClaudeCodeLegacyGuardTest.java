@@ -30,9 +30,9 @@ class ClaudeCodeLegacyGuardTest {
   private static final String LEGACY_GUARD =
       "#!/bin/sh\n# ward-owned: openspec-guard v1\nexec ward hook claude-code --guard-approved-specs\n";
 
-  private final ClaudeCodeIntegration integration = new ClaudeCodeIntegration();
-
   @TempDir Path root;
+
+  private final ClaudeCodeIntegration integration = new ClaudeCodeIntegration();
 
   private Path settings() {
     return root.resolve(".claude/settings.json");

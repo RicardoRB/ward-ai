@@ -23,6 +23,8 @@ final class TypeScenarios {
       interface Function { call(thisArg: any): any; }
       """;
 
+  private TypeScenarios() {}
+
   static TypeProject project(final String unit) {
     return new TypeProject()
         .file(UNIT, unit)
@@ -36,6 +38,4 @@ final class TypeScenarios {
     final String text = project.files().read(UNIT).orElseThrow();
     return facts.typeOf(TypeProject.span(text, token)).map(TypeRef::display).orElse("-");
   }
-
-  private TypeScenarios() {}
 }

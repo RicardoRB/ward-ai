@@ -25,8 +25,8 @@ final class EcmaOptions {
   /** The most blank lines kept in a run. */
   static final String MAX_BLANK_LINES = "max-blank-lines";
 
-  private static final String TAB = "tab";
-  private static final String SPACE = "space";
+  static final String TAB = "tab";
+  static final String SPACE = "space";
 
   /** The options both formatters declare, in declaration order. */
   static final List<FormatOption> DECLARED =

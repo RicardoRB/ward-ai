@@ -11,6 +11,8 @@ import java.util.List;
  */
 final class PythonChunker {
 
+  private static final int ROOT_COLUMNS = 1;
+
   private final String source;
   private final String[] lines;
   private final String indentUnit;
@@ -22,8 +24,6 @@ final class PythonChunker {
   private boolean lineOpen;
   private boolean indentPending;
   private int lastEnd;
-
-  private static final int ROOT_COLUMNS = 1;
 
   /** An own-line comment whose level waits for the next line of code. */
   private record Pending(int index, int column) {}

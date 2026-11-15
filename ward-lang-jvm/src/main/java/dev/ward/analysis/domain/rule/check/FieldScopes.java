@@ -10,6 +10,12 @@ final class FieldScopes {
 
   private static final Set<String> CONTAINERS = Set.of("classBody", "enumBodyDeclarations");
   private static final Set<String> NOT_ENTERED = Set.of("classBody", "block");
+  private static final Set<String> IMPLICITLY_STATIC =
+      Set.of(
+          "interfaceDeclaration",
+          "enumDeclaration",
+          "recordDeclaration",
+          "annotationTypeDeclaration");
   private static final Set<String> OPENERS = Set.of("(", "{", "=");
   private static final String MEMBER = "classBodyDeclaration";
   private static final String DECLARATOR = "variableDeclarator";
@@ -41,6 +47,32 @@ final class FieldScopes {
       }
     }
     return false;
+  }
+
+  /**
+   * Whether no instance of the class body {@code container} is in reach of the code with these
+   * ancestors: a static member, or a nested interface, enum, record or annotation, lies between
+   * them.
+   */
+  static boolean staticPath(final List<SyntaxNode> ancestors, final SyntaxNode container) {
+    int index = ancestors.size() - 1;
+    while (index >= 0 && !isSame(ancestors.get(index), container)) {
+      index--;
+    }
+    for (int inner = index + 1; inner < ancestors.size() && index >= 0; inner++) {
+      final SyntaxNode node = ancestors.get(inner);
+      if (IMPLICITLY_STATIC.contains(node.kind())
+          || MEMBER.equals(node.kind()) && staticBeforeOpener(node)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private static boolean isSame(final SyntaxNode node, final SyntaxNode other) {
+    return node.span().startOffset() == other.span().startOffset()
+        && node.span().endOffset() == other.span().endOffset()
+        && node.kind().equals(other.kind());
   }
 
   private static boolean staticBeforeOpener(final SyntaxNode member) {
