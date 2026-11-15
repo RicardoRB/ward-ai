@@ -11,9 +11,9 @@ import org.junit.jupiter.api.io.TempDir;
 
 class FileSystemProjectFilesReadTest {
 
-  private final FileSystemProjectFiles files = new FileSystemProjectFiles();
-
   @TempDir Path root;
+
+  private final FileSystemProjectFiles files = new FileSystemProjectFiles();
 
   @Test
   void readsAFileInsideTheRoot() throws IOException {

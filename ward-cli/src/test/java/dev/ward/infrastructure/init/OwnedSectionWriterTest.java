@@ -16,8 +16,9 @@ import org.junit.jupiter.api.io.TempDir;
 class OwnedSectionWriterTest {
   private static final String BEGIN = "<!-- begin -->";
   private static final String END = "<!-- end -->";
-  private final OwnedSectionWriter writer = new OwnedSectionWriter();
+
   @TempDir Path root;
+  private final OwnedSectionWriter writer = new OwnedSectionWriter();
 
   private OwnedSection section(final String body, final boolean wholeFile) {
     return new OwnedSection(root.resolve("dir/FILE.md"), BEGIN, END, body, wholeFile);

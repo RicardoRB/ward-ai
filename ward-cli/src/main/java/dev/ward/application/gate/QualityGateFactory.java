@@ -21,6 +21,7 @@ import javax.inject.Inject;
 
 /** Resolves the typed built-in gate registry in stable configuration order. */
 public class QualityGateFactory {
+  public static final List<String> SUPPORTED_GATES = SupportedQualityGates.IDS;
   private static final Set<String> IN_PROCESS_GATES =
       Set.of(
           SupportedQualityGates.ANALYSIS,
@@ -37,8 +38,6 @@ public class QualityGateFactory {
           SupportedQualityGates.CRAP,
           SupportedQualityGates.COVERAGE,
           SupportedQualityGates.VULNERABILITIES);
-
-  public static final List<String> SUPPORTED_GATES = SupportedQualityGates.IDS;
   private static final Set<String> PLATFORM_GATES =
       Set.of(
           SupportedQualityGates.STRYKER,

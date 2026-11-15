@@ -25,9 +25,9 @@ final class NodeScopeExpressions {
   private static final String EVAL = "eval";
 
   final ScopeBuilder builder;
+  final NodeScopeTypeRefs typeRefs;
   private final NodeScopeNames names;
   private final Consumer<SyntaxNode> visit;
-  final NodeScopeTypeRefs typeRefs;
 
   NodeScopeExpressions(
       final ScopeBuilder builder, final NodeScopeNames names, final Consumer<SyntaxNode> visit) {

@@ -9,9 +9,10 @@ import java.util.Set;
 
 /**
  * Reports each local variable and method or constructor parameter that has the name of a field of
- * an enclosing class, as Checkstyle's HiddenField does. In a static context only static fields are
- * hidden. With the user options, constructor parameters or setter parameters are not reported.
- * Lambda parameters and catch parameters are not checked.
+ * an enclosing class, as Checkstyle's HiddenField does. Where no instance of that class is in
+ * reach, in a static member or a nested interface, enum or record, only static fields are hidden.
+ * With the user options, constructor parameters or setter parameters are not reported. Lambda
+ * parameters and catch parameters are not checked.
  */
 public final class HiddenFieldCheck implements UnitCheck {
 
@@ -44,11 +45,7 @@ public final class HiddenFieldCheck implements UnitCheck {
 
   /** A local or parameter that may hide a field. */
   private record Candidate(
-      SyntaxNode name,
-      boolean parameter,
-      boolean staticContext,
-      SyntaxNode callable,
-      List<SyntaxNode> ancestors) {}
+      SyntaxNode name, boolean parameter, SyntaxNode callable, List<SyntaxNode> ancestors) {}
 
   @Override
   public List<RuleMatch> check(final SyntaxNode root, final SourceFile file) {
@@ -93,12 +90,7 @@ public final class HiddenFieldCheck implements UnitCheck {
                   .orElse(visit.node())
               : FieldScopes.firstLeaf(visit.node());
       found.add(
-          new Candidate(
-              name,
-              parameter,
-              FieldScopes.staticContext(ancestors),
-              Callables.nearest(ancestors).orElse(null),
-              ancestors));
+          new Candidate(name, parameter, Callables.nearest(ancestors).orElse(null), ancestors));
     }
     return found;
   }
@@ -115,7 +107,10 @@ public final class HiddenFieldCheck implements UnitCheck {
       final Candidate candidate, final String name, final List<Field> fields) {
     return fields.stream()
         .filter(field -> field.name().equals(name))
-        .filter(field -> !candidate.staticContext() || field.isStatic())
+        .filter(
+            field ->
+                field.isStatic()
+                    || !FieldScopes.staticPath(candidate.ancestors(), field.container()))
         .anyMatch(field -> candidate.ancestors().contains(field.container()));
   }
 

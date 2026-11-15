@@ -30,10 +30,10 @@ import java.util.logging.Logger;
  * skipped, and so is a file with a NUL byte in its first 8 KiB, which is not text.
  */
 final class FileSystemTextFiles {
-  private static final Logger LOGGER = Logger.getLogger(FileSystemTextFiles.class.getName());
-
   /** The largest text file that is scanned. */
   static final long MAX_BYTES = 8L * 1024 * 1024;
+
+  private static final Logger LOGGER = Logger.getLogger(FileSystemTextFiles.class.getName());
 
   private static final int BINARY_PROBE = 8 * 1024;
   private static final Set<String> SKIPPED =

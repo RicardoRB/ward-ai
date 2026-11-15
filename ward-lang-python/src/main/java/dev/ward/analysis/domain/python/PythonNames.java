@@ -8,6 +8,12 @@ import java.util.Set;
 /** Reads names and target lists from the expression nodes of the Python grammar. */
 final class PythonNames {
 
+  /** The kind of a name node. */
+  static final String NAME = "name";
+
+  /** The kind of an expression node. */
+  static final String TEST = "test";
+
   /** The node kinds that wrap a single operand when they have one child. */
   private static final Set<String> CHAIN =
       Set.of(
@@ -35,12 +41,6 @@ final class PythonNames {
   private static final Set<String> LISTS =
       Set.of("testlist_star_expr", "testlist", "exprlist", "testlist_comp");
   private static final String COMMA = ",";
-
-  /** The kind of a name node. */
-  static final String NAME = "name";
-
-  /** The kind of an expression node. */
-  static final String TEST = "test";
 
   private PythonNames() {}
 

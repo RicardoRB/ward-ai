@@ -11,6 +11,8 @@ import java.util.stream.Stream;
 
 /** The agent rule lines of a Node project's tool gates, part of {@link AgentRulesTemplate}. */
 public final class NodeAgentRules {
+  private NodeAgentRules() {}
+
   /** The rule for a workspace root, naming its runner as the runner shows it. */
   private static String workspaceRule(final String runnerName) {
     return "- This is a "
@@ -19,8 +21,6 @@ public final class NodeAgentRules {
         + " workspace runner for every package, and a package script exists only so the runner can"
         + " run it.";
   }
-
-  private NodeAgentRules() {}
 
   /**
    * Returns one line per selected Node tool gate, naming its command; the coverage minimums are the

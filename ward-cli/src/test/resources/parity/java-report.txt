@@ -3,9 +3,9 @@
 # rule, tool, tool id, outcome, note. Regenerate with -Dward.parity.write=true.
 # - no-counterpart: 53
 # checkstyle agree: 79
-# checkstyle agree-lines: 45
+# checkstyle agree-lines: 44
 # checkstyle anchor-differs: 3
-# checkstyle approximation: 16
+# checkstyle approximation: 17
 # checkstyle tool-silent: 8
 # errorprone agree: 18
 # errorprone agree-lines: 63
@@ -18,16 +18,16 @@
 # nullaway approximation: 2
 # nullaway not-comparable: 18
 # nullaway tool-silent: 3
-# pmd agree: 105
+# pmd agree: 103
 # pmd agree-lines: 109
 # pmd anchor-differs: 19
-# pmd approximation: 17
+# pmd approximation: 19
 # pmd tool-silent: 38
-# spotbugs agree-lines: 168
+# spotbugs agree-lines: 169
 # spotbugs anchor-differs: 41
 # spotbugs approximation: 16
 # spotbugs not-comparable: 120
-# spotbugs tool-silent: 126
+# spotbugs tool-silent: 125
 aa-assertion-of-arguments	spotbugs	AA_ASSERTION_OF_ARGUMENTS	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 abbreviation-as-word-in-name	checkstyle	AbbreviationAsWordInName	approximation	Ward's default pattern rejects any two consecutive capitals, as Google style does; Checkstyle allows up to four by default
 abstract-class-name	checkstyle	AbstractClassName	agree-lines	
@@ -994,7 +994,7 @@ sf-switch-fallthrough	spotbugs	SF_SWITCH_FALLTHROUGH	anchor-differs	tool lines [
 sf-switch-no-default	spotbugs	SF_SWITCH_NO_DEFAULT	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 short-class-name	pmd	ShortClassName	agree	
 should-have-even-args	errorprone	ShouldHaveEvenArgs	not-comparable	the fixture does not compile
-si-instance-before-finals-assigned	spotbugs	SI_INSTANCE_BEFORE_FINALS_ASSIGNED	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
+si-instance-before-finals-assigned	spotbugs	SI_INSTANCE_BEFORE_FINALS_ASSIGNED	agree-lines	
 sic-inner-should-be-static	spotbugs	SIC_INNER_SHOULD_BE_STATIC	not-comparable	the fixture does not compile
 sic-inner-should-be-static-anon	spotbugs	SIC_INNER_SHOULD_BE_STATIC_ANON	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 sic-inner-should-be-static-needs-this	spotbugs	SIC_INNER_SHOULD_BE_STATIC_NEEDS_THIS	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
@@ -1017,7 +1017,7 @@ sing-singleton-indirectly-implements-cloneable	spotbugs	SING_SINGLETON_INDIRECTL
 single-line-javadoc	checkstyle	SingleLineJavadoc	agree-lines	
 single-method-singleton	pmd	SingleMethodSingleton	anchor-differs	tool lines [1], on passing [], fixture [3]
 singleton-class-returning-new-instance	pmd	SingletonClassReturningNewInstance	agree-lines	
-singular-field	pmd	SingularField	agree-lines	
+singular-field	pmd	SingularField	approximation	Ward skips a field a picocli annotation fills; PMD without picocli on its classpath reports it
 sio-superfluous-instanceof	spotbugs	SIO_SUPERFLUOUS_INSTANCEOF	approximation	SpotBugs also reports text instanceof String (passing line 3); Ward does not
 size-greater-than-or-equals-zero	errorprone	SizeGreaterThanOrEqualsZero	agree-lines	
 sp-spin-on-field	spotbugs	SP_SPIN_ON_FIELD	agree-lines	
@@ -1164,9 +1164,9 @@ unused-import	checkstyle	UnusedImports	agree-lines
 unused-import	pmd	UnnecessaryImport	agree	
 unused-label	errorprone	UnusedLabel	agree	
 unused-label	pmd	UnusedLabel	agree	
-unused-local-variable	checkstyle	UnusedLocalVariable	agree-lines	
+unused-local-variable	checkstyle	UnusedLocalVariable	approximation	Ward skips the bindings of case patterns, as PMD's UnusedLocalVariable does; Checkstyle reports them
 unused-local-variable	errorprone	UnusedVariable	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
-unused-local-variable	pmd	UnusedLocalVariable	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
+unused-local-variable	pmd	UnusedLocalVariable	approximation	PMD reports nothing on the fixture's unused local; Ward reports it and skips the case-pattern bindings, as PMD does
 unused-null-check-in-equals	pmd	UnusedNullCheckInEquals	agree-lines	
 unused-private-field	checkstyle	UnusedPrivateField	approximation	Checkstyle also reports an annotated private field (line 4 of the passing fixture); Ward and PMD leave it alone
 unused-private-field	pmd	UnusedPrivateField	agree	

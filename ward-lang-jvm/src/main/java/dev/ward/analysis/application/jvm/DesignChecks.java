@@ -5,12 +5,14 @@ import static java.util.Map.entry;
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.TomlValues;
+import dev.ward.analysis.domain.rule.check.ConstantsInInterfaceCheck;
 import dev.ward.analysis.domain.rule.check.ExceptionFlowCheck;
 import dev.ward.analysis.domain.rule.check.FieldLimitCheck;
 import dev.ward.analysis.domain.rule.check.ImmutableFieldCheck;
 import dev.ward.analysis.domain.rule.check.ImportCountCheck;
 import dev.ward.analysis.domain.rule.check.MethodLimitCheck;
 import dev.ward.analysis.domain.rule.check.NestedIfCheck;
+import dev.ward.analysis.domain.rule.check.NullAssignmentCheck;
 import dev.ward.analysis.domain.rule.check.PackageCouplingCheck;
 import dev.ward.analysis.domain.rule.check.ParameterCountCheck;
 import dev.ward.analysis.domain.rule.check.ProtectedInFinalCheck;
@@ -86,6 +88,11 @@ final class DesignChecks {
         entry(
             "public-in-non-public",
             toml -> new PublicInNonPublicCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "constants-in-interface",
+            toml -> new ConstantsInInterfaceCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "null-assignment", toml -> new NullAssignmentCheck(TomlValues.required(toml, MESSAGE))),
         entry("exception-flow", toml -> new ExceptionFlowCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "immutable-field", toml -> new ImmutableFieldCheck(TomlValues.required(toml, MESSAGE))),

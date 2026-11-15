@@ -20,10 +20,10 @@ class CoverageBranchReadingTest {
   private static final int THREE = 3;
   private static final Path DIRECTORY = Path.of("src", "test", "resources", "coverage");
 
+  @TempDir Path temp;
+
   private final DetectedLineCoverage reader =
       new DetectedLineCoverage(List.of(new JacocoXmlLineCoverage(), new LcovLineCoverage()));
-
-  @TempDir Path temp;
 
   @Test
   void jacocoReportsOfMavenAndGradleCountTheBranchesOfEachLine() {

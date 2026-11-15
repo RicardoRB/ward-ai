@@ -31,7 +31,6 @@ import java.util.stream.IntStream;
 /** In-memory sources, fake report ports and the {@code crap} gate over them. */
 final class CrapGateFixture {
 
-  private static final int STRING_BUILDER_SIZE = 256;
   static final int FIVE = 5;
   static final int SIX = 6;
   static final int NINE = 9;
@@ -48,6 +47,8 @@ final class CrapGateFixture {
   static final String JACOCO_NAME = "com/shop/Cart.java";
   static final Instant BEFORE = Instant.parse("2026-01-01T00:00:00Z");
   static final Instant AFTER = Instant.parse("2026-01-02T00:00:00Z");
+
+  private static final int STRING_BUILDER_SIZE = 256;
 
   private final Map<String, LineHits> hits = new HashMap<>();
   private final Map<String, Instant> modified = new HashMap<>();

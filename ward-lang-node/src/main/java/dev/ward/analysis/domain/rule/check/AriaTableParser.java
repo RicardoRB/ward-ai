@@ -38,6 +38,8 @@ public final class AriaTableParser {
   private static final int SEMANTIC_ELEMENT = 2;
   private static final int SEMANTIC_ATTRIBUTES = 3;
 
+  private AriaTableParser() {}
+
   /**
    * Parses the event-handler rows into the events of each group; lines starting with {@code #} and
    * the header are skipped.
@@ -76,8 +78,6 @@ public final class AriaTableParser {
                             row[SEMANTIC_ELEMENT], row[SEMANTIC_ATTRIBUTES]),
                     Collectors.toList())));
   }
-
-  private AriaTableParser() {}
 
   /**
    * Parses the attribute table; lines starting with {@code #} and the header are skipped.

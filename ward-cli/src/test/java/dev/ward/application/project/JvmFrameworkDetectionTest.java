@@ -17,9 +17,9 @@ import org.junit.jupiter.params.provider.CsvSource;
 /** JVM frameworks are labels on Maven and Gradle projects, not separate project types. */
 class JvmFrameworkDetectionTest {
 
-  private final ProjectDetector detector = new ProjectDetector(new FileSystemProjectInspection());
-
   @TempDir Path dir;
+
+  private final ProjectDetector detector = new ProjectDetector(new FileSystemProjectInspection());
 
   @ParameterizedTest
   @CsvSource({

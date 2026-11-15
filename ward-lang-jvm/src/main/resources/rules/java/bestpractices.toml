@@ -81,9 +81,7 @@ severity = "error"
 category = "style"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["constDeclaration"]
-inside = ["interfaceDeclaration"]
+check = "constants-in-interface"
 message = "constant declared in an interface; move it to a class or an enum"
 '''
 

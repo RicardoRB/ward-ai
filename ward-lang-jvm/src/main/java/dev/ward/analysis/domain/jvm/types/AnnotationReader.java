@@ -14,10 +14,10 @@ import java.util.Map;
 final class AnnotationReader {
   private static final int UNSIGNED_SHORT = 0xFFFF;
   private static final int UNSIGNED_BYTE = 0xFF;
-
-  private final ByteBuffer in;
   private static final String COMPATIBLE_WITH =
       "Lcom/google/errorprone/annotations/CompatibleWith;";
+
+  private final ByteBuffer in;
 
   private final ConstantPool pool;
   private final List<String> compatible = new ArrayList<>();

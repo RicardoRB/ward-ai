@@ -32,6 +32,11 @@ final class NativeLintFixture {
       "openapi: 3.0.3\npaths:\n  /pets:\n    get:\n      operationId: listPets\n";
   static final String VIOLATING =
       "openapi: 3.0.3\npaths:\n  /pets:\n    get:\n      summary: list\n";
+
+  /** Selects only {@code operation-operation-id}, so each test is about one rule. */
+  static final String ONLY_OPERATION_ID =
+      "version = 1\n[select]\npreset = \"none\"\ninclude = [\"openapi.operation-operation-id\"]\n";
+
   private static final String GATE = "openapi-lint";
   private static final AnalysisCache NO_CACHE =
       new AnalysisCache() {
@@ -45,10 +50,6 @@ final class NativeLintFixture {
       };
 
   private final Path root;
-
-  /** Selects only {@code operation-operation-id}, so each test is about one rule. */
-  static final String ONLY_OPERATION_ID =
-      "version = 1\n[select]\npreset = \"none\"\ninclude = [\"openapi.operation-operation-id\"]\n";
 
   NativeLintFixture(final Path root) {
     this.root = root;
