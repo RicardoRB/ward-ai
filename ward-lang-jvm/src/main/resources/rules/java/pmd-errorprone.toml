@@ -477,6 +477,7 @@ body = '''
 check = "forbidden-node"
 kinds = ["classDeclaration"]
 text = '(?s)^class(\w+)[^{]*\{(?=.*private\1\()(?!.*static)(?!.*(?<!private)\1\()'
+parent = ["typeDeclaration"]
 message = "class has only private constructors and no static member, so it can never be used"
 '''
 
@@ -488,9 +489,7 @@ severity = "error"
 category = "correctness"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["classDeclaration"]
-text = '(?s)^class\w+[^{]*\{.*(?:LoggerFactory\.getLogger|LogFactory\.getLog|Logger\.getLogger)\(.*(?:LoggerFactory\.getLogger|LogFactory\.getLog|Logger\.getLogger)\('
+check = "more-than-one-logger"
 message = "class declares more than one logger"
 '''
 
@@ -546,7 +545,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["classDeclaration"]
-text = '(?s)^(?:(?=.*booleanequals\(Object)(?!.*inthashCode\(\))|(?=.*inthashCode\(\))(?!.*booleanequals\(Object))'
+text = '(?s)^(?:(?=.*booleanequals\((?:final)?Object\w+\)\{)(?!.*inthashCode\(\)\{)|(?=.*inthashCode\(\)\{)(?!.*booleanequals\((?:final)?Object\w+\)\{))'
 message = "class overrides only one of equals and hashCode"
 '''
 
@@ -673,9 +672,7 @@ severity = "error"
 category = "correctness"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["methodDeclaration"]
-text = '^(?:(?!int)[^({])*(?i:hashcode)\(\)'
+check = "suspicious-hashcode-name"
 message = "method named hashCode does not return int, so it does not override Object.hashCode"
 '''
 

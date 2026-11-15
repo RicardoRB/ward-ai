@@ -11,7 +11,8 @@ import java.util.Set;
 /**
  * Reports each class that holds only static methods and fields, and whose constructor is not
  * private: a utility class has to hide its constructor. A class annotated with one of the ignored
- * annotations is left alone.
+ * annotations is left alone, and so is a class that extends another one, a private class (no other
+ * code can construct it) and a class with an inner class, which needs an instance.
  */
 public final class HideUtilityClassConstructorCheck implements RuleCheck {
 
@@ -19,6 +20,7 @@ public final class HideUtilityClassConstructorCheck implements RuleCheck {
   private static final String CONSTRUCTOR = "constructorDeclaration";
   private static final String METHOD = "methodDeclaration";
   private static final String FIELD = "fieldDeclaration";
+  private static final String EXTENDS = "'extends'";
 
   private final Set<String> ignoredAnnotations;
   private final String message;
@@ -43,12 +45,18 @@ public final class HideUtilityClassConstructorCheck implements RuleCheck {
       if (CLASS.equals(type.kind())
           && Collections.disjoint(
               DeclarationText.annotationNames(DesignMembers.modifiers(visit)), ignoredAnnotations)
+          && JavaNodes.kid(type, EXTENDS).isEmpty()
+          && !isPrivate(visit)
           && isUtility(type)) {
         matches.add(
             CheckSupport.at(type.span(), CheckSupport.fill(message, JUnitMembers.name(type), "")));
       }
     }
     return List.copyOf(matches);
+  }
+
+  private static boolean isPrivate(final SyntaxWalk.Visit visit) {
+    return DesignMembers.modifiers(visit).contains("private");
   }
 
   /**
@@ -63,8 +71,12 @@ public final class HideUtilityClassConstructorCheck implements RuleCheck {
     final boolean hasInstance = code.stream().anyMatch(member -> !member.has("static"));
     final List<DesignMembers.Member> constructors =
         members.stream().filter(member -> CONSTRUCTOR.equals(member.declaration().kind())).toList();
+    final boolean hasInnerClass =
+        members.stream()
+            .anyMatch(member -> CLASS.equals(member.declaration().kind()) && !member.has("static"));
     return hasStatic
         && !hasInstance
+        && !hasInnerClass
         && (constructors.isEmpty()
             || constructors.stream().anyMatch(constructor -> !constructor.has("private")));
   }

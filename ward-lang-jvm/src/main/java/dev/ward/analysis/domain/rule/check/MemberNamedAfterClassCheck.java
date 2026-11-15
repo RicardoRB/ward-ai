@@ -7,9 +7,9 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Reports a field or a method whose name equals, ignoring case, the name of its enclosing class, as
- * PMD's AvoidFieldNameMatchingTypeName and MethodWithSameNameAsEnclosingClass do. A constructor is
- * not a method, so it is never reported.
+ * Reports a field whose name equals, ignoring case, or a method whose name equals the name of its
+ * enclosing class, as PMD's AvoidFieldNameMatchingTypeName and MethodWithSameNameAsEnclosingClass
+ * do. A constructor is not a method, so it is never reported.
  */
 public final class MemberNamedAfterClassCheck implements UnitCheck {
 
@@ -50,9 +50,14 @@ public final class MemberNamedAfterClassCheck implements UnitCheck {
     return ClassMembers.members(clazz).stream()
         .map(ClassMembers::declarationOf)
         .flatMap(declaration -> namesOf(declaration).stream().map(name -> pair(declaration, name)))
-        .filter(pair -> pair.name().equalsIgnoreCase(className))
+        .filter(pair -> matches(pair.name(), className))
         .map(pair -> CheckSupport.at(pair.declaration().span(), fill(pair.name())))
         .toList();
+  }
+
+  /** PMD ignores the case for a field, and compares a method name as it is written. */
+  private boolean matches(final String name, final String className) {
+    return fields ? name.equalsIgnoreCase(className) : name.equals(className);
   }
 
   private List<String> namesOf(final SyntaxNode declaration) {
