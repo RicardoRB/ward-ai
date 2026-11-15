@@ -57,13 +57,12 @@ public final class ControlBodyBracesCheck implements UnitCheck {
       final List<SyntaxNode> children, final int index, final boolean elseIf) {
     final SyntaxNode body = children.get(index);
     final List<SyntaxNode> parts = body.children();
-    if (!parts.isEmpty() && BLOCK.equals(parts.get(0).kind())) {
-      return true;
-    }
-    return elseIf
-        && index > 0
-        && ELSE.equals(children.get(index - 1).kind())
-        && !parts.isEmpty()
-        && IF.equals(parts.get(0).kind());
+    final boolean block = !parts.isEmpty() && BLOCK.equals(parts.get(0).kind());
+    return block
+        || elseIf
+            && index > 0
+            && ELSE.equals(children.get(index - 1).kind())
+            && !parts.isEmpty()
+            && IF.equals(parts.get(0).kind());
   }
 }

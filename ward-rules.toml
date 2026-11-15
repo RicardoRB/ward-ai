@@ -117,11 +117,13 @@ include = [
   "java.explicit-initialization",
   "java.extends-object",
   "java.fall-through",
+  "java.field-declarations-should-be-at-start-of-class",
   "java.file-length",
   "java.final-class",
   "java.final-field-could-be-static",
   "java.final-local-variable",
   "java.final-parameter-in-abstract-method",
+  "java.final-parameters",
   "java.finalize-does-not-call-super-finalize",
   "java.finalize-only-calls-super-finalize",
   "java.finalize-overloaded",
@@ -232,6 +234,7 @@ include = [
   "java.simple-date-format-needs-locale",
   "java.simplifiable-test-assertion",
   "java.simplified-ternary",
+  "java.simplify-boolean-expression",
   "java.simplify-boolean-return",
   "java.simplify-conditional",
   "java.single-method-singleton",
@@ -279,9 +282,11 @@ include = [
   "java.unnecessary-boxing",
   "java.unnecessary-case-change",
   "java.unnecessary-cast",
+  "java.unnecessary-constructor",
   "java.unnecessary-conversion-temporary",
   "java.unnecessary-fully-qualified-name",
   "java.unnecessary-interface-declaration",
+  "java.unnecessary-parentheses",
   "java.unnecessary-return",
   "java.unnecessary-varargs-array-creation",
   "java.unnecessary-warning-suppression",
@@ -292,6 +297,7 @@ include = [
   "java.unused-label",
   "java.unused-local-variable",
   "java.unused-null-check-in-equals",
+  "java.unused-private-field",
   "java.unused-private-method",
   "java.unused-return-value",
   "java.urf-unread-public-or-protected-field",
@@ -495,6 +501,8 @@ exclude-paths = ["**/src/test/resources/**"]
 exclude-paths = ["**/src/test/resources/**"]
 
 [rules.java.class-fan-out-complexity]
+# This repository enforces PMD CouplingBetweenObjects, which counts declared types only.
+counting = "pmd"
 exclude-paths = ["**/src/test/resources/**"]
 
 [rules.java.clone-method-must-be-public]
@@ -636,6 +644,9 @@ exclude-paths = ["**/src/test/resources/**"]
 [rules.java.fall-through]
 exclude-paths = ["**/src/test/resources/**"]
 
+[rules.java.field-declarations-should-be-at-start-of-class]
+exclude-paths = ["**/src/test/resources/**"]
+
 [rules.java.file-length]
 max = 500
 exclude-paths = ["**/src/test/resources/**"]
@@ -650,6 +661,9 @@ exclude-paths = ["**/src/test/resources/**"]
 exclude-paths = ["**/src/test/resources/**"]
 
 [rules.java.final-parameter-in-abstract-method]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.final-parameters]
 exclude-paths = ["**/src/test/resources/**"]
 
 [rules.java.finalize-does-not-call-super-finalize]
@@ -987,6 +1001,9 @@ exclude-paths = ["**/src/test/resources/**"]
 [rules.java.simplified-ternary]
 exclude-paths = ["**/src/test/resources/**"]
 
+[rules.java.simplify-boolean-expression]
+exclude-paths = ["**/src/test/resources/**"]
+
 [rules.java.simplify-boolean-return]
 exclude-paths = ["**/src/test/resources/**"]
 
@@ -1128,6 +1145,9 @@ exclude-paths = ["**/src/test/resources/**"]
 [rules.java.unnecessary-cast]
 exclude-paths = ["**/src/test/resources/**"]
 
+[rules.java.unnecessary-constructor]
+exclude-paths = ["**/src/test/resources/**"]
+
 [rules.java.unnecessary-conversion-temporary]
 exclude-paths = ["**/src/test/resources/**"]
 
@@ -1135,6 +1155,9 @@ exclude-paths = ["**/src/test/resources/**"]
 exclude-paths = ["**/src/test/resources/**"]
 
 [rules.java.unnecessary-interface-declaration]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unnecessary-parentheses]
 exclude-paths = ["**/src/test/resources/**"]
 
 [rules.java.unnecessary-return]
@@ -1165,6 +1188,9 @@ exclude-paths = ["**/src/test/resources/**"]
 exclude-paths = ["**/src/test/resources/**"]
 
 [rules.java.unused-null-check-in-equals]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unused-private-field]
 exclude-paths = ["**/src/test/resources/**"]
 
 [rules.java.unused-private-method]

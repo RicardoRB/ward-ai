@@ -9,13 +9,16 @@ import dev.ward.analysis.domain.rule.check.AppletConstructorCheck;
 import dev.ward.analysis.domain.rule.check.ArrayRangeCheck;
 import dev.ward.analysis.domain.rule.check.ByteAddCheck;
 import dev.ward.analysis.domain.rule.check.CastedArgumentCheck;
+import dev.ward.analysis.domain.rule.check.ControlBodyBracesCheck;
+import dev.ward.analysis.domain.rule.check.LoopEndsWithBranchCheck;
 import dev.ward.analysis.domain.rule.check.StringRangeCheck;
+import dev.ward.analysis.domain.rule.check.TerminateVmCheck;
 import dev.ward.analysis.domain.rule.check.TimeFromIntCheck;
 import dev.ward.analysis.domain.rule.check.UnusedClassLiteralCheck;
 import java.util.Locale;
 import java.util.Map;
 
-/** The checks of single SpotBugs correctness rules that need a check of their own. */
+/** The checks of single rules that need a check of their own. */
 final class OneOffChecks {
 
   private static final String MESSAGE = "message";
@@ -34,6 +37,13 @@ final class OneOffChecks {
         entry(
             "applet-constructor",
             toml -> new AppletConstructorCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "control-body-braces",
+            toml -> new ControlBodyBracesCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "loop-ends-with-branch",
+            toml -> new LoopEndsWithBranchCheck(TomlValues.required(toml, MESSAGE))),
+        entry("terminate-vm", toml -> new TerminateVmCheck(TomlValues.required(toml, MESSAGE))),
         entry("byte-add", toml -> new ByteAddCheck(TomlValues.required(toml, MESSAGE))),
         entry("time-from-int", toml -> new TimeFromIntCheck(TomlValues.required(toml, MESSAGE))),
         entry("string-range", toml -> new StringRangeCheck(TomlValues.required(toml, MESSAGE))),
