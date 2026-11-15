@@ -32,7 +32,7 @@ You need JDK 25. The Maven wrapper is included.
 ```bash
 ./mvnw -q test                        # run all tests
 ./mvnw -Dtest=ClassName#method test   # run one test
-./mvnw spotless:apply                 # format
+ward format                           # format the Java sources
 ./mvnw package                        # build ward-cli/target/ward.jar
 ```
 
