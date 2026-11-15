@@ -110,7 +110,7 @@ presets = ["standard"]
 body = '''
 check = "forbidden-node"
 kinds = ["expression"]
-text = '^new[^{]*\(\s*\)\s*\{\s*\{'
+text = '^new[^{"]*\(\s*\)\s*\{\s*\{'
 message = "double-brace initialization creates an anonymous subclass; fill a collection with its constructor or a factory"
 '''
 

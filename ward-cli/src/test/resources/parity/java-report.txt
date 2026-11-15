@@ -18,11 +18,11 @@
 # nullaway approximation: 2
 # nullaway not-comparable: 18
 # nullaway tool-silent: 3
-# pmd agree: 103
-# pmd agree-lines: 110
+# pmd agree: 105
+# pmd agree-lines: 109
 # pmd anchor-differs: 19
 # pmd approximation: 17
-# pmd tool-silent: 39
+# pmd tool-silent: 38
 # spotbugs agree-lines: 168
 # spotbugs anchor-differs: 41
 # spotbugs approximation: 16
@@ -913,7 +913,7 @@ regexp-singleline	checkstyle	RegexpSingleline	tool-silent	the tool reports nothi
 reliance-on-default-charset	pmd	RelianceOnDefaultCharset	agree-lines	
 remote-interface-naming-convention	pmd	RemoteInterfaceNamingConvention	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 remote-session-interface-naming-convention	pmd	RemoteSessionInterfaceNamingConvention	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
-replace-enumeration-with-iterator	pmd	ReplaceEnumerationWithIterator	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
+replace-enumeration-with-iterator	pmd	ReplaceEnumerationWithIterator	agree	
 replace-hashtable-with-map	pmd	ReplaceHashtableWithMap	agree	
 replace-java-util-calendar	pmd	ReplaceJavaUtilCalendar	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 replace-java-util-date	pmd	ReplaceJavaUtilDate	agree	
@@ -1188,7 +1188,7 @@ use-diamond-operator	pmd	UseDiamondOperator	tool-silent	the tool reports nothing
 use-enum-collections	pmd	UseEnumCollections	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 use-equals-to-compare-strings	pmd	UseEqualsToCompareStrings	agree	
 use-explicit-types	pmd	UseExplicitTypes	agree-lines	
-use-index-of-char	pmd	UseIndexOfChar	agree-lines	
+use-index-of-char	pmd	UseIndexOfChar	agree	
 use-io-streams-with-apache-commons-file-item	pmd	UseIOStreamsWithApacheCommonsFileItem	agree	
 use-locale-with-case-conversions	pmd	UseLocaleWithCaseConversions	agree-lines	
 use-notify-all-instead-of-notify	pmd	UseNotifyAllInsteadOfNotify	agree-lines	

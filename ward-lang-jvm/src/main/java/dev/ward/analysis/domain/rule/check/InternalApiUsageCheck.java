@@ -16,8 +16,9 @@ import java.util.stream.Stream;
 
 /**
  * Reports an import, or a call, that reaches the internal API of the JDK: {@code sun.*}, {@code
- * com.sun.*} and {@code jdk.internal.*}. An import is read from the text of the file; a call is
- * read from the type facts of its target, so a call whose target is unknown reports nothing.
+ * com.sun.*} and {@code jdk.internal.*}, except the packages that a module exports as supported
+ * API, such as {@code com.sun.net.httpserver}. An import is read from the text of the file; a call
+ * is read from the type facts of its target, so a call whose target is unknown reports nothing.
  */
 public final class InternalApiUsageCheck implements RuleCheck {
 
@@ -26,6 +27,22 @@ public final class InternalApiUsageCheck implements RuleCheck {
   private static final String IMPORT_PREFIX = "import";
   private static final String STATIC_PREFIX = "importstatic";
   private static final List<String> INTERNAL = List.of("sun.", "com.sun.", "jdk.internal.");
+
+  /** The {@code com.sun} packages that a JDK module exports as supported API. */
+  private static final List<String> SUPPORTED =
+      List.of(
+          "com.sun.net.httpserver.",
+          "com.sun.source.",
+          "com.sun.management.",
+          "com.sun.jdi.",
+          "com.sun.tools.attach.",
+          "com.sun.tools.jconsole.",
+          "com.sun.nio.sctp.",
+          "com.sun.nio.file.",
+          "com.sun.security.auth.",
+          "com.sun.security.jgss.",
+          "com.sun.jarsigner.");
+
   private static final FactNeed NEED = new FactNeed(Set.of(EXPRESSION), Set.of(FactKind.CALL));
 
   private final String message;
@@ -86,7 +103,8 @@ public final class InternalApiUsageCheck implements RuleCheck {
   }
 
   private static boolean isInternal(final String name) {
-    return INTERNAL.stream().anyMatch(name::startsWith);
+    return INTERNAL.stream().anyMatch(name::startsWith)
+        && SUPPORTED.stream().noneMatch(name::startsWith);
   }
 
   private String fill(final String name) {

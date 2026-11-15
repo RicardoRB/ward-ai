@@ -10,14 +10,14 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Reports an {@code equals} call on an enum receiver or with an enum argument. Enum constants are
- * compared by identity, so {@code ==} is the intended comparison.
+ * Reports an {@code equals} call on an enum receiver or with an enum argument; an enum nested in
+ * the argument, as in {@code equals(List.of(RED))}, does not count. Enum constants are compared by
+ * identity, so {@code ==} is the intended comparison.
  */
 public final class EnumComparisonCheck implements RuleCheck {
 
   private static final String EQUALS = "equals";
   private static final String EXPRESSION = "expression";
-  private static final String ARGUMENTS = "arguments";
 
   private final String message;
 
@@ -66,10 +66,6 @@ public final class EnumComparisonCheck implements RuleCheck {
             .filter(child -> TypedChecks.isEnum(child, types))
             .isPresent();
     return receiver
-        || SyntaxWalk.descendants(call).stream()
-            .filter(node -> ARGUMENTS.equals(node.kind()))
-            .flatMap(args -> SyntaxWalk.descendants(args).stream())
-            .filter(node -> EXPRESSION.equals(node.kind()))
-            .anyMatch(node -> TypedChecks.isEnum(node, types));
+        || CallArgumentNodes.all(call).stream().anyMatch(node -> TypedChecks.isEnum(node, types));
   }
 }

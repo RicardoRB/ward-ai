@@ -139,7 +139,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["lambdaExpression"]
-text = '^(?:\(\)->(?:[\w$.]+|new[\w$.]+)\(\)|\(?([\w$]+)\)?->(?:[\w$.]+\(\1\)|\1\.[\w$]+\(\)|new[\w$.]+\(\1\)))$'
+text = '^(?:\(\)->(?!new[A-Z])[\w$.]+\(\)|\(?([\w$]+)\)?->(?:(?!new[A-Z])[\w$.]+\(\1\)|\1\.[\w$]+\(\)))$'
 message = "the lambda only calls a method; use a method reference"
 '''
 

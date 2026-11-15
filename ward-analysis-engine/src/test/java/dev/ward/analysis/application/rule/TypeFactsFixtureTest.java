@@ -84,7 +84,7 @@ class TypeFactsFixtureTest {
     assertThat(target.typeParameters()).containsExactly("T");
     assertThat(target.declaringTypeParameters()).containsExactly("K", "V");
     final TypeMembers members = facts.membersOf(CALL).orElseThrow();
-    assertThat(members.methods()).singleElement().extracting(m -> m.name()).isEqualTo("run");
+    assertThat(members.methods()).singleElement().extracting(CallTarget::name).isEqualTo("run");
     assertThat(members.fields())
         .singleElement()
         .satisfies(

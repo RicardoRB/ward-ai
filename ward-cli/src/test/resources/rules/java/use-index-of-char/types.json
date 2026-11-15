@@ -1,0 +1,36 @@
+{
+  "3:12": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "indexOf",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "int",
+        "primitive": true
+      }
+    }
+  },
+  "7:12": {
+    "call": {
+      "declaring": {
+        "name": "java.util.List"
+      },
+      "name": "indexOf",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "int",
+        "primitive": true
+      }
+    }
+  }
+}
