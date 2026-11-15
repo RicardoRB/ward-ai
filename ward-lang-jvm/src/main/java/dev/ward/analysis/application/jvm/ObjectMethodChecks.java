@@ -5,12 +5,13 @@ import static java.util.Map.entry;
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.ObjectMethodCheck;
+import dev.ward.analysis.domain.rule.check.SuspiciousHashCodeNameCheck;
 import java.util.Map;
 import org.tomlj.TomlParseResult;
 
 /**
  * Builds the checks of the {@code clone} and {@code finalize} rules: methods that must not exist,
- * and methods that must call their {@code super} method.
+ * methods that must call their {@code super} method, and a misspelled {@code hashCode}.
  */
 final class ObjectMethodChecks {
 
@@ -25,6 +26,9 @@ final class ObjectMethodChecks {
     return Map.ofEntries(
         entry("no-clone", toml -> check(CLONE, false, toml)),
         entry("no-finalizer", toml -> check(FINALIZE, false, toml)),
+        entry(
+            "suspicious-hashcode-name",
+            toml -> new SuspiciousHashCodeNameCheck(TomlValues.required(toml, MESSAGE))),
         entry("super-clone", toml -> check(CLONE, true, toml)),
         entry("super-finalize", toml -> check(FINALIZE, true, toml)));
   }

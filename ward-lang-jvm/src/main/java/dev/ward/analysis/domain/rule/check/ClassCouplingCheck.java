@@ -11,13 +11,14 @@ import java.util.Set;
 /**
  * Counts the distinct types a class depends on, by simple name, through the node kinds the rule
  * names: instantiated types for data abstraction coupling, or every referenced type for fan-out
- * complexity. The members of a nested class belong to that class. A class fails when the count is
- * above the limit.
+ * complexity. The members of a nested type belong to that type. A class fails when the count is
+ * above the limit. The class itself and the type arguments of a generic type do not count.
  */
 public final class ClassCouplingCheck implements RuleCheck {
 
   private static final String CLASS = "classDeclaration";
   private static final Set<String> CLASSES = Set.of(CLASS);
+  private static final String TYPE_ARGUMENTS = "typeArguments";
   private static final char GENERICS = '<';
   private static final char PACKAGE_SEPARATOR = '.';
 
@@ -50,7 +51,9 @@ public final class ClassCouplingCheck implements RuleCheck {
   public List<RuleMatch> matches(final SyntaxNode root) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, CLASSES)) {
-      report(visit.node(), typesOf(visit.node()), matches);
+      final Set<String> types = typesOf(visit.node());
+      types.remove(JUnitMembers.name(visit.node()));
+      report(visit.node(), types, matches);
     }
     return List.copyOf(matches);
   }
@@ -76,7 +79,8 @@ public final class ClassCouplingCheck implements RuleCheck {
       if (typeKinds.contains(child.kind())) {
         addName(SyntaxWalk.text(child), types);
       }
-      if (!CLASS.equals(child.kind())) {
+      if (!DesignMembers.TYPE_KINDS.contains(child.kind())
+          && !TYPE_ARGUMENTS.equals(child.kind())) {
         collect(child, types);
       }
     }

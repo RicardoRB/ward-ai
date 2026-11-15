@@ -8,6 +8,22 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Fixed
+
+- `ward:java/hide-utility-class-constructor` no longer reports a class that extends another class (an exception class), a private class, or a class with an inner class (#347).
+- `ward:java/instantiable-utility-class` no longer reports a private nested class, which no other code can construct (#347).
+- `ward:java/class-fan-out-complexity` no longer counts the class itself, the types named only as type arguments (`List<Row>`), or the types of a nested record, interface or enum, which are counted for that type (#347).
+- `ward:java/data-class` takes the weight of class over the non-private methods, static ones included, as PMD does, and counts `&&` and `||` in its complexity only inside a condition (#347).
+- `ward:java/god-class` counts `&&` and `||` in its complexity only inside a condition, as PMD does (#347).
+- `ward:java/abstract-class-without-abstract-method` no longer reports an abstract class that extends or implements a type (#347).
+- `ward:java/implicit-functional-interface` no longer counts a `static` or `private` method as abstract when its modifier sits before an annotation, and leaves an interface that extends another one, whose inherited methods are unknown (#347).
+- `ward:java/override-both-equals-and-hashcode` reads `equals(final Object other)` and no longer matches the text of a string literal (#347).
+- `ward:java/missing-static-method-in-non-instantiatable-class` no longer reports a nested class, which its enclosing class can construct (#347).
+- `ward:java/suspicious-hashcode-method-name` reports only a method whose whole name is `hashCode` in some letter case, not a longer name that ends in `HashCode` (#347).
+- `ward:java/more-than-one-logger` counts logger fields, not logger variables in a method (#347).
+- `ward:java/method-with-same-name-as-enclosing-class` compares a method name with the class name as written, as PMD does; a field name is still compared ignoring case (#347).
+- `ward:java/linguistic-naming` no longer reports a `void` method named `is...`, `has...`, `can...`, `have...`, `will...` or `should...`, which PMD accepts (#347).
+
 ## [0.9.0] - 2026-11-14
 
 ### Added

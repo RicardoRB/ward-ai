@@ -153,7 +153,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["methodDeclaration"]
-text = '^void(?:get|is|has|can|have|will|should|to)[A-Z]'
+text = '^void(?:get|to)[A-Z]'
 message = "the method name says it returns a value, but it returns void"
 '''
 

@@ -8,8 +8,9 @@ import java.util.Set;
 
 /**
  * Reports each utility class that is instantiable: a concrete class without superclass or
- * interfaces, whose members are all static, that has a non-private member and no main method, and
- * that declares no private constructor.
+ * interfaces and is not private (no other code can construct a private class), whose members are
+ * all static, that has a non-private member and no main method, and that declares no private
+ * constructor.
  */
 public final class UtilityClassCheck implements UnitCheck {
 
@@ -40,13 +41,17 @@ public final class UtilityClassCheck implements UnitCheck {
 
   private static boolean isConcreteUtility(
       final SyntaxNode clazz, final List<SyntaxNode> ancestors) {
-    final boolean abstractClass =
-        MemberDeclarations.wrapper(ancestors)
-            .map(wrapper -> MemberDeclarations.modifiers(wrapper).contains("abstract"))
-            .orElse(false);
+    final boolean abstractClass = hasModifier(ancestors, "abstract");
+    final boolean privateClass = hasModifier(ancestors, MemberDeclarations.PRIVATE);
     final boolean hasSuperTypes =
         clazz.children().stream().anyMatch(child -> HIERARCHY.contains(SyntaxWalk.text(child)));
-    return !abstractClass && !hasSuperTypes && isUtilityBody(clazz);
+    return !abstractClass && !privateClass && !hasSuperTypes && isUtilityBody(clazz);
+  }
+
+  private static boolean hasModifier(final List<SyntaxNode> ancestors, final String modifier) {
+    return MemberDeclarations.wrapper(ancestors)
+        .map(wrapper -> MemberDeclarations.modifiers(wrapper).contains(modifier))
+        .orElse(false);
   }
 
   private static boolean isUtilityBody(final SyntaxNode clazz) {

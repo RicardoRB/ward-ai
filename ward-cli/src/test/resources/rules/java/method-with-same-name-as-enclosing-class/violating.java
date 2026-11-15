@@ -1,4 +1,4 @@
 class Sample {
   Sample() {}
-  void sample() {}
+  void Sample() {}
 }

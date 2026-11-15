@@ -14,3 +14,16 @@ class Calculator {
     return total;
   }
 }
+
+class Row {
+  public String a;
+  public String b;
+  public String c;
+  public String d;
+
+  static Row of(String value) {
+    final Row row = new Row();
+    row.a = value;
+    return row;
+  }
+}
