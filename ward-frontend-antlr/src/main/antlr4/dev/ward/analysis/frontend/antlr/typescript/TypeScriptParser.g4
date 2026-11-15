@@ -61,8 +61,7 @@ typeParameterList
     ;
 
 typeParameter
-    : typeParameterModifier* identifier constraint?
-    | typeParameterModifier* identifier '=' typeArgument
+    : typeParameterModifier* identifier constraint? ('=' typeArgument)?
     | typeParameters
     ;
 typeParameterModifier
@@ -117,7 +116,10 @@ primaryType
     | templateStringType                         # TemplateStringPrimType
     | inferType                                  # InferPrimType
     | predefinedType                             # PredefinedPrimType
+    // Before the reference: `keyof` is also a name, and `x as keyof T` would end at `keyof`
+    | KeyOf primaryType                          # KeyOfType
     | typeReference                              # ReferencePrimType
+    | mappedType                                 # MappedPrimType
     | objectType                                 # ObjectPrimType
     | primaryType {this.notLineTerminator()}? '[' primaryType? ']' # ArrayPrimType
     | '[' tupleElementTypes ']'                  # TuplePrimType
@@ -125,7 +127,6 @@ primaryType
     | This                                       # ThisPrimType
     | Asserts (This | typeReference) (Is primaryType)? # AssertsPrimType
     | typeReference Is primaryType               # RedefinitionOfType
-    | KeyOf primaryType                          # KeyOfType
     | ReadOnly primaryType                       # ReadonlyPrimType
     ;
 
@@ -175,6 +176,18 @@ objectType
     : '{' typeBody? '}'
     ;
 
+// `{ readonly [K in keyof T as U]?: T[K] }`: before the object type, whose computed property name
+// would read `K in Keys` as an expression
+mappedType
+    : '{' mappedTypeModifier? '[' identifier In type_ (As type_)? ']' mappedTypeOptional? typeAnnotation? (SemiColon | ',')? '}'
+    ;
+mappedTypeModifier
+    : ('+' | '-')? ReadOnly
+    ;
+mappedTypeOptional
+    : ('+' | '-')? '?'
+    ;
+
 typeBody
     : typeMemberList (SemiColon | ',')?
     ;
@@ -208,7 +221,7 @@ tupleElementTypes
     : tupleElementType (',' tupleElementType)* ','?
     ;
 tupleElementType
-    : Ellipsis? (identifier '?'? ':')? type_
+    : Ellipsis? (identifier '?'? ':')? type_ '?'?
     ;
 functionType
     : typeParameters? '(' parameterList? ')' '=>' type_
@@ -516,7 +529,7 @@ variableDeclarationList
     ;
 
 variableDeclaration
-    : (identifierOrKeyWord | arrayLiteral | objectLiteral) typeAnnotation? (
+    : (identifierOrKeyWord | arrayLiteral | objectLiteral) '!'? typeAnnotation? (
         '=' typeParameters? singleExpression
     )? // ECMAScript 6: Array & Object Matching
     ;
@@ -572,7 +585,7 @@ returnStatement
     ;
 
 yieldStatement
-    : (Yield | YieldStar) ({this.notLineTerminator()}? expressionSequence)? eos
+    : (Yield '*'? | YieldStar) ({this.notLineTerminator()}? expressionSequence)? eos
     ;
 
 withStatement
@@ -668,7 +681,11 @@ propertyMemberDeclaration
     ;
 
 propertyMemberBase
-    : accessibilityModifier? Declare? Abstract? Static? Async? ReadOnly? accessorModifier?
+    : Declare? accessibilityModifier? Declare? Abstract? Static? overrideModifier? Async? ReadOnly? accessorModifier?
+    ;
+// `override` is a contextual keyword: a lexer token that `identifier` also accepts, like `accessor`
+overrideModifier
+    : Override
     ;
 accessorModifier
     : Accessor
@@ -803,7 +820,7 @@ singleExpression
     | singleExpression '?.'? '[' expressionSequence ']'           # MemberIndexExpression
     | singleExpression '?.' singleExpression                      # OptionalChainExpression
     | singleExpression '!'? '.' '#'? identifierName typeGeneric?  # MemberDotExpression
-    | singleExpression '?'? '.' '#'? identifierName typeGeneric?  # MemberDotExpression
+    | singleExpression '?' '.' '#'? identifierName typeGeneric?   # MemberDotExpression
     // Split to try `new Date()` first, then `new Date`.
     | New identifier typeArguments? arguments                         # NewExpression
     | New singleExpression typeArguments? arguments                   # NewExpression
@@ -887,12 +904,12 @@ assignable
 
 anonymousFunction
     : functionDeclaration
-    | Async? Function_ '*'? '(' formalParameterList? ')' typeAnnotation? '{' functionBody '}'
+    | Async? Function_ '*'? typeParameters? '(' formalParameterList? ')' typeAnnotation? '{' functionBody '}'
     | arrowFunctionDeclaration
     ;
 
 arrowFunctionDeclaration
-    : Async? arrowFunctionParameters typeAnnotation? '=>' arrowFunctionBody
+    : Async? typeParameters? arrowFunctionParameters typeAnnotation? '=>' arrowFunctionBody
     ;
 
 arrowFunctionParameters
@@ -919,6 +936,8 @@ assignmentOperator
     | '|='
     | '**='
     | '??='
+    | '||='
+    | '&&='
     ;
 
 literal
@@ -976,6 +995,7 @@ identifier
     | Is
     | Satisfies
     | Accessor
+    | Override
     | Get
     | Set
     | Using
@@ -1001,12 +1021,14 @@ identifier
     | Constructor
     | Namespace
     | Abstract
+    | Declare
     ;
 
 identifierOrKeyWord
     : identifier
     | TypeAlias
     | Require
+    | Module
     ;
 
 reservedWord
@@ -1065,6 +1087,7 @@ keyword
     | As
     | Satisfies
     | Accessor
+    | Override
     | Get
     | Set
     | Using

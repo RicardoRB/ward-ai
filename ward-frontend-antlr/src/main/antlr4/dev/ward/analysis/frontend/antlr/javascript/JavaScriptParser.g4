@@ -486,6 +486,8 @@ assignmentOperator
     | '|='
     | '**='
     | '??='
+    | '||='
+    | '&&='
     ;
 
 literal

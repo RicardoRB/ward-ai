@@ -149,6 +149,11 @@ class SecretScanCheckTest extends SecretScanCheckSupport {
         .isEmpty();
     assertThat(new SecretScanCheck(base, List.of(docs)).textMatches(new TextFile("src/a", TOKEN)))
         .hasSize(1);
+    // The list keeps its answer per path: a second rule asking for the same paths gets the same.
+    assertThat(new SecretScanCheck(base, List.of(docs)).textMatches(new TextFile("docs/a", TOKEN)))
+        .isEmpty();
+    assertThat(new SecretScanCheck(base, List.of(docs)).textMatches(new TextFile("src/a", TOKEN)))
+        .hasSize(1);
   }
 
   @Test

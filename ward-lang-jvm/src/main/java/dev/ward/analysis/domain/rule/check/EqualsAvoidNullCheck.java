@@ -24,7 +24,7 @@ public final class EqualsAvoidNullCheck implements UnitCheck {
   private static final String OPEN = "'('";
   private static final Pattern CALL =
       Pattern.compile(
-          "[^\"]*\\.(equals|equalsIgnoreCase)\\((?:\"(?:[^\"\\\\]|\\\\.)*\"\\+?)+\\)",
+          "[^\"]*\\.(equals|equalsIgnoreCase)\\((?:\"(?:[^\"\\\\]|\\\\.)*+\"\\+?)+\\)",
           Pattern.DOTALL
       );
   private static final Set<String> EXPRESSION = Set.of("expression");

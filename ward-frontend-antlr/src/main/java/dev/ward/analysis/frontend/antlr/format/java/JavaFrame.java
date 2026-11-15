@@ -65,6 +65,11 @@ final class JavaFrame {
     return parts.isEmpty();
   }
 
+  /** Tells whether this frame is a list with nothing written in it yet. */
+  boolean startsList() {
+    return kind == Kind.GROUP && parts.isEmpty();
+  }
+
   void add(final Document document) {
     parts.add(document);
   }

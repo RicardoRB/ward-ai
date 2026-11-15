@@ -18,7 +18,9 @@ final class NodeScopeExpressions {
   private static final int PAIR = 2;
   private static final int SINGLE = 1;
 
-  private static final Set<String> MEMBER_OPERATORS = Set.of(".", "?.");
+  private static final String OPTIONAL_CHAIN = "?.";
+  private static final String EXPRESSION = "singleExpression";
+  private static final Set<String> MEMBER_OPERATORS = Set.of(".", OPTIONAL_CHAIN);
   private static final Set<String> UPDATE_OPERATORS = Set.of("++", "--");
   private static final String EQUALS = "=";
   private static final String EVAL = "eval";
@@ -69,8 +71,34 @@ final class NodeScopeExpressions {
       visit.accept(parts.get(2));
     } else if (MEMBER_OPERATORS.contains(operator)) {
       visit.accept(parts.get(0));
+      if (OPTIONAL_CHAIN.equals(operator)) {
+        optionalTail(parts.get(2));
+      }
     } else {
       parts.forEach(visit);
+    }
+  }
+
+  /**
+   * Handles the right side of {@code a?.b.c(d)} and of {@code a?.(d)}, which the grammar reads as
+   * one expression: its leftmost name is a property, and what follows that name is read as usual.
+   */
+  private void optionalTail(final SyntaxNode node) {
+    final List<SyntaxNode> parts = NodeFlowSyntax.parts(node);
+    if (parts.size() == SINGLE && NodeScopeNames.nameOf(node) != null) {
+      return;
+    }
+    if (parts.isEmpty() || !EXPRESSION.equals(parts.get(0).kind())) {
+      visit.accept(node);
+      return;
+    }
+    optionalTail(parts.get(0));
+    final boolean member =
+        parts.size() == TRIPLE && MEMBER_OPERATORS.contains(NodeFlowSyntax.text(parts.get(1)));
+    if (!member) {
+      parts.stream().skip(1).forEach(visit);
+    } else if (OPTIONAL_CHAIN.equals(NodeFlowSyntax.text(parts.get(1)))) {
+      optionalTail(parts.get(2));
     }
   }
 
@@ -126,7 +154,7 @@ final class NodeScopeExpressions {
   private static boolean isAssignment(final List<SyntaxNode> inner) {
     return inner.size() >= 2
         && NodeScopeNames.nameOf(inner.get(0)) != null
-        && "singleExpression".equals(inner.get(inner.size() - 1).kind());
+        && EXPRESSION.equals(inner.get(inner.size() - 1).kind());
   }
 
   private void readAll(final SyntaxNode node) {

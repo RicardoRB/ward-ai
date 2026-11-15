@@ -1,0 +1,35 @@
+# Cost of parsing and analysing the corpora, written by hand on 2026-11-15 (not compared by a test).
+# Machine: 10 cores, 32 GB, macOS, JDK 25, JVM (not the native binary). Other sessions were building
+# on the machine during every measurement: the 1-minute load average is next to each number, and no
+# number was taken below a load of 3, so read the ratios, not the absolute times.
+# "Parse" is one AntlrLanguageFrontend parsing every file once, in one JVM, DFA cache cold at start.
+
+## Parse time, got v16.2.0 (96 files, 2.0 MB)
+original grammar (22 files with syntax diagnostics)     | 144.3 s (load not recorded), 105.2 s (load about 7)
+grammar fixes only, adaptive prediction (0 diagnostics) | 137.2 s (load 7.6)
+grammar fixes and quick prediction (0 diagnostics)      |  30.5 s (load 9.7)
+# The trees of the last two rows are identical for every file.
+
+## Parse time, OWASP Juice Shop v20.4.0 (679 files)
+original grammar                    | 198.5 s (load not recorded), 136.4 s (load about 7)
+grammar fixes, adaptive prediction  | 132.2 s (load about 8)
+grammar fixes and quick prediction  |  41.4 s (load 10.7)
+# 17 s of each row is one vendored JavaScript file; the JavaScript grammar has no quick prediction.
+
+## Lookahead of the decisions that #502 lists, test/pagination.ts of got
+original: the expression loop read up to 631 tokens (73,841 in total with SLL, 67,257 again with
+full LL), the statement rule up to 634.
+now: the expression loop, the statement keywords and the prefix operators are decided from one or two
+tokens. What still reads far, in the three slowest files: an async arrow function with a return
+type (about 700 tokens), a getter or setter of a class (about 750), `new a.b(...)` (about 600), an
+`else` branch (about 540) and a `type` alias (about 230).
+
+## GotBenchmarkSmokeTest (682 rules over 96 files)
+test time                    | 59.2 s (load 8.0)
+Maven run, wall time         | 67.5 s
+Maven run, peak resident set | 2.03 GB, as /usr/bin/time -l reports it for the Maven process
+# The cost of the `ward` gate (cold and cached, native binary) is measured in #569, not here.
+
+## ward format over a copy of got (JVM, ward.jar of this change)
+98 files: 93 written, 5 unchanged, 0 refused; a second run changes nothing; the TypeScript 5.9.3
+parser reports no syntax error in the formatted copy.

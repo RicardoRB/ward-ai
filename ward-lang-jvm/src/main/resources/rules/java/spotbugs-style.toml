@@ -279,7 +279,7 @@ body = '''
 check = "forbidden-node"
 kinds = ["fieldDeclaration"]
 modifiers = ["public", "static", "final"]
-text = '^[\w.]+\[\]'
+text = '^[\w.]+\[\](?!\w+=(?:\{\}|new[\w.]+\[0\]);)'
 message = "public static final array is mutable; expose a copy or an unmodifiable list"
 '''
 

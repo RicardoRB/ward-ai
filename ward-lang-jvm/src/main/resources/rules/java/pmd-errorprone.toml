@@ -26,7 +26,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["statement"]
-text = '^(?:if|while)\((?:"(?:[^"\\]|\\.)*"|\x27(?:[^\x27\\]|\\.)*\x27|[^{};"\x27])*?(?:\w=[^=]|\w(?:\+\+|--)|(?:\+\+|--)\w)'
+text = '^(?:if|while)\((?:"(?:[^"\\]|\\.)*+"|\x27(?:[^\x27\\]|\\.)*+\x27|[^{};"\x27])*?(?:\w=[^=]|\w(?:\+\+|--)|(?:\+\+|--)\w)'
 message = "assignment or increment inside an if or while condition; move it out of the operand"
 '''
 
@@ -251,7 +251,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["forControl"]
-text = '^(?:final)?float'
+text = '^(?:final)?float\w+[=,;]'
 message = "loop index is a float; use double or int"
 '''
 
@@ -405,8 +405,8 @@ category = "correctness"
 presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
-kinds = ["methodDeclaration"]
-text = '^(?![^({]*(?:setUp|tearDown)\(\))(?i)[^({]*(?:setup|teardown)\(\)'
+kinds = ["classBodyDeclaration"]
+text = '^(?:public|protected|final)*void(?!setUp\(|tearDown\()(?i:setup|teardown)\(\)'
 message = "misspelled JUnit 3 fixture method; it is not called as setUp or tearDown"
 '''
 
@@ -698,7 +698,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["classDeclaration"]
-text = '(?s)^(?!.*(?:@Test|@ParameterizedTest|@RepeatedTest|@TestFactory|@Nested|voidtest\w*\())class(?:(?!extends|implements|permits)\w)*?(?:Test|Tests|TestCase)(?:<[^{]*>)?(?:extends[^{]*)?(?:implements[^{]*)?\{'
+text = '(?s)^(?!.*(?:@Test|@ParameterizedTest|@RepeatedTest|@TestFactory|@Nested|voidtest\w*\())class(?:(?!extends|implements|permits)\w)*?(?:Test|Tests|TestCase)(?:<[^{]*>)?(?:extends(?![\w.]*?(?:Test|Tests|TestCase)(?:<|implements|\{))[^{]*)?(?:implements[^{]*)?\{'
 message = "class named as a test has no test methods"
 '''
 
@@ -726,7 +726,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["methodCall"]
-text = '^assert(?:True|False)\((?:true|false)(?:,.*)?\)$'
+text = '^(?:assertTrue|assertFalse)\((?:true|false)(?:,.*)?\)$'
 message = "assertion with a boolean literal always evaluates the same way"
 '''
 

@@ -543,7 +543,7 @@ presets = ["strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["variableDeclaration"]
-text = '=undefined$'
+text = '(?<![=!<>])=undefined$'
 message = "do not initialize a variable to undefined"
 '''
 
@@ -557,7 +557,7 @@ presets = ["strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["variableDeclaration"]
-text = '=undefined$'
+text = '(?<![=!<>])=undefined$'
 message = "do not initialize a variable to undefined"
 '''
 

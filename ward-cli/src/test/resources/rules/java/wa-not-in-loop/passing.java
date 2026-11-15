@@ -6,4 +6,9 @@ final class Sample {
       }
     }
   }
+
+  void helper(Object lock) throws Exception {
+    Waits.wait(lock, 10L);
+    util.Waits.wait(lock, 10L);
+  }
 }
