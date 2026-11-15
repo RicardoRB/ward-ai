@@ -14,6 +14,10 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 - `ward:java/coupling-between-objects` reports a class coupled to more than `max` (default 20) distinct types through its declarations: the types of fields, local variables, parameters, loop variables, resources and return types, without primitives and `java.lang` types (#347).
 
+### Changed
+
+- Apache Fory is updated from 1.7.7 to 1.7.8. Its native-image feature now ignores the JSON codecs that the annotation processor generated, including those packaged in dependencies (apache/fory#4146).
+
 ### Fixed
 
 - `ward:java/collection-incompatible-type` no longer reports `List<UUID>.get(int)`: `get`, `getOrDefault`, `containsKey` and `containsValue` apply only to `Map` types and `indexOf` and `lastIndexOf` only to `List` types (#573). A `methods` entry of `incompatible-argument` may end with `@key` to name the declaring types it applies to.

@@ -167,11 +167,11 @@
     },
     {
       "type": "library",
-      "bom-ref": "pkg:maven/org.apache.fory/fory-core@1.7.7",
+      "bom-ref": "pkg:maven/org.apache.fory/fory-core@1.7.8",
       "group": "org.apache.fory",
       "name": "fory-core",
-      "version": "1.7.7",
-      "purl": "pkg:maven/org.apache.fory/fory-core@1.7.7",
+      "version": "1.7.8",
+      "purl": "pkg:maven/org.apache.fory/fory-core@1.7.8",
       "licenses": [
         {
           "license": {
@@ -182,11 +182,11 @@
     },
     {
       "type": "library",
-      "bom-ref": "pkg:maven/org.apache.fory/fory-json@1.7.7",
+      "bom-ref": "pkg:maven/org.apache.fory/fory-json@1.7.8",
       "group": "org.apache.fory",
       "name": "fory-json",
-      "version": "1.7.7",
-      "purl": "pkg:maven/org.apache.fory/fory-json@1.7.7",
+      "version": "1.7.8",
+      "purl": "pkg:maven/org.apache.fory/fory-json@1.7.8",
       "licenses": [
         {
           "license": {
@@ -593,7 +593,7 @@
         "pkg:maven/com.google.dagger/dagger@2.60.1",
         "pkg:maven/info.picocli/picocli@4.7.7",
         "pkg:maven/javax.inject/javax.inject@1",
-        "pkg:maven/org.apache.fory/fory-json@1.7.7",
+        "pkg:maven/org.apache.fory/fory-json@1.7.8",
         "pkg:maven/org.codehaus.plexus/plexus-utils@3.6.2",
         "pkg:maven/org.eclipse.jdt/org.eclipse.jdt.core@3.47.0",
         "pkg:maven/org.tomlj/tomlj@2.2.0"
@@ -640,11 +640,11 @@
       "dependsOn": []
     },
     {
-      "ref": "pkg:maven/org.apache.fory/fory-core@1.7.7",
+      "ref": "pkg:maven/org.apache.fory/fory-core@1.7.8",
       "dependsOn": []
     },
     {
-      "ref": "pkg:maven/org.apache.fory/fory-json@1.7.7",
+      "ref": "pkg:maven/org.apache.fory/fory-json@1.7.8",
       "dependsOn": []
     },
     {
