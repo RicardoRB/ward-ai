@@ -92,17 +92,7 @@ class JavaCompatibilityMatrixTest {
     assertDetectedJdk(project, jdk);
     final Set<String> configured = configuredGates(project);
     assertOmissionsExplained(preset, configured, init.stdout());
-    JavaMatrixProcesses.git(project, "add", "-A");
-    JavaMatrixProcesses.git(
-        project,
-        "-c",
-        "user.name=ward",
-        "-c",
-        "user.email=ward@example.invalid",
-        "commit",
-        "-qm",
-        "init"
-    );
+    JavaMatrixProcesses.commitAll(project);
 
     final String cleanReport = report(project);
     final Map<String, String> clean = statuses(cleanReport);

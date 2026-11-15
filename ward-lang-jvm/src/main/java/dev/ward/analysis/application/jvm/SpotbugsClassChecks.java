@@ -3,6 +3,7 @@ package dev.ward.analysis.application.jvm;
 import static java.util.Map.entry;
 
 import dev.ward.analysis.application.rule.CheckFactory;
+import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.AmbiguousInvocationCheck;
 import dev.ward.analysis.domain.rule.check.EqualsInheritanceCheck;
@@ -14,6 +15,7 @@ import dev.ward.analysis.domain.rule.check.ParameterStringComparisonCheck;
 import dev.ward.analysis.domain.rule.check.StaticClassInstantiationCheck;
 import dev.ward.analysis.domain.rule.check.StaticInitializationCheck;
 import java.util.Locale;
+import java.util.List;
 import java.util.Map;
 import org.tomlj.TomlParseResult;
 
@@ -25,6 +27,10 @@ final class SpotbugsClassChecks {
 
   /** The checks this class provides, by name. */
   static Map<String, CheckFactory> checks() {
+    return CheckRegistry.union(List.of(equalsAndInvocationChecks(), staticInitializationChecks()));
+  }
+
+  private static Map<String, CheckFactory> equalsAndInvocationChecks() {
     return Map.ofEntries(
         entry(
             "equals-inheritance",
@@ -53,7 +59,12 @@ final class SpotbugsClassChecks {
         entry(
             "parameter-string-comparison",
             toml -> new ParameterStringComparisonCheck(TomlValues.required(toml, MESSAGE))
-        ),
+        )
+    );
+  }
+
+  private static Map<String, CheckFactory> staticInitializationChecks() {
+    return Map.ofEntries(
         entry(
             "lazy-static-init",
             toml ->

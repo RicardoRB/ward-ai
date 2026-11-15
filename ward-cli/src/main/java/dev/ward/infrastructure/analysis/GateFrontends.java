@@ -44,8 +44,14 @@ public final class GateFrontends {
 
   /** Creates the support of every language over one parser. */
   public static List<FrontendSupport> create(final LanguageFrontend frontend) {
-    final Set<RuleCapability> symbols = symbolCapabilities();
-    final Set<RuleCapability> graphs = graphCapabilities();
+    return Stream.concat(
+        scriptingLanguages(frontend).stream(),
+        compiledLanguages(frontend).stream()
+    )
+        .toList();
+  }
+
+  private static List<FrontendSupport> scriptingLanguages(final LanguageFrontend frontend) {
     final Set<RuleCapability> flow = flowCapabilities();
     return List.of(
         new FrontendSupport(
@@ -78,7 +84,14 @@ public final class GateFrontends {
             new NodeControlFlow(),
             new CachedScopes(new NodeScopeAnalysis(ClasspathBuiltinNames.javascript()))
         )
-            .withManifests(NODE_MANIFESTS),
+            .withManifests(NODE_MANIFESTS)
+    );
+  }
+
+  private static List<FrontendSupport> compiledLanguages(final LanguageFrontend frontend) {
+    final Set<RuleCapability> symbols = symbolCapabilities();
+    final Set<RuleCapability> graphs = graphCapabilities();
+    return List.of(
         new FrontendSupport(
             AnalysisLanguage.SWIFT,
             frontend,

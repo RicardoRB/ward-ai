@@ -3,6 +3,7 @@ package dev.ward.analysis.application.node;
 import static java.util.Map.entry;
 
 import dev.ward.analysis.application.rule.CheckFactory;
+import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.BiomeActivedescendantTabindexCheck;
 import dev.ward.analysis.domain.rule.check.BiomeAriaHiddenOnFocusableCheck;
@@ -22,6 +23,7 @@ import dev.ward.analysis.domain.rule.check.BiomeStaticElementInteractionsCheck;
 import dev.ward.analysis.domain.rule.check.BiomeSvgTitleCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUseFocusableInteractiveCheck;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /** The checks that read Biome 2.5.15's mirrored ARIA tables, kept apart from the JSX checks. */
@@ -91,6 +93,10 @@ final class AriaChecks {
 
   /** The checks that read the element roles and the interactions they allow. */
   private static Map<String, CheckFactory> interactionChecks() {
+    return CheckRegistry.union(List.of(roleTransitionChecks(), focusAndInteractionChecks()));
+  }
+
+  private static Map<String, CheckFactory> roleTransitionChecks() {
     return Map.ofEntries(
         entry(
             "node-noninteractive-tabindex",
@@ -107,7 +113,12 @@ final class AriaChecks {
                     AriaTables.load(),
                     TomlValues.required(toml, MESSAGE)
                 )
-        ),
+        )
+    );
+  }
+
+  private static Map<String, CheckFactory> focusAndInteractionChecks() {
+    return Map.ofEntries(
         entry(
             "node-interactive-to-noninteractive-role",
             toml ->

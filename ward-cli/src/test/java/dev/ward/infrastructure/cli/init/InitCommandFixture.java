@@ -113,50 +113,7 @@ final class InitCommandFixture {
 
   /** Runs init; {@code terminal} makes the input behave like an interactive terminal. */
   int run(final boolean terminal, final String input, final String... args) {
-    final InitService service =
-        new InitService(
-            new ProjectDetector(new FileSystemProjectInspection()),
-            Set.of(new ClaudeCodeIntegration()),
-            new InitSetupCatalog(
-                new dev.ward.application.init.InitPorts(
-                    new FakeEnvironmentInspection(executables) {
-                      @Override
-                      public Optional<String> openApiSpec(final Path projectRoot) {
-                        return Files.exists(projectRoot.resolve("openapi.yml"))
-                            ? Optional.of("openapi.yml")
-                            : Optional.empty();
-                      }
-                    },
-                    new NodeInputs(
-                        new dev.ward.infrastructure.project.node.FileSystemPackageManifests(),
-                        new FileSystemNodeSources(),
-                        new FileSystemNodeToolConfigs()
-                    ),
-                    buildTools,
-                    new dev.ward.infrastructure.project.python.FileSystemPythonToolConfigs(),
-                    new dev.ward.application.init.ToolchainPorts(
-                        swiftPorts,
-                        dev.ward.domain.init.BuildModulePlanning.none()
-                    )
-                ),
-                new QualityHookInstaller(),
-                new TomlConfigurationReader(),
-                "1.2.3"
-            ),
-            new InitProjectFiles(
-                buildTools,
-                new PresetRuleFileWriter(
-                    RuleFileTargetsFixtures.of(
-                        new dev.ward.infrastructure.project.node.FileSystemPackageManifests(),
-                        new FileSystemNodeToolConfigs(),
-                        new dev.ward.infrastructure.project.python.FileSystemPythonToolConfigs()
-                    )
-                ),
-                ArchitectureTablesFixtures.create(),
-                new FileConfigurationStorage(),
-                new OwnedSectionWriter()
-            )
-        );
+    final InitService service = service();
     final CommandLine command =
         new CommandLine(
             new InitCommand(service, new TerminalLikeInputStream(input), Optional::empty, terminal)
@@ -175,6 +132,56 @@ final class InitCommandFixture {
     withDirectory[1] = root.toString();
     System.arraycopy(args, 0, withDirectory, 2, args.length);
     return command.execute(withDirectory);
+  }
+
+  private InitService service() {
+    return new InitService(
+        new ProjectDetector(new FileSystemProjectInspection()),
+        Set.of(new ClaudeCodeIntegration()),
+        new InitSetupCatalog(
+            new dev.ward.application.init.InitPorts(
+                new FakeEnvironmentInspection(executables) {
+                  @Override
+                  public Optional<String> openApiSpec(final Path projectRoot) {
+                    return Files.exists(projectRoot.resolve("openapi.yml"))
+                        ? Optional.of("openapi.yml")
+                        : Optional.empty();
+                  }
+                },
+                new NodeInputs(
+                    new dev.ward.infrastructure.project.node.FileSystemPackageManifests(),
+                    new FileSystemNodeSources(),
+                    new FileSystemNodeToolConfigs()
+                ),
+                buildTools,
+                new dev.ward.infrastructure.project.python.FileSystemPythonToolConfigs(),
+                new dev.ward.application.init.ToolchainPorts(
+                    swiftPorts,
+                    dev.ward.domain.init.BuildModulePlanning.none()
+                )
+            ),
+            new QualityHookInstaller(),
+            new TomlConfigurationReader(),
+            "1.2.3"
+        ),
+        projectFiles()
+    );
+  }
+
+  private InitProjectFiles projectFiles() {
+    return new InitProjectFiles(
+        buildTools,
+        new PresetRuleFileWriter(
+            RuleFileTargetsFixtures.of(
+                new dev.ward.infrastructure.project.node.FileSystemPackageManifests(),
+                new FileSystemNodeToolConfigs(),
+                new dev.ward.infrastructure.project.python.FileSystemPythonToolConfigs()
+            )
+        ),
+        ArchitectureTablesFixtures.create(),
+        new FileConfigurationStorage(),
+        new OwnedSectionWriter()
+    );
   }
 
   String output() {

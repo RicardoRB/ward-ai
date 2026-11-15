@@ -3,6 +3,7 @@ package dev.ward.analysis.application.jvm;
 import static java.util.Map.entry;
 
 import dev.ward.analysis.application.rule.CheckFactory;
+import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.KotlinClassLinesCheck;
 import dev.ward.analysis.domain.rule.check.KotlinComplexConditionCheck;
@@ -15,6 +16,7 @@ import dev.ward.analysis.domain.rule.check.KotlinMemberNameCheck;
 import dev.ward.analysis.domain.rule.check.KotlinNameShadowingCheck;
 import dev.ward.analysis.domain.rule.check.KotlinObjectPropertyCheck;
 import dev.ward.analysis.domain.rule.check.KotlinPackageDirectoryCheck;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.tomlj.TomlParseResult;
@@ -45,6 +47,10 @@ final class KotlinDeclarationChecks {
 
   /** The checks this class provides, by name. */
   static Map<String, CheckFactory> checks() {
+    return CheckRegistry.union(List.of(nameChecks(), structureChecks()));
+  }
+
+  private static Map<String, CheckFactory> nameChecks() {
     return Map.ofEntries(
         entry("kotlin-empty-block", KotlinDeclarationChecks::emptyBlock),
         entry(
@@ -79,7 +85,12 @@ final class KotlinDeclarationChecks {
                     bool(toml, IGNORE_OVERRIDDEN, true),
                     TomlValues.required(toml, MESSAGE)
                 )
-        ),
+        )
+    );
+  }
+
+  private static Map<String, CheckFactory> structureChecks() {
+    return Map.ofEntries(
         entry(
             "kotlin-name-shadowing",
             toml -> new KotlinNameShadowingCheck(TomlValues.required(toml, MESSAGE))

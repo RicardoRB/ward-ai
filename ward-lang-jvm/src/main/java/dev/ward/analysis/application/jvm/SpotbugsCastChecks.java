@@ -3,6 +3,7 @@ package dev.ward.analysis.application.jvm;
 import static java.util.Map.entry;
 
 import dev.ward.analysis.application.rule.CheckFactory;
+import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.AssertOnParameterCheck;
 import dev.ward.analysis.domain.rule.check.CastTypesCheck;
@@ -17,6 +18,7 @@ import dev.ward.analysis.domain.rule.check.UncheckedEqualsCastCheck;
 import dev.ward.analysis.domain.rule.check.UnconfirmedCastCheck;
 import dev.ward.analysis.domain.rule.check.UnsharedBoxedLockCheck;
 import java.util.Locale;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,6 +31,10 @@ final class SpotbugsCastChecks {
 
   /** The checks this class provides, by name. */
   static Map<String, CheckFactory> checks() {
+    return CheckRegistry.union(List.of(castChecks(), comparisonAndLockChecks()));
+  }
+
+  private static Map<String, CheckFactory> castChecks() {
     return Map.ofEntries(
         entry(
             "covariant-compare-to",
@@ -66,7 +72,12 @@ final class SpotbugsCastChecks {
         entry(
             "unchecked-equals-cast",
             toml -> new UncheckedEqualsCastCheck(TomlValues.required(toml, MESSAGE))
-        ),
+        )
+    );
+  }
+
+  private static Map<String, CheckFactory> comparisonAndLockChecks() {
+    return Map.ofEntries(
         entry(
             "unconfirmed-cast",
             toml ->

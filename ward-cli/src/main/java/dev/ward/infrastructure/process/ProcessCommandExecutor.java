@@ -79,49 +79,57 @@ public class ProcessCommandExecutor implements CommandExecutor {
           );
           return result;
         } catch (InterruptedException e) {
-          process.destroyForcibly();
-          Thread.currentThread().interrupt();
-          return failure(
-              executable,
-              "interrupted",
-              new CommandResult(
-                  EXIT_INTERRUPTED,
-                  "",
-                  "Interrupted",
-                  since(start),
-                  "PROCESS_INTERRUPTED"
-              )
-          );
+          return interrupted(process, executable, start);
         } catch (ExecutionException e) {
-          process.destroyForcibly();
-          return failure(
-              executable,
-              "read-failure",
-              new CommandResult(
-                  EXIT_OUTPUT_CAPTURE_FAILED,
-                  "",
-                  "Failed to read process output",
-                  since(start),
-                  "OUTPUT_CAPTURE_FAILURE"
-              )
-          );
+          return outputFailure(process, executable, start);
         }
       }
     } catch (IOException e) {
-      if (LOGGER.isLoggable(Level.WARNING)) {
-        LOGGER.log(
-            Level.WARNING,
-            "event=process-failure executable=" + executable + " category=start-failure"
-        );
-      }
-      return new CommandResult(
-          EXIT_COULD_NOT_START,
-          "",
-          "Could not start " + executable + ": " + e.getMessage(),
-          since(start),
-          "PROCESS_START_FAILURE"
+      return failure(
+          executable,
+          "start-failure",
+          new CommandResult(
+              EXIT_COULD_NOT_START,
+              "",
+              "Could not start " + executable + ": " + e.getMessage(),
+              since(start),
+              "PROCESS_START_FAILURE"
+          )
       );
     }
+  }
+
+  private static CommandResult interrupted(
+      final Process process,
+      final String executable,
+      final long start
+  ) {
+    process.destroyForcibly();
+    Thread.currentThread().interrupt();
+    return failure(
+        executable,
+        "interrupted",
+        new CommandResult(EXIT_INTERRUPTED, "", "Interrupted", since(start), "PROCESS_INTERRUPTED")
+    );
+  }
+
+  private static CommandResult outputFailure(
+      final Process process,
+      final String executable,
+      final long start
+  ) {
+    process.destroyForcibly();
+    return failure(
+        executable,
+        "read-failure",
+        new CommandResult(
+            EXIT_OUTPUT_CAPTURE_FAILED,
+            "",
+            "Failed to read process output",
+            since(start),
+            "OUTPUT_CAPTURE_FAILURE"
+        )
+    );
   }
 
   private static CommandResult failure(

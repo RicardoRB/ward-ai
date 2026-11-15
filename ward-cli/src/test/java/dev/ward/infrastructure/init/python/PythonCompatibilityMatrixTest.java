@@ -117,17 +117,7 @@ class PythonCompatibilityMatrixTest {
         .isEmpty();
 
     assertThat(engineLayerFiles(project, fixture)).as("engine layer findings, clean").isEmpty();
-    final Path untested = COVERAGE_VIOLATIONS.resolve(fixture);
-    MatrixFileTrees.copy(untested, project);
-    final Run report = run(env, project, "check", "--profile", "ci", "--format", "json");
-    assertThat(checks(report).get("coverage"))
-        .as("coverage with an untested module\n%s", report.output())
-        .isEqualTo("FAILED");
-    assertThat(report.output())
-        .as("coverage finding")
-        .contains("Line coverage")
-        .contains("is below");
-    MatrixFileTrees.remove(untested, project);
+    assertUntestedModuleFailsCoverage(env, project, fixture);
     MatrixFileTrees.copy(VIOLATIONS.resolve(fixture), project);
     assertThat(engineLayerFiles(project, fixture))
         .as("engine layer findings, seeded")
@@ -142,6 +132,25 @@ class PythonCompatibilityMatrixTest {
                     .as("seeded violation for gate %s", gate)
                     .isEqualTo("FAILED")
         );
+  }
+
+  private void assertUntestedModuleFailsCoverage(
+      final Map<String,
+      String> env,
+      final Path project,
+      final String fixture
+  ) throws IOException, InterruptedException {
+    final Path untested = COVERAGE_VIOLATIONS.resolve(fixture);
+    MatrixFileTrees.copy(untested, project);
+    final Run report = run(env, project, "check", "--profile", "ci", "--format", "json");
+    assertThat(checks(report).get("coverage"))
+        .as("coverage with an untested module\n%s", report.output())
+        .isEqualTo("FAILED");
+    assertThat(report.output())
+        .as("coverage finding")
+        .contains("Line coverage")
+        .contains("is below");
+    MatrixFileTrees.remove(untested, project);
   }
 
   /** The layer files the ward engine flags in {@code project}, for the layered style. */

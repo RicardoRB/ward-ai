@@ -3,6 +3,7 @@ package dev.ward.analysis.application.jvm;
 import static java.util.Map.entry;
 
 import dev.ward.analysis.application.rule.CheckFactory;
+import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.ArrayArgumentCastCheck;
 import dev.ward.analysis.domain.rule.check.ComparisonContractCheck;
@@ -18,6 +19,7 @@ import dev.ward.analysis.domain.rule.check.JavaNonFinalConstantCheck;
 import dev.ward.analysis.domain.rule.check.JavaProtoNullComparisonCheck;
 import dev.ward.analysis.domain.rule.check.JavaStaticQualifiedCheck;
 import dev.ward.analysis.domain.rule.check.JavaVarargsConditionalCheck;
+import java.util.List;
 import java.util.Map;
 
 /** Builds the checks of Error Prone rules that read the call targets and types of expressions. */
@@ -28,6 +30,10 @@ final class ErrorProneTypedChecks {
 
   /** The checks this class provides, by name. */
   static Map<String, CheckFactory> checks() {
+    return CheckRegistry.union(List.of(typeContractChecks(), apiUsageChecks()));
+  }
+
+  private static Map<String, CheckFactory> typeContractChecks() {
     return Map.ofEntries(
         entry(
             "array-argument-cast",
@@ -52,7 +58,12 @@ final class ErrorProneTypedChecks {
         entry(
             "non-final-compile-time-constant",
             toml -> new JavaNonFinalConstantCheck(TomlValues.required(toml, MESSAGE))
-        ),
+        )
+    );
+  }
+
+  private static Map<String, CheckFactory> apiUsageChecks() {
+    return Map.ofEntries(
         entry(
             "static-qualified-using-expression",
             toml -> new JavaStaticQualifiedCheck(TomlValues.required(toml, MESSAGE))
