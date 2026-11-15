@@ -11,12 +11,15 @@ import java.util.regex.Pattern;
 /**
  * Reports a local variable declared with a side-effect-free initializer when a statement that may
  * return or throw sits between the declaration and the first use, as PMD's PrematureDeclaration
- * does. An initializer with a call or a creation counts as impure and is skipped.
+ * does. An initializer with a call or a creation counts as impure and is skipped; so does a
+ * statement with a call or a creation that does not throw, which ends the search as in PMD.
  */
 public final class PrematureDeclarationCheck implements RuleCheck {
 
   private static final String DECLARATOR = "variableDeclarator";
   private static final Pattern EXIT = Pattern.compile("(?:^|[^\\w$])(?:return|throw)(?![\\w$])");
+
+  private static final Pattern THROW = Pattern.compile("(?:^|[^\\w$])throw(?![\\w$])");
 
   private final String message;
 
@@ -60,8 +63,12 @@ public final class PrematureDeclarationCheck implements RuleCheck {
   }
 
   private static boolean pure(final SyntaxNode declarator) {
-    return SyntaxWalk.descendants(declarator).stream()
-        .noneMatch(node -> "arguments".equals(node.kind()) || "'new'".equals(node.kind()));
+    return !impure(declarator);
+  }
+
+  private static boolean impure(final SyntaxNode node) {
+    return SyntaxWalk.descendants(node).stream()
+        .anyMatch(n -> "arguments".equals(n.kind()) || "'new'".equals(n.kind()));
   }
 
   private static boolean exitBeforeUse(final List<SyntaxNode> following, final String name) {
@@ -72,6 +79,9 @@ public final class PrematureDeclarationCheck implements RuleCheck {
       if (use.matcher(text).find()) {
         return exit;
       }
+      if (impure(statement) && !THROW.matcher(text).find()) {
+        return false;
+      }
       exit = exit || EXIT.matcher(text).find();
     }
     return false;
@@ -79,7 +89,10 @@ public final class PrematureDeclarationCheck implements RuleCheck {
 
   private static String tokens(final SyntaxNode statement) {
     final StringBuilder out = new StringBuilder();
-    SyntaxWalk.leaves(statement).forEach(leaf -> out.append(' ').append(leaf.fields().get("text")));
+    SyntaxWalk.leaves(statement).stream()
+        .map(leaf -> String.valueOf(leaf.fields().get("text")))
+        .filter(text -> !text.startsWith("\""))
+        .forEach(text -> out.append(' ').append(text));
     return out.toString();
   }
 }

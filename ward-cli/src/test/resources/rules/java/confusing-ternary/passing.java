@@ -13,6 +13,11 @@ class Passing {
     } else if (a == null) {
       stop();
     }
+    if (a != null) {
+      go();
+    } else {
+      stop();
+    }
   }
   void go() {
   }

@@ -4,3 +4,7 @@ class ParserTest {
   @Test
   void parses() {}
 }
+
+class Facts implements FactTest {
+  void helper() {}
+}

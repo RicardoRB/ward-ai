@@ -11,12 +11,15 @@ import dev.ward.analysis.domain.rule.check.AvoidReassigningCatchVariablesCheck;
 import dev.ward.analysis.domain.rule.check.AvoidReassigningLoopVariablesCheck;
 import dev.ward.analysis.domain.rule.check.BitMaskComparisonCheck;
 import dev.ward.analysis.domain.rule.check.ConstantClampCheck;
+import dev.ward.analysis.domain.rule.check.ControlBodyBracesCheck;
 import dev.ward.analysis.domain.rule.check.DefaultLabelNotLastCheck;
 import dev.ward.analysis.domain.rule.check.EqualsOnUnrelatedTypesCheck;
 import dev.ward.analysis.domain.rule.check.ForLoopCanBeForeachCheck;
 import dev.ward.analysis.domain.rule.check.ImplicitFunctionalInterfaceCheck;
+import dev.ward.analysis.domain.rule.check.LoopEndsWithBranchCheck;
 import dev.ward.analysis.domain.rule.check.MethodReturnsInternalArrayCheck;
 import dev.ward.analysis.domain.rule.check.PreserveStackTraceCheck;
+import dev.ward.analysis.domain.rule.check.TerminateVmCheck;
 import dev.ward.analysis.domain.rule.check.TypeNameMismatchCheck;
 import dev.ward.analysis.domain.rule.check.UnitTestAssertCountCheck;
 import dev.ward.analysis.domain.rule.check.UnitTestLifecycleCheck;
@@ -51,6 +54,13 @@ final class ReviewChecks {
   private static Map<String, CheckFactory> build() {
     return Map.ofEntries(
         entry("unused-label", toml -> new UnusedLabelCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "loop-ends-with-branch",
+            toml -> new LoopEndsWithBranchCheck(TomlValues.required(toml, MESSAGE))),
+        entry("terminate-vm", toml -> new TerminateVmCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "control-body-braces",
+            toml -> new ControlBodyBracesCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "unit-test-without-assert",
             toml -> new UnitTestWithoutAssertCheck(TomlValues.required(toml, MESSAGE))),

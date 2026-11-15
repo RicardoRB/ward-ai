@@ -117,6 +117,24 @@ final class JUnitMembers {
         .count();
   }
 
+  /**
+   * Returns whether a method calls what PMD takes for an assertion: a method whose name starts with
+   * {@code assert}, {@code check} or {@code verify}, or is {@code fail}.
+   */
+  static boolean callsProbableAssertion(final SyntaxNode method) {
+    return SyntaxWalk.descendants(method).stream()
+        .filter(node -> METHOD_CALL.equals(node.kind()))
+        .flatMap(node -> node.children().stream())
+        .filter(c -> IDENTIFIER.equals(c.kind()))
+        .map(SyntaxWalk::text)
+        .anyMatch(
+            name ->
+                name.startsWith("assert")
+                    || name.startsWith("check")
+                    || name.startsWith("verify")
+                    || "fail".equals(name));
+  }
+
   /** Returns whether a method has no formal parameters. */
   static boolean hasNoParameters(final SyntaxNode method) {
     return method.children().stream()

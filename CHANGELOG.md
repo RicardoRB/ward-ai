@@ -17,6 +17,24 @@ still change behavior. Breaking changes are called out under **Changed**.
 - `ward:java/static-or-default-interface-method`, which is about Android before 7.0, moves from the `standard` preset to `strict`: a rule sees one file and not the project, so it cannot tell an Android project from another (#573).
 - `ward:java/cwo-closed-without-opened` no longer reports `lock.unlock()` in a method that calls a method of the same file that acquires that lock, such as a private `tryLock()` (#573).
 - A `forbidden-node` rule whose pattern starts with a keyword (`^new(...)`, `^if(`, `^for`, ...) now needs that keyword as the node's first token, so a call to `newBoolean(...)` or `iffy(...)` is no longer read as `new Boolean(` or `if(`. This stops `ban-class-loader`, `dead-thread`, `dm-boolean-ctor`, `dm-number-ctor`, `dm-string-ctor` and `dp-create-classloader-inside-do-privileged` from reporting calls to methods named `newX` (#573).
+- `ward:java/control-statement-braces` decides on the statement's syntax nodes instead of its text, so a call such as `document.parts()` or `doStatement(...)`, and a string with a parenthesis such as `endsWith(")")`, are no longer reported as a body without braces.
+- `ward:java/while-loop-with-literal-boolean` reports `while (false)` and `do ... while (true)` or `while (false)`, as PMD does, and no longer a plain `while (true)`.
+- `ward:java/for-loop-can-be-foreach` reports only a loop that starts at `0`, whose element is not assigned, and whose `.get(i)` receiver is known to be an `Iterable` (an array needs no type); `JsonTree.get(i)` and `array[i] += x` are no longer reported. The rule now has the `TYPES` capability.
+- `ward:java/logic-inversion` no longer reports `!(x instanceof Map<?, ?> m)`, whose `<` and `>` are type arguments.
+- `ward:java/confusing-ternary` no longer reports `if (x != null) ... else ...`, as PMD does not.
+- `ward:java/labeled-statement` no longer reports a statement that starts with a method reference such as `Type::method`.
+- `ward:java/premature-declaration` stops at a statement with a call or a creation that does not throw, as PMD does, and no longer reads the words `return` and `throw` inside string literals and text blocks.
+- `ward:java/assignment-in-operand` ignores `=`, `++` and `--` inside string and character literals of the condition.
+- `ward:java/avoid-branching-statement-as-last-in-loop` decides on the last statement's syntax node, so a call such as `returnsOf(x);` is no longer taken for a `return`; it also covers `do` loops.
+- `ward:java/avoid-instantiating-objects-in-loops`: no rule change; the repository's own finding was fixed in the code.
+- `ward:java/preserve-stack-trace` reports only `throw new ...` in a catch block, not the rethrow of an existing exception, and a nested catch clause answers for its own throws.
+- `ward:java/use-try-with-resources` reports `x.close()` in a `finally` block only when the type of `x` is known to be `AutoCloseable`; an `XMLStreamReader` is no longer reported. The rule now has the `TYPES` capability.
+- `ward:java/avoid-throwing-new-instance-of-same-exception` reports only `throw new X(e)` with the caught exception as the sole argument; `throw new X("context", e)` adds context and is not reported.
+- `ward:java/j-unit-use-expected` no longer reports a `try` that calls `cursor.fail(...)` or another method named `fail` on an object; only `fail(...)` and `Assert.fail(...)`.
+- `ward:java/unit-test-should-include-assert` counts a call to a method named `check...`, `verify...` or `fail` as an assertion, as PMD does.
+- `ward:java/do-not-terminate-vm` does not report `System.exit` in a method named `main`, as PMD does.
+- `ward:java/unnecessary-warning-suppression` no longer reports a Javadoc comment that only names `NOPMD`.
+- `ward:java/test-class-without-test-cases` no longer takes the interface named after `implements` or `extends` for the class's own name (`class Facts implements FactTest`).
 
 ## [0.9.0] - 2026-11-14
 

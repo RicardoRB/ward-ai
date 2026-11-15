@@ -1,6 +1,6 @@
 class Violating {
-  void run(Object a, boolean b) {
-    if (a != null) {
+  void run(Object a, Object c, boolean b) {
+    if (a != c) {
       go();
     } else {
       stop();

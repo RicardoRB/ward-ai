@@ -41,7 +41,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["catchClause"]
-text = '(?s)^catch\((?:final)?([\w.]+?)(\w+)\)\{thrownew\1\([^;]*\b\2\b[^;]*\);\}$'
+text = '(?s)^catch\((?:final)?([\w.]+?)(\w+)\)\{thrownew\1\(\2\);\}$'
 message = "catch block throws a new instance of the same exception; rethrow it or add context"
 '''
 
@@ -157,7 +157,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["expression"]
-text = '(?s)^!\((?!.*(&&|\|\|)).*(==|!=|<=|>=|<|>).*\)$'
+text = '(?s)^!\((?!.*(&&|\|\||instanceof)).*(==|!=|<=|>=|<|>).*\)$'
 message = "negated comparison; use the opposite operator instead of !"
 '''
 

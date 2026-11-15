@@ -26,7 +26,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["statement"]
-text = '^(?:if|while)\([^{};]*?(?:\w=[^=]|\w(?:\+\+|--)|(?:\+\+|--)\w)'
+text = '^(?:if|while)\((?:"(?:[^"\\]|\\.)*"|\x27(?:[^\x27\\]|\\.)*\x27|[^{};"\x27])*?(?:\w=[^=]|\w(?:\+\+|--)|(?:\+\+|--)\w)'
 message = "assignment or increment inside an if or while condition; move it out of the operand"
 '''
 
@@ -52,9 +52,7 @@ severity = "error"
 category = "correctness"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["statement"]
-text = '^(?:for|while)\(.*\)\{.*(?:break|continue|return[^;]*);\}$'
+check = "loop-ends-with-branch"
 message = "loop ends with a branching statement, so it never repeats; check that this is not a bug"
 '''
 
@@ -705,7 +703,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["classDeclaration"]
-text = '(?s)^(?!.*(?:@Test|@ParameterizedTest|@RepeatedTest|@TestFactory|@Nested|voidtest\w*\())class\w*?(?:Test|Tests|TestCase)(?:<[^{]*>)?(?:extends[^{]*)?(?:implements[^{]*)?\{'
+text = '(?s)^(?!.*(?:@Test|@ParameterizedTest|@RepeatedTest|@TestFactory|@Nested|voidtest\w*\())class(?:(?!extends|implements|permits)\w)*?(?:Test|Tests|TestCase)(?:<[^{]*>)?(?:extends[^{]*)?(?:implements[^{]*)?\{'
 message = "class named as a test has no test methods"
 '''
 
@@ -872,9 +870,7 @@ severity = "error"
 category = "correctness"
 presets = ["strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["expression"]
-text = '^(?:(?:java\.lang\.)?System|Runtime\.getRuntime\(\))\.(?:exit|halt)\([^()]*\)$'
+check = "terminate-vm"
 message = "System.exit terminates the JVM; only the application entry point should do it"
 '''
 

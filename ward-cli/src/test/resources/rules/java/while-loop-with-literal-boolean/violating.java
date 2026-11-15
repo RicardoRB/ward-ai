@@ -1,7 +1,10 @@
 final class Spinner {
   void spin() {
-    while (true) {
+    while (false) {
       break;
     }
+    do {
+      spin();
+    } while (true);
   }
 }
