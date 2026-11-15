@@ -180,13 +180,17 @@ still change behavior. Breaking changes are called out under **Changed**.
 - **Breaking (alpha):** `ward init` no longer adds the japicmp Maven plugin or the `me.champeau.gradle.japicmp` Gradle plugin, and `api-compat` no longer depends on `<distributionManagement>` or a published artifact: it compares sources with the latest release tag for Java and Kotlin (#526). Existing build files that already declare japicmp are left alone.
 - **Breaking (alpha, no migration):** The OpenSpec integration. Ward no longer ships the `openspec`, `openspec-archived` and `openspec-junit-traceability` check types, the `root` setting of a check, the `ward spec` commands (`validate`, `guard`, `enforce`), `--exclude-spec` of `ward check` and `ward hook claude-code`, `--tool` and `--openspec-validation` of `ward init`, the OpenSpec installer and its step in the generated CI workflow, the OpenSpec checks of `ward doctor`, and the approved-artifact guard of every agent integration with its `PreToolUse` registrations. A `ward.toml` that still names a removed check type is rejected with the unknown-type error that lists the valid types. `ward integrate <agent>` and `--remove` delete the Ward-owned guard files that earlier versions wrote. To keep approved files from agent edits, use the agent's own permission rules or repository protection such as CODEOWNERS.
 
-## [0.7.1] - 2026-11-12
+## 0.7.1 - 2026-11-12 (withdrawn)
+
+This release was withdrawn on 2026-11-15. It shipped rules written from rows of the Semgrep registry, whose license does not allow distribution; its binaries and its tag are removed. Ward 0.8.0 removed those rules.
 
 ### Fixed
 
 - A `break` or `continue` outside a loop, or a jump to a label that does not exist, no longer aborts the `ward` gate with `unexpected error`: the jump leaves the body like a `return`, and the other files and rules still run (#530).
 
-## [0.7.0] - 2026-11-11
+## 0.7.0 - 2026-11-11 (withdrawn)
+
+This release was withdrawn on 2026-11-15. It shipped rules written from rows of the Semgrep registry, whose license does not allow distribution; its binaries and its tag are removed. Ward 0.8.0 removed those rules.
 
 ### Added
 
@@ -216,7 +220,9 @@ still change behavior. Breaking changes are called out under **Changed**.
   - `ward:java/declaration-order` now stands only for Checkstyle's `DeclarationOrder`; PMD's `FieldDeclarationsShouldBeAtStartOfClass`, which the same rule used to mirror, is the new rule `ward:java/field-declarations-should-be-at-start-of-class` (a field after a method, constructor or nested type; initializer blocks and nested enums may come first).
   - `ward:java/string-instantiation` reports only `new String(value)` with a `String` argument, as PMD does, and no longer a `String` built from bytes or characters.
 
-## [0.6.0] - 2026-11-10
+## 0.6.0 - 2026-11-10 (withdrawn)
+
+This release was withdrawn on 2026-11-15. It shipped rules written from rows of the Semgrep registry, whose license does not allow distribution; its binaries and its tag are removed. Ward 0.8.0 removed those rules.
 
 ### Added
 
@@ -493,10 +499,7 @@ Initial release, published as `sentinel-ai`.
 
 [0.9.1]: https://github.com/RicardoRB/ward-ai/compare/v0.9.0...v0.9.1
 [0.9.0]: https://github.com/RicardoRB/ward-ai/compare/v0.8.0...v0.9.0
-[0.8.0]: https://github.com/RicardoRB/ward-ai/compare/v0.7.1...v0.8.0
-[0.7.1]: https://github.com/RicardoRB/ward-ai/compare/v0.7.0...v0.7.1
-[0.7.0]: https://github.com/RicardoRB/ward-ai/compare/v0.6.0...v0.7.0
-[0.6.0]: https://github.com/RicardoRB/ward-ai/compare/v0.5.0...v0.6.0
+[0.8.0]: https://github.com/RicardoRB/ward-ai/compare/v0.5.0...v0.8.0
 [0.5.0]: https://github.com/RicardoRB/ward-ai/compare/v0.4.1...v0.5.0
 [0.4.1]: https://github.com/RicardoRB/ward-ai/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/RicardoRB/ward-ai/compare/v0.3.0...v0.4.0
