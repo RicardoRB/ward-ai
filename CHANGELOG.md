@@ -30,7 +30,6 @@ still change behavior. Breaking changes are called out under **Changed**.
 - `ward:java/premature-declaration` stops at a statement with a call or a creation that does not throw, as PMD does, and no longer reads the words `return` and `throw` inside string literals and text blocks.
 - `ward:java/assignment-in-operand` ignores `=`, `++` and `--` inside string and character literals of the condition.
 - `ward:java/avoid-branching-statement-as-last-in-loop` decides on the last statement's syntax node, so a call such as `returnsOf(x);` is no longer taken for a `return`; it also covers `do` loops.
-- `ward:java/avoid-instantiating-objects-in-loops`: no rule change; the repository's own finding was fixed in the code.
 - `ward:java/preserve-stack-trace` reports only `throw new ...` in a catch block, not the rethrow of an existing exception, and a nested catch clause answers for its own throws.
 - `ward:java/use-try-with-resources` reports `x.close()` in a `finally` block only when the type of `x` is known to be `AutoCloseable`; an `XMLStreamReader` is no longer reported. The rule now has the `TYPES` capability.
 - `ward:java/avoid-throwing-new-instance-of-same-exception` reports only `throw new X(e)` with the caught exception as the sole argument; `throw new X("context", e)` adds context and is not reported.
