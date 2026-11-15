@@ -60,7 +60,7 @@ class JavaCorpusSmokeTest {
           + " labelled, so its tp, fp and un describe the sample.\n"
           + "# The cost of the run is in java-corpus-cost.txt.\n"
           + "# Regenerate: ./mvnw -pl ward-cli -am -Dtest=JavaCorpusSmokeTest"
-          + " -Dward.corpus.java=<dir> -Dward.benchmark.write=true"
+          + " -Dward.corpus.java=<dir> -Djacoco.skip=true -Dward.benchmark.write=true"
           + " -Dsurefire.failIfNoSpecifiedTests=false test\n";
 
   /** A finding in a place of the source. */

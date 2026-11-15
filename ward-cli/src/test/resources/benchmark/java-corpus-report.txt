@@ -3,7 +3,7 @@
 # spring-petclinic 500158f732419217507c7656904b8e6aa1bcc0d6, archive sha-256 4932ae0209375b3cca3dd7c8f6f9345498d75dedc5970dcfa91814f1b830768d.
 # A labelled finding is true (tp), false (fp) or undetermined (un), as read from the code at its line; the labels are in java-corpus-labels.txt. A rule with more than 3 findings has a sample of at least 3 labelled, so its tp, fp and un describe the sample.
 # The cost of the run is in java-corpus-cost.txt.
-# Regenerate: ./mvnw -pl ward-cli -am -Dtest=JavaCorpusSmokeTest -Dward.corpus.java=<dir> -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
+# Regenerate: ./mvnw -pl ward-cli -am -Dtest=JavaCorpusSmokeTest -Dward.corpus.java=<dir> -Djacoco.skip=true -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
 commons-lang | files 638 | not analysed 0
 spring-petclinic | files 50 | not analysed 0
 rules 1058 | not run (need type facts) 249 | findings 28153

@@ -1,7 +1,7 @@
 # Cost of Ward on the Java corpus of JavaCorpusSmokeTest (#564). Hand-written from one measured run; no test compares it.
 # Measured 2026-11-15 with the jar of this change (java -jar ward.jar, OpenJDK 25.0.4, default heap), on an Apple M4 with
-# 10 cores and 32 GB, through /usr/bin/time -l. Other builds ran on the machine at the same time, so the wall times are
-# upper bounds; the user CPU time is beside each.
+# 10 cores and 32 GB, through /usr/bin/time -l. Other builds ran on the machine at the same time and the load average
+# was not recorded (it was well above 3), so the wall times are upper bounds; the user CPU time is beside each.
 # Rule set: preset standard, languages java, plus every Java security rule (1,058 rules), default options.
 # Each project had only a ward.toml with the ward check and that ward-rules.toml; nothing of the project was built.
 #
