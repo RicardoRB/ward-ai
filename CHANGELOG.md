@@ -8,6 +8,10 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Added
+
+- `ward:java/class-fan-out-complexity` gets the option `counting`: `checkstyle` (the default) counts every referenced or created type, `pmd` counts what PMD's `CouplingBetweenObjects` counts, the distinct declared types of fields, variables, parameters, loop variables, resources and return types, without primitives and `java.lang` types (#347).
+
 ### Fixed
 
 - `ward:java/collection-incompatible-type` no longer reports `List<UUID>.get(int)`: `get`, `getOrDefault`, `containsKey` and `containsValue` apply only to `Map` types and `indexOf` and `lastIndexOf` only to `List` types (#573). A `methods` entry of `incompatible-argument` may end with `@key` to name the declaring types it applies to.

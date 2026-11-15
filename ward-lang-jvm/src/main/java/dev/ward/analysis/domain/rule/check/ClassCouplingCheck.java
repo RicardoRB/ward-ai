@@ -22,6 +22,76 @@ public final class ClassCouplingCheck implements RuleCheck {
   private static final char GENERICS = '<';
   private static final char PACKAGE_SEPARATOR = '.';
 
+  /** How the types of a class are counted. */
+  public enum Counting {
+    /** Every referenced or created type, as Checkstyle's class fan-out complexity does. */
+    CHECKSTYLE,
+    /** The declared types of fields, variables, parameters and returns, as PMD does. */
+    PMD
+  }
+
+  private static final String TYPE_TYPE = "typeType";
+  private static final String METHOD = "methodDeclaration";
+  private static final String ARRAY = "[]";
+  private static final Set<String> DECLARATIONS =
+      Set.of(
+          "fieldDeclaration",
+          "localVariableDeclaration",
+          "formalParameter",
+          "enhancedForControl",
+          "resource");
+  private static final Set<String> TYPE_PARTS = Set.of(TYPE_TYPE, "classOrInterfaceType");
+  private static final Set<String> JAVA_LANG =
+      Set.of(
+          "Boolean",
+          "Byte",
+          "Character",
+          "Class",
+          "Double",
+          "Enum",
+          "Exception",
+          "Float",
+          "Integer",
+          "Iterable",
+          "Long",
+          "Number",
+          "Object",
+          "Record",
+          "Runnable",
+          "Short",
+          "String",
+          "StringBuilder",
+          "StringBuffer",
+          "Thread",
+          "Throwable",
+          "Void",
+          "var",
+          "boolean",
+          "byte",
+          "char",
+          "double",
+          "float",
+          "int",
+          "long",
+          "short",
+          "void",
+          "RuntimeException",
+          "IllegalArgumentException",
+          "IllegalStateException",
+          "UnsupportedOperationException",
+          "Comparable",
+          "CharSequence",
+          "AutoCloseable",
+          "Math",
+          "System",
+          "Error",
+          "Override",
+          "Deprecated",
+          "SuppressWarnings",
+          "FunctionalInterface",
+          "SafeVarargs");
+
+  private final Counting counting;
   private final Set<String> typeKinds;
   private final Set<String> excluded;
   private final int max;
@@ -41,6 +111,26 @@ public final class ClassCouplingCheck implements RuleCheck {
       final Set<String> excluded,
       final int max,
       final String message) {
+    this(Counting.CHECKSTYLE, typeKinds, excluded, max, message);
+  }
+
+  /**
+   * Creates the check with the given way of counting.
+   *
+   * @param counting how the types are counted
+   * @param typeKinds the node kinds whose text names a type; unused for {@link Counting#PMD}
+   * @param excluded the simple names that do not count; unused for {@link Counting#PMD}
+   * @param max the largest allowed count
+   * @param message the message; {@code {value}} and {@code {max}} are filled in
+   * @throws IllegalArgumentException if {@code max} is negative
+   */
+  public ClassCouplingCheck(
+      final Counting counting,
+      final Set<String> typeKinds,
+      final Set<String> excluded,
+      final int max,
+      final String message) {
+    this.counting = Objects.requireNonNull(counting, "counting");
     this.typeKinds = Set.copyOf(typeKinds);
     this.excluded = Set.copyOf(excluded);
     this.max = CheckSupport.nonNegative(max, "max");
@@ -70,7 +160,11 @@ public final class ClassCouplingCheck implements RuleCheck {
 
   private Set<String> typesOf(final SyntaxNode node) {
     final Set<String> types = new HashSet<>();
-    collect(node, types);
+    if (counting == Counting.PMD) {
+      declared(node, types);
+    } else {
+      collect(node, types);
+    }
     return types;
   }
 
@@ -83,6 +177,33 @@ public final class ClassCouplingCheck implements RuleCheck {
           && !TYPE_ARGUMENTS.equals(child.kind())) {
         collect(child, types);
       }
+    }
+  }
+
+  /** Collects the declared types of the class, leaving the nested types to themselves. */
+  private static void declared(final SyntaxNode node, final Set<String> types) {
+    for (final SyntaxNode child : node.children()) {
+      if (DECLARATIONS.contains(child.kind())) {
+        child.children().stream()
+            .filter(part -> TYPE_PARTS.contains(part.kind()))
+            .findFirst()
+            .ifPresent(type -> addDeclared(SyntaxWalk.text(type), types));
+      } else if (METHOD.equals(child.kind()) && !child.children().isEmpty()) {
+        addDeclared(SyntaxWalk.text(child.children().get(0)), types);
+      }
+      if (!DesignMembers.TYPE_KINDS.contains(child.kind())) {
+        declared(child, types);
+      }
+    }
+  }
+
+  private static void addDeclared(final String text, final Set<String> types) {
+    final String bare = text.replace(ARRAY, "");
+    final int generics = bare.indexOf(GENERICS);
+    final String raw = generics < 0 ? bare : bare.substring(0, generics);
+    final String simple = raw.substring(raw.lastIndexOf(PACKAGE_SEPARATOR) + 1);
+    if (!simple.isEmpty() && !JAVA_LANG.contains(simple)) {
+      types.add(generics < 0 ? simple : simple + bare.substring(generics));
     }
   }
 
