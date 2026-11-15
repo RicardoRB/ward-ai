@@ -16,8 +16,6 @@ public final class ConstantsInInterfaceCheck implements UnitCheck {
 
   private static final Set<String> METHODS =
       Set.of("interfaceMethodDeclaration", "genericInterfaceMethodDeclaration");
-  private static final Set<String> SERIAL_NAMES =
-      Set.of("serialVersionUID", "serialPersistentFields");
 
   private final String message;
 
