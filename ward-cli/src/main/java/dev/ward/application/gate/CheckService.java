@@ -65,7 +65,10 @@ public class CheckService {
 
   /** Runs the default profile gates except {@code excludedGates}, without progress output. */
   public CheckReport checkExcluding(final Path start, final Set<String> excludedGates) {
-    return check(start, List.of(), CheckProgressListener.NO_OP, false, excludedGates);
+    return checkWith(
+        start,
+        new CheckRunOptions(List.of(), CheckProgressListener.NO_OP, false, excludedGates)
+    );
   }
 
   /** Runs a partial check of the {@code edit} profile, without progress output. */
@@ -138,7 +141,7 @@ public class CheckService {
                       )
               )
               .toList();
-      return runner.run(project, skipped, options.listener(), options.failFast());
+      return runner.run(project, skipped, options);
     }
     final PartialCheckPlan plan =
         paths.isEmpty()
@@ -163,11 +166,7 @@ public class CheckService {
                 + plan.count(PartialCheckPlan.Scope.FULL)
     );
     final List<QualityGate> gates = PartialGates.create(selected.get(), plan, gateFactory, project);
-    return PartialGates.scoped(
-        runner.run(project, gates, options.listener(), options.failFast()),
-        plan,
-        paths
-    );
+    return PartialGates.scoped(runner.run(project, gates, options), plan, paths);
   }
 
   /**
@@ -210,26 +209,28 @@ public class CheckService {
       final CheckProgressListener listener,
       final boolean failFast
   ) {
-    return check(start, requestedProfiles, listener, failFast, Set.of());
+    return checkWith(
+        start,
+        new CheckRunOptions(
+            requestedProfiles == null ? List.of() : requestedProfiles,
+            listener,
+            failFast,
+            Set.of()
+        )
+    );
   }
 
   /**
-   * Runs the selected gates except {@code excludedGates}. When the exclusion alone leaves nothing
-   * enabled, the report is empty rather than an error, because the excluded gates run elsewhere.
+   * Runs the gates that {@code options} selects, up to {@code options.jobs()} at once. The {@code
+   * edit} profile without paths runs as a partial check. When the excluded gates alone leave
+   * nothing enabled, the report is empty rather than an error, because they run elsewhere.
    */
-  public CheckReport check(
-      final Path start,
-      final List<String> requestedProfiles,
-      final CheckProgressListener listener,
-      final boolean failFast,
-      final Set<String> excludedGates
-  ) {
-    if (requestedProfiles != null && requestedProfiles.contains(EditProfile.NAME)) {
-      return checkPartial(
-          start,
-          List.of(),
-          new CheckRunOptions(requestedProfiles, listener, failFast, excludedGates)
-      );
+  public CheckReport checkWith(final Path start, final CheckRunOptions options) {
+    final List<String> requestedProfiles = options.profiles();
+    final Set<String> excludedGates = options.excludedGates();
+    final boolean failFast = options.failFast();
+    if (requestedProfiles.contains(EditProfile.NAME)) {
+      return checkPartial(start, List.of(), options);
     }
     final Project project = detector.detect(start).orElseThrow(ProjectNotFoundException::new);
     final Optional<WardConfiguration> selected =
@@ -247,13 +248,13 @@ public class CheckService {
                   + " gates="
                   + gates.size()
       );
-      own = runner.run(project, gates, listener, failFast);
+      own = runner.run(project, gates, options);
     }
     return OwnLanguageMemberChecks.checkAll(
         own,
         OwnLanguageMemberChecks.directories(project, partialPorts.members()),
         failFast,
-        directory -> check(directory, requestedProfiles, listener, failFast, excludedGates)
+        directory -> checkWith(directory, options)
     );
   }
 }

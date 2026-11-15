@@ -8,6 +8,10 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Added
+
+- `ward check --jobs <n>` runs up to `n` checks at once, and `--jobs auto` one per processor; the environment variable `WARD_JOBS` sets the same value for Git hooks and CI (#577). `ward-format`, `secrets`, and `ward` without `java-classpath` run next to any other check; every other check still runs one at a time in the order of `ward.toml`. The report, the order of the checks and the exit code do not depend on the value. Without the option nothing changes.
+
 ### Changed
 
 - This repository checks its own Java with the `ward` and `ward-format` gates instead of the Checkstyle, PMD, SpotBugs and Spotless Maven plugins (#347, #470). Its sources are formatted with `ward format`.

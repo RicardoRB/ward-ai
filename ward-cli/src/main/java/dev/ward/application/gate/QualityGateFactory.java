@@ -144,12 +144,12 @@ public class QualityGateFactory {
     return configuration.checks().values().stream()
         .<QualityGate> map(
             check ->
-                new TypedQualityGate(
-                    check.type(),
-                    check.enabled()
-                        ? createGate(check, project, focus.getOrDefault(check.name(), List.of()))
-                        : new SkippedQualityGate(check.name())
-                )
+                check.enabled()
+                    ? TypedQualityGate.of(
+                        check,
+                        createGate(check, project, focus.getOrDefault(check.name(), List.of()))
+                    )
+                    : new TypedQualityGate(check.type(), new SkippedQualityGate(check.name()))
         )
         .toList();
   }
