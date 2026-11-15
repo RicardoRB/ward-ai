@@ -41,16 +41,13 @@ jobs:
           java-version: '25'
 
       # The key changes with the POMs. The restore key lets a run with new POMs start from the last
-      # cache instead of downloading everything at once, which Maven Central limits (429). The second
-      # restore key reads the caches that setup-java saved before this step existed.
+      # cache instead of downloading everything at once, which Maven Central limits (429).
       - name: Cache the Maven repository
         uses: actions/cache@v5
         with:
           path: ~/.m2/repository
           key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml') }}
-          restore-keys: |
-            maven-${{ runner.os }}-
-            setup-java-${{ runner.os }}-
+          restore-keys: maven-${{ runner.os }}-
 
       - name: Verify tag matches Maven version
         shell: bash
@@ -103,16 +100,13 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       # The key changes with the POMs. The restore key lets a run with new POMs start from the last
-      # cache instead of downloading everything at once, which Maven Central limits (429). The second
-      # restore key reads the caches that setup-java saved before this step existed.
+      # cache instead of downloading everything at once, which Maven Central limits (429).
       - name: Cache the Maven repository
         uses: actions/cache@v5
         with:
           path: ~/.m2/repository
           key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml') }}
-          restore-keys: |
-            maven-${{ runner.os }}-
-            setup-java-${{ runner.os }}-
+          restore-keys: maven-${{ runner.os }}-
 
       - name: Build native executable
         run: ./mvnw -q -Pnative -DskipTests native:compile
