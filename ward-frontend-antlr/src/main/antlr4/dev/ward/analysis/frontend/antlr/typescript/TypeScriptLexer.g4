@@ -109,6 +109,8 @@ BitXorAssign               : '^=';
 BitOrAssign                : '|=';
 PowerAssign                : '**=';
 NullishCoalescingAssign    : '??=';
+LogicalOrAssign            : '||=';
+LogicalAndAssign           : '&&=';
 ARROW                      : '=>';
 
 /// Null Literals
@@ -170,6 +172,7 @@ Try        : 'try';
 As         : 'as';
 Satisfies  : 'satisfies';
 Accessor   : 'accessor';
+Override   : 'override';
 Get        : 'get';
 Set        : 'set';
 Using      : 'using';
@@ -300,7 +303,7 @@ fragment SingleStringCharacter: ~['\\\r\n] | '\\' EscapeSequence | LineContinuat
 
 fragment EscapeSequence:
     CharacterEscapeSequence
-    | '0' // no digit ahead! TODO
+    | [0-9] // `\0`, and the legacy octal and `\8`, `\9` escapes of sloppy mode; more digits are plain characters
     | HexEscapeSequence
     | UnicodeEscapeSequence
     | ExtendedUnicodeEscapeSequence

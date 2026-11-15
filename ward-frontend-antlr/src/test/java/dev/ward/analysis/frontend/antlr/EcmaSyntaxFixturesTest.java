@@ -38,6 +38,22 @@ class EcmaSyntaxFixturesTest {
   private static final Map<String, List<String>> TYPESCRIPT_KINDS =
       Map.ofEntries(
           Map.entry("accessor-field.ts", List.of("accessorModifier")),
+          Map.entry("class-modifiers.ts", List.of("overrideModifier", "propertyMemberBase")),
+          Map.entry("definite-assignment.ts", List.of("variableDeclaration", "'!'")),
+          Map.entry("generator-forms.ts", List.of("yieldStatement", "typeParameters")),
+          Map.entry("generic-arrow.ts", List.of("arrowFunctionDeclaration", "typeParameters")),
+          Map.entry("keyof-cast.ts", List.of("asExpression", "variableStatement")),
+          Map.entry("keyword-variable-names.ts", List.of("variableStatement")),
+          Map.entry("legacy-escapes.ts", List.of("StringLiteral")),
+          Map.entry("logical-assignment.ts", List.of("assignmentOperator")),
+          Map.entry(
+              "mapped-types.ts",
+              List.of("mappedType", "mappedTypeModifier", "mappedTypeOptional")
+          ),
+          Map.entry(
+              "type-parameter-defaults.ts",
+              List.of("constraint", "callSignature", "tupleElementType")
+          ),
           Map.entry("as-types.ts", List.of("asExpression", "tupleElementType")),
           Map.entry("call-in-arrow-block.ts", List.of("arrowFunctionBody", "functionBody")),
           Map.entry(
@@ -100,6 +116,8 @@ class EcmaSyntaxFixturesTest {
   private static final Map<String, List<String>> JAVASCRIPT_KINDS =
       Map.ofEntries(
           Map.entry("accessor-field.js", List.of("accessorModifier")),
+          Map.entry("legacy-escapes.js", List.of("StringLiteral")),
+          Map.entry("logical-assignment.js", List.of("assignmentOperator")),
           Map.entry("decorators.js", List.of("decorator")),
           Map.entry("export-named.js", List.of("exportAliasName")),
           Map.entry("import-attributes.js", List.of("importAttributes")),
