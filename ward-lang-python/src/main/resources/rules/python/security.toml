@@ -108,6 +108,6 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["atom_expr", "expr_stmt"]
-text = '^(?:hashlib\.(?:md5|sha1|sha224|sha256|sha384|sha512)|md5|sha1)\(\w*(?:password|passwd|pwd)\w*(?:\.encode\([^()]*\))?\)(?:\.\w+\(\))?$|^(?:\w+\.)*make_password\(.*\bhasher=["\x27](?:md5|sha1|unsalted_md5|unsalted_sha1)["\x27].*\)$|^PASSWORD_HASHERS=\[.*(?:Unsalted)?(?:MD5|SHA1)PasswordHasher'
+text = '^(?:hashlib\.(?:md5|sha1|sha224|sha256|sha384|sha512)|md5|sha1)\(\w*(?:password|passwd|pwd)\w*(?:\.encode\([^()]*\))?\)(?:\.\w+\(\))?$|^(?:\w+\.)*make_password\(.*\bhasher=["\x27](?:md5|sha1|unsalted_md5|unsalted_sha1)["\x27].*\)$|^PASSWORD_HASHERS=\[.*\.(?:Unsalted)?(?:MD5|SHA1)PasswordHasher'
 message = "a plain or weak hash is not a password hash; use a slow, salted one such as scrypt, argon2 or the Django hashers"
 '''

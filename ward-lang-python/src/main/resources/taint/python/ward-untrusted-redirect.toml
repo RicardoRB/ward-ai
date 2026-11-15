@@ -41,3 +41,21 @@ receiver = "urllib.parse"
 kind = "call"
 name = "url_has_allowed_host_and_scheme"
 
+
+# A value that these encode can only be a part of the query string, never the host.
+[[sanitizers]]
+kind = "call"
+name = "quote_plus"
+
+[[sanitizers]]
+kind = "call"
+name = "urlencode"
+
+# The path of a route of the application itself, whatever its arguments are.
+[[sanitizers]]
+kind = "call"
+name = "reverse"
+
+[[sanitizers]]
+kind = "call"
+name = "url_for"

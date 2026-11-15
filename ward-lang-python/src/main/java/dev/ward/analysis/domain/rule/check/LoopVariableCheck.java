@@ -31,6 +31,8 @@ public final class LoopVariableCheck implements RuleCheck {
   private static final String UNDERSCORE = "_";
   private static final Set<String> BINDERS = Set.of("import", ",", "as");
   private static final Set<String> IMPORTS = Set.of("import_name", "import_from");
+  private static final Set<String> DEFINITIONS = Set.of("funcdef", "classdef");
+  private static final Pattern F_STRING = Pattern.compile("^(?i:f|rf|fr)[\"'][\\s\\S]*\\{");
 
   private final Problem problem;
   private final String message;
@@ -82,7 +84,14 @@ public final class LoopVariableCheck implements RuleCheck {
   private static boolean uses(final String name, final List<SyntaxNode> nodes) {
     return nodes.stream()
         .flatMap(node -> SyntaxWalk.leaves(node).stream())
-        .anyMatch(leaf -> name.equals(SyntaxWalk.text(leaf)));
+        .map(SyntaxWalk::text)
+        .anyMatch(text -> name.equals(text) || formats(text, name));
+  }
+
+  /** Tells whether {@code text} is an f-string that may read {@code name} in a replacement field. */
+  private static boolean formats(final String text, final String name) {
+    return F_STRING.matcher(text).find()
+        && Pattern.compile("(?<![\\w.])" + Pattern.quote(name) + "(?!\\w)").matcher(text).find();
   }
 
   /** The first block of the loop, which holds the body. */
@@ -103,14 +112,13 @@ public final class LoopVariableCheck implements RuleCheck {
 
   /**
    * The names that module-level imports bind: the first name after {@code import}, and any {@code
-   * as} alias.
+   * as} alias. An import inside a function or a class binds a name of that scope only.
    */
   private static List<String> importedNames(final SyntaxNode root) {
     final List<String> names = new ArrayList<>();
-    for (final SyntaxNode statement : root.children()) {
-      if (SyntaxWalk.descendants(statement).stream()
-          .anyMatch(node -> IMPORTS.contains(node.kind()))) {
-        names.addAll(bound(statement));
+    for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, IMPORTS)) {
+      if (visit.ancestors().stream().noneMatch(node -> DEFINITIONS.contains(node.kind()))) {
+        names.addAll(bound(visit.node()));
       }
     }
     return names;

@@ -53,6 +53,25 @@ class PythonFormatSyntaxTest {
   }
 
   @Test
+  void blankLinesAtTheEndDoNotChangeTheTokens() {
+    final PythonFormatSyntax syntax = new PythonFormatSyntax();
+    final String body = "def one():\n    return 1\n";
+
+    assertThat(syntax.parse("x = 1\n\n\n").tokens()).isEqualTo(syntax.parse("x = 1\n").tokens());
+    assertThat(syntax.parse(body + "\n").tokens()).isEqualTo(syntax.parse(body).tokens());
+  }
+
+  @Test
+  void formatsASourceThatEndsWithBlankLines() {
+    final FormatSafety safety = new FormatSafety(new PythonFormatSyntax());
+
+    final FormatResult result =
+        safety.formatSafely(new PythonFormatter(), OPTIONS, "def one():\n    return 1\n\n\n");
+
+    assertThat(result).isEqualTo(new FormatResult.Formatted("def one():\n    return 1\n"));
+  }
+
+  @Test
   void refusesAnUnknownCharacter() {
     final FormatSafety safety = new FormatSafety(new PythonFormatSyntax());
 

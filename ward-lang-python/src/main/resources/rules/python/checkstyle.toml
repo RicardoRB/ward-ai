@@ -43,7 +43,7 @@ body = '''
 check = "identifier-pattern"
 kinds = ["funcdef"]
 name = "NAME"
-pattern = "^_*[a-z][a-z0-9_]*_*$"
+pattern = "^(?:_*[a-z][a-z0-9_]*_*|setUp|tearDown|setUpClass|tearDownClass|setUpModule|tearDownModule|asyncSetUp|asyncTearDown|setUpTestData)$"
 message = "function name '{value}' must be snake_case"
 '''
 
@@ -126,9 +126,8 @@ severity = "error"
 category = "style"
 presets = ["standard", "strict"]
 body = '''
-check = "text-pattern"
-target = "lines"
-pattern = "^(?:[^'\"#]|'[^']*'|\"[^\"]*\")*;"
+check = "forbidden-node"
+kinds = ["simple_stmts>';'"]
 message = "more than one statement on a line"
 '''
 

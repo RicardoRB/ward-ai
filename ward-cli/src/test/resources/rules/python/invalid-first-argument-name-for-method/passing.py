@@ -10,3 +10,10 @@ class A:
 class M(type):
     def m(cls):
         pass
+
+
+class Model:
+    @validator("size")
+    @classmethod
+    def check_size(cls, value):
+        return value
