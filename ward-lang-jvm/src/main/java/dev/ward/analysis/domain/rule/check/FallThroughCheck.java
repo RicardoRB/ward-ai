@@ -7,20 +7,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * Reports a case group with statements whose last statement neither leaves the switch nor continues
  * the loop, when another case group or trailing label follows it. The check reports at the label
  * that the falling-through group runs into. The user option is {@code check-last-group}, which also
  * checks the last group. Shortcut: a statement counts as leaving only when it is a {@code break},
- * {@code continue}, {@code return}, {@code throw} or {@code yield} statement; an if statement whose
- * branches all leave is still reported.
+ * {@code continue}, {@code return}, {@code throw} or {@code yield} statement, or a block that ends
+ * in one; an if statement whose branches all leave is still reported. A comment between the last
+ * statement and the next label that says {@code fall through}, {@code falls-through} or {@code
+ * fallthru} marks the fall-through as meant, as it does for Checkstyle's FallThrough.
  */
 public final class FallThroughCheck implements UnitCheck {
   private static final String SWITCH = "'switch'";
   private static final String GROUP = "switchBlockStatementGroup";
   private static final String LABEL = "switchLabel";
   private static final String STATEMENT = "blockStatement";
+  private static final String BLOCK = "block";
+  private static final Pattern MARKED =
+      Pattern.compile("falls?[ -]?thr(?:u|ough)", Pattern.CASE_INSENSITIVE);
   private static final Set<String> LEAVING =
       Set.of("'break'", "'continue'", "'return'", "'throw'", "'yield'");
 
@@ -43,13 +49,17 @@ public final class FallThroughCheck implements UnitCheck {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("statement"))) {
       if (visit.node().children().stream().anyMatch(c -> SWITCH.equals(c.kind()))) {
-        fallThroughs(visit.node(), matches);
+        fallThroughs(visit.node(), file, matches);
       }
     }
     return List.copyOf(matches);
   }
 
-  private void fallThroughs(final SyntaxNode switchNode, final List<RuleMatch> matches) {
+  private void fallThroughs(
+      final SyntaxNode switchNode,
+      final SourceFile file,
+      final List<RuleMatch> matches
+  ) {
     final List<Group> groups = groups(switchNode);
     for (int index = 0; index < groups.size(); index++) {
       final Group group = groups.get(index);
@@ -58,10 +68,36 @@ public final class FallThroughCheck implements UnitCheck {
         continue;
       }
       final SyntaxNode lastStatement = group.statements().get(group.statements().size() - 1);
-      if (!LEAVING.contains(firstLeaf(lastStatement).kind())) {
-        matches.add(CheckSupport.at(reportSpan(groups, index), message));
+      final Span next = reportSpan(groups, index);
+      final boolean meant = !last && marked(file, lastStatement.span(), next);
+      if (!leaves(lastStatement) && !meant) {
+        matches.add(CheckSupport.at(next, message));
       }
     }
+  }
+
+  /** A statement leaves when it is a leaving statement or a block whose last statement leaves. */
+  private static boolean leaves(final SyntaxNode statement) {
+    if (LEAVING.contains(firstLeaf(statement).kind())) {
+      return true;
+    }
+    final List<SyntaxNode> inner =
+        statement.children().stream()
+            .filter(child -> "statement".equals(child.kind()))
+            .flatMap(child -> child.children().stream())
+            .filter(child -> BLOCK.equals(child.kind()))
+            .flatMap(block -> block.children().stream())
+            .filter(child -> STATEMENT.equals(child.kind()))
+            .toList();
+    return !inner.isEmpty() && leaves(inner.get(inner.size() - 1));
+  }
+
+  private static boolean marked(final SourceFile file, final Span statement, final Span label) {
+    final String text = file.text();
+    final boolean readable =
+        statement.endOffset() <= label.startOffset() && label.startOffset() <= text.length();
+    return readable
+        && MARKED.matcher(text.substring(statement.endOffset(), label.startOffset())).find();
   }
 
   private static SyntaxNode firstLeaf(final SyntaxNode node) {

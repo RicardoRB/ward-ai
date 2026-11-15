@@ -18,8 +18,6 @@ public final class NonRuntimeAnnotationCheck implements RuleCheck {
   private static final String ANNOTATION_TYPE = "annotationTypeDeclaration";
   private static final String IDENTIFIER = "identifier";
   private static final String EXPRESSION = "expression";
-  private static final String RETENTION = "Retention";
-  private static final Pattern RUNTIME = Pattern.compile("RUNTIME\\)?$");
   private static final Pattern LOOKUP =
       Pattern.compile(
           "\\.(?:isAnnotationPresent|getAnnotation|getDeclaredAnnotation|getAnnotationsByType|"
@@ -56,18 +54,7 @@ public final class NonRuntimeAnnotationCheck implements RuleCheck {
   private static Set<String> nonRuntime(final SyntaxNode root) {
     final Set<String> names = new java.util.HashSet<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(ANNOTATION_TYPE))) {
-      final boolean runtime =
-          visit.ancestors().stream()
-              .reduce((first, second) -> second)
-              .map(AnnotationTexts::of)
-              .orElse(List.of())
-              .stream()
-              .anyMatch(
-                  text ->
-                      RETENTION.equals(AnnotationTexts.simpleName(text))
-                          && RUNTIME.matcher(text).find()
-              );
-      if (!runtime) {
+      if (!AnnotationRetention.runtime(visit)) {
         visit.node().children().stream()
             .filter(child -> IDENTIFIER.equals(child.kind()))
             .findFirst()

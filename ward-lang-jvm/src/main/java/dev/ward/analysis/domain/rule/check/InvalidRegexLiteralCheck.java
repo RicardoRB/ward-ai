@@ -20,7 +20,7 @@ public final class InvalidRegexLiteralCheck implements UnitCheck {
   private static final Pattern ESCAPE = Pattern.compile("\\\\(.)");
   private static final Pattern CALL =
       Pattern.compile(
-          "^(compile|matches|split|replaceAll|replaceFirst)\\((\"(?:[^\"\\\\]|\\\\.)*\")"
+          "^(compile|matches|split|replaceAll|replaceFirst)\\((\"(?:[^\"\\\\]|\\\\.)*+\")"
       );
 
   private final String message;

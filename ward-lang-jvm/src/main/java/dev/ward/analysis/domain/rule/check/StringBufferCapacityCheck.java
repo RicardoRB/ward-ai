@@ -25,7 +25,7 @@ public final class StringBufferCapacityCheck implements UnitCheck {
       Pattern.compile(
           "^(?:java\\.lang\\.)?(StringBuilder|StringBuffer)(\\w+)=new(?:java\\.lang\\.)?\\1\\(\\);$"
       );
-  private static final String LITERAL_APPEND = "\\.append\\(\"((?:[^\"\\\\]|\\\\.)*)\"\\);$";
+  private static final String LITERAL_APPEND = "\\.append\\(\"((?:[^\"\\\\]|\\\\.)*+)\"\\);$";
 
   private final String message;
 

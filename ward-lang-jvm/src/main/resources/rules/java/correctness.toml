@@ -134,7 +134,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["classBodyDeclaration"]
-text = 'booleanhasNext\(\)[^{]*\{[\s\S]*next\s*\('
+text = '^(?:@[\w.]+|public|final|synchronized)*booleanhasNext\(\)[^{]*\{[\s\S]*(?:(?<![\w.])|this\.)next\('
 message = "hasNext() calls next(), which moves the iterator"
 '''
 
@@ -260,7 +260,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["classBodyDeclaration"]
-text = 'booleanequals\(\s*(final)?(?!Object)[\w.<>\[\]]+\w+\s*\)'
+text = 'booleanequals\(\s*(?:final)?+(?!(?:java\.lang\.)?Object)[\w.<>\[\]]+\w+\s*\)'
 message = "equals() does not override equals(Object), so collections never call it"
 '''
 
@@ -526,7 +526,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["expression"]
-text = '^(\w+)(&|\||\^|-|/|%)\1$'
+text = '^(?!(?:true|false)\b|\d)(\w+)(&|\||\^|-|/|%)\1$'
 message = "{value} combines a variable with itself"
 '''
 
@@ -1082,6 +1082,6 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["classDeclaration"]
-text = '^class(\w+)(?=[\s\S]*(?:void|int|long|boolean|String|Object)\1\()'
+text = '^class(\w+?)(?=(?:<[^{]*?>)?(?:extends|implements|permits|\{))(?=[\s\S]*(?:[{};)]|public|protected|private|static|final|abstract|synchronized)(?:void|int|long|boolean|String|Object)\1\()'
 message = "method has the name of its class; it is not a constructor"
 '''

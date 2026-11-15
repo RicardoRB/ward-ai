@@ -23,7 +23,7 @@ final class JavaLiteralSites {
 
   private static final Pattern WHOLE_VALUE =
       Pattern.compile(
-          "^\"((?:[^\"\\\\]|\\\\.)*)\"(?:\\.(?:getBytes|toCharArray)\\((?:[^()]|\\([^()]*\\))*\\))?$"
+          "^\"((?:[^\"\\\\]|\\\\.)*+)\"(?:\\.(?:getBytes|toCharArray)\\((?:[^()]|\\([^()]*\\))*+\\))?$"
       );
 
   private JavaLiteralSites() {}

@@ -9,7 +9,8 @@ import java.util.Set;
 
 /**
  * Reports a method whose first statement calls the method itself, with or without a {@code return}
- * before the call, so the call can never end.
+ * before the call, so the call can never end. A call that reaches an overload is not reported (see
+ * {@link SelfCall}).
  */
 public final class SelfRecursiveMethodCheck implements UnitCheck {
   private static final String METHOD = "methodDeclaration";
@@ -31,14 +32,15 @@ public final class SelfRecursiveMethodCheck implements UnitCheck {
   public List<RuleMatch> check(final SyntaxNode root, final SourceFile file) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(METHOD))) {
-      if (callsItselfFirst(visit.node())) {
+      if (callsItselfFirst(visit)) {
         matches.add(CheckSupport.at(visit.node().span(), message));
       }
     }
     return List.copyOf(matches);
   }
 
-  private static boolean callsItselfFirst(final SyntaxNode method) {
+  private static boolean callsItselfFirst(final SyntaxWalk.Visit visit) {
+    final SyntaxNode method = visit.node();
     final String name =
         method.children().stream()
             .filter(child -> IDENTIFIER.equals(child.kind()))
@@ -52,6 +54,7 @@ public final class SelfRecursiveMethodCheck implements UnitCheck {
             .map(SyntaxWalk::spacedText)
             .orElse("");
     return !name.isEmpty()
-        && (body.startsWith("{ " + name + " (") || body.startsWith("{ return " + name + " ("));
+        && (body.startsWith("{ " + name + " (") || body.startsWith("{ return " + name + " ("))
+        && SelfCall.reachesItself(visit, name, body);
   }
 }

@@ -12,4 +12,20 @@ final class Check {
     }
     return out;
   }
+
+  int open(final int value) {
+    int total = 0;
+    switch (value) {
+      case 1: {
+        total = 1;
+      }
+      case 2:
+        // adds two
+        total += 2;
+        break;
+      default:
+        break;
+    }
+    return total;
+  }
 }

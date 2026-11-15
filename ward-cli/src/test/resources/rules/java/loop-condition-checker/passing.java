@@ -18,4 +18,18 @@ class Passing {
   int count;
   void go() {
   }
+
+  void countDown(int n) {
+    int left = n;
+    while (--left >= 0) {
+      go();
+    }
+    for (int k = n; --k >= 0;) {
+      go();
+    }
+    int seen = 0;
+    while (seen++ < n) {
+      go();
+    }
+  }
 }

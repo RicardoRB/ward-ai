@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 public final class ForbiddenNodeCheck implements UnitCheck {
   private static final Set<String> KEYWORDS =
       Set.of(
+          "assert",
           "new",
           "if",
           "for",

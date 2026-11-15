@@ -356,7 +356,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["arrayCreatorRest"]
-parent-path = "creator>expression>variableInitializer"
+parent-path = "creator>expression>variableInitializer>variableDeclarator"
 text = '^\[\]+\{'
 message = "the declaration can use a short array initializer; drop new and the type"
 '''

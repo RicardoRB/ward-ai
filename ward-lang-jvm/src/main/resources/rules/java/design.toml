@@ -157,7 +157,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["expression"]
-text = '(?s)^!\((?!.*(&&|\|\||instanceof)).*(==|!=|<=|>=|<|>).*\)$'
+text = '(?s)^!\((?!\()(?!.*(&&|\|\||instanceof)).*(==|!=|<=|>=|<|>).*\)$'
 message = "negated comparison; use the opposite operator instead of !"
 '''
 
