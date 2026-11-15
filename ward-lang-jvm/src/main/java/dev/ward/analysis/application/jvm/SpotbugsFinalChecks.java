@@ -3,6 +3,7 @@ package dev.ward.analysis.application.jvm;
 import static java.util.Map.entry;
 
 import dev.ward.analysis.application.rule.CheckFactory;
+import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.JavaOverridableSecurityCheck;
 import dev.ward.analysis.domain.rule.check.JavaPutIfAbsentCheck;
@@ -17,6 +18,7 @@ import dev.ward.analysis.domain.rule.check.JavaUselessVoidMethodCheck;
 import dev.ward.analysis.domain.rule.check.JavaValueRangeCheck;
 import dev.ward.analysis.domain.rule.check.JavaWaitContextCheck;
 import java.util.Locale;
+import java.util.List;
 import java.util.Map;
 
 /** The checks of the last SpotBugs ports for Java, which read classes, locks and field use. */
@@ -28,6 +30,10 @@ final class SpotbugsFinalChecks {
 
   /** The checks this class provides, by name. */
   static Map<String, CheckFactory> checks() {
+    return CheckRegistry.union(List.of(serialAndStaticChecks(), conditionAndFieldChecks()));
+  }
+
+  private static Map<String, CheckFactory> serialAndStaticChecks() {
     return Map.ofEntries(
         entry(
             "serial-constructor",
@@ -52,7 +58,12 @@ final class SpotbugsFinalChecks {
         entry(
             "sync-set-unsync-get",
             toml -> new JavaSyncAccessorCheck(TomlValues.required(toml, MESSAGE))
-        ),
+        )
+    );
+  }
+
+  private static Map<String, CheckFactory> conditionAndFieldChecks() {
+    return Map.ofEntries(
         entry(
             "wait-context",
             toml ->

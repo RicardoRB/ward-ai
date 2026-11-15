@@ -38,6 +38,20 @@ final class JavaMatrixProcesses {
     assertThat(run(dir, command).exitCode()).as("git %s", String.join(" ", args)).isZero();
   }
 
+  static void commitAll(final Path project) throws IOException, InterruptedException {
+    git(project, "add", "-A");
+    git(
+        project,
+        "-c",
+        "user.name=ward",
+        "-c",
+        "user.email=ward@example.invalid",
+        "commit",
+        "-qm",
+        "init"
+    );
+  }
+
   /** Runs {@code command} with the cell's JDK as {@code JAVA_HOME} and first on {@code PATH}. */
   static CommandRun run(final Path dir, final List<String> command)
       throws IOException, InterruptedException {

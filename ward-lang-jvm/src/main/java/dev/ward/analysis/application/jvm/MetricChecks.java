@@ -37,10 +37,10 @@ final class MetricChecks {
 
   /** The checks this class provides, by name. */
   static Map<String, CheckFactory> checks() {
-    return CheckRegistry.union(List.of(build()));
+    return CheckRegistry.union(List.of(sizeChecks(), countChecks()));
   }
 
-  private static Map<String, CheckFactory> build() {
+  private static Map<String, CheckFactory> sizeChecks() {
     return Map.ofEntries(
         entry(
             "line-length",
@@ -64,7 +64,12 @@ final class MetricChecks {
             "npath",
             toml ->
                 new NPathCheck(TomlValues.integer(toml, MAX), TomlValues.required(toml, MESSAGE))
-        ),
+        )
+    );
+  }
+
+  private static Map<String, CheckFactory> countChecks() {
+    return Map.ofEntries(
         entry(
             "ncss",
             toml ->

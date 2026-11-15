@@ -171,45 +171,14 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
                 .collect(Collectors.toSet());
     final Set<String> rootGates =
         selected.stream().filter(gate -> !moduleGates.contains(gate)).collect(Collectors.toSet());
-    PomTools.TOOLS.stream()
-        .filter(tool -> selected.contains(tool.gate()))
-        .forEach(
-            tool ->
-                versions
-                    .unavailable(tool)
-                    .ifPresentOrElse(
-                        reason -> edit.warnings.add(tool.gate() + " omitted: " + reason),
-                        () -> {
-                          if (tool.module() && !edit.modules.isEmpty()) {
-                            PomModulePlacement.place(tool, preset, versions, edit);
-                          } else {
-                            PomToolPlacement.apply(tool, preset, versions, approval, edit);
-                          }
-                        }
-                    )
-        );
+    PomToolEdits.placeTools(edit, selected, versions, preset, approval);
     final String pinned =
         PresetPluginSnippets.pinLifecycle(edit.content, selected, preset, edit.details);
     if (!pinned.equals(edit.content) && edit.tools.isEmpty()) {
       edit.tools.add("default lifecycle plugin versions");
     }
     edit.content = pinned;
-    if (!edit.tools.isEmpty()) {
-      PomDeclarationValidator.validate(
-          edit.content,
-          PomTools.addedDeclarations(edit.original, edit.content, rootGates)
-      );
-    }
-    edit.modules.forEach(
-        module -> {
-          if (!module.tools.isEmpty()) {
-            PomDeclarationValidator.validate(
-                module.content,
-                PomTools.addedDeclarations(module.original, module.content, selected)
-            );
-          }
-        }
-    );
+    PomToolEdits.validateDeclarations(edit, selected, rootGates);
     return edit;
   }
 

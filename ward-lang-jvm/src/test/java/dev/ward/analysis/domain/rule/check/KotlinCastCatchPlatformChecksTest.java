@@ -64,6 +64,16 @@ final class KotlinCastCatchPlatformChecksTest {
         )
     )
         .isEmpty();
+  }
+
+  @Test
+  void unsafeCastIgnoresCastsWhereNeitherClassIsFinal() {
+    final String source = "fun f(s: String) {\n    val n = s as Target\n}\n";
+    final SyntaxNode root = KotlinTypedCheckFixtures.parse(source);
+    final SyntaxNode cast = KotlinTypedCheckFixtures.nodes(root, "typeRHS").get(0);
+    final KotlinUnsafeCastCheck check = new KotlinUnsafeCastCheck(MESSAGE);
+    final List<String> ancestors = List.of(OBJECT);
+    final SpanFacts string = KotlinCheckFactBuilders.typed(STRING, CLASS_KIND, true, ancestors);
     assertThat(
         check.matches(
             root,

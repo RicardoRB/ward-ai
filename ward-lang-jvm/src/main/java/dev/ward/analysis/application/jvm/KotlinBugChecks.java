@@ -3,6 +3,7 @@ package dev.ward.analysis.application.jvm;
 import static java.util.Map.entry;
 
 import dev.ward.analysis.application.rule.CheckFactory;
+import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.InvalidRangeCheck;
 import dev.ward.analysis.domain.rule.check.KotlinIgnoredReturnValueCheck;
@@ -17,6 +18,7 @@ import dev.ward.analysis.domain.rule.check.KotlinUnsafeCastCheck;
 import dev.ward.analysis.domain.rule.check.UnreachableStatementCheck;
 import dev.ward.analysis.domain.rule.check.UnusedUnaryOperatorCheck;
 import dev.ward.analysis.domain.types.Nullness;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,6 +32,10 @@ final class KotlinBugChecks {
 
   /** The checks this class provides, by name. */
   static Map<String, CheckFactory> checks() {
+    return CheckRegistry.union(List.of(valueBugChecks(), nullabilityBugChecks()));
+  }
+
+  private static Map<String, CheckFactory> valueBugChecks() {
     return Map.ofEntries(
         entry(
             "kotlin-invalid-range",
@@ -63,7 +69,12 @@ final class KotlinBugChecks {
                     TomlValues.strings(toml, "ignore-return-value-annotations"),
                     TomlValues.required(toml, MESSAGE)
                 )
-        ),
+        )
+    );
+  }
+
+  private static Map<String, CheckFactory> nullabilityBugChecks() {
+    return Map.ofEntries(
         entry(
             "kotlin-redundant-suspend",
             toml -> new KotlinRedundantSuspendCheck(TomlValues.required(toml, MESSAGE))

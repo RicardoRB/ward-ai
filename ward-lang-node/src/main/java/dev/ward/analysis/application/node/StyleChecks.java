@@ -39,11 +39,17 @@ final class StyleChecks {
 
   /** The checks this family provides, by name. */
   static Map<String, CheckFactory> checks() {
-    return Stream.concat(first().stream(), second().stream())
+    return Stream.of(
+        groupingChecks(),
+        fieldAndJavadocChecks(),
+        modernSyntaxChecks(),
+        constAndImportChecks()
+    )
+        .flatMap(List::stream)
         .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue));
   }
 
-  private static List<Map.Entry<String, CheckFactory>> first() {
+  private static List<Map.Entry<String, CheckFactory>> groupingChecks() {
     return List.of(
         Map.entry(
             "node-constructor-group",
@@ -70,7 +76,12 @@ final class StyleChecks {
                     toml.getBoolean("ignore-case", () -> false),
                     TomlValues.required(toml, MESSAGE)
                 )
-        ),
+        )
+    );
+  }
+
+  private static List<Map.Entry<String, CheckFactory>> fieldAndJavadocChecks() {
+    return List.of(
         Map.entry(
             "node-hidden-field",
             toml ->
@@ -124,7 +135,7 @@ final class StyleChecks {
     }
   }
 
-  private static List<Map.Entry<String, CheckFactory>> second() {
+  private static List<Map.Entry<String, CheckFactory>> modernSyntaxChecks() {
     return List.of(
         Map.entry(
             "node-arrow-callback",
@@ -138,7 +149,12 @@ final class StyleChecks {
         Map.entry(
             "node-string-concat",
             toml -> new NodeStringConcatCheck(TomlValues.required(toml, MESSAGE))
-        ),
+        )
+    );
+  }
+
+  private static List<Map.Entry<String, CheckFactory>> constAndImportChecks() {
+    return List.of(
         Map.entry(
             "node-type-only-export",
             toml ->

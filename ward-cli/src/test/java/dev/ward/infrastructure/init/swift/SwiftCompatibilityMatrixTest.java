@@ -108,14 +108,7 @@ class SwiftCompatibilityMatrixTest {
         .as("gates that fail on the clean project")
         .isEmpty();
 
-    final Path untested = COVERAGE_VIOLATIONS.resolve(fixture);
-    copyTree(untested, project);
-    final Run uncovered = run(env, project, "check", "--profile", "ci", "--format", "json");
-    assertThat(checks(uncovered).get("swift-coverage"))
-        .as("swift-coverage with an untested source file\n%s", uncovered.output())
-        .isEqualTo("FAILED");
-    assertThat(uncovered.output()).as("coverage finding").contains("Line coverage");
-    MatrixFileTrees.restore(untested, FIXTURES.resolve(fixture), project);
+    assertUntestedFileFailsCoverage(env, project, fixture);
     copyTree(VIOLATIONS.resolve(fixture), project);
     final Run violatedReport = run(env, project, "check", "--profile", "ci", "--format", "json");
     final Map<String, String> violated = checks(violatedReport);
@@ -131,6 +124,22 @@ class SwiftCompatibilityMatrixTest {
                     .as("seeded violation for gate %s", gate)
                     .isEqualTo("FAILED")
         );
+  }
+
+  private static void assertUntestedFileFailsCoverage(
+      final Map<String,
+      String> env,
+      final Path project,
+      final String fixture
+  ) throws IOException, InterruptedException {
+    final Path untested = COVERAGE_VIOLATIONS.resolve(fixture);
+    copyTree(untested, project);
+    final Run uncovered = run(env, project, "check", "--profile", "ci", "--format", "json");
+    assertThat(checks(uncovered).get("swift-coverage"))
+        .as("swift-coverage with an untested source file\n%s", uncovered.output())
+        .isEqualTo("FAILED");
+    assertThat(uncovered.output()).as("coverage finding").contains("Line coverage");
+    MatrixFileTrees.restore(untested, FIXTURES.resolve(fixture), project);
   }
 
   /**

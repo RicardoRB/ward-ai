@@ -3,6 +3,7 @@ package dev.ward.analysis.application.jvm;
 import static java.util.Map.entry;
 
 import dev.ward.analysis.application.rule.CheckFactory;
+import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.ConstructorSuperCheck;
 import dev.ward.analysis.domain.rule.check.FieldsAtStartCheck;
@@ -20,6 +21,7 @@ import dev.ward.analysis.domain.rule.check.UnnecessaryConstructorCheck;
 import dev.ward.analysis.domain.rule.check.UnnecessaryParenthesesCheck;
 import dev.ward.analysis.domain.rule.check.UselessQualifiedThisCheck;
 import dev.ward.analysis.domain.rule.check.VariableCanBeInlinedCheck;
+import java.util.List;
 import java.util.Map;
 
 /** Builds the checks of the Java code style rules that read the shape of a class or a block. */
@@ -30,6 +32,10 @@ final class CodestyleChecks {
 
   /** The checks this class provides, by name. */
   static Map<String, CheckFactory> checks() {
+    return CheckRegistry.union(List.of(blockShapeChecks(), classShapeChecks()));
+  }
+
+  private static Map<String, CheckFactory> blockShapeChecks() {
     return Map.ofEntries(
         entry(
             "throws-exception",
@@ -58,7 +64,12 @@ final class CodestyleChecks {
         entry(
             "string-instantiation",
             toml -> new StringInstantiationCheck(TomlValues.required(toml, MESSAGE))
-        ),
+        )
+    );
+  }
+
+  private static Map<String, CheckFactory> classShapeChecks() {
+    return Map.ofEntries(
         entry(
             "static-import-count",
             toml ->
