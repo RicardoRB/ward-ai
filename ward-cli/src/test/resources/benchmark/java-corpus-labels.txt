@@ -1,0 +1,669 @@
+# Labels of the sampled findings of the Java corpus run, decided by reading the code at the line.
+# Format: rule | file:line | tp, fp or un | reason. A rule with more than 3 findings has a sample of
+# at least 3: where the rule has findings there, one in Spring PetClinic, then main and test code of
+# Apache Commons Lang in turn.
+# tp: the line is a real instance of what the rule names, even when the project does it on purpose.
+# fp: it is not. un: it was not decided, because it needs more of the code than was read, or the
+# project's own conventions.
+ward:java/aa-assertion-of-arguments | commons-lang/src/main/java/org/apache/commons/lang3/Conversion.java:1305 | tp | a public static method checks its arguments with an assert statement
+ward:java/abbreviation-as-word-in-name | commons-lang/src/main/java/org/apache/commons/lang3/arch/Processor.java:214 | tp | the name has a run of capital letters longer than the rule allows
+ward:java/abbreviation-as-word-in-name | commons-lang/src/main/java/org/apache/commons/lang3/math/IEEE754rUtils.java:32 | tp | the name has a run of capital letters longer than the rule allows
+ward:java/abbreviation-as-word-in-name | commons-lang/src/test/java/org/apache/commons/lang3/function/FailableTest.java:1765 | tp | the name has a run of capital letters longer than the rule allows
+ward:java/abstract-class-name | commons-lang/src/main/java/org/apache/commons/lang3/text/StrLookup.java:47 | tp | the abstract class name does not start with Abstract
+ward:java/abstract-class-name | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:191 | tp | the abstract class name does not start with Abstract
+ward:java/abstract-class-name | spring-petclinic/src/test/java/org/springframework/samples/petclinic/service/EntityUtils.java:33 | tp | the abstract class name does not start with Abstract
+ward:java/abstract-class-without-abstract-method | spring-petclinic/src/test/java/org/springframework/samples/petclinic/service/EntityUtils.java:33 | tp | the abstract class declares no abstract method
+ward:java/add-empty-string | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsTrimTest.java:91 | tp | an empty string literal is added to convert a value to text
+ward:java/add-empty-string | commons-lang/src/test/java/org/apache/commons/lang3/math/NumberUtilsTest.java:1895 | tp | an empty string literal is added to convert a value to text
+ward:java/add-empty-string | commons-lang/src/test/java/org/apache/commons/lang3/math/NumberUtilsTest.java:1953 | tp | an empty string literal is added to convert a value to text
+ward:java/append-character-with-char | commons-lang/src/main/java/org/apache/commons/lang3/time/FastDateParser.java:119 | tp | append receives a string literal of one character
+ward:java/append-character-with-char | commons-lang/src/test/java/org/apache/commons/lang3/AppendableJoinerTest.java:80 | tp | append receives a string literal of one character
+ward:java/append-character-with-char | spring-petclinic/src/test/java/org/springframework/samples/petclinic/system/I18nPropertiesSyncTest.java:129 | tp | append receives a string literal of one character
+ward:java/array-is-stored-directly | commons-lang/src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java:216 | tp | the array parameter is assigned to a field without a copy
+ward:java/array-is-stored-directly | commons-lang/src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java:479 | tp | the array parameter is assigned to a field without a copy
+ward:java/array-is-stored-directly | commons-lang/src/test/java/org/apache/commons/lang3/builder/JsonToStringStyleTest.java:134 | tp | the array parameter is assigned to a field without a copy
+ward:java/assert-equals-argument-order | commons-lang/src/test/java/org/apache/commons/lang3/BitFieldLongTest.java:141 | tp | the constant is the second argument of assertEquals, where the actual value goes
+ward:java/assert-equals-argument-order | commons-lang/src/test/java/org/apache/commons/lang3/BitFieldTest.java:102 | tp | the constant is the second argument of assertEquals, where the actual value goes
+ward:java/assert-equals-argument-order | commons-lang/src/test/java/org/apache/commons/lang3/BitFieldTest.java:173 | tp | the constant is the second argument of assertEquals, where the actual value goes
+ward:java/assert-statement-in-test | commons-lang/src/main/java/org/apache/commons/lang3/CachedRandomBits.java:116 | fp | the assert statement is in main code, not in a test
+ward:java/assert-statement-in-test | commons-lang/src/main/java/org/apache/commons/lang3/Conversion.java:1305 | fp | the assert statement is in main code, not in a test
+ward:java/assert-statement-in-test | commons-lang/src/main/java/org/apache/commons/lang3/text/ExtendedMessageFormat.java:166 | fp | the assert statement is in main code, not in a test
+ward:java/assignment-in-operand | commons-lang/src/main/java/org/apache/commons/lang3/RandomStringUtils.java:450 | tp | the condition assigns or increments a variable
+ward:java/assignment-in-operand | commons-lang/src/main/java/org/apache/commons/lang3/concurrent/AtomicSafeInitializer.java:130 | tp | the condition assigns or increments a variable
+ward:java/assignment-in-operand | commons-lang/src/test/java/org/apache/commons/lang3/function/FailableTest.java:101 | tp | the condition assigns or increments a variable
+ward:java/at-nonatomic-operations-on-shared-variable | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/MultiBackgroundInitializerTest.java:133 | tp | a volatile field is incremented without a lock
+ward:java/at-stale-thread-write-of-primitive | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/MultiBackgroundInitializerTest.java:69 | tp | a plain field read by another thread is written without a lock
+ward:java/atclause-order | commons-lang/src/main/java/org/apache/commons/lang3/ClassUtils.java:1029 | tp | the block tags are not in the order the rule lists
+ward:java/atclause-order | commons-lang/src/main/java/org/apache/commons/lang3/RandomUtils.java:238 | tp | the block tags are not in the order the rule lists
+ward:java/atclause-order | commons-lang/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java:122 | tp | the block tags are not in the order the rule lists
+ward:java/avoid-accessibility-alteration | commons-lang/src/main/java/org/apache/commons/lang3/builder/HashCodeBuilder.java:290 | fp | the call is to the project's own helper method named setAccessible, not to AccessibleObject
+ward:java/avoid-accessibility-alteration | commons-lang/src/main/java/org/apache/commons/lang3/reflect/FieldUtils.java:401 | fp | the call is to the project's own helper method named setAccessible, not to AccessibleObject
+ward:java/avoid-accessibility-alteration | commons-lang/src/test/java/org/apache/commons/lang3/builder/AbstractReflectionSetAccessibleTest.java:57 | fp | the call is to the project's own helper method named setAccessible, not to AccessibleObject
+ward:java/avoid-branching-statement-as-last-in-loop | commons-lang/src/test/java/org/apache/commons/lang3/text/StrBuilderClearTest.java:99 | tp | the labelled loop body ends in a return statement
+ward:java/avoid-calendar-date-creation | commons-lang/src/test/java/org/apache/commons/lang3/CharUtilsPerfRun.java:81 | tp | a Calendar instance is created only to read the current time
+ward:java/avoid-deeply-nested-if-stmts | commons-lang/src/main/java/org/apache/commons/lang3/RandomStringUtils.java:320 | tp | the if statement is nested three levels deep
+ward:java/avoid-deeply-nested-if-stmts | commons-lang/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java:2094 | tp | the if statement is nested three levels deep
+ward:java/avoid-deeply-nested-if-stmts | commons-lang/src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java:1116 | tp | the if statement is nested three levels deep
+ward:java/avoid-dollar-signs | commons-lang/src/test/java/org/apache/commons/lang3/ClassUtilsShortClassNameTest.java:158 | tp | the type name contains a dollar sign
+ward:java/avoid-dollar-signs | commons-lang/src/test/java/org/apache/commons/lang3/ClassUtilsShortClassNameTest.java:35 | tp | the type name contains a dollar sign
+ward:java/avoid-dollar-signs | commons-lang/src/test/java/org/apache/commons/lang3/ClassUtilsShortClassNameTest.java:48 | tp | the type name contains a dollar sign
+ward:java/avoid-escaped-unicode-characters | commons-lang/src/main/java/org/apache/commons/lang3/text/translate/EntityArrays.java:156 | tp | the string literal writes a character as a Unicode escape
+ward:java/avoid-escaped-unicode-characters | commons-lang/src/main/java/org/apache/commons/lang3/text/translate/EntityArrays.java:286 | tp | the string literal writes a character as a Unicode escape
+ward:java/avoid-escaped-unicode-characters | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsStartsEndsWithTest.java:125 | tp | the string literal writes a character as a Unicode escape
+ward:java/avoid-field-name-matching-type-name | spring-petclinic/src/main/java/org/springframework/samples/petclinic/vet/Vets.java:33 | tp | the field has the name of its class in another case
+ward:java/avoid-instanceof-checks-in-catch-clause | commons-lang/src/main/java/org/apache/commons/lang3/concurrent/AtomicSafeInitializer.java:139 | tp | a caught exception is tested with instanceof inside the catch clause
+ward:java/avoid-instanceof-checks-in-catch-clause | commons-lang/src/main/java/org/apache/commons/lang3/concurrent/MultiBackgroundInitializer.java:280 | tp | a caught exception is tested with instanceof inside the catch clause
+ward:java/avoid-literals-in-if-condition | commons-lang/src/main/java/org/apache/commons/lang3/LocaleUtils.java:359 | tp | the if condition compares against a number literal
+ward:java/avoid-literals-in-if-condition | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/MemoizerCacheTest.java:158 | tp | the if condition compares against a number literal
+ward:java/avoid-literals-in-if-condition | spring-petclinic/src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java:122 | tp | the if condition compares against a number literal
+ward:java/avoid-print-stack-trace | commons-lang/src/test/java/org/apache/commons/lang3/math/NumberUtilsTest.java:115 | tp | printStackTrace is called on a caught exception
+ward:java/avoid-print-stack-trace | commons-lang/src/test/java/org/apache/commons/lang3/time/FastDateFormatTest.java:97 | tp | printStackTrace is called on a caught exception
+ward:java/avoid-reassigning-loop-variables | commons-lang/src/main/java/org/apache/commons/lang3/StringUtils.java:3368 | tp | the loop variable is assigned in the loop body
+ward:java/avoid-reassigning-loop-variables | commons-lang/src/main/java/org/apache/commons/lang3/StringUtils.java:3824 | tp | the loop variable is assigned in the loop body
+ward:java/avoid-reassigning-loop-variables | commons-lang/src/main/java/org/apache/commons/lang3/reflect/ConstructorUtils.java:140 | tp | the loop variable is assigned in the loop body
+ward:java/avoid-string-buffer-field | commons-lang/src/main/java/org/apache/commons/lang3/builder/ToStringBuilder.java:121 | tp | the field is a StringBuffer
+ward:java/avoid-string-buffer-field | commons-lang/src/main/java/org/apache/commons/lang3/builder/ToStringBuilder.java:298 | tp | the field is a StringBuffer
+ward:java/avoid-string-buffer-field | commons-lang/src/test/java/org/apache/commons/lang3/builder/ToStringBuilderTraversalMemoryTest.java:71 | tp | the field is a StringBuffer
+ward:java/avoid-synchronized-at-method-level | commons-lang/src/main/java/org/apache/commons/lang3/concurrent/BackgroundInitializer.java:395 | tp | the method is declared synchronized
+ward:java/avoid-synchronized-at-method-level | commons-lang/src/main/java/org/apache/commons/lang3/concurrent/TimedSemaphore.java:431 | tp | the method is declared synchronized
+ward:java/avoid-synchronized-at-method-level | commons-lang/src/test/java/org/apache/commons/lang3/builder/ReflectionToStringBuilderMutateInspectConcurrencyTest.java:87 | tp | the method is declared synchronized
+ward:java/avoid-synchronized-statement | commons-lang/src/main/java/org/apache/commons/lang3/concurrent/LazyInitializer.java:147 | tp | a synchronized block
+ward:java/avoid-synchronized-statement | commons-lang/src/main/java/org/apache/commons/lang3/concurrent/MultiBackgroundInitializer.java:322 | tp | a synchronized block
+ward:java/avoid-synchronized-statement | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/TimedSemaphoreTest.java:187 | tp | a synchronized block
+ward:java/avoid-thread-group | commons-lang/src/main/java/org/apache/commons/lang3/ThreadUtils.java:229 | tp | the code uses ThreadGroup
+ward:java/avoid-thread-group | commons-lang/src/main/java/org/apache/commons/lang3/ThreadUtils.java:465 | tp | the code uses ThreadGroup
+ward:java/avoid-thread-group | commons-lang/src/test/java/org/apache/commons/lang3/ThreadUtilsTest.java:104 | tp | the code uses ThreadGroup
+ward:java/avoid-throwing-null-pointer-exception | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/AbstractConcurrentInitializerCloseAndExceptionsTest.java:73 | tp | a NullPointerException is thrown by hand
+ward:java/avoid-unchecked-exceptions-in-signatures | commons-lang/src/main/java/org/apache/commons/lang3/event/EventListenerSupport.java:103 | tp | the throws clause lists IllegalArgumentException
+ward:java/avoid-unchecked-exceptions-in-signatures | commons-lang/src/main/java/org/apache/commons/lang3/event/EventListenerSupport.java:123 | tp | the throws clause lists IllegalArgumentException
+ward:java/avoid-unchecked-exceptions-in-signatures | commons-lang/src/test/java/org/apache/commons/lang3/event/EventListenerSupportTest.java:205 | tp | the throws clause lists IllegalArgumentException
+ward:java/avoid-using-octal-values | commons-lang/src/test/java/org/apache/commons/lang3/math/NumberUtilsTest.java:808 | tp | the integer literal is octal
+ward:java/avoid-using-octal-values | commons-lang/src/test/java/org/apache/commons/lang3/math/NumberUtilsTest.java:809 | tp | the integer literal is octal
+ward:java/avoid-using-octal-values | commons-lang/src/test/java/org/apache/commons/lang3/math/NumberUtilsTest.java:811 | tp | the integer literal is octal
+ward:java/avoid-using-volatile | commons-lang/src/main/java/org/apache/commons/lang3/concurrent/LazyInitializer.java:116 | tp | the field is volatile
+ward:java/avoid-using-volatile | commons-lang/src/main/java/org/apache/commons/lang3/time/FastDateParser.java:1001 | tp | the field is volatile
+ward:java/avoid-using-volatile | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/MultiBackgroundInitializerTest.java:53 | tp | the field is volatile
+ward:java/ban-class-loader | commons-lang/src/test/java/org/apache/commons/lang3/ClassLoaderUtilsTest.java:49 | tp | a URLClassLoader is created; test code that loads a known class
+ward:java/ban-class-loader | commons-lang/src/test/java/org/apache/commons/lang3/ClassLoaderUtilsTest.java:60 | tp | a URLClassLoader is created; test code that loads a known class
+ward:java/ban-class-loader | commons-lang/src/test/java/org/apache/commons/lang3/ClassUtilsGetShortClassNameTest.java:94 | tp | a URLClassLoader is created; test code that loads a known class
+ward:java/big-integer-instantiation | commons-lang/src/test/java/org/apache/commons/lang3/math/NumberUtilsTest.java:479 | tp | a BigInteger is built from the text of zero
+ward:java/boolean-get-method-name | commons-lang/src/main/java/org/apache/commons/lang3/builder/AbstractReflection.java:112 | tp | a method that returns boolean is named get...
+ward:java/boolean-get-method-name | commons-lang/src/test/java/org/apache/commons/lang3/FunctionsTest.java:111 | tp | a method that returns boolean is named get...
+ward:java/boolean-get-method-name | commons-lang/src/test/java/org/apache/commons/lang3/function/FailableTest.java:164 | tp | a method that returns boolean is named get...
+ward:java/bshift-wrong-add-priority | commons-lang/src/main/java/org/apache/commons/lang3/CharUtils.java:592 | fp | the shift is inside an array index; the plus joins strings outside the brackets
+ward:java/bx-unboxing-immediately-reboxed | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/ConstantInitializerTest.java:79 | tp | the value is unboxed and passed to valueOf
+ward:java/call-super-in-constructor | commons-lang/src/main/java/org/apache/commons/lang3/concurrent/LazyInitializer.java:86 | tp | the constructor of a subclass calls neither super nor this
+ward:java/call-super-in-constructor | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/BackgroundInitializerTest.java:62 | tp | the constructor of a subclass calls neither super nor this
+ward:java/call-super-in-constructor | spring-petclinic/src/main/java/org/springframework/samples/petclinic/owner/Visit.java:50 | tp | the constructor of a subclass calls neither super nor this
+ward:java/class-name | commons-lang/src/test/java/org/apache/commons/lang3/EnumUtilsTest.java:640 | tp | a second top-level type of the file has another name than the file
+ward:java/class-name | commons-lang/src/test/java/org/apache/commons/lang3/SerializationUtilsTest.java:57 | tp | a second top-level type of the file has another name than the file
+ward:java/class-name | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:168 | tp | a second top-level type of the file has another name than the file
+ward:java/clone-method-must-be-public | commons-lang/src/test/java/org/apache/commons/lang3/util/FluentBitSetTest.java:490 | fp | the method is a test method whose name ends in clone, not clone itself
+ward:java/clone-method-must-implement-cloneable | commons-lang/src/main/java/org/apache/commons/lang3/time/ImmutableTimeZone.java:29 | fp | the superclass TimeZone is Cloneable; the other is a test method whose name ends in clone
+ward:java/clone-method-must-implement-cloneable | commons-lang/src/test/java/org/apache/commons/lang3/util/FluentBitSetTest.java:43 | fp | the superclass TimeZone is Cloneable; the other is a test method whose name ends in clone
+ward:java/clone-method-return-type-must-match-class-name | commons-lang/src/main/java/org/apache/commons/lang3/text/StrTokenizer.java:457 | tp | clone is declared to return Object
+ward:java/clone-method-return-type-must-match-class-name | commons-lang/src/main/java/org/apache/commons/lang3/time/ImmutableTimeZone.java:39 | tp | clone is declared to return Object
+ward:java/clone-method-return-type-must-match-class-name | commons-lang/src/main/java/org/apache/commons/lang3/util/FluentBitSet.java:199 | tp | clone is declared to return Object
+ward:java/cn-idiom | commons-lang/src/test/java/org/apache/commons/lang3/ObjectUtilsTest.java:131 | tp | the class implements Cloneable and declares no clone method
+ward:java/cn-idiom | commons-lang/src/test/java/org/apache/commons/lang3/ObjectUtilsTest.java:82 | tp | the class implements Cloneable and declares no clone method
+ward:java/cn-idiom | commons-lang/src/test/java/org/apache/commons/lang3/builder/EqualsBuilderReflectJreImplementationTest.java:95 | tp | the class implements Cloneable and declares no clone method
+ward:java/cn-idiom-no-super-call | commons-lang/src/main/java/org/apache/commons/lang3/time/ImmutableTimeZone.java:39 | tp | clone builds its result without super.clone; the second is a test method whose name ends in clone
+ward:java/cn-idiom-no-super-call | commons-lang/src/main/java/org/apache/commons/lang3/util/FluentBitSet.java:199 | tp | clone builds its result without super.clone; the second is a test method whose name ends in clone
+ward:java/cn-idiom-no-super-call | commons-lang/src/test/java/org/apache/commons/lang3/util/FluentBitSetTest.java:490 | fp | clone builds its result without super.clone; the second is a test method whose name ends in clone
+ward:java/cn-implements-clone-but-not-cloneable | commons-lang/src/main/java/org/apache/commons/lang3/time/ImmutableTimeZone.java:29 | fp | the superclass TimeZone is Cloneable
+ward:java/cnt-rough-constant-value | commons-lang/src/test/java/org/apache/commons/lang3/ArrayUtilsTest.java:7027 | tp | the literal is a rough value of e
+ward:java/cnt-rough-constant-value | commons-lang/src/test/java/org/apache/commons/lang3/ArrayUtilsTest.java:7040 | tp | the literal is a rough value of e
+ward:java/cnt-rough-constant-value | commons-lang/src/test/java/org/apache/commons/lang3/function/FailableDoubleSupplierTest.java:35 | tp | the literal is a rough value of e
+ward:java/cognitive-complexity | commons-lang/src/main/java/org/apache/commons/lang3/StringUtils.java:3021 | tp | a long method with many nested branches; the count is the rule's own measure
+ward:java/cognitive-complexity | commons-lang/src/test/java/org/apache/commons/lang3/time/FastDateParser_TimeZoneStrategyTest.java:177 | tp | a long method with many nested branches; the count is the rule's own measure
+ward:java/cognitive-complexity | spring-petclinic/src/test/java/org/springframework/samples/petclinic/system/I18nPropertiesSyncTest.java:40 | tp | a long method with many nested branches; the count is the rule's own measure
+ward:java/collapsible-if-statements | commons-lang/src/main/java/org/apache/commons/lang3/StringUtils.java:1294 | tp | an if without else whose whole body is another if without else
+ward:java/collapsible-if-statements | commons-lang/src/main/java/org/apache/commons/lang3/StringUtils.java:2875 | tp | an if without else whose whole body is another if without else
+ward:java/collapsible-if-statements | spring-petclinic/src/main/java/org/springframework/samples/petclinic/owner/Owner.java:150 | tp | an if without else whose whole body is another if without else
+ward:java/command-injection | commons-lang/src/test/java/org/apache/commons/lang3/builder/ToStringBuilderTraversalMemoryTest.java:159 | un | a system property reaches a ProcessBuilder in a test that starts a child JVM; not attacker input
+ward:java/consecutive-appends-should-reuse | commons-lang/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java:2053 | tp | the next statement appends to the same builder
+ward:java/consecutive-appends-should-reuse | commons-lang/src/main/java/org/apache/commons/lang3/text/StrSubstitutor.java:454 | tp | the next statement appends to the same builder
+ward:java/consecutive-appends-should-reuse | commons-lang/src/test/java/org/apache/commons/lang3/text/ExtendedMessageFormatTest.java:444 | tp | the next statement appends to the same builder
+ward:java/constant-name | commons-lang/src/main/java/org/apache/commons/lang3/RandomStringUtils.java:99 | tp | the static final name is not in upper case with underscores
+ward:java/constant-name | commons-lang/src/test/java/org/apache/commons/lang3/Supplementary.java:74 | tp | the static final name is not in upper case with underscores
+ward:java/constant-name | spring-petclinic/src/test/java/org/springframework/samples/petclinic/PostgresIntegrationTests.java:96 | tp | the static final name is not in upper case with underscores
+ward:java/constants-in-interface | commons-lang/src/test/java/org/apache/commons/lang3/reflect/FieldUtilsTest.java:65 | tp | an interface declares a constant
+ward:java/constructor-calls-overridable-method | commons-lang/src/main/java/org/apache/commons/lang3/text/StrSubstitutor.java:387 | tp | the constructor calls a public setter of its non-final class
+ward:java/constructor-calls-overridable-method | commons-lang/src/main/java/org/apache/commons/lang3/text/StrSubstitutor.java:406 | tp | the constructor calls a public setter of its non-final class
+ward:java/constructor-calls-overridable-method | commons-lang/src/main/java/org/apache/commons/lang3/text/StrSubstitutor.java:440 | tp | the constructor calls a public setter of its non-final class
+ward:java/constructors-declaration-grouping | commons-lang/src/main/java/org/apache/commons/lang3/arch/Processor.java:154 | un | the order of the constructors was not checked against the whole class
+ward:java/constructors-declaration-grouping | commons-lang/src/main/java/org/apache/commons/lang3/time/DurationFormatUtils.java:775 | un | the order of the constructors was not checked against the whole class
+ward:java/control-statement-braces | commons-lang/src/main/java/org/apache/commons/lang3/builder/EqualsBuilder.java:1021 | fp | an else followed by a comment and an if on the next line is an else-if chain with braces
+ward:java/control-statement-braces | commons-lang/src/main/java/org/apache/commons/lang3/builder/EqualsBuilder.java:776 | fp | an else followed by a comment and an if on the next line is an else-if chain with braces
+ward:java/control-statement-braces | commons-lang/src/main/java/org/apache/commons/lang3/text/StrSubstitutor.java:1191 | fp | an else followed by a comment and an if on the next line is an else-if chain with braces
+ward:java/ct-constructor-throw | commons-lang/src/main/java/org/apache/commons/lang3/ThreadUtils.java:136 | tp | the constructor of a public non-final nested class throws on a bad argument
+ward:java/custom-import-order | commons-lang/src/main/java/org/apache/commons/lang3/concurrent/UncheckedFuture.java:28 | tp | the import is not in the group order of the rule's default
+ward:java/custom-import-order | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/AtomicInitializerNonObjectTest.java:23 | tp | the import is not in the group order of the rule's default
+ward:java/custom-import-order | spring-petclinic/src/main/java/org/springframework/samples/petclinic/model/BaseEntity.java:20 | tp | the import is not in the group order of the rule's default
+ward:java/cyclomatic-complexity | commons-lang/src/main/java/org/apache/commons/lang3/StringUtils.java:1438 | tp | the method has more branches than the limit; the count is the rule's own measure
+ward:java/cyclomatic-complexity | commons-lang/src/test/java/org/apache/commons/lang3/SystemUtilsTest.java:989 | tp | the method has more branches than the limit; the count is the rule's own measure
+ward:java/cyclomatic-complexity | spring-petclinic/src/test/java/org/springframework/samples/petclinic/system/I18nPropertiesSyncTest.java:40 | tp | the method has more branches than the limit; the count is the rule's own measure
+ward:java/data-class | commons-lang/src/main/java/org/apache/commons/lang3/concurrent/AbstractConcurrentInitializer.java:44 | un | a class of fields with getters and setters; the two others were not measured by hand
+ward:java/data-class | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:109 | un | a class of fields with getters and setters; the two others were not measured by hand
+ward:java/data-class | spring-petclinic/src/main/java/org/springframework/samples/petclinic/model/Person.java:29 | tp | a class of fields with getters and setters; the two others were not measured by hand
+ward:java/de-might-ignore | commons-lang/src/main/java/org/apache/commons/lang3/math/NumberUtils.java:480 | tp | the catch block is empty or holds only a comment
+ward:java/de-might-ignore | commons-lang/src/main/java/org/apache/commons/lang3/reflect/FieldUtils.java:208 | tp | the catch block is empty or holds only a comment
+ward:java/de-might-ignore | commons-lang/src/test/java/org/apache/commons/lang3/util/FluentBitSetTest.java:1203 | tp | the catch block is empty or holds only a comment
+ward:java/deduplicate-constants | commons-lang/src/test/java/org/apache/commons/lang3/StringEscapeUtilsTest.java:458 | tp | the literal has the same text as a constant of the class
+ward:java/deduplicate-constants | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsSubstringTest.java:416 | tp | the literal has the same text as a constant of the class
+ward:java/deduplicate-constants | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsTest.java:1240 | tp | the literal has the same text as a constant of the class
+ward:java/dls-dead-local-store | commons-lang/src/main/java/org/apache/commons/lang3/ClassUtils.java:638 | tp | the initial value is overwritten on every path before it is read; the second was not traced
+ward:java/dls-dead-local-store | commons-lang/src/main/java/org/apache/commons/lang3/builder/ToStringBuilder.java:1072 | un | the initial value is overwritten on every path before it is read; the second was not traced
+ward:java/dm-convert-case | commons-lang/src/main/java/org/apache/commons/lang3/StringUtils.java:9263 | tp | toLowerCase or toUpperCase without a Locale
+ward:java/dm-convert-case | commons-lang/src/test/java/org/apache/commons/lang3/text/ExtendedMessageFormatTest.java:473 | tp | toLowerCase or toUpperCase without a Locale
+ward:java/dm-convert-case | spring-petclinic/src/main/java/org/springframework/samples/petclinic/owner/PetController.java:204 | tp | toLowerCase or toUpperCase without a Locale
+ward:java/dm-default-encoding | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsTest.java:3095 | tp | getBytes without a charset
+ward:java/dm-default-encoding | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsTest.java:3158 | tp | getBytes without a charset
+ward:java/dm-default-encoding | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsTest.java:703 | tp | getBytes without a charset
+ward:java/dm-useless-thread | commons-lang/src/test/java/org/apache/commons/lang3/ThreadUtilsTest.java:190 | tp | a Thread is created with no Runnable; the tests need only a thread object
+ward:java/dm-useless-thread | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/BasicThreadFactoryTest.java:202 | tp | a Thread is created with no Runnable; the tests need only a thread object
+ward:java/dm-useless-thread | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/BasicThreadFactoryTest.java:244 | tp | a Thread is created with no Runnable; the tests need only a thread object
+ward:java/dmi-collections-should-not-contain-themselves | commons-lang/src/test/java/org/apache/commons/lang3/builder/ToStringBuilderAppendCycleTest.java:58 | tp | a list is added to itself; the two others add a fraction to itself, which is arithmetic
+ward:java/dmi-collections-should-not-contain-themselves | commons-lang/src/test/java/org/apache/commons/lang3/math/FractionTest.java:157 | fp | a list is added to itself; the two others add a fraction to itself, which is arithmetic
+ward:java/dmi-collections-should-not-contain-themselves | commons-lang/src/test/java/org/apache/commons/lang3/math/FractionTest.java:160 | fp | a list is added to itself; the two others add a fraction to itself, which is arithmetic
+ward:java/dmi-useless-substring | commons-lang/src/test/java/org/apache/commons/lang3/text/StrBuilderTest.java:1750 | tp | substring(0)
+ward:java/dmi-useless-substring | commons-lang/src/test/java/org/apache/commons/lang3/text/StrBuilderTest.java:1751 | tp | substring(0)
+ward:java/do-not-extend-java-lang-throwable | commons-lang/src/test/java/org/apache/commons/lang3/AnnotationUtilsTest.java:154 | tp | the class extends Throwable
+ward:java/do-not-extend-java-lang-throwable | commons-lang/src/test/java/org/apache/commons/lang3/exception/ExceptionUtilsTest.java:152 | tp | the class extends Throwable
+ward:java/double-brace-initialization | spring-petclinic/src/test/java/org/springframework/samples/petclinic/owner/PetTypeFormatterTests.java:84 | tp | an anonymous subclass with an initializer block
+ward:java/double-brace-initialization | spring-petclinic/src/test/java/org/springframework/samples/petclinic/owner/PetTypeFormatterTests.java:89 | tp | an anonymous subclass with an initializer block
+ward:java/dp-create-classloader-inside-do-privileged | commons-lang/src/test/java/org/apache/commons/lang3/ClassLoaderUtilsTest.java:49 | tp | a class loader is created outside doPrivileged
+ward:java/dp-create-classloader-inside-do-privileged | commons-lang/src/test/java/org/apache/commons/lang3/ClassLoaderUtilsTest.java:60 | tp | a class loader is created outside doPrivileged
+ward:java/dp-create-classloader-inside-do-privileged | commons-lang/src/test/java/org/apache/commons/lang3/ClassUtilsGetShortClassNameTest.java:94 | tp | a class loader is created outside doPrivileged
+ward:java/dp-do-inside-do-privileged | commons-lang/src/main/java/org/apache/commons/lang3/reflect/FieldUtils.java:132 | tp | setAccessible(true) outside doPrivileged
+ward:java/dp-do-inside-do-privileged | commons-lang/src/main/java/org/apache/commons/lang3/reflect/FieldUtils.java:588 | tp | setAccessible(true) outside doPrivileged
+ward:java/dp-do-inside-do-privileged | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/BackgroundInitializerSupplierTest.java:59 | tp | setAccessible(true) outside doPrivileged
+ward:java/ec-null-arg | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:1056 | tp | equals(null) inside an assertion of the equals contract
+ward:java/ec-null-arg | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:1880 | tp | equals(null) inside an assertion of the equals contract
+ward:java/ec-null-arg | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:2283 | tp | equals(null) inside an assertion of the equals contract
+ward:java/ei-expose-rep | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:9254 | fp | a zero-length static constant array cannot be changed by the caller; the second returns an instance array field
+ward:java/ei-expose-rep | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:9542 | fp | a zero-length static constant array cannot be changed by the caller; the second returns an instance array field
+ward:java/ei-expose-rep | commons-lang/src/test/java/org/apache/commons/lang3/function/MethodFixtures.java:181 | tp | a zero-length static constant array cannot be changed by the caller; the second returns an instance array field
+ward:java/ei-expose-rep2 | commons-lang/src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java:216 | tp | the array parameter is stored in a field without a copy
+ward:java/ei-expose-rep2 | commons-lang/src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java:479 | tp | the array parameter is stored in a field without a copy
+ward:java/ei-expose-rep2 | commons-lang/src/test/java/org/apache/commons/lang3/builder/JsonToStringStyleTest.java:134 | tp | the array parameter is stored in a field without a copy
+ward:java/empty-method-in-abstract-class-should-be-abstract | commons-lang/src/test/java/org/apache/commons/lang3/RangeTest.java:42 | tp | a method of an abstract class is empty or returns a default value
+ward:java/empty-method-in-abstract-class-should-be-abstract | commons-lang/src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java:79 | tp | a method of an abstract class is empty or returns a default value
+ward:java/eq-always-true | commons-lang/src/test/java/org/apache/commons/lang3/ArrayUtilsTest.java:261 | fp | the first is the test method that holds the local class, the second the equals that returns true
+ward:java/eq-always-true | commons-lang/src/test/java/org/apache/commons/lang3/ArrayUtilsTest.java:265 | tp | the first is the test method that holds the local class, the second the equals that returns true
+ward:java/eq-compareto-use-object-equals | commons-lang/src/test/java/org/apache/commons/lang3/RangeReadObjectTest.java:64 | tp | the class declares compareTo and no equals
+ward:java/eq-compareto-use-object-equals | commons-lang/src/test/java/org/apache/commons/lang3/RangeTest.java:40 | tp | the class declares compareTo and no equals
+ward:java/eq-compareto-use-object-equals | commons-lang/src/test/java/org/apache/commons/lang3/compare/ComparableUtilsTest.java:439 | tp | the class declares compareTo and no equals
+ward:java/eq-other-no-object | commons-lang/src/main/java/org/apache/commons/lang3/text/StrBuilder.java:1876 | fp | the class also overrides equals(Object); this is a typed overload beside it
+ward:java/eq-overriding-equals-not-symmetric | commons-lang/src/main/java/org/apache/commons/lang3/mutable/MutableFloat.java:36 | fp | the superclass (Number, or a Thread subclass) does not define equals, so there is no asymmetric pair
+ward:java/eq-overriding-equals-not-symmetric | commons-lang/src/main/java/org/apache/commons/lang3/mutable/MutableLong.java:34 | fp | the superclass (Number, or a Thread subclass) does not define equals, so there is no asymmetric pair
+ward:java/eq-overriding-equals-not-symmetric | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/TimedSemaphoreTest.java:49 | fp | the superclass (Number, or a Thread subclass) does not define equals, so there is no asymmetric pair
+ward:java/eq-unusual | commons-lang/src/test/java/org/apache/commons/lang3/ArrayUtilsTest.java:6730 | tp | equals only throws
+ward:java/equals-null | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:1056 | tp | equals(null) inside an assertion of the equals contract
+ward:java/equals-null | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:1880 | tp | equals(null) inside an assertion of the equals contract
+ward:java/equals-null | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:2283 | tp | equals(null) inside an assertion of the equals contract
+ward:java/excessive-imports | commons-lang/src/main/java/org/apache/commons/lang3/time/FastDateParser.java:17 | tp | the file has more imports than the limit
+ward:java/excessive-imports | commons-lang/src/test/java/org/apache/commons/lang3/builder/EqualsBuilderReflectJreImplementationTest.java:18 | tp | the file has more imports than the limit
+ward:java/excessive-imports | spring-petclinic/src/test/java/org/springframework/samples/petclinic/owner/OwnerControllerTests.java:17 | tp | the file has more imports than the limit
+ward:java/excessive-public-count | commons-lang/src/main/java/org/apache/commons/lang3/StringUtils.java:142 | tp | the class has more public members than the limit
+ward:java/excessive-public-count | commons-lang/src/main/java/org/apache/commons/lang3/builder/ToStringBuilder.java:110 | tp | the class has more public members than the limit
+ward:java/excessive-public-count | commons-lang/src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java:222 | tp | the class has more public members than the limit
+ward:java/fe-floating-point-equality | commons-lang/src/main/java/org/apache/commons/lang3/math/NumberUtils.java:472 | tp | a float or double is compared with == to a zero literal
+ward:java/fe-floating-point-equality | commons-lang/src/main/java/org/apache/commons/lang3/math/NumberUtils.java:513 | tp | a float or double is compared with == to a zero literal
+ward:java/fe-floating-point-equality | commons-lang/src/test/java/org/apache/commons/lang3/math/NumberUtilsBenchmark.java:203 | tp | a float or double is compared with == to a zero literal
+ward:java/file-length | commons-lang/src/main/java/org/apache/commons/lang3/ThreadUtils.java:17 | tp | the file is longer than the limit
+ward:java/file-length | commons-lang/src/main/java/org/apache/commons/lang3/math/NumberUtils.java:17 | tp | the file is longer than the limit
+ward:java/file-length | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsJoinBenchmark.java:18 | tp | the file is longer than the limit
+ward:java/final-field-could-be-static | commons-lang/src/test/java/org/apache/commons/lang3/builder/ReflectionDiffBuilderTest.java:278 | tp | a final instance field with a constant initializer; the test fixtures need instance fields for reflection
+ward:java/final-field-could-be-static | commons-lang/src/test/java/org/apache/commons/lang3/builder/ShortPrefixToStringStyleTest.java:36 | tp | a final instance field with a constant initializer; the test fixtures need instance fields for reflection
+ward:java/final-field-could-be-static | commons-lang/src/test/java/org/apache/commons/lang3/builder/ToStringBuilderTest.java:131 | tp | a final instance field with a constant initializer; the test fixtures need instance fields for reflection
+ward:java/for-loop-variable-count | commons-lang/src/main/java/org/apache/commons/lang3/StringUtils.java:5408 | tp | the for loop declares two variables
+ward:java/for-loop-variable-count | commons-lang/src/main/java/org/apache/commons/lang3/StringUtils.java:5419 | tp | the for loop declares two variables
+ward:java/for-loop-variable-count | commons-lang/src/main/java/org/apache/commons/lang3/StringUtils.java:5425 | tp | the for loop declares two variables
+ward:java/google-method-name | commons-lang/src/main/java/org/apache/commons/lang3/ObjectUtils.java:388 | tp | the name is in upper case; a test name with underscores, which Google style allows for tests, is undetermined
+ward:java/google-method-name | commons-lang/src/main/java/org/apache/commons/lang3/text/translate/EntityArrays.java:372 | tp | the name is in upper case; a test name with underscores, which Google style allows for tests, is undetermined
+ward:java/google-method-name | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsTest.java:1923 | un | the name is in upper case; a test name with underscores, which Google style allows for tests, is undetermined
+ward:java/google-non-constant-field-name | commons-lang/src/main/java/org/apache/commons/lang3/compare/ComparableUtils.java:45 | tp | a one-letter name, or one lower-case letter before a capital
+ward:java/google-non-constant-field-name | commons-lang/src/main/java/org/apache/commons/lang3/time/FastDateParser.java:103 | tp | a one-letter name, or one lower-case letter before a capital
+ward:java/google-non-constant-field-name | commons-lang/src/test/java/org/apache/commons/lang3/builder/HashCodeBuilderTest.java:146 | tp | a one-letter name, or one lower-case letter before a capital
+ward:java/google-right-curly | spring-petclinic/src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java:101 | tp | else is on the line after the closing brace
+ward:java/google-right-curly | spring-petclinic/src/main/java/org/springframework/samples/petclinic/owner/PetController.java:169 | tp | else is on the line after the closing brace
+ward:java/google-right-curly | spring-petclinic/src/test/java/org/springframework/samples/petclinic/PetClinicConcurrencyTests.java:89 | tp | else is on the line after the closing brace
+ward:java/ic-superclass-uses-subclass-during-initialization | commons-lang/src/main/java/org/apache/commons/lang3/Strings.java:32 | tp | a static field of the class is initialized with an instance of its subclass
+ward:java/ic-superclass-uses-subclass-during-initialization | commons-lang/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java:76 | tp | a static field of the class is initialized with an instance of its subclass
+ward:java/ic-superclass-uses-subclass-during-initialization | commons-lang/src/main/java/org/apache/commons/lang3/text/StrLookup.java:47 | tp | a static field of the class is initialized with an instance of its subclass
+ward:java/icast-questionable-unsigned-right-shift | commons-lang/src/test/java/org/apache/commons/lang3/SerializationUtilsTest.java:71 | tp | an unsigned shift result is cast to byte
+ward:java/identifier-name | commons-lang/src/main/java/org/apache/commons/lang3/ObjectUtils.java:388 | tp | the method name is in upper case; a test name with underscores is a naming choice of the project and undetermined
+ward:java/identifier-name | commons-lang/src/main/java/org/apache/commons/lang3/text/translate/EntityArrays.java:372 | tp | the method name is in upper case; a test name with underscores is a naming choice of the project and undetermined
+ward:java/identifier-name | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsTest.java:1908 | un | the method name is in upper case; a test name with underscores is a naming choice of the project and undetermined
+ward:java/identity-binary-expression | commons-lang/src/test/java/org/apache/commons/lang3/BooleanUtilsTest.java:1056 | tp | both operands of the operator are the same literal; the tests build truth tables this way
+ward:java/identity-binary-expression | commons-lang/src/test/java/org/apache/commons/lang3/BooleanUtilsTest.java:1117 | tp | both operands of the operator are the same literal; the tests build truth tables this way
+ward:java/identity-binary-expression | commons-lang/src/test/java/org/apache/commons/lang3/BooleanUtilsTest.java:1140 | tp | both operands of the operator are the same literal; the tests build truth tables this way
+ward:java/iil-pattern-compile-in-loop | commons-lang/src/main/java/org/apache/commons/lang3/text/WordUtils.java:216 | tp | a pattern is compiled inside a loop
+ward:java/iio-inefficient-index-of | commons-lang/src/test/java/org/apache/commons/lang3/text/StrBuilderTest.java:856 | tp | indexOf with a string of one character
+ward:java/iio-inefficient-index-of | commons-lang/src/test/java/org/apache/commons/lang3/text/StrBuilderTest.java:871 | tp | indexOf with a string of one character
+ward:java/iio-inefficient-index-of | commons-lang/src/test/java/org/apache/commons/lang3/text/StrBuilderTest.java:874 | tp | indexOf with a string of one character
+ward:java/iio-inefficient-last-index-of | commons-lang/src/test/java/org/apache/commons/lang3/text/StrBuilderTest.java:1057 | tp | lastIndexOf with a string of one character
+ward:java/iio-inefficient-last-index-of | commons-lang/src/test/java/org/apache/commons/lang3/text/StrBuilderTest.java:1077 | tp | lastIndexOf with a string of one character
+ward:java/iio-inefficient-last-index-of | commons-lang/src/test/java/org/apache/commons/lang3/text/StrBuilderTest.java:1080 | tp | lastIndexOf with a string of one character
+ward:java/iju-assert-method-invoked-from-run-method | commons-lang/src/test/java/org/apache/commons/lang3/ClassUtilsGetShortClassNameTest.java:101 | fp | the run method of the first two holds no assertion; the third was not traced
+ward:java/iju-assert-method-invoked-from-run-method | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/BackgroundInitializerTest.java:264 | fp | the run method of the first two holds no assertion; the third was not traced
+ward:java/iju-assert-method-invoked-from-run-method | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/BackgroundInitializerTest.java:274 | un | the run method of the first two holds no assertion; the third was not traced
+ward:java/illegal-catch | commons-lang/src/main/java/org/apache/commons/lang3/concurrent/MultiBackgroundInitializer.java:276 | tp | the catch clause names Exception
+ward:java/illegal-catch | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/MultiBackgroundInitializerSupplierTest.java:201 | tp | the catch clause names Exception
+ward:java/illegal-catch | spring-petclinic/src/test/java/org/springframework/samples/petclinic/PetClinicConcurrencyTests.java:94 | tp | the catch clause names Exception
+ward:java/illegal-identifier-name | commons-lang/src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java:1174 | tp | a local named var, or a type name that starts with a dollar sign
+ward:java/illegal-identifier-name | commons-lang/src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java:1883 | tp | a local named var, or a type name that starts with a dollar sign
+ward:java/illegal-identifier-name | commons-lang/src/test/java/org/apache/commons/lang3/ClassUtilsShortClassNameTest.java:27 | tp | a local named var, or a type name that starts with a dollar sign
+ward:java/illegal-token-text | commons-lang/src/main/java/org/apache/commons/lang3/StringEscapeUtils.java:209 | tp | a form feed or a space written as a Unicode escape
+ward:java/illegal-token-text | commons-lang/src/main/java/org/apache/commons/lang3/StringEscapeUtils.java:253 | tp | a form feed or a space written as a Unicode escape
+ward:java/illegal-token-text | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsIsTest.java:135 | tp | a form feed or a space written as a Unicode escape
+ward:java/im-bad-check-for-odd | commons-lang/src/test/java/org/apache/commons/lang3/FunctionsTest.java:102 | tp | the remainder of two is compared with one
+ward:java/im-bad-check-for-odd | commons-lang/src/test/java/org/apache/commons/lang3/function/FailableTest.java:155 | tp | the remainder of two is compared with one
+ward:java/immutable-field | commons-lang/src/test/java/org/apache/commons/lang3/RangeReadObjectTest.java:47 | tp | a private field with an initializer that nothing assigns again
+ward:java/implicit-functional-interface | commons-lang/src/main/java/org/apache/commons/lang3/function/FailableIntUnaryOperator.java:29 | tp | an interface with one abstract method and no FunctionalInterface annotation
+ward:java/implicit-functional-interface | commons-lang/src/main/java/org/apache/commons/lang3/function/FailableLongUnaryOperator.java:29 | tp | an interface with one abstract method and no FunctionalInterface annotation
+ward:java/implicit-functional-interface | commons-lang/src/test/java/org/apache/commons/lang3/reflect/testbed/Bar.java:21 | tp | an interface with one abstract method and no FunctionalInterface annotation
+ward:java/insecure-random | commons-lang/src/test/java/org/apache/commons/lang3/RandomStringUtilsTest.java:167 | un | a java.util.Random in a test, passed as the generator under test; no token or key is made
+ward:java/insecure-random | commons-lang/src/test/java/org/apache/commons/lang3/RandomStringUtilsTest.java:366 | un | a java.util.Random in a test, passed as the generator under test; no token or key is made
+ward:java/insecure-random | commons-lang/src/test/java/org/apache/commons/lang3/RandomStringUtilsTest.java:908 | un | a java.util.Random in a test, passed as the generator under test; no token or key is made
+ward:java/instantiable-utility-class | commons-lang/src/main/java/org/apache/commons/lang3/Charsets.java:35 | tp | a class of static members with no private constructor
+ward:java/instantiable-utility-class | commons-lang/src/main/java/org/apache/commons/lang3/reflect/AccessibleObjects.java:25 | tp | a class of static members with no private constructor
+ward:java/instantiable-utility-class | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsJoinBenchmark.java:489 | tp | a class of static members with no private constructor
+ward:java/int-vacuous-comparison | commons-lang/src/main/java/org/apache/commons/lang3/math/Fraction.java:236 | fp | the compared variable is a long, so the comparison with the int limits is a real range check
+ward:java/int-vacuous-comparison | commons-lang/src/main/java/org/apache/commons/lang3/math/Fraction.java:432 | fp | the compared variable is a long, so the comparison with the int limits is a real range check
+ward:java/int-vacuous-comparison | commons-lang/src/test/java/org/apache/commons/lang3/time/StopWatchTest.java:157 | fp | the compared variable is a long, so the comparison with the int limits is a real range check
+ward:java/invalid-javadoc-position | commons-lang/src/test/java/org/apache/commons/lang3/ClassUtilsTest.java:208 | tp | the Javadoc comment is between the annotation and the method
+ward:java/invalid-javadoc-position | commons-lang/src/test/java/org/apache/commons/lang3/ClassUtilsTest.java:214 | tp | the Javadoc comment is between the annotation and the method
+ward:java/invalid-javadoc-position | commons-lang/src/test/java/org/apache/commons/lang3/FunctionsTest.java:668 | tp | a Javadoc before the first constant of an enum is before a declaration; the second is after an annotation
+ward:java/is2-inconsistent-sync | commons-lang/src/test/java/org/apache/commons/lang3/exception/ExceptionUtilsTest.java:103 | un | the locking of the field was not traced
+ward:java/j-unit-jupiter-test-should-be-package-private | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsIndexOfAnyTest.java:64 | tp | a public JUnit Jupiter test method
+ward:java/j-unit-jupiter-test-should-be-package-private | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsJoinExceptionTest.java:87 | tp | a public JUnit Jupiter test method
+ward:java/j-unit-jupiter-test-should-be-package-private | spring-petclinic/src/test/java/org/springframework/samples/petclinic/PetClinicConcurrencyTests.java:40 | tp | a public JUnit Jupiter test method
+ward:java/j-unit-use-expected | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/MultiBackgroundInitializerSupplierTest.java:131 | tp | a try block that fails when no exception is thrown
+ward:java/j-unit-use-expected | commons-lang/src/test/java/org/apache/commons/lang3/time/FastDateFormatTest.java:77 | tp | a try block that fails when no exception is thrown
+ward:java/j-unit-use-expected | commons-lang/src/test/java/org/apache/commons/lang3/util/FluentBitSetTest.java:1200 | tp | a try block that fails when no exception is thrown
+ward:java/javadoc-leading-asterisk-align | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:3698 | un | the column of the asterisks was not measured by hand
+ward:java/javadoc-leading-asterisk-align | commons-lang/src/main/java/org/apache/commons/lang3/builder/EqualsBuilder.java:459 | un | the column of the asterisks was not measured by hand
+ward:java/javadoc-leading-asterisk-align | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsSubstringTest.java:434 | un | the column of the asterisks was not measured by hand
+ward:java/javadoc-method | commons-lang/src/main/java/org/apache/commons/lang3/Strings.java:289 | tp | the Javadoc lists two parameters and the method has three; the two others were not compared
+ward:java/javadoc-method | commons-lang/src/test/java/org/apache/commons/lang3/RandomUtilsTest.java:344 | un | the Javadoc lists two parameters and the method has three; the two others were not compared
+ward:java/javadoc-method | spring-petclinic/src/main/java/org/springframework/samples/petclinic/owner/VisitController.java:64 | un | the Javadoc lists two parameters and the method has three; the two others were not compared
+ward:java/javadoc-missing-leading-asterisk | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:9096 | tp | a row inside a Javadoc comment has no asterisk
+ward:java/javadoc-missing-leading-asterisk | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:9098 | tp | a row inside a Javadoc comment has no asterisk
+ward:java/javadoc-missing-leading-asterisk | commons-lang/src/test/java/org/apache/commons/lang3/CharUtilsPerfRun.java:47 | tp | a row inside a Javadoc comment has no asterisk
+ward:java/javadoc-paragraph | commons-lang/src/main/java/org/apache/commons/lang3/StringEscapeUtils.java:418 | tp | a paragraph tag follows a text row with no empty row between
+ward:java/javadoc-paragraph | commons-lang/src/test/java/org/apache/commons/lang3/Supplementary.java:70 | tp | a paragraph tag follows a text row with no empty row between
+ward:java/javadoc-paragraph | spring-petclinic/src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java:49 | tp | a paragraph tag follows a text row with no empty row between
+ward:java/javadoc-tag-continuation-indentation | commons-lang/src/main/java/org/apache/commons/lang3/Streams.java:166 | tp | the continuation row of a block tag starts at the column of the tag
+ward:java/javadoc-tag-continuation-indentation | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/MultiBackgroundInitializerTest.java:169 | tp | the continuation row of a block tag starts at the column of the tag
+ward:java/javadoc-tag-continuation-indentation | spring-petclinic/src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java:43 | tp | the continuation row of a block tag starts at the column of the tag
+ward:java/jua-dont-assert-instanceof-in-tests | commons-lang/src/test/java/org/apache/commons/lang3/math/FractionTest.java:706 | tp | assertTrue on an instanceof test
+ward:java/jua-dont-assert-instanceof-in-tests | commons-lang/src/test/java/org/apache/commons/lang3/math/FractionTest.java:710 | tp | assertTrue on an instanceof test
+ward:java/jua-dont-assert-instanceof-in-tests | commons-lang/src/test/java/org/apache/commons/lang3/math/FractionTest.java:714 | tp | assertTrue on an instanceof test
+ward:java/labeled-statement | commons-lang/src/main/java/org/apache/commons/lang3/reflect/MethodUtils.java:568 | tp | a labelled loop
+ward:java/labeled-statement | commons-lang/src/test/java/org/apache/commons/lang3/text/StrBuilderClearTest.java:99 | tp | a labelled loop
+ward:java/lambda-can-be-method-reference | commons-lang/src/main/java/org/apache/commons/lang3/RandomUtils.java:77 | tp | the lambda only calls one method with no argument
+ward:java/lambda-can-be-method-reference | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/AbstractConcurrentInitializerCloseAndExceptionsTest.java:165 | tp | the lambda only calls one method with no argument
+ward:java/lambda-can-be-method-reference | spring-petclinic/src/test/java/org/springframework/samples/petclinic/system/CrashControllerTests.java:37 | tp | the lambda only calls one method with no argument
+ward:java/lambda-parameter-name | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/AbstractConcurrentInitializerCloseAndExceptionsTest.java:112 | tp | the lambda parameter starts with a capital letter
+ward:java/lambda-parameter-name | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/AbstractConcurrentInitializerCloseAndExceptionsTest.java:92 | tp | the lambda parameter starts with a capital letter
+ward:java/left-curly | commons-lang/src/main/java/org/apache/commons/lang3/AnnotationUtils.java:63 | tp | an opening brace alone on its line
+ward:java/left-curly | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsTest.java:2935 | tp | an opening brace alone on its line
+ward:java/left-curly | spring-petclinic/src/test/java/org/springframework/samples/petclinic/owner/PetTypeFormatterTests.java:85 | tp | an opening brace alone on its line
+ward:java/line-length | commons-lang/src/main/java/org/apache/commons/lang3/StringUtils.java:4924 | tp | the line is longer than 100 characters; the projects use a longer limit
+ward:java/line-length | commons-lang/src/test/java/org/apache/commons/lang3/ValidateTest.java:224 | tp | the line is longer than 100 characters; the projects use a longer limit
+ward:java/line-length | spring-petclinic/src/main/java/org/springframework/samples/petclinic/PetClinicRuntimeHints.java:33 | tp | the line is longer than 100 characters; the projects use a longer limit
+ward:java/linguistic-naming | commons-lang/src/main/java/org/apache/commons/lang3/text/ExtendedMessageFormat.java:315 | tp | a method named get... or to... returns void
+ward:java/linguistic-naming | commons-lang/src/main/java/org/apache/commons/lang3/text/StrBuilder.java:1956 | tp | a method named get... or to... returns void
+ward:java/linguistic-naming | commons-lang/src/test/java/org/apache/commons/lang3/builder/ReflectionToStringBuilderOverrideExcludeTest.java:70 | tp | a method named get... or to... returns void
+ward:java/literals-first-in-comparisons | commons-lang/src/main/java/org/apache/commons/lang3/LocaleUtils.java:368 | tp | equals is called on the variable with a literal argument
+ward:java/literals-first-in-comparisons | commons-lang/src/main/java/org/apache/commons/lang3/LocaleUtils.java:372 | tp | equals is called on the variable with a literal argument
+ward:java/literals-first-in-comparisons | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:674 | tp | equals is called on the variable with a literal argument
+ward:java/local-final-variable-name | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:7630 | tp | the name has one lower-case letter before a capital, or is in upper case
+ward:java/local-final-variable-name | commons-lang/src/main/java/org/apache/commons/lang3/StringUtils.java:2545 | tp | the name has one lower-case letter before a capital, or is in upper case
+ward:java/local-final-variable-name | commons-lang/src/test/java/org/apache/commons/lang3/ObjectUtilsTest.java:388 | tp | the name has one lower-case letter before a capital, or is in upper case
+ward:java/local-variable-name | commons-lang/src/main/java/org/apache/commons/lang3/StringUtils.java:2307 | tp | a local name in upper case or starting with a capital
+ward:java/local-variable-name | commons-lang/src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java:1498 | tp | a local name in upper case or starting with a capital
+ward:java/local-variable-name | commons-lang/src/test/java/org/apache/commons/lang3/ObjectUtilsTest.java:388 | tp | a local name in upper case or starting with a capital
+ward:java/loose-coupling | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:6688 | tp | a local is declared as HashMap or ArrayList
+ward:java/loose-coupling | commons-lang/src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java:796 | tp | a local is declared as HashMap or ArrayList
+ward:java/loose-coupling | commons-lang/src/test/java/org/apache/commons/lang3/builder/JsonToStringStyleTest.java:397 | tp | a local is declared as HashMap or ArrayList
+ward:java/mc-overridable-method-call-in-clone | commons-lang/src/main/java/org/apache/commons/lang3/text/StrTokenizer.java:459 | tp | clone calls a method that a subclass can override
+ward:java/mc-overridable-method-call-in-constructor | commons-lang/src/main/java/org/apache/commons/lang3/text/StrSubstitutor.java:387 | tp | the constructor calls a public setter of its non-final class
+ward:java/mc-overridable-method-call-in-constructor | commons-lang/src/main/java/org/apache/commons/lang3/text/StrSubstitutor.java:406 | tp | the constructor calls a public setter of its non-final class
+ward:java/mc-overridable-method-call-in-constructor | commons-lang/src/main/java/org/apache/commons/lang3/text/StrSubstitutor.java:440 | tp | the constructor calls a public setter of its non-final class
+ward:java/member-name | commons-lang/src/test/java/org/apache/commons/lang3/builder/ReflectionToStringBuilderExcludeNullValuesTest.java:42 | tp | an instance field named in upper case
+ward:java/member-name | commons-lang/src/test/java/org/apache/commons/lang3/builder/ReflectionToStringBuilderExcludeNullValuesTest.java:43 | tp | an instance field named in upper case
+ward:java/member-name | commons-lang/src/test/java/org/apache/commons/lang3/builder/ReflectionToStringBuilderMutateInspectConcurrencyTest.java:73 | tp | an instance field named in upper case
+ward:java/method-length | commons-lang/src/main/java/org/apache/commons/lang3/StringUtils.java:7795 | tp | the method is longer than the limit
+ward:java/method-length | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsTest.java:2756 | tp | the method is longer than the limit
+ward:java/method-length | spring-petclinic/src/test/java/org/springframework/samples/petclinic/PetClinicConcurrencyTests.java:41 | tp | the method is longer than the limit
+ward:java/method-name | commons-lang/src/main/java/org/apache/commons/lang3/Conversion.java:262 | tp | an underscore or upper case in a method name; a test name with underscores is undetermined
+ward:java/method-name | commons-lang/src/main/java/org/apache/commons/lang3/ObjectUtils.java:513 | tp | an underscore or upper case in a method name; a test name with underscores is undetermined
+ward:java/method-name | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsTest.java:1382 | un | an underscore or upper case in a method name; a test name with underscores is undetermined
+ward:java/method-returns-internal-array | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:9254 | fp | a zero-length static constant array cannot be changed by the caller; the second returns an instance array field
+ward:java/method-returns-internal-array | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:9542 | fp | a zero-length static constant array cannot be changed by the caller; the second returns an instance array field
+ward:java/method-returns-internal-array | commons-lang/src/test/java/org/apache/commons/lang3/function/MethodFixtures.java:181 | tp | a zero-length static constant array cannot be changed by the caller; the second returns an instance array field
+ward:java/misleading-empty-varargs | commons-lang/src/test/java/org/apache/commons/lang3/util/IterableStringTokenizerTest.java:153 | tp | Arrays.asList with no argument
+ward:java/misleading-empty-varargs | commons-lang/src/test/java/org/apache/commons/lang3/util/IterableStringTokenizerTest.java:165 | tp | Arrays.asList with no argument
+ward:java/missing-javadoc | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsJoinBenchmark.java:257 | tp | a public method with no Javadoc
+ward:java/missing-javadoc | spring-petclinic/src/main/java/org/springframework/samples/petclinic/PetClinicApplication.java:32 | tp | a public method with no Javadoc
+ward:java/missing-javadoc | spring-petclinic/src/main/java/org/springframework/samples/petclinic/owner/Owner.java:72 | tp | a public method with no Javadoc
+ward:java/missing-javadoc-type | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsJoinBenchmark.java:218 | tp | a public type with no Javadoc
+ward:java/missing-javadoc-type | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsJoinBenchmark.java:346 | tp | a public type with no Javadoc
+ward:java/missing-javadoc-type | spring-petclinic/src/main/java/org/springframework/samples/petclinic/PetClinicRuntimeHints.java:25 | tp | a public type with no Javadoc
+ward:java/missing-serial-version-uid | spring-petclinic/src/main/java/org/springframework/samples/petclinic/model/BaseEntity.java:33 | tp | a Serializable class with no serialVersionUID
+ward:java/missing-static-method-in-non-instantiatable-class | commons-lang/src/test/java/ClassPathUtilsDefaultPackage.java:21 | un | the members of the class were not read
+ward:java/missing-switch-default | commons-lang/src/main/java/org/apache/commons/lang3/RandomStringUtils.java:419 | tp | the switch has no default label
+ward:java/missing-switch-default | commons-lang/src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java:1065 | tp | the switch has no default label
+ward:java/missing-switch-default | commons-lang/src/test/java/org/apache/commons/lang3/CharSequenceUtilsBenchmark.java:182 | tp | the switch has no default label
+ward:java/misused-week-year | commons-lang/src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java:578 | tp | a week-year pattern with no week field; the test checks that pattern on purpose
+ward:java/misused-week-year | commons-lang/src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java:579 | tp | a week-year pattern with no week field; the test checks that pattern on purpose
+ward:java/misused-week-year | commons-lang/src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java:580 | tp | a week-year pattern with no week field; the test checks that pattern on purpose
+ward:java/mockito-usage | commons-lang/src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java:376 | fp | verify is a static helper of the test class, not Mockito's
+ward:java/modifier-order | spring-petclinic/src/main/java/org/springframework/samples/petclinic/vet/VetController.java:73 | tp | an annotation follows the public modifier
+ward:java/ms-cannot-be-final | commons-lang/src/test/java/org/apache/commons/lang3/reflect/testbed/StaticContainer.java:35 | tp | a public or protected static field that is not final
+ward:java/ms-cannot-be-final | commons-lang/src/test/java/org/apache/commons/lang3/reflect/testbed/StaticContainer.java:36 | tp | a public or protected static field that is not final
+ward:java/ms-expose-rep | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:9234 | fp | a zero-length static constant array cannot be changed by the caller; the second returns a static array with elements
+ward:java/ms-expose-rep | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:9493 | fp | a zero-length static constant array cannot be changed by the caller; the second returns a static array with elements
+ward:java/ms-expose-rep | commons-lang/src/test/java/org/apache/commons/lang3/util/IterableStringTokenizerTest.java:53 | tp | a zero-length static constant array cannot be changed by the caller; the second returns a static array with elements
+ward:java/ms-final-pkgprotect | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:487 | tp | a public static field that is not final
+ward:java/ms-should-be-final | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:209 | tp | a public static field with a constant name that is not final
+ward:java/multiline-comment-leading-asterisk-presence | commons-lang/src/main/java/org/apache/commons/lang3/StringUtils.java:2470 | tp | a row of a block comment has no asterisk
+ward:java/multiline-comment-leading-asterisk-presence | commons-lang/src/main/java/org/apache/commons/lang3/StringUtils.java:2478 | tp | a row of a block comment has no asterisk
+ward:java/multiline-comment-leading-asterisk-presence | commons-lang/src/main/java/org/apache/commons/lang3/StringUtils.java:2486 | tp | a row of a block comment has no asterisk
+ward:java/mutable-static-state | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:209 | tp | a static field that is neither private nor final
+ward:java/mutable-static-state | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:485 | tp | a static field that is neither private nor final
+ward:java/mutable-static-state | spring-petclinic/src/test/java/org/springframework/samples/petclinic/MySqlIntegrationTests.java:50 | tp | a static field that is neither private nor final
+ward:java/nm-class-naming-convention | commons-lang/src/test/java/org/apache/commons/lang3/ClassUtilsShortClassNameTest.java:27 | tp | a class name that starts with a dollar sign
+ward:java/nm-class-naming-convention | commons-lang/src/test/java/org/apache/commons/lang3/ClassUtilsShortClassNameTest.java:35 | tp | a class name that starts with a dollar sign
+ward:java/nm-class-not-exception | commons-lang/src/test/java/org/apache/commons/lang3/ObjectToStringRuntimeException.java:23 | tp | a class named ...Exception that extends nothing
+ward:java/nm-confusing | commons-lang/src/test/java/org/apache/commons/lang3/BooleanUtilsTest.java:399 | un | the other method of the pair was not looked up
+ward:java/nm-confusing | commons-lang/src/test/java/org/apache/commons/lang3/BooleanUtilsTest.java:412 | un | the other method of the pair was not looked up
+ward:java/nm-confusing | commons-lang/src/test/java/org/apache/commons/lang3/BooleanUtilsTest.java:425 | un | the other method of the pair was not looked up
+ward:java/nm-field-naming-convention | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:209 | tp | a static field that is not final has an upper-case name
+ward:java/nm-field-naming-convention | commons-lang/src/main/java/org/apache/commons/lang3/function/Suppliers.java:36 | tp | a static field that is not final has an upper-case name
+ward:java/nm-field-naming-convention | commons-lang/src/test/java/org/apache/commons/lang3/function/MethodFixtures.java:29 | tp | a static field that is not final has an upper-case name
+ward:java/nm-method-naming-convention | commons-lang/src/main/java/org/apache/commons/lang3/ObjectUtils.java:405 | tp | a method name in upper case
+ward:java/nm-method-naming-convention | commons-lang/src/main/java/org/apache/commons/lang3/ObjectUtils.java:474 | tp | a method name in upper case
+ward:java/nm-method-naming-convention | commons-lang/src/main/java/org/apache/commons/lang3/text/translate/EntityArrays.java:372 | tp | a method name in upper case
+ward:java/no-package | commons-lang/src/test/java/ClassPathUtilsDefaultPackage.java:21 | tp | a class in the default package, which the test needs
+ward:java/non-empty-atclause-description | commons-lang/src/test/java/org/apache/commons/lang3/LocaleUtilsTest.java:101 | tp | a block tag with no text
+ward:java/non-empty-atclause-description | spring-petclinic/src/main/java/org/springframework/samples/petclinic/owner/VisitController.java:60 | tp | a block tag with no text
+ward:java/non-empty-atclause-description | spring-petclinic/src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java:51 | tp | a block tag with no text
+ward:java/non-static-initializer | commons-lang/src/main/java/org/apache/commons/lang3/AnnotationUtils.java:63 | tp | an instance initializer block
+ward:java/non-static-initializer | spring-petclinic/src/test/java/org/springframework/samples/petclinic/owner/PetTypeFormatterTests.java:85 | tp | an instance initializer block
+ward:java/non-static-initializer | spring-petclinic/src/test/java/org/springframework/samples/petclinic/owner/PetTypeFormatterTests.java:90 | tp | an instance initializer block
+ward:java/non-thread-safe-singleton | commons-lang/src/main/java/org/apache/commons/lang3/concurrent/MultiBackgroundInitializer.java:277 | un | a parameter is given a default value; no static field is involved; the first was not traced
+ward:java/non-thread-safe-singleton | commons-lang/src/main/java/org/apache/commons/lang3/exception/ContextedException.java:139 | fp | a parameter is given a default value; no static field is involved; the first was not traced
+ward:java/non-thread-safe-singleton | commons-lang/src/main/java/org/apache/commons/lang3/exception/ContextedRuntimeException.java:139 | fp | a parameter is given a default value; no static field is involved; the first was not traced
+ward:java/np-boolean-return-null | commons-lang/src/main/java/org/apache/commons/lang3/BooleanUtils.java:628 | tp | the method returns null for a Boolean, as its Javadoc says
+ward:java/np-boolean-return-null | commons-lang/src/main/java/org/apache/commons/lang3/BooleanUtils.java:664 | tp | the method returns null for a Boolean, as its Javadoc says
+ward:java/np-boolean-return-null | commons-lang/src/main/java/org/apache/commons/lang3/BooleanUtils.java:700 | tp | the method returns null for a Boolean, as its Javadoc says
+ward:java/np-clone-could-return-null | commons-lang/src/main/java/org/apache/commons/lang3/text/StrTokenizer.java:457 | tp | clone returns null when the clone fails
+ward:java/np-load-of-known-null-value | commons-lang/src/test/java/org/apache/commons/lang3/ArrayUtilsTest.java:3084 | tp | a local that was set to null is passed as an argument; the tests do it to name the null
+ward:java/np-load-of-known-null-value | commons-lang/src/test/java/org/apache/commons/lang3/ArrayUtilsTest.java:3247 | tp | a local that was set to null is passed as an argument; the tests do it to name the null
+ward:java/np-load-of-known-null-value | commons-lang/src/test/java/org/apache/commons/lang3/ArrayUtilsTest.java:3653 | tp | a local that was set to null is passed as an argument; the tests do it to name the null
+ward:java/np-tostring-could-return-null | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsTest.java:105 | tp | toString returns null in a test object
+ward:java/ns-non-short-circuit | commons-lang/src/main/java/org/apache/commons/lang3/tuple/ImmutableTriple.java:101 | tp | a single bar joins two null checks beside a double bar
+ward:java/null-assignment | commons-lang/src/main/java/org/apache/commons/lang3/math/NumberUtils.java:439 | tp | null is assigned to a variable after its declaration
+ward:java/null-assignment | commons-lang/src/main/java/org/apache/commons/lang3/time/DurationFormatUtils.java:659 | tp | null is assigned to a variable after its declaration
+ward:java/null-assignment | commons-lang/src/test/java/org/apache/commons/lang3/builder/NoClassNameToStringStyleTest.java:98 | tp | null is assigned to a variable after its declaration
+ward:java/one-top-level-class | commons-lang/src/test/java/org/apache/commons/lang3/EnumUtilsTest.java:640 | tp | the file declares several top-level types
+ward:java/one-top-level-class | commons-lang/src/test/java/org/apache/commons/lang3/SerializationUtilsTest.java:64 | tp | the file declares several top-level types
+ward:java/one-top-level-class | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:168 | tp | the file declares several top-level types
+ward:java/outer-type-filename | commons-lang/src/test/java/org/apache/commons/lang3/EnumUtilsTest.java:41 | tp | the first type of the file is not the one the file is named after
+ward:java/outer-type-filename | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:76 | tp | the first type of the file is not the one the file is named after
+ward:java/overload-methods-declaration-order | commons-lang/src/main/java/org/apache/commons/lang3/builder/ReflectionToStringBuilder.java:823 | un | the other overloads were not located
+ward:java/overload-methods-declaration-order | commons-lang/src/main/java/org/apache/commons/lang3/time/CalendarUtils.java:217 | un | the other overloads were not located
+ward:java/overload-methods-declaration-order | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:1312 | un | the other overloads were not located
+ward:java/overriding-thread-run | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/AbstractConcurrentInitializerTest.java:54 | tp | run is overridden in an anonymous Thread subclass
+ward:java/overriding-thread-run | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/TimedSemaphoreTest.java:121 | tp | run is overridden in an anonymous Thread subclass
+ward:java/overriding-thread-run | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/TimedSemaphoreTest.java:222 | tp | run is overridden in an anonymous Thread subclass
+ward:java/pa-public-array-attribute | commons-lang/src/test/java/org/apache/commons/lang3/reflect/testbed/GenericTypeHolder.java:29 | tp | a public array field of a reflection test fixture
+ward:java/pa-public-array-attribute | commons-lang/src/test/java/org/apache/commons/lang3/reflect/testbed/GenericTypeHolder.java:37 | tp | a public array field of a reflection test fixture
+ward:java/pa-public-array-attribute | commons-lang/src/test/java/org/apache/commons/lang3/reflect/testbed/GenericTypeHolder.java:38 | tp | a public array field of a reflection test fixture
+ward:java/pa-public-primitive-attribute | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsGetDigitsBenchmark.java:69 | tp | a public field that is not final
+ward:java/pa-public-primitive-attribute | commons-lang/src/test/java/org/apache/commons/lang3/reflect/testbed/PubliclyShadowedChild.java:23 | tp | a public field that is not final
+ward:java/pa-public-primitive-attribute | commons-lang/src/test/java/org/apache/commons/lang3/reflect/testbed/PubliclyShadowedChild.java:24 | tp | a public field that is not final
+ward:java/package-declaration | commons-lang/src/test/java/ClassPathUtilsDefaultPackage.java:21 | tp | the file has no package declaration, which the test needs
+ward:java/parameter-count | commons-lang/src/main/java/org/apache/commons/lang3/RandomStringUtils.java:838 | tp | more than five parameters
+ward:java/parameter-count | commons-lang/src/main/java/org/apache/commons/lang3/concurrent/EventCountCircuitBreaker.java:384 | tp | more than five parameters
+ward:java/parameter-count | commons-lang/src/test/java/org/apache/commons/lang3/CharSequenceUtilsTest.java:83 | tp | more than five parameters
+ward:java/parameter-name | commons-lang/src/main/java/org/apache/commons/lang3/time/ImmutableTimeZone.java:143 | tp | a parameter name that starts with a capital letter
+ward:java/parameter-name | commons-lang/src/test/java/org/apache/commons/lang3/builder/ReflectionToStringBuilderIncludeTest.java:222 | tp | a parameter name that starts with a capital letter
+ward:java/path-injection | commons-lang/src/test/java/org/apache/commons/lang3/builder/ToStringBuilderTraversalMemoryTest.java:155 | un | a system property builds the path of the java executable in a test; not attacker input
+ward:java/premature-declaration | commons-lang/src/main/java/org/apache/commons/lang3/reflect/MemberUtils.java:203 | un | the statements between the declaration and its use were not traced
+ward:java/premature-declaration | commons-lang/src/main/java/org/apache/commons/lang3/text/StrSubstitutor.java:1181 | un | the statements between the declaration and its use were not traced
+ward:java/premature-declaration | commons-lang/src/test/java/org/apache/commons/lang3/time/FastDateParserTest.java:817 | un | the statements between the declaration and its use were not traced
+ward:java/preserve-stack-trace | commons-lang/src/main/java/org/apache/commons/lang3/concurrent/ConcurrentUtils.java:185 | un | the new exception gets the message of the caught one and not the exception; the two others pass a part of it
+ward:java/preserve-stack-trace | commons-lang/src/main/java/org/apache/commons/lang3/event/EventUtils.java:116 | un | the new exception gets the message of the caught one and not the exception; the two others pass a part of it
+ward:java/preserve-stack-trace | commons-lang/src/test/java/org/apache/commons/lang3/time/FastDateParserSDFTest.java:125 | tp | the new exception gets the message of the caught one and not the exception; the two others pass a part of it
+ward:java/proper-clone-implementation | commons-lang/src/main/java/org/apache/commons/lang3/time/ImmutableTimeZone.java:39 | tp | clone builds its result without super.clone; the second is a test method whose name ends in clone
+ward:java/proper-clone-implementation | commons-lang/src/main/java/org/apache/commons/lang3/util/FluentBitSet.java:199 | tp | clone builds its result without super.clone; the second is a test method whose name ends in clone
+ward:java/proper-clone-implementation | commons-lang/src/test/java/org/apache/commons/lang3/util/FluentBitSetTest.java:490 | fp | clone builds its result without super.clone; the second is a test method whose name ends in clone
+ward:java/proper-logger | spring-petclinic/src/test/java/org/springframework/samples/petclinic/PostgresIntegrationTests.java:96 | tp | the logger is not named as the rule's default asks
+ward:java/protected-member-in-final-class | commons-lang/src/main/java/org/apache/commons/lang3/stream/Streams.java:143 | tp | a protected constructor in a final class
+ward:java/protected-member-in-final-class | commons-lang/src/test/java/org/apache/commons/lang3/builder/DiffTest.java:33 | tp | a protected constructor in a final class
+ward:java/ps-public-semaphores | commons-lang/src/main/java/org/apache/commons/lang3/concurrent/TimedSemaphore.java:327 | tp | a public method waits on this
+ward:java/ps-public-semaphores | commons-lang/src/test/java/org/apache/commons/lang3/ThreadUtilsTest.java:64 | tp | a public method waits on this
+ward:java/public-member-in-non-public-type | commons-lang/src/main/java/org/apache/commons/lang3/event/EventListenerSupport.java:90 | un | a public method of a package-private class; the second type is a protected nested class
+ward:java/public-member-in-non-public-type | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/MultiBackgroundInitializerSupplierTest.java:79 | tp | a public method of a package-private class; the second type is a protected nested class
+ward:java/public-member-in-non-public-type | spring-petclinic/src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java:149 | tp | a public method of a package-private class; the second type is a protected nested class
+ward:java/pzla-prefer-zero-length-arrays | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:8467 | tp | the method returns null for an array type
+ward:java/pzla-prefer-zero-length-arrays | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:9561 | tp | the method returns null for an array type
+ward:java/pzla-prefer-zero-length-arrays | commons-lang/src/test/java/org/apache/commons/lang3/SerializationUtilsTest.java:74 | tp | the method returns null for an array type
+ward:java/random-mod-integer | commons-lang/src/test/java/org/apache/commons/lang3/CharSequenceUtilsTest.java:291 | tp | the remainder of nextInt() is taken
+ward:java/random-mod-integer | commons-lang/src/test/java/org/apache/commons/lang3/CharSequenceUtilsTest.java:293 | tp | the remainder of nextInt() is taken
+ward:java/range-array-length | commons-lang/src/test/java/org/apache/commons/lang3/text/StrBuilderTest.java:185 | tp | the test passes a length outside the array on purpose
+ward:java/range-array-length | commons-lang/src/test/java/org/apache/commons/lang3/text/StrBuilderTest.java:187 | tp | the test passes a length outside the array on purpose
+ward:java/range-array-offset | commons-lang/src/test/java/org/apache/commons/lang3/text/StrBuilderTest.java:184 | tp | the test passes an offset outside the array on purpose
+ward:java/range-array-offset | commons-lang/src/test/java/org/apache/commons/lang3/text/StrBuilderTest.java:186 | tp | the test passes an offset outside the array on purpose
+ward:java/reflc-reflection-may-increase-accessibility-of-class | commons-lang/src/main/java/org/apache/commons/lang3/ClassUtils.java:233 | tp | Class.forName with a name given by the caller
+ward:java/reflf-reflection-may-increase-accessibility-of-field | commons-lang/src/main/java/org/apache/commons/lang3/reflect/FieldUtils.java:127 | tp | getDeclaredField with a name given by the caller
+ward:java/reflf-reflection-may-increase-accessibility-of-field | commons-lang/src/main/java/org/apache/commons/lang3/reflect/FieldUtils.java:198 | tp | getDeclaredField with a name given by the caller
+ward:java/reflf-reflection-may-increase-accessibility-of-field | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:1315 | tp | getDeclaredField with a name given by the caller
+ward:java/reliance-on-default-charset | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsTest.java:3095 | tp | getBytes without a charset
+ward:java/reliance-on-default-charset | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsTest.java:3158 | tp | getBytes without a charset
+ward:java/reliance-on-default-charset | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsTest.java:703 | tp | getBytes without a charset
+ward:java/replace-hashtable-with-map | commons-lang/src/test/java/org/apache/commons/lang3/stream/StreamsTest.java:235 | tp | a Hashtable; the test needs its Enumeration
+ward:java/replace-hashtable-with-map | commons-lang/src/test/java/org/apache/commons/lang3/stream/StreamsTest.java:247 | tp | a Hashtable; the test needs its Enumeration
+ward:java/replace-java-util-calendar | commons-lang/src/main/java/org/apache/commons/lang3/time/DateUtils.java:1652 | tp | java.util.Calendar; the library's purpose is to support it
+ward:java/replace-java-util-calendar | commons-lang/src/main/java/org/apache/commons/lang3/time/DateUtils.java:234 | tp | java.util.Calendar; the library's purpose is to support it
+ward:java/replace-java-util-calendar | commons-lang/src/test/java/org/apache/commons/lang3/time/DateUtilsTest.java:134 | tp | java.util.Calendar; the library's purpose is to support it
+ward:java/replace-java-util-date | commons-lang/src/main/java/org/apache/commons/lang3/time/DateUtils.java:1671 | tp | java.util.Date; the library's purpose is to support it
+ward:java/replace-java-util-date | commons-lang/src/main/java/org/apache/commons/lang3/time/DateUtils.java:426 | tp | java.util.Date; the library's purpose is to support it
+ward:java/replace-java-util-date | commons-lang/src/test/java/org/apache/commons/lang3/time/DateUtilsRoundingTest.java:54 | tp | java.util.Date; the library's purpose is to support it
+ward:java/require-empty-line-before-block-tag-group | commons-lang/src/test/java/org/apache/commons/lang3/text/ExtendedMessageFormatTest.java:249 | tp | the first block tag follows a text row directly
+ward:java/require-empty-line-before-block-tag-group | spring-petclinic/src/main/java/org/springframework/samples/petclinic/owner/Owner.java:117 | tp | the first block tag follows a text row directly
+ward:java/require-empty-line-before-block-tag-group | spring-petclinic/src/main/java/org/springframework/samples/petclinic/owner/Owner.java:173 | tp | the first block tag follows a text row directly
+ward:java/return-empty-collection-rather-than-null | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:9231 | tp | null is returned for an array type
+ward:java/return-empty-collection-rather-than-null | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:9828 | tp | null is returned for an array type
+ward:java/return-empty-collection-rather-than-null | commons-lang/src/test/java/org/apache/commons/lang3/SerializationUtilsTest.java:88 | tp | null is returned for an array type
+ward:java/ri-redundant-interfaces | commons-lang/src/main/java/org/apache/commons/lang3/concurrent/BasicThreadFactory.java:103 | fp | the class is named as the interface it implements and has no superclass; the second repeats an interface of its superclass
+ward:java/ri-redundant-interfaces | commons-lang/src/test/java/org/apache/commons/lang3/ClassUtilsTest.java:65 | tp | the class is named as the interface it implements and has no superclass; the second repeats an interface of its superclass
+ward:java/rv-check-for-positive-indexof | commons-lang/src/test/java/org/apache/commons/lang3/RandomStringUtilsTest.java:529 | tp | indexOf is compared with > 0
+ward:java/rv-check-for-positive-indexof | commons-lang/src/test/java/org/apache/commons/lang3/RandomStringUtilsTest.java:626 | tp | indexOf is compared with > 0
+ward:java/rv-check-for-positive-indexof | commons-lang/src/test/java/org/apache/commons/lang3/builder/ReflectionToStringBuilderExcludeTest.java:134 | tp | indexOf is compared with > 0
+ward:java/rv-rem-of-random-int | commons-lang/src/test/java/org/apache/commons/lang3/CharSequenceUtilsTest.java:291 | tp | the remainder of nextInt() is taken
+ward:java/rv-rem-of-random-int | commons-lang/src/test/java/org/apache/commons/lang3/CharSequenceUtilsTest.java:293 | tp | the remainder of nextInt() is taken
+ward:java/se-comparator-should-be-serializable | commons-lang/src/test/java/org/apache/commons/lang3/ObjectUtilsTest.java:70 | tp | a Comparator that is not Serializable; the second implements a test interface that was not read
+ward:java/se-comparator-should-be-serializable | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:403 | un | a Comparator that is not Serializable; the second implements a test interface that was not read
+ward:java/se-no-serialversionid | spring-petclinic/src/main/java/org/springframework/samples/petclinic/model/BaseEntity.java:33 | tp | a Serializable class with no serialVersionUID
+ward:java/se-private-read-resolve-not-inherited | commons-lang/src/main/java/org/apache/commons/lang3/ObjectUtils.java:78 | tp | a private readResolve in a class that can be extended
+ward:java/se-private-read-resolve-not-inherited | commons-lang/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java:76 | tp | a private readResolve in a class that can be extended
+ward:java/se-transient-field-of-nonserializable-class | commons-lang/src/main/java/org/apache/commons/lang3/math/Fraction.java:38 | fp | the superclass (Number, GregorianCalendar) is Serializable; the second was not traced
+ward:java/se-transient-field-of-nonserializable-class | commons-lang/src/main/java/org/apache/commons/lang3/time/FastDateParser.java:703 | fp | the superclass (Number, GregorianCalendar) is Serializable; the second was not traced
+ward:java/se-transient-field-of-nonserializable-class | commons-lang/src/test/java/org/apache/commons/lang3/builder/EqualsBuilderTest.java:40 | un | the superclass (Number, GregorianCalendar) is Serializable; the second was not traced
+ward:java/self-assertion | commons-lang/src/test/java/org/apache/commons/lang3/IntegerRangeTest.java:138 | tp | the same variable is both arguments; the tests check that equals is reflexive
+ward:java/self-assertion | commons-lang/src/test/java/org/apache/commons/lang3/math/FractionTest.java:412 | tp | the same variable is both arguments; the tests check that equals is reflexive
+ward:java/self-assertion | commons-lang/src/test/java/org/apache/commons/lang3/mutable/MutableFloatTest.java:132 | tp | the same variable is both arguments; the tests check that equals is reflexive
+ward:java/self-equals | commons-lang/src/test/java/org/apache/commons/lang3/event/EventUtilsTest.java:206 | tp | equals is called on the receiver itself, to check that it is reflexive
+ward:java/self-equals | commons-lang/src/test/java/org/apache/commons/lang3/event/EventUtilsTest.java:218 | tp | equals is called on the receiver itself, to check that it is reflexive
+ward:java/sf-switch-no-default | commons-lang/src/main/java/org/apache/commons/lang3/RandomStringUtils.java:419 | tp | the switch has no default label
+ward:java/sf-switch-no-default | commons-lang/src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java:1065 | tp | the switch has no default label
+ward:java/sf-switch-no-default | commons-lang/src/test/java/org/apache/commons/lang3/CharSequenceUtilsBenchmark.java:182 | tp | the switch has no default label
+ward:java/short-class-name | commons-lang/src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java:411 | tp | a type name of fewer than five characters
+ward:java/short-class-name | commons-lang/src/test/java/org/apache/commons/lang3/ClassUtilsTest.java:77 | tp | a type name of fewer than five characters
+ward:java/short-class-name | spring-petclinic/src/main/java/org/springframework/samples/petclinic/owner/Pet.java:46 | tp | a type name of fewer than five characters
+ward:java/si-instance-before-finals-assigned | commons-lang/src/main/java/org/apache/commons/lang3/CharSet.java:61 | tp | a static final field creates an instance of the class before later static finals are assigned
+ward:java/si-instance-before-finals-assigned | commons-lang/src/main/java/org/apache/commons/lang3/CharSet.java:68 | tp | a static final field creates an instance of the class before later static finals are assigned
+ward:java/si-instance-before-finals-assigned | commons-lang/src/main/java/org/apache/commons/lang3/CharSet.java:82 | tp | a static final field creates an instance of the class before later static finals are assigned
+ward:java/sic-inner-should-be-static | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:102 | tp | an inner class that uses nothing of the outer instance
+ward:java/sic-inner-should-be-static | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:181 | tp | an inner class that uses nothing of the outer instance
+ward:java/sic-inner-should-be-static-anon | commons-lang/src/test/java/org/apache/commons/lang3/ClassUtilsGetShortClassNameTest.java:103 | tp | an anonymous class that uses nothing of the outer instance
+ward:java/sic-inner-should-be-static-anon | spring-petclinic/src/test/java/org/springframework/samples/petclinic/owner/PetTypeFormatterTests.java:84 | tp | an anonymous class that uses nothing of the outer instance
+ward:java/sic-inner-should-be-static-anon | spring-petclinic/src/test/java/org/springframework/samples/petclinic/owner/PetTypeFormatterTests.java:89 | tp | an anonymous class that uses nothing of the outer instance
+ward:java/signature-declare-throws-exception | commons-lang/src/main/java/org/apache/commons/lang3/AutoCloseables.java:43 | tp | the throws clause names Exception
+ward:java/signature-declare-throws-exception | commons-lang/src/main/java/org/apache/commons/lang3/AutoCloseables.java:56 | tp | the throws clause names Exception
+ward:java/signature-declare-throws-exception | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/locks/LockingVisitorsTest.java:111 | tp | the throws clause names Exception
+ward:java/simple-date-format-needs-locale | commons-lang/src/test/java/org/apache/commons/lang3/time/FastDateFormatTest.java:260 | tp | SimpleDateFormat is created with no Locale
+ward:java/simple-date-format-needs-locale | commons-lang/src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java:242 | tp | SimpleDateFormat is created with no Locale
+ward:java/simple-date-format-needs-locale | commons-lang/src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java:272 | tp | SimpleDateFormat is created with no Locale
+ward:java/simplifiable-test-assertion | commons-lang/src/test/java/org/apache/commons/lang3/ArrayUtilsTest.java:4897 | tp | assertEquals with a boolean literal or assertTrue on a != test; the third joins two tests with or and has no simpler form
+ward:java/simplifiable-test-assertion | commons-lang/src/test/java/org/apache/commons/lang3/LongRangeTest.java:193 | tp | assertEquals with a boolean literal or assertTrue on a != test; the third joins two tests with or and has no simpler form
+ward:java/simplifiable-test-assertion | commons-lang/src/test/java/org/apache/commons/lang3/builder/ToStringBuilderTraversalConcurrencyTest.java:163 | fp | assertEquals with a boolean literal or assertTrue on a != test; the third joins two tests with or and has no simpler form
+ward:java/sing-singleton-has-nonprivate-constructor | commons-lang/src/main/java/org/apache/commons/lang3/text/StrTokenizer.java:97 | fp | the first class is no singleton: its static factories return new objects; the second has a shared instance and public construction
+ward:java/sing-singleton-has-nonprivate-constructor | commons-lang/src/main/java/org/apache/commons/lang3/time/CalendarUtils.java:36 | tp | the first class is no singleton: its static factories return new objects; the second has a shared instance and public construction
+ward:java/single-line-javadoc | commons-lang/src/test/java/org/apache/commons/lang3/reflect/MethodUtilsAnnotationsTest.java:35 | fp | the first names an annotation in its text; the second holds a see tag
+ward:java/single-line-javadoc | commons-lang/src/test/java/org/apache/commons/lang3/time/FastDateParserJava15BugTest.java:44 | tp | the first names an annotation in its text; the second holds a see tag
+ward:java/single-method-singleton | commons-lang/src/main/java/org/apache/commons/lang3/time/FastDateFormat.java:276 | tp | several methods named getInstance in one class
+ward:java/single-method-singleton | commons-lang/src/main/java/org/apache/commons/lang3/time/FastDateFormat.java:300 | tp | several methods named getInstance in one class
+ward:java/single-method-singleton | commons-lang/src/test/java/org/apache/commons/lang3/time/FastDateParserTest.java:271 | tp | several methods named getInstance in one class
+ward:java/singleton-class-returning-new-instance | commons-lang/src/main/java/org/apache/commons/lang3/time/CalendarUtils.java:52 | tp | getInstance returns a new object
+ward:java/singular-field | commons-lang/src/test/java/org/apache/commons/lang3/text/StrBuilderClearTest.java:57 | un | the field is read and written in one method only; the first was not traced
+ward:java/singular-field | spring-petclinic/src/test/java/org/springframework/samples/petclinic/PostgresIntegrationTests.java:100 | tp | the field is read and written in one method only; the first was not traced
+ward:java/ss-should-be-static | commons-lang/src/test/java/org/apache/commons/lang3/builder/ReflectionDiffBuilderTest.java:276 | tp | a final instance field with a constant value; the fixtures need instance fields for reflection
+ward:java/ss-should-be-static | commons-lang/src/test/java/org/apache/commons/lang3/builder/ReflectionToStringBuilderSummaryTest.java:24 | tp | a final instance field with a constant value; the fixtures need instance fields for reflection
+ward:java/ss-should-be-static | commons-lang/src/test/java/org/apache/commons/lang3/builder/ToStringBuilderTest.java:137 | tp | a final instance field with a constant value; the fixtures need instance fields for reflection
+ward:java/star-import | spring-petclinic/src/test/java/org/springframework/samples/petclinic/owner/OwnerControllerTests.java:52 | tp | a static wildcard import
+ward:java/star-import | spring-petclinic/src/test/java/org/springframework/samples/petclinic/vet/VetControllerTests.java:39 | tp | a static wildcard import
+ward:java/static-variable-name | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:209 | tp | a static field that is not final has an upper-case name
+ward:java/static-variable-name | commons-lang/src/main/java/org/apache/commons/lang3/function/Suppliers.java:36 | tp | a static field that is not final has an upper-case name
+ward:java/static-variable-name | commons-lang/src/test/java/org/apache/commons/lang3/function/MethodFixtures.java:29 | tp | a static field that is not final has an upper-case name
+ward:java/summary-javadoc | commons-lang/src/main/java/org/apache/commons/lang3/function/FailableIntFunction.java:32 | tp | the Javadoc has no summary sentence, or the sentence does not end
+ward:java/summary-javadoc | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsStartsEndsWithTest.java:24 | tp | the Javadoc has no summary sentence, or the sentence does not end
+ward:java/summary-javadoc | spring-petclinic/src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java:41 | tp | the Javadoc has no summary sentence, or the sentence does not end
+ward:java/suspicious-equals-method-name | commons-lang/src/main/java/org/apache/commons/lang3/Strings.java:222 | un | the second is a test method whose name ends in equals; the others are helpers that take two values
+ward:java/suspicious-equals-method-name | commons-lang/src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java:490 | un | the second is a test method whose name ends in equals; the others are helpers that take two values
+ward:java/suspicious-equals-method-name | commons-lang/src/test/java/org/apache/commons/lang3/util/FluentBitSetTest.java:524 | fp | the second is a test method whose name ends in equals; the others are helpers that take two values
+ward:java/system-println | commons-lang/src/test/java/org/apache/commons/lang3/CharUtilsPerfRun.java:92 | tp | System.out.println
+ward:java/system-println | commons-lang/src/test/java/org/apache/commons/lang3/builder/ToStringBuilderTraversalMemoryTest.java:138 | tp | System.out.println
+ward:java/system-println | spring-petclinic/src/test/java/org/springframework/samples/petclinic/PetClinicConcurrencyTests.java:117 | tp | System.out.println
+ward:java/test-class-without-test-cases | commons-lang/src/test/java/org/apache/commons/lang3/AbstractLangTest.java:28 | tp | the class is named as a test and declares no test method; it is a base class
+ward:java/test-class-without-test-cases | commons-lang/src/test/java/org/apache/commons/lang3/CharSequenceUtilsTest.java:46 | un | a private abstract nested helper whose name ends in Test
+ward:java/test-class-without-test-cases | commons-lang/src/test/java/org/apache/commons/lang3/builder/AbstractReflectionTest.java:23 | tp | the class is named as a test and declares no test method
+ward:java/throws-method-throws-clause-basic-exception | commons-lang/src/main/java/org/apache/commons/lang3/AutoCloseables.java:56 | tp | the throws clause names Exception
+ward:java/throws-method-throws-clause-basic-exception | commons-lang/src/test/java/org/apache/commons/lang3/external/AnnotationEqualsTest.java:150 | tp | the throws clause names Exception
+ward:java/throws-method-throws-clause-basic-exception | spring-petclinic/src/test/java/org/springframework/samples/petclinic/PetClinicConcurrencyTests.java:41 | tp | the throws clause names Exception
+ward:java/throws-method-throws-clause-throwable | commons-lang/src/main/java/org/apache/commons/lang3/time/StopWatch.java:536 | tp | the throws clause names Throwable
+ward:java/throws-method-throws-clause-throwable | commons-lang/src/main/java/org/apache/commons/lang3/time/StopWatch.java:669 | tp | the throws clause names Throwable
+ward:java/throws-method-throws-clause-throwable | commons-lang/src/test/java/org/apache/commons/lang3/function/FailableLongPredicateTest.java:73 | tp | the throws clause names Throwable
+ward:java/todo-comment | commons-lang/src/main/java/org/apache/commons/lang3/exception/ExceptionUtils.java:256 | tp | a TODO comment
+ward:java/todo-comment | commons-lang/src/main/java/org/apache/commons/lang3/text/translate/UnicodeEscaper.java:136 | tp | a TODO comment
+ward:java/todo-comment | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:1141 | tp | a TODO comment
+ward:java/too-few-branches-for-switch | commons-lang/src/main/java/org/apache/commons/lang3/time/DateUtils.java:1110 | un | the labels of the switch were not counted
+ward:java/too-few-branches-for-switch | commons-lang/src/main/java/org/apache/commons/lang3/time/DurationFormatUtils.java:287 | un | the labels of the switch were not counted
+ward:java/too-few-branches-for-switch | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/AbstractConcurrentInitializerCloseAndExceptionsTest.java:67 | un | the labels of the switch were not counted
+ward:java/too-many-fields | commons-lang/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java:76 | tp | more fields than the limit
+ward:java/too-many-fields | commons-lang/src/test/java/org/apache/commons/lang3/builder/DiffBuilderTest.java:68 | tp | more fields than the limit
+ward:java/too-many-fields | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:233 | tp | more fields than the limit
+ward:java/too-many-methods | commons-lang/src/main/java/org/apache/commons/lang3/builder/CompareToBuilder.java:118 | tp | more methods than the limit
+ward:java/too-many-methods | commons-lang/src/test/java/org/apache/commons/lang3/SystemUtilsTest.java:43 | tp | more methods than the limit
+ward:java/too-many-methods | spring-petclinic/src/main/java/org/springframework/samples/petclinic/owner/PetController.java:49 | tp | more methods than the limit
+ward:java/too-many-static-imports | commons-lang/src/test/java/org/apache/commons/lang3/LocaleUtilsTest.java:17 | tp | more static imports than the limit
+ward:java/too-many-static-imports | commons-lang/src/test/java/org/apache/commons/lang3/builder/EqualsBuilderTest.java:17 | tp | more static imports than the limit
+ward:java/too-many-static-imports | spring-petclinic/src/test/java/org/springframework/samples/petclinic/owner/OwnerControllerTests.java:17 | tp | more static imports than the limit
+ward:java/type-name | commons-lang/src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java:262 | tp | a type name with an underscore or a dollar sign
+ward:java/type-name | commons-lang/src/test/java/org/apache/commons/lang3/ClassUtilsShortClassNameTest.java:101 | tp | a type name with an underscore or a dollar sign
+ward:java/type-name | commons-lang/src/test/java/org/apache/commons/lang3/ClassUtilsShortClassNameTest.java:86 | tp | a type name with an underscore or a dollar sign
+ward:java/type-name-mismatch | commons-lang/src/test/java/org/apache/commons/lang3/EnumUtilsTest.java:640 | tp | a second top-level type of the file has another name than the file
+ward:java/type-name-mismatch | commons-lang/src/test/java/org/apache/commons/lang3/SerializationUtilsTest.java:57 | tp | a second top-level type of the file has another name than the file
+ward:java/type-name-mismatch | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:168 | tp | a second top-level type of the file has another name than the file
+ward:java/type-parameter-naming-conventions | commons-lang/src/main/java/org/apache/commons/lang3/Functions.java:314 | tp | a type parameter of a letter and a digit
+ward:java/type-parameter-naming-conventions | commons-lang/src/main/java/org/apache/commons/lang3/Functions.java:371 | tp | a type parameter of a letter and a digit
+ward:java/type-parameter-naming-conventions | commons-lang/src/main/java/org/apache/commons/lang3/Functions.java:398 | tp | a type parameter of a letter and a digit
+ward:java/unit-test-should-include-assert | commons-lang/src/test/java/org/apache/commons/lang3/ValidateTest.java:1580 | tp | the test method calls no assertion; it passes when nothing is thrown
+ward:java/unit-test-should-include-assert | commons-lang/src/test/java/org/apache/commons/lang3/builder/ReflectionToStringBuilderExcludeTest.java:57 | tp | the test method calls no assertion; it passes when nothing is thrown
+ward:java/unit-test-should-include-assert | spring-petclinic/src/test/java/org/springframework/samples/petclinic/MySqlIntegrationTests.java:62 | tp | the test method calls no assertion; it passes when nothing is thrown
+ward:java/unnecessary-block | commons-lang/src/main/java/org/apache/commons/lang3/BooleanUtils.java:790 | tp | a block in a case group or alone in a method body
+ward:java/unnecessary-block | commons-lang/src/main/java/org/apache/commons/lang3/BooleanUtils.java:819 | tp | a block in a case group or alone in a method body
+ward:java/unnecessary-block | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsTest.java:2905 | tp | a block in a case group or alone in a method body
+ward:java/unnecessary-boxing | commons-lang/src/main/java/org/apache/commons/lang3/math/NumberUtils.java:49 | tp | valueOf on a literal where the type is the wrapper
+ward:java/unnecessary-boxing | commons-lang/src/main/java/org/apache/commons/lang3/math/NumberUtils.java:79 | tp | valueOf on a literal where the type is the wrapper
+ward:java/unnecessary-boxing | commons-lang/src/test/java/org/apache/commons/lang3/builder/RecursiveToStringStyleTest.java:80 | tp | valueOf on a literal where the type is the wrapper
+ward:java/unnecessary-fully-qualified-name | commons-lang/src/main/java/org/apache/commons/lang3/reflect/MethodUtils.java:318 | tp | the type is imported and written with its package; the third was not checked
+ward:java/unnecessary-fully-qualified-name | commons-lang/src/main/java/org/apache/commons/lang3/reflect/MethodUtils.java:320 | tp | the type is imported and written with its package; the third was not checked
+ward:java/unnecessary-fully-qualified-name | commons-lang/src/test/java/org/apache/commons/lang3/event/EventListenerSupportTest.java:200 | un | the type is imported and written with its package; the third was not checked
+ward:java/unnecessary-interface-declaration | commons-lang/src/main/java/org/apache/commons/lang3/concurrent/BasicThreadFactory.java:103 | fp | the class is named as the interface it implements and has no superclass; the second repeats an interface of its superclass
+ward:java/unnecessary-interface-declaration | commons-lang/src/test/java/org/apache/commons/lang3/ClassUtilsTest.java:65 | tp | the class is named as the interface it implements and has no superclass; the second repeats an interface of its superclass
+ward:java/unnecessary-lambda | commons-lang/src/main/java/org/apache/commons/lang3/function/Predicates.java:29 | un | the reads of the constant were not counted
+ward:java/unnecessary-lambda | commons-lang/src/main/java/org/apache/commons/lang3/function/Predicates.java:30 | un | the reads of the constant were not counted
+ward:java/unnecessary-lambda | commons-lang/src/test/java/org/apache/commons/lang3/stream/LangCollectorsTest.java:54 | un | the reads of the constant were not counted
+ward:java/unnecessary-warning-suppression | commons-lang/src/main/java/org/apache/commons/lang3/function/FailableByteConsumer.java:42 | tp | a SuppressWarnings annotation, which this rule forbids by policy
+ward:java/unnecessary-warning-suppression | commons-lang/src/test/java/org/apache/commons/lang3/builder/HashCodeBuilderTest.java:190 | tp | a SuppressWarnings annotation, which this rule forbids by policy
+ward:java/unnecessary-warning-suppression | spring-petclinic/src/main/java/org/springframework/samples/petclinic/system/WebConfiguration.java:24 | tp | a SuppressWarnings annotation, which this rule forbids by policy
+ward:java/unused-anonymous-class | commons-lang/src/test/java/org/apache/commons/lang3/FunctionsTest.java:1050 | tp | an anonymous object is created and dropped; the test only checks that it compiles
+ward:java/unused-anonymous-class | commons-lang/src/test/java/org/apache/commons/lang3/FunctionsTest.java:837 | un | an anonymous object is created and dropped; the test only checks that it compiles
+ward:java/unused-anonymous-class | commons-lang/src/test/java/org/apache/commons/lang3/FunctionsTest.java:882 | un | an anonymous object is created and dropped; the test only checks that it compiles
+ward:java/unused-assignment | commons-lang/src/main/java/org/apache/commons/lang3/ClassUtils.java:638 | tp | the initial value is overwritten on every path before it is read; the second was not traced
+ward:java/unused-assignment | commons-lang/src/main/java/org/apache/commons/lang3/builder/ToStringBuilder.java:1072 | un | the initial value is overwritten on every path before it is read; the second was not traced
+ward:java/unused-formal-parameter | commons-lang/src/test/java/org/apache/commons/lang3/builder/CompareToBuilderTest.java:169 | tp | the parameter is not used in the body
+ward:java/unused-formal-parameter | commons-lang/src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java:474 | tp | the parameter is not used in the body
+ward:java/unused-formal-parameter | commons-lang/src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java:484 | tp | the parameter is not used in the body
+ward:java/unused-local-variable | commons-lang/src/main/java/org/apache/commons/lang3/ClassUtils.java:1329 | fp | the first local is read inside an anonymous class of the lambda; the second is assigned only
+ward:java/unused-local-variable | commons-lang/src/test/java/org/apache/commons/lang3/RandomUtilsTest.java:50 | un | the first local is read inside an anonymous class of the lambda; the second is assigned only
+ward:java/unused-local-variable | commons-lang/src/test/java/org/apache/commons/lang3/exception/ExceptionUtilsTest.java:265 | tp | the first local is read inside an anonymous class of the lambda; the second is assigned only
+ward:java/unused-private-method | commons-lang/src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java:469 | tp | the private method is called only by reflection from the test
+ward:java/unused-private-method | commons-lang/src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java:479 | tp | the private method is called only by reflection from the test
+ward:java/unused-private-method | commons-lang/src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java:494 | tp | the private method is called only by reflection from the test
+ward:java/upm-uncalled-private-method | commons-lang/src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java:469 | tp | the private method is called only by reflection from the test
+ward:java/upm-uncalled-private-method | commons-lang/src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java:479 | tp | the private method is called only by reflection from the test
+ward:java/upm-uncalled-private-method | commons-lang/src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java:494 | tp | the private method is called only by reflection from the test
+ward:java/urf-unread-field | commons-lang/src/test/java/org/apache/commons/lang3/builder/ReflectionDiffBuilderTest.java:267 | tp | the private field is read only by reflection from the test
+ward:java/urf-unread-field | commons-lang/src/test/java/org/apache/commons/lang3/builder/ReflectionDiffBuilderTest.java:273 | tp | the private field is read only by reflection from the test
+ward:java/urf-unread-field | commons-lang/src/test/java/org/apache/commons/lang3/builder/ReflectionDiffBuilderTest.java:278 | tp | the private field is read only by reflection from the test
+ward:java/use-locale-with-case-conversions | commons-lang/src/main/java/org/apache/commons/lang3/StringUtils.java:9263 | tp | toLowerCase or toUpperCase without a Locale
+ward:java/use-locale-with-case-conversions | commons-lang/src/test/java/org/apache/commons/lang3/text/ExtendedMessageFormatTest.java:473 | tp | toLowerCase or toUpperCase without a Locale
+ward:java/use-locale-with-case-conversions | spring-petclinic/src/main/java/org/springframework/samples/petclinic/owner/PetController.java:204 | tp | toLowerCase or toUpperCase without a Locale
+ward:java/use-proper-class-loader | commons-lang/src/main/java/org/apache/commons/lang3/ClassUtils.java:776 | tp | getClassLoader is called on a class
+ward:java/use-proper-class-loader | commons-lang/src/main/java/org/apache/commons/lang3/SerializationUtils.java:132 | tp | getClassLoader is called on a class
+ward:java/use-proper-class-loader | commons-lang/src/test/java/org/apache/commons/lang3/AnnotationUtilsTest.java:576 | tp | getClassLoader is called on a class
+ward:java/use-short-array-initializer | commons-lang/src/test/java/org/apache/commons/lang3/ArrayUtilsTest.java:278 | un | the created array has a narrower element type than the declared one, so the short form would change it
+ward:java/use-short-array-initializer | commons-lang/src/test/java/org/apache/commons/lang3/ClassUtilsTest.java:1523 | tp | the declaration can drop new and the type
+ward:java/use-short-array-initializer | commons-lang/src/test/java/org/apache/commons/lang3/ClassUtilsTest.java:838 | tp | the first can drop new; the others are array elements or arguments, where new is needed
+ward:java/use-standard-charsets | commons-lang/src/test/java/org/apache/commons/lang3/CharEncodingTest.java:80 | tp | a charset name written as a string; the tests check the names
+ward:java/use-standard-charsets | commons-lang/src/test/java/org/apache/commons/lang3/CharEncodingTest.java:81 | tp | a charset name written as a string; the tests check the names
+ward:java/use-standard-charsets | commons-lang/src/test/java/org/apache/commons/lang3/CharsetsTest.java:49 | tp | a charset name written as a string; the tests check the names
+ward:java/use-string-buffer-length | commons-lang/src/test/java/org/apache/commons/lang3/exception/ExceptionUtilsTest.java:884 | tp | toString().length() on a writer
+ward:java/use-underscores-in-numeric-literals | commons-lang/src/main/java/org/apache/commons/lang3/exception/CloneFailedException.java:27 | tp | a long number literal with no underscores
+ward:java/use-underscores-in-numeric-literals | commons-lang/src/main/java/org/apache/commons/lang3/mutable/MutableLong.java:41 | tp | a long number literal with no underscores
+ward:java/use-underscores-in-numeric-literals | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsAbbreviateTest.java:194 | tp | a long number literal with no underscores
+ward:java/use-varargs | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:7122 | tp | the last parameter is an array
+ward:java/use-varargs | commons-lang/src/main/java/org/apache/commons/lang3/builder/ReflectionToStringBuilder.java:127 | tp | the last parameter is an array
+ward:java/use-varargs | commons-lang/src/test/java/org/apache/commons/lang3/builder/CompareToBuilderTest.java:169 | tp | the last parameter is an array
+ward:java/useless-overriding-method | commons-lang/src/main/java/org/apache/commons/lang3/builder/StandardToStringStyle.java:259 | un | the override only calls super; the first and third may widen the access of the method
+ward:java/useless-overriding-method | commons-lang/src/main/java/org/apache/commons/lang3/builder/StandardToStringStyle.java:435 | un | the override only calls super; the first and third may widen the access of the method
+ward:java/useless-overriding-method | commons-lang/src/test/java/org/apache/commons/lang3/builder/HashCodeBuilderTest.java:82 | tp | the override only calls super; the first and third may widen the access of the method
+ward:java/uuf-unused-field | commons-lang/src/test/java/org/apache/commons/lang3/builder/ReflectionDiffBuilderTest.java:262 | tp | a private static field that nothing reads; a reflection fixture
+ward:java/uw-uncond-wait | commons-lang/src/test/java/org/apache/commons/lang3/ObjectUtilsTest.java:905 | fp | the first calls a static helper named wait; the second waits with no condition
+ward:java/uw-uncond-wait | commons-lang/src/test/java/org/apache/commons/lang3/ThreadUtilsTest.java:68 | tp | the first calls a static helper named wait; the second waits with no condition
+ward:java/uwf-field-not-initialized-in-constructor | commons-lang/src/main/java/org/apache/commons/lang3/time/FastDateParser.java:995 | fp | no constructor sets the field; the second is set by a method the constructor path calls and the third by the BeforeEach method
+ward:java/uwf-field-not-initialized-in-constructor | commons-lang/src/test/java/org/apache/commons/lang3/RangeTest.java:58 | fp | no constructor sets the field; the second is set by a method the constructor path calls and the third by the BeforeEach method
+ward:java/uwf-field-not-initialized-in-constructor | spring-petclinic/src/test/java/org/springframework/samples/petclinic/PostgresIntegrationTests.java:98 | tp | no constructor sets the field; the second is set by a method the constructor path calls and the third by the BeforeEach method
+ward:java/uwf-null-field | commons-lang/src/test/java/org/apache/commons/lang3/ArrayUtilsRemoveMultipleTest.java:33 | tp | a constant that is null on purpose; the third was not traced
+ward:java/uwf-null-field | commons-lang/src/test/java/org/apache/commons/lang3/ObjectUtilsTest.java:138 | tp | a constant that is null on purpose; the third was not traced
+ward:java/uwf-null-field | commons-lang/src/test/java/org/apache/commons/lang3/reflect/testbed/StaticContainer.java:38 | un | a constant that is null on purpose; the third was not traced
+ward:java/uwf-unwritten-field | commons-lang/src/test/java/org/apache/commons/lang3/builder/DiffBuilderTest.java:87 | tp | a field that nothing writes; a reflection fixture
+ward:java/uwf-unwritten-field | commons-lang/src/test/java/org/apache/commons/lang3/builder/EqualsBuilderTest.java:290 | tp | a field that nothing writes; a reflection fixture
+ward:java/variable-can-be-inlined | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:6754 | fp | the variable carries the SuppressWarnings annotation of its cast; the third is returned at once
+ward:java/variable-can-be-inlined | commons-lang/src/main/java/org/apache/commons/lang3/SerializationUtils.java:202 | fp | the variable carries the SuppressWarnings annotation of its cast; the third is returned at once
+ward:java/variable-can-be-inlined | spring-petclinic/src/main/java/org/springframework/samples/petclinic/owner/PetController.java:70 | tp | the variable carries the SuppressWarnings annotation of its cast; the third is returned at once
+ward:java/variable-declaration-usage-distance | commons-lang/src/main/java/org/apache/commons/lang3/StringUtils.java:2388 | un | the statements between the declaration and its use were not counted
+ward:java/variable-declaration-usage-distance | commons-lang/src/test/java/org/apache/commons/lang3/math/FractionTest.java:805 | un | the statements between the declaration and its use were not counted
+ward:java/variable-declaration-usage-distance | spring-petclinic/src/test/java/org/springframework/samples/petclinic/PetClinicConcurrencyTests.java:115 | un | the statements between the declaration and its use were not counted
+ward:java/vo-volatile-increment | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/MultiBackgroundInitializerTest.java:133 | tp | a volatile field is incremented
+ward:java/vo-volatile-increment | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/MultiBackgroundInitializerTest.java:80 | tp | a volatile field is incremented
+ward:java/wa-not-in-loop | commons-lang/src/test/java/org/apache/commons/lang3/ThreadUtilsTest.java:68 | tp | wait is called on this outside a loop
+ward:java/while-loop-with-literal-boolean | commons-lang/src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java:1850 | tp | a do-while loop with a literal condition

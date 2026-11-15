@@ -111,7 +111,7 @@ body = '''
 check = "forbidden-node"
 kinds = ["fieldDeclaration"]
 modifiers = ["static"]
-text = '(?:SimpleDateFormat|DateFormat|DecimalFormat|NumberFormat|MessageFormat|ChoiceFormat)\w*[=;]'
+text = '^(?:java\.text\.)?(?:SimpleDateFormat|DateFormat|DecimalFormat|NumberFormat|MessageFormat|ChoiceFormat)\w*[=;]'
 message = "a static formatter is shared across threads but is not thread-safe; synchronize its use"
 '''
 

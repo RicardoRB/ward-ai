@@ -43,7 +43,9 @@ public final class AnnotationReflectionCheck implements UnitCheck {
   @Override
   public List<RuleMatch> check(final SyntaxNode root, final SourceFile file) {
     final Set<String> hidden = new HashSet<>(SOURCE_ONLY);
-    SyntaxWalk.descendants(root).forEach(node -> hiddenType(node).ifPresent(hidden::add));
+    SyntaxWalk.visits(root, Set.of(ANNOTATION_TYPE)).stream()
+        .filter(visit -> !AnnotationRetention.runtime(visit))
+        .forEach(visit -> nameOf(visit.node()).ifPresent(hidden::add));
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(METHOD_CALL))) {
       final Matcher query = QUERY.matcher(SyntaxWalk.text(visit.node()));
@@ -54,18 +56,8 @@ public final class AnnotationReflectionCheck implements UnitCheck {
     return List.copyOf(matches);
   }
 
-  /**
-   * Returns the name of the annotation type that {@code holder} declares without runtime retention.
-   */
-  private static Optional<String> hiddenType(final SyntaxNode holder) {
-    final Optional<SyntaxNode> declaration =
-        holder.children().stream().filter(c -> ANNOTATION_TYPE.equals(c.kind())).findFirst();
-    final String text = SyntaxWalk.text(holder);
-    final boolean runtime = text.contains("Retention(") && text.contains("RUNTIME");
-    if (declaration.isEmpty() || runtime) {
-      return Optional.empty();
-    }
-    return declaration.get().children().stream()
+  private static Optional<String> nameOf(final SyntaxNode annotationType) {
+    return annotationType.children().stream()
         .filter(child -> IDENTIFIER.equals(child.kind()))
         .findFirst()
         .map(SyntaxWalk::text);

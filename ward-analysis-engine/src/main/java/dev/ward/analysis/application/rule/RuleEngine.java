@@ -194,6 +194,15 @@ public final class RuleEngine {
       collector.recordError(
           new RuleExecutionError(rule.definition().id(), unit.path(), "the rule could not run")
       );
+    } catch (final StackOverflowError overflow) {
+      // A pattern that recurses on a very long text fails this rule on this unit, not the run.
+      collector.recordError(
+          new RuleExecutionError(
+              rule.definition().id(),
+              unit.path(),
+              "the rule ran out of stack on this file"
+          )
+      );
     }
   }
 

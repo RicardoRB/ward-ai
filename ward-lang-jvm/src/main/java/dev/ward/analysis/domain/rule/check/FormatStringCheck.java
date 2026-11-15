@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
  * literal, or whose only argument is an array is never reported.
  */
 public final class FormatStringCheck extends FactsCheck {
-  private static final Pattern LITERAL = Pattern.compile("^\"((?:[^\"\\\\]|\\\\.)*)\"$");
+  private static final Pattern LITERAL = Pattern.compile("^\"((?:[^\"\\\\]|\\\\.)*+)\"$");
   private static final String EXPRESSION = "expression";
   private static final int FORMAT_POSITIONS = 2;
   private static final FactNeed NEED =

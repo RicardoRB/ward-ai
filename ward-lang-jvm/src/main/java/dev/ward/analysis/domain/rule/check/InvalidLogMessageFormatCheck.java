@@ -25,7 +25,7 @@ public final class InvalidLogMessageFormatCheck extends FactsCheck {
       Set.of("org.slf4j.Logger", "org.apache.logging.log4j.Logger");
   private static final Set<String> LEVELS =
       Set.of("trace", "debug", "info", "warn", "error", "fatal");
-  private static final Pattern LITERAL = Pattern.compile("^\"(?:[^\"\\\\]|\\\\.)*\"$");
+  private static final Pattern LITERAL = Pattern.compile("^\"(?:[^\"\\\\]|\\\\.)*+\"$");
   private static final Pattern PLACEHOLDER = Pattern.compile("(?<!\\\\)\\{}");
   private static final String THROWABLE = "java.lang.Throwable";
   private static final String EXPRESSION = "expression";
