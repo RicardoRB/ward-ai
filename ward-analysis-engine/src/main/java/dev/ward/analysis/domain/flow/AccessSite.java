@@ -11,6 +11,8 @@ import java.util.Objects;
  * @param access the access itself
  */
 public record AccessSite(int block, int index, VariableAccess access) {
+  private static final int HASH_FACTOR = 31;
+
   /**
    * Validates the fields.
    *
@@ -22,5 +24,15 @@ public record AccessSite(int block, int index, VariableAccess access) {
       throw new IllegalArgumentException("block and index must not be negative");
     }
     Objects.requireNonNull(access, "access");
+  }
+
+  /**
+   * Hashes the position only. The block and the index identify the access within its graph, and
+   * the analyses key hash maps by this record, so hashing the access too costs time and separates
+   * nothing.
+   */
+  @Override
+  public int hashCode() {
+    return HASH_FACTOR * block + index;
   }
 }
