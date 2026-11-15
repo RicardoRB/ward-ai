@@ -98,14 +98,10 @@ public final class ForLoopCanBeForeachCheck implements RuleCheck {
       return Optional.empty();
     }
     final String index = indexName(parts.get(0));
-    if (!SyntaxWalk.text(parts.get(0)).matches("[\\w.]*" + Pattern.quote(index) + "=0")) {
+    if (!countsUpFromZero(parts, index)) {
       return Optional.empty();
     }
     final String condition = SyntaxWalk.text(parts.get(1));
-    final String update = SyntaxWalk.text(parts.get(2));
-    if (index.isEmpty() || !update.equals(index + "++") && !update.equals("++" + index)) {
-      return Optional.empty();
-    }
     final Matcher bound = BOUND.matcher(condition);
     if (!bound.matches() || !bound.group(1).equals(index)) {
       return Optional.empty();
@@ -115,6 +111,13 @@ public final class ForLoopCanBeForeachCheck implements RuleCheck {
     return onlyReads(body, index, collection, types, ARRAY_LENGTH.equals(bound.group(BOUND_KIND)))
         ? Optional.of(collection)
         : Optional.empty();
+  }
+
+  private static boolean countsUpFromZero(final List<SyntaxNode> parts, final String index) {
+    final String update = SyntaxWalk.text(parts.get(2));
+    return !index.isEmpty()
+        && SyntaxWalk.text(parts.get(0)).matches("[\\w.]*" + Pattern.quote(index) + "=0")
+        && (update.equals(index + "++") || update.equals("++" + index));
   }
 
   private static String indexName(final SyntaxNode init) {
