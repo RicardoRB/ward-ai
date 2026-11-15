@@ -9,11 +9,12 @@ import org.junit.jupiter.api.Test;
 class ErrorProneNamesTest extends ErrorProneTrees {
 
   @Test
-  void reportsFieldAndMethodNamedAfterTheirClassIgnoringCase() {
+  void reportsFieldIgnoringCaseAndMethodWithTheExactNameOfTheirClass() {
     final SyntaxNode clazz =
         classNamed(
             CLASS_NAME,
             member(field("sample")),
+            member(method(CLASS_NAME, 0, 0)),
             member(method("SAMPLE", 0, 0)),
             member(constructorWith(0)),
             member(field("other")));
