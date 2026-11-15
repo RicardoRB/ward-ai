@@ -1,0 +1,5 @@
+# Commits that only reformat or move code, left out of git blame.
+# Use: git config blame.ignoreRevsFile .git-blame-ignore-revs
+
+# Java sources formatted with ward format, and the switch to the ward gates (#576)
+bdb4b1b71accc49b456a5792616fea0fd9b614cc
