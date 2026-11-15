@@ -39,7 +39,7 @@ public final class UnitTestLifecycleCheck implements UnitCheck {
 
   @Override
   public List<RuleMatch> check(final SyntaxNode root, final SourceFile file) {
-    if (junit4Only && !JUnitMembers.usesJunit4(root)) {
+    if (junit4Only && !JUnitMethods.usesJunit4(root)) {
       return List.of();
     }
     return SyntaxWalk.visits(root, Set.of("classBody")).stream()
@@ -50,7 +50,7 @@ public final class UnitTestLifecycleCheck implements UnitCheck {
             member -> JUnitMembers.annotations(member).stream().noneMatch(annotations::contains))
         .flatMap(member -> JUnitMembers.method(member).stream())
         .filter(method -> methodName.equals(JUnitMembers.name(method)))
-        .filter(JUnitMembers::hasNoParameters)
+        .filter(JUnitMethods::hasNoParameters)
         .map(
             method ->
                 CheckSupport.at(
