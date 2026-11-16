@@ -1,0 +1,33 @@
+# Measured cost of Ward on Healthchecks v5.0.3 (657 .py files, about 45,000 lines). Hand-written, not compared by a test.
+# Measured on 2026-11-15 with the jar of this branch (java -jar ward.jar, OpenJDK 25.0.4.1, not the native binary),
+# Apple M4, 10 cores, 32 GB. Six other sessions built on the machine: the 1-minute load average never fell below 3
+# in 25 minutes of waiting, so each number has the load average it was measured under.
+
+## ward gate, standard preset (388 rules, 7,955 findings): `ward check --format json`, one `ward` check over **/*.py
+cold run   | wall 42.6 s | user 63.9 s | peak memory 1,919 MiB | 1-minute load average 6.78
+cached run | wall 10.4 s | user 20.8 s | peak memory 1,504 MiB | 1-minute load average 6.95
+Both runs report the same 7,955 findings.
+
+## PythonCorpusSmokeTest (standard preset and every security rule, 425 rules, in the test JVM, no cache)
+before the fixes | did not end: stopped after 80 minutes in one regular expression (see below)
+after the fixes  | 38 s to 150 s for the test, by machine load (1-minute load average 4 to 43)
+
+## What stopped the first run
+The pattern of ward:python/multi-value-repeated-key-literal and -variable could split a dictionary literal at its
+commas in exponentially many ways. On a long literal with distinct keys the run did not end. The pattern now has one
+way to split, and each rule has a fixture with a 120-entry literal.
+
+## Files without analysis
+0 of 657. No syntax diagnostic and no frontend failure.
+
+## ward format over a copy of the corpus: `ward format .`
+wall 64.8 s | user 91.8 s | 1-minute load average 4.29 (whole tree: 657 .py files and the JavaScript under static/)
+657 valid Python files: 138 changed, 519 unchanged, 0 refused. Each changed file has the same Python AST (ast.dump)
+and the same tokens, comments and layout aside (tokenize), before and after. A second run changes nothing.
+One file refused, not Python: static/js/tom-select.popular.min.js (a minified vendored script, "input has a syntax error").
+
+## ward format over the Python fixtures of this repository (1,182 files under ward-cli/src/test/resources)
+Ward 0.9.1 refused rules/python/too-many-public-methods/violating.py ("formatting changed a token"). The cause: a
+source that ends with a blank line has one more line-break token than its formatted text, and the safety check
+compared them. Every Python file that ends with a blank line was refused. Fixed in PythonFormatSyntax; now 0 refused,
+and the 1,180 valid files keep their AST and tokens (2 fixtures are invalid Python on purpose).

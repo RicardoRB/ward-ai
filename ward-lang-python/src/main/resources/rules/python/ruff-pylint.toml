@@ -344,7 +344,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["for_stmt"]
-text = "(?s)^for\\s*([A-Za-z_]\\w*)\\s*,\\s*[A-Za-z_]\\w*\\s*in\\s*([A-Za-z_][\\w.]*)\\.items\\(\\)\\s*:.*(?<![\\w.])\\2\\[\\1\\]"
+text = "(?s)^for\\s*([A-Za-z_]\\w*)\\s*,\\s*[A-Za-z_]\\w*\\s*in\\s*([A-Za-z_][\\w.]*)\\.items\\(\\)\\s*:.*(?<![\\w.])\\2\\[\\1\\](?!\\s*=(?!=))"
 message = "dictionary is indexed with the key that items() already yields"
 '''
 
@@ -358,7 +358,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["for_stmt"]
-text = "(?s)^for\\s*([A-Za-z_]\\w*)\\s*,\\s*[A-Za-z_]\\w*\\s*in\\s*enumerate\\(\\s*([A-Za-z_][\\w.]*)\\s*\\)\\s*:.*(?<![\\w.])\\2\\[\\1\\]"
+text = "(?s)^for\\s*([A-Za-z_]\\w*)\\s*,\\s*[A-Za-z_]\\w*\\s*in\\s*enumerate\\(\\s*([A-Za-z_][\\w.]*)\\s*\\)\\s*:.*(?<![\\w.])\\2\\[\\1\\](?!\\s*=(?!=))"
 message = "list is indexed with the index that enumerate() already yields"
 '''
 

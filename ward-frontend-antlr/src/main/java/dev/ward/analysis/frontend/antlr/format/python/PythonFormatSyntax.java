@@ -54,11 +54,11 @@ public final class PythonFormatSyntax implements FormatSyntax {
   }
 
   private static List<FormatToken> formatTokens(final List<PythonEntry> entries) {
-    final int trailing = trailingNewline(entries);
+    final int trailing = trailingRun(entries);
     final List<FormatToken> tokens = new ArrayList<>();
     for (int index = 0; index < entries.size(); index++) {
-      if (index != trailing) {
-        final PythonEntry entry = entries.get(index);
+      final PythonEntry entry = entries.get(index);
+      if (index < trailing || !isLineBreak(entry)) {
         tokens.add(new FormatToken(entry.typeName(), entry.text(), entry.line()));
       }
     }
@@ -66,21 +66,25 @@ public final class PythonFormatSyntax implements FormatSyntax {
   }
 
   /**
-   * Finds the line break that ends the last logical line. The lexer emits it only when the text
-   * ends with a line break, so it is left out, and a source with or without a final line break has
-   * the same tokens.
+   * Finds where the line breaks and dedents that end the source start. The lexer emits one line
+   * break when the text ends with a line break and one more for each blank line after it, so the
+   * line breaks of that run are left out, and a source has the same tokens with or without a final
+   * line break or blank lines at its end.
    */
-  private static int trailingNewline(final List<PythonEntry> entries) {
-    int index = entries.size() - 1;
-    while (index >= 0 && entries.get(index).kind() == PythonEntry.Kind.DEDENT) {
+  private static int trailingRun(final List<PythonEntry> entries) {
+    int index = entries.size();
+    while (index > 0
+        && (entries.get(index - 1).kind() == PythonEntry.Kind.DEDENT
+            || isLineBreak(entries.get(index - 1)))) {
       index--;
     }
-    final boolean newline =
-        index >= 0
-            && entries.get(index).kind() == PythonEntry.Kind.NEWLINE
-            && NEWLINE_TYPE.equals(entries.get(index).typeName())
-            && NEWLINE_TEXT.equals(entries.get(index).text());
-    return newline ? index : -1;
+    return index;
+  }
+
+  private static boolean isLineBreak(final PythonEntry entry) {
+    return entry.kind() == PythonEntry.Kind.NEWLINE
+        && NEWLINE_TYPE.equals(entry.typeName())
+        && NEWLINE_TEXT.equals(entry.text());
   }
 
   private static List<FormatRule> rules(final ParseTree root) {

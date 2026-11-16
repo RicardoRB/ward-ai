@@ -52,8 +52,9 @@ category = "security"
 presets = ["strict"]
 body = '''
 check = "forbidden-node"
-kinds = ["atom_expr"]
-text = "(password|passwd|pwd|secret|token)\\w*=[\"'][^\"']+[\"']"
+kinds = ["argument"]
+sources = "main"
+text = "^\\w*(password|passwd|pwd|secret|token)\\w*=[\"'][^\"']+[\"']$"
 message = "hardcoded password or secret passed as an argument; read it from the environment"
 '''
 
