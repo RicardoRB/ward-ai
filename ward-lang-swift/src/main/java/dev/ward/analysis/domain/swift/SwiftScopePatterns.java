@@ -1,6 +1,5 @@
 package dev.ward.analysis.domain.swift;
 
-import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.scope.BindingFlag;
 import dev.ward.analysis.domain.scope.BindingKind;
@@ -17,9 +16,11 @@ final class SwiftScopePatterns {
   private static final String INITIALIZER = "initializer";
 
   private final SwiftScopeWalk walk;
+  private final SwiftScopeShadows shadows;
 
   SwiftScopePatterns(final SwiftScopeWalk walk) {
     this.walk = walk;
+    this.shadows = new SwiftScopeShadows(walk);
   }
 
   void patternInitializer(final SyntaxNode node) {
@@ -27,51 +28,17 @@ final class SwiftScopePatterns {
     final SyntaxNode pattern = SwiftScopeWalk.child(node, PATTERN);
     final boolean initialized = SwiftScopeWalk.child(node, INITIALIZER) != null;
     if (pattern != null) {
-      shadowRead(node, pattern);
+      shadows.shadowRead(node, pattern);
       pattern(pattern, true, initialized);
     }
-  }
-
-  /**
-   * Records the read of the outer name in {@code let name = name.value} and {@code if let name =
-   * name}: the initializer is evaluated before the new binding exists. The scopes resolve a use by
-   * its place, and the use stands after the new name, so without this the outer binding looked
-   * unused (#567). The extra reference stands right before the new name, in this scope and in the
-   * enclosing one.
-   */
-  private void shadowRead(final SyntaxNode node, final SyntaxNode pattern) {
-    final SyntaxNode identifier = SwiftScopeWalk.child(pattern, IDENTIFIER_PATTERN);
-    final SyntaxNode name = identifier == null ? null : SwiftScopeWalk.child(identifier, IDENTIFIER);
-    final SyntaxNode initializer = SwiftScopeWalk.child(node, INITIALIZER);
-    if (name == null || initializer == null || !reads(initializer, SwiftScopeWalk.text(name))) {
-      return;
-    }
-    final Span at = name.span();
-    final int offset = Math.max(at.startOffset() - 1, 0);
-    final Span before =
-        new Span(at.startLine(), at.startColumn(), at.startLine(), at.startColumn(), offset, offset);
-    final String text = SwiftScopeWalk.text(name);
-    walk.builder.reference(text, before, ReferenceAccess.READ);
-    walk.builder.referenceIn(walk.builder.enclosing(), text, before, ReferenceAccess.READ);
-  }
-
-  /** Whether the node reads a variable of this name; a member such as {@code .name} is not one. */
-  private static boolean reads(final SyntaxNode node, final String name) {
-    if ("primary_expression".equals(node.kind()) && node.children().size() == 1) {
-      final SyntaxNode only = node.children().get(0);
-      if (IDENTIFIER.equals(only.kind())) {
-        return name.equals(SwiftScopeWalk.text(only));
-      }
-    }
-    return node.children().stream().anyMatch(child -> reads(child, name));
   }
 
   void optionalBinding(final SyntaxNode node) {
     node.children().stream().filter(c -> INITIALIZER.equals(c.kind())).forEach(walk::visit);
     if (SwiftScopeWalk.child(node, INITIALIZER) == null) {
-      shorthandRead(node);
+      shadows.shorthandRead(node);
     } else if (SwiftScopeWalk.child(node, PATTERN) != null) {
-      shadowRead(node, SwiftScopeWalk.child(node, PATTERN));
+      shadows.shadowRead(node, SwiftScopeWalk.child(node, PATTERN));
     }
     final BindingKind outer = walk.declaring;
     walk.declaring =
@@ -82,27 +49,8 @@ final class SwiftScopePatterns {
     walk.declaring = outer;
   }
 
-  /**
-   * Records the read of {@code if let name} and {@code guard let name}: the shorthand unwraps the
-   * outer {@code name}. The reference stands at the keyword, before the new binding, so in this
-   * scope it resolves to an earlier binding of the name; the same reference in the enclosing scope
-   * reaches a parameter or a variable declared further out.
-   */
-  private void shorthandRead(final SyntaxNode node) {
-    final SyntaxNode pattern = SwiftScopeWalk.child(node, PATTERN);
-    final SyntaxNode identifier =
-        pattern == null ? null : SwiftScopeWalk.child(pattern, IDENTIFIER_PATTERN);
-    final SyntaxNode name = identifier == null ? null : SwiftScopeWalk.child(identifier, IDENTIFIER);
-    if (name != null) {
-      final String text = SwiftScopeWalk.text(name);
-      final Span keyword = node.children().get(0).span();
-      walk.builder.reference(text, keyword, ReferenceAccess.READ);
-      walk.builder.referenceIn(walk.builder.enclosing(), text, keyword, ReferenceAccess.READ);
-    }
-  }
-
   void forIn(final SyntaxNode node) {
-    walk.builder.open(ScopeKind.BLOCK, node.span());
+    walk.scopes.open(ScopeKind.BLOCK, node.span());
     node.children().stream().filter(c -> "expression".equals(c.kind())).forEach(walk::visit);
     final BindingKind outer = walk.declaring;
     walk.declaring = BindingKind.VARIABLE;
@@ -111,11 +59,11 @@ final class SwiftScopePatterns {
     node.children().stream()
         .filter(c -> !PATTERN.equals(c.kind()) && !"expression".equals(c.kind()))
         .forEach(walk::visit);
-    walk.builder.close();
+    walk.scopes.close();
   }
 
   void catchClause(final SyntaxNode node) {
-    walk.builder.open(ScopeKind.BLOCK, node.span());
+    walk.scopes.open(ScopeKind.BLOCK, node.span());
     if (SwiftScopeWalk.child(node, PATTERN) == null) {
       walk.builder.declare(
           "error",
@@ -125,7 +73,7 @@ final class SwiftScopePatterns {
       );
     }
     walk.generic(node);
-    walk.builder.close();
+    walk.scopes.close();
   }
 
   /** Walks a pattern: names are declared when {@code binding}, and read otherwise. */

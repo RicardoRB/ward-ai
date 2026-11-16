@@ -216,7 +216,7 @@ Contextual_keyword
         | 'macro'
         | 'package'
         | 'nonisolated'
-    ) {dev.ward.analysis.frontend.antlr.swift.SwiftSupport.isBeforeName(_input)}?
+    ) {dev.ward.analysis.frontend.antlr.swift.SwiftContextualKeywords.isBeforeName(_input)}?
     ;
 
 Identifier

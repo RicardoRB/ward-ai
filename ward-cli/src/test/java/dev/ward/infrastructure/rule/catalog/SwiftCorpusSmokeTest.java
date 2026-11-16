@@ -3,9 +3,6 @@ package dev.ward.infrastructure.rule.catalog;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.application.rule.RuleEngine;
-import dev.ward.analysis.domain.format.FormatOptions;
-import dev.ward.analysis.domain.format.FormatResult;
-import dev.ward.analysis.domain.format.FormatSafety;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
@@ -13,9 +10,6 @@ import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleNotRun;
 import dev.ward.analysis.domain.rule.RulePreset;
 import dev.ward.analysis.domain.rule.RuleRunResult;
-import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
-import dev.ward.analysis.frontend.antlr.format.swift.SwiftFormatSyntax;
-import dev.ward.analysis.frontend.antlr.format.swift.SwiftFormatter;
 import dev.ward.infrastructure.rule.BundledRuleMatchers;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -93,7 +87,10 @@ class SwiftCorpusSmokeTest {
     final List<Place> found = places(result.findings());
     final List<String> formatProblems = new ArrayList<>();
     final String report =
-        report(corpora, rules, result, found, labels) + format(units, formatProblems);
+        report(corpora, rules, result, found, labels) + SwiftCorpusFormat.check(
+            units,
+            formatProblems
+        );
     final Path file = RESOURCES.resolve(REPORT);
     if (Boolean.getBoolean("ward.benchmark.write")) {
       Files.writeString(file, report);
@@ -130,33 +127,6 @@ class SwiftCorpusSmokeTest {
                 .thenComparing(RuleDefinition::id)
         )
         .toList();
-  }
-
-  /**
-   * Formats every file through the safety checks and parses the output with the analysis frontend.
-   * Returns the report line, and adds every refused or broken file to {@code problems}.
-   */
-  private static String format(final List<SourceUnit> units, final List<String> problems) {
-    final SwiftFormatter formatter = new SwiftFormatter();
-    final FormatSafety safety = new FormatSafety(new SwiftFormatSyntax());
-    final FormatOptions options = FormatOptions.defaults(formatter.options());
-    final AntlrLanguageFrontend frontend = new AntlrLanguageFrontend();
-    int changed = 0;
-    for (final SourceUnit unit : units) {
-      final FormatResult outcome =
-          safety.formatSafely(formatter, options, unit.text().replace("\r\n", "\n"));
-      if (outcome instanceof FormatResult.Refused refused) {
-        problems.add("%s:%d: refused: %s".formatted(unit.path(), refused.line(), refused.reason()));
-      } else if (outcome instanceof FormatResult.Formatted formatted) {
-        changed++;
-        final SourceUnit written = new SourceUnit(unit.path(), unit.language(), formatted.text());
-        if (!frontend.parse(written).diagnostics().isEmpty()) {
-          problems.add(unit.path() + ": the formatted file has syntax errors");
-        }
-      }
-    }
-    return "ward format | files %d | need formatting %d | refused or broken %d%n"
-        .formatted(units.size(), changed, problems.size());
   }
 
   /** The files a unit-wide error names, with the reason: a syntax error or a frontend failure. */

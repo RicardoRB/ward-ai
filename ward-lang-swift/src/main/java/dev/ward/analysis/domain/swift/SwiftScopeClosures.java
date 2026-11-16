@@ -61,7 +61,7 @@ final class SwiftScopeClosures {
 
   void accessorCall(final SyntaxNode statement) {
     final String name = SwiftScopeWalk.text(statement).replaceAll("[({\\s].*", "");
-    walk.builder.open(ScopeKind.FUNCTION, statement.span());
+    walk.scopes.open(ScopeKind.FUNCTION, statement.span());
     final String implicit = "didSet".equals(name) ? "oldValue" : "newValue";
     final SyntaxNode argument = SwiftScopeWalk.findKind(statement, "function_call_argument");
     final SyntaxNode explicit =
@@ -84,11 +84,11 @@ final class SwiftScopeClosures {
     if (closure != null) {
       closure.children().stream().filter(c -> "statements".equals(c.kind())).forEach(walk::visit);
     }
-    walk.builder.close();
+    walk.scopes.close();
   }
 
   void accessor(final SyntaxNode node, final String implicit) {
-    walk.builder.open(ScopeKind.FUNCTION, node.span());
+    walk.scopes.open(ScopeKind.FUNCTION, node.span());
     final SyntaxNode named = SwiftScopeWalk.child(node, "setter_name");
     if (named == null) {
       walk.builder.declare(
@@ -101,17 +101,17 @@ final class SwiftScopeClosures {
       walk.declare(SwiftScopeWalk.child(named, IDENTIFIER), BindingKind.PARAMETER, false, false);
     }
     node.children().stream().filter(c -> "code_block".equals(c.kind())).forEach(walk::visit);
-    walk.builder.close();
+    walk.scopes.close();
   }
 
   void closure(final SyntaxNode node) {
     final boolean signature = SwiftScopeWalk.child(node, "closure_signature") != null;
-    final int scope = walk.builder.open(ScopeKind.LAMBDA, node.span());
+    final int scope = walk.scopes.open(ScopeKind.LAMBDA, node.span());
     if (!signature) {
       walk.builder.markOpen(scope);
     }
     walk.generic(node);
-    walk.builder.close();
+    walk.scopes.close();
   }
 
   void closureParameter(final SyntaxNode node) {

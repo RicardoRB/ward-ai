@@ -1063,7 +1063,7 @@ pattern
     | optional_pattern
     | 'is' type_
     | pattern 'as' type_
-    | {SwiftLookahead.isExpressionPattern(_input)}? expression_pattern
+    | {SwiftPatternLookahead.isExpressionPattern(_input)}? expression_pattern
     ;
 
 // The pattern of a declaration, of `if let` and of `for ... in` binds names: it is `_`, a name or a
@@ -1499,7 +1499,7 @@ postfix_expression
     | postfix_expression {SwiftLookahead.isPostfixDirective(_input)}? postfix_directive # postfix_directive_expression
     | dynamic_type_expression                    # dynamic_type
     | postfix_expression {SwiftLookahead.isOnSameLine(_input)}? '[' expression_list ']' # subscript_expression
-    | postfix_expression {SwiftLookahead.isLabeledSubscript(_input)}? '[' function_call_argument_list ']' # labeled_subscript_expression
+    | postfix_expression {SwiftPatternLookahead.isLabeledSubscript(_input)}? '[' function_call_argument_list ']' # labeled_subscript_expression
     // ! is a postfix operator already
     // | postfix_expression '!'                                            # forced_value_expression
     // ? is a postfix operator already
@@ -1575,7 +1575,7 @@ postfix_expression__next
     | postfix_expression__next {SwiftLookahead.isPostfixDirective(_input)}? postfix_directive # postfix_directive_expression_next
     | dynamic_type_expression                    # dynamic_type_next
     | postfix_expression__next {SwiftLookahead.isOnSameLine(_input)}? '[' expression_list ']' # subscript_expression_next
-    | postfix_expression__next {SwiftLookahead.isLabeledSubscript(_input)}? '[' function_call_argument_list ']' # labeled_subscript_expression_next
+    | postfix_expression__next {SwiftPatternLookahead.isLabeledSubscript(_input)}? '[' function_call_argument_list ']' # labeled_subscript_expression_next
     // ! is a postfix operator already
     // | postfix_expression__next '!'                                            # forced_value_expression_next
     // ? is a postfix operator already
@@ -1647,7 +1647,7 @@ postfix_expression__condition
     | postfix_expression__condition {SwiftLookahead.isPostfixDirective(_input)}? postfix_directive # postfix_directive_expression_condition
     | dynamic_type_expression                    # dynamic_type_condition
     | postfix_expression__condition {SwiftLookahead.isOnSameLine(_input)}? '[' expression_list ']' # subscript_expression_condition
-    | postfix_expression__condition {SwiftLookahead.isLabeledSubscript(_input)}? '[' function_call_argument_list ']' # labeled_subscript_expression_condition
+    | postfix_expression__condition {SwiftPatternLookahead.isLabeledSubscript(_input)}? '[' function_call_argument_list ']' # labeled_subscript_expression_condition
     // ! is a postfix operator already
     // | postfix_expression__condition '!'                                            # forced_value_expression_condition
     // ? is a postfix operator already

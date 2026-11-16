@@ -51,6 +51,7 @@ final class SwiftScopeWalk {
   private static final String PATTERN = "pattern";
 
   final ScopeBuilder builder;
+  final SwiftScopeStack scopes;
   BindingKind declaring = BindingKind.CONSTANT;
   final SwiftScopeTypes types;
   final SwiftScopeClosures closures;
@@ -64,6 +65,7 @@ final class SwiftScopeWalk {
     this.patterns = new SwiftScopePatterns(this);
     this.expressions = new SwiftScopeExpressions(this);
     this.builder = builder;
+    this.scopes = new SwiftScopeStack(builder);
     handlers.put("import_declaration", types::importDeclaration);
     handlers.put("function_declaration", types::function);
     handlers.put("initializer_declaration", node -> scoped(node, ScopeKind.FUNCTION, false));
@@ -107,12 +109,12 @@ final class SwiftScopeWalk {
   }
 
   void scoped(final SyntaxNode node, final ScopeKind kind, final boolean open) {
-    final int scope = builder.open(kind, node.span());
+    final int scope = scopes.open(kind, node.span());
     if (open) {
       builder.markOpen(scope);
     }
     generic(node);
-    builder.close();
+    scopes.close();
   }
 
   static String text(final SyntaxNode node) {

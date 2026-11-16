@@ -57,7 +57,7 @@ final class SwiftDocBuilder {
       step(index);
     }
     if (!tokens.isEmpty()) {
-      final String tail = SwiftGaps.after(tokens.get(tokens.size() - 1));
+      final String tail = SwiftSource.after(tokens.get(tokens.size() - 1));
       final int newlines = SwiftGaps.countNewlines(tail);
       if (newlines > 0) {
         root.add(SwiftGaps.newlines(newlines, maxBlankLines));
@@ -154,7 +154,7 @@ final class SwiftDocBuilder {
     final Token before = index >= 2 ? tokens.get(index - 2) : null;
     final Token previous = tokens.get(index - 1);
     final Token token = tokens.get(index);
-    final String between = SwiftGaps.between(previous, token);
+    final String between = SwiftSource.between(previous, token);
     final int newlines = SwiftGaps.countNewlines(between);
     if (newlines > 0) {
       return SwiftGaps.newlines(newlines, maxBlankLines);
@@ -181,7 +181,7 @@ final class SwiftDocBuilder {
     if (DOT.equals(previous.getText())) {
       return false;
     }
-    final String between = SwiftGaps.between(previous, tokens.get(index));
+    final String between = SwiftSource.between(previous, tokens.get(index));
     return LABEL_PRECEDERS.contains(previous.getText()) || SwiftGaps.countNewlines(between) > 0;
   }
 }

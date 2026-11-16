@@ -23,11 +23,11 @@ final class SyntaxTreeMapper {
   /** The kind of a token the parser could not place in the tree. */
   static final String ERROR_KIND = "error";
 
-  /** What separates a rule name from the name of its variant. */
-  private static final String VARIANT = "__";
-
   /** The kind of a comment node. */
   static final String COMMENT_KIND = "comment";
+
+  /** What separates a rule name from the name of its variant. */
+  private static final String VARIANT = "__";
 
   private final Parser parser;
   private final TokenStream tokens;

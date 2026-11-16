@@ -46,7 +46,9 @@ final class DocComments {
     final List<String> lines = new ArrayList<>();
     for (final SyntaxNode comment : comments) {
       for (final String line : comment.fields().getOrDefault(TEXT, "").split("\n", -1)) {
-        lines.add(line.strip().replaceFirst("^(///|/\\*\\*|\\*/|\\*)", "").replace("*/", "").strip());
+        lines.add(
+            line.strip().replaceFirst("^(///|/\\*\\*|\\*/|\\*)", "").replace("*/", "").strip()
+        );
       }
     }
     return lines;

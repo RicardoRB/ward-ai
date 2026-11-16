@@ -12,6 +12,8 @@ import java.util.regex.Pattern;
  */
 final class SwiftInterpolation {
   private static final String OPEN = "\\(";
+  private static final char OPEN_PAREN = '(';
+  private static final char CLOSE_PAREN = ')';
 
   /** A name that is not a member (after a dot) and not an argument label (before a colon). */
   private static final Pattern NAME =
@@ -45,9 +47,9 @@ final class SwiftInterpolation {
     int index = start;
     while (index < text.length() && depth > 0) {
       final char character = text.charAt(index);
-      if (character == '(') {
+      if (character == OPEN_PAREN) {
         depth++;
-      } else if (character == ')') {
+      } else if (character == CLOSE_PAREN) {
         depth--;
       }
       index++;
