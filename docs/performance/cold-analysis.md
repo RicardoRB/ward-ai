@@ -174,6 +174,46 @@ rule by rule on one thread, as before.
 - With the native binary 4 jobs use less CPU time than 1 (226 s against 323 s): see "The native
   collector".
 
+### How many jobs
+
+Measured later on 2026-11-16, in one session, on the same tree for both binaries: the `ward` check
+alone, each run from an empty `.ward`. The native binary ran without `JAVA_HOME` except in the last
+row (see "The native binary and `JAVA_HOME`").
+
+| `--jobs` | Jar: load, start → end | Jar: wall time | Jar: CPU | Jar: peak memory | Native: load, start → end | Native: wall time | Native: CPU | Native: peak memory |
+|---|---|---|---|---|---|---|---|---|
+| 4 | 2.4 → 3.8 | 50 s | 219 s | 6.0 GB | 4.1 → 5.2 | 95 s | 209 s | 3.1 GB |
+| 6 | 3.7 → 6.7 | 47 s | 267 s | 5.3 GB | 4.2 → 3.5 | 90 s | 246 s | 2.9 GB |
+| 8 | 2.7 → 8.0 | 47 s | 305 s | 5.7 GB | 3.1 → 6.7 | 84 s | 270 s | 3.0 GB |
+| 10 | 2.7 → 10.3 | 42 s | 285 s | 6.7 GB | 2.6 → 7.0 | 76 s | 279 s | 3.5 GB |
+| 10, native with `JAVA_HOME` | | | | | 2.2 → 6.1 | 81 s | 285 s | 3.3 GB |
+
+With the one-job rows of the first table (jar 118 s, native 324 s):
+
+- **The bend is at 4.** One to four jobs divide the wall time by 2.4 (jar) and 3.4 (native).
+  From 4 to 10 they still fall on both binaries, by 16 % (jar) and 20 % (native), while the CPU
+  time grows by about 30 %, and the memory of the native binary by about 0.4 GB.
+- **No flat point up to 10.** Every step from 6 to 10 shortens the native run, and the last step
+  (8 → 10) shortens both by about 10 %. That is close to the noise of a shared machine, but it is
+  the same on both binaries. So `--jobs auto` stays one job per processor: these numbers do not
+  show a point where more jobs stop helping on this 10-core machine, and a machine with more cores
+  was not measured.
+- **To save CPU and memory instead of time,** `--jobs 4` gives 89 % (jar) and 92 % (native) of the
+  gain of 10 jobs, with 75 to 77 % of their CPU time.
+- **Same result.** The `.ward` caches of the four jar runs and of the native run with `JAVA_HOME`
+  are identical (19,368 files), and so are the caches of the four native runs
+  without `JAVA_HOME`.
+
+### The native binary and `JAVA_HOME`
+
+The native binary has no JDK of its own: it reads the types of the JDK from `$JAVA_HOME/lib/modules`
+(`JvmClassLibraries`), and without `JAVA_HOME` it knows no JDK type. The jar reads the JDK it runs
+on. On this repository the native runs without `JAVA_HOME` report 381 more findings of
+`ward:java/avoid-instantiating-objects-in-loops`, in 312 files, than the jar: the rule leaves out an
+object added to a collection, and without the JDK types it cannot tell that `List.add` is one.
+With `JAVA_HOME` set the native cache is identical to the jar's. This does not depend on the number
+of jobs and is not changed here; the earlier native rows of this section ran with `JAVA_HOME` set.
+
 ### The `default` profile, jar
 
 `format`, `ward` and `secrets`, on the final code of this change.
@@ -261,6 +301,8 @@ user can pass `-Xms2g` to the native `ward` on a machine with enough memory.
 - **The corpora of #564 and #568** (Commons Lang, PetClinic, `got`). The one-thread and parallel
   caches were compared on this repository only.
 - **Where the one-thread remainder goes.** No profile was taken after the change.
+- **More than 10 jobs.** This machine has 10 cores; whether `auto` should stop below the number of
+  processors on a larger machine was not measured.
 - **Peak memory of the native binary under a heap limit**, and the native `default` profile.
 - **A whole native run with `-Xms2g`.** Only its first 136 s.
 
