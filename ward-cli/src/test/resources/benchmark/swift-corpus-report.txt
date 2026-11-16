@@ -1,0 +1,149 @@
+# Ward's Swift rules of the standard preset and every Swift security rule, with default options, and the Swift formatter, over every .swift file of two pinned projects (both MIT).
+# alamofire 5.12.2, archive sha-256 866871d47bd878ed393090d2fd643d0cdcc3517f83931852da6bc17ec317115b.
+# sample-food-truck 3954a769e99f3cc53297d94f2b960ceb2665b3d6, archive sha-256 d9041c035e9201dcb080de90226a9b5eb876b4a04db75ec321ae4674c0b4a86c.
+# A labelled finding is true (tp), false (fp) or undetermined (un), as read from the code at its line; the labels are in swift-corpus-labels.txt. A rule with more than 3 findings has a sample of at least 3 labelled, so its tp, fp and un describe the sample.
+# The security rules are text patterns (#559) and are listed last, apart.
+# The cost of the run is in swift-corpus-cost.txt.
+# Regenerate: ./mvnw -pl ward-cli -am -Dtest=SwiftCorpusSmokeTest -Dward.corpus.swift=<dir> -Djacoco.skip=true -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
+alamofire | files 101 | not analysed 57
+sample-food-truck | files 82 | not analysed 47
+rules 138 | not run (need type facts) 1 | findings 3264
+ward:swift/abbreviation-as-word-in-name | findings 271 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/annotation-location | findings 1 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/assign-only-property | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/blanket-disable-command | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/block-based-kvo | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/capture-variable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/catch-parameter-name | findings 2 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/class-delegate-protocol | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/class-type-parameter-name | findings 3 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/closure-parameter-position | findings 1 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/comment-spacing | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/compiler-protocol-init | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/complexity | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/computed-accessors-order | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/constant-name | findings 97 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/constructors-declaration-grouping | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/control-statement | findings 2 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/custom-import-order | findings 17 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/deployment-target | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/discouraged-direct-init | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/duplicate-code | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/duplicate-conditions | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/duplicate-enum-cases | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/duplicate-imports | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/duplicated-key-in-dictionary-literal | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/dynamic-inline | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/empty-catch-block | findings 7 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/empty-enum-arguments | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/empty-parameters | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/file-length | findings 10 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/for-where | findings 1 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/force-cast | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/force-try | findings 28 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/function-length | findings 13 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/function-name-whitespace | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/generic-type-name | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/google-method-name | findings 108 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/google-non-constant-field-name | findings 3 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/google-right-curly | findings 1 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/hidden-field | findings 29 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/identifier-name | findings 313 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/implicit-getter | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/implicit-optional-initialization | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/inclusive-language | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/invalid-swiftlint-command | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/invisible-character | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/is-disjoint | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/javadoc-method | findings 26 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/lambda-parameter-name | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/large-tuple | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/left-curly | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/legacy-cggeometry-functions | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/legacy-constant | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/legacy-constructor | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/legacy-hashing | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/legacy-nsgeometry-functions | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/legacy-random | findings 1 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/legacy-swiftui-aspect-ratio | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/line-length | findings 726 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/local-final-variable-name | findings 4 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/local-variable-name | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/magic-number | findings 425 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/mark | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/member-name | findings 1 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/method-name | findings 8 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/method-type-parameter-name | findings 17 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/missing-javadoc-type | findings 15 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/missing-switch-default | findings 83 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/modifier-order | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/multiline-comment-leading-asterisk-presence | findings 35 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/multiple-closures-with-trailing-closure | findings 8 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/multiple-variable-declarations | findings 4 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/naming | findings 21 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/nesting | findings 2 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/no-fallthrough-only | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/non-empty-atclause-description | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/non-optional-string-data-conversion | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/notification-center-detachment | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/ns-number-init-as-function-reference | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/nsobject-prefer-isequal | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/one-statement-per-line | findings 83 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/optional-data-string-conversion | findings 2 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/orphaned-doc-comment | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/overload-methods-declaration-order | findings 4 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/override-in-extension | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/parameter-count | findings 3 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/parameter-name | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/period-spacing | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/prefer-type-checking | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/private-over-fileprivate | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/private-unit-test | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/protocol-property-accessors-order | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/reduce-boolean | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/redundant-discardable-let | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/redundant-objc-attribute | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/redundant-protocol | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/redundant-public-accessibility | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/redundant-sendable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/redundant-set-access-control | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/redundant-string-enum-value | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/redundant-void-return | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/regexp-singleline | findings 179 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/self-in-property-initialization | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/shorthand-operator | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/static-over-final-class | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/static-variable-name | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/summary-javadoc | findings 78 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/syntactic-sugar | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/todo-comment | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/trailing-semicolon | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/type-body-length | findings 13 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/type-name | findings 13 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/typesafe-array-init | not run
+ward:swift/unavailable-condition | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/unneeded-break-in-switch | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/unneeded-override | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/unneeded-synthesized-initializer | findings 2 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/unused-closure-parameter | findings 22 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/unused-control-flow-label | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/unused-declaration | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/unused-enumerated | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/unused-imports | findings 129 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/unused-local-variable | findings 22 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/unused-optional-binding | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/unused-parameter | findings 6 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/unused-setter-value | findings 2 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/valid-ibinspectable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/variable-declaration-usage-distance | findings 421 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/vertical-parameter-alignment | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/void-function-in-ternary | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/void-return | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/xctfail-message | findings 1 | labelled 0 | tp 0 | fp 0 | un 0
+security | ward:swift/cleartext-url | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+security | ward:swift/hard-coded-credential | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+security | ward:swift/userdefaults-secret | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+security | ward:swift/weak-cipher | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+security | ward:swift/weak-hash | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+security | ward:swift/weak-random | findings 1 | labelled 0 | tp 0 | fp 0 | un 0
+ward format | files 183 | need formatting 55 | refused or broken 113

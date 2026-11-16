@@ -50,6 +50,31 @@ final class SwiftBrackets {
   }
 
   /**
+   * Tells whether a parenthesis or a square bracket that also spans lines opens after the index on
+   * the same source line.
+   *
+   * @param index the index of an opening bracket
+   * @return true when a later bracket of that line spans lines
+   */
+  boolean opensSpanningLater(final int index) {
+    final int line = tokens.get(index).getLine();
+    for (int later = index + 1; later < tokens.size(); later++) {
+      if (tokens.get(later).getLine() != line) {
+        return false;
+      }
+      if (isListOpener(later) && closes[later] != SwiftFrame.NO_CLOSE && spansLines(later)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean isListOpener(final int index) {
+    final String text = tokens.get(index).getText();
+    return OPEN_PAREN.equals(text) || OPEN_BRACKET.equals(text);
+  }
+
+  /**
    * Tells whether the bracket pair at the index holds a comma outside any nested bracket.
    *
    * @param index the index of an opening bracket that has a closing bracket

@@ -1,6 +1,8 @@
 package dev.ward.analysis.frontend.antlr.swift;
 
 import java.util.BitSet;
+import org.antlr.v4.runtime.BufferedTokenStream;
+import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.misc.Interval;
@@ -309,13 +311,27 @@ public final class SwiftSupport {
     return between.contains("\n") || between.contains(";");
   }
 
+  /**
+   * Tells whether spaces and then the start of a name, a parenthesis or a bracket follow on the
+   * same line. The lexer asks it after a contextual keyword such as {@code some}.
+   */
+  public static boolean isBeforeName(final CharStream input) {
+    int ahead = 1;
+    while (input.LA(ahead) == ' ' || input.LA(ahead) == '\t') {
+      ahead++;
+    }
+    final int next = input.LA(ahead);
+    final boolean nameStart = Character.isLetter(next) || next == '_' || next == '`';
+    final boolean spaced = ahead > 1;
+    return spaced && (nameStart || next == '(' || next == '[') || next == '(' && ahead == 1;
+  }
+
   /** Reads the stream to its end, so that the lookahead the predicates use is available. */
   public static void fillUp(final TokenStream tokens) {
-    for (int jj = 1;; ++jj) {
-      final int t = tokens.LA(jj);
-      if (t == -1) {
-        break;
-      }
+    // fill() returns at once when the end was already read; LA(k) in a loop walked the whole
+    // stream on every predicate, which made a long file take minutes (#567)
+    if (tokens instanceof BufferedTokenStream buffered) {
+      buffered.fill();
     }
   }
 }

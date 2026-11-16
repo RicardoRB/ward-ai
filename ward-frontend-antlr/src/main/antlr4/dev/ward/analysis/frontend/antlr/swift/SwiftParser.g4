@@ -56,7 +56,7 @@ statement
     | defer_statement ';'?
     | do_statement ';'?
     | compiler_control_statement ';'?
-    | expression ';'?
+    | {SwiftLookahead.isExpressionStatement(_input)}? expression ';'?
     // proper logic with semicolons is not supported yet. compiler_control_statement should be separated with a newline, but not with a semicolon
     ;
 
@@ -70,14 +70,13 @@ statement
 //
 // This logic is implemented in swift in ParseStmt.cpp (Parser::parseBraceItems)
 statements
-    : statements_impl[-1]
+    : statements_impl
     ;
 
-statements_impl[int indexBefore]
-    locals[
-   int indexAfter = -1
-]
-    : {SwiftSupport.isSeparatedStatement(_input, $indexBefore)}? statement {$indexAfter = _input.index();} statements_impl[$indexAfter]?
+// The predicate reads only the tokens, and no action follows the statement: the parser can then
+// evaluate it, and the predicates of the next statement, while it predicts.
+statements_impl
+    : {SwiftLookahead.isStatementStart(_input)}? statement statements_impl__next?
     ;
 
 // GRAMMAR OF A LOOP STATEMENT
@@ -92,19 +91,19 @@ loop_statement
 // GRAMMAR OF A FOR STATEMENT
 
 for_statement
-    : 'for' for_init? ';' expression? ';' expression? code_block
+    : 'for' for_init? ';' expression__condition? ';' expression__condition? code_block
     | 'for' '(' for_init? ';' expression? ';' expression? ')' code_block
     ;
 
 for_init
     : variable_declaration
-    | expression_list
+    | expression_list__condition
     ;
 
 // GRAMMAR OF A FOR_IN STATEMENT
 
 for_in_statement
-    : 'for' 'await'? 'case'? pattern 'in' expression where_clause? code_block
+    : 'for' 'try'? 'await'? ('case' pattern | pattern__binding) 'in' expression__condition where_clause? code_block
     ;
 
 // GRAMMAR OF A WHILE STATEMENT
@@ -118,19 +117,19 @@ condition_list
     ;
 
 condition
-    : expression
+    : expression__condition
     | availability_condition
     | case_condition
     | optional_binding_condition
     ;
 
 case_condition
-    : 'case' pattern initializer where_clause?
+    : 'case' pattern initializer__condition where_clause?
     ;
 
 optional_binding_condition
-    : 'let' pattern initializer?
-    | 'var' pattern initializer?
+    : 'let' pattern__binding initializer__condition?
+    | 'var' pattern__binding initializer__condition?
     ;
 
 // GRAMMAR OF A REPEAT-WHILE STATEMENT
@@ -167,7 +166,7 @@ guard_statement
 // GRAMMAR OF A SWITCH STATEMENT
 
 switch_statement
-    : 'switch' expression '{' switch_cases? '}'
+    : 'switch' expression__condition '{' switch_cases? '}'
     ;
 
 switch_cases
@@ -177,10 +176,11 @@ switch_cases
 switch_case
     : case_label statements
     | default_label statements
+    | conditional_compilation_block
     ;
 
 case_label
-    : 'case' case_item_list ':'
+    : attributes? 'case' case_item_list ':'
     ;
 
 case_item_list
@@ -189,7 +189,7 @@ case_item_list
     ;
 
 default_label
-    : 'default' ':'
+    : attributes? 'default' ':'
     ;
 
 where_clause
@@ -197,7 +197,7 @@ where_clause
     ;
 
 where_expression
-    : expression
+    : expression__condition
     ;
 
 // GRAMMAR OF A LABELED STATEMENT
@@ -290,7 +290,17 @@ conditional_compilation_block
     ;
 
 if_directive_clause
-    : if_directive compilation_condition statements?
+    : if_directive compilation_condition (statements? | directive_members)
+    ;
+
+// the cases of an enumeration or of a switch that a compilation condition guards
+directive_members
+    : (union_style_enum_case_clause | raw_value_style_enum_case_clause) (
+        union_style_enum_case_clause
+        | raw_value_style_enum_case_clause
+        | declaration
+    )*
+    | switch_case+
     ;
 
 elseif_directive_clauses
@@ -298,11 +308,11 @@ elseif_directive_clauses
     ;
 
 elseif_directive_clause
-    : elseif_directive compilation_condition statements?
+    : elseif_directive compilation_condition (statements? | directive_members)
     ;
 
 else_directive_clause
-    : else_directive statements?
+    : else_directive (statements? | directive_members)
     ;
 
 if_directive
@@ -335,6 +345,8 @@ platform_condition
     : 'os' '(' operating_system ')'
     | 'arch' '(' architecture ')'
     | 'swift' '(' compilation_condition_GE swift_version ')'
+    // canImport(Module), targetEnvironment(simulator), compiler(>=5.9), hasFeature(Name)
+    | Identifier '(' balanced_tokens ')'
     ;
 
 swift_version
@@ -433,13 +445,22 @@ requirement
     | same_type_requirement
     ;
 
+// the composition comes first: `where T: A & B {` is never `where T: A` before a statement `& B`
 conformance_requirement
-    : type_identifier ':' type_identifier
-    | type_identifier ':' protocol_composition_type
+    : type_identifier ':' protocol_composition_type
+    | type_identifier ':' type_identifier
+    | self_requirement_type ':' protocol_composition_type
+    | self_requirement_type ':' type_identifier
     ;
 
 same_type_requirement
     : type_identifier same_type_equals type_
+    | self_requirement_type same_type_equals type_
+    ;
+
+// `where Self == Style` and `where Self.Element: Equatable`
+self_requirement_type
+    : 'Self' ('.' type_identifier)?
     ;
 
 // GRAMMAR OF A GENERIC ARGUMENT CLAUSE
@@ -539,7 +560,7 @@ pattern_initializer_list
  *  ANTLR resolves in favor or first choice: pattern is x, 1 is initializer.
  */
 pattern_initializer
-    : pattern initializer?
+    : pattern__binding initializer?
     ;
 
 initializer
@@ -571,7 +592,7 @@ getter_setter_block
     ;
 
 getter_clause
-    : attributes? mutation_modifier? 'get' code_block
+    : attributes? mutation_modifier? 'get' 'async'? throws_clause? code_block
     ;
 
 setter_clause
@@ -588,7 +609,7 @@ getter_setter_keyword_block
     ;
 
 getter_keyword_clause
-    : attributes? mutation_modifier? 'get'
+    : attributes? mutation_modifier? 'get' 'async'? throws_clause?
     ;
 
 setter_keyword_clause
@@ -659,9 +680,7 @@ parameter_list
     ;
 
 parameter
-    : external_parameter_name? local_parameter_name type_annotation default_argument_clause?
-    | external_parameter_name? local_parameter_name type_annotation
-    | external_parameter_name? local_parameter_name type_annotation range_operator
+    : attributes? external_parameter_name? local_parameter_name type_annotation (default_argument_clause | range_operator)?
     ;
 
 external_parameter_name
@@ -781,16 +800,14 @@ macro_declaration
     ;
 
 contextual_macro
-    : {_input.LT(1).getText().equals("macro")}? Identifier
+    : {_input.LT(1).getText().equals("macro")}? Contextual_keyword
     ;
 
 // GRAMMAR OF A CLASS DECLARATION
 
 class_declaration
-    : attributes? access_level_modifier? 'final'? ('class' | 'actor') class_name generic_parameter_clause? type_inheritance_clause? generic_where_clause?
-        class_body
-    | attributes? access_level_modifier? 'final' access_level_modifier? ('class' | 'actor') class_name generic_parameter_clause? type_inheritance_clause?
-        generic_where_clause? class_body
+    : attributes? access_level_modifier? ('final' access_level_modifier?)? ('class' | 'actor') class_name generic_parameter_clause?
+        type_inheritance_clause? generic_where_clause? class_body
     ;
 
 class_name
@@ -809,7 +826,7 @@ class_member
 // GRAMMAR OF A PROTOCOL DECLARATION
 
 protocol_declaration
-    : attributes? access_level_modifier? 'protocol' protocol_name type_inheritance_clause? protocol_body
+    : attributes? access_level_modifier? 'protocol' protocol_name generic_parameter_clause? type_inheritance_clause? protocol_body
     ;
 
 protocol_name
@@ -891,8 +908,8 @@ deinitializer_declaration
 // GRAMMAR OF AN EXTENSION DECLARATION
 
 extension_declaration
-    : attributes? access_level_modifier? 'extension' type_identifier type_inheritance_clause? extension_body
-    | attributes? access_level_modifier? 'extension' type_identifier generic_where_clause extension_body
+    : attributes? access_level_modifier? 'extension' (type_identifier | array_type | dictionary_type) type_inheritance_clause? generic_where_clause?
+        extension_body
     ;
 
 extension_body
@@ -907,13 +924,13 @@ extension_member
 // GRAMMAR OF A SUBSCRIPT DECLARATION
 
 subscript_declaration
-    : subscript_head subscript_result code_block
-    | subscript_head subscript_result getter_setter_block
-    | subscript_head subscript_result getter_setter_keyword_block
+    : subscript_head subscript_result generic_where_clause? code_block
+    | subscript_head subscript_result generic_where_clause? getter_setter_block
+    | subscript_head subscript_result generic_where_clause? getter_setter_keyword_block
     ;
 
 subscript_head
-    : attributes? declaration_modifiers? 'subscript' parameter_clause
+    : attributes? declaration_modifiers? 'subscript' generic_parameter_clause? parameter_clause
     ;
 
 subscript_result
@@ -986,7 +1003,7 @@ precedence_group_name
 // GRAMMAR OF A DECLARATION MODIFIER
 
 nonisolated_modifier
-    : {_input.LT(1).getText().equals("nonisolated")}? Identifier ('(' 'unsafe' ')')?
+    : {_input.LT(1).getText().equals("nonisolated")}? Contextual_keyword ('(' 'unsafe' ')')?
     ;
 declaration_modifier
     : nonisolated_modifier
@@ -1025,7 +1042,7 @@ access_level_modifier
     | 'public' '(' 'set' ')'
     | 'open'
     | 'open' '(' 'set' ')'
-    | {_input.LT(1).getText().equals("package")}? Identifier
+    | {_input.LT(1).getText().equals("package")}? Contextual_keyword
     ;
 
 mutation_modifier
@@ -1046,7 +1063,29 @@ pattern
     | optional_pattern
     | 'is' type_
     | pattern 'as' type_
-    | expression_pattern
+    | {SwiftLookahead.isExpressionPattern(_input)}? expression_pattern
+    ;
+
+// The pattern of a declaration, of `if let` and of `for ... in` binds names: it is `_`, a name or a
+// tuple of them, never an expression or an enumeration case. Without this variant the parser read
+// `var body: some View { ... }` to the end of the block as `case body:` and a statement (#567).
+pattern__binding
+    : wildcard_pattern type_annotation?
+    | identifier_pattern type_annotation?
+    | tuple_pattern__binding type_annotation?
+    | 'self' // `guard let self else { return }`
+    ;
+
+tuple_pattern__binding
+    : '(' tuple_pattern_element_list__binding? ')'
+    ;
+
+tuple_pattern_element_list__binding
+    : tuple_pattern_element__binding (',' tuple_pattern_element__binding)*
+    ;
+
+tuple_pattern_element__binding
+    : pattern__binding
     ;
 
 // GRAMMAR OF A WILDCARD PATTERN
@@ -1101,7 +1140,7 @@ optional_pattern
 
 /** Doc says "Expression patterns appear only in switch statement case labels." */
 expression_pattern
-    : expression
+    : expression__condition
     ;
 
 // Attributes
@@ -1154,7 +1193,7 @@ balanced_token
 // Quote:
 // The following tokens are reserved as punctuation and can’t be used as custom operators: (, ), {, }, [, ], ., ,, :, ;, =, @, #, & (as a prefix operator), ->, `, ?, and ! (as a postfix operator).
 any_punctuation_for_balanced_token
-    : ('.' | ',' | ':' | ';' | '=' | '@' | '#' | '`' | '?')
+    : ('.' | ',' | ':' | ';' | '=' | '@' | '#' | '`' | '?' | '\\')
     | arrow_operator
     | {SwiftSupport.isPrefixOp(_input)}? '&'
     | {SwiftSupport.isPostfixOp(_input)}? '!'
@@ -1184,7 +1223,7 @@ prefix_expression
 
 // `consume x` and `each t` are prefix operators only before an identifier
 contextual_operator
-    : {SwiftContextualKeywords.isContextualOperator(_input)}? Identifier
+    : {SwiftContextualKeywords.isContextualOperator(_input)}? Contextual_keyword
     ;
 
 in_out_expression
@@ -1194,16 +1233,17 @@ in_out_expression
 // GRAMMAR OF A TRY EXPRESSION
 
 try_operator
-    : 'try' '?'
-    | 'try' '!'
-    | 'try'
+    : 'try' {SwiftLookahead.isAttached(_input)}? '?'
+    | 'try' {SwiftLookahead.isAttached(_input)}? '!'
+    | {SwiftLookahead.isPlainTry(_input)}? 'try'
     ;
 
 // GRAMMAR OF A BINARY EXPRESSION
 
 binary_expression
     : binary_operator prefix_expression
-    | assignment_operator try_operator? prefix_expression
+    // without `try` the first alternative reads the assignment
+    | assignment_operator try_operator prefix_expression
     | conditional_operator try_operator? prefix_expression
     | type_casting_operator
     ;
@@ -1223,8 +1263,9 @@ conditional_operator
 type_casting_operator
     : 'is' type_
     | 'as' type_
-    | 'as' '?' type_
-    | 'as' '!' type_
+    // `as ? Type` is not a cast: the mark is written right after `as`
+    | 'as' {SwiftLookahead.isAttached(_input)}? '?' type_
+    | 'as' {SwiftLookahead.isAttached(_input)}? '!' type_
     ;
 
 // GRAMMAR OF A PRIMARY EXPRESSION
@@ -1254,6 +1295,8 @@ literal_expression
     | array_literal
     | dictionary_literal
     | '#file'
+    | '#fileID'
+    | '#filePath'
     | '#line'
     | '#column'
     | '#function'
@@ -1295,35 +1338,11 @@ playground_literal
 
 // GRAMMAR OF A SELF EXPRESSION
 
+// `self.name`, `self[index]` and `Self.name` are members and subscripts of these, read by
+// postfix_expression: alternatives for them here were ambiguous with it and never chosen.
 self_expression
     : 'self'
-    | 'self' '.' declaration_identifier
-    | 'self' '[' expression_list ']'
-    | 'self' '.' 'init'
-
-    // From ParseExpr.cpp. self and Self parsed with same code:
-    //
-    //  case tok::kw_self:     // self
-    //  case tok::kw_Self:     // Self
-    //    Result = makeParserResult(parseExprIdentifier());
-    //
-    // However, later something happens and Self[1], Self
-    //
-    // Example code from SetAlgebra.swift:
-    //
-    // public var isEmpty: Bool {
-    //   return self == Self()
-    // }
-    //
-    // Also a valid code:
-    //
-    // return self == Self() && self == Self.init() && Self.Other() == Self.Other()
-    //
-    // So this is undocumented:
-    //
-    | 'Self'                            // Self()
-    | 'Self' '.' declaration_identifier // Self.This()
-    | 'Self' '.' 'init'                 // Self.init()
+    | 'Self'
     ;
 
 // GRAMMAR OF A SUPERCLASS EXPRESSION
@@ -1353,8 +1372,9 @@ closure_expression
     ;
 
 closure_signature
-    : capture_list? closure_parameter_clause throws_clause? function_result? 'in'
-    | capture_list 'in'
+    : attributes? capture_list? closure_parameter_clause 'async'? throws_clause? function_result? 'in'
+    | attributes? capture_list 'in'
+    | attributes 'in'
     ;
 
 closure_parameter_clause
@@ -1365,7 +1385,7 @@ closure_parameter_clause
 
 // Renamed rule "identifier_list"
 closure_parameter_clause_identifier_list
-    : declaration_identifier (',' declaration_identifier)*
+    : (declaration_identifier | '_') (',' (declaration_identifier | '_'))*
     ;
 
 closure_parameter_list
@@ -1446,7 +1466,17 @@ key_path_expression
 
 // Swift 5.0 key path literal, for example \Stack<Int>.items
 key_path_literal
-    : '\\' type_identifier? ('.' declaration_identifier)+
+    : '\\' type_identifier? key_path_component+
+    ;
+
+// \.self, \.first?.name and \.items[0]
+key_path_component
+    : '.' (declaration_identifier | 'self') key_path_postfix*
+    ;
+
+key_path_postfix
+    : {SwiftSupport.isPostfixOp(_input)}? ('?' | '!')
+    | {SwiftLookahead.isOnSameLine(_input)}? '[' expression_list ']'
     ;
 
 // GRAMMAR OF A POSTFIX EXPRESSION (inlined many rules from spec to avoid indirect left-recursion)
@@ -1454,23 +1484,185 @@ key_path_literal
 postfix_expression
     : primary_expression                                                     # primary
     | postfix_expression postfix_operator                                    # postfix_operation
-    | postfix_expression function_call_argument_clause                       # function_call_expression
-    | postfix_expression function_call_argument_clause? trailing_closure     # function_call_expression_with_closure
+    | postfix_expression {SwiftLookahead.isOnSameLine(_input)}? function_call_argument_clause            # function_call_expression
+    | postfix_expression trailing_closure             # function_call_expression_with_closure
     | postfix_expression '.' 'init'                                          # initializer_expression
     | postfix_expression '.' 'init' '(' argument_names ')'                   # initializer_expression_with_args
-    | postfix_expression '.' Pure_decimal_digits                             # explicit_member_expression1
+    | postfix_expression '.' (Pure_decimal_digits | Decimal_literal)         # explicit_member_expression1
     | postfix_expression '.' declaration_identifier generic_argument_clause? # explicit_member_expression2
     | postfix_expression '.' declaration_identifier '(' argument_names ')'   # explicit_member_expression3
     // This does't exist in the swift grammar, but this valid swift statement fails without it
     // self.addTarget(self, action: #selector(nameOfAction(_:)))
-    | postfix_expression '(' argument_names ')'  # explicit_member_expression4
+    | postfix_expression {SwiftLookahead.isOnSameLine(_input)}? '(' argument_names ')'  # explicit_member_expression4
     | postfix_expression '.' 'self'              # postfix_self_expression
+    | postfix_expression '.' keyword_member_name # explicit_member_expression_keyword
+    | postfix_expression {SwiftLookahead.isPostfixDirective(_input)}? postfix_directive # postfix_directive_expression
     | dynamic_type_expression                    # dynamic_type
-    | postfix_expression '[' expression_list ']' # subscript_expression
+    | postfix_expression {SwiftLookahead.isOnSameLine(_input)}? '[' expression_list ']' # subscript_expression
+    | postfix_expression {SwiftLookahead.isLabeledSubscript(_input)}? '[' function_call_argument_list ']' # labeled_subscript_expression
     // ! is a postfix operator already
     // | postfix_expression '!'                                            # forced_value_expression
     // ? is a postfix operator already
     // | postfix_expression '?'                                            # optional_chaining_expression
+    ;
+
+// VARIANTS OF THE EXPRESSION RULES
+//
+// A rule named `x__variant` reads a part of what `x` reads, and its node in the syntax tree has the
+// kind `x`. Two variants take out the readings that made the parser read on to the end of a
+// block before it could choose (#567):
+//  - `__condition`: an expression in the condition of `if`, `guard`, `while`, `switch`, `for` and
+//    `catch` takes no trailing closure, so the brace after it opens the body of the statement.
+
+//  - `__next`: a statement after the first of its block does not start with a closure, a dot,
+//    `&` or `=`. The brace after `var name: Type` or after a call is then never a new statement, a line
+//    that starts with a dot continues the expression of the line above, and `=` continues a
+//    declaration.
+
+statements_impl__next
+    : {SwiftLookahead.isStatementStart(_input)}? statement__next statements_impl__next?
+    ;
+
+statement__next
+    : declaration ';'?
+    | loop_statement ';'?
+    | branch_statement ';'?
+    | labeled_statement ';'?
+    | control_transfer_statement ';'?
+    | defer_statement ';'?
+    | do_statement ';'?
+    | {!SwiftLookahead.isPostfixDirective(_input)}? compiler_control_statement ';'?
+    | {SwiftLookahead.isExpressionStatement(_input)}? expression__next ';'?
+    // proper logic with semicolons is not supported yet. compiler_control_statement should be separated with a newline, but not with a semicolon
+    ;
+
+expression__next
+    : try_operator? prefix_expression__next binary_expressions?
+    ;
+
+prefix_expression__next
+    : contextual_operator postfix_expression
+    | prefix_operator__next postfix_expression
+    | 'await' postfix_expression
+    | postfix_expression__next
+    | 'repeat' prefix_expression
+    ;
+
+prefix_operator__next
+    : {SwiftSupport.isPrefixOp(_input)}? operator_head__next ({_input.get(_input.index()-1).getType()!=WS}? operator_character)*
+    ;
+
+operator_head__next
+    : ('/' | '-' | '+' | '!' | '*' | '%' | '|' | '<' | '>' | '^' | '~' | '?')
+    | Operator_head_other
+    ;
+
+postfix_expression__next
+    : primary_expression__next                                                     # primary_next
+    | postfix_expression__next postfix_operator                                    # postfix_operation_next
+    | postfix_expression__next {SwiftLookahead.isOnSameLine(_input)}? function_call_argument_clause            # function_call_expression_next
+    | postfix_expression__next trailing_closure             # function_call_expression_with_closure_next
+    | postfix_expression__next '.' 'init'                                          # initializer_expression_next
+    | postfix_expression__next '.' 'init' '(' argument_names ')'                   # initializer_expression_with_args_next
+    | postfix_expression__next '.' (Pure_decimal_digits | Decimal_literal)         # explicit_member_expression1_next
+    | postfix_expression__next '.' declaration_identifier generic_argument_clause? # explicit_member_expression2_next
+    | postfix_expression__next '.' declaration_identifier '(' argument_names ')'   # explicit_member_expression3_next
+    // This does't exist in the swift grammar, but this valid swift statement fails without it
+    // self.addTarget(self, action: #selector(nameOfAction(_:)))
+    | postfix_expression__next {SwiftLookahead.isOnSameLine(_input)}? '(' argument_names ')'  # explicit_member_expression4_next
+    | postfix_expression__next '.' 'self'              # postfix_self_expression_next
+    | postfix_expression__next '.' keyword_member_name # explicit_member_expression_keyword_next
+    | postfix_expression__next {SwiftLookahead.isPostfixDirective(_input)}? postfix_directive # postfix_directive_expression_next
+    | dynamic_type_expression                    # dynamic_type_next
+    | postfix_expression__next {SwiftLookahead.isOnSameLine(_input)}? '[' expression_list ']' # subscript_expression_next
+    | postfix_expression__next {SwiftLookahead.isLabeledSubscript(_input)}? '[' function_call_argument_list ']' # labeled_subscript_expression_next
+    // ! is a postfix operator already
+    // | postfix_expression__next '!'                                            # forced_value_expression_next
+    // ? is a postfix operator already
+    // | postfix_expression__next '?'                                            # optional_chaining_expression_next
+    ;
+
+primary_expression__next
+    : declaration_identifier generic_argument_clause?
+    | literal_expression
+    | self_expression
+    | superclass_expression
+    | parenthesized_expression
+    | tuple_expression
+    | wildcard_expression
+    | selector_expression
+    | key_path_expression
+    | key_path_literal
+    | '#' declaration_identifier generic_argument_clause?
+    | if_statement
+    | switch_statement
+    ;
+
+expression__condition
+    : try_operator? prefix_expression__condition binary_expressions__condition?
+    ;
+
+expression_list__condition
+    : expression__condition (',' expression__condition)*
+    ;
+
+binary_expressions__condition
+    : binary_expression__condition+
+    ;
+
+binary_expression__condition
+    : binary_operator prefix_expression__condition
+    | assignment_operator try_operator prefix_expression__condition
+    | conditional_operator try_operator? prefix_expression__condition
+    | type_casting_operator
+    ;
+
+prefix_expression__condition
+    : contextual_operator postfix_expression__condition
+    | prefix_operator postfix_expression__condition
+    | 'await' postfix_expression__condition
+    | postfix_expression__condition
+    | in_out_expression
+    | 'repeat' prefix_expression__condition
+    ;
+
+initializer__condition
+    : assignment_operator expression__condition
+    ;
+
+postfix_expression__condition
+    : primary_expression                                                     # primary_condition
+    | postfix_expression__condition postfix_operator                                    # postfix_operation_condition
+    | postfix_expression__condition {SwiftLookahead.isOnSameLine(_input)}? function_call_argument_clause            # function_call_expression_condition
+    | postfix_expression__condition '.' 'init'                                          # initializer_expression_condition
+    | postfix_expression__condition '.' 'init' '(' argument_names ')'                   # initializer_expression_with_args_condition
+    | postfix_expression__condition '.' (Pure_decimal_digits | Decimal_literal)         # explicit_member_expression1_condition
+    | postfix_expression__condition '.' declaration_identifier generic_argument_clause? # explicit_member_expression2_condition
+    | postfix_expression__condition '.' declaration_identifier '(' argument_names ')'   # explicit_member_expression3_condition
+    // This does't exist in the swift grammar, but this valid swift statement fails without it
+    // self.addTarget(self, action: #selector(nameOfAction(_:)))
+    | postfix_expression__condition {SwiftLookahead.isOnSameLine(_input)}? '(' argument_names ')'  # explicit_member_expression4_condition
+    | postfix_expression__condition '.' 'self'              # postfix_self_expression_condition
+    | postfix_expression__condition '.' keyword_member_name # explicit_member_expression_keyword_condition
+    | postfix_expression__condition {SwiftLookahead.isPostfixDirective(_input)}? postfix_directive # postfix_directive_expression_condition
+    | dynamic_type_expression                    # dynamic_type_condition
+    | postfix_expression__condition {SwiftLookahead.isOnSameLine(_input)}? '[' expression_list ']' # subscript_expression_condition
+    | postfix_expression__condition {SwiftLookahead.isLabeledSubscript(_input)}? '[' function_call_argument_list ']' # labeled_subscript_expression_condition
+    // ! is a postfix operator already
+    // | postfix_expression__condition '!'                                            # forced_value_expression_condition
+    // ? is a postfix operator already
+    // | postfix_expression__condition '?'                                            # optional_chaining_expression_condition
+    ;
+
+// members that a compilation condition guards, as in
+//     view
+//         #if os(iOS)
+//         .frame(width: 40)
+//         #endif
+postfix_directive
+    : if_directive compilation_condition postfix_expression? (elseif_directive compilation_condition postfix_expression?)* (
+        else_directive postfix_expression?
+    )? endif_directive
     ;
 
 // GRAMMAR OF A FUNCTION CALL EXPRESSION
@@ -1497,7 +1689,12 @@ function_call_argument
     ;
 
 trailing_closure
-    : closure_expression
+    : closure_expression labeled_trailing_closure*
+    ;
+
+// the closures after the first: `observe { ... } onStop: { ... }`
+labeled_trailing_closure
+    : (declaration_identifier | '_') ':' closure_expression
     ;
 
 // GRAMMAR OF AN EXPLICIT MEMBER EXPRESSION
@@ -1518,21 +1715,25 @@ dynamic_type_expression
 
 // GRAMMAR OF A TYPE
 
+// `contextual_keyword type_` is not the first alternative: ANTLR puts an empty action before the
+// first alternative of a left-recursive rule, and the parser does not evaluate a predicate behind
+// an action while it predicts, so `name: Type` before a line that starts with a name failed (#567).
 type_
-    : contextual_keyword type_  # the_existential_type
-    | 'repeat' type_            # the_pack_expansion_type
-    | array_type                # the_array_type
-    | dictionary_type           # the_dictionary_type
-    | function_type             # the_function_type
-    | type_identifier           # the_type_identifier
-    | tuple_type                # the_tuple_type
-    | type_ '?'                 # the_optional_type
-    | type_ '!'                 # the_implicitly_unwrapped_optional_type
-    | protocol_composition_type # the_protocol_composition_type
-    | type_ '.' 'Type'          # the_metatype_type_type
-    | type_ '.' 'Protocol'      # the_metatype_protocol_type
-    | 'Any'                     # the_any_type
-    | 'Self'                    # the_self_type
+    : 'repeat' type_
+    | contextual_keyword type_
+    | array_type
+    | dictionary_type
+    | function_type
+    | type_identifier
+    | tuple_type
+    | type_ {SwiftLookahead.isAttached(_input)}? '?'
+    | type_ {SwiftLookahead.isAttached(_input)}? '!'
+    | protocol_composition_type
+    | type_ '.' 'Type'
+    | type_ '.' 'Protocol'
+    | 'Any'
+    | 'Self' '.' type_identifier
+    | 'Self'
     ;
 
 // GRAMMAR OF A TYPE ANNOTATION
@@ -1545,15 +1746,21 @@ type_annotation
 
 // `any` and `some` are contextual keywords, so they stay identifiers everywhere else
 contextual_keyword
-    : {SwiftContextualKeywords.isContextualTypeKeyword(_input)}? Identifier
+    : {SwiftContextualKeywords.isContextualTypeKeyword(_input)}? Contextual_keyword
     ;
 
 type_identifier
     : type_name generic_argument_clause? ('.' type_identifier)?
     ;
 
+// not `Contextual_keyword`: `some View` is never the type `some` before a statement `View`
 type_name
-    : declaration_identifier
+    : declaration_identifier__type
+    ;
+
+declaration_identifier__type
+    : Identifier
+    | keyword_as_identifier_in_declarations
     ;
 
 // GRAMMAR OF A TUPLE TYPE
@@ -1568,7 +1775,7 @@ tuple_type_element_list
     ;
 
 tuple_type_element
-    : element_name type_annotation
+    : element_name type_annotation default_argument_clause?
     | type_
     ;
 
@@ -1584,7 +1791,7 @@ throws_clause
 // GRAMMAR OF A FUNCTION TYPE
 
 function_type
-    : attributes? function_type_argument_clause throws_clause? arrow_operator type_
+    : attributes? function_type_argument_clause 'async'? throws_clause? arrow_operator type_
     | attributes? function_type_argument_clause 'rethrows' arrow_operator type_
     ;
 
@@ -1600,11 +1807,12 @@ function_type_argument_list
 
 function_type_argument
     : attributes? 'inout'? type_
-    | argument_label type_annotation
+    | argument_label argument_label? type_annotation
     ;
 
 argument_label
     : label_identifier
+    | '_'
     ;
 
 // GRAMMAR OF AN ARRAY TYPE
@@ -1637,6 +1845,7 @@ protocol_composition_type
 
 protocol_identifier
     : type_identifier
+    | 'Any'
     ;
 
 // GRAMMAR OF A METATYPE TYPE
@@ -1661,7 +1870,7 @@ type_inheritance_list
     ;
 
 type_inheritance_item
-    : attributes? type_identifier
+    : attributes? type_identifier ('&' type_identifier)*
     | '~' type_identifier
     ;
 
@@ -1680,12 +1889,14 @@ class_requirement
 // identifier is context sensitive
 declaration_identifier
     : Identifier
+    | Contextual_keyword
     | keyword_as_identifier_in_declarations
     ;
 
 // external, internal argument name
 label_identifier
     : Identifier
+    | Contextual_keyword
     | keyword_as_identifier_in_labels
     ;
 
@@ -1756,9 +1967,12 @@ keyword_as_identifier_in_labels
     | 'arch'
     | 'arm'
     | 'arm64'
+    | 'actor'
     | 'as'
     | 'assignment'
     | 'associatedtype'
+    | 'async'
+    | 'await'
     | 'associativity'
     | 'blue'
     | 'break'
@@ -1852,6 +2066,61 @@ keyword_as_identifier_in_labels
     | 'while'
     | 'willSet'
     | 'x86_64'
+    ;
+
+// a keyword is a member name after a dot: Configuration.default, queue.async, value.as(Int.self)
+keyword_member_name
+    : 'Any'
+    | 'Self'
+    | 'actor'
+    | 'as'
+    | 'associatedtype'
+    | 'async'
+    | 'await'
+    | 'break'
+    | 'case'
+    | 'catch'
+    | 'class'
+    | 'continue'
+    | 'default'
+    | 'defer'
+    | 'deinit'
+    | 'do'
+    | 'else'
+    | 'enum'
+    | 'extension'
+    | 'fallthrough'
+    | 'false'
+    | 'fileprivate'
+    | 'for'
+    | 'func'
+    | 'guard'
+    | 'if'
+    | 'import'
+    | 'in'
+    | 'internal'
+    | 'is'
+    | 'nil'
+    | 'operator'
+    | 'precedencegroup'
+    | 'private'
+    | 'protocol'
+    | 'public'
+    | 'repeat'
+    | 'rethrows'
+    | 'return'
+    | 'static'
+    | 'struct'
+    | 'subscript'
+    | 'super'
+    | 'switch'
+    | 'throw'
+    | 'throws'
+    | 'true'
+    | 'try'
+    | 'typealias'
+    | 'where'
+    | 'while'
     ;
 
 // GRAMMAR OF OPERATORS

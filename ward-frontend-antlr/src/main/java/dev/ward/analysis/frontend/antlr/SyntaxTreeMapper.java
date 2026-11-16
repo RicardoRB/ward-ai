@@ -23,6 +23,9 @@ final class SyntaxTreeMapper {
   /** The kind of a token the parser could not place in the tree. */
   static final String ERROR_KIND = "error";
 
+  /** What separates a rule name from the name of its variant. */
+  private static final String VARIANT = "__";
+
   /** The kind of a comment node. */
   static final String COMMENT_KIND = "comment";
 
@@ -66,8 +69,18 @@ final class SyntaxTreeMapper {
       children.addAll(commentsBefore(firstToken(child)));
       children.add(node(child));
     }
-    final String kind = parser.getRuleNames() [context.getRuleIndex()];
-    return new SyntaxNode(kind, SyntaxSpans.span(context), Map.of(), children);
+    return new SyntaxNode(kind(context), SyntaxSpans.span(context), Map.of(), children);
+  }
+
+  /**
+   * Returns the kind of a rule node: its rule name, without the variant a grammar adds after
+   * {@value #VARIANT}. A rule {@code expression__condition} reads a part of what {@code expression}
+   * reads, and the rules that read the tree see one kind for both.
+   */
+  private String kind(final ParserRuleContext context) {
+    final String name = parser.getRuleNames() [context.getRuleIndex()];
+    final int variant = name.lastIndexOf(VARIANT);
+    return variant < 0 ? name : name.substring(0, variant);
   }
 
   private static Token firstToken(final ParseTree node) {
