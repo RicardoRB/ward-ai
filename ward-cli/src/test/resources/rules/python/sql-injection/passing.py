@@ -22,3 +22,18 @@ def by_id(conn):
 
 def constant(cursor):
     cursor.execute("SELECT 1")
+
+
+@app.route("/task")
+def unrelated_execute(executor, pipeline):
+    task = request.args.get("task")
+    executor.execute(task)
+    pipeline.execute(task)
+
+
+class Job:
+    def __init__(self, command):
+        self.command = command
+
+    def start(self):
+        self.command.execute(request.args.get("step"))

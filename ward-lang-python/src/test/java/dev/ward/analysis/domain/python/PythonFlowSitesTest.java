@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 /** The flow sites that the Python lowering records for the taint rules. */
 class PythonFlowSitesTest {
-  private static List<FlowSite> sites(final String source, final String body) {
+  static List<FlowSite> sites(final String source, final String body) {
     final SourceUnit unit = new SourceUnit("m.py", AnalysisLanguage.PYTHON, source);
     final ControlFlowGraph graph =
         new PythonControlFlow()

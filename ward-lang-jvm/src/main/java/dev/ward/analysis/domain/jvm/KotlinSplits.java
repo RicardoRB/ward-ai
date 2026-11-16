@@ -11,7 +11,8 @@ import java.util.Set;
  * {@code if}, {@code when} and {@code try} that make a value, and the operands of {@code &&},
  * {@code ||} and {@code ?:}. The outermost ones are found; a part inside a part is found when that
  * part's statements are lowered. A lambda written as the trailing block of a call also reports the
- * call's name, its label, and the span of the receiver written before the call.
+ * call's name, its label, and the span of the receiver written before the call; the receiver of
+ * {@code with(x) {}} is its first argument.
  */
 final class KotlinSplits {
   private static final String LAMBDA = "functionLiteral";
@@ -19,6 +20,7 @@ final class KotlinSplits {
   private static final String POSTFIX = "postfixUnaryExpression";
   private static final String MEMBER = "memberAccessOperator";
   private static final String ANNOTATED = "annotatedLambda";
+  private static final String WITH = "with";
   private static final Set<String> CONTROL =
       Set.of("ifExpression", "whenExpression", "tryExpression");
   private static final Set<String> OPERATORS =
@@ -120,9 +122,10 @@ final class KotlinSplits {
   private static void suffix(
       final SyntaxNode suffix,
       final String callee,
-      final Span receiver,
+      final Span written,
       final List<Split> found
   ) {
+    final Span receiver = written == null ? withReceiver(suffix, callee) : written;
     for (final SyntaxNode part : KotlinFlowSyntax.parts(suffix)) {
       if (ANNOTATED.equals(part.kind())) {
         final SyntaxNode lambda = KotlinFlowSyntax.child(part, LAMBDA);
@@ -132,6 +135,12 @@ final class KotlinSplits {
         walk(part, found);
       }
     }
+  }
+
+  /** The first argument of {@code with}, or null for any other call. */
+  private static Span withReceiver(final SyntaxNode suffix, final String callee) {
+    final List<SyntaxNode> arguments = KotlinCalls.argumentsOf(suffix);
+    return WITH.equals(callee) && !arguments.isEmpty() ? arguments.get(0).span() : null;
   }
 
   private static String labelOf(final SyntaxNode mark) {
