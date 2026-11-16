@@ -1,6 +1,7 @@
 package dev.ward.analysis.frontend.antlr.swift;
 
 import java.util.BitSet;
+import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.misc.Interval;
@@ -311,11 +312,10 @@ public final class SwiftSupport {
 
   /** Reads the stream to its end, so that the lookahead the predicates use is available. */
   public static void fillUp(final TokenStream tokens) {
-    for (int jj = 1;; ++jj) {
-      final int t = tokens.LA(jj);
-      if (t == -1) {
-        break;
-      }
+    // fill() returns at once when the end was already read; LA(k) in a loop walked the whole
+    // stream on every predicate, which made a long file take minutes (#567)
+    if (tokens instanceof BufferedTokenStream buffered) {
+      buffered.fill();
     }
   }
 }

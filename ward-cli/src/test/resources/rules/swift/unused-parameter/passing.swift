@@ -10,3 +10,11 @@ struct Point {
 class Shape: Drawable {
     func draw(size: Int) {}
 }
+
+struct Form {
+    func headers(name: String, fileName: String? = nil, flag: Bool = false) -> String {
+        var text = "name=\(name)"
+        if let fileName { text += fileName }
+        return text + "\(flag)"
+    }
+}

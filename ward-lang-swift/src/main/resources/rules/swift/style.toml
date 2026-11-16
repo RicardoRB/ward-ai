@@ -53,7 +53,7 @@ category = "style"
 presets = ["standard", "strict"]
 body = '''
 check = "text-pattern"
-target = "lines"
+target = "code"
 pattern = '^\s*\{\s*$'
 message = "opening brace must be on the same line as the statement it opens"
 '''
@@ -111,7 +111,7 @@ category = "style"
 presets = ["standard", "strict"]
 body = '''
 check = "text-pattern"
-target = "lines"
+target = "code"
 pattern = '^(?!\s*//).*;[ \t]*[^\s/]'
 message = "more than one statement on a line; put each statement on its own line"
 '''
@@ -166,9 +166,7 @@ severity = "error"
 category = "docs"
 presets = ["standard", "strict"]
 body = '''
-check = "text-pattern"
-target = "comments"
-pattern = '^(///|/\*\*(?![^\n]*\*/))[ \t]*[^\n]*[^.!?\s*/][ \t]*(\n|$)'
+check = "swift-doc-summary"
 message = "first sentence of the documentation comment must end with a period"
 '''
 

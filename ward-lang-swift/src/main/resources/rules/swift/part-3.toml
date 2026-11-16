@@ -33,14 +33,12 @@ message = "control flow label is never used by break or continue"
 [[rules]]
 id = "ward:swift/unused-closure-parameter"
 language = "swift"
-capability = "SYNTAX"
+capability = "SCOPES"
 severity = "warning"
 category = "correctness"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["closure_expression"]
-text = '^\{([a-zA-Z]\w*)in(?!.*\1)'
+check = "swift-unused-closure-parameter"
 message = "unused closure parameter; replace it with _"
 '''
 

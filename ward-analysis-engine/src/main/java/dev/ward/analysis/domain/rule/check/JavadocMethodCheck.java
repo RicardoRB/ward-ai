@@ -4,7 +4,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -38,17 +37,15 @@ public final class JavadocMethodCheck implements RuleCheck {
   public List<RuleMatch> matches(final SyntaxNode root) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(FUNCTION))) {
-      final Optional<SyntaxNode> comment = Declaration.of(visit, Set.of()).previousSibling();
-      if (comment.isPresent() && SyntaxWalk.COMMENT_KIND.equals(comment.get().kind())) {
-        missingTags(visit.node(), commentText(comment.get()))
+      // every line of the documentation, not the last one, and no plain comment such as a mark
+      final List<SyntaxNode> comments =
+          DocComments.leading(Declaration.of(visit, Set.of()).previousSiblings());
+      if (!comments.isEmpty()) {
+        missingTags(visit.node(), String.join("\n", DocComments.lines(comments)))
             .forEach(tag -> matches.add(match(visit.node(), tag)));
       }
     }
     return List.copyOf(matches);
-  }
-
-  private static String commentText(final SyntaxNode comment) {
-    return comment.fields().getOrDefault("text", SyntaxWalk.text(comment));
   }
 
   private RuleMatch match(final SyntaxNode function, final String tag) {
@@ -66,7 +63,7 @@ public final class JavadocMethodCheck implements RuleCheck {
   private static List<String> missingInSignature(final SyntaxNode signature, final String comment) {
     final List<String> missing = new ArrayList<>();
     parameterNames(signature).stream()
-        .filter(name -> !hasTag(comment, "Parameter\\s*" + Pattern.quote(name)))
+        .filter(name -> !hasParameter(comment, name))
         .forEach(name -> missing.add("- Parameter " + name + ":"));
     missing.addAll(missingTag(signature, comment, RESULT, "Returns"));
     missing.addAll(missingTag(signature, comment, THROWS, "Throws"));
@@ -95,6 +92,13 @@ public final class JavadocMethodCheck implements RuleCheck {
 
   private static boolean hasNode(final SyntaxNode signature, final String kind) {
     return !SyntaxWalk.visits(signature, Set.of(kind)).isEmpty();
+  }
+
+  /** Whether the comment has {@code - Parameter name:}, or {@code - name:} under a list. */
+  private static boolean hasParameter(final String comment, final String name) {
+    final String quoted = Pattern.quote(name);
+    return hasTag(comment, "Parameter\\s*" + quoted)
+        || hasTag(comment, "Parameters") && hasTag(comment, quoted);
   }
 
   private static boolean hasTag(final String comment, final String tag) {

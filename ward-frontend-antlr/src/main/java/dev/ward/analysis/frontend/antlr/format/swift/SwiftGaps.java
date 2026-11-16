@@ -16,7 +16,9 @@ final class SwiftGaps {
   private static final String COMMA = ",";
   private static final String COLON = ":";
   private static final String DOT = ".";
+  private static final String HASH = "#";
   private static final String OPEN_BRACE = "{";
+  private static final String CLOSE_BRACE = "}";
   private static final String LF = "\n";
   private static final Set<String> NO_SPACE_BEFORE = Set.of(")", "]", COMMA, ";");
   private static final Set<String> NO_SPACE_AFTER = Set.of("(", "[");
@@ -32,18 +34,6 @@ final class SwiftGaps {
   }
 
   private SwiftGaps() {}
-
-  /**
-   * The source text between two tokens.
-   *
-   * @param source the whole source
-   * @param previous the earlier token
-   * @param token the later token
-   * @return the characters between them
-   */
-  static String between(final String source, final Token previous, final Token token) {
-    return source.substring(previous.getStopIndex() + 1, token.getStartIndex());
-  }
 
   /**
    * Counts the line feeds in a text.
@@ -145,31 +135,68 @@ final class SwiftGaps {
     final String prev = previous.getText();
     final String text = token.getText();
     if ((between.isEmpty() && SwiftTokens.isGluedOperator(previous, text))
+        || SwiftTokens.endsRange(before, previous)
         || NO_SPACE_BEFORE.contains(text)
         || NO_SPACE_AFTER.contains(prev)
         || SwiftTokens.isPrefix(before, previous)) {
       return Spacing.NONE;
     }
-    return access(previous, token, between);
+    // the `?` that ends `??` or `as?` ends an operator, not an operand: `a ?? .none`, `as? [Int]`
+    final boolean operandEnd =
+        SwiftTokens.isOperandEnd(previous)
+            && !SwiftTokens.endsBinary(before, previous)
+            && !SwiftTokens.isKeywordMark(before, previous);
+    return access(previous, token, between, operandEnd);
   }
 
   /** Spacing around member dots, calls, subscripts and postfix marks; null when none applies. */
-  private static Spacing access(final Token previous, final Token token, final String between) {
+  private static Spacing access(
+      final Token previous,
+      final Token token,
+      final String between,
+      final boolean operandEnd
+  ) {
     final String prev = previous.getText();
     final String text = token.getText();
     if (DOT.equals(text)) {
-      return SwiftTokens.isOperandEnd(previous) ? Spacing.NONE : Spacing.SPACE;
+      return afterDot(prev, operandEnd);
     }
     if (DOT.equals(prev)) {
       return Spacing.NONE;
     }
     if (CALL_OPENERS.contains(text)) {
-      return SwiftTokens.isOperandEnd(previous) ? Spacing.NONE : Spacing.SPACE;
+      // `#available(...)` and `#selector(...)` take their bracket like a call
+      return isCallee(prev, between, operandEnd) ? Spacing.NONE : Spacing.SPACE;
     }
     if (SwiftTokens.POSTFIX.contains(text)) {
-      return SwiftTokens.isOperandEnd(previous) && between.isEmpty() ? Spacing.NONE : Spacing.SPACE;
+      final boolean operand = SwiftTokens.isOperandEnd(previous) || CLOSE_BRACE.equals(prev);
+      final boolean attached =
+          operand && between.isEmpty() || SwiftTokens.isKeywordMark(previous, token);
+      return attached ? Spacing.NONE : Spacing.SPACE;
     }
     return null;
+  }
+
+  /**
+   * Whether a bracket continues what stands before it: an operand, {@code #available} or {@code
+   * #selector}, or the {@code >} that closes generic arguments, as in {@code Box<Int>(1)}.
+   */
+  private static boolean isCallee(
+      final String prev,
+      final String between,
+      final boolean operandEnd
+  ) {
+    return operandEnd
+        || prev.startsWith(HASH) && prev.length() > 1
+        || ">".equals(prev) && between.isEmpty();
+  }
+
+  /** Before a member dot: none after an operand, as written after a closure, a space otherwise. */
+  private static Spacing afterDot(final String prev, final boolean operandEnd) {
+    if (CLOSE_BRACE.equals(prev)) {
+      return Spacing.KEEP;
+    }
+    return operandEnd ? Spacing.NONE : Spacing.SPACE;
   }
 
   /** Spacing after a comma, colon, keyword or postfix mark, and before a block. */
@@ -178,7 +205,7 @@ final class SwiftGaps {
     if (COMMA.equals(prev)
         || COLON.equals(prev)
         || SwiftTokens.POSTFIX.contains(prev)
-        || SwiftTokens.KEYWORDS.contains(prev)
+        || SwiftTokens.KEYWORDS.contains(prev) && !COLON.equals(token.getText())
         || OPEN_BRACE.equals(token.getText())) {
       return Spacing.SPACE;
     }
@@ -187,10 +214,11 @@ final class SwiftGaps {
 
   /** One space around a binary or assignment operator; anything else is kept as written. */
   private static Spacing operator(final Token before, final Token previous, final Token token) {
-    if (SwiftTokens.isBinaryAt(previous, token.getText())
-        || SwiftTokens.endsBinary(before, previous)) {
+    if (SwiftTokens.isBinaryAt(previous, token.getText())) {
       return Spacing.SPACE;
     }
-    return Spacing.KEEP;
+    final boolean afterBinary =
+        SwiftTokens.endsBinary(before, previous) && !SwiftTokens.hasNoLeftOperand(before, previous);
+    return afterBinary ? Spacing.SPACE : Spacing.KEEP;
   }
 }

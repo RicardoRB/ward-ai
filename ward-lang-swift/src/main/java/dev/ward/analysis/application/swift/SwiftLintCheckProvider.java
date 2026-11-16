@@ -20,6 +20,7 @@ import dev.ward.analysis.domain.swift.SwiftStaticOverFinalClassCheck;
 import dev.ward.analysis.domain.swift.SwiftTypesafeArrayInitCheck;
 import dev.ward.analysis.domain.swift.SwiftUnneededOverrideCheck;
 import dev.ward.analysis.domain.swift.SwiftUnneededSynthesizedInitializerCheck;
+import dev.ward.analysis.domain.swift.SwiftUnusedClosureParameterCheck;
 import dev.ward.analysis.domain.swift.SwiftUnusedSetterValueCheck;
 import dev.ward.analysis.domain.swift.SwiftValidIbinspectableCheck;
 import dev.ward.analysis.domain.swift.SwiftVoidFunctionInTernaryCheck;
@@ -90,6 +91,10 @@ public final class SwiftLintCheckProvider implements CheckProvider {
   }
 
   private static void usageChecks(final Map<String, CheckFactory> checks) {
+    checks.put(
+        "swift-unused-closure-parameter",
+        toml -> new SwiftUnusedClosureParameterCheck(TomlValues.required(toml, MESSAGE))
+    );
     checks.put(
         "swift-orphaned-doc-comment",
         toml -> new SwiftOrphanedDocCommentCheck(TomlValues.required(toml, MESSAGE))

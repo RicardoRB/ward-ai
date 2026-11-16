@@ -28,7 +28,6 @@ final class SwiftDocBuilder {
   private static final String CR_LF = "\r\n";
   private static final Set<String> LABEL_PRECEDERS = Set.of(OPEN_BRACE, CLOSE_BRACE, ";", COLON);
 
-  private final String source;
   private final List<Token> tokens;
   private final int maxBlankLines;
   private final SwiftBrackets brackets;
@@ -37,12 +36,10 @@ final class SwiftDocBuilder {
   /**
    * Prepares the builder for one source.
    *
-   * @param source the Swift source the tokens were read from
    * @param tokens the significant tokens of the source, in order
    * @param maxBlankLines the most blank lines kept in a row
    */
-  SwiftDocBuilder(final String source, final List<Token> tokens, final int maxBlankLines) {
-    this.source = source;
+  SwiftDocBuilder(final List<Token> tokens, final int maxBlankLines) {
     this.tokens = List.copyOf(tokens);
     this.maxBlankLines = maxBlankLines;
     this.brackets = new SwiftBrackets(this.tokens);
@@ -60,7 +57,7 @@ final class SwiftDocBuilder {
       step(index);
     }
     if (!tokens.isEmpty()) {
-      final String tail = source.substring(tokens.get(tokens.size() - 1).getStopIndex() + 1);
+      final String tail = SwiftSource.after(tokens.get(tokens.size() - 1));
       final int newlines = SwiftGaps.countNewlines(tail);
       if (newlines > 0) {
         root.add(SwiftGaps.newlines(newlines, maxBlankLines));
@@ -137,7 +134,9 @@ final class SwiftDocBuilder {
       return Kind.PLAIN;
     }
     if (brackets.spansLines(index)) {
-      return Kind.INDENT;
+      // of the brackets that open on one line and span lines, the last one indents: `call(item(`
+      // then has one level, as when the formatter itself breaks `call(item(a, b))`
+      return brackets.opensSpanningLater(index) ? Kind.PLAIN : Kind.INDENT;
     }
     return brackets.hasTopLevelComma(index) ? Kind.GROUP : Kind.PLAIN;
   }
@@ -155,7 +154,7 @@ final class SwiftDocBuilder {
     final Token before = index >= 2 ? tokens.get(index - 2) : null;
     final Token previous = tokens.get(index - 1);
     final Token token = tokens.get(index);
-    final String between = SwiftGaps.between(source, previous, token);
+    final String between = SwiftSource.between(previous, token);
     final int newlines = SwiftGaps.countNewlines(between);
     if (newlines > 0) {
       return SwiftGaps.newlines(newlines, maxBlankLines);
@@ -182,7 +181,7 @@ final class SwiftDocBuilder {
     if (DOT.equals(previous.getText())) {
       return false;
     }
-    final String between = SwiftGaps.between(source, previous, tokens.get(index));
+    final String between = SwiftSource.between(previous, tokens.get(index));
     return LABEL_PRECEDERS.contains(previous.getText()) || SwiftGaps.countNewlines(between) > 0;
   }
 }

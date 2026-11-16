@@ -3,6 +3,7 @@ package dev.ward.analysis.frontend.antlr.format.swift;
 import java.util.Set;
 import java.util.regex.Pattern;
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.misc.Interval;
 
 /**
  * Classifies Swift tokens by their text for spacing. A token that ends an operand is an identifier
@@ -67,11 +68,17 @@ final class SwiftTokens {
           "%=",
           "->"
       );
+  /** The keywords that a {@code ?} or {@code !} written right after them belongs to. */
+  private static final Set<String> MARKED_KEYWORDS = Set.of("as", "try");
+
   private static final Set<String> PREFIX_CAPABLE = Set.of("+", "-", "&", "~", "!");
   private static final Set<String> CLOSERS = Set.of(")", "]");
-  private static final Pattern WORD = Pattern.compile("[A-Za-z0-9_]+");
+  /** A name or a number; a name can start with {@code $} or stand in backticks. */
+  private static final Pattern WORD =
+      Pattern.compile("[$]?[\\p{L}\\p{N}_]+|[0-9][\\p{L}\\p{N}_.]*|`[^`]+`");
   private static final Pattern OPERATOR_TEXT = Pattern.compile("[=<>!&|^~+*/%?.\\-]+");
   private static final String STRING_START = "\"";
+  private static final String RANGE_START = ".";
 
   private SwiftTokens() {}
 
@@ -116,7 +123,21 @@ final class SwiftTokens {
     return (WORD.matcher(text).matches() && !KEYWORDS.contains(text))
         || text.startsWith(STRING_START)
         || CLOSERS.contains(text)
-        || POSTFIX.contains(text);
+        || isPostfixMark(token);
+  }
+
+  /**
+   * Tells whether the token is a {@code ?} or {@code !} written right after its operand. The
+   * {@code ?} of a conditional expression has a space before it and ends no operand, so a minus
+   * after it is a prefix: {@code flag ? -1 : 1}.
+   */
+  private static boolean isPostfixMark(final Token token) {
+    final int start = token.getStartIndex();
+    if (!POSTFIX.contains(token.getText()) || start == 0) {
+      return false;
+    }
+    final String before = token.getInputStream().getText(Interval.of(start - 1, start - 1));
+    return !before.isBlank();
   }
 
   /**
@@ -130,7 +151,24 @@ final class SwiftTokens {
   static boolean isPrefix(final Token before, final Token operator) {
     return PREFIX_CAPABLE.contains(operator.getText())
         && !isOperandEnd(before)
-        && !isAdjacentOperator(before, operator);
+        && !isAdjacentOperator(before, operator)
+        && !isKeywordMark(before, operator);
+  }
+
+  /**
+   * Tells whether the token is the {@code ?} or {@code !} of {@code as?}, {@code as!}, {@code
+   * try?} or {@code try!}: the mark is written right after the keyword and is a part of it, so no
+   * space may come between them.
+   *
+   * @param before the token before the mark, or null
+   * @param mark the token that may be the mark
+   * @return true when the mark belongs to the keyword before it
+   */
+  static boolean isKeywordMark(final Token before, final Token mark) {
+    return before != null
+        && POSTFIX.contains(mark.getText())
+        && MARKED_KEYWORDS.contains(before.getText())
+        && before.getStopIndex() + 1 == mark.getStartIndex();
   }
 
   /**
@@ -157,6 +195,41 @@ final class SwiftTokens {
     return (isAdjacentOperator(before, previous)
         && BINARY.contains(before.getText() + previous.getText()))
         || isBinaryAt(before, previous.getText());
+  }
+
+  /**
+   * Tells whether the token ends a range operator ({@code ...} or {@code ..<}). Swift reads a
+   * range operator with a space on one side only as a prefix or a postfix operator, so the operand
+   * after it stays attached.
+   *
+   * @param before the token before the earlier one, or null
+   * @param previous the earlier token
+   * @return true when the earlier token is the last character of a range operator
+   */
+  static boolean endsRange(final Token before, final Token previous) {
+    final String text = previous.getText();
+    return isAdjacentOperator(before, previous)
+        && RANGE_START.equals(before.getText())
+        && (RANGE_START.equals(text) || "<".equals(text));
+  }
+
+  /**
+   * Tells whether the operator that the earlier token ends has no operand on its left, as in the
+   * compilation condition {@code compiler(>=6)}: Swift reads it as a prefix operator, which may
+   * not be separated from its operand.
+   *
+   * @param before the token before the earlier one, or null
+   * @param previous the earlier token
+   * @return true when a parenthesis or a comma stands right before the operator
+   */
+  static boolean hasNoLeftOperand(final Token before, final Token previous) {
+    final Token first = isAdjacentOperator(before, previous) ? before : previous;
+    final int start = first.getStartIndex();
+    if (start == 0) {
+      return true;
+    }
+    final String ahead = first.getInputStream().getText(Interval.of(start - 1, start - 1));
+    return "(".equals(ahead) || ",".equals(ahead);
   }
 
   private static boolean isAdjacentOperator(final Token before, final Token token) {

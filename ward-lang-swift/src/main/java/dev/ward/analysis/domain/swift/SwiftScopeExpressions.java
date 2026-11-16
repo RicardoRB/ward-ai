@@ -20,11 +20,11 @@ final class SwiftScopeExpressions {
 
   /** An {@code if let} binds in the condition and the first block, not in the {@code else}. */
   void ifStatement(final SyntaxNode node) {
-    walk.builder.open(ScopeKind.BLOCK, node.span());
+    walk.scopes.open(ScopeKind.BLOCK, node.span());
     node.children().stream()
         .filter(child -> !"else_clause".equals(child.kind()))
         .forEach(walk::visit);
-    walk.builder.close();
+    walk.scopes.close();
     node.children().stream()
         .filter(child -> "else_clause".equals(child.kind()))
         .forEach(walk::visit);
@@ -91,6 +91,12 @@ final class SwiftScopeExpressions {
   }
 
   /** In {@code a.b} the name after the dot is a member, not a reference. */
+  /** Records the names that the interpolations of a string literal read. */
+  void stringLiteral(final SyntaxNode node) {
+    SwiftInterpolation.names(SwiftScopeWalk.text(node))
+        .forEach(name -> walk.builder.reference(name, node.span(), ReferenceAccess.READ));
+  }
+
   void postfix(final SyntaxNode node) {
     node.children().stream().filter(c -> !IDENTIFIER.equals(c.kind())).forEach(walk::visit);
   }
