@@ -156,12 +156,13 @@ public class CheckCommand implements Callable<Integer> {
 
   static final class JobsConverter implements ITypeConverter<Integer> {
     private static final String AUTO = "auto";
+    private static final int AUTO_JOBS = 0;
     private static final int MINIMUM = 1;
 
     @Override
     public Integer convert(final String value) {
       if (AUTO.equalsIgnoreCase(value)) {
-        return Runtime.getRuntime().availableProcessors();
+        return AUTO_JOBS;
       }
       final int jobs = Integer.parseInt(value);
       if (jobs < MINIMUM) {
@@ -275,7 +276,7 @@ public class CheckCommand implements Callable<Integer> {
     if (paths.isEmpty()) {
       return service.checkWith(
           options.directory(),
-          new CheckRunOptions(profiles, listener, failFast, Set.of(), jobs)
+          new CheckRunOptions(profiles, listener, failFast, Set.of(), jobs())
       );
     }
     final Path workingDirectory = options.directory().toAbsolutePath().normalize();
@@ -291,8 +292,13 @@ public class CheckCommand implements Callable<Integer> {
     return service.checkPartial(
         workingDirectory,
         resolved,
-        new CheckRunOptions(profiles, listener, failFast, Set.of(), jobs)
+        new CheckRunOptions(profiles, listener, failFast, Set.of(), jobs())
     );
+  }
+
+  /** The job limit; {@code auto} is one job per processor. */
+  private int jobs() {
+    return jobs == JobsConverter.AUTO_JOBS ? collaborators.processors() : jobs;
   }
 
   private PrintWriter output() {
