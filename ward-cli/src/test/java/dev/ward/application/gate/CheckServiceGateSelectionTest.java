@@ -99,7 +99,7 @@ class CheckServiceGateSelectionTest {
         """);
 
     final CheckReport report =
-        service().check(dir, List.of(), CheckProgressListener.NO_OP, false, Set.of(MYPY, PYTEST));
+        service().checkExcluding(dir, Set.of(MYPY, PYTEST));
 
     assertThat(report.results()).extracting("name").containsExactly("tests");
     assertThat(executor.commands).containsExactly(TESTS_COMMAND);
@@ -110,7 +110,7 @@ class CheckServiceGateSelectionTest {
     configure("version = 2\n[checks.mypy]\ncommand = \"mypy .\"\n");
 
     final CheckReport report =
-        service().check(dir, List.of(), CheckProgressListener.NO_OP, false, Set.of(MYPY, PYTEST));
+        service().checkExcluding(dir, Set.of(MYPY, PYTEST));
 
     assertThat(report.results()).isEmpty();
     assertThat(report.passed()).isTrue();
@@ -124,7 +124,7 @@ class CheckServiceGateSelectionTest {
     assertThatThrownBy(
         () ->
             service()
-                .check(dir, List.of(), CheckProgressListener.NO_OP, false, Set.of(MYPY, PYTEST))
+                .checkExcluding(dir, Set.of(MYPY, PYTEST))
     )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("No quality gates are enabled");

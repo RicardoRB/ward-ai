@@ -90,6 +90,17 @@ public class CheckCommand implements Callable<Integer> {
   private boolean failFast;
 
   @Option(
+      names = "--jobs",
+      paramLabel = "<n>",
+      defaultValue = "${env:WARD_JOBS:-1}",
+      converter = JobsConverter.class,
+      description =
+          "Run up to n checks at once, or 'auto' for one per processor"
+              + " (default: $WARD_JOBS, or 1)."
+  )
+  private int jobs;
+
+  @Option(
       names = "--learn-after",
       paramLabel = "<n>",
       description = "Learn recurring failures after n occurrences."
@@ -140,6 +151,24 @@ public class CheckCommand implements Callable<Integer> {
     @Override
     public SeverityThreshold convert(final String value) {
       return SeverityThreshold.parse(value);
+    }
+  }
+
+  static final class JobsConverter implements ITypeConverter<Integer> {
+    private static final String AUTO = "auto";
+    private static final int AUTO_JOBS = 0;
+    private static final int MINIMUM = 1;
+
+    @Override
+    public Integer convert(final String value) {
+      if (AUTO.equalsIgnoreCase(value)) {
+        return AUTO_JOBS;
+      }
+      final int jobs = Integer.parseInt(value);
+      if (jobs < MINIMUM) {
+        throw new IllegalArgumentException("expected a number of at least 1, or auto");
+      }
+      return jobs;
     }
   }
 
@@ -245,7 +274,10 @@ public class CheckCommand implements Callable<Integer> {
 
   private CheckReport runServiceCheck(final CheckProgressListener listener) {
     if (paths.isEmpty()) {
-      return service.check(options.directory(), profiles, listener, failFast, Set.of());
+      return service.checkWith(
+          options.directory(),
+          new CheckRunOptions(profiles, listener, failFast, Set.of(), jobs())
+      );
     }
     final Path workingDirectory = options.directory().toAbsolutePath().normalize();
     final List<Path> resolved =
@@ -260,8 +292,13 @@ public class CheckCommand implements Callable<Integer> {
     return service.checkPartial(
         workingDirectory,
         resolved,
-        new CheckRunOptions(profiles, listener, failFast, Set.of())
+        new CheckRunOptions(profiles, listener, failFast, Set.of(), jobs())
     );
+  }
+
+  /** The job limit; {@code auto} is one job per processor. */
+  private int jobs() {
+    return jobs == JobsConverter.AUTO_JOBS ? collaborators.processors() : jobs;
   }
 
   private PrintWriter output() {

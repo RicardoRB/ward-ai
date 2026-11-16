@@ -53,6 +53,13 @@ final class WardProvidesModule {
     return VersionProvider.current();
   }
 
+  /** The number of processors, which {@code ward check --jobs auto} uses as its limit. */
+  @Provides
+  @Named("ward.processors")
+  static int processors() {
+    return Runtime.getRuntime().availableProcessors();
+  }
+
   @Provides
   static PathExistence pathExistence() {
     return new FilePathExistence();
