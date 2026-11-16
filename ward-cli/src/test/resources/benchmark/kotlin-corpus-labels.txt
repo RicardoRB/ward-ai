@@ -1,0 +1,143 @@
+# Labels of the findings of the Kotlin corpus run, decided by reading the code at the line.
+# Format: rule | file:line | tp, fp or un | reason.
+# tp: the line is a real instance of what the rule describes. fp: it is not. un: it cannot be decided from the
+# code, or it depends on a count that was not recomputed. Every finding of a rule with at most 3 findings is
+# labelled; a rule with more has a sample of 3: one in PetClinic where the rule reports there, then main and test
+# code of Okio in turn.
+ward:kotlin/cognitive-complexity | okio/okio/src/commonMain/kotlin/okio/Options.kt:109 | tp | a recursive builder with loops nested four deep; far above the limit
+ward:kotlin/cognitive-complexity | okio/okio/src/jvmTest/kotlin/okio/ZipBuilder.kt:55 | un | long function with nested loops and branches; the count was not recomputed by hand
+ward:kotlin/cognitive-complexity | okio/okio/src/commonMain/kotlin/okio/internal/Buffer.kt:1624 | un | long function with nested loops and branches; the count was not recomputed by hand
+ward:kotlin/complex-condition | okio/okio/src/commonMain/kotlin/okio/Base64.kt:72 | tp | the condition joins four or more comparisons with && and ||
+ward:kotlin/complex-condition | okio/okio/src/commonMain/kotlin/okio/internal/Path.kt:359 | tp | the condition joins four or more comparisons with && and ||
+ward:kotlin/complex-condition | okio/okio/src/commonMain/kotlin/okio/internal/RealBufferedSource.kt:287 | tp | the condition joins four or more comparisons with && and ||
+ward:kotlin/constructor-parameter-naming | okio/okio/src/jvmTest/kotlin/okio/internal/HmacTest.kt:70 | tp | a constructor property that starts with an upper-case letter
+ward:kotlin/cyclomatic-complexity | okio/okio/src/commonMain/kotlin/okio/Base64.kt:32 | tp | a decoder with one branch per character class; far above the limit
+ward:kotlin/cyclomatic-complexity | okio/okio-testing-support/src/commonMain/kotlin/okio/AbstractFileSystemTest.kt:283 | un | a branchy function; the count was not recomputed by hand
+ward:kotlin/cyclomatic-complexity | okio/okio/src/commonMain/kotlin/okio/internal/Buffer.kt:866 | un | a branchy function; the count was not recomputed by hand
+ward:kotlin/double-mutability-for-collection | okio/okio-fakefilesystem/src/commonMain/kotlin/okio/fakefilesystem/FakeFileSystem.kt:634 | tp | a val property with no visibility modifier holds a mutable collection
+ward:kotlin/double-mutability-for-collection | okio/okio-fakefilesystem/src/commonMain/kotlin/okio/fakefilesystem/FakeFileSystem.kt:652 | tp | a val property with no visibility modifier holds a mutable collection
+ward:kotlin/double-mutability-for-collection | okio/okio/src/zlibMain/kotlin/okio/internal/ZipEntry.kt:89 | tp | a val property with no visibility modifier holds a mutable collection
+ward:kotlin/empty-default-constructor | okio/okio/src/commonMain/kotlin/okio/Buffer.kt:368 | tp | the class header writes an empty constructor() that can go
+ward:kotlin/empty-while-block | okio/okio/src/jvmTest/kotlin/okio/InflaterSourceTest.kt:112 | tp | the loop only evaluates its condition to drain a source; the braces are empty
+ward:kotlin/empty-while-block | okio/okio/src/jvmTest/kotlin/okio/InflaterSourceTest.kt:202 | tp | the loop only evaluates its condition to drain a source; the braces are empty
+ward:kotlin/empty-while-block | okio/okio/src/zlibTest/kotlin/okio/GzipSinkTest.kt:55 | tp | the loop only evaluates its condition to drain a source; the braces are empty
+ward:kotlin/enum-entry-name-case | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/internal/preview1/Errno.kt:132 | tp | lower-case entry, named after the constant of an external interface
+ward:kotlin/enum-entry-name-case | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/internal/preview1/Errno.kt:192 | tp | lower-case entry, named after the constant of an external interface
+ward:kotlin/enum-entry-name-case | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/internal/preview1/Errno.kt:39 | tp | lower-case entry, named after the constant of an external interface
+ward:kotlin/enum-naming | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/internal/preview1/Errno.kt:132 | tp | lower-case entry, named after the constant of an external interface
+ward:kotlin/enum-naming | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/internal/preview1/Errno.kt:192 | tp | lower-case entry, named after the constant of an external interface
+ward:kotlin/enum-naming | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/internal/preview1/Errno.kt:39 | tp | lower-case entry, named after the constant of an external interface
+ward:kotlin/file-length | okio/okio-fakefilesystem/src/commonMain/kotlin/okio/fakefilesystem/FakeFileSystem.kt:15 | tp | the file is longer than 500 lines
+ward:kotlin/file-length | okio/okio/src/commonTest/kotlin/okio/ByteStringTest.kt:15 | tp | the file is longer than 500 lines
+ward:kotlin/file-length | okio/okio/src/commonMain/kotlin/okio/BufferedSource.kt:15 | tp | the file is longer than 500 lines
+ward:kotlin/filename | okio/build-support/src/main/kotlin/dokka.kt:1 | tp | a lower-case file name for a file of functions
+ward:kotlin/filename | okio/okio/src/commonMain/kotlin/okio/internal/-Utf16.kt:1 | tp | the file name starts with a hyphen, which the project allows itself by switching its own linter off
+ward:kotlin/filename | okio/okio/src/jvmMain/kotlin/okio/internal/-JavaIo.kt:1 | tp | the file name starts with a hyphen, which the project allows itself by switching its own linter off
+ward:kotlin/function-expression-body | spring-petclinic-kotlin/src/main/kotlin/org/springframework/samples/petclinic/owner/VisitController.kt:68 | tp | the body is one return of an if expression
+ward:kotlin/function-expression-body | okio/okio-fakefilesystem/src/commonMain/kotlin/okio/fakefilesystem/FakeFileSystem.kt:695 | tp | the body is one return statement
+ward:kotlin/function-expression-body | okio/okio/src/commonTest/kotlin/okio/BufferedSinkFactory.kt:21 | tp | the body is one return statement
+ward:kotlin/function-length | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/WasiFileSystem.kt:142 | tp | the body is longer than 60 lines
+ward:kotlin/function-length | okio/okio-testing-support/src/commonMain/kotlin/okio/AbstractFileSystemTest.kt:145 | tp | a test body longer than 60 lines
+ward:kotlin/function-length | okio/okio/src/commonMain/kotlin/okio/internal/Buffer.kt:1552 | tp | the body is longer than 60 lines
+ward:kotlin/function-name | okio/okio-testing-support/src/wasmWasiMain/kotlin/okio/internal/preview1/Preview1Env.kt:26 | tp | snake_case name that mirrors an imported system call
+ward:kotlin/function-name | okio/okio/src/nativeTest/kotlin/okio/DeflaterTest.kt:258 | fp | a factory function named after the type it returns, which the Kotlin conventions allow
+ward:kotlin/function-name | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/internal/preview1/Preview1.kt:197 | tp | snake_case name that mirrors an imported system call
+ward:kotlin/hidden-field | okio/okio/src/hashFunctions/kotlin/okio/internal/Md5.kt:88 | tp | a parameter or local value has the name of a property of the class
+ward:kotlin/hidden-field | okio/okio-testing-support/src/commonMain/kotlin/okio/AbstractFileSystemTest.kt:238 | tp | a parameter or local value has the name of a property of the class
+ward:kotlin/hidden-field | okio/okio/src/hashFunctions/kotlin/okio/internal/Sha512.kt:106 | tp | a parameter or local value has the name of a property of the class
+ward:kotlin/implicit-default-locale | okio/okio/src/jvmTest/kotlin/okio/BufferedSinkTest.kt:371 | tp | a format call without a locale
+ward:kotlin/invalid-javadoc-position | okio/okio-nodefilesystem/src/commonMain/kotlin/okio/FsJs.kt:17 | tp | a KDoc comment at the top of the file, before file annotations or imports; it documents no declaration
+ward:kotlin/invalid-javadoc-position | okio/okio/src/commonMain/kotlin/okio/Okio.kt:17 | tp | a KDoc comment at the top of the file, before file annotations or imports; it documents no declaration
+ward:kotlin/invalid-javadoc-position | okio/okio/src/commonMain/kotlin/okio/Utf8.kt:17 | tp | a KDoc comment at the top of the file, before file annotations or imports; it documents no declaration
+ward:kotlin/javadoc-content-location | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/internal/preview1/Rights.kt:66 | tp | the text starts on the opening line of a comment that spans lines
+ward:kotlin/javadoc-method | spring-petclinic-kotlin/src/main/kotlin/org/springframework/samples/petclinic/owner/PetValidator.kt:54 | tp | the comment describes the function and has no @param for a parameter
+ward:kotlin/javadoc-method | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/internal/preview1/Preview1.kt:81 | tp | the comment describes an imported function and has no @param tags
+ward:kotlin/javadoc-method | okio/okio/src/jvmTest/kotlin/okio/AwaitSignalTest.kt:197 | tp | the comment describes the function and has no @param for a parameter
+ward:kotlin/javadoc-paragraph | spring-petclinic-kotlin/src/main/kotlin/org/springframework/samples/petclinic/system/CacheConfig.kt:46 | tp | a paragraph tag on the line right after text
+ward:kotlin/kdoc | okio/okio/src/zlibMain/kotlin/okio/DeflaterSink.kt:39 | un | KDoc between the class name and its primary constructor; the rule does not list a primary constructor, and KDoc there is unusual
+ward:kotlin/kdoc | okio/okio/src/zlibMain/kotlin/okio/InflaterSource.kt:27 | un | KDoc between the class name and its primary constructor; the rule does not list a primary constructor, and KDoc there is unusual
+ward:kotlin/large-class | okio/okio-testing-support/src/commonMain/kotlin/okio/AbstractFileSystemTest.kt:38 | tp | a test class of more than 599 lines
+ward:kotlin/large-class | okio/okio/src/commonTest/kotlin/okio/CommonBufferedSourceTest.kt:28 | tp | a test class of more than 599 lines
+ward:kotlin/large-class | okio/okio/src/commonTest/kotlin/okio/PathTest.kt:26 | tp | a test class of more than 599 lines
+ward:kotlin/loop-with-too-many-jump-statements | okio/okio/src/commonMain/kotlin/okio/internal/Buffer.kt:174 | tp | the loop body has two or three break or continue statements
+ward:kotlin/loop-with-too-many-jump-statements | okio/okio/src/jvmMain/kotlin/okio/AsyncTimeout.kt:472 | tp | the loop body has two or three break or continue statements
+ward:kotlin/loop-with-too-many-jump-statements | okio/okio/src/nativeMain/kotlin/okio/DataProcessor.kt:87 | tp | the loop body has two or three break or continue statements
+ward:kotlin/magic-number | spring-petclinic-kotlin/src/test/kotlin/org/springframework/samples/petclinic/owner/PetRepositoryTest.kt:69 | tp | a bare number in the code; most findings of this rule are test data
+ward:kotlin/magic-number | okio/okio/src/commonMain/kotlin/okio/Utf8.kt:531 | tp | a function returns a bare byte count
+ward:kotlin/magic-number | okio/okio/src/commonTest/kotlin/okio/CommonBufferedSinkTest.kt:238 | tp | a bare number in the code; most findings of this rule are test data
+ward:kotlin/matching-declaration-name | okio/okio/src/jvmMain/kotlin/okio/-DeprecatedOkio.kt:27 | tp | the only top-level declaration has another name than the file
+ward:kotlin/matching-declaration-name | okio/samples/src/jvmMain/kotlin/okio/samples/BitmapEncoder.kt:25 | tp | the only top-level declaration has another name than the file
+ward:kotlin/matching-declaration-name | okio/samples/src/jvmMain/kotlin/okio/samples/GoldenValue.kt:26 | tp | the only top-level declaration has another name than the file
+ward:kotlin/may-be-const | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/internal/preview1/OFlags.kt:14 | tp | a val initialised with a compile-time constant
+ward:kotlin/may-be-const | okio/okio/src/jvmTest/kotlin/okio/ByteStringJavaTest.kt:258 | tp | a val initialised with a compile-time constant
+ward:kotlin/may-be-const | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/internal/preview1/Rights.kt:124 | tp | a val initialised with a compile-time constant
+ward:kotlin/member-name-equals-class-name | okio/okio/src/jvmMain/kotlin/okio/Timeout.kt:49 | un | the function has the name of its class only when case is ignored; it is a setter that returns the object
+ward:kotlin/missing-javadoc-type | spring-petclinic-kotlin/src/test/kotlin/org/springframework/samples/petclinic/owner/PetRepositoryTest.kt:13 | tp | a public class without KDoc
+ward:kotlin/missing-javadoc-type | okio/okio/src/appleMain/kotlin/okio/ByteString.kt:61 | tp | an actual class without KDoc; its expect declaration carries the documentation
+ward:kotlin/missing-javadoc-type | okio/okio/src/commonTest/kotlin/okio/CommonOkioKotlinTest.kt:22 | tp | a public class without KDoc
+ward:kotlin/multiline-comment-leading-asterisk-presence | okio/okio/src/commonMain/kotlin/okio/Utf8.kt:321 | tp | a row of a long block comment that has no leading asterisk
+ward:kotlin/multiline-comment-leading-asterisk-presence | okio/okio/src/commonMain/kotlin/okio/Utf8.kt:341 | tp | a row of a long block comment that has no leading asterisk
+ward:kotlin/multiline-comment-leading-asterisk-presence | okio/okio/src/commonMain/kotlin/okio/Utf8.kt:363 | tp | a row of a long block comment that has no leading asterisk
+ward:kotlin/no-consecutive-comments | okio/okio/src/commonMain/kotlin/okio/Utf8.kt:159 | tp | a comment of another kind directly below a comment
+ward:kotlin/no-consecutive-comments | okio/okio/src/jvmTest/kotlin/okio/TestUtil.kt:174 | tp | a comment of another kind directly below a comment
+ward:kotlin/no-consecutive-comments | okio/okio/src/commonMain/kotlin/okio/internal/-Utf8.kt:2 | tp | a comment of another kind directly below a comment
+ward:kotlin/no-name-shadowing | okio/okio/src/commonMain/kotlin/okio/ForwardingFileSystem.kt:203 | tp | a local value redeclares the name of a parameter
+ward:kotlin/no-name-shadowing | okio/okio/src/jvmTest/kotlin/okio/TestUtil.kt:68 | tp | a local value redeclares the name of a parameter
+ward:kotlin/no-name-shadowing | okio/okio/src/commonMain/kotlin/okio/internal/Buffer.kt:420 | tp | a local value redeclares the name of a parameter
+ward:kotlin/no-single-line-block-comment | okio/okio/src/commonMain/kotlin/okio/Utf8.kt:193 | tp | a block comment on one line that switches a linter rule
+ward:kotlin/no-single-line-block-comment | okio/okio/src/jvmTest/kotlin/okio/TestUtil.kt:279 | tp | a block comment on one line that switches a linter rule
+ward:kotlin/no-single-line-block-comment | okio/okio/src/commonMain/kotlin/okio/internal/Buffer.kt:1023 | tp | a block comment on one line that switches a linter rule
+ward:kotlin/one-statement-per-line | okio/okio/src/nativeTest/kotlin/okio/DeflaterSinkTest.kt:104 | tp | two statements separated by a semicolon inside a one-line lambda
+ward:kotlin/one-statement-per-line | okio/okio/src/nativeTest/kotlin/okio/DeflaterSinkTest.kt:96 | tp | two statements separated by a semicolon inside a one-line lambda
+ward:kotlin/one-statement-per-line | okio/okio/src/nativeTest/kotlin/okio/InflaterSourceTest.kt:163 | tp | two statements separated by a semicolon inside a one-line lambda
+ward:kotlin/overload-methods-declaration-order | okio/okio/src/commonMain/kotlin/okio/BufferedSource.kt:339 | tp | another function stands between the two overloads
+ward:kotlin/overload-methods-declaration-order | okio/okio-testing-support/src/commonMain/kotlin/okio/AbstractFileSystemTest.kt:2721 | un | a member function and an extension function declared in the class share the name; whether they are overloads is debatable
+ward:kotlin/overload-methods-declaration-order | okio/okio/src/jvmMain/kotlin/okio/ByteString.kt:310 | un | a member function and an extension function declared in the class share the name; whether they are overloads is debatable
+ward:kotlin/parameter-count | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/internal/preview1/Preview1.kt:112 | tp | more than five parameters
+ward:kotlin/parameter-count | okio/okio/src/jvmTest/kotlin/okio/ZipBuilder.kt:39 | tp | more than five parameters
+ward:kotlin/parameter-count | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/internal/preview1/Preview1.kt:93 | tp | more than five parameters
+ward:kotlin/property-name | spring-petclinic-kotlin/src/main/kotlin/org/springframework/samples/petclinic/owner/PetController.kt:38 | tp | an upper-case name for a private property of a class that is not a constant
+ward:kotlin/property-name | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/internal/preview1/Filetype.kt:17 | tp | snake_case property
+ward:kotlin/property-name | okio/okio/src/commonTest/kotlin/okio/HashingSinkTest.kt:95 | tp | snake_case property
+ward:kotlin/require-empty-line-before-block-tag-group | spring-petclinic-kotlin/src/main/kotlin/org/springframework/samples/petclinic/owner/PetRepository.kt:37 | tp | the first block tag follows a text line
+ward:kotlin/require-empty-line-before-block-tag-group | okio/okio/src/commonMain/kotlin/okio/ForwardingFileSystem.kt:67 | fp | an annotation inside a fenced code sample of the comment, not a block tag
+ward:kotlin/require-empty-line-before-block-tag-group | spring-petclinic-kotlin/src/main/kotlin/org/springframework/samples/petclinic/owner/OwnerRepository.kt:38 | tp | the first block tag follows a text line
+ward:kotlin/single-line-javadoc | okio/okio/src/commonMain/kotlin/okio/Base64.kt:24 | tp | a one-line KDoc that only holds a block tag
+ward:kotlin/spread-operator | spring-petclinic-kotlin/src/main/kotlin/org/springframework/samples/petclinic/PetClinicApplication.kt:31 | tp | an array is spread into a vararg call
+ward:kotlin/spread-operator | okio/okio/src/jvmMain/kotlin/okio/-DeprecatedOkio.kt:126 | fp | the function passes its own vararg parameter on, which Kotlin does without a copy
+ward:kotlin/spread-operator | okio/okio/src/commonTest/kotlin/okio/ByteStringTest.kt:234 | tp | an array is spread into a vararg call
+ward:kotlin/string-template | okio/build-support/src/main/kotlin/platforms.kt:106 | tp | braces around a plain name in a template
+ward:kotlin/summary-javadoc | spring-petclinic-kotlin/src/main/kotlin/org/springframework/samples/petclinic/vet/VetRepository.kt:22 | tp | the first sentence does not end with a period
+ward:kotlin/summary-javadoc | okio/okio/src/commonMain/kotlin/okio/Base64.kt:24 | tp | the comment only holds an author tag
+ward:kotlin/summary-javadoc | okio/okio/src/zlibTest/kotlin/okio/ZipFileSystemTest.kt:166 | un | the comment starts with a fenced code block, so there is no first sentence to end
+ward:kotlin/swallowed-exception | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/WasiFileSystem.kt:225 | tp | the handler drops the caught exception
+ward:kotlin/swallowed-exception | okio/okio-testing-support/src/commonMain/kotlin/okio/AbstractFileSystemTest.kt:1163 | tp | the handler drops the caught exception
+ward:kotlin/swallowed-exception | okio/okio/src/jvmMain/kotlin/okio/NioFileSystemWrappingFileSystem.kt:105 | tp | the handler drops the caught exception
+ward:kotlin/throwing-exception-from-finally | okio/okio/src/jvmMain/kotlin/okio/AsyncTimeout.kt:205 | tp | a throw inside finally
+ward:kotlin/throwing-exceptions-without-message-or-cause | okio/okio/src/commonMain/kotlin/okio/Segment.kt:162 | tp | an exception built with no argument
+ward:kotlin/throwing-exceptions-without-message-or-cause | okio/okio/src/commonMain/kotlin/okio/Segment.kt:163 | tp | an exception built with no argument
+ward:kotlin/todo-comment | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/WasiFileSystem.kt:222 | tp | a TODO comment
+ward:kotlin/todo-comment | okio/okio/src/jvmMain/kotlin/okio/SegmentPool.kt:46 | tp | a TODO comment
+ward:kotlin/too-many-functions | spring-petclinic-kotlin/src/test/kotlin/org/springframework/samples/petclinic/owner/OwnerControllerTest.kt:31 | tp | the class declares more than 11 functions
+ward:kotlin/too-many-functions | okio/okio/src/commonMain/kotlin/okio/Buffer.kt:31 | tp | an expect class that declares 84 functions
+ward:kotlin/too-many-functions | okio/okio/src/commonTest/kotlin/okio/CommonBufferedSourceTest.kt:28 | tp | the class declares more than 11 functions
+ward:kotlin/type-name | okio/okio/src/jvmMain/kotlin/okio/-DeprecatedOkio.kt:27 | tp | a backticked object name that starts with a hyphen
+ward:kotlin/type-name | okio/okio/src/jvmMain/kotlin/okio/-DeprecatedUtf8.kt:20 | tp | a backticked object name that starts with a hyphen
+ward:kotlin/unused-parameter | spring-petclinic-kotlin/src/test/kotlin/org/springframework/samples/petclinic/system/MockMvcValidationConfiguration.kt:22 | tp | the handler never reads its exception parameter
+ward:kotlin/use-array-literals-in-annotations | spring-petclinic-kotlin/src/test/kotlin/org/springframework/samples/petclinic/owner/PetControllerTest.kt:29 | tp | arrayOf inside an annotation
+ward:kotlin/use-check-not-null | okio/okio/src/commonMain/kotlin/okio/internal/Buffer.kt:1702 | tp | check with a not-null condition
+ward:kotlin/use-check-or-error | okio/okio-testing-support/src/wasmWasiMain/kotlin/okio/WasiClock.kt:35 | tp | throws IllegalStateException with a message
+ward:kotlin/use-check-or-error | okio/okio/src/jvmTest/kotlin/okio/TestUtil.kt:69 | tp | throws IllegalStateException with a message
+ward:kotlin/use-check-or-error | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/WasiFileSystem.kt:94 | tp | throws IllegalStateException with a message
+ward:kotlin/use-or-empty | spring-petclinic-kotlin/src/main/kotlin/org/springframework/samples/petclinic/owner/PetTypeFormatter.kt:39 | tp | an elvis operator with an empty string or list
+ward:kotlin/use-or-empty | okio/okio/src/commonMain/kotlin/okio/internal/FileSystem.kt:119 | tp | an elvis operator with an empty string or list
+ward:kotlin/use-or-empty | spring-petclinic-kotlin/src/main/kotlin/org/springframework/samples/petclinic/model/NamedEntity.kt:37 | tp | an elvis operator with an empty string or list
+ward:kotlin/use-require | okio/okio/src/commonMain/kotlin/okio/Segment.kt:162 | tp | an if that only throws IllegalArgumentException
+ward:kotlin/use-require | okio/okio/src/commonMain/kotlin/okio/Segment.kt:163 | tp | an if that only throws IllegalArgumentException
+ward:kotlin/utility-class-with-public-constructor | okio/okio/src/nonJvmMain/kotlin/okio/NonJvmPlatform.kt:34 | fp | an actual class has to stay a class to match its expect declaration
+ward:kotlin/value-parameter-comment | okio/okio/src/jvmMain/kotlin/okio/ForwardingTimeout.kt:25 | tp | an end-of-line comment after an annotation of a constructor parameter
+ward:kotlin/var-could-be-val | okio/okio-nodefilesystem/src/commonMain/kotlin/okio/NodeJsFileSystem.kt:29 | tp | a private var of an object that nothing assigns again
+ward:kotlin/var-could-be-val | okio/okio/src/zlibTest/kotlin/okio/ZipFileSystemGoTest.kt:30 | tp | a private var that the file never assigns again
+ward:kotlin/var-could-be-val | okio/okio-nodefilesystem/src/commonMain/kotlin/okio/NodeJsFileSystem.kt:31 | tp | a private var of an object that nothing assigns again
+ward:kotlin/variable-declaration-usage-distance | okio/okio/src/zlibMain/kotlin/okio/internal/ZipFiles.kt:209 | tp | the variable is first read many statements after its declaration
+ward:kotlin/variable-declaration-usage-distance | okio/okio/src/zlibMain/kotlin/okio/internal/ZipFiles.kt:210 | tp | the variable is first read many statements after its declaration

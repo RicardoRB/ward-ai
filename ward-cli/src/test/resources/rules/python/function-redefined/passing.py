@@ -1,3 +1,6 @@
+from typing import overload
+
+
 class A:
     @property
     def f(self):
@@ -14,3 +17,15 @@ if True:
 else:
     def g():
         pass
+
+
+@overload
+def read(name: str) -> str: ...
+
+
+@overload
+def read(name: str, default: int) -> int: ...
+
+
+def read(name, default=None):
+    return default if name is None else name

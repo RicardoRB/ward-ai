@@ -32,7 +32,11 @@ final class JavadocContentChecks {
         ),
         entry(
             "javadoc-paragraph",
-            toml -> new JavadocParagraphCheck(TomlValues.required(toml, MESSAGE))
+            toml ->
+                new JavadocParagraphCheck(
+                    TomlValues.required(toml, MESSAGE),
+                    Boolean.TRUE.equals(toml.getBoolean("markdown"))
+                )
         ),
         entry(
             "javadoc-method",

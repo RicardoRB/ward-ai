@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 public final class ForbiddenNodeCheck implements UnitCheck {
   private static final Set<String> KEYWORDS =
       Set.of(
+          "assert",
           "new",
           "if",
           "for",
@@ -103,22 +104,20 @@ public final class ForbiddenNodeCheck implements UnitCheck {
     }
 
     boolean holds(final SyntaxWalk.Visit visit) {
-      final SyntaxNode node = visit.node();
-      final boolean textOk =
-          text.map(p -> keywordStarts(p, node) && p.matcher(SyntaxWalk.text(node)).find())
-              .orElse(true);
-      final boolean childOk =
-          withChild.isEmpty()
-              || node.children().stream().anyMatch(c -> withChild.contains(c.kind()));
-      return textOk && childOk && parentOk(visit) && pathOk(visit);
+      // The text of a node is costly to build, so the conditions on its kind come first.
+      return childOk(visit.node()) && parentOk(visit) && pathOk(visit) && textOk(visit.node());
     }
 
-    /**
-     * Tells whether a pattern whose every alternative starts with a keyword, such as {@code
-     * ^new(...)}, sees that keyword as a token of its own. The text has no whitespace, so {@code
-     * new Boolean(} and a call to {@code newBoolean(} read the same; the first token tells them
-     * apart.
-     */
+    private boolean textOk(final SyntaxNode node) {
+      return text.map(p -> keywordStarts(p, node) && p.matcher(SyntaxWalk.text(node)).find())
+          .orElse(true);
+    }
+
+    private boolean childOk(final SyntaxNode node) {
+      return withChild.isEmpty()
+          || node.children().stream().anyMatch(c -> withChild.contains(c.kind()));
+    }
+
     private static boolean keywordStarts(final Pattern pattern, final SyntaxNode node) {
       final List<String> keywords = new ArrayList<>();
       for (final String alternative : alternatives(pattern.pattern())) {
@@ -128,8 +127,7 @@ public final class ForbiddenNodeCheck implements UnitCheck {
         }
         keywords.add(keyword.group(1));
       }
-      return SyntaxWalk.leaves(node).stream()
-          .findFirst()
+      return SyntaxWalk.firstLeaf(node)
           .map(first -> keywords.contains(String.valueOf(first.fields().get("text"))))
           .orElse(true);
     }

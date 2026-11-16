@@ -8,7 +8,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-/** Reports a bare {@code return} or {@code return None} as the last statement of a function. */
+/**
+ * Reports a bare {@code return} or {@code return None} as the last statement of a function that has
+ * no other {@code return}. Where another path returns a value, the final {@code return None} states
+ * the other result and is not redundant.
+ */
 public final class UselessReturnCheck implements RuleCheck {
   private static final Set<String> FUNCTIONS = Set.of("funcdef");
   private static final Set<String> DESCEND =
@@ -29,7 +33,9 @@ public final class UselessReturnCheck implements RuleCheck {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, FUNCTIONS)) {
       final Optional<SyntaxNode> last = lastStatement(visit.node());
-      if (last.isPresent() && BARE.contains(SyntaxWalk.text(last.get()))) {
+      if (last.isPresent()
+          && BARE.contains(SyntaxWalk.text(last.get()))
+          && FunctionBodies.ownScope(visit.node(), Set.of(RETURN)).size() == 1) {
         found.add(new RuleMatch(last.get().span(), message));
       }
     }

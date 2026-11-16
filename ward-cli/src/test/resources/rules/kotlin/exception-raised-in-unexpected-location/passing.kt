@@ -7,3 +7,19 @@ class Item {
         throw IllegalStateException("no")
     }
 }
+
+class Reader {
+    fun stream(): Any {
+        return object : Any() {
+            fun read(): Int {
+                throw IllegalStateException("closed")
+            }
+
+            override fun toString(): String = "stream"
+
+            fun skip() {
+                throw IllegalStateException("closed")
+            }
+        }
+    }
+}

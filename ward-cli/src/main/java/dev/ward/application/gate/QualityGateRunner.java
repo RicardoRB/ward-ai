@@ -12,16 +12,25 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.IntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 
 /**
- * Executes gates in order and aggregates their results. A failing gate does not stop the others.
+ * Executes gates and aggregates their results in order. A failing gate does not stop the others.
  */
 public class QualityGateRunner {
   private static final Logger LOGGER = Logger.getLogger(QualityGateRunner.class.getName());
+  private static final int SERIAL = 1;
+  private static final int NONE = -1;
 
   private final FindingExtractor findingExtractor;
   private final GatePrerequisites prerequisites;
@@ -81,11 +90,120 @@ public class QualityGateRunner {
       final CheckProgressListener listener,
       final boolean failFast
   ) {
-    final List<GateResult> results = new ArrayList<>();
-    final GatePrerequisites.RunPrerequisites checks = prerequisites.start();
+    return run(project, gates, new CheckRunOptions(List.of(), listener, failFast, Set.of()));
+  }
+
+  /**
+   * Runs the gates, up to {@code options.jobs()} at once, and returns their results in the order of
+   * {@code gates}. A gate that is not {@linkplain QualityGate#independent() independent} runs after
+   * every such gate before it, so those run one at a time in order. The report and the progress
+   * events do not depend on the number of jobs: with fail-fast, every gate after the first one that
+   * did not pass is reported as not run, even when it ran.
+   */
+  public CheckReport run(
+      final Project project,
+      final List<QualityGate> gates,
+      final CheckRunOptions options
+  ) {
+    final GateRun run = new GateRun(project, prerequisites.start(), options);
+    if (options.jobs() <= SERIAL || gates.size() <= SERIAL) {
+      return new CheckReport(project, collect(gates, run, index -> run.execute(gates, index)));
+    }
+    final int threads = Math.min(options.jobs(), gates.size());
+    try (ExecutorService pool = Executors.newFixedThreadPool(threads)) {
+      try {
+        final List<CompletableFuture<GateResult>> started = start(gates, run, pool);
+        return new CheckReport(project, collect(gates, run, index -> await(started.get(index))));
+      } finally {
+        // Closing the pool waits for the running gates; the ones that wait for a thread must not
+        // start once the walk has ended.
+        run.stopAfter(NONE);
+      }
+    }
+  }
+
+  /** Submits every gate: independent ones at once, the others chained in order. */
+  private List<CompletableFuture<GateResult>> start(
+      final List<QualityGate> gates,
+      final GateRun run,
+      final ExecutorService pool
+  ) {
+    final List<CompletableFuture<GateResult>> started = new ArrayList<>(gates.size());
+    CompletableFuture<GateResult> ordered = CompletableFuture.completedFuture(null);
     for (int i = 0; i < gates.size(); i++) {
-      final QualityGate gate = gates.get(i);
-      listener.gateStarted(gate.name());
+      final int index = i;
+      if (gates.get(i).independent()) {
+        started.add(CompletableFuture.supplyAsync(() -> run.execute(gates, index), pool));
+      } else {
+        ordered = ordered.thenApplyAsync(previous -> run.execute(gates, index), pool);
+        started.add(ordered);
+      }
+    }
+    return started;
+  }
+
+  /** Walks the gates in order, reporting each one and applying fail-fast. */
+  private static List<GateResult> collect(
+      final List<QualityGate> gates,
+      final GateRun run,
+      final IntFunction<GateResult> resultOf
+  ) {
+    final List<GateResult> results = new ArrayList<>(gates.size());
+    for (int i = 0; i < gates.size(); i++) {
+      run.progress.started(i, gates.get(i).name());
+      final GateResult result = resultOf.apply(i);
+      results.add(result);
+      run.progress.finished(result);
+      if (run.options.failFast() && result.status() != GateStatus.PASSED) {
+        run.stopAfter(i);
+        gates.subList(i + 1, gates.size()).forEach(skipped -> results.add(run.skip(skipped)));
+        break;
+      }
+    }
+    return results;
+  }
+
+  private static GateResult await(final CompletableFuture<GateResult> result) {
+    try {
+      return result.join();
+    } catch (CompletionException exception) {
+      if (exception.getCause() instanceof RuntimeException cause) {
+        throw cause;
+      }
+      throw exception;
+    }
+  }
+
+  /** The state of one run, shared by the threads that execute its gates. */
+  private final class GateRun {
+    private final Project project;
+    private final GatePrerequisites.RunPrerequisites checks;
+    private final CheckRunOptions options;
+    private final OrderedProgress progress;
+    private final AtomicInteger lastToRun = new AtomicInteger(Integer.MAX_VALUE);
+
+    GateRun(
+        final Project project,
+        final GatePrerequisites.RunPrerequisites checks,
+        final CheckRunOptions options
+    ) {
+      this.project = project;
+      this.checks = checks;
+      this.options = options;
+      this.progress = new OrderedProgress(options.listener());
+    }
+
+    /** Keeps gates after {@code index} that have not started from starting. */
+    void stopAfter(final int index) {
+      lastToRun.accumulateAndGet(index, Math::min);
+    }
+
+    /** Runs the gate at {@code index}; returns {@code null} when the run stopped before it. */
+    GateResult execute(final List<QualityGate> gates, final int index) {
+      if (index > lastToRun.get()) {
+        return null;
+      }
+      final QualityGate gate = gates.get(index);
       final long start = System.nanoTime();
       final Instant gateStart = Instant.now();
       LOGGER.log(Level.INFO, () -> "event=gate-start gate=" + gate.name());
@@ -94,12 +212,10 @@ public class QualityGateRunner {
               project,
               checks.attach(
                   project,
-                  gate.execute(project, step -> listener.gateStep(gate.name(), step))
+                  gate.execute(project, step -> progress.step(index, gate.name(), step))
               ),
               gateStart
           );
-      results.add(result);
-      listener.gateFinished(result);
       LOGGER.log(
           Level.INFO,
           () ->
@@ -110,20 +226,18 @@ public class QualityGateRunner {
                   + " duration-ms="
                   + TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start)
       );
-      if (failFast && result.status() != GateStatus.PASSED) {
-        for (final QualityGate skipped : gates.subList(i + 1, gates.size())) {
-          final GateResult skippedResult = skippedByFailFast(skipped);
-          results.add(skippedResult);
-          listener.gateFinished(skippedResult);
-          LOGGER.log(
-              Level.INFO,
-              () -> "event=gate-skip gate=" + skipped.name() + " reason=fail-fast"
-          );
-        }
-        break;
+      if (options.failFast() && result.status() != GateStatus.PASSED) {
+        stopAfter(index);
       }
+      return result;
     }
-    return new CheckReport(project, results);
+
+    GateResult skip(final QualityGate gate) {
+      final GateResult skipped = skippedByFailFast(gate);
+      progress.finished(skipped);
+      LOGGER.log(Level.INFO, () -> "event=gate-skip gate=" + gate.name() + " reason=fail-fast");
+      return skipped;
+    }
   }
 
   /**

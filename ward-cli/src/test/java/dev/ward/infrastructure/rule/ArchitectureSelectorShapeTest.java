@@ -86,4 +86,48 @@ class ArchitectureSelectorShapeTest {
     assertThat(rules.getFirst().allowEmpty()).isTrue();
     assertThat(rules.getFirst().select().excludePaths()).containsExactly("src/test/**");
   }
+
+  @Test
+  void externalIsReadInMustNotDependOnOnly() throws IOException {
+    final String text =
+        "version = 1\n[[rule]]\nname = \"r\"\nselect = { directories = [\"a\"] }\n"
+            + "must-not-depend-on = { external = [\"org.springframework\", \"@nestjs\"] }\n"
+            + "because = \"x\"\n";
+    ArchitectureFiles.write(root, "ward-architecture.toml", text);
+
+    assertThat(ArchitectureFileReader.read(root, null).orElseThrow().rules())
+        .singleElement()
+        .satisfies(
+            rule ->
+                assertThat(rule.constraint().target().external())
+                    .containsExactly("org.springframework", "@nestjs")
+        );
+    assertThat(
+        ArchitectureFiles.problemsOf(root, text.replace("must-not-depend-on", "may-only-depend-on"))
+    )
+        .anySatisfy(
+            problem ->
+                assertThat(problem)
+                    .contains("may-only-depend-on.external", "must-not-depend-on only")
+        );
+    assertThat(
+        ArchitectureFiles.problemsOf(
+            root,
+            ArchitectureFiles.rule("").replace("directories = [\"a\"]", "external = [\"a\"]")
+        )
+    )
+        .anySatisfy(problem -> assertThat(problem).contains("select.external"));
+  }
+
+  @Test
+  void anExternalNameWithAWildcardIsAProblem() throws IOException {
+    final String text =
+        ArchitectureFiles.rule("")
+            .replace("directories = [\"b\"]", "external = [\"org.springframework.*\"]");
+
+    assertThat(ArchitectureFiles.problemsOf(root, text))
+        .anySatisfy(
+            problem -> assertThat(problem).contains("must-not-depend-on.external", "without '*'")
+        );
+  }
 }

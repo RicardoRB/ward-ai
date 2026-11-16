@@ -78,6 +78,8 @@ public final class JavaLoopConditionCheck implements RuleCheck {
 
   private static boolean unchanged(final JavaLoopParts loop, final Set<String> names) {
     final List<SyntaxNode> leaves = new ArrayList<>(SyntaxWalk.leaves(loop.body()));
+    // A step or an assignment inside the condition changes the variable too.
+    leaves.addAll(SyntaxWalk.leaves(loop.condition()));
     loop.update().forEach(part -> leaves.addAll(SyntaxWalk.leaves(part)));
     for (int index = 0; index < leaves.size(); index++) {
       final String text = text(leaves.get(index));

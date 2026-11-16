@@ -27,18 +27,21 @@ final class WardAnalysisFixtures {
 
   /** A check service whose gate commands run through {@code executor}. */
   static CheckService checks(final FakeCommandExecutor executor) {
-    final QualityGateFactory factory =
-        new QualityGateFactory(
-            executor,
-            new GateReportPorts(ReportDirectories.NONE, null, null, null),
-            new GateExtensions(null, ports(), null, null, null, null, null, null, null)
-        );
     return new CheckService(
         new ProjectDetector(new FileSystemProjectInspection()),
         new TomlConfigurationReader(),
-        factory,
+        factory(executor),
         new QualityGateRunner(),
         new PartialPorts(new FilePathExistence(), new NodeWorkspaceMembers())
+    );
+  }
+
+  /** A gate factory with the real {@code ward} analysis. */
+  static QualityGateFactory factory(final FakeCommandExecutor executor) {
+    return new QualityGateFactory(
+        executor,
+        new GateReportPorts(ReportDirectories.NONE, null, null, null),
+        new GateExtensions(null, ports(), null, null, null, null, null, null, null)
     );
   }
 

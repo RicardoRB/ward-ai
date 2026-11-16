@@ -38,6 +38,9 @@ public final class TaintAnalysis {
    * @return one finding per sink argument that receives a tainted value, in block order
    */
   public static List<TaintFinding> run(final ControlFlowGraph graph, final TaintSpec spec) {
+    if (!TaintSpans.hasSource(graph, spec) || !TaintSpans.hasSink(graph, spec)) {
+      return List.of();
+    }
     final ReachingDefinitions reaching = ReachingDefinitions.of(graph);
     final Map<AccessSite, Taint> origins = TaintOrigins.of(graph, reaching, spec);
     final List<TaintFinding> found = new ArrayList<>();
@@ -57,6 +60,9 @@ public final class TaintAnalysis {
    * @return the taint of the first returned value that a source reaches, if any
    */
   static Optional<Taint> returned(final ControlFlowGraph graph, final TaintSpec spec) {
+    if (!TaintSpans.hasSource(graph, spec)) {
+      return Optional.empty();
+    }
     final ReachingDefinitions reaching = ReachingDefinitions.of(graph);
     final Map<AccessSite, Taint> origins = TaintOrigins.of(graph, reaching, spec);
     for (final BasicBlock block : graph.blocks()) {

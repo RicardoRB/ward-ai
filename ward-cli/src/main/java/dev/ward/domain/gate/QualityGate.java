@@ -20,4 +20,13 @@ public interface QualityGate {
   default GateResult execute(final Project project, final GateProgress progress) {
     return execute(project);
   }
+
+  /**
+   * Returns whether the gate only reads the project's sources and writes only under {@code .ward},
+   * so that it may run at the same time as any other gate. The default is {@code false}: the gate
+   * runs alone among such gates, in configuration order.
+   */
+  default boolean independent() {
+    return false;
+  }
 }

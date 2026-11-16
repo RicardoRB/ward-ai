@@ -66,6 +66,22 @@ final class SyntaxWalk {
     return out;
   }
 
+  /** The first of {@link #leaves}, found without collecting the others. */
+  static Optional<SyntaxNode> firstLeaf(final SyntaxNode node) {
+    if (node.children().isEmpty()) {
+      return node.fields().containsKey("text") && !COMMENT_KIND.equals(node.kind())
+          ? Optional.of(node)
+          : Optional.empty();
+    }
+    for (final SyntaxNode child : node.children()) {
+      final Optional<SyntaxNode> leaf = firstLeaf(child);
+      if (leaf.isPresent()) {
+        return leaf;
+      }
+    }
+    return Optional.empty();
+  }
+
   private static void collectLeaves(final SyntaxNode node, final List<SyntaxNode> out) {
     if (node.children().isEmpty()) {
       if (node.fields().containsKey("text") && !COMMENT_KIND.equals(node.kind())) {

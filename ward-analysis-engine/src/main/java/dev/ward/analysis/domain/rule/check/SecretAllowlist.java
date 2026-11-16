@@ -3,26 +3,26 @@ package dev.ward.analysis.domain.rule.check;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
 /**
  * One allowlist of the Gitleaks configuration, as data: paths, regexes and stopwords, what the
  * regexes read, and whether one criterion or all of them allow a finding.
  *
- * @param paths patterns of file paths, searched anywhere in the path
- * @param regexes patterns searched in the {@code target}
- * @param stopwords lower-case words; one inside the lower-cased secret allows the finding
- * @param target what the regexes read
- * @param all whether every criterion that is present must hold, instead of any
+ * <p>Whether a path matches depends only on the allowlist and the path, and every rule that shares
+ * the allowlist asks it for every file, so the answer is kept per path.
  */
-public record SecretAllowlist(
-    List<Pattern> paths,
-    List<Pattern> regexes,
-    List<String> stopwords,
-    Target target,
-    boolean all
-) {
+public final class SecretAllowlist {
+  private final List<Pattern> paths;
+  private final List<Pattern> regexes;
+  private final List<String> stopwords;
+  private final Target target;
+  private final boolean all;
+  private final Map<String, Boolean> pathAnswers = new ConcurrentHashMap<>();
+
   /** What an allowlist regex is searched in. */
   public enum Target {
     /** The secret. */
@@ -36,12 +36,27 @@ public record SecretAllowlist(
   /** What a rule matched, as an allowlist sees it. */
   record Candidate(String path, String secret, String match, String line) {}
 
-  /** Copies the lists. */
-  public SecretAllowlist {
-    paths = List.copyOf(paths);
-    regexes = List.copyOf(regexes);
-    stopwords = List.copyOf(stopwords);
-    Objects.requireNonNull(target, "target");
+  /**
+   * Creates the allowlist and copies the lists.
+   *
+   * @param paths patterns of file paths, searched anywhere in the path
+   * @param regexes patterns searched in the {@code target}
+   * @param stopwords lower-case words; one inside the lower-cased secret allows the finding
+   * @param target what the regexes read
+   * @param all whether every criterion that is present must hold, instead of any
+   */
+  public SecretAllowlist(
+      final List<Pattern> paths,
+      final List<Pattern> regexes,
+      final List<String> stopwords,
+      final Target target,
+      final boolean all
+  ) {
+    this.paths = List.copyOf(paths);
+    this.regexes = List.copyOf(regexes);
+    this.stopwords = List.copyOf(stopwords);
+    this.target = Objects.requireNonNull(target, "target");
+    this.all = all;
   }
 
   /** Returns whether this allowlist allows a file by its path alone, so its rule skips the file. */
@@ -50,6 +65,10 @@ public record SecretAllowlist(
   }
 
   boolean pathMatches(final String path) {
+    return !paths.isEmpty() && pathAnswers.computeIfAbsent(path, this::searchPaths);
+  }
+
+  private boolean searchPaths(final String path) {
     return paths.stream().anyMatch(pattern -> pattern.matcher(path).find());
   }
 

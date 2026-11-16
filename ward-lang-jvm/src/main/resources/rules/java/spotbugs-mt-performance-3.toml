@@ -86,7 +86,7 @@ category = "concurrency"
 presets = ["standard", "strict"]
 body = '''
 check = "lock-scope-call"
-call = '^([\w.]+\.)?wait\('
+call = '^(?:(?:[\w.]+\.)?[a-z_]\w*\.)?wait\('
 loop = "no"
 message = "wait called outside a loop that re-checks its condition"
 '''
@@ -100,7 +100,7 @@ category = "concurrency"
 presets = ["standard", "strict"]
 body = '''
 check = "lock-scope-call"
-call = '^([\w.]+\.)?wait\('
+call = '^(?:(?:[\w.]+\.)?[a-z_]\w*\.)?wait\('
 lock = "no"
 message = "wait called without holding a lock"
 '''

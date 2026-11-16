@@ -22,7 +22,6 @@ public final class KotlinHiddenFieldCheck implements UnitCheck {
   private static final String VARIABLE = "variableDeclaration";
   private static final String PARAMETERS = "functionValueParameters";
   private static final String PARAMETER = "functionValueParameter";
-  private static final String IDENTIFIER = "Identifier";
   private static final String VALUE = "{value}";
 
   private final String message;
@@ -92,15 +91,12 @@ public final class KotlinHiddenFieldCheck implements UnitCheck {
 
   private static Optional<String> nameOf(final SyntaxNode property) {
     return KotlinDocs.childrenOf(property, VARIABLE).stream()
-        .flatMap(variable -> SyntaxWalk.leaves(variable).stream())
-        .filter(leaf -> IDENTIFIER.equals(leaf.kind()))
         .findFirst()
+        .flatMap(KotlinDocs::firstName)
         .map(KotlinDocs::text);
   }
 
   private static Optional<SyntaxNode> firstIdentifier(final SyntaxNode node) {
-    return SyntaxWalk.leaves(node).stream()
-        .filter(leaf -> IDENTIFIER.equals(leaf.kind()))
-        .findFirst();
+    return KotlinDocs.firstName(node);
   }
 }

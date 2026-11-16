@@ -116,7 +116,7 @@ class CheckServiceMixedWorkspaceTest {
   }
 
   private CheckReport check() {
-    return service().check(dir, List.of(), CheckProgressListener.NO_OP, false, Set.of());
+    return service().check(dir, List.of(), CheckProgressListener.NO_OP, false);
   }
 
   private void checkPartial(final String path) {

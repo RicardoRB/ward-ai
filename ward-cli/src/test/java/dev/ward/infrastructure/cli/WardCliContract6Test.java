@@ -71,6 +71,21 @@ class WardCliContract6Test extends WardCliIntegrationSupport {
   }
 
   @Test
+  void jobsBelowOneIsAUsageError() {
+    run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "tests", "-C", project.toString());
+
+    assertThat(run(CHECK, "--jobs", "0", "-C", project.toString())).isEqualTo(ExitCodes.ERROR);
+    assertThat(err.toString()).contains("--jobs", "expected a number of at least 1, or auto");
+  }
+
+  @Test
+  void jobsAutoRunsTheChecks() {
+    run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "tests", "-C", project.toString());
+
+    assertThat(run(CHECK, "--jobs", "auto", "-C", project.toString())).isEqualTo(ExitCodes.OK);
+  }
+
+  @Test
   void learningPromptEmittedAfterFailPassFailPassInJson() throws IOException {
     useTscGate();
 

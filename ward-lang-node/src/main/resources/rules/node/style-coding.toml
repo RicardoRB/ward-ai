@@ -82,9 +82,7 @@ severity = "ERROR"
 category = "style"
 presets = ["standard", "strict"]
 body = '''
-check = "text-pattern"
-target = "lines"
-pattern = '^(?!\s*for\s*\().*;\s*[A-Za-z_$]'
+check = "node-one-statement-per-line"
 message = "only one statement per line is allowed"
 '''
 
@@ -96,9 +94,7 @@ severity = "ERROR"
 category = "style"
 presets = ["standard", "strict"]
 body = '''
-check = "text-pattern"
-target = "lines"
-pattern = '^(?!\s*for\s*\().*;\s*[A-Za-z_$]'
+check = "node-one-statement-per-line"
 message = "only one statement per line is allowed"
 '''
 

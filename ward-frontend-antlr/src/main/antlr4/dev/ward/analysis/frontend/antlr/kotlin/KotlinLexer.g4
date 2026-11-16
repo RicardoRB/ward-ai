@@ -42,8 +42,10 @@ LPAREN           : '(' -> pushMode(Inside);
 RPAREN           : ')';
 LSQUARE          : '[' -> pushMode(Inside);
 RSQUARE          : ']';
-LCURL            : '{';
-RCURL            : '}';
+// A block inside parentheses or a string template is lexed as code outside them: its newlines end
+// statements. An unmatched '}' has no mode to leave.
+LCURL            : '{' -> pushMode(DEFAULT_MODE);
+RCURL            : '}' { if (!_modeStack.isEmpty()) { popMode(); } };
 MULT             : '*';
 MOD              : '%';
 DIV              : '/';
@@ -193,6 +195,8 @@ DoubleLiteral:
 
 LongLiteral: (IntegerLiteral | HexLiteral | BinLiteral) 'L';
 
+UnsignedLiteral: (IntegerLiteral | HexLiteral | BinLiteral) [uU] 'L'?;
+
 IntegerLiteral:
     (
         '0'
@@ -294,7 +298,7 @@ Inside_RSQUARE : ']' -> popMode, type(RSQUARE);
 Inside_LPAREN  : LPAREN  -> pushMode(Inside), type(LPAREN);
 Inside_LSQUARE : LSQUARE -> pushMode(Inside), type(LSQUARE);
 
-Inside_LCURL            : LCURL            -> type(LCURL);
+Inside_LCURL            : LCURL            -> pushMode(DEFAULT_MODE), type(LCURL);
 Inside_RCURL            : RCURL            -> type(RCURL);
 Inside_DOT              : DOT              -> type(DOT);
 Inside_COMMA            : COMMA            -> type(COMMA);
@@ -402,6 +406,30 @@ Inside_NOINLINE    : NOINLINE    -> type(NOINLINE);
 Inside_CROSSINLINE : CROSSINLINE -> type(CROSSINLINE);
 Inside_REIFIED     : REIFIED     -> type(REIFIED);
 
+Inside_PACKAGE     : PACKAGE      -> type(PACKAGE);
+Inside_IMPORT      : IMPORT       -> type(IMPORT);
+Inside_CLASS       : CLASS        -> type(CLASS);
+Inside_INTERFACE   : INTERFACE    -> type(INTERFACE);
+Inside_CONTEXT     : CONTEXT      -> type(CONTEXT);
+Inside_VALUE       : VALUE        -> type(VALUE);
+Inside_EXPECT      : EXPECT       -> type(EXPECT);
+Inside_ACTUAL      : ACTUAL       -> type(ACTUAL);
+Inside_FUN         : FUN          -> type(FUN);
+Inside_TYPE_ALIAS  : TYPE_ALIAS   -> type(TYPE_ALIAS);
+Inside_CONSTRUCTOR : CONSTRUCTOR  -> type(CONSTRUCTOR);
+Inside_BY          : BY           -> type(BY);
+Inside_COMPANION   : COMPANION    -> type(COMPANION);
+Inside_INIT        : INIT         -> type(INIT);
+Inside_THIS        : THIS         -> type(THIS);
+Inside_TYPEOF      : TYPEOF       -> type(TYPEOF);
+Inside_WHERE       : WHERE        -> type(WHERE);
+Inside_AS          : AS           -> type(AS);
+Inside_IS          : IS           -> type(IS);
+Inside_FIELD_SITE  : FIELD_SITE   -> type(FIELD_SITE);
+Inside_GETTER      : GETTER       -> type(GETTER);
+Inside_SETTER      : SETTER       -> type(SETTER);
+Inside_DYNAMIC     : DYNAMIC      -> type(DYNAMIC);
+
 Inside_BooleanLiteral   : BooleanLiteral   -> type(BooleanLiteral);
 Inside_IntegerLiteral   : IntegerLiteral   -> type(IntegerLiteral);
 Inside_HexLiteral       : HexLiteral       -> type(HexLiteral);
@@ -411,6 +439,7 @@ Inside_RealLiteral      : RealLiteral      -> type(RealLiteral);
 Inside_NullLiteral      : NullLiteral      -> type(NullLiteral);
 
 Inside_LongLiteral: LongLiteral -> type(LongLiteral);
+Inside_UnsignedLiteral: UnsignedLiteral -> type(UnsignedLiteral);
 
 Inside_Identifier      : Identifier                       -> type(Identifier);
 Inside_LabelReference  : LabelReference                   -> type(LabelReference);
@@ -429,7 +458,7 @@ LineStrText: ~('\\' | '"' | '$')+ | '$';
 
 LineStrEscapedChar: '\\' . | UniCharacterLiteral;
 
-LineStrExprStart: '${' -> pushMode(StringExpression);
+LineStrExprStart: '${' -> pushMode(DEFAULT_MODE);
 
 mode MultiLineString;
 
@@ -443,82 +472,6 @@ MultiLineStrText: ~('\\' | '"' | '$')+ | '$';
 
 MultiLineStrEscapedChar: '\\' .;
 
-MultiLineStrExprStart: '${' -> pushMode(StringExpression);
+MultiLineStrExprStart: '${' -> pushMode(DEFAULT_MODE);
 
 MultiLineNL: NL -> skip;
-
-mode StringExpression;
-
-StrExpr_RCURL: RCURL -> popMode, type(RCURL);
-
-StrExpr_LPAREN  : LPAREN  -> pushMode(Inside), type(LPAREN);
-StrExpr_LSQUARE : LSQUARE -> pushMode(Inside), type(LSQUARE);
-
-StrExpr_RPAREN           : ')'              -> type(RPAREN);
-StrExpr_RSQUARE          : ']'              -> type(RSQUARE);
-StrExpr_LCURL            : LCURL            -> pushMode(StringExpression), type(LCURL);
-StrExpr_DOT              : DOT              -> type(DOT);
-StrExpr_COMMA            : COMMA            -> type(COMMA);
-StrExpr_MULT             : MULT             -> type(MULT);
-StrExpr_MOD              : MOD              -> type(MOD);
-StrExpr_DIV              : DIV              -> type(DIV);
-StrExpr_ADD              : ADD              -> type(ADD);
-StrExpr_SUB              : SUB              -> type(SUB);
-StrExpr_INCR             : INCR             -> type(INCR);
-StrExpr_DECR             : DECR             -> type(DECR);
-StrExpr_CONJ             : CONJ             -> type(CONJ);
-StrExpr_DISJ             : DISJ             -> type(DISJ);
-StrExpr_EXCL             : EXCL             -> type(EXCL);
-StrExpr_COLON            : COLON            -> type(COLON);
-StrExpr_SEMICOLON        : SEMICOLON        -> type(SEMICOLON);
-StrExpr_ASSIGNMENT       : ASSIGNMENT       -> type(ASSIGNMENT);
-StrExpr_ADD_ASSIGNMENT   : ADD_ASSIGNMENT   -> type(ADD_ASSIGNMENT);
-StrExpr_SUB_ASSIGNMENT   : SUB_ASSIGNMENT   -> type(SUB_ASSIGNMENT);
-StrExpr_MULT_ASSIGNMENT  : MULT_ASSIGNMENT  -> type(MULT_ASSIGNMENT);
-StrExpr_DIV_ASSIGNMENT   : DIV_ASSIGNMENT   -> type(DIV_ASSIGNMENT);
-StrExpr_MOD_ASSIGNMENT   : MOD_ASSIGNMENT   -> type(MOD_ASSIGNMENT);
-StrExpr_ARROW            : ARROW            -> type(ARROW);
-StrExpr_DOUBLE_ARROW     : DOUBLE_ARROW     -> type(DOUBLE_ARROW);
-StrExpr_RANGE            : RANGE            -> type(RANGE);
-StrExpr_COLONCOLON       : COLONCOLON       -> type(COLONCOLON);
-StrExpr_Q_COLONCOLON     : Q_COLONCOLON     -> type(Q_COLONCOLON);
-StrExpr_DOUBLE_SEMICOLON : DOUBLE_SEMICOLON -> type(DOUBLE_SEMICOLON);
-StrExpr_HASH             : HASH             -> type(HASH);
-StrExpr_AT               : AT               -> type(AT);
-StrExpr_QUEST            : QUEST            -> type(QUEST);
-StrExpr_ELVIS            : ELVIS            -> type(ELVIS);
-StrExpr_LANGLE           : LANGLE           -> type(LANGLE);
-StrExpr_RANGLE           : RANGLE           -> type(RANGLE);
-StrExpr_LE               : LE               -> type(LE);
-StrExpr_GE               : GE               -> type(GE);
-StrExpr_EXCL_EQ          : EXCL_EQ          -> type(EXCL_EQ);
-StrExpr_EXCL_EQEQ        : EXCL_EQEQ        -> type(EXCL_EQEQ);
-StrExpr_AS               : AS               -> type(IS);
-StrExpr_IS               : IS               -> type(IN);
-StrExpr_IN               : IN;
-StrExpr_NOT_IS           : NOT_IS       -> type(NOT_IS);
-StrExpr_NOT_IN           : NOT_IN       -> type(NOT_IN);
-StrExpr_AS_SAFE          : AS_SAFE      -> type(AS_SAFE);
-StrExpr_EQEQ             : EQEQ         -> type(EQEQ);
-StrExpr_EQEQEQ           : EQEQEQ       -> type(EQEQEQ);
-StrExpr_SINGLE_QUOTE     : SINGLE_QUOTE -> type(SINGLE_QUOTE);
-StrExpr_QUOTE_OPEN       : QUOTE_OPEN   -> pushMode(LineString), type(QUOTE_OPEN);
-StrExpr_TRIPLE_QUOTE_OPEN:
-    TRIPLE_QUOTE_OPEN -> pushMode(MultiLineString), type(TRIPLE_QUOTE_OPEN)
-;
-
-StrExpr_BooleanLiteral   : BooleanLiteral   -> type(BooleanLiteral);
-StrExpr_IntegerLiteral   : IntegerLiteral   -> type(IntegerLiteral);
-StrExpr_HexLiteral       : HexLiteral       -> type(HexLiteral);
-StrExpr_BinLiteral       : BinLiteral       -> type(BinLiteral);
-StrExpr_CharacterLiteral : CharacterLiteral -> type(CharacterLiteral);
-StrExpr_RealLiteral      : RealLiteral      -> type(RealLiteral);
-StrExpr_NullLiteral      : NullLiteral      -> type(NullLiteral);
-StrExpr_LongLiteral      : LongLiteral      -> type(LongLiteral);
-
-StrExpr_Identifier      : Identifier                       -> type(Identifier);
-StrExpr_LabelReference  : LabelReference                   -> type(LabelReference);
-StrExpr_LabelDefinition : LabelDefinition                  -> type(LabelDefinition);
-StrExpr_Comment         : (LineComment | DelimitedComment) -> channel(HIDDEN);
-StrExpr_WS              : WS                               -> skip;
-StrExpr_NL              : NL                               -> skip;

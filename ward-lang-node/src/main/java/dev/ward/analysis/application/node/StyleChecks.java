@@ -14,6 +14,7 @@ import dev.ward.analysis.domain.rule.check.NodeJavadocPositionCheck;
 import dev.ward.analysis.domain.rule.check.NodeMagicNumberCheck;
 import dev.ward.analysis.domain.rule.check.NodeMagicNumberFlags;
 import dev.ward.analysis.domain.rule.check.NodeMissingJavadocTypeCheck;
+import dev.ward.analysis.domain.rule.check.NodeOneStatementPerLineCheck;
 import dev.ward.analysis.domain.rule.check.NodeOverloadGroupingCheck;
 import dev.ward.analysis.domain.rule.check.NodePreferConstCheck;
 import dev.ward.analysis.domain.rule.check.NodeStringConcatCheck;
@@ -54,6 +55,10 @@ final class StyleChecks {
         Map.entry(
             "node-constructor-group",
             toml -> new NodeConstructorGroupCheck(TomlValues.required(toml, MESSAGE))
+        ),
+        Map.entry(
+            "node-one-statement-per-line",
+            toml -> new NodeOneStatementPerLineCheck(TomlValues.required(toml, MESSAGE))
         ),
         Map.entry(
             "node-overload-grouping",

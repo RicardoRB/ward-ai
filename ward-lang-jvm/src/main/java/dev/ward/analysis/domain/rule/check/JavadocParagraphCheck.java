@@ -18,6 +18,7 @@ public final class JavadocParagraphCheck implements UnitCheck {
   private static final String HTML = "<";
 
   private final String message;
+  private final boolean markdown;
 
   /**
    * Creates the check.
@@ -25,7 +26,18 @@ public final class JavadocParagraphCheck implements UnitCheck {
    * @param message the message; {@code {value}} says what is wrong
    */
   public JavadocParagraphCheck(final String message) {
+    this(message, false);
+  }
+
+  /**
+   * Creates the check.
+   *
+   * @param message the message; {@code {value}} is the problem
+   * @param markdown whether an empty line alone starts a paragraph, as in KDoc
+   */
+  public JavadocParagraphCheck(final String message, final boolean markdown) {
     this.message = Objects.requireNonNull(message, "message");
+    this.markdown = markdown;
   }
 
   @Override
@@ -64,7 +76,7 @@ public final class JavadocParagraphCheck implements UnitCheck {
       if (!previousEmpty) {
         report(row, text, "a paragraph tag must follow an empty line", matches);
       }
-    } else if (startsParagraph(text, previousEmpty, content)) {
+    } else if (!markdown && startsParagraph(text, previousEmpty, content)) {
       report(row, text, "an empty line must be followed by a paragraph tag", matches);
     }
   }

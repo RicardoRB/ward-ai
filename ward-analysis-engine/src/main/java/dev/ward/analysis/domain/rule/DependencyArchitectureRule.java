@@ -1,17 +1,22 @@
 package dev.ward.analysis.domain.rule;
 
 import dev.ward.analysis.domain.graph.DependencyGraph;
+import dev.ward.analysis.domain.graph.ProjectFiles;
 import dev.ward.analysis.domain.ir.DependencyEdge;
+import dev.ward.analysis.domain.ir.Reference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.TreeMap;
 import java.util.function.Predicate;
 
 /**
  * The {@code ward:architecture/dependencies} rule: for each {@code must-not-depend-on}, {@code
  * may-only-depend-on} and {@code only-accessed-by} rule of {@code ward-architecture.toml}, reports
- * every dependency edge that breaks it, at the import that creates the edge.
+ * every dependency edge that breaks it, at the import that creates the edge. A {@code
+ * must-not-depend-on} rule that names {@code external} code also reports every import of a selected
+ * file that resolved to no project file and names that code.
  */
 public final class DependencyArchitectureRule implements GraphRule {
   /** The id of the rule, the same in every language. */
@@ -59,6 +64,51 @@ public final class DependencyArchitectureRule implements GraphRule {
       }
     }
     return List.copyOf(matches);
+  }
+
+  @Override
+  public List<GraphMatch> matches(final DependencyGraph graph, final ProjectFiles project) {
+    final List<GraphMatch> matches = new ArrayList<>(matches(graph));
+    for (final ArchitectureRule rule : rules) {
+      if (!rule.constraint().target().external().isEmpty()) {
+        external(rule, project, matches);
+      }
+    }
+    return List.copyOf(matches);
+  }
+
+  private static void external(
+      final ArchitectureRule rule,
+      final ProjectFiles project,
+      final List<GraphMatch> matches
+  ) {
+    final Predicate<String> selected = rule.select().matcher();
+    final Predicate<String> named = rule.constraint().target().externalMatcher();
+    new TreeMap<>(project.unresolvedImports())
+        .forEach(
+            (file, references) -> {
+              if (selected.test(file)) {
+                references.forEach(
+                    reference ->
+                        ImportedName.of(reference.specifier())
+                            .filter(named)
+                            .ifPresent(name -> matches.add(match(rule, file, reference, name)))
+                );
+              }
+            }
+        );
+  }
+
+  private static GraphMatch match(
+      final ArchitectureRule rule,
+      final String file,
+      final Reference reference,
+      final String name
+  ) {
+    return new GraphMatch(
+        file,
+        new RuleMatch(reference.span(), rule.message(file + " must not depend on " + name))
+    );
   }
 
   private static Optional<String> violation(

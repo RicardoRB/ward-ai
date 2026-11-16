@@ -5,3 +5,5 @@ export function pair(a) {
   const b = a + 1;
   return b;
 }
+// A comment; it may hold a semicolon.
+export const text = 'a; b';

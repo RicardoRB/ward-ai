@@ -17,7 +17,7 @@ import java.util.Set;
 public final class KotlinKdocPlacementCheck implements RuleCheck {
   private static final String COMMENT = SyntaxWalk.COMMENT_KIND;
   private static final Set<String> WRAPPERS =
-      Set.of("topLevelObject", "classMemberDeclaration", "declaration", "statement");
+      Set.of("topLevelObject", "classMemberDeclaration", "declaration", "statement", "enumEntries");
   private static final Set<String> DOCUMENTABLE =
       Set.of(
           "classDeclaration",

@@ -5,6 +5,8 @@ import dev.ward.analysis.domain.graph.DependencyGraph;
 import dev.ward.analysis.domain.graph.ProjectFiles;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.analysis.domain.ir.DependencyEdge;
+import dev.ward.analysis.domain.ir.Reference;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.rule.ArchitectureRule;
 import dev.ward.analysis.domain.rule.ArchitectureRuleBody;
@@ -21,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -72,8 +76,32 @@ final class ArchitectureRun {
     }
     return new ArchitectureRun(
         rules,
-        new ProjectFiles(snapshot.summaries().keySet(), snapshot.entries(), sources)
+        new ProjectFiles(
+            snapshot.summaries().keySet(),
+            snapshot.entries(),
+            sources,
+            unresolvedImports(snapshot)
+        )
     );
+  }
+
+  /** The references of each summary that no edge of its file carries: they name no project file. */
+  private static Map<String, List<Reference>> unresolvedImports(final DependencySnapshot snapshot) {
+    final Map<String, List<Reference>> unresolved = new LinkedHashMap<>();
+    snapshot.summaries()
+        .forEach(
+            (path, summary) -> {
+              final Set<Reference> resolved =
+                  snapshot.graph().outgoingEdgesOf(path).stream()
+                      .map(DependencyEdge::reference)
+                      .collect(Collectors.toSet());
+              unresolved.put(
+                  path,
+                  summary.imports().stream().filter(Predicate.not(resolved::contains)).toList()
+              );
+            }
+        );
+    return unresolved;
   }
 
   /**

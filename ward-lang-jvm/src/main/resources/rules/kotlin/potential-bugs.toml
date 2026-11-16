@@ -95,7 +95,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["propertyDeclaration"]
-not-inside = ["functionBody"]
+not-inside = ["functionBody", "block", "functionLiteral"]
 text = '^(?:(?:override|open|final|public)\s*)*val\w*?\s*(:\s*(MutableList|MutableMap|MutableSet|ArrayList|HashMap|HashSet|LinkedHashMap|LinkedHashSet)|=\s*(mutableListOf|mutableMapOf|mutableSetOf|arrayListOf|hashMapOf|hashSetOf|linkedMapOf|linkedSetOf))'
 message = "public val exposes a mutable collection; expose a read-only type instead"
 '''

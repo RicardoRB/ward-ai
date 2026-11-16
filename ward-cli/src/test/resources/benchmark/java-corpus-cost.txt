@@ -1,0 +1,37 @@
+# Cost of Ward on the Java corpus of JavaCorpusSmokeTest (#564). Hand-written from measured runs; no test compares it.
+# Measured 2026-11-15 with the jar of #564, before the speed-up of #569 (java -jar ward.jar, OpenJDK 25.0.4, default
+# heap), on an Apple M4 with 10 cores and 32 GB, through /usr/bin/time -l. Each run started when the 1-minute load
+# average was below 3; the load at the start is beside each number. Other builds share the machine: during the cold run
+# of Commons Lang the load rose to 13.7, so that wall time is an upper bound (an earlier run under load gave the same
+# 447 s).
+# Rule set: preset standard, languages java, plus every Java security rule (1,058 rules), default options.
+# Each project had only a ward.toml with the ward check and that ward-rules.toml; nothing of the project was built.
+#
+# project | run | files | lines | findings | wall time | user CPU | peak memory | load at start
+commons-lang     | ward check, cold    | 638 | 213,292 | 29,563 | 447.3 s | 659.8 s | 5.30 GB | 2.98
+commons-lang     | ward check, cached  | 638 | 213,292 | 29,563 |   9.9 s |  22.3 s | 2.70 GB | 2.94
+commons-lang     | ward format --check | 638 | 213,292 | 595 files need formatting, 0 refused | 7.3 s | 12.8 s | 1.23 GB | 2.92
+spring-petclinic | ward check, cold    |  50 |   4,297 |    491 |   6.6 s |  21.2 s | 0.76 GB | 2.87
+spring-petclinic | ward check, cached  |  50 |   4,297 |    491 |   1.9 s |   7.1 s | 0.46 GB | 2.99
+spring-petclinic | ward format --check |  50 |   4,297 | 45 files need formatting, 0 refused | 0.8 s | 2.6 s | 0.42 GB | 2.67
+#
+# The cold and the cached run report the same number of findings. The CLI counts more findings than the report of the
+# test (28,153 places in both projects), because the gate also runs the project-wide checks (duplication, for one) and
+# counts every finding, where the test counts a rule once per line.
+# The peak memory of the cold run of Commons Lang was 3.59 GB in an earlier run and 5.30 GB in this one: with the
+# default heap it depends on when the collector runs, so read it as "3.6 to 5.3 GB".
+#
+# Cost per file, cold, beside this repository's own run (#491: 263 s and 9.0 GB for 3,920 files with 318 rules):
+#   commons-lang     0.70 s per file, 2.1 ms per line, 0.66 ms per file and rule
+#   spring-petclinic 0.13 s per file, 1.5 ms per line, 0.13 ms per file and rule
+#   this repository  0.067 s per file, 0.21 ms per file and rule
+# So Commons Lang costs about ten times this repository per file and about three times per file and rule, while
+# PetClinic costs less per file and rule than this repository. The cost does not grow with the lines alone: Commons Lang
+# has 334 lines per file on average and 3 files above 5,000 lines, PetClinic 86 lines per file. The long files are the
+# place to look.
+# The rule engine alone, as the test runs it (no project-wide checks, no cache, one JVM), took 150 to 240 s for both
+# projects under load.
+#
+# Before #564 the run did not finish cleanly: one valid file (a fuzz regression test with a string literal of several
+# thousand characters) ended 25 data-flow and taint rules with a StackOverflowError, and ward format refused one
+# PetClinic file as "formatting is not stable".

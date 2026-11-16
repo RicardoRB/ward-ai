@@ -1,6 +1,7 @@
 package dev.ward.analysis.domain.flow.taint;
 
 import dev.ward.analysis.domain.ir.BasicBlock;
+import dev.ward.analysis.domain.ir.ControlFlowGraph;
 import dev.ward.analysis.domain.ir.FlowSite;
 import dev.ward.analysis.domain.ir.FlowSiteKind;
 import dev.ward.analysis.domain.ir.Span;
@@ -38,5 +39,22 @@ final class TaintSpans {
   /** Returns the sink entry that a call matches, if any. */
   static Optional<TaintEntry> sinkOf(final FlowSite site, final TaintSpec spec) {
     return spec.sinks().stream().filter(entry -> entry.matches(site)).findFirst();
+  }
+
+  /**
+   * Reports whether a source entry matches a site of the graph. Every taint starts at such a site,
+   * so a graph without one has no taint and needs no data-flow analysis.
+   */
+  static boolean hasSource(final ControlFlowGraph graph, final TaintSpec spec) {
+    return graph.blocks().stream()
+        .flatMap(block -> block.sites().stream())
+        .anyMatch(site -> sourceOf(site, spec).isPresent());
+  }
+
+  /** Reports whether a sink entry matches a site of the graph; every finding is at such a site. */
+  static boolean hasSink(final ControlFlowGraph graph, final TaintSpec spec) {
+    return graph.blocks().stream()
+        .flatMap(block -> block.sites().stream())
+        .anyMatch(site -> sinkOf(site, spec).isPresent());
   }
 }

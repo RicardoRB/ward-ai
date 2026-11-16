@@ -29,7 +29,7 @@ public final class LibraryCallCheck implements RuleCheck {
   }
 
   private static final String EXPRESSION = "expression";
-  private static final Pattern LITERAL = Pattern.compile("\"(?:[^\"\\\\]|\\\\.)*\"");
+  private static final Pattern LITERAL = Pattern.compile("\"(?:[^\"\\\\]|\\\\.)*+\"");
   private static final Set<String> GUAVA_STRINGS =
       Set.of("nullToEmpty", "emptyToNull", "isNullOrEmpty");
   private static final String GUAVA_PRECONDITIONS = "com.google.common.base.Preconditions";
