@@ -16,6 +16,7 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ### Changed
 
+- `android-lint` stays an external gate for good (#571): the checks it adds over the native `ward:android/*` rules need resolved types, the merged manifest and resources, Gradle's model or API level tables, and the table in the Android SDK is under a licence that forbids redistribution. The website page of the gate gives the reasons.
 - This repository checks its own Java with the `ward` and `ward-format` gates instead of the Checkstyle, PMD, SpotBugs and Spotless Maven plugins (#347, #470). Its sources are formatted with `ward format`.
 
 ## [0.9.1] - 2026-11-15
