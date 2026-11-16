@@ -1,5 +1,6 @@
 package dev.ward.application.gate;
 
+import dev.ward.analysis.domain.port.WorkLimit;
 import dev.ward.domain.gate.CheckReport;
 import dev.ward.domain.gate.FindingExtractionException;
 import dev.ward.domain.gate.FindingExtractor;
@@ -98,7 +99,8 @@ public class QualityGateRunner {
    * {@code gates}. A gate that is not {@linkplain QualityGate#independent() independent} runs after
    * every such gate before it, so those run one at a time in order. The report and the progress
    * events do not depend on the number of jobs: with fail-fast, every gate after the first one that
-   * did not pass is reported as not run, even when it ran.
+   * did not pass is reported as not run, even when it ran. The jobs are one limit for the run: a
+   * running gate counts as one, and so does each thread a gate takes from the limit it is given.
    */
   public CheckReport run(
       final Project project,
@@ -180,6 +182,7 @@ public class QualityGateRunner {
     private final GatePrerequisites.RunPrerequisites checks;
     private final CheckRunOptions options;
     private final OrderedProgress progress;
+    private final WorkLimit limit;
     private final AtomicInteger lastToRun = new AtomicInteger(Integer.MAX_VALUE);
 
     GateRun(
@@ -191,6 +194,7 @@ public class QualityGateRunner {
       this.checks = checks;
       this.options = options;
       this.progress = new OrderedProgress(options.listener());
+      this.limit = new WorkLimit(Math.max(SERIAL, options.jobs()));
     }
 
     /** Keeps gates after {@code index} that have not started from starting. */
@@ -212,7 +216,14 @@ public class QualityGateRunner {
               project,
               checks.attach(
                   project,
-                  gate.execute(project, step -> progress.step(index, gate.name(), step))
+                  limit.holding(
+                      () ->
+                          gate.execute(
+                              project,
+                              step -> progress.step(index, gate.name(), step),
+                              limit
+                          )
+                  )
               ),
               gateStart
           );

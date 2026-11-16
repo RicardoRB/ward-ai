@@ -95,8 +95,8 @@ public class CheckCommand implements Callable<Integer> {
       defaultValue = "${env:WARD_JOBS:-1}",
       converter = JobsConverter.class,
       description =
-          "Run up to n checks at once, or 'auto' for one per processor"
-              + " (default: $WARD_JOBS, or 1)."
+          "Work on up to n threads at once (checks, and the files the ward check analyzes),"
+              + " or 'auto' for one per processor (default: $WARD_JOBS, or 1)."
   )
   private int jobs;
 

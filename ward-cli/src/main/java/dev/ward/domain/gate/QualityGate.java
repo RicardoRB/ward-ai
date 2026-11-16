@@ -1,5 +1,6 @@
 package dev.ward.domain.gate;
 
+import dev.ward.analysis.domain.port.WorkLimit;
 import dev.ward.domain.project.Project;
 
 /**
@@ -19,6 +20,20 @@ public interface QualityGate {
    */
   default GateResult execute(final Project project, final GateProgress progress) {
     return execute(project);
+  }
+
+  /**
+   * Runs the gate like {@link #execute(Project, GateProgress)}. The calling thread holds one permit
+   * of {@code limit}; a gate that works on several threads takes its other threads from it, so the
+   * gates of a run and their threads stay under one limit. The default works on the calling thread
+   * only.
+   */
+  default GateResult execute(
+      final Project project,
+      final GateProgress progress,
+      final WorkLimit limit
+  ) {
+    return execute(project, progress);
   }
 
   /**
