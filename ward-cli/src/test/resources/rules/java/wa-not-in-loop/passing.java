@@ -9,6 +9,16 @@ final class Sample {
 
   void helper(Object lock) throws Exception {
     Waits.wait(lock, 10L);
-    util.Waits.wait(lock, 10L);
+    Sample.Waits.wait(lock, 10L);
+  }
+
+  static final class Waits {
+    private Waits() {}
+
+    static void wait(final Object lock, final long millis) {
+      if (lock == null || millis < 0) {
+        throw new IllegalArgumentException();
+      }
+    }
   }
 }
