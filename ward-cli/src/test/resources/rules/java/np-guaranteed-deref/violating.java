@@ -3,10 +3,7 @@ final class Check {
     if (text == null) {
       flag = false;
     }
-    if (flag) {
-      text.trim();
-    } else {
-      text.strip();
-    }
+    // Both paths dereference text on this one line, so the line is the same whichever one a tool names.
+    if (flag) { text.trim(); } else { text.strip(); }
   }
 }
