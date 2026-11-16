@@ -31,6 +31,7 @@ class SwiftDeclarationLintChecksTest {
     assertThat(LintRuns.run(check, "for u in us {\n if let id = u.id { }\n}\n")).isEmpty();
     assertThat(LintRuns.run(check, "for u in us {\n if u.id == 1 && u.age > 1 { }\n}\n")).isEmpty();
     assertThat(LintRuns.run(check, "for u in us where u.id == 1 { }\n")).isEmpty();
+    assertThat(LintRuns.run(check, "for u in us {\n u.on { e in\n  if e { }\n }\n}\n")).isEmpty();
   }
 
   @Test

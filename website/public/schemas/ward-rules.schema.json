@@ -49675,25 +49675,6 @@
         }
       }
     },
-    "ward:swift/missing-switch-default": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:swift/modifier-order": {
       "type": "object",
       "additionalProperties": false,
@@ -51159,25 +51140,6 @@
       }
     },
     "ward:swift/unused-enumerated": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:swift/unused-imports": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -61585,7 +61547,6 @@
               "swift.method-name",
               "swift.method-type-parameter-name",
               "swift.missing-javadoc-type",
-              "swift.missing-switch-default",
               "swift.modifier-order",
               "swift.multiline-comment-leading-asterisk-presence",
               "swift.multiple-closures-with-trailing-closure",
@@ -61663,7 +61624,6 @@
               "swift.unused-control-flow-label",
               "swift.unused-declaration",
               "swift.unused-enumerated",
-              "swift.unused-imports",
               "swift.unused-local-variable",
               "swift.unused-optional-binding",
               "swift.unused-parameter",
@@ -64571,7 +64531,6 @@
               "swift.method-name",
               "swift.method-type-parameter-name",
               "swift.missing-javadoc-type",
-              "swift.missing-switch-default",
               "swift.modifier-order",
               "swift.multiline-comment-leading-asterisk-presence",
               "swift.multiple-closures-with-trailing-closure",
@@ -64649,7 +64608,6 @@
               "swift.unused-control-flow-label",
               "swift.unused-declaration",
               "swift.unused-enumerated",
-              "swift.unused-imports",
               "swift.unused-local-variable",
               "swift.unused-optional-binding",
               "swift.unused-parameter",
@@ -72620,9 +72578,6 @@
             "missing-javadoc-type": {
               "$ref": "#/$defs/ward:swift~1missing-javadoc-type"
             },
-            "missing-switch-default": {
-              "$ref": "#/$defs/ward:swift~1missing-switch-default"
-            },
             "modifier-order": {
               "$ref": "#/$defs/ward:swift~1modifier-order"
             },
@@ -72853,9 +72808,6 @@
             },
             "unused-enumerated": {
               "$ref": "#/$defs/ward:swift~1unused-enumerated"
-            },
-            "unused-imports": {
-              "$ref": "#/$defs/ward:swift~1unused-imports"
             },
             "unused-local-variable": {
               "$ref": "#/$defs/ward:swift~1unused-local-variable"

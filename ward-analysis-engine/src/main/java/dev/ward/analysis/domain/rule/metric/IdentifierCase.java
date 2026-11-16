@@ -6,8 +6,8 @@ import java.util.Optional;
 
 /**
  * Checks a declared name against the style its node kind requires. A name is a declaration's child,
- * or the target of a plain assignment such as {@code x = 1}. Dunder names are not checked, and
- * leading underscores are ignored.
+ * or the target of a plain assignment such as {@code x = 1}. Dunder names and operators are not
+ * checked, and leading underscores are ignored.
  */
 final class IdentifierCase implements Measure {
   private static final String ASSIGN = "=";
@@ -33,8 +33,15 @@ final class IdentifierCase implements Measure {
 
   private static boolean skipped(final String name) {
     return name.isEmpty()
+        || isOperator(name)
         || name.length() > 1 && name.startsWith("__") && name.endsWith("__")
         || name.replaceFirst("^_+", "").isEmpty();
+  }
+
+  /** An operator such as {@code ==} is a symbol, not an identifier with a case. */
+  private static boolean isOperator(final String name) {
+    final char first = name.charAt(0);
+    return !Character.isLetter(first) && first != '_' && !BACKTICK.equals(String.valueOf(first));
   }
 
   private static Optional<String> declared(final SyntaxNode node, final MetricRule rule) {

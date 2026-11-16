@@ -353,6 +353,7 @@ name = "flatmap-over-map-reduce"
 category = "performance"
 swiftlint = ["flatmap_over_map_reduce"]
 
+# Swift (#596): reported only when the `if` is the whole loop body.
 [[rule]]
 name = "for-where"
 presets = ["standard", "strict"]
@@ -453,6 +454,7 @@ name = "joined-default-parameter"
 category = "style"
 swiftlint = ["joined_default_parameter"]
 
+# Swift (#596): the payload of an enumeration case is not a tuple type.
 [[rule]]
 name = "large-tuple"
 presets = ["standard", "strict"]

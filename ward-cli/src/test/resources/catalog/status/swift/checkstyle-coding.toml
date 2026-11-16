@@ -26,7 +26,7 @@ inner-assignment = { status = "planned", issue = "#298" }
 magic-number = "implemented"
 missing-ctor = "not-applicable"
 missing-null-case-in-switch = "not-applicable"
-missing-switch-default = "implemented"
+missing-switch-default = "not-applicable"
 modified-control-variable = { status = "planned", issue = "#298" }
 multiple-string-literals = { status = "planned", issue = "#298" }
 multiple-variable-declarations = "implemented"

@@ -137,6 +137,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["tuple_type"]
+not-inside = ["union_style_enum_case"]
 text = '^\([^(),]+,[^(),]+,[^(),]+'
 message = "tuple has more than two members; use a struct"
 '''

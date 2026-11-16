@@ -14,11 +14,13 @@ ruff = ["N818"]
 name = "catch-parameter-name"
 checkstyle = ["CatchParameterName"]
 
+# Swift (#596): UpperCamelCase, as the Swift API Design Guidelines name type parameters.
 [[rule]]
 name = "class-type-parameter-name"
 not-applicable = { javascript = "JavaScript has no type parameters", python = "Java generic type parameters; Python generics are not declared with names" }
 checkstyle = ["ClassTypeParameterName"]
 
+# Swift (#596): lowerCamelCase, as the Swift API Design Guidelines name every property.
 [[rule]]
 name = "constant-name"
 detekt = ["TopLevelPropertyNaming"]
@@ -76,6 +78,7 @@ checkstyle = ["MethodName"]
 ktlint = ["function-naming"]
 ruff = ["N802"]
 
+# Swift (#596): UpperCamelCase, as the Swift API Design Guidelines name type parameters.
 [[rule]]
 name = "method-type-parameter-name"
 not-applicable = { javascript = "JavaScript has no type parameters", python = "Java generic type parameters; Python generics are not declared with names" }

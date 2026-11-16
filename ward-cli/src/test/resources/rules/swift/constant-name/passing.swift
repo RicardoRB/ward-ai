@@ -1,3 +1,4 @@
 class Limits {
-    static let MAX_SIZE = 10
+    static let maxSize = 10
+    static let `default` = 20
 }

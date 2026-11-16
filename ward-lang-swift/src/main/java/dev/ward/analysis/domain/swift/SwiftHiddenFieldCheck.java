@@ -21,12 +21,15 @@ import java.util.regex.Pattern;
 
 /**
  * Reports each parameter or local variable that has the name of a property of its enclosing type,
- * like Checkstyle's {@code HiddenField}. The parameters of an initializer are left alone, as the
- * standard preset's {@code ignoreConstructorParameter} does.
+ * like Checkstyle's {@code HiddenField}. The parameters of an initializer, with or without modifiers
+ * such as {@code public} or {@code convenience}, are left alone: {@code self.value = value} is the
+ * Swift idiom, as the standard preset's {@code ignoreConstructorParameter} does.
  */
 public final class SwiftHiddenFieldCheck implements RuleCheck {
   private static final String NAME = "{value}";
-  private static final Pattern INITIALIZER = Pattern.compile("init[?!]?\\(");
+  private static final Pattern INITIALIZER = Pattern.compile(
+      "(?:@?\\w+(?:\\([^)]*\\))?\\s+)*init[?!]?\\s*[(<]"
+  );
   private static final Set<ScopeKind> LOCAL_SCOPES = Set.of(ScopeKind.FUNCTION, ScopeKind.BLOCK);
   private static final Set<BindingKind> SHADOWING_KINDS =
       Set.of(BindingKind.VARIABLE, BindingKind.CONSTANT);

@@ -11,21 +11,15 @@ ward:swift/abbreviation-as-word-in-name | alamofire/Tests/ParameterEncodingTests
 ward:swift/annotation-location | sample-food-truck/App/Store/SocialFeedPlusSettings.swift:79 | tp | an attribute with arguments, or several attributes, stands on the line of the declaration
 ward:swift/annotation-location | alamofire/Source/Core/Session.swift:572 | tp | an attribute with arguments, or several attributes, stands on the line of the declaration
 ward:swift/annotation-location | alamofire/Tests/ConcurrencyTests.swift:538 | tp | an attribute with arguments, or several attributes, stands on the line of the declaration
-ward:swift/class-type-parameter-name | sample-food-truck/FoodTruckKit/Sources/Donut/DonutBoxView.swift:10 | fp | a descriptive UpperCamelCase type parameter; the Swift API Design Guidelines name them so, and the default pattern is the single letter of Java
-ward:swift/class-type-parameter-name | alamofire/Source/Features/Combine.swift:35 | fp | a descriptive UpperCamelCase type parameter; the Swift API Design Guidelines name them so, and the default pattern is the single letter of Java
-ward:swift/class-type-parameter-name | alamofire/Tests/RequestInterceptorTests.swift:628 | fp | a descriptive UpperCamelCase type parameter; the Swift API Design Guidelines name them so, and the default pattern is the single letter of Java
 ward:swift/closure-parameter-position | sample-food-truck/FoodTruckKit/Sources/Order/OrderGenerator.swift:85 | tp | the closure parameters start on the line after the opening brace
 ward:swift/comment-spacing | sample-food-truck/App/Orders/OrdersTable.swift:119 | tp | no space after the slashes
 ward:swift/comment-spacing | alamofire/Source/Features/MultipartFormData.swift:229 | tp | no space after the slashes
 ward:swift/comment-spacing | alamofire/Source/Features/MultipartFormData.swift:201 | tp | no space after the slashes
 ward:swift/complexity | alamofire/Source/Core/Request.swift:1179 | tp | a long function with many guard, if and loop branches; the count was not recomputed by hand
 ward:swift/complexity | alamofire/Source/Features/URLEncodedFormEncoder.swift:581 | tp | a long function with many guard, if and loop branches; the count was not recomputed by hand
-ward:swift/constant-name | sample-food-truck/FoodTruckKit/Sources/Donut/Ingredients/Topping.swift:109 | fp | a static let in lowerCamelCase, as the Swift API Design Guidelines name every property; the default pattern is the UPPER_SNAKE_CASE of Java
-ward:swift/constant-name | alamofire/Source/Features/Concurrency.swift:899 | fp | a static let in lowerCamelCase, as the Swift API Design Guidelines name every property; the default pattern is the UPPER_SNAKE_CASE of Java
-ward:swift/constant-name | alamofire/Tests/ServerTrustEvaluatorTests.swift:51 | fp | a static let in lowerCamelCase, as the Swift API Design Guidelines name every property; the default pattern is the UPPER_SNAKE_CASE of Java
 ward:swift/custom-import-order | sample-food-truck/App/Store/StoreSupportView.swift:10 | tp | the import is not in alphabetical order after the one before it
-ward:swift/custom-import-order | alamofire/Source/Features/MultipartFormData.swift:30 | fp | the import is alone in its #elseif branch; the import before it is in another branch
-ward:swift/custom-import-order | alamofire/Tests/ConcurrencyTests.swift:794 | un | the import stands inside an #if block in the middle of the file
+ward:swift/custom-import-order | sample-food-truck/App/Account/AccountView.swift:9 | tp | FoodTruckKit comes after SwiftUI in the same list of imports, out of alphabetical order
+ward:swift/custom-import-order | sample-food-truck/App/App.swift:9 | tp | FoodTruckKit comes after SwiftUI in the same list of imports, out of alphabetical order
 ward:swift/empty-catch-block | alamofire/Source/Core/DataStreamRequest.swift:331 | un | the catch block holds only a comment that says the error is ignored on purpose; the rule text does not say whether a comment counts
 ward:swift/empty-catch-block | alamofire/Tests/MultipartFormDataTests.swift:222 | un | the catch block holds only a comment that says the error is ignored on purpose; the rule text does not say whether a comment counts
 ward:swift/empty-catch-block | alamofire/Example/Source/DetailViewController.swift:138 | un | the catch block holds only a comment that says the error is ignored on purpose; the rule text does not say whether a comment counts
@@ -37,7 +31,6 @@ ward:swift/file-length | alamofire/Tests/RequestTests.swift:25 | tp | the file i
 ward:swift/file-length | alamofire/Source/Core/AFError.swift:25 | tp | the file is longer than 500 lines
 ward:swift/for-where | sample-food-truck/App/Orders/OrderDetailView.swift:116 | tp | the loop body is one if without else
 ward:swift/for-where | alamofire/Source/Features/ServerTrustEvaluation.swift:361 | tp | the loop body is one if without else
-ward:swift/for-where | alamofire/Tests/WebSocketTests.swift:419 | fp | the if is the last of several statements of a closure, not the only statement of a for loop
 ward:swift/force-cast | alamofire/Tests/URLProtocolTests.swift:88 | tp | as! in the line
 ward:swift/force-cast | alamofire/Example/Source/AppDelegate.swift:37 | tp | as! in the line
 ward:swift/force-cast | alamofire/Example/Source/AppDelegate.swift:38 | tp | as! in the line
@@ -54,11 +47,9 @@ ward:swift/google-non-constant-field-name | sample-food-truck/FoodTruckKit/Sourc
 ward:swift/google-non-constant-field-name | alamofire/Source/Core/Request.swift:105 | tp | the name does not match the pattern: one lowercase letter before a capital, or one letter
 ward:swift/google-non-constant-field-name | alamofire/Tests/ParameterEncoderTests.swift:1199 | tp | the name does not match the pattern: one lowercase letter before a capital, or one letter
 ward:swift/google-right-curly | sample-food-truck/FoodTruckKit/Sources/Store/StoreActor.swift:84 | tp | else if starts a line after a closing brace and a comment
-ward:swift/google-right-curly | alamofire/Source/Core/UploadRequest.swift:155 | fp | the else belongs to a multi-line guard, which has no closing brace before it
-ward:swift/google-right-curly | alamofire/Source/Core/Response.swift:437 | fp | the else belongs to a multi-line guard, which has no closing brace before it
-ward:swift/hidden-field | sample-food-truck/FoodTruckKit/Sources/Donut/DonutView.swift:60 | fp | a parameter of init that is assigned to the property of the same name, the usual Swift initializer
 ward:swift/hidden-field | alamofire/Source/Core/Session.swift:971 | tp | a parameter or local has the name of a property of the type
 ward:swift/hidden-field | alamofire/Tests/ServerTrustEvaluatorTests.swift:130 | un | a local in a static function; the property it would hide was not found by reading the file
+ward:swift/hidden-field | alamofire/Example/Source/DetailViewController.swift:109 | tp | a local bound by if let has the name of a property of the type
 ward:swift/identifier-name | alamofire/Source/Features/EventMonitor.swift:707 | tp | the name is longer than 40 characters or shorter than 3
 ward:swift/identifier-name | alamofire/Tests/RequestTests.swift:1433 | tp | the name is longer than 40 characters or shorter than 3
 ward:swift/identifier-name | alamofire/Source/Alamofire.swift:37 | tp | AF starts with a capital letter and has two characters
@@ -69,8 +60,8 @@ ward:swift/javadoc-method | alamofire/Source/Core/URLConvertible+URLRequestConve
 ward:swift/javadoc-method | alamofire/Source/Core/AFError.swift:239 | tp | the documentation comment has no tag for this parameter or result
 ward:swift/javadoc-method | alamofire/Source/Core/AFError.swift:247 | tp | the documentation comment has no tag for this parameter or result
 ward:swift/large-tuple | sample-food-truck/Widgets/SegmentedGauge.swift:162 | tp | the function returns a tuple of four members
-ward:swift/large-tuple | alamofire/Source/Core/AFError.swift:199 | fp | the three values are the payload of an enumeration case, not a tuple type
-ward:swift/large-tuple | alamofire/Tests/TestHelpers.swift:68 | fp | the three values are the payload of an enumeration case, not a tuple type
+ward:swift/large-tuple | alamofire/Source/Core/SessionDelegate.swift:93 | tp | a typealias of a tuple type of three labelled members
+ward:swift/large-tuple | alamofire/Source/Core/WebSocketRequest.swift:134 | tp | an array of a tuple type of three labelled members
 ward:swift/legacy-random | sample-food-truck/FoodTruckKit/Sources/Order/OrderGenerator.swift:143 | tp | drand48 is a legacy C generator
 ward:swift/line-length | sample-food-truck/FoodTruckKit/Sources/Donut/DiagonalDonutStackLayout.swift:20 | tp | the line is longer than 100 characters
 ward:swift/line-length | alamofire/Source/Features/AuthenticationInterceptor.swift:168 | tp | the line is longer than 100 characters
@@ -87,15 +78,9 @@ ward:swift/member-name | alamofire/Source/Alamofire.swift:37 | tp | AF is a glob
 ward:swift/method-name | alamofire/Source/Core/DownloadRequest.swift:372 | tp | the method name has an underscore
 ward:swift/method-name | alamofire/Tests/TLSEvaluationTests.swift:160 | tp | the method name has an underscore
 ward:swift/method-name | alamofire/Source/Core/DataRequest.swift:243 | tp | the method name has an underscore
-ward:swift/method-type-parameter-name | alamofire/Source/Extensions/Result+Alamofire.swift:82 | fp | a descriptive UpperCamelCase type parameter; the Swift API Design Guidelines name them so, and the default pattern is the single letter of Java
-ward:swift/method-type-parameter-name | alamofire/Tests/NSLoggingEventMonitor.swift:199 | fp | a descriptive UpperCamelCase type parameter; the Swift API Design Guidelines name them so, and the default pattern is the single letter of Java
-ward:swift/method-type-parameter-name | alamofire/Source/Core/DataRequest.swift:243 | fp | a descriptive UpperCamelCase type parameter; the Swift API Design Guidelines name them so, and the default pattern is the single letter of Java
 ward:swift/missing-javadoc-type | sample-food-truck/FoodTruckKit/Sources/Donut/DonutView.swift:57 | tp | a public type without a documentation comment
 ward:swift/missing-javadoc-type | alamofire/Tests/NSLoggingEventMonitor.swift:28 | tp | a public type without a documentation comment
 ward:swift/missing-javadoc-type | sample-food-truck/FoodTruckKit/Sources/Account/AccountStore.swift:19 | tp | a public type without a documentation comment
-ward:swift/missing-switch-default | sample-food-truck/FoodTruckKit/Sources/Account/AccountStore.swift:26 | fp | the switch lists every case; Swift rejects a switch that is not exhaustive, so a missing default is not a defect and adding one hides new cases
-ward:swift/missing-switch-default | alamofire/Source/Core/Request.swift:51 | fp | the switch lists every case; Swift rejects a switch that is not exhaustive, so a missing default is not a defect and adding one hides new cases
-ward:swift/missing-switch-default | alamofire/Tests/DataStreamTests.swift:50 | fp | the switch lists every case; Swift rejects a switch that is not exhaustive, so a missing default is not a defect and adding one hides new cases
 ward:swift/modifier-order | sample-food-truck/FoodTruckKit/Sources/Donut/DonutRenderer.swift:11 | tp | static or override stands before the access level
 ward:swift/modifier-order | alamofire/Source/Core/UploadRequest.swift:148 | tp | static or override stands before the access level
 ward:swift/modifier-order | alamofire/Source/Core/DownloadRequest.swift:227 | tp | static or override stands before the access level
@@ -109,8 +94,8 @@ ward:swift/multiple-variable-declarations | alamofire/Tests/AuthenticationTests.
 ward:swift/multiple-variable-declarations | alamofire/Tests/AuthenticationTests.swift:181 | tp | one let declares two constants
 ward:swift/multiple-variable-declarations | alamofire/Tests/AuthenticationTests.swift:61 | tp | one let declares two constants
 ward:swift/naming | sample-food-truck/App/Store/StoreSupportView.swift:42 | tp | the name has an underscore
-ward:swift/naming | alamofire/Source/Core/SessionDelegate.swift:106 | fp | case NAME: in a switch reads a constant of the SDK; it declares nothing
 ward:swift/naming | alamofire/Tests/TLSEvaluationTests.swift:159 | tp | the name has an underscore
+ward:swift/naming | sample-food-truck/App/Account/AccountView.swift:115 | tp | the name has an underscore
 ward:swift/nesting | sample-food-truck/Widgets/SegmentedGauge.swift:101 | tp | a type declared inside a type that is itself nested
 ward:swift/nesting | alamofire/Source/Core/WebSocketRequest.swift:44 | tp | a type declared inside a type that is itself nested
 ward:swift/nesting | alamofire/Tests/SessionTests.swift:193 | tp | a type declared inside a type that is itself nested
@@ -154,9 +139,6 @@ ward:swift/unneeded-synthesized-initializer | alamofire/Tests/AuthenticationInte
 ward:swift/unused-closure-parameter | sample-food-truck/App/Truck/SalesHistoryView.swift:50 | tp | the closure never uses the named parameter
 ward:swift/unused-closure-parameter | sample-food-truck/App/Donut/TopDonutSalesChart.swift:55 | tp | the closure never uses the named parameter
 ward:swift/unused-closure-parameter | sample-food-truck/App/Truck/Cards/TruckOrdersCard.swift:64 | tp | the closure never uses the named parameter
-ward:swift/unused-imports | sample-food-truck/App/Truck/Cards/TruckOrdersCard.swift:9 | fp | the file uses types of the module; the rule only looks for the module name in the code, and Swift code does not write it
-ward:swift/unused-imports | alamofire/Source/Features/AuthenticationInterceptor.swift:25 | fp | the file uses types of the module; the rule only looks for the module name in the code, and Swift code does not write it
-ward:swift/unused-imports | alamofire/Tests/ParameterEncoderTests.swift:26 | fp | the file uses types of the module; the rule only looks for the module name in the code, and Swift code does not write it
 ward:swift/unused-local-variable | alamofire/Tests/ResponseSerializationTests.swift:1406 | fp | the name is declared once in each branch of a conditional compilation block and read after it
 ward:swift/unused-local-variable | alamofire/Tests/SessionTests.swift:565 | fp | the name is declared once in each branch of a conditional compilation block and read after it
 ward:swift/unused-parameter | sample-food-truck/FoodTruckKit/Sources/Order/OrderGenerator.swift:107 | tp | the body never uses the parameter
@@ -171,3 +153,6 @@ ward:swift/weak-random | sample-food-truck/FoodTruckKit/Sources/Order/OrderGener
 ward:swift/xctfail-message | alamofire/Tests/DownloadTests.swift:1076 | tp | XCTFail() without a message
 ward:swift/xctfail-message | alamofire/Tests/DownloadTests.swift:958 | tp | XCTFail() without a message
 ward:swift/xctfail-message | alamofire/Tests/ResponseTests.swift:585 | tp | XCTFail() without a message
+ward:swift/hard-coded-credential | alamofire/Tests/AuthenticationTests.swift:61 | tp | the second constant of a declaration of two is a password literal
+ward:swift/hard-coded-credential | alamofire/Tests/AuthenticationTests.swift:89 | tp | the second constant of a declaration of two is a password literal
+ward:swift/hard-coded-credential | alamofire/Tests/AuthenticationTests.swift:181 | tp | the second constant of a declaration of two is a password literal

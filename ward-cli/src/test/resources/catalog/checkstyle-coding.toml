@@ -104,6 +104,7 @@ not-applicable = { python = "Java final local variables; Python has no final mod
 pmd = ["LocalVariableCouldBeFinal"]
 checkstyle = ["FinalLocalVariable"]
 
+# Swift (#596): the parameters of any initializer, with modifiers, are left alone; `self.value = value` is the Swift idiom.
 [[rule]]
 name = "hidden-field"
 typescript-eslint = ["no-shadow"]
@@ -193,6 +194,7 @@ checkstyle = ["MissingNullCaseInSwitch"]
 
 [[rule]]
 name = "missing-switch-default"
+not-applicable = { swift = "The Swift compiler rejects a switch that is not exhaustive, so a missing default is not a defect and adding one hides new enumeration cases (#596)" }
 ids = { java = "ward:java/missing-switch-default" }
 pmd = ["SwitchStmtsShouldHaveDefault"]
 checkstyle = ["MissingSwitchDefault"]

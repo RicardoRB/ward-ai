@@ -4,6 +4,7 @@
 name = "cognitive-complexity"
 pmd = ["CognitiveComplexity"]
 
+# Swift (#596): `case NAME:` in a switch reads a constant and declares nothing.
 [[rule]]
 name = "naming"
 eslint = ["camelcase"]

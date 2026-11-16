@@ -7,10 +7,10 @@ import dev.ward.analysis.domain.rule.check.ConstructorGroupCheck;
 import dev.ward.analysis.domain.rule.check.DocSummaryCheck;
 import dev.ward.analysis.domain.rule.check.ImportSortCheck;
 import dev.ward.analysis.domain.rule.check.JavadocMethodCheck;
-import dev.ward.analysis.domain.rule.check.UnusedImportCheck;
 import dev.ward.analysis.domain.rule.check.VariableDistanceCheck;
 import dev.ward.analysis.domain.swift.SwiftHiddenFieldCheck;
 import dev.ward.analysis.domain.swift.SwiftParameterAlignmentCheck;
+import dev.ward.analysis.domain.swift.SwiftRightCurlyCheck;
 import dev.ward.analysis.domain.swift.SwiftUnusedParameterCheck;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -57,8 +57,8 @@ public final class SwiftCheckProvider implements CheckProvider {
         toml -> new SwiftParameterAlignmentCheck(TomlValues.required(toml, MESSAGE))
     );
     checks.put(
-        "swift-unused-import",
-        toml -> new UnusedImportCheck(TomlValues.required(toml, MESSAGE))
+        "swift-right-curly",
+        toml -> new SwiftRightCurlyCheck(TomlValues.required(toml, MESSAGE))
     );
     checks.put("swift-unused-definition", toml -> root -> List.of());
     checks.put(

@@ -4,3 +4,5 @@ struct Client {
     static let authToken = "placeholder-two"
     let signingSecretKey = "placeholder-three"
 }
+
+let user = "alice", password = "placeholder-four"
