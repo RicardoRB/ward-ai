@@ -42,6 +42,14 @@ Before you open a pull request, run Ward on Ward itself:
 java -jar ward-cli/target/ward.jar check --profile pre-push
 ```
 
+The repository shares its Git hooks in `.githooks/`: `pre-commit` and `pre-push` run the matching
+Ward profile on the files you commit or push, with `WARD_JOBS=auto` unless you set it. They need a
+`ward` on your `PATH`. Turn them on once per clone:
+
+```bash
+git config core.hooksPath .githooks
+```
+
 Read [AGENTS.md](AGENTS.md) first. It covers the package layout, the patterns to copy, and the
 static-analysis rules. In short:
 
