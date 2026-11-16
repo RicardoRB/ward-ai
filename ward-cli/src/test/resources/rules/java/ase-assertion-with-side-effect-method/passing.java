@@ -7,4 +7,16 @@ final class Check {
     assertTrue(names.remove("a"));
     assertEquals("b", new StringBuilder().append("b").toString());
   }
+
+  private static void assertEquals(final Object expected, final Object actual) {
+    if (!expected.equals(actual)) {
+      throw new IllegalStateException();
+    }
+  }
+
+  private static void assertTrue(final boolean condition) {
+    if (!condition) {
+      throw new IllegalStateException();
+    }
+  }
 }

@@ -3,10 +3,13 @@ abbreviation-as-word-in-name	checkstyle	AbbreviationAsWordInName	Ward's default 
 atclause-order	checkstyle	AtclauseOrder	Checkstyle reports both misplaced @param tags, Ward the first
 avoid-string-buffer-field	pmd	AvoidStringBufferField	PMD also reports a StringBuilder field; Ward reports StringBuffer fields only
 class-type-parameter-name	checkstyle	ClassTypeParameterName	the passing fixture uses names such as KeyT, which Checkstyle's default pattern (one capital letter) rejects
+fall-through	errorprone	FallThrough	Error Prone accepts a fall-through comment that matches \bfalls?.?through\b, so it reports the case after // fallthru (line 33 of the passing fixture); Ward accepts falls?[ -]?thr(u|ough), the default reliefPattern of Checkstyle's FallThrough, which agrees
 hide-utility-class-constructor	checkstyle	HideUtilityClassConstructor	Ward leaves a class that has an inner class, which needs an instance; Checkstyle reports it
 interface-type-parameter-name	checkstyle	InterfaceTypeParameterName	the passing fixture uses names such as KeyT, which Checkstyle's default pattern (one capital letter) rejects
 java8-api-checker	errorprone	Java8ApiChecker	Error Prone reports List.of(1); Ward has no finding there
 method-type-parameter-name	checkstyle	MethodTypeParameterName	the passing fixture uses names such as KeyT, which Checkstyle's default pattern (one capital letter) rejects
+sf-switch-fallthrough	spotbugs	SF_SWITCH_FALLTHROUGH	SpotBugs reads class files, which keep no comments, so it reports a fall-through that a // falls-through comment marks as meant (line 25 of the passing fixture); Ward reads the comment, as Checkstyle's FallThrough does. On the violating fixture SpotBugs anchors each fall-through on the line before the next label, Ward on the label
+test-class-without-test-cases	pmd	TestClassWithoutTestCases	PMD finds inherited test methods through resolved types: it leaves SlowParserTest, whose superclass is in the file, and reports TypedParserTest (line 16 of the passing fixture), whose superclass base.GenericParserTests it cannot resolve; Ward has no types and takes a superclass named as a test class for one that has tests
 text-block-google-style-formatting	checkstyle	TextBlockGoogleStyleFormatting	Checkstyle also reports the closing delimiter on its own line
 annotated-declaration-visibility	checkstyle	AnnotatedDeclarationVisibility	Checkstyle reports only the public @VisibleForTesting declaration (line 2); Ward also reports the private one (line 3)
 close-resource	pmd	CloseResource	PMD wants a finally block or try-with-resources and reports the direct close() of the passing fixture; Ward accepts a direct close()
