@@ -49,4 +49,25 @@ class Subject {
     val unused = request.queryString
     Runtime.getRuntime().exec("fixed")
   }
+
+  fun sanitizedInRun(request: HttpServletRequest) {
+    val port = request.getParameter("x").run { Integer.parseInt(this) }
+    Runtime.getRuntime().exec("run " + port)
+  }
+
+  fun sanitizedInWith(request: HttpServletRequest) {
+    val port = with(request.getParameter("x")) { Integer.parseInt(this) }
+    Runtime.getRuntime().exec("run " + port)
+  }
+
+  fun sanitizedInsideAlso(request: HttpServletRequest) {
+    request.getParameter("x").also { Runtime.getRuntime().exec("run " + Integer.parseInt(it)) }
+  }
+
+  fun sanitizedInsideLet(request: HttpServletRequest) {
+    request.getParameter("x").let {
+      val port = Integer.parseInt(it)
+      Runtime.getRuntime().exec("run " + port)
+    }
+  }
 }

@@ -1,29 +1,151 @@
-# SQL text that a DB-API cursor, Django's raw SQL or SQLAlchemy text() runs, which is argument 0. A DB-API cursor
-# has no declared type, so the method name matches on any receiver; parameter values are bound by the driver.
+# SQL text that a DB-API cursor or connection (PEP 249, sqlite3, Django's connection.cursor(), a SQLAlchemy
+# connection or session), Django's raw SQL or SQLAlchemy text() runs, which is argument 0. A cursor has no declared
+# type, so the methods match a receiver whose text names a cursor or a connection, as in cursor, self.cursor,
+# conn.cursor(), cur, conn, connection, db or session; an execute of any other object (an executor, a pipeline, a
+# command) is not SQL. Parameter values are bound by the driver.
 
 [[sinks]]
 kind = "call"
 name = "execute"
+qualifier = "*cursor"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execute"
+qualifier = "*cursor()"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execute"
+qualifier = "*cur"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execute"
+qualifier = "*conn"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execute"
+qualifier = "*connection"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execute"
+qualifier = "*db"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execute"
+qualifier = "*session"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execute"
+qualifier = "*connect()"
 arguments = [0]
 
 [[sinks]]
 kind = "call"
 name = "executemany"
+qualifier = "*cursor"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "executemany"
+qualifier = "*cursor()"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "executemany"
+qualifier = "*cur"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "executemany"
+qualifier = "*conn"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "executemany"
+qualifier = "*connection"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "executemany"
+qualifier = "*db"
 arguments = [0]
 
 [[sinks]]
 kind = "call"
 name = "executescript"
+qualifier = "*cursor"
 arguments = [0]
 
 [[sinks]]
 kind = "call"
-name = "raw"
+name = "executescript"
+qualifier = "*cursor()"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "executescript"
+qualifier = "*cur"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "executescript"
+qualifier = "*conn"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "executescript"
+qualifier = "*connection"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "executescript"
+qualifier = "*db"
 arguments = [0]
 
 [[sinks]]
 kind = "call"
 name = "mogrify"
+qualifier = "*cursor"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "mogrify"
+qualifier = "*cursor()"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "mogrify"
+qualifier = "*cur"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "raw"
+qualifier = "*objects"
 arguments = [0]
 
 [[sinks]]

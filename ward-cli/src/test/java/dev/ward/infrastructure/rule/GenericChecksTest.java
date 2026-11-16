@@ -104,6 +104,22 @@ class GenericChecksTest {
   }
 
   @Test
+  void textPatternTakesTheMatchPositionOnlyForLines() {
+    final String lines = MINIMAL.get(GenericKind.TEXT_PATTERN);
+
+    assertThat(DeclarativeChecks.bundled().build(lines + "\nposition = \"match\"")).isNotNull();
+    assertThatThrownBy(() -> DeclarativeChecks.bundled().build(lines + "\nposition = \"word\""))
+        .isInstanceOf(RuleConfigurationException.class)
+        .hasMessageContaining("position must be line or match");
+    assertThatThrownBy(
+        () ->
+            DeclarativeChecks.bundled()
+                .build(lines.replace("lines", "comments") + "\nposition = \"match\"")
+    )
+        .isInstanceOf(RuleConfigurationException.class);
+  }
+
+  @Test
   void textPatternWithoutATargetStaysTheNamePatternCheck() {
     final String legacy =
         "check = \"text-pattern\"\nkinds = [\"a\"]\nmodifiers = [\"m\"]\nname = \"n\"\n"

@@ -29,7 +29,7 @@ enum GenericKind {
   DEPTH("depth", List.of("reset", "max"), List.of(option("max", RuleOptionType.INTEGER))),
   TEXT_PATTERN(
       "text-pattern",
-      List.of("target", "pattern", "required", "limit", "header-lines"),
+      List.of("target", "pattern", "required", "limit", "header-lines", "position"),
       List.of(option("pattern", RuleOptionType.REGEX), option("limit", RuleOptionType.INTEGER))
   ),
   ORDER(
