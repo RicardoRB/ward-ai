@@ -32,6 +32,7 @@ final class InitQuestions {
   private final boolean useDefaults;
   private final QuestionProgress progress;
   private Optional<PreviousChoices> previous = Optional.empty();
+  private boolean architectureChosen;
 
   /**
    * Answers are read only on a terminal, or when no setup option was given (piped answers).
@@ -84,7 +85,8 @@ final class InitQuestions {
         qualityHooks,
         answers.ci(),
         answers.agentRules(),
-        schemeQuestions.scheme(catalog, project)
+        schemeQuestions.scheme(catalog, project),
+        architectureChosen
     );
   }
 
@@ -155,14 +157,17 @@ final class InitQuestions {
 
   /**
    * The architecture style: the option when given, the default with defaults, outside a strict
-   * wizard, or when the preset was given as an option; otherwise asked.
+   * wizard, or when the preset was given as an option; otherwise asked. A style from the option or
+   * the question is chosen; a default is not.
    */
   private String architecture(final QualityPreset preset, final boolean gatesGiven) {
     final String selected;
+    architectureChosen = true;
     if (answers.architecture() != null) {
       selected = answers.architecture();
     } else if (useDefaults || gatesGiven || preset != QualityPreset.STRICT) {
       selected = DEFAULT_ARCHITECTURE;
+      architectureChosen = false;
     } else {
       progress.expect(1);
       progress.step();

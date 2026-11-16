@@ -94,6 +94,27 @@ public final class OwnedSections {
     return List.copyOf(all);
   }
 
+  /**
+   * Returns {@code sections} with the project's {@code ward-architecture.toml} appended when the
+   * user chose an architecture style and the file does not exist: {@code exists} tells whether it
+   * does.
+   */
+  public static List<OwnedSection> withArchitectureFile(
+      final List<OwnedSection> sections,
+      final Project project,
+      final InitSelection selection,
+      final boolean exists
+  ) {
+    final List<OwnedSection> all = new ArrayList<>(sections);
+    ArchitectureFileTemplate.section(project, selection, exists).ifPresent(all::add);
+    return List.copyOf(all);
+  }
+
+  /** Returns the project's {@code ward-architecture.toml}, which init writes at most once. */
+  public static Path architectureFilePath(final Project project) {
+    return ArchitectureFileTemplate.path(project);
+  }
+
   /** Returns the project's {@code .editorconfig}, which the {@code ward} engine may write. */
   public static Path editorConfigPath(final Project project) {
     return EditorConfigTemplate.path(project);

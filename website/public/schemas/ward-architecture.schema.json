@@ -19,9 +19,9 @@
   "$defs": {
     "selector": {
       "type": "object",
-      "description": "Selects files by project-relative path. A file is selected when it matches an entry of each of paths and directories that is set, and no entry of exclude-paths.",
+      "description": "Selects files by project-relative path. A file is selected when it matches an entry of each of paths and directories that is set, and no entry of exclude-paths. In must-not-depend-on, external also names code outside the project.",
       "additionalProperties": false,
-      "anyOf": [{ "required": ["paths"] }, { "required": ["directories"] }],
+      "anyOf": [{ "required": ["paths"] }, { "required": ["directories"] }, { "required": ["external"] }],
       "properties": {
         "paths": {
           "description": "Globs on the project-relative path: *, **, ? and {a,b}.",
@@ -40,6 +40,12 @@
           "type": "array",
           "minItems": 1,
           "items": { "type": "string", "minLength": 1 }
+        },
+        "external": {
+          "description": "Package or module names outside the project, read in must-not-depend-on only. An entry matches the imported name itself and every name below it after '.' or '/': org.springframework, @nestjs, django.db, UIKit. No wildcards.",
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1, "pattern": "^[^*]+$" }
         }
       }
     },
@@ -66,7 +72,7 @@
           "$ref": "#/$defs/selector"
         },
         "must-not-depend-on": {
-          "description": "Reports every dependency edge from a selected file to a file of this selector (ward:architecture/dependencies).",
+          "description": "Reports every dependency edge from a selected file to a file of this selector, and every import by a selected file of a name in external (ward:architecture/dependencies).",
           "$ref": "#/$defs/selector"
         },
         "may-only-depend-on": {

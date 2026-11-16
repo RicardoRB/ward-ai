@@ -19,6 +19,12 @@ must-not-depend-on = { directories = ["infrastructure", "adapter"] }
 because = "the domain must not know its adapters"
 
 [[rule]]
+name = "domain-is-framework-free"
+select = { directories = ["domain"] }
+must-not-depend-on = { external = ["org.springframework", "jakarta.persistence"] }
+because = "the domain must not know the framework"
+
+[[rule]]
 name = "repositories-behind-services"
 select = { paths = ["src/**/repository/**"] }
 only-accessed-by = { paths = ["src/**/service/**"] }
@@ -59,8 +65,30 @@ process and reads no other file. A hostile file can add or hide architecture fin
 else. `ward.toml` does not accept these rules: an `architecture` table under the `ward` check is an
 unknown key.
 
-`ward init` does not create, change or mention this file. You write it. An edit of the file does not
-start a partial check of the whole project, so run `ward check` after you change it.
+An edit of the file does not start a partial check of the whole project, so run `ward check` after
+you change it.
+
+## What ward init writes
+
+`ward init` writes the file once: when you choose the architecture style (the `--architecture`
+option, or the wizard's question under `strict`) and the project root has no
+`ward-architecture.toml`. `ward init --dry-run` shows it as created. The file starts with one rule
+for the style that the `layers` table of `ward.toml` does not state, and a commented `external`
+example:
+
+| Style | Rule | What it says |
+|---|---|---|
+| `layered` | `lower-layers-do-not-call-controllers` | `service` and `repository` must not depend on `controller` (FastAPI: also the router and `crud` folders) |
+| `hexagonal` | `domain-is-innermost` | `domain` must not depend on `application` |
+| `clean` | `entities-do-not-know-use-cases` | `domain` and `core` must not depend on `usecase`, `usecases` or `application` |
+
+The rule sets `allow-empty = true`, so a project without those folders passes, and leaves out the
+test sources that the `layers` table leaves out.
+
+After that the file is yours. It has no ownership marker. An init that finds the file, edited or
+not, leaves it byte for byte and shows it as kept, also with `--overwrite` and with another
+`--architecture`. To get a new starter, delete the file and run init again. An init that takes the
+default style (`--yes`, or a preset other than `strict` without `--architecture`) writes no file.
 
 ## A rule
 
@@ -83,9 +111,11 @@ A selector is an inline table with these keys. Every list holds non-empty string
 | `paths` | Globs on the project-relative path, with `/` separators: `*` inside a folder, `**` across folders, `?` one character, `{a,b}` either text. |
 | `directories` | Plain directory names. A file is selected when a directory of its path has one of these names, as a layer is in `[[checks.ward.layers]]`. Swift paths compare ignoring case. |
 | `exclude-paths` | Globs of the paths that are left out. |
+| `external` | Package or module names outside the project. Read in `must-not-depend-on` only; see [External code](#external-code). |
 
 A file is selected when it matches an entry of each of `paths` and `directories` that is set, and no
-entry of `exclude-paths`. A selector needs `paths` or `directories`. Test sources are left out only
+entry of `exclude-paths`. A selector needs `paths` or `directories`; in `must-not-depend-on`,
+`external` alone is enough. Test sources are left out only
 through `exclude-paths`: a rule has no hidden exclusion, so `directories = ["domain"]` also selects
 `src/test/java/shop/domain/OrderTest.java` unless you add `exclude-paths = ["src/test/**"]`.
 
@@ -95,7 +125,7 @@ Let S be the files that `select` picks and T the files of the constraint's selec
 
 | Constraint | Value | A finding is | Rule id |
 |---|---|---|---|
-| `must-not-depend-on` | selector | a dependency from a file of S to a file of T | `ward:architecture/dependencies` |
+| `must-not-depend-on` | selector | a dependency from a file of S to a file of T, or an import by a file of S of a name in `external` | `ward:architecture/dependencies` |
 | `may-only-depend-on` | selector | a dependency from a file of S to a project file in neither S nor T | `ward:architecture/dependencies` |
 | `only-accessed-by` | selector | a dependency into a file of S from a file in neither S nor T | `ward:architecture/dependencies` |
 | `file-name` | glob on the base name | a file of S whose name does not match | `ward:architecture/naming` |
@@ -109,8 +139,44 @@ The message is `<name>: <what is wrong>, because <reason>`, for example
 `domain-is-pure: src/main/java/shop/domain/Order.java must not depend on src/main/java/shop/infrastructure/Db.java, because the domain must not know its adapters`.
 
 Dependencies are the edges between project files that the gate resolves. An import of a library is
-not an edge, so `may-only-depend-on` limits dependencies on project code, and a rule such as "the
-domain must not import the framework" cannot be written yet.
+not an edge, so `may-only-depend-on` limits dependencies on project code only. To forbid a library,
+name it with `external`.
+
+## External code
+
+`external` in `must-not-depend-on` names code outside the project by the package or module name it
+is imported with. An entry matches the imported name itself and every name below it, after a `.` or
+a `/`:
+
+| Language | The name is | `external = ["..."]` | Matches | Does not match |
+|---|---|---|---|---|
+| Java, Kotlin | the imported package, type or member | `org.springframework` | `import org.springframework.stereotype.Service`, `import org.springframework.web.*`, a static import | `import org.springframeworks.Other` |
+| TypeScript, JavaScript | the module specifier of `import`, `export ... from`, `require()` and `import()` | `express`, `@nestjs`, `node:fs` | `"express"`, `"express/lib/router"`, `"@nestjs/common"` | `"express-session"`, `"./express"` |
+| Python | the module, and for `from m import n` also `m.n` | `django.db` | `import django.db.models`, `from django.db import models`, `from django import db` | `from . import django`, `import djangorestframework` |
+| Swift | the imported module | `UIKit` | `import UIKit` | `import SwiftUI` |
+
+```toml
+[[rule]]
+name = "domain-is-framework-free"
+select = { directories = ["domain"] }
+must-not-depend-on = { external = ["express", "@nestjs"] }
+because = "the domain must not know the web framework"
+```
+
+The finding sits at the import, and its message names the file and the imported name:
+`domain-is-framework-free: src/domain/order.ts must not depend on express, because the domain must not know the web framework`.
+
+- Only an import that resolves to no project file is external. A path alias or a package of your
+  own monorepo that the gate resolves to a project file is a dependency on that file, which
+  `paths` and `directories` select.
+- An entry is a name, not a glob. An entry with `*` is a configuration problem: write
+  `org.springframework`, not `org.springframework.*`.
+- `external` can stand next to `paths` and `directories` in the same `must-not-depend-on`; the rule
+  then forbids both the project files and the external names.
+- `external` in `select`, `may-only-depend-on`, `only-accessed-by` or `must-be-in` is a
+  configuration problem. An allow-list of libraries cannot be written yet.
+- A name used without an import, such as a fully qualified `org.springframework.util.Assert` in a
+  Java expression, is not seen.
 
 ## A rule that cannot be checked fails the gate
 
@@ -136,7 +202,7 @@ A rule never passes because Ward could not check it:
 ## Relation to the tables of ward.toml
 
 `[[checks.ward.layers]]`, `[checks.ward.cycles]` and `[[checks.ward.independence]]` stay in
-`ward.toml`, keep their rule ids and messages, and are what `ward init` writes. They are shorthands
+`ward.toml`, keep their rule ids and messages, and are what every `ward init` writes. They are shorthands
 for part of what a rule here says:
 
 - A `layers` table with `from = ["A"]` and `forbidden = ["B"]` reports what this rule reports, except that the table skips Java and Swift test sources by itself:

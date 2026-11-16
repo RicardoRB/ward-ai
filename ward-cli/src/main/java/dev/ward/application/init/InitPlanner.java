@@ -146,17 +146,42 @@ final class InitPlanner {
             .filter(file -> file.action() == PlannedFileChange.Action.PRESERVE_USER_OWNED)
             .map(PlannedFileChange::file)
             .toList();
+    final boolean architectureFile =
+        files.configuration().exists(OwnedSections.architectureFilePath(project));
     final List<OwnedSection> sections =
-        OwnedSections.withEditorConfig(
-            OwnedSections.of(catalog.get(), project, selection, gates, userOwned),
+        OwnedSections.withArchitectureFile(
+            OwnedSections.withEditorConfig(
+                OwnedSections.of(catalog.get(), project, selection, gates, userOwned),
+                project,
+                gates,
+                files.configuration().read(OwnedSections.editorConfigPath(project))
+            ),
             project,
-            gates,
-            files.configuration().read(OwnedSections.editorConfigPath(project))
+            selection,
+            architectureFile
         );
     final List<PlannedFileChange> changes = new ArrayList<>();
     sections.stream().map(files.sections()::plan).forEach(changes::add);
     changes.addAll(existingEditorConfig(project, gates));
+    if (architectureFile && selection.architectureChosen()) {
+      changes.add(existingArchitectureFile(project));
+    }
     return changes;
+  }
+
+  /**
+   * Names the project's {@code ward-architecture.toml} in the preview when a style is chosen and
+   * the file exists: it is the user's, so init leaves it byte for byte, whatever style it holds.
+   */
+  private static PlannedFileChange existingArchitectureFile(final Project project) {
+    return new PlannedFileChange(
+        OwnedSections.architectureFilePath(project),
+        PlannedFileChange.Action.PRESERVE_USER_OWNED,
+        List.of(
+            "Your architecture rules; init wrote or found this file and never changes it, so edit"
+                + " it by hand if the style changed."
+        )
+    );
   }
 
   /**

@@ -110,7 +110,8 @@ class InitServicePlanTest {
         hooks,
         null,
         false,
-        null
+        null,
+        false
     );
   }
 
