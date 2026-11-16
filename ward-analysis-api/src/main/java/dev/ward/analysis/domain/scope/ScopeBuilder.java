@@ -51,6 +51,12 @@ public final class ScopeBuilder extends ScopeDeclarations {
     return stack.peek();
   }
 
+  /** Returns the id of the scope around the current one; the module scope has itself. */
+  public int enclosing() {
+    final int parent = parents.get(current());
+    return parent == Scope.NO_PARENT || parent == UnitScopes.BUILTIN_ID ? current() : parent;
+  }
+
   /** Returns the kind of scope {@code id}. */
   public ScopeKind kindOf(final int id) {
     return kinds.get(id);

@@ -90,6 +90,7 @@ final class SwiftScopeWalk {
     handlers.put("expression", expressions::expression);
     handlers.put(PRIMARY, expressions::primary);
     handlers.put("postfix_expression", expressions::postfix);
+    handlers.put("string_literal", expressions::stringLiteral);
     handlers.put(PATTERN, node -> patterns.pattern(node, false, false));
     TYPES.forEach(kind -> handlers.put(kind, types::typeLike));
     SCOPED.forEach(kind -> handlers.put(kind, node -> scoped(node, ScopeKind.BLOCK, false)));

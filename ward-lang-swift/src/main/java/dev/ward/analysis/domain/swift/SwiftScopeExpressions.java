@@ -91,6 +91,12 @@ final class SwiftScopeExpressions {
   }
 
   /** In {@code a.b} the name after the dot is a member, not a reference. */
+  /** Records the names that the interpolations of a string literal read. */
+  void stringLiteral(final SyntaxNode node) {
+    SwiftInterpolation.names(SwiftScopeWalk.text(node))
+        .forEach(name -> walk.builder.reference(name, node.span(), ReferenceAccess.READ));
+  }
+
   void postfix(final SyntaxNode node) {
     node.children().stream().filter(c -> !IDENTIFIER.equals(c.kind())).forEach(walk::visit);
   }

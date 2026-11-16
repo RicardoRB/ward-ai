@@ -46,6 +46,10 @@ public final class ConstructorGroupCheck implements RuleCheck {
     boolean initialized = false;
     boolean leftGroup = false;
     for (final SyntaxNode member : body.children()) {
+      // a comment between two initializers is not a member that ends their group
+      if (SyntaxWalk.COMMENT_KIND.equals(member.kind())) {
+        continue;
+      }
       final boolean initializer = INITIALIZER.matcher(SyntaxWalk.text(member)).find();
       if (initializer && leftGroup) {
         matches.add(new RuleMatch(member.span(), message.replace("{value}", "init")));
