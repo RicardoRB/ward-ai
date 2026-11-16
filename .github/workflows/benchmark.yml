@@ -33,8 +33,13 @@ jobs:
         with:
           python-version: '3.13'
 
+      # native:compile alone runs no lifecycle phase, so the sibling modules of the new version
+      # are neither built nor in a repository; install them first, as the verify native job does.
+      - name: Install the analysis modules for the native build
+        run: ./mvnw -B -q -DskipTests install -pl ward-analysis-api,ward-analysis-engine,ward-frontend-antlr,ward-lang-jvm,ward-lang-node,ward-lang-python,ward-lang-swift,ward-lang-openapi,ward-lang-android -am
+
       - name: Build native executable
-        run: ./mvnw -q -Pnative -DskipTests native:compile
+        run: ./mvnw -B -q -Pnative -pl ward-cli -DskipTests package native:compile
 
       - name: Package the benchmark
         run: ./mvnw -q -pl ward-analysis-bench -am -DskipTests package
