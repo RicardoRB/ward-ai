@@ -22,6 +22,7 @@ final class PythonFlowSites implements FlowSites {
   private static final String OPEN_INDEX = "[";
   private static final String DOT = ".";
   private static final String AWAIT = "await";
+  private static final String SUBPROCESS = "subprocess";
   private static final Set<String> OTHER_BODIES =
       Set.of("funcdef", "classdef", "decorated", "async_funcdef", "lambdef", "lambdef_nocond");
 
@@ -80,7 +81,7 @@ final class PythonFlowSites implements FlowSites {
     if (PythonCallArguments.opens(trailer, OPEN_CALL)) {
       final List<SyntaxNode> values = PythonCallArguments.values(trailer);
       values.forEach(value -> walk(value, found));
-      call(chain, values).ifPresent(found::add);
+      call(chain, values, trailer).ifPresent(found::add);
       chain.afterCall(trailer);
     } else if (PythonCallArguments.opens(trailer, OPEN_INDEX)) {
       trailer.children().forEach(child -> walk(child, found));
@@ -106,7 +107,11 @@ final class PythonFlowSites implements FlowSites {
     );
   }
 
-  private Optional<FlowSite> call(final Chain chain, final List<SyntaxNode> values) {
+  private Optional<FlowSite> call(
+      final Chain chain,
+      final List<SyntaxNode> values,
+      final SyntaxNode trailer
+  ) {
     if (chain.name().isEmpty()) {
       return Optional.empty();
     }
@@ -121,11 +126,46 @@ final class PythonFlowSites implements FlowSites {
               "",
               Optional.of(module).filter(m -> !m.isEmpty()),
               chain,
-              values
+              spans(module, values, trailer)
           )
       );
     }
-    return Optional.of(site(chain.name(), qualifier, receiverOf(qualifier), chain, values));
+    final Optional<String> receiver = receiverOf(qualifier);
+    return Optional.of(
+        site(chain.name(), qualifier, receiver, chain, spans(receiver.orElse(""), values, trailer))
+    );
+  }
+
+  /**
+   * The spans of the arguments. A list or tuple given to a {@code subprocess} function without
+   * {@code shell=True} is the program and its arguments, which no shell reads, so it stands for no
+   * command text: its span is empty. shortcut: the program named by the vector's first item is not
+   * followed (that is argument injection, not shell injection); upgrade with a rule of its own.
+   */
+  private static List<Span> spans(
+      final String module,
+      final List<SyntaxNode> values,
+      final SyntaxNode trailer
+  ) {
+    final List<Span> spans = new ArrayList<>(values.stream().map(SyntaxNode::span).toList());
+    if (SUBPROCESS.equals(module)
+        && !values.isEmpty()
+        && PythonCallArguments.isSequenceDisplay(values.get(0))
+        && !PythonCallArguments.passes(trailer, "shell", "True")) {
+      final Span vector = spans.get(0);
+      spans.set(
+          0,
+          new Span(
+              vector.startLine(),
+              vector.startColumn(),
+              vector.startLine(),
+              vector.startColumn(),
+              vector.startOffset(),
+              vector.startOffset()
+          )
+      );
+    }
+    return spans;
   }
 
   private static FlowSite site(
@@ -133,9 +173,8 @@ final class PythonFlowSites implements FlowSites {
       final String qualifier,
       final Optional<String> receiver,
       final Chain chain,
-      final List<SyntaxNode> values
+      final List<Span> spans
   ) {
-    final List<Span> spans = values.stream().map(SyntaxNode::span).toList();
     return new FlowSite(
         FlowSiteKind.CALL,
         name,
