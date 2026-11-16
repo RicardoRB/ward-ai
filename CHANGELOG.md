@@ -10,12 +10,15 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ### Added
 
+- `ward-architecture.toml`: the `external` selector names code outside the project, so "the domain does not import the framework" is one rule (#570). `must-not-depend-on = { external = ["org.springframework"] }` reports every import by a selected file of that package or module name, or of a name below it after `.` or `/`, that resolves to no project file. The finding has the id `ward:architecture/dependencies` and sits at the import, in Java, Kotlin, TypeScript, JavaScript, Python and Swift. An entry is a name without `*`; `external` in `select` or in another constraint is a configuration problem.
+- `ward init` writes a starter `ward-architecture.toml` when you choose the architecture style (`--architecture`, or the wizard's question) and the project has none: one rule for the style that the `layers` table does not state, with `allow-empty = true`, and a commented `external` example (#570). `--dry-run` shows the file. After that the file is yours: an init that finds it, edited or not, leaves it byte for byte and shows it as kept. An init with the default style writes no file.
 - `ward check --jobs <n>` runs up to `n` checks at once, and `--jobs auto` one per processor; the environment variable `WARD_JOBS` sets the same value for Git hooks and CI (#577). `ward-format`, `secrets`, and `ward` without `java-classpath` run next to any other check; every other check still runs one at a time in the order of `ward.toml`. The report, the order of the checks and the exit code do not depend on the value. Without the option nothing changes.
 - With `--jobs` (or `WARD_JOBS`) above 1, the `ward` check analyzes several files at once (#585): parsing and the per-file rules run on up to that many threads. The value is one limit for the whole command: a running check and a file under analysis each count as one job. Findings, their order, execution errors and the `.ward` cache do not depend on the value. Without the option the `ward` check works on one thread as before. More jobs need more memory per file under analysis, and less in total than one job on a large project, because the syntax trees of a file are dropped when its rules are done.
 
 ### Changed
 
 - The `ward` check runs its per-file rules on a thread with a stack of 8 MiB, whatever the value of `--jobs` (#585). A file on which a rule ran out of stack on a JVM with the default stack (1 to 2 MiB) can now be analyzed; no other result changes.
+- `android-lint` stays an external gate for good (#571): the checks it adds over the native `ward:android/*` rules need resolved types, the merged manifest and resources, Gradle's model or API level tables, and the table in the Android SDK is under a licence that forbids redistribution. The website page of the gate gives the reasons.
 - This repository checks its own Java with the `ward` and `ward-format` gates instead of the Checkstyle, PMD, SpotBugs and Spotless Maven plugins (#347, #470). Its sources are formatted with `ward format`.
 
 ## [0.9.1] - 2026-11-15

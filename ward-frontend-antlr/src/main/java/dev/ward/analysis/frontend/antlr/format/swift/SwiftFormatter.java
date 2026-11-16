@@ -33,6 +33,7 @@ public final class SwiftFormatter implements SourceFormatter {
   /** Option key for the most blank lines kept in a row. */
   static final String MAX_BLANK_LINES = "max-blank-lines";
 
+  private static final int MAX_PASSES = 4;
   private static final String SPACE_STYLE = "space";
   private static final String TAB_STYLE = "tab";
   private static final String DEFAULT_LINE_WIDTH = "100";
@@ -83,16 +84,32 @@ public final class SwiftFormatter implements SourceFormatter {
    * Lays out the source. Output always uses LF line endings and ends with exactly one newline. The
    * result is not checked here; the caller runs the safety checks.
    *
+   * <p>The layout reads the line breaks of the source, so a list that the first pass breaks can
+   * read differently in the next one. The passes repeat until the text no longer changes, at most
+   * {@value #MAX_PASSES} times, so that the result formats to itself.
+   *
    * @param source the Swift source
    * @param options the option values
    * @return the formatted text, or {@code Unchanged} when it equals the source
    */
   @Override
   public FormatResult format(final String source, final FormatOptions options) {
+    String text = layout(source, options);
+    for (int pass = 1; pass < MAX_PASSES; pass++) {
+      final String next = layout(text, options);
+      if (next.equals(text)) {
+        break;
+      }
+      text = next;
+    }
+    return text.equals(source) ? new FormatResult.Unchanged() : new FormatResult.Formatted(text);
+  }
+
+  private static String layout(final String source, final FormatOptions options) {
     final List<Token> tokens =
         SwiftLexing.significant(SwiftLexing.filled(SwiftLexing.lexer(source)).getTokens());
     final Document document =
-        new SwiftDocBuilder(source, tokens, options.integer(MAX_BLANK_LINES)).build();
+        new SwiftDocBuilder(tokens, options.integer(MAX_BLANK_LINES)).build();
     final PrintStyle style =
         new PrintStyle(
             options.integer(LINE_WIDTH),
@@ -100,8 +117,7 @@ public final class SwiftFormatter implements SourceFormatter {
             options.integer(INDENT_WIDTH),
             EndOfLine.LF
         );
-    final String text = finalNewline(new DocPrinter(style).print(document));
-    return text.equals(source) ? new FormatResult.Unchanged() : new FormatResult.Formatted(text);
+    return finalNewline(new DocPrinter(style).print(document));
   }
 
   private static IndentStyle indentStyle(final String value) {

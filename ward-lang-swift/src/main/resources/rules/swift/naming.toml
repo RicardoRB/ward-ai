@@ -33,8 +33,8 @@ body = '''
 check = "identifier-pattern"
 kinds = ["function_declaration"]
 name = "declaration_identifier"
-skip = ["attributes"]
-pattern = '[a-z][a-zA-Z0-9]*'
+skip = ["attributes", "type_annotation", "function_signature", "generic_parameter_clause", "default_argument_clause"]
+pattern = '`?[a-z][a-zA-Z0-9]*`?'
 message = "method name '{value}' does not match the name pattern of this rule"
 '''
 
@@ -55,7 +55,7 @@ not-modifiers = ["static"]
 not-inside = ["code_block", "closure_expression"]
 name = "declaration_identifier"
 skip = ["attributes"]
-pattern = '[a-z][a-zA-Z0-9]*'
+pattern = '`?[a-z][a-zA-Z0-9]*`?'
 message = "property name '{value}' does not match the name pattern of this rule"
 '''
 
@@ -161,7 +161,7 @@ check = "identifier-pattern"
 kinds = ["class_declaration", "struct_declaration", "enum_declaration", "protocol_declaration", "function_declaration", "constant_declaration", "variable_declaration", "parameter"]
 not-modifiers = ["static"]
 name = "declaration_identifier"
-skip = ["attributes"]
+skip = ["attributes", "type_annotation", "function_signature", "generic_parameter_clause", "default_argument_clause"]
 pattern = '^(?!.*[A-Z]{2}).*$'
 message = "name '{value}' has more than one consecutive capital letter"
 '''
@@ -178,7 +178,7 @@ body = '''
 check = "identifier-pattern"
 kinds = ["function_declaration"]
 name = "declaration_identifier"
-skip = ["attributes"]
+skip = ["attributes", "type_annotation", "function_signature", "generic_parameter_clause", "default_argument_clause"]
 pattern = '[a-z][a-z0-9]++(?:[A-Z][a-z0-9]++)*+[A-Z]?'
 message = "method name '{value}' does not match the name pattern of this rule"
 '''
@@ -195,7 +195,7 @@ check = "identifier-pattern"
 kinds = ["parameter"]
 name = "label_identifier"
 skip = ["attributes", "external_parameter_name"]
-pattern = '[a-z][a-zA-Z0-9]*'
+pattern = '_|[a-z][a-zA-Z0-9]*'
 message = "parameter name '{value}' does not match the name pattern of this rule"
 '''
 
@@ -227,7 +227,7 @@ options.pattern = { type = "regex" }
 body = '''
 check = "identifier-pattern"
 kinds = ["catch_clause"]
-name = "declaration_identifier"
+name = "identifier_pattern"
 skip = ["attributes", "code_block"]
 pattern = '_|[a-z]([a-z0-9][a-zA-Z0-9]*)?'
 message = "catch parameter name '{value}' does not match the name pattern of this rule"

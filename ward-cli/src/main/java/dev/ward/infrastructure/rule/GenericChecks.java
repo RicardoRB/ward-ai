@@ -186,13 +186,14 @@ final class GenericChecks {
   private static TextMatchCheck.Target target(final String value) {
     return switch (value) {
       case "lines" -> TextMatchCheck.Target.LINES;
+      case "code" -> TextMatchCheck.Target.CODE;
       case "comments" -> TextMatchCheck.Target.COMMENTS;
       case "strings" -> TextMatchCheck.Target.STRINGS;
       case "filename" -> TextMatchCheck.Target.FILENAME;
       case "header" -> TextMatchCheck.Target.HEADER;
       default ->
           throw new RuleConfigurationException(
-              "target must be lines, comments, strings, filename or header"
+              "target must be lines, code, comments, strings, filename or header"
           );
     };
   }

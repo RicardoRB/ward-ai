@@ -126,7 +126,13 @@ final class ArchitectureRuleReader {
           ? null
           : new ArchitectureConstraint(kind, null, glob);
     }
-    final ArchitectureSelector target = selectors.read(table, label, kind.key());
+    final ArchitectureSelector target =
+        selectors.read(
+            table,
+            label,
+            kind.key(),
+            kind == ArchitectureConstraint.Kind.MUST_NOT_DEPEND_ON
+        );
     return target == null ? null : new ArchitectureConstraint(kind, target, null);
   }
 

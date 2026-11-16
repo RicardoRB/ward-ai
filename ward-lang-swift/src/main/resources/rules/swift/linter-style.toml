@@ -39,7 +39,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["if_statement", "while_statement", "guard_statement", "switch_statement"]
-text = '^(?:(?:if|while|switch)\([^()]*+(?:\([^()]*\)[^()]*+)*+\)\{|guard\([^()]*+(?:\([^()]*\)[^()]*+)*+\)else\{)'
+text = '^(?:(?:if|while)\([^()]*+(?:\([^()]*\)[^()]*+)*+\)\{|switch\([^(),]*+(?:\([^()]*\)[^(),]*+)*+\)\{|guard\([^()]*+(?:\([^()]*\)[^()]*+)*+\)else\{)'
 message = "condition should not be wrapped in parentheses"
 '''
 
@@ -251,8 +251,8 @@ body = '''
 check = "identifier-pattern"
 kinds = ["constant_declaration", "variable_declaration", "function_declaration", "enum_case_name"]
 name = "declaration_identifier"
-skip = ["attributes"]
-pattern = 'id|URL|GlobalAPIKey|_|[a-z][A-Za-z0-9_]{2,39}'
+skip = ["attributes", "type_annotation", "function_signature", "generic_parameter_clause", "default_argument_clause"]
+pattern = '`?(?:id|URL|GlobalAPIKey|_|[a-z][A-Za-z0-9_]{2,39})`?'
 message = "name '{value}' must start with a lowercase letter and be 3 to 40 characters long"
 '''
 

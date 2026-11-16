@@ -173,6 +173,8 @@ T__129 : 'where' ;
 T__130 : 'while' ;
 T__131 : 'willSet' ;
 T__132 : 'x86_64' ;
+T__133 : '#fileID' ;
+T__134 : '#filePath' ;
 
 Platform_name_platform_version
     : Platform_name WS Platform_version
@@ -185,6 +187,8 @@ fragment Platform_name
     | 'macOSApplicationExtension'
     | 'watchOS'
     | 'tvOS'
+    | 'visionOS'
+    | 'macCatalyst'
     ;
 
 fragment Platform_version
@@ -197,10 +201,29 @@ fragment Platform_version
 
 // GRAMMAR OF A GENERIC PARAMETER CLAUSE
 
+// A word that is a keyword only before a name on the same line: `some View`, `any Error`,
+// `package var`, `nonisolated func`, `macro Name`, `consume value`. As a token of its own it lets
+// the parser tell `name: Type` followed by a line that starts with a name from `some Type` at once.
+Contextual_keyword
+    : (
+        'any'
+        | 'some'
+        | 'borrowing'
+        | 'consuming'
+        | 'sending'
+        | 'each'
+        | 'consume'
+        | 'macro'
+        | 'package'
+        | 'nonisolated'
+    ) {dev.ward.analysis.frontend.antlr.swift.SwiftContextualKeywords.isBeforeName(_input)}?
+    ;
+
 Identifier
     : Identifier_head Identifier_characters?
     | '`' Identifier_head Identifier_characters? '`'
     | Implicit_parameter_name
+    | '$' Identifier_head Identifier_characters? // the projected value of a property wrapper
     ;
 
 // identifier_list : identifier (',' identifier)* ;
@@ -567,6 +590,7 @@ Interpolated_string_literal
 fragment Interpolated_text_item
     : '\\(' (Interpolated_string_literal | Interpolated_text_item)+ ')' // nested strings allowed
     | Quoted_text_item
+    | '\\' [.A-Z] // a key path inside an interpolation: "\(\.name)" and "\(\Type.name)"
     ;
 
 WS

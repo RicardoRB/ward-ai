@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 /**
  * The text form of the rules of {@code ward-architecture.toml} in a rule body. One rule is a line
  * of tab-separated fields; every text is percent-encoded, so names, globs and reasons may hold any
- * character. A selector is three comma-separated lists joined by {@code ;}.
+ * character. A selector is four comma-separated lists joined by {@code ;}.
  */
 public final class ArchitectureRuleBody {
   private static final String RULE_SEPARATOR = "\n";
@@ -26,7 +26,8 @@ public final class ArchitectureRuleBody {
   private static final int SELECT = 4;
   private static final int VALUE = 5;
   private static final int FIELDS = 6;
-  private static final int LISTS = 3;
+  private static final int LISTS = 4;
+  private static final int EXTERNAL = 3;
 
   private ArchitectureRuleBody() {}
 
@@ -83,7 +84,12 @@ public final class ArchitectureRuleBody {
   }
 
   private static String selector(final ArchitectureSelector selector) {
-    return Stream.of(selector.paths(), selector.directories(), selector.excludePaths())
+    return Stream.of(
+        selector.paths(),
+        selector.directories(),
+        selector.excludePaths(),
+        selector.external()
+    )
         .map(
             items ->
                 items.isEmpty()
@@ -100,7 +106,12 @@ public final class ArchitectureRuleBody {
     if (lists.length != LISTS) {
       throw new IllegalArgumentException("a selector has " + LISTS + " lists");
     }
-    return new ArchitectureSelector(items(lists[0]), items(lists[1]), items(lists[2]));
+    return new ArchitectureSelector(
+        items(lists[0]),
+        items(lists[1]),
+        items(lists[2]),
+        items(lists[EXTERNAL])
+    );
   }
 
   private static List<String> items(final String list) {

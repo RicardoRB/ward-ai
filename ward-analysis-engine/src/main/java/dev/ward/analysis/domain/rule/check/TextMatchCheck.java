@@ -59,7 +59,10 @@ public final class TextMatchCheck implements UnitCheck {
   private List<Item> items(final SyntaxNode root, final SourceFile file) {
     final Target target = rule.target();
     if (target == Target.LINES) {
-      return lines(file);
+      return lines(file.lines());
+    }
+    if (target == Target.CODE) {
+      return lines(CodeLines.of(root, file));
     }
     if (target == Target.FILENAME) {
       return List.of(new Item(file.name(), FILE_START));
@@ -88,11 +91,11 @@ public final class TextMatchCheck implements UnitCheck {
     return List.of(new Item(String.join("\n", lines.subList(0, count)), FILE_START));
   }
 
-  private static List<Item> lines(final SourceFile file) {
+  private static List<Item> lines(final List<String> lines) {
     final List<Item> items = new ArrayList<>();
     int offset = 0;
     int number = 1;
-    for (final String line : file.lines()) {
+    for (final String line : lines) {
       items.add(lineItem(line, number, offset));
       offset += line.length() + 1;
       number++;
@@ -113,6 +116,8 @@ public final class TextMatchCheck implements UnitCheck {
   public enum Target {
     /** Each line of the file. */
     LINES,
+    /** The lines of the file, with string literals and comments blanked. */
+    CODE,
     /** Each comment node. */
     COMMENTS,
     /** Each node of the filter's kinds, such as string literals. */
