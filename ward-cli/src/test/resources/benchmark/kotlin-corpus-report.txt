@@ -1,0 +1,165 @@
+# Ward's Kotlin rules of the standard preset and every Kotlin security rule, with default options, over every .kt file of two pinned projects (both Apache-2.0).
+# okio parent-3.18.2, archive sha-256 d327ed5e1074a7f9ddd2bc5e4230040164aa4a4c916e033d2a2ba66bd19023b9.
+# spring-petclinic-kotlin v3.2.0, archive sha-256 bb9843e7767534ee29c0979aac482b7e4dc268aee28f52d555ae8d2f5aa81e0b.
+# A labelled finding is true (tp), false (fp) or undetermined (un), as read from the code at its line; the labels are in kotlin-corpus-labels.txt. A rule with more than 3 findings has a sample of at least 3 labelled, so its tp, fp and un describe the sample.
+# The cost of the run is in kotlin-corpus-cost.txt.
+# Regenerate: ./mvnw -pl ward-cli -am -Dtest=KotlinCorpusSmokeTest -Dward.corpus.kotlin=<dir> -Djacoco.skip=true -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
+okio | files 313 | not analysed 0
+spring-petclinic-kotlin | files 38 | not analysed 0
+rules 156 | not run (need type facts) 10 | findings 4572
+ward:kotlin/array-primitive | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/avoid-referential-equality | not run
+ward:kotlin/backing-property-naming | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/cognitive-complexity | findings 20 | labelled 3 | tp 1 | fp 0 | un 2
+ward:kotlin/command-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/complex-condition | findings 10 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/constructor-parameter-naming | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
+ward:kotlin/constructors-declaration-grouping | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/cross-site-scripting | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/cyclomatic-complexity | findings 28 | labelled 3 | tp 1 | fp 0 | un 2
+ward:kotlin/destructuring-declaration-with-too-many-entries | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/double-mutability-for-collection | findings 3 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/duplicate-code | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/empty-class-block | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/empty-default-constructor | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
+ward:kotlin/empty-do-while-block | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/empty-else-block | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/empty-finally-block | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/empty-for-block | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/empty-if-block | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/empty-init-block | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/empty-kt-file | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/empty-secondary-constructor | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/empty-try-block | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/empty-when-block | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/empty-while-block | findings 4 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/enum-entry-name-case | findings 77 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/enum-naming | findings 77 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/environment-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/equals-always-returns-true-or-false | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/equals-null-call | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/exception-raised-in-unexpected-location | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/explicit-garbage-collection-call | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/explicit-it-lambda-parameter | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/expression-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/file-length | findings 15 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/filename | findings 14 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/for-each-on-range | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/forbidden-void | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/function-expression-body | findings 170 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/function-length | findings 24 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/function-name | findings 34 | labelled 3 | tp 2 | fp 1 | un 0
+ward:kotlin/function-only-returning-constant | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/has-platform-type | not run
+ward:kotlin/header-splitting | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/hidden-field | findings 74 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/ignored-return-value | not run
+ward:kotlin/illegal-token-text | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/implicit-default-locale | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
+ward:kotlin/inject-dispatcher | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/instance-of-check-for-exception | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/invalid-javadoc-position | findings 4 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/invalid-package-declaration | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/invalid-range | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/iterator-has-next-calls-next-method | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/iterator-not-throwing-no-such-element-exception | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/javadoc-content-location | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
+ward:kotlin/javadoc-leading-asterisk-align | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/javadoc-method | findings 421 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/javadoc-missing-leading-asterisk | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/javadoc-paragraph | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
+ward:kotlin/jndi-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/kdoc | findings 2 | labelled 2 | tp 0 | fp 0 | un 2
+ward:kotlin/large-class | findings 4 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/ldap-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/log-forging | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/loop-with-too-many-jump-statements | findings 10 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/magic-number | findings 2756 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/map-get-with-not-null-assertion-operator | not run
+ward:kotlin/matching-declaration-name | findings 5 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/may-be-const | findings 40 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/member-name-equals-class-name | findings 1 | labelled 1 | tp 0 | fp 0 | un 1
+ward:kotlin/missing-javadoc-type | findings 177 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/multiline-comment-leading-asterisk-presence | findings 72 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/multiple-variable-declarations | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/nested-classes-visibility | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/new-line-at-end-of-file | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/no-consecutive-comments | findings 30 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/no-empty-file | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/no-finalizer | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/no-name-shadowing | findings 68 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/no-single-line-block-comment | findings 34 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/no-unit-return | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/object-literal-to-lambda | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/object-property-naming | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/one-statement-per-line | findings 5 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/optional-abstract-keyword | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/overload-methods-declaration-order | findings 48 | labelled 3 | tp 1 | fp 0 | un 2
+ward:kotlin/parameter-count | findings 11 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/path-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/print-stack-trace | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/property-name | findings 103 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/redundant-higher-order-map-usage | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/redundant-suspend-modifier | not run
+ward:kotlin/regex-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/regexp-singleline | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/require-empty-line-before-block-tag-group | findings 7 | labelled 3 | tp 2 | fp 1 | un 0
+ward:kotlin/rethrow-caught-exception | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/return-from-finally | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/safe-cast | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/script-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/serial-version-uid-in-serializable-class | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/server-side-request-forgery | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/session-attribute-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/single-line-javadoc | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
+ward:kotlin/sleep-instead-of-delay | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/spread-operator | findings 27 | labelled 3 | tp 2 | fp 1 | un 0
+ward:kotlin/sql-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/string-template | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
+ward:kotlin/summary-javadoc | findings 35 | labelled 3 | tp 2 | fp 0 | un 1
+ward:kotlin/suspend-fun-with-flow-return-type | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/swallowed-exception | findings 20 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/throwing-exception-from-finally | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
+ward:kotlin/throwing-exceptions-without-message-or-cause | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
+ward:kotlin/throwing-new-instance-of-same-exception | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/todo-comment | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
+ward:kotlin/too-many-functions | findings 105 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/trailing-whitespace | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/type-name | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
+ward:kotlin/unnecessary-abstract-class | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/unnecessary-apply | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/unnecessary-filter | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/unnecessary-inheritance | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/unnecessary-not-null-operator | not run
+ward:kotlin/unnecessary-parentheses-before-trailing-lambda | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/unnecessary-safe-call | not run
+ward:kotlin/unnecessary-temporary-instantiation | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/unreachable-catch-block | not run
+ward:kotlin/unreachable-code | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/unsafe-call-on-nullable-type | not run
+ward:kotlin/unsafe-cast | not run
+ward:kotlin/unsafe-reflection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/untrusted-deserialization | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/untrusted-redirect | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/unused-local-variable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/unused-parameter | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
+ward:kotlin/unused-private-class | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/unused-private-member | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/unused-unary-operator | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/use-any-or-none-instead-of-find | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/use-array-literals-in-annotations | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
+ward:kotlin/use-check-not-null | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
+ward:kotlin/use-check-or-error | findings 3 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/use-is-null-or-empty | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/use-or-empty | findings 3 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/use-require | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
+ward:kotlin/use-require-not-null | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/useless-call-on-not-null | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/useless-postfix-expression | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/utility-class-with-public-constructor | findings 1 | labelled 1 | tp 0 | fp 1 | un 0
+ward:kotlin/value-argument-comment | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/value-parameter-comment | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
+ward:kotlin/var-could-be-val | findings 8 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/variable-declaration-usage-distance | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
+ward:kotlin/wrong-equals-type-parameter | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/xpath-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0

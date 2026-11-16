@@ -18,7 +18,6 @@ public final class KotlinKdocMethodCheck implements UnitCheck {
   private static final String FUNCTION = "functionDeclaration";
   private static final String PARAMETERS = "functionValueParameters";
   private static final String PARAMETER = "functionValueParameter";
-  private static final String IDENTIFIER = "Identifier";
   private static final String TYPE = "type";
   private static final String COLON = ":";
   private static final String UNIT = "Unit";
@@ -71,9 +70,7 @@ public final class KotlinKdocMethodCheck implements UnitCheck {
     final List<String> names = new ArrayList<>();
     for (final SyntaxNode list : KotlinDocs.childrenOf(function, PARAMETERS)) {
       for (final SyntaxNode parameter : KotlinDocs.childrenOf(list, PARAMETER)) {
-        SyntaxWalk.leaves(parameter).stream()
-            .filter(leaf -> IDENTIFIER.equals(leaf.kind()))
-            .findFirst()
+        KotlinDocs.firstName(parameter)
             .ifPresent(leaf -> names.add(KotlinDocs.text(leaf)));
       }
     }

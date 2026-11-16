@@ -12,7 +12,7 @@ module
     constant label @8:9
     function bump @12:9
     function @8:23
-      variable field @8:23
+      builtin field @8:23
     function @10:5
       parameter q @10:17
     function @12:5
@@ -37,7 +37,7 @@ module
 references
   7:9 count write -> class variable count @7:9
   7:17 start read -> class constant start @6:19
-  8:37 field read -> function variable field @8:23
+  8:37 field read -> function builtin field @8:23
   10:32 q read -> function parameter q @10:17
   13:13 local write -> block constant local @13:13
   13:21 by read -> function parameter by @12:14

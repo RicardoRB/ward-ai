@@ -138,6 +138,41 @@ class ChecksTest {
   }
 
   @Test
+  void textPatternSkipsADeclarationInsideAnExcludedKind() {
+    final SyntaxNode declaration =
+        Trees.node(
+            "objectDeclaration",
+            0,
+            30,
+            1,
+            Trees.node(
+                "classDeclaration",
+                7,
+                27,
+                1,
+                Trees.leaf("CLASS", "class", 7),
+                Trees.leaf(Trees.IDENTIFIER, "Order_Item", 13)
+            )
+        );
+    final TextPatternCheck check =
+        new TextPatternCheck(
+            new DeclarationFilter(
+                Set.of("classDeclaration"),
+                Set.of(),
+                Optional.empty(),
+                Optional.empty(),
+                Set.of("objectDeclaration")
+            ),
+            Trees.IDENTIFIER,
+            Set.of(),
+            "[A-Z][a-zA-Z0-9]*",
+            "bad name {value}"
+        );
+
+    assertThat(check.matches(declaration)).isEmpty();
+  }
+
+  @Test
   void textPatternSkipsDeclarationsWithTheExcludedModifier() {
     final SyntaxNode field =
         Trees.node(

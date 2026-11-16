@@ -64,20 +64,13 @@ final class KotlinScopeBodies {
 
   void accessor(final SyntaxNode node) {
     walk.builder.open(ScopeKind.FUNCTION, node.span());
+    // The backing field is given by the language: nobody declares it, so it is never "unused".
     walk.builder.declare(
         "field",
-        BindingKind.VARIABLE,
+        BindingKind.BUILTIN,
         node.span(),
         EnumSet.noneOf(BindingFlag.class)
     );
-    if (SETTER.equals(node.kind())) {
-      walk.builder.declare(
-          "value",
-          BindingKind.PARAMETER,
-          node.span(),
-          EnumSet.noneOf(BindingFlag.class)
-      );
-    }
     for (final SyntaxNode part : node.children()) {
       if (PARAMETER.equals(part.kind())) {
         walk.declare(KotlinScopeWalk.simple(part), BindingKind.PARAMETER, false, Set.of());

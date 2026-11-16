@@ -37,10 +37,12 @@ final class KotlinDocs {
           "propertyDeclaration",
           "secondaryConstructor",
           "typeAlias",
-          "enumEntry"
+          "enumEntry",
+          "classParameter"
       );
   private static final Set<String> KEYWORDS_BEFORE_DECLARATIONS = Set.of("package", "import");
   private static final String TEXT = "text";
+  private static final String SIMPLE_IDENTIFIER = "simpleIdentifier";
   private static final String KDOC_OPEN = "/**";
   private static final String EMPTY_BLOCK = "/**/";
   private static final String SEMICOLON = ";";
@@ -132,6 +134,17 @@ final class KotlinDocs {
   static String text(final SyntaxNode node) {
     final String text = node.fields().get(TEXT);
     return text == null ? "" : text;
+  }
+
+  /**
+   * Returns the first name below {@code node}: the token of its first {@code simpleIdentifier}. A
+   * soft keyword such as {@code value} is a name there, with its own token kind.
+   */
+  static Optional<SyntaxNode> firstName(final SyntaxNode node) {
+    return SyntaxWalk.descendants(node).stream()
+        .filter(child -> SIMPLE_IDENTIFIER.equals(child.kind()))
+        .findFirst()
+        .flatMap(SyntaxWalk::firstLeaf);
   }
 
   private static boolean isBlank(final SyntaxNode leaf) {
