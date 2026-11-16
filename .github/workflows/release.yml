@@ -76,8 +76,9 @@ jobs:
       native-runners: '["ubuntu-24.04", "macos-15", "windows-latest"]'
       harness-compatibility: true
 
+  # The build does not use the verify results, so it runs beside verify; publish waits for both.
   build:
-    needs: verify
+    needs: preflight
     strategy:
       fail-fast: false
       matrix:
@@ -156,7 +157,7 @@ jobs:
           if-no-files-found: error
 
   publish:
-    needs: build
+    needs: [verify, build]
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
