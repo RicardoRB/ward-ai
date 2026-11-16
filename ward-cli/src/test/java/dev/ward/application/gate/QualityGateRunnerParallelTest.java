@@ -226,6 +226,8 @@ class QualityGateRunnerParallelTest {
   void aGateErrorIsRethrownAfterTheRunningGatesEnd() {
     final AtomicInteger ended = new AtomicInteger();
     final CountDownLatch failed = new CountDownLatch(1);
+    // A gate that has not started when the error arrives does not start, so wait for it.
+    final CountDownLatch otherStarted = new CountDownLatch(1);
     final List<QualityGate> gates =
         List.of(
             ParallelGateFixtures.gate(
@@ -233,6 +235,7 @@ class QualityGateRunnerParallelTest {
                 GateStatus.PASSED,
                 true,
                 () -> {
+                  ParallelGateFixtures.await(otherStarted);
                   failed.countDown();
                   throw new WardException("broken configuration");
                 }
@@ -242,6 +245,7 @@ class QualityGateRunnerParallelTest {
                 GateStatus.PASSED,
                 true,
                 () -> {
+                  otherStarted.countDown();
                   ParallelGateFixtures.await(failed);
                   ended.incrementAndGet();
                 }
