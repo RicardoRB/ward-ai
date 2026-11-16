@@ -47,7 +47,7 @@ public final class NoMethodArgumentCheck implements RuleCheck {
     for (int index = Math.max(0, ancestors.size() - 2); index < ancestors.size(); index++) {
       final SyntaxNode node = ancestors.get(index);
       if (SyntaxKinds.DECORATED.equals(node.kind())) {
-        return FunctionDecorators.decoratorLines(SyntaxWalk.text(node)).stream()
+        return FunctionDecorators.decoratorNames(node).stream()
             .anyMatch(STATIC_DECORATORS::contains);
       }
     }

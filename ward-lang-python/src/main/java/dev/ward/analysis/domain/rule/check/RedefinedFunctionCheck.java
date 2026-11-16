@@ -12,6 +12,7 @@ import dev.ward.analysis.domain.scope.Scope;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -76,10 +77,11 @@ public final class RedefinedFunctionCheck implements RuleCheck {
       if (!DEFINITIONS.contains(current.kind())) {
         continue;
       }
-      final boolean earlier =
+      final Optional<Binding> earlier =
           bindings.subList(0, index).stream()
-              .anyMatch(b -> DEFINITIONS.contains(b.kind()) && b.name().equals(current.name()));
-      if (earlier) {
+              .filter(b -> DEFINITIONS.contains(b.kind()) && b.name().equals(current.name()))
+              .reduce((first, second) -> second);
+      if (earlier.isPresent() && !overloadStub(definitionAt(root, earlier.get()))) {
         final Definition definition = definitionAt(root, current);
         if (definition != null && !exempt(definition, current.name())) {
           found.add(
@@ -137,6 +139,15 @@ public final class RedefinedFunctionCheck implements RuleCheck {
       }
     }
     return false;
+  }
+
+  /** Whether the definition is an {@code @overload} stub, which the next definition completes. */
+  private static boolean overloadStub(final Definition definition) {
+    return definition != null
+        && definition.ancestors().stream()
+            .filter(ancestor -> "decorated".equals(ancestor.kind()))
+            .flatMap(ancestor -> FunctionDecorators.decoratorNames(ancestor).stream())
+            .anyMatch(name -> name.endsWith("overload"));
   }
 
   private static boolean decoratedExempt(final SyntaxNode decorated, final String name) {

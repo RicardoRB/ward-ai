@@ -216,8 +216,8 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["funcdef"]
-# shortcut: plain parameter lists only; defaults and annotations are not read
-text = '^def(?:(?:__(?:len|bool|hash|str|repr|iter|next|index|bytes|enter|aiter|anext|await|reversed|length_hint|fspath)__)\((?!self\):)|(?:__(?:getitem|delitem|contains|eq|ne|lt|le|gt|ge|getattr|getattribute|delattr|format|delete|instancecheck|subclasscheck|class_getitem)__)\((?!\w+,\w+\):)|(?:__(?:setitem|setattr|set|get|set_name)__)\((?!\w+,\w+,\w+\):)|(?:__(?:exit|aexit)__)\((?!\w+,\w+,\w+,\w+\):))'
+# shortcut: plain parameter lists only; defaults and parameter annotations are not read
+text = '^def(?:(?:__(?:len|bool|hash|str|repr|iter|next|index|bytes|enter|aiter|anext|await|reversed|length_hint|fspath)__)\((?!self\)(?:->[^:]*)?:)|(?:__(?:getitem|delitem|contains|eq|ne|lt|le|gt|ge|getattr|getattribute|delattr|format|delete|instancecheck|subclasscheck|class_getitem)__)\((?!\w+,\w+\)(?:->[^:]*)?:)|(?:__(?:setitem|setattr|set|get|set_name)__)\((?!\w+,\w+,\w+\)(?:->[^:]*)?:)|(?:__(?:exit|aexit)__)\((?!\w+,\w+,\w+,\w+\)(?:->[^:]*)?:))'
 message = "special method {value} has the wrong number of parameters"
 '''
 
@@ -245,7 +245,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["expr_stmt"]
-text = '^[^=]*,[^=]*=\s*(?:-?\d[\d_.]*|None|True|False)\s*$'
+text = '^[^=:]*,[^=:]*=\s*(?:-?\d[\d_.]*|None|True|False)\s*$'
 message = "unpacking a value that is not a sequence"
 '''
 
@@ -301,6 +301,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["comparison"]
+with-child = ["comp_op"]
 # shortcut: leaf text has no spaces, so an identifier ending in 'in' before a literal also matches; upgrade with token kinds
 text = 'in(?:None|True|False|-?\d[\d_.]*)$'
 message = "a literal number or None does not support the membership test"
@@ -329,9 +330,9 @@ category = "correctness"
 presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
-kinds = ["if_stmt", "test"]
-# shortcut: only a leading constant is seen; a constant tested in the middle of a ternary is not
-text = '^(?:if(?:None|True|False|-?\d[\d_.]*|\x27[^\x27]*\x27|\x22[^\x22]*\x22):|(?:True|False|-?\d[\d_.]*)if)'
+kinds = ["if_stmt", "test>'if'"]
+# shortcut: the node text has no spaces, so a name that ends in "if" before a constant and "else" also matches
+text = '^if(?:None|True|False|-?\d[\d_.]*|\x27[^\x27]*\x27|\x22[^\x22]*\x22):|^(?!if(?![A-Za-z0-9_]))[\s\S]*?if(?:None|True|False|-?\d[\d_.]*)else'
 message = "conditional statement with a constant test"
 '''
 

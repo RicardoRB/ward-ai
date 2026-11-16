@@ -55,22 +55,42 @@ public final class ClassLimitCheck implements RuleCheck {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(CLASS))) {
       final SyntaxNode definition = visit.node();
-      if (violates(definition, visit.ancestors())) {
-        found.add(new RuleMatch(definition.span(), message));
+      final int count = count(definition);
+      if (violates(definition, visit.ancestors(), count)) {
+        found.add(new RuleMatch(definition.span(), filled(count)));
       }
     }
     return List.copyOf(found);
   }
 
-  private boolean violates(final SyntaxNode definition, final List<SyntaxNode> ancestors) {
+  private int count(final SyntaxNode definition) {
     return switch (problem) {
-      case INSTANCE_ATTRIBUTES -> attributes(definition).size() > limit;
-      case ANCESTORS -> bases(definition) > limit;
-      case PUBLIC_METHODS ->
-          !ancestors.stream().anyMatch(a -> "decorated".equals(a.kind()))
-              && !ModuleDefinitions.hasBases(definition)
-              && publicMethods(definition) < limit;
+      case INSTANCE_ATTRIBUTES -> attributes(definition).size();
+      case ANCESTORS -> bases(definition);
+      case PUBLIC_METHODS -> publicMethods(definition);
     };
+  }
+
+  private boolean violates(
+      final SyntaxNode definition,
+      final List<SyntaxNode> ancestors,
+      final int count
+  ) {
+    if (problem != Problem.PUBLIC_METHODS) {
+      return count > limit;
+    }
+    return !ancestors.stream().anyMatch(a -> "decorated".equals(a.kind()))
+        && !ModuleDefinitions.hasBases(definition)
+        && count < limit;
+  }
+
+  /** The message with the measured count and the limit in place of their placeholders. */
+  private String filled(final int count) {
+    final String bound = String.valueOf(limit);
+    return message
+        .replace("{value}", String.valueOf(count))
+        .replace("{min}", bound)
+        .replace("{max}", bound);
   }
 
   /** The distinct names assigned as {@code self.name} in the methods of the class. */

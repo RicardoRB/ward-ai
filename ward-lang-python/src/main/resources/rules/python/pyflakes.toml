@@ -81,7 +81,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["atom"]
-text = "\\{(?:[^{}]*,)*?(\"[^\"]*\"|'[^']*'):(?:[^{}]*,)*?\\1:"
+text = "\\{(?:[^{},]*,)*?(\"[^\"]*\"|'[^']*'):(?:[^{},]*,)*?\\1:"
 message = "dictionary key repeated; the first value is lost"
 '''
 
@@ -426,7 +426,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["atom"]
-text = '^\{(?:[^{}]*,)*?([A-Za-z_]\w*):(?:[^{}]*,)*?\1:'
+text = '^\{(?:[^{},]*,)*?([A-Za-z_]\w*):(?:[^{},]*,)*?\1:'
 message = "dictionary key repeated; the first value is lost"
 '''
 
