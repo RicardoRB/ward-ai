@@ -166,8 +166,11 @@ jobs:
           echo "Mutation targets: ${targets:-none}"
           echo "PIT_TARGET_CLASSES=${targets:-none.changed}" >> "$GITHUB_ENV"
 
-      # --output keeps the text report on stdout for the job log.
+      # --output keeps the text report on stdout for the job log. WARD_JOBS=auto runs the checks that
+      # may overlap at once and analyzes files in parallel, one thread per processor.
       - name: Run quality gates
+        env:
+          WARD_JOBS: auto
         run: ward check --profile ci --format sarif --output target/ward.sarif
 
       # Fork tokens cannot write security events; no file means Ward could not run at all.
