@@ -101,7 +101,7 @@ Shares of the samples of "After, run 1" (15,235 samples):
   of this repository: 6.2 % of the samples after the fixes. Leaving them out changes the dependency
   graph that the gate stores, so it is not a change with obviously equal results.
 - **The analysis is single-threaded.** Running checks in parallel is #577. Analyzing files in
-  parallel inside one check is the other candidate of the proposal's decision point.
+  parallel inside one check is #585; see "Parallel file analysis" below.
 - **`durationMs` is 0** in the JSON report for the `format`, `ward` and `secrets` checks. A report
   with real durations would replace the JFR spans used above.
 - **Native binary.** Not built and not profiled here; the shares can differ without a JIT.
@@ -132,3 +132,152 @@ jfr print --events jdk.ExecutionSample --stack-depth 200 /tmp/cold.jfr > /tmp/co
 - Delete `.ward` before every run: the cache is keyed by file content and does not notice a changed
   check.
 - For "before", build the jar from `4df12686f` and run it on the same tree.
+
+## Parallel file analysis (#585)
+
+Numbers for #585, the OpenSpec change `analyze-files-in-parallel`, measured on 2026-11-16 on the
+same machine (Apple M4, 10 cores, 32 GB). With `--jobs <n>` above 1 the `ward` check parses the
+files and runs the per-file rules on up to `n` threads, file by file. Without `--jobs` it works
+rule by rule on one thread, as before.
+
+- **Before:** the jar and the native binary built from `0.10.0` at `be2663eb6` (it has `--jobs`
+  for checks, #577). **After:** built from this change. Jar on Temurin 25.0.4.1, native binary built
+  with GraalVM CE 25.5.
+- **Tree:** this change, about 11,500 source files with the test fixtures; each run from an empty
+  `.ward`, with `--severity info --format json`.
+- The `ward` check alone ran through a profile that holds only that check, added to `ward.toml`
+  for the measurement and not committed.
+- Each row gives the 1-minute load average at the start and at the end of the run. Other sessions
+  used the machine; the script waited for a load below 3 before a run, for 25 minutes at most.
+
+### The `ward` check alone
+
+| Binary | Run | Load, start → end | Wall time | CPU time (user + sys) | Peak memory |
+|---|---|---|---|---|---|
+| Jar | Before, `--jobs 1` | 6.9 → 3.3 | 127 s | 233 s | 4.7 GB |
+| Jar | After, `--jobs 1` | 2.7 → 2.8 | 118 s | 223 s | 6.6 GB |
+| Jar | After, `--jobs 10` | 2.8 → 8.5 | 45 s | 306 s | 5.9 GB |
+| Native | Before, `--jobs 1` | 3.3 → 3.1 | 336 s | 335 s | 2.2 GB |
+| Native | After, `--jobs 1` | 2.5 → 3.1 | 324 s | 323 s | 2.2 GB |
+| Native | After, `--jobs 4` | 3.0 → 2.9 | 102 s | 226 s | 3.0 GB |
+| Native | After, `--jobs 10` | 2.7 → 5.6 | 82 s | 303 s | 4.0 GB |
+
+- **Jar: 127 s → 45 s** with 10 jobs. **Native: 336 s → 82 s** with 10 jobs, 102 s with 4.
+- With one job nothing changed in the code path, and the times agree within the noise of the load.
+  The peak memory of the jar is the resident set of a JVM whose heap may grow to 8 GB here. The
+  6.6 GB of the one-job run after the change is one run and was not investigated; the same work
+  gave 4.5 to 4.7 GB in three runs of the baseline (see "Memory" for what the analysis needs).
+- The speed-up stops near 3 to 4 because part of the check still runs on one thread: reading the
+  sources, the cache keys (which parse and lower the files a taint rule follows), cache reads and
+  writes, type facts, and the rules that read the whole project (architecture, duplicate code,
+  unused definitions). This remainder was not profiled in this step.
+- With the native binary 4 jobs use less CPU time than 1 (226 s against 323 s): see "The native
+  collector".
+
+### The `default` profile, jar
+
+`format`, `ward` and `secrets`, on the final code of this change.
+
+| Run | Load, start → end | Wall time | CPU time (user + sys) | Peak memory |
+|---|---|---|---|---|
+| Before, `--jobs 1` | 6.5 → 4.5 | 150 s | 273 s | 7.0 GB |
+| After, `--jobs 1` | 5.5 → 3.6 | 151 s | 268 s | 4.6 GB |
+| After, `--jobs 10` | 3.6 → 8.7 | 43 s | 301 s | 4.6 GB |
+
+Under a high load (28 at the start), with the first implementation of this change, the baseline
+took 256 s with one job and 215 s with `--jobs auto` (checks in parallel only, #577), and the
+change 44 s with `--jobs auto`.
+
+`secrets` and `format` stay on one thread each: with `--jobs` they run next to the `ward` check,
+which remains the longest of the three (45 s alone), so more threads for them would not shorten the
+profile.
+
+### Memory
+
+A heap limit shows what the analysis needs, where the resident set of a JVM with a large heap does
+not:
+
+| Run (jar, `-Xmx2g`) | Result | Wall time |
+|---|---|---|
+| Before, `--jobs 1` | `OutOfMemoryError` after 291 s | |
+| After, `--jobs 10` | completes | 54 s |
+| After, `--jobs 10`, `-Xmx1g` | `OutOfMemoryError` | |
+
+- One job keeps the syntax trees of every file until the last rule ends, before and after: this
+  repository does not fit in 2 GB that way. (The one-job run of the final change was not repeated
+  with `-Xmx2g`; it is the code path of "before".)
+- Several jobs analyze file by file: the trees, graphs and scopes of at most `n` files are alive at
+  once, so 10 jobs fit in 2 GB, and not in 1 GB. What does not depend on `n` is unchanged: the
+  source text of every file, the file summaries, the parse cache (8 MB of source text, about
+  700 MB of trees) and the graphs of the files that the taint rule follows.
+- The native binary with 10 jobs peaked at 4.0 GB of resident memory with its default heap limit
+  (80 % of the machine); it was not run with a lower limit.
+
+### The native collector
+
+The first implementation analyzed file by file with one job too. On the JVM that was not slower
+(133 s against 148 s with `-XX:+UseSerialGC`, same instruction count), and it fit in 2 GB. With the
+native binary it was slower: 472 s against 336 s, with 40 % more instructions and identical
+results. The collection log (`-XX:+PrintGC`) shows why:
+
+| Native run, first 136 s, `--jobs 1` | Collections | Full collections | Time in collections |
+|---|---|---|---|
+| Before | 990 | 49 | 68 s |
+| File by file | 847 (116 s) | 57 (135 s) | 65 s (135 s) |
+| File by file, `-Xms2g` | 237 | 4 | 25 s |
+| File by file, `-Xms1500m` | 383 | 16 | 38 s |
+| File by file, `-Xmn512m` | 1,079 | 60 | 68 s |
+| File by file, `-XX:InitialCollectionPolicy=Adaptive` | 3,544 | 29 | 43 s |
+
+The serial collector of the native image keeps its heap close to the live set. File by file the
+live set stays near 1 GB for the whole run, the trees of a file die in the old generation, and a
+full collection of 1.3 s runs about every 2 s. The baseline binary does the same while its heap is
+small, and half of its first 136 s goes to collections too; it gets out of it as the kept trees
+make the heap grow.
+
+So one job keeps the rule-by-rule loop, and the default is exactly as fast as before. A minimum
+heap would help both loops, but one built into the binary stops Ward on a machine whose maximum
+heap is smaller ("The specified minimum heap size must not be larger than the maximum heap size"),
+so it is left as a follow-up for #569 together with the other collector settings. Until then a
+user can pass `-Xms2g` to the native `ward` on a machine with enough memory.
+
+### Same result
+
+- **Engine test.** `ParallelEngineResultTest` runs every per-file rule over a sample of the rule
+  fixtures of every language, and two files that do not parse, with 1, 2 and 8 threads: the
+  findings, their order, the execution errors and the rules not run are equal.
+- **This repository, `ward` check.** The `.ward/cache` directories of the seven runs on the final
+  tree (the jar before with 1 job; the jar after with 1 and 10 jobs and with 10 jobs in 2 GB; the
+  native binary after with 1, 4 and 10 jobs) were compared with `diff -r`: 19,368 files each, no
+  difference. Their JSON reports are byte-identical. The native baseline run was compared the same
+  way on the tree of the first implementation.
+- **This repository, `default` profile.** The caches of the three runs of the table above:
+  42,248 files each, no difference between the baseline and the change with 1 and with 10 jobs.
+- **Partial run.** `ward check --profile default --path <one file>` on a full cache, jar: 7.2 s
+  before and 7.1 s after (three runs each, between 7.10 s and 7.21 s).
+
+### Not measured
+
+- **The corpora of #564 and #568** (Commons Lang, PetClinic, `got`). The one-thread and parallel
+  caches were compared on this repository only.
+- **Where the one-thread remainder goes.** No profile was taken after the change.
+- **Peak memory of the native binary under a heap limit**, and the native `default` profile.
+- **A whole native run with `-Xms2g`.** Only its first 136 s.
+
+### How to reproduce
+
+```bash
+./mvnw -q -DskipTests package
+for jobs in 1 10; do
+  rm -rf .ward
+  uptime
+  /usr/bin/time -l java -jar ward-cli/target/ward.jar check --profile default \
+    --severity info --format json --output /tmp/jobs-$jobs.json --jobs $jobs
+  uptime
+  cp -R .ward/cache /tmp/cache-$jobs
+done
+diff -r /tmp/cache-1 /tmp/cache-10
+```
+
+For the native binary replace `java -jar ward-cli/target/ward.jar` with the binary built by
+`./mvnw -Pnative -DskipTests native:compile`; add `-XX:+PrintGC` for the collection log.

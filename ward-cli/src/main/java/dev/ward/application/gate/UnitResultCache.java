@@ -48,7 +48,10 @@ final class UnitResultCache {
     this(engine, codec, engineVersion, dependencies, GateProgress.NONE);
   }
 
-  /** Like the constructor without {@code progress}, and tells it each phase of the analysis. */
+  /**
+   * Like the constructor without {@code progress}, and tells it each phase of the analysis. The
+   * files are summarized on as many threads as the limit of {@code engine} allows.
+   */
   UnitResultCache(
       final RuleEngine engine,
       final AnalysisResultCodec codec,
@@ -115,7 +118,7 @@ final class UnitResultCache {
             .toList();
     progress.step("resolving dependencies");
     final DependencySnapshot snapshot =
-        new DependencyAnalysis(frontends, dependencies)
+        new DependencyAnalysis(frontends, dependencies, engine.limit())
             .analyze(units, new AnalysisSummaryCache(cache, codec, engineVersion));
     final UnitKeys unitKeys = new UnitKeys(engineVersion, unitRules, snapshot, cache, frontends);
     final Map<SourceUnit, String> keys = new LinkedHashMap<>();

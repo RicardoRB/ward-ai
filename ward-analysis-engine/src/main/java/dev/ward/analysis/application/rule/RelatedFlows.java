@@ -7,19 +7,20 @@ import dev.ward.analysis.domain.port.AnalysisFailedException;
 import dev.ward.analysis.domain.port.ParseResult;
 import dev.ward.analysis.domain.rule.CompiledRule;
 import dev.ward.analysis.domain.rule.FlowView;
-import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Gives a rule that follows calls into other files the graphs of the files its unit depends on,
  * directly or through others. A file is parsed and lowered once per run. A file that does not parse
- * or lower has no graphs, and no error is recorded for it, as it is not the file being checked.
+ * or lower has no graphs, and no error is recorded for it, as it is not the file being checked. Safe
+ * for the threads of one run: the graphs are kept by path, which names one unit of the snapshot.
  */
 final class RelatedFlows {
   private final Map<AnalysisLanguage, FrontendSupport> support;
   private final DependencySnapshot snapshot;
-  private final Map<SourceUnit, List<ControlFlowGraph>> lowered = new IdentityHashMap<>();
+  private final Map<String, List<ControlFlowGraph>> lowered = new ConcurrentHashMap<>();
 
   RelatedFlows(
       final Map<AnalysisLanguage,
@@ -37,9 +38,20 @@ final class RelatedFlows {
     }
     final List<ControlFlowGraph> related =
         snapshot.closureOf(unit.path()).stream()
-            .flatMap(other -> lowered.computeIfAbsent(other, this::lower).stream())
+            .flatMap(other -> graphsOf(other).stream())
             .toList();
     return new FlowView(own.graphs(), related);
+  }
+
+  /** Lowers outside the map, so no thread waits for another file; a second result is dropped. */
+  private List<ControlFlowGraph> graphsOf(final SourceUnit unit) {
+    final List<ControlFlowGraph> known = lowered.get(unit.path());
+    if (known != null) {
+      return known;
+    }
+    final List<ControlFlowGraph> fresh = lower(unit);
+    final List<ControlFlowGraph> first = lowered.putIfAbsent(unit.path(), fresh);
+    return first == null ? fresh : first;
   }
 
   private List<ControlFlowGraph> lower(final SourceUnit unit) {

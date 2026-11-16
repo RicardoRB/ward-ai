@@ -16,8 +16,6 @@ import dev.ward.analysis.frontend.antlr.swift.SwiftLexer;
 import dev.ward.analysis.frontend.antlr.swift.SwiftParser;
 import dev.ward.analysis.frontend.antlr.typescript.TypeScriptLexer;
 import dev.ward.analysis.frontend.antlr.typescript.TypeScriptParser;
-import java.util.EnumMap;
-import java.util.Map;
 import java.util.function.Function;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
@@ -25,10 +23,10 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 /**
- * The ANTLR frontend for every {@link AnalysisLanguage}. Each language keeps one lexer and one
- * parser, reset per unit, so parsing is serialized; the results are cached, so any number of
- * threads and passes that ask for the same unit share one parse. Create one instance per run and
- * hand it to every pass.
+ * The ANTLR frontend for every {@link AnalysisLanguage}. A lexer and a parser are not thread-safe,
+ * so each thread that parses borrows its own set of them, one per language, reset per unit (see
+ * {@link SessionPool}). The results are cached, so any number of threads and passes that ask for
+ * the same unit share one parse. Create one instance per run and hand it to every pass.
  */
 public final class AntlrLanguageFrontend implements LanguageFrontend {
   /**
@@ -38,20 +36,12 @@ public final class AntlrLanguageFrontend implements LanguageFrontend {
    */
   private static final long RECENT_WEIGHT = 8L * 1024 * 1024;
 
-  private final Map<AnalysisLanguage, LanguageFrontend> sessions =
-      new EnumMap<>(AnalysisLanguage.class);
+  private final SessionPool sessions = new SessionPool(AntlrLanguageFrontend::session);
   private final ParseCache recent = new ParseCache(RECENT_WEIGHT);
-
-  /** Creates the lexers and parsers for the six source languages. */
-  public AntlrLanguageFrontend() {
-    for (final AnalysisLanguage language : AnalysisLanguage.values()) {
-      sessions.put(language, session(language));
-    }
-  }
 
   @Override
   public ParseResult parse(final SourceUnit unit) {
-    return recent.parse(unit, key -> sessions.get(key.language()).parse(key));
+    return recent.parse(unit, sessions::parse);
   }
 
   private static LanguageFrontend session(final AnalysisLanguage language) {

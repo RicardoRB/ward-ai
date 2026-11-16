@@ -7,6 +7,7 @@ import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.AnalysisCache;
+import dev.ward.analysis.domain.port.WorkLimit;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleRunResult;
@@ -101,6 +102,15 @@ public final class AnalysisGate implements QualityGate {
 
   @Override
   public GateResult execute(final Project project, final GateProgress progress) {
+    return execute(project, progress, WorkLimit.serial());
+  }
+
+  @Override
+  public GateResult execute(
+      final Project project,
+      final GateProgress progress,
+      final WorkLimit limit
+  ) {
     progress.step("loading rules");
     final RuleSet set = setup.resolve(project.root(), JavaRelease.of(project));
     if (!set.problems().isEmpty()) {
@@ -126,7 +136,7 @@ public final class AnalysisGate implements QualityGate {
         );
     final UnitResultCache results =
         new UnitResultCache(
-            new RuleEngine(ports.matcher()),
+            new RuleEngine(ports.matcher(), limit),
             ports.codec(),
             ports.engineVersion(),
             ports

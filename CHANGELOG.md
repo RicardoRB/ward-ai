@@ -11,9 +11,11 @@ still change behavior. Breaking changes are called out under **Changed**.
 ### Added
 
 - `ward check --jobs <n>` runs up to `n` checks at once, and `--jobs auto` one per processor; the environment variable `WARD_JOBS` sets the same value for Git hooks and CI (#577). `ward-format`, `secrets`, and `ward` without `java-classpath` run next to any other check; every other check still runs one at a time in the order of `ward.toml`. The report, the order of the checks and the exit code do not depend on the value. Without the option nothing changes.
+- With `--jobs` (or `WARD_JOBS`) above 1, the `ward` check analyzes several files at once (#585): parsing and the per-file rules run on up to that many threads. The value is one limit for the whole command: a running check and a file under analysis each count as one job. Findings, their order, execution errors and the `.ward` cache do not depend on the value. Without the option the `ward` check works on one thread as before. More jobs need more memory per file under analysis, and less in total than one job on a large project, because the syntax trees of a file are dropped when its rules are done.
 
 ### Changed
 
+- The `ward` check runs its per-file rules on a thread with a stack of 8 MiB, whatever the value of `--jobs` (#585). A file on which a rule ran out of stack on a JVM with the default stack (1 to 2 MiB) can now be analyzed; no other result changes.
 - This repository checks its own Java with the `ward` and `ward-format` gates instead of the Checkstyle, PMD, SpotBugs and Spotless Maven plugins (#347, #470). Its sources are formatted with `ward format`.
 
 ## [0.9.1] - 2026-11-15
