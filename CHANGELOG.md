@@ -10,6 +10,8 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ### Added
 
+- `ward-architecture.toml`: the `external` selector names code outside the project, so "the domain does not import the framework" is one rule (#570). `must-not-depend-on = { external = ["org.springframework"] }` reports every import by a selected file of that package or module name, or of a name below it after `.` or `/`, that resolves to no project file. The finding has the id `ward:architecture/dependencies` and sits at the import, in Java, Kotlin, TypeScript, JavaScript, Python and Swift. An entry is a name without `*`; `external` in `select` or in another constraint is a configuration problem.
+- `ward init` writes a starter `ward-architecture.toml` when you choose the architecture style (`--architecture`, or the wizard's question) and the project has none: one rule for the style that the `layers` table does not state, with `allow-empty = true`, and a commented `external` example (#570). `--dry-run` shows the file. After that the file is yours: an init that finds it, edited or not, leaves it byte for byte and shows it as kept. An init with the default style writes no file.
 - `ward check --jobs <n>` runs up to `n` checks at once, and `--jobs auto` one per processor; the environment variable `WARD_JOBS` sets the same value for Git hooks and CI (#577). `ward-format`, `secrets`, and `ward` without `java-classpath` run next to any other check; every other check still runs one at a time in the order of `ward.toml`. The report, the order of the checks and the exit code do not depend on the value. Without the option nothing changes.
 
 ### Changed

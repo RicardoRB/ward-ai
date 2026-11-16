@@ -849,7 +849,7 @@ the gate does not pass. Limits are not keys of the check: a `ward` check accepts
 |---|---|---|
 | Style, bug and security rules, their options and severity (`ward:<language>/*`) | [`ward-rules.toml`](/configuration/ward-rules/) | `ward init`, `ward rules` |
 | `ward:architecture/layers`, `/cycles`, `/independence` | the `layers`, `cycles` and `independence` tables of the `ward` check in `ward.toml` | `ward init` |
-| `ward:architecture/dependencies`, `/naming`, `/location`: your own architecture rules | [`ward-architecture.toml`](/configuration/ward-architecture/) | you |
+| `ward:architecture/dependencies`, `/naming`, `/location`: your own architecture rules | [`ward-architecture.toml`](/configuration/ward-architecture/) | you; `ward init` writes a starter once, for a chosen style |
 
 `ward.toml` does not accept the rules of `ward-architecture.toml`: an `architecture` table under the
 `ward` check is an unknown key. `architecture-file` in the check points at another path for the

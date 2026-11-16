@@ -49,7 +49,8 @@ public record ArchitectureConstraint(Kind kind, ArchitectureSelector target, Str
   }
 
   /**
-   * Validates the parts: {@code file-name} has a glob and no target, every other kind a target.
+   * Validates the parts: {@code file-name} has a glob and no target, every other kind a target, and
+   * only {@code must-not-depend-on} names external code.
    *
    * @throws NullPointerException if the kind is missing
    * @throws IllegalArgumentException if the parts do not fit the kind
@@ -59,6 +60,11 @@ public record ArchitectureConstraint(Kind kind, ArchitectureSelector target, Str
     final boolean named = kind == Kind.FILE_NAME;
     if (named == (fileName == null) || named != (target == null)) {
       throw new IllegalArgumentException(kind.key() + " has the wrong value");
+    }
+    if (target != null && !target.external().isEmpty() && kind != Kind.MUST_NOT_DEPEND_ON) {
+      throw new IllegalArgumentException(
+          "external is read in " + Kind.MUST_NOT_DEPEND_ON.key() + " only, not in " + kind.key()
+      );
     }
   }
 }

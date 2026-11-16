@@ -58,7 +58,8 @@ class AnalysisCacheIgnoreTest {
             false,
             null,
             false,
-            null
+            null,
+            false
         );
     return OwnedSections.of(catalog, JAVA, selection, gates, List.of()).stream()
         .filter(section -> section.file().endsWith(".gitignore"))

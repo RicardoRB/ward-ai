@@ -23,7 +23,7 @@ public record ArchitectureRule(
    * Validates the parts.
    *
    * @throws NullPointerException if a part is missing
-   * @throws IllegalArgumentException if the name or reason is blank
+   * @throws IllegalArgumentException if the name or reason is blank, or the selection names external code
    */
   public ArchitectureRule {
     Objects.requireNonNull(select, "select");
@@ -31,6 +31,9 @@ public record ArchitectureRule(
     if (Objects.requireNonNull(name, "name").isBlank()
         || Objects.requireNonNull(because, "because").isBlank()) {
       throw new IllegalArgumentException("a rule needs a name and a reason");
+    }
+    if (!select.external().isEmpty()) {
+      throw new IllegalArgumentException("select names project files, not external code");
     }
   }
 
