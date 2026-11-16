@@ -1,0 +1,71 @@
+# Cost of Ward on the Kotlin corpus of KotlinCorpusSmokeTest (#565). Hand-written from one measured run; no test compares it.
+# Measured 2026-11-16 with the jar of this change (java -jar ward.jar, OpenJDK 25.0.4, default heap), on an Apple M4 with
+# 10 cores and 32 GB, through /usr/bin/time -l. Other sessions built on the machine at the same time: the run waited 25
+# minutes for a 1-minute load average below 3 and did not get one, so the load average is beside each number and the wall
+# times are upper bounds; the user CPU time is beside each.
+# Rule set: preset standard, languages kotlin, plus every Kotlin security rule (156 rules, 10 of them need type facts and
+# do not run), default options. Each project had only a ward.toml with the ward check over **/*.kt and that
+# ward-rules.toml; nothing of the project was built.
+#
+# run | files | lines | findings | wall time | user CPU | peak memory | 1-minute load
+okio                    | ward check, cold    | 313 | 53,554 | 6,050 | 44.0 s | 70.6 s | 2.23 GB | 4.9
+okio                    | ward check, cached  | 313 | 53,554 | 6,050 | 18.1 s | 29.4 s | 2.22 GB | 4.6
+okio                    | ward format --check | 313 | 53,554 | 233 Kotlin files need formatting, 0 refused | 50.9 s | 64.6 s | 2.21 GB | 4.7
+spring-petclinic-kotlin | ward check, cold    |  38 |  2,181 |    69 |  3.3 s | 11.5 s | 0.64 GB | 5.3
+spring-petclinic-kotlin | ward check, cached  |  38 |  2,181 |    69 |  2.6 s |  8.5 s | 0.65 GB | 5.3
+spring-petclinic-kotlin | ward format --check |  38 |  2,181 | 30 Kotlin files need formatting, 0 refused |  2.5 s |  4.9 s | 0.75 GB | 5.4
+#
+# The cold and the cached run report the same findings. The CLI counts more findings than the report of the test (4,572
+# places in both projects), because the gate also runs the project-wide checks and counts every finding, where the test
+# counts a rule once per line. ward format --check has no path filter, so on Okio it also read the 25 Java files of the
+# samples (258 files need formatting in all).
+#
+# Cost per file, cold, beside the Java corpus (java-corpus-cost.txt: 0.70 s per file and 2.1 ms per line on Commons Lang):
+#   okio                    0.14 s per file, 0.82 ms per line, 0.90 ms per file and rule
+#   spring-petclinic-kotlin 0.09 s per file, 1.5 ms per line (mostly start-up: 57 lines per file)
+# The cached run of Okio still takes 18 s for 313 unchanged files, and ward format --check is slower than the cold check:
+# both are numbers for #569.
+#
+# The rule engine alone, as the test runs it (no project-wide checks, no cache, one JVM), took 166 to 176 s for both
+# projects before the grammar fixes of this change and 25 to 35 s after them, with the same rules: the time went into the
+# error recovery of the parser on the files it could not read. A slow file can be a file the grammar gets wrong.
+#
+# Files without analysis. Before this change 27 of the 313 Okio files (8.6 %) had a syntax diagnostic and none of
+# PetClinic; all 27 are valid Kotlin. The causes, each now a case of syntax/kotlin/real-code.kt of the ANTLR frontend:
+#   - inside ( ) and [ ] the lexer did not know about 20 keywords (is, as, this, fun, class, actual, expect, value, by,
+#     constructor, ...) and read them as names, so `actual val` in a constructor failed and `x is T` became an infix call;
+#   - a { } block inside parentheses or inside a string template kept the mode of its surroundings, so the statements of
+#     a lambda argument lost their newlines, and a template knew almost no keyword;
+#   - unsigned literals (1u, 0xFFuL);
+#   - a line break after an assignment operator;
+#   - `as Type?` at the end of a line (the right side of a cast was parsed as an expression);
+#   - a trailing comma after the conditions of a when branch;
+#   - anonymous functions (fun(x: Int): Int { ... });
+#   - a class member directly before the closing brace of its class (class A { val x = 1 }).
+# One more grammar error did not stop the analysis but made it wrong: the braces after a supertype call
+# (class Vet : Person() { ... }) were read as a trailing lambda, so the members of the class were local variables. It
+# gave 118 false unused-local-variable findings, 36 unnecessary-parentheses-before-trailing-lambda, 51 var-could-be-val
+# and hid 40 too-many-functions and 39 overload-methods-declaration-order findings.
+#
+# Formatter. ward format rewrote 263 of the 351 Kotlin files, refused none, and a second run changed nothing. Every
+# formatted file parses again, and no file differs from its original in anything but white space. Before the grammar
+# fixes the formatter refused the 27 files above.
+#
+# False positives that this change does not fix, counted over every finding (not only the labelled sample):
+#   - property-name: 18 names written in backticks (a keyword used as a name) do not match the pattern.
+#   - spread-operator: 9 of 27 spread a vararg parameter of the enclosing function, which Kotlin passes on without a copy.
+#   - function-name: 3 factory functions named after the type they return, and 1 backticked name.
+#   - require-empty-line-before-block-tag-group: 1 annotation inside a fenced code sample of a KDoc comment.
+#   - utility-class-with-public-constructor: 1 actual class, which must stay a class.
+#   - overload-methods-declaration-order: a member function and an extension function of the same name count as
+#     overloads (2 of the 3 labelled places; undetermined).
+#   - magic-number: 2,756 places, 1,888 of them in test files, where the numbers are test data. True by the rule's own
+#     description; the rule has no notion of test code.
+#
+# Known Kotlin limits of the taint rules (#559): lambdas, if and when as values, property syntax. The security rules
+# reported nothing on either project. Okio has no web or database entry point. PetClinic has 6 controllers with 20
+# handlers: 6 of them return an if or a when as a value, 11 expressions read a property of a bound request object with
+# property syntax, and no handler passes request data through a lambda. So the corpus meets two of the three limits, but
+# no handler has a flow from a request to a sink that the limits could hide: the queries bind their parameters, and the
+# two redirects built at run time end in a numeric id. The corpus neither confirms nor refutes the limits; a corpus with
+# real injection flaws in Kotlin is still missing.

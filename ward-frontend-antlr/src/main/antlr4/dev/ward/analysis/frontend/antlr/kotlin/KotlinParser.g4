@@ -95,8 +95,9 @@ delegationSpecifier
     | explicitDelegation
     ;
 
+// The braces after a supertype call are the class body, never a trailing lambda.
 constructorInvocation
-    : userType callSuffix
+    : userType valueArguments
     ;
 
 explicitDelegation
@@ -117,7 +118,7 @@ classMemberDeclaration
         | anonymousInitializer
         | secondaryConstructor
         | typeAlias
-    ) anysemi+
+    ) anysemi*
     ;
 
 anonymousInitializer
@@ -127,7 +128,7 @@ anonymousInitializer
 secondaryConstructor
     : modifierList? CONSTRUCTOR NL* functionValueParameters (
         NL* COLON NL* constructorDelegationCall
-    )? NL* block?
+    )? (NL* block)?
     ;
 
 constructorDelegationCall
@@ -151,6 +152,12 @@ functionDeclaration
     : functionModifierList? FUN (NL* type NL* DOT)? (NL* typeParameters)? (NL* receiverType NL* DOT)? (
         NL* identifier
     )? NL* functionValueParameters (NL* COLON NL* type)? (NL* typeConstraints)? (NL* functionBody)?
+    ;
+
+anonymousFunction
+    : FUN (NL* receiverType NL* DOT)? NL* functionValueParameters (NL* COLON NL* type)? (NL* typeConstraints)? (
+        NL* functionBody
+    )?
     ;
 
 functionValueParameters
@@ -311,7 +318,7 @@ declaration
     ;
 
 expression
-    : disjunction (assignmentOperator disjunction)*
+    : disjunction (assignmentOperator NL* disjunction)*
     ;
 
 disjunction
@@ -355,7 +362,7 @@ multiplicativeExpression
     ;
 
 typeRHS
-    : prefixUnaryExpression (NL* typeOperation prefixUnaryExpression)*
+    : prefixUnaryExpression (NL* typeOperation NL* type)*
     ;
 
 prefixUnaryExpression
@@ -370,6 +377,7 @@ atomicExpression
     : parenthesizedExpression
     | literalConstant
     | functionLiteral
+    | anonymousFunction
     | thisExpression        // THIS labelReference?
     | superExpression       // SUPER (LANGLE type RANGLE)? labelReference?
     | conditionalExpression // ifExpression, whenExpression
@@ -431,6 +439,7 @@ literalConstant
     | RealLiteral
     | NullLiteral
     | LongLiteral
+    | UnsignedLiteral
     ;
 
 stringLiteral
@@ -458,7 +467,7 @@ lineStringContent
     ;
 
 lineStringExpression
-    : LineStrExprStart expression RCURL
+    : LineStrExprStart NL* expression NL* RCURL
     ;
 
 multiLineStringContent
@@ -468,7 +477,7 @@ multiLineStringContent
     ;
 
 multiLineStringExpression
-    : MultiLineStrExprStart expression RCURL
+    : MultiLineStrExprStart NL* expression NL* RCURL
     ;
 
 functionLiteral
@@ -489,7 +498,7 @@ lambdaParameter
 
 // https://kotlinlang.org/docs/reference/grammar.html#objectLiteral
 objectLiteral
-    : OBJECT (NL* COLON NL* delegationSpecifiers)? NL* classBody?
+    : OBJECT (NL* COLON NL* delegationSpecifiers)? (NL* classBody)?
     ;
 
 collectionLiteral
@@ -525,7 +534,7 @@ whenExpression
     ;
 
 whenEntry
-    : whenCondition (NL* COMMA NL* whenCondition)* (NL* whenGuard)? NL* ARROW NL* controlStructureBody semi?
+    : whenCondition (NL* COMMA NL* whenCondition)* (NL* COMMA)? (NL* whenGuard)? NL* ARROW NL* controlStructureBody semi?
     | ELSE NL* ARROW NL* controlStructureBody
     ;
 
@@ -566,11 +575,11 @@ loopExpression
     ;
 
 forExpression
-    : FOR NL* LPAREN annotations* (variableDeclaration | multiVariableDeclaration) IN expression RPAREN NL* controlStructureBody?
+    : FOR NL* LPAREN annotations* (variableDeclaration | multiVariableDeclaration) IN expression RPAREN (NL* controlStructureBody)?
     ;
 
 whileExpression
-    : WHILE NL* LPAREN expression RPAREN NL* controlStructureBody?
+    : WHILE NL* LPAREN expression RPAREN (NL* controlStructureBody)?
     ;
 
 doWhileExpression

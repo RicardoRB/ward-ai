@@ -154,6 +154,6 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["functionDeclaration"]
-text = 'fun(?:equals|finalize|hashCode|toString)\([^)]*\)[^{=]*[{=][\s\S]*throw'
+text = '^(?:@\w+(?:\([^)]*\))?)*[a-z]*fun(?:equals|finalize|hashCode|toString)\([^)]*\)[^{=]*[{=][\s\S]*throw'
 message = "this method should not throw an exception"
 '''

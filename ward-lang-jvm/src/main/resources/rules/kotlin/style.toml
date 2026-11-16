@@ -346,7 +346,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["ifExpression"]
-text = '^if\s*\((?:[^()]|\([^()]*\))*\)\s*(?:\{\s*)?throw\s*IllegalArgumentException\s*\(\s*(?:"[^"]*"\s*)?\)\s*(?:\}\s*)?$'
+text = '^if\s*\((?:[^()]|\([^()]*\))*+\)\s*(?:\{\s*)?throw\s*IllegalArgumentException\s*\(\s*(?:"[^"]*"\s*)?\)\s*(?:\}\s*)?$'
 message = "use require instead of throwing IllegalArgumentException in an if"
 '''
 
