@@ -22,7 +22,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-/** Parses each source unit once per run, however many rules run over it. */
+/**
+ * Parses each source unit once, however many rules run over it. Not thread-safe: a run that
+ * analyzes units on several threads gives each unit its own trees.
+ */
 final class UnitTrees {
   private final Map<AnalysisLanguage, FrontendSupport> support;
   private final Map<SourceUnit, Optional<SyntaxNode>> parsed = new HashMap<>();

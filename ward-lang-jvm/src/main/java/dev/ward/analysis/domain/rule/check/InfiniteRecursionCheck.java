@@ -12,7 +12,8 @@ import java.util.regex.Pattern;
 /**
  * Reports a method whose body is a single statement that calls the method itself with no condition
  * on the way, as Error Prone's InfiniteRecursion does for the plain case. A call inside a
- * conditional, a loop or a second statement is not read.
+ * conditional, a loop or a second statement is not read, and a call that reaches an overload is not
+ * reported (see {@link SelfCall}).
  */
 public final class InfiniteRecursionCheck implements RuleCheck {
   private final String message;
@@ -31,14 +32,15 @@ public final class InfiniteRecursionCheck implements RuleCheck {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("methodDeclaration"))) {
       final String name = child(visit.node(), "identifier").map(SyntaxWalk::text).orElse("");
-      if (!name.isEmpty() && callsItself(visit.node(), name)) {
+      if (!name.isEmpty() && callsItself(visit, name)) {
         matches.add(CheckSupport.at(visit.node().span(), CheckSupport.fill(message, name, "")));
       }
     }
     return List.copyOf(matches);
   }
 
-  private static boolean callsItself(final SyntaxNode method, final String name) {
+  private static boolean callsItself(final SyntaxWalk.Visit visit, final String name) {
+    final SyntaxNode method = visit.node();
     final Pattern call =
         Pattern.compile(
             "^(?:return )?(?:this \\. )?" + Pattern.quote(name) + " \\([^;{}?&|]*\\) ;$"
@@ -50,7 +52,9 @@ public final class InfiniteRecursionCheck implements RuleCheck {
                 block.children().stream().filter(c -> "blockStatement".equals(c.kind())).toList()
         )
         .filter(statements -> statements.size() == 1)
-        .map(statements -> call.matcher(SyntaxWalk.spacedText(statements.get(0))).matches())
+        .map(statements -> SyntaxWalk.spacedText(statements.get(0)))
+        .filter(statement -> call.matcher(statement).matches())
+        .map(statement -> SelfCall.reachesItself(visit, name, statement))
         .orElse(false);
   }
 

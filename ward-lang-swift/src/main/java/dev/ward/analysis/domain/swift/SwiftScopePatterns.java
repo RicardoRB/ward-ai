@@ -16,9 +16,11 @@ final class SwiftScopePatterns {
   private static final String INITIALIZER = "initializer";
 
   private final SwiftScopeWalk walk;
+  private final SwiftScopeShadows shadows;
 
   SwiftScopePatterns(final SwiftScopeWalk walk) {
     this.walk = walk;
+    this.shadows = new SwiftScopeShadows(walk);
   }
 
   void patternInitializer(final SyntaxNode node) {
@@ -26,12 +28,18 @@ final class SwiftScopePatterns {
     final SyntaxNode pattern = SwiftScopeWalk.child(node, PATTERN);
     final boolean initialized = SwiftScopeWalk.child(node, INITIALIZER) != null;
     if (pattern != null) {
+      shadows.shadowRead(node, pattern);
       pattern(pattern, true, initialized);
     }
   }
 
   void optionalBinding(final SyntaxNode node) {
     node.children().stream().filter(c -> INITIALIZER.equals(c.kind())).forEach(walk::visit);
+    if (SwiftScopeWalk.child(node, INITIALIZER) == null) {
+      shadows.shorthandRead(node);
+    } else if (SwiftScopeWalk.child(node, PATTERN) != null) {
+      shadows.shadowRead(node, SwiftScopeWalk.child(node, PATTERN));
+    }
     final BindingKind outer = walk.declaring;
     walk.declaring =
         "var".equals(SwiftScopeWalk.text(node.children().get(0)))
@@ -42,7 +50,7 @@ final class SwiftScopePatterns {
   }
 
   void forIn(final SyntaxNode node) {
-    walk.builder.open(ScopeKind.BLOCK, node.span());
+    walk.scopes.open(ScopeKind.BLOCK, node.span());
     node.children().stream().filter(c -> "expression".equals(c.kind())).forEach(walk::visit);
     final BindingKind outer = walk.declaring;
     walk.declaring = BindingKind.VARIABLE;
@@ -51,11 +59,11 @@ final class SwiftScopePatterns {
     node.children().stream()
         .filter(c -> !PATTERN.equals(c.kind()) && !"expression".equals(c.kind()))
         .forEach(walk::visit);
-    walk.builder.close();
+    walk.scopes.close();
   }
 
   void catchClause(final SyntaxNode node) {
-    walk.builder.open(ScopeKind.BLOCK, node.span());
+    walk.scopes.open(ScopeKind.BLOCK, node.span());
     if (SwiftScopeWalk.child(node, PATTERN) == null) {
       walk.builder.declare(
           "error",
@@ -65,7 +73,7 @@ final class SwiftScopePatterns {
       );
     }
     walk.generic(node);
-    walk.builder.close();
+    walk.scopes.close();
   }
 
   /** Walks a pattern: names are declared when {@code binding}, and read otherwise. */

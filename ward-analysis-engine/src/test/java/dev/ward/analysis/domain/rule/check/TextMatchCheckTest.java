@@ -1,6 +1,7 @@
 package dev.ward.analysis.domain.rule.check;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
@@ -62,6 +63,44 @@ class TextMatchCheckTest {
     assertThat(matches).hasSize(1);
     assertThat(matches.get(0).span().startLine())
         .isEqualTo(FILE.text().lines().toList().indexOf("int b; // TODO: x") + 1);
+  }
+
+  @Test
+  void textPatternAtTheMatchReportsTheColumnAndWidthOfTheMatch() {
+    final SyntaxNode root = gen.node(UNIT, gen.leaf("tok", "x"));
+    final TextMatchCheck check =
+        new TextMatchCheck(
+            NodeFilter.of(Set.of()),
+            new TextMatchCheck.Rule(
+                TextMatchCheck.Target.LINES,
+                Pattern.compile("TODO"),
+                false,
+                0,
+                1,
+                true
+            ),
+            "{value}"
+        );
+
+    final List<RuleMatch> matches = check.matches(root, FlowView.NONE, FILE);
+
+    assertThat(matches).hasSize(2);
+    assertThat(matches.get(1).span().startLine())
+        .isEqualTo(FILE.text().lines().toList().indexOf("int b; // TODO: x") + 1);
+    assertThat(matches.get(1).span().startColumn()).isEqualTo("int b; // ".length() + 1);
+    assertThat(matches.get(1).span().endColumn()).isEqualTo("int b; // TODO".length() + 1);
+    assertThat(matches.get(1).span().startOffset())
+        .isEqualTo(FILE.text().indexOf("TODO: x"));
+  }
+
+  @Test
+  void textPatternAtTheMatchNeedsATargetMadeOfLines() {
+    final Pattern pattern = Pattern.compile("x");
+
+    assertThatThrownBy(
+        () -> new TextMatchCheck.Rule(TextMatchCheck.Target.COMMENTS, pattern, false, 0, 1, true)
+    )
+        .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test

@@ -50,7 +50,9 @@ public final class TextPatternCheck implements RuleCheck {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, filter.kinds())) {
       final Declaration declaration = Declaration.of(visit, filter.modifierKinds());
-      if (CheckSupport.admits(declaration.modifiers(), filter.required(), filter.excluded())) {
+      if (visit.ancestors().stream()
+          .noneMatch(ancestor -> filter.notInside().contains(ancestor.kind()))
+          && CheckSupport.admits(declaration.modifiers(), filter.required(), filter.excluded())) {
         check(visit.node(), matches);
       }
     }

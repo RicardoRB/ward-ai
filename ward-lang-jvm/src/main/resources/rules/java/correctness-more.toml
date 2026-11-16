@@ -101,7 +101,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["expression", "statement"]
-text = '^([^|&()]+)(?:\|\||&&)\1$|^if\(([^()]+)\)[\s\S]*?elseif\(\2\)'
+text = '^([^|&()"\x27]+)(?:\|\||&&)\1$|^if\(([^()]+)\)[\s\S]*?elseif\(\2\)'
 message = "the same condition is tested twice"
 '''
 

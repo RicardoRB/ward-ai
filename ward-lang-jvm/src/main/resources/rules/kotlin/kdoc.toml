@@ -71,6 +71,7 @@ category = "docs"
 presets = ["standard", "strict"]
 body = '''
 check = "javadoc-paragraph"
+markdown = true
 message = "KDoc paragraph problem: {value}"
 '''
 

@@ -263,8 +263,8 @@ category = "correctness"
 presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
-kinds = ["atom"]
-text = "^\\{([\"'\\d]|True|False|None)[^:]*:[\\s\\S]*for\\w+in"
+kinds = ["dictorsetmaker>comp_for"]
+text = "^([\"'\\d]|True|False|None)[^:]*:"
 message = "dict comprehension with a constant key repeats one key; use a literal value or a loop"
 '''
 
@@ -306,7 +306,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["expr_stmt"]
-text = '^[^=()]*(==|!=|<=|>=|<|>)[^=]*$'
+text = '^(?![rRbBuUfF]{0,2}[\x22\x27])[^=()]*(==|!=|<=|>=|<|>)[^=]*$'
 message = "pointless comparison; assign it or remove it"
 '''
 
@@ -320,7 +320,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["expr_stmt"]
-text = "^(?![\\s\\S]*\\b(?:yield|await)\\b)(?!\\.\\.\\.\\s*$)(?![rRbBuUfF]{0,2}(?:\"\"\"|\"|\\')[\\s\\S]*(?:\"\"\"|\"|\\')\\s*$)(?![\\s\\S]*[\\w\\])]\\s*\\()(?![\\s\\S]*(?<![=!<>])=(?!=))(?!\\s*\\w+\\s*:)[\\s\\S]+$"
+text = "^(?![\\s\\S]*\\b(?:yield|await)\\b)(?!\\.\\.\\.\\s*$)(?![rRbBuUfF]{0,2}(?:\"\"\"|\"|\\')[\\s\\S]*(?:\"\"\"|\"|\\')\\s*$)(?![\\s\\S]*[\\w\\])]\\s*\\()(?![\\s\\S]*(?<![=!<>])=(?!=))(?!\\s*[\\w.]+\\s*:)[\\s\\S]+$"
 message = "useless expression; assign it or remove it"
 '''
 
@@ -501,7 +501,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["expr_stmt"]
-text = '^[A-Za-z_]\w*(?:\.[A-Za-z_]\w*|\[[^\]]*\])+:[^=]*$'
+text = '^(?!self\.)[A-Za-z_]\w*(?:\.[A-Za-z_]\w*|\[[^\]]*\])+:[^=]*$'
 message = "possible unintentional type annotation (:) where an assignment (=) was meant"
 '''
 

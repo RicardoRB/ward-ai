@@ -11,7 +11,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "text-pattern"
 target = "lines"
-pattern = "[\"'][ \\t]+[\"']"
+pattern = "^(?:[^'\"#]|'(?:[^'\\\\]|\\\\.)*'|\"(?:[^\"\\\\]|\\\\.)*\")*?(?:'(?:[^'\\\\]|\\\\.)*'|\"(?:[^\"\\\\]|\\\\.)*\")[ \\t]+[rRbBuUfF]{0,2}[\"']"
 message = "adjacent string literals concatenate implicitly; join them with +, or write one literal"
 '''
 

@@ -155,7 +155,8 @@ public final class CoreCheckProvider implements CheckProvider {
         TomlValues.strings(toml, KINDS),
         TomlValues.strings(toml, MODIFIERS),
         Optional.ofNullable(toml.getString(REQUIRED)),
-        Optional.ofNullable(toml.getString(EXCLUDED))
+        Optional.ofNullable(toml.getString(EXCLUDED)),
+        TomlValues.optionalStrings(toml, "not-inside")
     );
   }
 }

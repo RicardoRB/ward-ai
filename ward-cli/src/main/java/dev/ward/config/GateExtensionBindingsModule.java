@@ -52,8 +52,8 @@ interface GateExtensionBindingsModule {
 
   /**
    * The ward gate reads Java, Python, TypeScript and JavaScript sources through the ANTLR frontend,
-   * with syntax rules only. Gates run one after another, so one frontend, which is not thread-safe,
-   * serves them all.
+   * with syntax rules only. One frontend serves every gate and every analysis thread: it keeps a
+   * lexer and a parser per thread that parses.
    */
   @Provides
   static AnalysisPorts analysisPorts(

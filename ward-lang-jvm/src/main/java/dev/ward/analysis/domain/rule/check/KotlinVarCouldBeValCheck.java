@@ -19,6 +19,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Reports each {@code var} that is initialized where it is declared and never assigned again, as
@@ -59,7 +61,9 @@ public final class KotlinVarCouldBeValCheck implements RuleCheck {
     final List<RuleMatch> found = new ArrayList<>();
     for (final Scope scope : scopes.scopes()) {
       for (final Binding binding : scope.bindings()) {
-        if (candidate(binding, scope, unit.text()) && neverReassigned(binding, scopes)) {
+        if (candidate(binding, scope, unit.text())
+            && neverReassigned(binding, scopes)
+            && !(scope.kind() == ScopeKind.CLASS && assignedByName(binding, unit.text()))) {
           found.add(new RuleMatch(binding.declaration(), message.replace(NAME, binding.name())));
         }
       }
@@ -79,6 +83,27 @@ public final class KotlinVarCouldBeValCheck implements RuleCheck {
     return binding.kind() == BindingKind.VARIABLE
         && !binding.has(BindingFlag.DESTRUCTURED)
         && (local || privateProperty);
+  }
+
+  // shortcut: any assignment to the name in the file counts, such as this.name = value in a
+  // function whose parameter has the same name; a local variable of that name hides a finding.
+  private static boolean assignedByName(final Binding binding, final String text) {
+    final String name = Pattern.quote(binding.name());
+    final Matcher write =
+        Pattern.compile(
+            "(?<![\\w$])"
+                + name
+                + "\\s*(?:[-+*/%]?=(?!=)|\\+\\+|--)|(?:\\+\\+|--)\\s*"
+                + name
+                + "(?![\\w$])"
+        )
+            .matcher(text);
+    while (write.find()) {
+      if (write.start() != binding.declaration().startOffset()) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private static boolean neverReassigned(final Binding binding, final UnitScopes scopes) {

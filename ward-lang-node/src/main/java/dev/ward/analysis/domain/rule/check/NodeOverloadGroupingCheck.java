@@ -24,8 +24,13 @@ public final class NodeOverloadGroupingCheck implements RuleCheck {
           "readonly",
           "abstract",
           "override",
-          "async"
+          "async",
+          "declare",
+          "accessor"
       );
+  private static final Set<String> ACCESSORS = Set.of("get", "set");
+  private static final String PRIVATE = "#";
+  private static final String NAME = "[A-Za-z_$][\\w$]*";
 
   private final String message;
 
@@ -74,10 +79,24 @@ public final class NodeOverloadGroupingCheck implements RuleCheck {
     return matches;
   }
 
-  /** The first identifier of the member that is not a modifier, or empty when it has none. */
+  /**
+   * The first identifier of the member that is not a modifier, or empty when it has none. The
+   * {@code get} or {@code set} before the name of an accessor is not the name: a getter and the
+   * setter of the same property are one group, and two getters are not. A private name keeps its
+   * {@code #}, so {@code #size} and {@code size} are two names.
+   */
   private static String name(final SyntaxNode member) {
-    for (final String token : leaves(member)) {
-      if (!MODIFIERS.contains(token) && token.matches("[A-Za-z_$][\\w$]*")) {
+    final List<String> tokens = leaves(member);
+    for (int index = 0; index < tokens.size(); index++) {
+      final String token = tokens.get(index);
+      final boolean accessor =
+          ACCESSORS.contains(token)
+              && index + 1 < tokens.size()
+              && tokens.get(index + 1).matches(NAME);
+      if (PRIVATE.equals(token) && index + 1 < tokens.size()) {
+        return PRIVATE + tokens.get(index + 1);
+      }
+      if (!accessor && !MODIFIERS.contains(token) && token.matches(NAME)) {
         return token;
       }
     }

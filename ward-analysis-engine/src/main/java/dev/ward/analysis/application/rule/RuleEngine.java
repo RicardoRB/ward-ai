@@ -4,33 +4,43 @@ import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
-import dev.ward.analysis.domain.port.AnalysisFailedException;
+import dev.ward.analysis.domain.port.WorkLimit;
 import dev.ward.analysis.domain.rule.CompiledRule;
-import dev.ward.analysis.domain.rule.DependencyView;
 import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.analysis.domain.rule.RuleDefinition;
-import dev.ward.analysis.domain.rule.RuleExecutionError;
 import dev.ward.analysis.domain.rule.RuleMatcher;
 import dev.ward.analysis.domain.rule.RuleRunResult;
-import dev.ward.analysis.domain.rule.UnitViews;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.SortedMap;
 import java.util.stream.Collectors;
 
 /**
  * Runs analysis rules over source units. A rule runs only where its language's frontend provides
  * the rule's capability; a unit or rule that fails is recorded as an execution error, and the run
- * continues. Findings come back sorted, so the same input gives the same output.
+ * continues. Findings come back sorted, so the same input gives the same output. With a work limit
+ * above one the units are analyzed several at once, each with every rule in rule order; the result
+ * does not depend on the limit.
  */
 public final class RuleEngine {
-  private final RuleMatcher matcher;
+  private static final int SERIAL = 1;
 
-  /** Creates an engine that builds its rules with {@code matcher}. */
+  private final RuleMatcher matcher;
+  private final WorkLimit limit;
+
+  /** Creates an engine that builds its rules with {@code matcher} and analyzes a unit at a time. */
   public RuleEngine(final RuleMatcher matcher) {
+    this(matcher, WorkLimit.serial());
+  }
+
+  /**
+   * Creates an engine that builds its rules with {@code matcher} and analyzes as many units at once
+   * as {@code limit} allows.
+   */
+  public RuleEngine(final RuleMatcher matcher, final WorkLimit limit) {
     this.matcher = matcher;
+    this.limit = limit;
   }
 
   /**
@@ -58,18 +68,28 @@ public final class RuleEngine {
     final Map<AnalysisLanguage, FrontendSupport> support = supportByLanguage(frontends);
     final RuleRunCollector collector = new RuleRunCollector();
     final List<PreparedRule> prepared = PreparedRule.all(rules, support, matcher, collector);
-    final RunState state =
-        new RunState(
-            support,
-            new UnitTrees(support, PreparedRule.needs(prepared)),
-            collector,
-            snapshot,
-            new RelatedFlows(support, snapshot)
-        );
-    for (final PreparedRule rule : prepared) {
-      runRule(rule, units, state);
-    }
+    final UnitRuns runs = new UnitRuns(support, prepared, snapshot);
+    analyzed(units, runs).forEach(collector::addAll);
     return collector.result();
+  }
+
+  /**
+   * Analyzes the units on analysis threads. With several threads the work is split by unit. With
+   * one thread it stays rule by rule over trees that live until the run ends, as before #585: file
+   * by file, the collector of the native binary has to free the trees of each file from its old
+   * generation, and a cold check of this repository took 472 s instead of 336 s
+   * (docs/performance/cold-analysis.md).
+   */
+  private List<RuleRunCollector> analyzed(final List<SourceUnit> units, final UnitRuns runs) {
+    if (limit.threads() == SERIAL) {
+      return limit.map(List.of(units), runs::ruleByRule);
+    }
+    return limit.map(units, runs::fileByFile);
+  }
+
+  /** Returns the limit of the threads that analyze units. */
+  public WorkLimit limit() {
+    return limit;
   }
 
   /**
@@ -136,76 +156,10 @@ public final class RuleEngine {
         .toList();
   }
 
-  /** What one run shares between its rules. */
-  private record RunState(
-      Map<AnalysisLanguage,
-      FrontendSupport> support,
-      UnitTrees trees,
-      RuleRunCollector collector,
-      DependencySnapshot snapshot,
-      RelatedFlows related
-  ) {}
-
   private static Map<AnalysisLanguage, FrontendSupport> supportByLanguage(
       final List<FrontendSupport> frontends
   ) {
     return frontends.stream()
         .collect(Collectors.toMap(FrontendSupport::language, frontend -> frontend));
-  }
-
-  private void runRule(
-      final PreparedRule prepared,
-      final List<SourceUnit> units,
-      final RunState state
-  ) {
-    if (prepared.rule().isEmpty()) {
-      return;
-    }
-    for (final SourceUnit unit : units) {
-      if (prepared.runnable().contains(unit.language())) {
-        runOnUnit(prepared.rule().get(), unit, state);
-      }
-    }
-  }
-
-  private static void runOnUnit(
-      final CompiledRule rule,
-      final SourceUnit unit,
-      final RunState state
-  ) {
-    final RuleRunCollector collector = state.collector();
-    final Optional<SyntaxNode> root = state.trees().parse(unit, collector);
-    if (root.isEmpty()) {
-      return;
-    }
-    try {
-      final DependencyView dependencies = view(rule, unit, state);
-      final UnitViews views =
-          new UnitViews(
-              state
-                  .related()
-                  .with(rule, unit, state.trees().flows(rule, unit, root.get(), collector)),
-              state.trees().scopes(rule, unit, root.get(), dependencies, collector),
-              state.trees().types(rule, unit, root.get(), collector)
-          );
-      rule.matches(root.get(), dependencies, views, unit)
-          .forEach(match -> collector.finding(RuleFindings.of(rule.definition(), unit, match)));
-    } catch (final AnalysisFailedException exception) {
-      collector.recordError(
-          new RuleExecutionError(rule.definition().id(), unit.path(), "the rule could not run")
-      );
-    }
-  }
-
-  /** Only a rule that reads {@code SYMBOLS} or {@code SCOPES} sees the files around the unit. */
-  private static DependencyView view(
-      final CompiledRule rule,
-      final SourceUnit unit,
-      final RunState state
-  ) {
-    if (!rule.definition().capability().readsDependencies()) {
-      return DependencyView.NONE;
-    }
-    return state.snapshot().view(unit.path());
   }
 }

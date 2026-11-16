@@ -309,7 +309,18 @@ follow the ids and documented behavior of Android Lint.
 A component is exported with `android:exported="true"`, or, for a service or receiver, with an
 `intent-filter` and no `exported` attribute. Prefixes are read as written (`android:`, `tools:`),
 and `tools:ignore` is not honored: turn a rule off in `ward-rules.toml`. `android-lint` stays for the
-checks that need the compiled platform API, such as `NewApi`. 
+checks that need the compiled platform API, such as `NewApi`.
+
+### Why `android-lint` stays external
+
+The decision is final (#571). Android Lint has 512 built-in checks; the native rules cover the few
+that sources show. The rest need what the build owns: resolved types and bytecode, the merged
+manifest and resources, Gradle's dependency model, or per-API-level tables (`NewApi`). Ward does not
+ship the tables: the only complete source, `api-versions.xml`, is part of the Android SDK package
+under the Android Software Development Kit License Agreement, which does not allow redistribution
+(clause 3.4). Even with a table, `NewApi` would need resolved call targets that Ward does not have for
+Android types. Android projects already have the SDK and Gradle, so the gate adds no new requirement.
+
 
 `ward:android/unused-resources` (Lint `UnusedResources`) reports a resource that nothing refers to: a value of a `values` file (string, color, dimen, bool, integer, style, plurals, array, drawable) or a layout, menu, drawable, color, navigation or XML file. A reference is `@type/name` in any XML file (a style's `parent` and the part of its dotted name before the last dot count) or `R.type.name` in a Java or Kotlin file; a layout also counts as used when its view binding class (`ActivityMainBinding` for `activity_main`) is named. Ward does not follow references through unused files and reports a resource that is read only through `Resources.getIdentifier`.
 
@@ -849,7 +860,7 @@ the gate does not pass. Limits are not keys of the check: a `ward` check accepts
 |---|---|---|
 | Style, bug and security rules, their options and severity (`ward:<language>/*`) | [`ward-rules.toml`](/configuration/ward-rules/) | `ward init`, `ward rules` |
 | `ward:architecture/layers`, `/cycles`, `/independence` | the `layers`, `cycles` and `independence` tables of the `ward` check in `ward.toml` | `ward init` |
-| `ward:architecture/dependencies`, `/naming`, `/location`: your own architecture rules | [`ward-architecture.toml`](/configuration/ward-architecture/) | you |
+| `ward:architecture/dependencies`, `/naming`, `/location`: your own architecture rules | [`ward-architecture.toml`](/configuration/ward-architecture/) | you; `ward init` writes a starter once, for a chosen style |
 
 `ward.toml` does not accept the rules of `ward-architecture.toml`: an `architecture` table under the
 `ward` check is an unknown key. `architecture-file` in the check points at another path for the

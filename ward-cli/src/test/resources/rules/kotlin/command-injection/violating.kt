@@ -48,4 +48,23 @@ class Subject {
 
   val running: Process
     get() = Runtime.getRuntime().exec(readLine())
+
+  fun alsoKeepsTheReceiver(request: HttpServletRequest) {
+    val value = request.getParameter("x").also { Integer.parseInt(it) }
+    Runtime.getRuntime().exec(value)
+  }
+
+  fun applyKeepsTheReceiver(request: HttpServletRequest) {
+    val value = request.getParameter("x").apply { Integer.parseInt(this) }
+    Runtime.getRuntime().exec(value)
+  }
+
+  fun insideAlso(request: HttpServletRequest) {
+    request.getParameter("x").also { Runtime.getRuntime().exec("run " + it) }
+  }
+
+  fun valueOfWith(request: HttpServletRequest, prefix: String) {
+    val value = with(prefix) { request.getParameter("x") }
+    Runtime.getRuntime().exec(value)
+  }
 }

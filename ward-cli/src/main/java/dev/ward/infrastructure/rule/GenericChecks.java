@@ -179,20 +179,29 @@ final class GenericChecks {
         Pattern.compile(TomlValues.required(toml, PATTERN)),
         required,
         TomlValues.optionalInteger(toml, "limit", required ? 1 : 0),
-        TomlValues.optionalInteger(toml, "header-lines", 1)
+        TomlValues.optionalInteger(toml, "header-lines", 1),
+        atMatch(toml.getString("position", () -> "line"))
     );
+  }
+
+  private static boolean atMatch(final String position) {
+    if (!"line".equals(position) && !"match".equals(position)) {
+      throw new RuleConfigurationException("position must be line or match");
+    }
+    return "match".equals(position);
   }
 
   private static TextMatchCheck.Target target(final String value) {
     return switch (value) {
       case "lines" -> TextMatchCheck.Target.LINES;
+      case "code" -> TextMatchCheck.Target.CODE;
       case "comments" -> TextMatchCheck.Target.COMMENTS;
       case "strings" -> TextMatchCheck.Target.STRINGS;
       case "filename" -> TextMatchCheck.Target.FILENAME;
       case "header" -> TextMatchCheck.Target.HEADER;
       default ->
           throw new RuleConfigurationException(
-              "target must be lines, comments, strings, filename or header"
+              "target must be lines, code, comments, strings, filename or header"
           );
     };
   }

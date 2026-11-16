@@ -1,0 +1,37 @@
+# Cost of Ward on the Swift corpus of SwiftCorpusSmokeTest (#567). Hand-written from measured runs; no test compares it.
+# Measured 2026-11-16 with the jar of this change (java -jar ward.jar, default heap), on an Apple M4 with 10 cores and
+# 32 GB, through /usr/bin/time -l. Other sessions built on the machine at the same time: the 1-minute load average at the
+# start of each run is in the last column, and only the first run started below 3. The wall times are upper bounds; the
+# user CPU time is beside each.
+# Rule set: preset standard, languages swift (138 rules; the six Swift security rules are in that preset), default options.
+# Each project had only a ward.toml with the ward check and the ward-format check, and that ward-rules.toml; nothing of
+# the project was built.
+#
+# run | files | lines | result | wall time | user CPU | peak memory | load average at start
+alamofire         | ward check, cold    | 101 | 43,746 | 6,680 findings | 79.1 s | 141.6 s | 4.84 GB | 2.8
+alamofire         | ward check, cached  | 101 | 43,746 | 6,680 findings | 67.0 s | 110.6 s | 5.32 GB | 7.5
+alamofire         | ward format --check | 101 | 43,746 | 94 files need formatting, 0 refused | 272.4 s | 257.1 s | 5.85 GB | 7.1
+sample-food-truck | ward check, cold    |  82 |  8,579 | 2,059 findings | 35.8 s | 47.1 s | 2.30 GB | 39.1
+sample-food-truck | ward check, cached  |  82 |  8,579 | 2,059 findings | 19.4 s | 30.0 s | 2.31 GB | 30.7
+sample-food-truck | ward format --check |  82 |  8,579 | 76 files need formatting, 0 refused | 20.1 s | 27.2 s | 2.34 GB | 23.1
+#
+# The cold and the cached run report the same findings. The CLI counts more findings than the report of the test (8,371
+# places in both projects), because the gate counts every finding where the test counts a rule once per line.
+#
+# What the numbers say, for #569:
+# - The cached run of Alamofire is hardly faster than the cold one (67 s against 79 s) and uses as much memory. The time
+#   is in parsing, which the cache does not save for Swift, or which the scope rules repeat.
+# - ward format --check on Alamofire takes 272 s for 101 files, 2.7 s per file, three times the whole ward check. The
+#   formatter parses every file, formats it up to four times until the text is stable, and parses the result again for
+#   the safety checks; each parse builds a new parser.
+# - Peak memory is 4.8 GB for 43,746 lines, far above the Java corpus (3.6 GB for 213,000 lines). The ANTLR prediction
+#   cache of the Swift parser is the likely holder; it is never cleared.
+#
+# Before this change, on the same machine and also under load:
+# - the rule engine as the test runs it (no CLI, no cache) took 7,689 s for the 183 files, and 104 of them (57 %) had
+#   syntax diagnostics, so their findings were not complete; it now takes 110 to 140 s with no file left out;
+# - parsing alone took minutes for a long file (465 s for one XCTest file of 1,000 lines); the 183 files now parse in
+#   about 70 s, and the 494 Swift fixtures of this repository in 3.4 s instead of 58.8 s;
+# - one run of the parser over the 183 files ended with an OutOfMemoryError in an 8 GB heap while the grammar was being
+#   changed (long lookahead fills the prediction cache);
+# - ward format refused 40 of the 183 files and wrote 8 files that swiftc rejects; it now refuses none and breaks none.

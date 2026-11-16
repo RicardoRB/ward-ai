@@ -9,3 +9,15 @@ export class Shape {
     return 0;
   }
 }
+export class Box {
+  #width = 0;
+  get width() {
+    return this.#width;
+  }
+  set width(value) {
+    this.#width = value;
+  }
+  get height() {
+    return 1;
+  }
+}

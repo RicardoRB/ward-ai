@@ -90,6 +90,21 @@ record Declaration(SyntaxNode node, SyntaxNode outer, SyntaxNode parent, List<St
     return List.copyOf(texts);
   }
 
+  /** Returns the children before {@code outer} in its parent, the nearest first. */
+  List<SyntaxNode> previousSiblings() {
+    final List<SyntaxNode> before = new ArrayList<>();
+    if (parent == null) {
+      return before;
+    }
+    for (final SyntaxNode child : parent.children()) {
+      if (child.equals(outer)) {
+        break;
+      }
+      before.add(0, child);
+    }
+    return before;
+  }
+
   /** Returns the child directly before {@code outer} in its parent, if there is one. */
   Optional<SyntaxNode> previousSibling() {
     if (parent == null) {

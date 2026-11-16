@@ -21,7 +21,7 @@ import java.util.stream.IntStream;
  */
 public final class FormatStringAnnotationCheck extends FactsCheck {
   private static final String ANNOTATION = "com.google.errorprone.annotations.FormatString";
-  private static final Pattern LITERAL = Pattern.compile("^\"(?:[^\"\\\\]|\\\\.)*\"$");
+  private static final Pattern LITERAL = Pattern.compile("^\"(?:[^\"\\\\]|\\\\.)*+\"$");
   private static final Pattern COMPUTED = Pattern.compile("[+(]");
   private static final String EXPRESSION = "expression";
   private static final FactNeed NEED =

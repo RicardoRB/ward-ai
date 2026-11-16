@@ -19,7 +19,6 @@ public final class KotlinOverloadOrderCheck implements UnitCheck {
   private static final String MEMBER = "classMemberDeclaration";
   private static final String FUNCTION = "functionDeclaration";
   private static final String NAME = "identifier";
-  private static final String IDENTIFIER = "Identifier";
 
   private final String message;
 
@@ -64,9 +63,8 @@ public final class KotlinOverloadOrderCheck implements UnitCheck {
 
   private static String nameOf(final SyntaxNode function) {
     return KotlinDocs.childrenOf(function, NAME).stream()
-        .flatMap(name -> SyntaxWalk.leaves(name).stream())
-        .filter(leaf -> IDENTIFIER.equals(leaf.kind()))
         .findFirst()
+        .flatMap(KotlinDocs::firstName)
         .map(KotlinDocs::text)
         .orElse("");
   }

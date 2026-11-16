@@ -1,6 +1,7 @@
 package dev.ward.analysis.frontend.antlr.swift;
 
 import java.util.Set;
+import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStream;
 
@@ -30,5 +31,20 @@ final class SwiftContextualKeywords {
     final Token next = tokens.LT(2);
     return operatorWord
         && (next.getType() == SwiftLexer.Identifier || "self".equals(next.getText()));
+  }
+
+  /**
+   * Tells whether spaces and then the start of a name, a parenthesis or a bracket follow on the
+   * same line. The lexer asks it after a contextual keyword such as {@code some}.
+   */
+  static boolean isBeforeName(final CharStream input) {
+    int ahead = 1;
+    while (input.LA(ahead) == ' ' || input.LA(ahead) == '\t') {
+      ahead++;
+    }
+    final int next = input.LA(ahead);
+    final boolean nameStart = Character.isLetter(next) || next == '_' || next == '`';
+    final boolean spaced = ahead > 1;
+    return spaced && (nameStart || next == '(' || next == '[') || next == '(' && ahead == 1;
   }
 }

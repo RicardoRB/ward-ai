@@ -1,0 +1,371 @@
+# Label of the sampled findings of the got run, decided by reading the code at the line.
+# Format: rule | file:line | tp, fp or un | reason.
+# tp: the line is a real instance of what the rule names. fp: it is not. un: it cannot be decided
+# from the code, or it is true by the letter of the rule and of no consequence in a test.
+# Every finding of a rule of category security is here; of another rule, the first three in path order.
+ward:javascript/hard-coded-secret | documentation/examples/advanced-creation.js:139 | tp | a string literal is the value of a secret option, in an example
+ward:javascript/line-length | documentation/examples/advanced-creation.js:10 | tp | the line is longer than the limit of the rule
+ward:javascript/line-length | documentation/examples/advanced-creation.js:108 | tp | the line is longer than the limit of the rule
+ward:javascript/line-length | documentation/examples/advanced-creation.js:155 | tp | the line is longer than the limit of the rule
+ward:javascript/magic-number | documentation/examples/gh-got.js:12 | tp | a number other than 0 or 1 is written in an expression, with no named constant
+ward:javascript/magic-number | documentation/examples/pagination.js:4 | tp | a number other than 0 or 1 is written in an expression, with no named constant
+ward:javascript/multiline-comment-leading-asterisk-presence | documentation/examples/advanced-creation.js:7 | tp | the lines of the block comment have no leading asterisk
+ward:javascript/naming | documentation/examples/runkit-example.js:5 | fp | the snake_case name is the key of a destructured property of a remote response, which the code renames to camelCase
+ward:javascript/no-default-export | documentation/examples/gh-got.js:78 | tp | the module has a default export
+ward:javascript/no-delete | documentation/examples/gh-got.js:30 | tp | the delete operator removes a property
+ward:javascript/no-delete | documentation/examples/h2c.js:12 | tp | the delete operator removes a property
+ward:javascript/no-for-in | documentation/examples/h2c.js:21 | tp | a for-in loop
+ward:javascript/no-process-env | documentation/examples/advanced-creation.js:113 | tp | process.env is read directly
+ward:javascript/no-process-env | documentation/examples/gh-got.js:23 | tp | process.env is read directly
+ward:javascript/no-unused-function-parameters | documentation/examples/h2c.js:42 | tp | the first parameter of the callback is not used
+ward:javascript/no-use-before-define | documentation/examples/uppercase-headers.js:58 | tp | the name is used in a function that is written above the declaration of the name
+ward:javascript/no-use-before-define | documentation/examples/uppercase-headers.js:70 | tp | the name is used in a function that is written above the declaration of the name
+ward:typescript/array-callback-return | test/https.ts:4747 | un | the callback of map is an async function with no return, so the array holds promises that Promise.all awaits
+ward:typescript/cleartext-transport | test/abort.ts:494 | un | a plain HTTP URL of a host that the test never reaches or that does not exist
+ward:typescript/cleartext-transport | test/abort.ts:516 | un | a plain HTTP URL of a host that the test never reaches or that does not exist
+ward:typescript/cleartext-transport | test/abort.ts:629 | un | a plain HTTP URL of a host that the test never reaches or that does not exist
+ward:typescript/cleartext-transport | test/abort.ts:684 | un | a plain HTTP URL of a host that the test never reaches or that does not exist
+ward:typescript/cleartext-transport | test/abort.ts:707 | un | a plain HTTP URL of a host that the test never reaches or that does not exist
+ward:typescript/cleartext-transport | test/abort.ts:796 | un | a plain HTTP URL of a host that the test never reaches or that does not exist
+ward:typescript/cleartext-transport | test/dns-cache-integration.ts:306 | un | a plain HTTP URL of a host that the test never reaches or that does not exist
+ward:typescript/cleartext-transport | test/error.ts:51 | un | a plain HTTP URL of a host that the test never reaches or that does not exist
+ward:typescript/cleartext-transport | test/headers.ts:406 | fp | plain HTTP to a test server on the loopback interface
+ward:typescript/cleartext-transport | test/hooks.ts:2313 | fp | plain HTTP to a test server on the loopback interface
+ward:typescript/cleartext-transport | test/hooks.ts:2335 | fp | plain HTTP to a test server on the loopback interface
+ward:typescript/cleartext-transport | test/hooks.ts:2358 | fp | plain HTTP to a test server on the loopback interface
+ward:typescript/cleartext-transport | test/hooks.ts:2406 | fp | plain HTTP to a test server on the loopback interface
+ward:typescript/cleartext-transport | test/hooks.ts:2427 | fp | plain HTTP to a test server on the loopback interface
+ward:typescript/cleartext-transport | test/hooks.ts:2452 | fp | plain HTTP to a test server on the loopback interface
+ward:typescript/cleartext-transport | test/hooks.ts:2474 | fp | plain HTTP to a test server on the loopback interface
+ward:typescript/cleartext-transport | test/hooks.ts:2490 | fp | plain HTTP to a test server on the loopback interface
+ward:typescript/cleartext-transport | test/hooks.ts:2514 | fp | plain HTTP to a test server on the loopback interface
+ward:typescript/cleartext-transport | test/hooks.ts:2541 | fp | plain HTTP to a test server on the loopback interface
+ward:typescript/cleartext-transport | test/hooks.ts:2563 | fp | plain HTTP to a test server on the loopback interface
+ward:typescript/cleartext-transport | test/hooks.ts:2583 | fp | plain HTTP to a test server on the loopback interface
+ward:typescript/cleartext-transport | test/hooks.ts:2659 | fp | plain HTTP to a test server on the loopback interface
+ward:typescript/cleartext-transport | test/hooks.ts:4204 | fp | plain HTTP to a test server on the loopback interface
+ward:typescript/cleartext-transport | test/hooks.ts:726 | fp | plain HTTP to a test server on the loopback interface
+ward:typescript/cleartext-transport | test/redirects.ts:3094 | fp | plain HTTP to a test server on the loopback interface
+ward:typescript/cleartext-transport | test/redirects.ts:3146 | fp | plain HTTP to a test server on the loopback interface
+ward:typescript/cleartext-transport | test/timeout.ts:527 | un | a plain HTTP URL of a host that the test never reaches or that does not exist
+ward:typescript/cleartext-transport | test/timings.ts:158 | fp | plain HTTP to a test server on the loopback interface
+ward:typescript/complexity | source/core/index.ts:1155 | tp | the function has more branches than the limit of the rule
+ward:typescript/complexity | source/core/index.ts:2548 | tp | the function has more branches than the limit of the rule
+ward:typescript/complexity | source/core/index.ts:550 | tp | the function has more branches than the limit of the rule
+ward:typescript/consistent-type-imports | benchmark/index.ts:13 | fp | the default import is used as a value, with new
+ward:typescript/consistent-type-imports | source/core/index.ts:29 | fp | the default import is used as a value, with new
+ward:typescript/consistent-type-imports | source/core/index.ts:60 | un | the import lists several error classes; whether each one is used as a value was not followed
+ward:typescript/dot-notation | source/core/utils/http2-client.ts:380 | fp | the bracket is an indexed access type inside a type assertion, not a property read
+ward:typescript/empty-catch-block | source/core/index.ts:1748 | tp | the catch block is empty
+ward:typescript/empty-catch-block | source/core/index.ts:1753 | tp | the catch block is empty
+ward:typescript/empty-catch-block | source/core/index.ts:1873 | tp | the catch block is empty
+ward:typescript/file-length | source/as-promise/index.ts:1 | tp | the file is longer than the limit of the rule
+ward:typescript/file-length | source/core/index.ts:1 | tp | the file is longer than the limit of the rule
+ward:typescript/file-length | source/core/options.ts:1 | tp | the file is longer than the limit of the rule
+ward:typescript/function-length | source/as-promise/index.ts:58 | tp | the function is longer than the limit of the rule
+ward:typescript/function-length | source/as-promise/index.ts:64 | tp | the function is longer than the limit of the rule
+ward:typescript/function-length | source/as-promise/index.ts:65 | tp | the function is longer than the limit of the rule
+ward:typescript/header-injection | test/headers.ts:760 | un | a test server copies a request header into a response header
+ward:typescript/header-injection | test/pagination.ts:3441 | fp | the header is built from the address of the test server and a counter
+ward:typescript/header-injection | test/pagination.ts:3683 | fp | the header is built from the address of the test server and a counter
+ward:typescript/hidden-field | source/core/errors.ts:154 | tp | the constructor parameter has the name of a field the class declares
+ward:typescript/hidden-field | source/core/errors.ts:170 | tp | the constructor parameter has the name of a field the class declares
+ward:typescript/hidden-field | source/core/errors.ts:184 | tp | the constructor parameter has the name of a field the class declares
+ward:typescript/invalid-javadoc-position | source/as-promise/types.ts:15 | fp | the documentation comment is directly before a call signature of an object type, which is a declaration
+ward:typescript/invalid-javadoc-position | source/as-promise/types.ts:39 | fp | the documentation comment is directly before a call signature of an object type, which is a declaration
+ward:typescript/invalid-javadoc-position | source/as-promise/types.ts:46 | fp | the documentation comment is directly before a call signature of an object type, which is a declaration
+ward:typescript/javadoc-leading-asterisk-align | source/as-promise/types.ts:12 | un | the comment has no leading asterisks at all, so the alignment of its closing line follows a convention this code does not use
+ward:typescript/javadoc-leading-asterisk-align | source/as-promise/types.ts:35 | un | the comment has no leading asterisks at all, so the alignment of its closing line follows a convention this code does not use
+ward:typescript/javadoc-leading-asterisk-align | source/as-promise/types.ts:43 | un | the comment has no leading asterisks at all, so the alignment of its closing line follows a convention this code does not use
+ward:typescript/javadoc-method | source/core/options.ts:1144 | un | the documentation comment has no parameter tags; the types are in the signature, as is usual in TypeScript
+ward:typescript/javadoc-method | source/core/options.ts:920 | un | the documentation comment has no parameter tags; the types are in the signature, as is usual in TypeScript
+ward:typescript/javadoc-method | source/core/options.ts:935 | un | the documentation comment has no parameter tags; the types are in the signature, as is usual in TypeScript
+ward:typescript/javadoc-missing-leading-asterisk | source/as-promise/types.ts:15 | tp | the lines of the documentation comment have no leading asterisk
+ward:typescript/javadoc-missing-leading-asterisk | source/as-promise/types.ts:39 | tp | the lines of the documentation comment have no leading asterisk
+ward:typescript/javadoc-missing-leading-asterisk | source/as-promise/types.ts:46 | tp | the lines of the documentation comment have no leading asterisk
+ward:typescript/line-length | benchmark/index.ts:1 | tp | the line is longer than the limit of the rule
+ward:typescript/line-length | benchmark/index.ts:20 | tp | the line is longer than the limit of the rule
+ward:typescript/line-length | source/as-promise/index.ts:100 | tp | the line is longer than the limit of the rule
+ward:typescript/local-variable-name | test/error.ts:504 | tp | the local name starts with an upper-case letter
+ward:typescript/local-variable-name | test/http.ts:27 | tp | the local name starts with an upper-case letter
+ward:typescript/magic-number | benchmark/server.ts:10 | tp | a number other than 0 or 1 is written in an expression, with no named constant
+ward:typescript/magic-number | source/as-promise/index.ts:104 | tp | a number other than 0 or 1 is written in an expression, with no named constant
+ward:typescript/magic-number | source/core/calculate-retry-delay.ts:34 | tp | a number other than 0 or 1 is written in an expression, with no named constant
+ward:typescript/member-name | source/core/options.ts:3499 | fp | the member name is a computed symbol key, not an identifier
+ward:typescript/missing-frame-protection | test/helpers/create-http-test-server.ts:1 | un | an HTTP server of a test helper sets no frame header; no browser loads its pages
+ward:typescript/missing-javadoc-type | source/as-promise/types.ts:56 | tp | the exported type has line comments but no documentation comment
+ward:typescript/missing-javadoc-type | source/core/diagnostics-channel.ts:16 | tp | the exported type has no documentation comment
+ward:typescript/missing-javadoc-type | source/core/errors.ts:164 | fp | the class has a documentation comment; a line comment stands between the two
+ward:typescript/multiline-comment-leading-asterisk-presence | source/core/index.ts:1324 | tp | the lines of the block comment have no leading asterisk
+ward:typescript/multiline-comment-leading-asterisk-presence | source/core/index.ts:1812 | tp | the lines of the block comment have no leading asterisk
+ward:typescript/multiline-comment-leading-asterisk-presence | source/core/index.ts:1819 | tp | the lines of the block comment have no leading asterisk
+ward:typescript/nesting-depth | source/core/index.ts:1358 | tp | the block is nested deeper than the limit of the rule
+ward:typescript/nesting-depth | source/core/index.ts:1528 | tp | the block is nested deeper than the limit of the rule
+ward:typescript/nesting-depth | source/core/index.ts:1536 | tp | the block is nested deeper than the limit of the rule
+ward:typescript/no-confusing-void-type | benchmark/index.ts:20 | tp | void is a member of a union type
+ward:typescript/no-confusing-void-type | source/core/options.ts:149 | tp | void is a member of a union type
+ward:typescript/no-confusing-void-type | source/core/options.ts:153 | tp | void is a member of a union type
+ward:typescript/no-const-assign | test/promise.ts:183 | fp | the method of an object literal has a parameter with the name of an outer constant; nothing assigns to the constant
+ward:typescript/no-const-assign | test/redirects.ts:326 | fp | the method of an object literal has a parameter with the name of an outer constant; nothing assigns to the constant
+ward:typescript/no-const-assign | test/redirects.ts:4402 | fp | the method of an object literal has a parameter with the name of an outer constant; nothing assigns to the constant
+ward:typescript/no-default-export | source/as-promise/index.ts:58 | tp | the module has a default export
+ward:typescript/no-default-export | source/core/calculate-retry-delay.ts:44 | tp | the module has a default export
+ward:typescript/no-default-export | source/core/index.ts:336 | tp | the module has a default export
+ward:typescript/no-delete | source/core/index.ts:2796 | tp | the delete operator removes a property
+ward:typescript/no-delete | source/core/index.ts:2824 | tp | the delete operator removes a property
+ward:typescript/no-delete | source/core/options.ts:2792 | tp | the delete operator removes a property
+ward:typescript/no-explicit-any | source/as-promise/index.ts:277 | tp | the type any is written
+ward:typescript/no-explicit-any | source/core/calculate-retry-delay.ts:3 | tp | the type any is written
+ward:typescript/no-explicit-any | source/core/index.ts:1908 | tp | the type any is written
+ward:typescript/no-for-in | source/core/index.ts:1686 | tp | a for-in loop
+ward:typescript/no-for-in | source/core/index.ts:2587 | tp | a for-in loop
+ward:typescript/no-for-in | source/create.ts:145 | tp | a for-in loop
+ward:typescript/no-implicit-any-let | source/core/index.ts:575 | tp | a let declaration has neither a type nor a value
+ward:typescript/no-implicit-any-let | source/core/index.ts:763 | tp | a let declaration has neither a type nor a value
+ward:typescript/no-implicit-any-let | source/core/options.ts:2365 | tp | a let declaration has neither a type nor a value
+ward:typescript/no-namespace-import | test/cookies.ts:4 | tp | a namespace import
+ward:typescript/no-namespace-import | test/https.ts:18 | tp | a namespace import
+ward:typescript/no-namespace-import | test/stream.ts:26 | tp | a namespace import
+ward:typescript/no-non-null-assertion | source/as-promise/index.ts:161 | tp | a non-null assertion
+ward:typescript/no-non-null-assertion | source/core/errors.ts:171 | tp | a non-null assertion
+ward:typescript/no-non-null-assertion | source/core/index.ts:1165 | tp | a non-null assertion
+ward:typescript/no-process-env | test/cache.ts:603 | tp | process.env is read directly
+ward:typescript/no-process-env | test/cache.ts:631 | tp | process.env is read directly
+ward:typescript/no-process-env | test/http.ts:30 | tp | process.env is read directly
+ward:typescript/no-re-export-all | source/index.ts:16 | tp | an export of every name of another module
+ward:typescript/no-re-export-all | source/index.ts:17 | tp | an export of every name of another module
+ward:typescript/no-re-export-all | source/index.ts:19 | tp | an export of every name of another module
+ward:typescript/no-redeclare | source/as-promise/index.ts:283 | fp | the name is a method of an object literal or a type parameter, declared once in its own scope
+ward:typescript/no-redeclare | source/core/options.ts:1287 | fp | the name is a method of an object literal or a type parameter, declared once in its own scope
+ward:typescript/no-redeclare | source/core/options.ts:1296 | fp | the name is a method of an object literal or a type parameter, declared once in its own scope
+ward:typescript/no-redundant-type-constituents | test/helpers/test.ts:157 | tp | unknown in a union absorbs the other member
+ward:typescript/no-script-url | test/redirects.ts:5141 | tp | a string literal is a javascript: URL; the test passes it as a redirect target that must be refused
+ward:typescript/no-self-assign | source/core/utils/http2-client.ts:1118 | fp | the right side subtracts one from the property, so the value changes
+ward:typescript/no-self-assign | source/core/utils/http2-client.ts:883 | fp | the right side subtracts one from the property, so the value changes
+ward:typescript/no-skipped-tests | test/cache.ts:595 | tp | the test is skipped
+ward:typescript/no-skipped-tests | test/cache.ts:626 | tp | the test is skipped
+ward:typescript/no-skipped-tests | test/stream.ts:941 | tp | the test is skipped
+ward:typescript/no-sparse-arrays | source/core/options.ts:3432 | fp | the hole is in an array destructuring pattern, which skips an element; no array is created
+ward:typescript/no-sparse-arrays | source/core/options.ts:3831 | fp | the hole is in an array destructuring pattern, which skips an element; no array is created
+ward:typescript/no-sparse-arrays | test/promise.ts:942 | fp | the hole is in an array destructuring pattern, which skips an element; no array is created
+ward:typescript/no-throw-literal | test/arguments.ts:1429 | tp | a string is thrown
+ward:typescript/no-throw-literal | test/arguments.ts:1486 | tp | a string is thrown
+ward:typescript/no-throw-literal | test/response-parse.ts:785 | tp | a string is thrown
+ward:typescript/no-undef | source/as-promise/index.ts:283 | fp | the name is a type parameter or a type that the file declares or imports
+ward:typescript/no-undef | source/as-promise/types.ts:36 | fp | the name is a type parameter or a type that the file declares or imports
+ward:typescript/no-undef | source/as-promise/types.ts:56 | fp | the name is a type parameter or a type that the file declares or imports
+ward:typescript/no-undef-init | test/agent.ts:214 | tp | a constant is initialised with undefined
+ward:typescript/no-unsafe-finally | source/core/options.ts:1723 | tp | a throw statement inside a finally block
+ward:typescript/no-unsafe-finally | test/https.ts:1641 | fp | the return belongs to a callback that is written inside the finally block
+ward:typescript/no-unsafe-finally | test/https.ts:1727 | fp | the return belongs to a callback that is written inside the finally block
+ward:typescript/no-unused-expressions | source/core/utils/http2-client.ts:1118 | fp | the statement is an assignment or a call, which has an effect
+ward:typescript/no-unused-expressions | source/core/utils/http2-client.ts:1311 | fp | the statement is an assignment or a call, which has an effect
+ward:typescript/no-unused-expressions | source/core/utils/http2-client.ts:1480 | fp | the statement is an assignment or a call, which has an effect
+ward:typescript/no-unused-function-parameters | test/agent.ts:9 | fp | the parameter is used on the next line to create the object
+ward:typescript/no-unused-function-parameters | test/helpers/test.ts:100 | fp | the line is an overload signature, which has no body
+ward:typescript/no-unused-function-parameters | test/helpers/test.ts:101 | fp | the line is an overload signature, which has no body
+ward:typescript/no-unused-instantiation | test/arguments.ts:845 | un | the object is created for the exception its constructor throws, inside an assertion
+ward:typescript/no-unused-instantiation | test/arguments.ts:853 | un | the object is created for the exception its constructor throws, inside an assertion
+ward:typescript/no-unused-instantiation | test/arguments.ts:861 | un | the object is created for the exception its constructor throws, inside an assertion
+ward:typescript/no-unused-template-literal | test/helpers/create-https-test-server.ts:45 | fp | the template literal spans several lines, which a quoted string cannot
+ward:typescript/no-unused-template-literal | test/parse-link-header.ts:59 | fp | the template literal spans several lines, which a quoted string cannot
+ward:typescript/no-use-before-define | source/core/options.ts:1770 | tp | the name is used in a function that is written above the declaration of the name
+ward:typescript/no-use-before-define | source/core/options.ts:2866 | tp | the name is used in a function that is written above the declaration of the name
+ward:typescript/no-use-before-define | source/core/options.ts:2892 | tp | the name is used in a function that is written above the declaration of the name
+ward:typescript/no-useless-escape | test/parse-link-header.ts:108 | fp | the backslash is inside a String.raw template, where it is a character of the string
+ward:typescript/no-useless-escape | test/parse-link-header.ts:114 | fp | the backslash is inside a String.raw template, where it is a character of the string
+ward:typescript/parameter-count | source/core/index.ts:2973 | tp | the function has more parameters than the limit of the rule
+ward:typescript/parameter-count | source/core/response.ts:186 | tp | the function has more parameters than the limit of the rule
+ward:typescript/parameter-count | source/core/utils/dns-cache.ts:521 | tp | the function has more parameters than the limit of the rule
+ward:typescript/parameter-name | test/agent.ts:9 | tp | the parameter name starts with an upper-case letter
+ward:typescript/parameter-name | test/hooks.ts:90 | tp | the parameter name starts with an upper-case letter
+ward:typescript/parameter-name | test/promise.ts:493 | un | the parameter is a single underscore, the usual mark of an unused parameter
+ward:typescript/prefer-const | source/core/errors.ts:127 | fp | the variable is assigned again later, inside a function
+ward:typescript/prefer-const | test/cookies.ts:253 | fp | the variable is assigned again later, inside a function
+ward:typescript/prefer-const | test/error.ts:632 | fp | the variable is assigned again later, inside a function
+ward:typescript/prefer-template | test/hooks.ts:3840 | tp | a string is built with the plus operator
+ward:typescript/prefer-template | test/hooks.ts:4038 | tp | a string is built with the plus operator
+ward:typescript/prefer-template | test/hooks.ts:4085 | tp | a string is built with the plus operator
+ward:typescript/require-await | source/as-promise/index.ts:139 | tp | the async callback returns a call without await
+ward:typescript/require-await | source/core/index.ts:1088 | tp | the async method has no await
+ward:typescript/require-await | source/core/index.ts:1899 | fp | the async generator delegates to an async iterable with yield*
+ward:typescript/tls-verification-disabled | benchmark/index.ts:25 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | benchmark/index.ts:36 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | benchmark/index.ts:47 | tp | certificate verification is turned off in the options of another HTTP library, for a benchmark against a local server
+ward:typescript/tls-verification-disabled | benchmark/index.ts:70 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/agent.ts:217 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/agent.ts:24 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/agent.ts:45 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/diagnostics-channel.ts:969 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/dns-cache-integration.ts:332 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/helpers/create-https-test-server.ts:84 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:1037 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:1069 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:1108 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:1146 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:1189 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:1234 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:1337 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:1372 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:1404 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:1425 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:1454 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:1511 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:1563 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:1600 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:1610 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:1695 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:1705 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:1769 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:177 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:1840 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:1853 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:1862 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:190 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:1913 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:1922 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:1969 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:206 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:2126 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:2186 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:2203 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:237 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:253 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:2566 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:2619 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:2662 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:269 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:2694 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:2729 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:2861 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:287 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:2996 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:3028 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:3043 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:307 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:3087 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:3092 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:3128 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:3139 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:3144 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:3152 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:3185 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:3263 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:328 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:3331 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:3336 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:3346 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:3413 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:3485 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:349 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:3546 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:3613 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:3687 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:3692 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:3720 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:3759 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:379 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:3832 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:3860 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:3878 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:414 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4171 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4194 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4236 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4257 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4296 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4337 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4358 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:439 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4391 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4409 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4438 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4466 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4496 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4522 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4540 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4558 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4577 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4595 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4616 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4634 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:464 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4668 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4681 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4723 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4748 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4772 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4791 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4808 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4840 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4849 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4874 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4896 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4950 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:4983 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:5022 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:5061 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:5069 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:517 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:5436 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:5463 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:5483 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:5516 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:552 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:558 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:5634 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:593 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:716 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:823 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:866 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:899 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:915 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:946 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:972 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/https.ts:984 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/normalize-arguments.ts:100 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/redirects.ts:3064 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/retry.ts:2977 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/stream.ts:2028 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/stream.ts:2040 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/timeout.ts:1009 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/timeout.ts:102 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/timeout.ts:1050 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/timeout.ts:1095 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/timeout.ts:1116 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/timeout.ts:1154 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/timeout.ts:1166 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/timeout.ts:1269 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/timeout.ts:1461 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/timeout.ts:1515 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/timeout.ts:1606 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/timeout.ts:1610 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/timeout.ts:1630 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/timeout.ts:1753 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/timeout.ts:3186 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/timeout.ts:321 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/timeout.ts:767 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/timeout.ts:853 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/timeout.ts:890 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/timeout.ts:945 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/timeout.ts:97 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/tls-verification-disabled | test/timings.ts:57 | tp | certificate verification is turned off, for a test server with a self-signed certificate
+ward:typescript/todo-comment | source/core/index.ts:2408 | tp | a TODO comment
+ward:typescript/todo-comment | source/core/index.ts:2469 | tp | a TODO comment
+ward:typescript/todo-comment | source/core/response.ts:198 | tp | a TODO comment
+ward:typescript/unused-assignment | test/create.ts:1223 | un | the initial value is replaced inside a callback before the assertion reads the variable; the order is decided at run time
+ward:typescript/unused-assignment | test/error.ts:724 | fp | the initial value is what the assertion reads when the callback does not run
+ward:typescript/unused-assignment | test/helpers/slow-data-stream.ts:16 | fp | the incremented value is read by the comparison of the next call
+ward:typescript/unused-local-variable | test/cache.ts:657 | fp | the variable is read after its declaration
+ward:typescript/unused-local-variable | test/retry.ts:511 | fp | the variable is read after its declaration
+ward:typescript/use-global-this | source/core/errors.ts:77 | fp | self is a parameter of the constructor, not the global object
+ward:typescript/use-global-this | source/core/errors.ts:81 | fp | self is a parameter of the constructor, not the global object
+ward:typescript/use-global-this | source/core/errors.ts:85 | fp | self is a parameter of the constructor, not the global object
+ward:typescript/variable-declaration-usage-distance | source/as-promise/index.ts:59 | tp | the variable is declared more statements before its first use than the limit of the rule
+ward:typescript/variable-declaration-usage-distance | source/as-promise/index.ts:60 | tp | the variable is declared more statements before its first use than the limit of the rule
+ward:typescript/variable-declaration-usage-distance | source/core/index.ts:1787 | tp | the variable is declared more statements before its first use than the limit of the rule
+ward:typescript/weak-key-size | test/create.ts:254 | tp | an RSA key of 512 bits is generated, for a test
+ward:typescript/weak-key-size | test/create.ts:255 | tp | an RSA key of 512 bits is generated, for a test
+ward:typescript/xss | test/arguments.ts:1095 | un | a test server writes a request header or the request URL to the response; no browser renders it
+ward:typescript/xss | test/arguments.ts:1105 | un | a test server writes a request header or the request URL to the response; no browser renders it
+ward:typescript/xss | test/arguments.ts:1160 | un | a test server writes a request header or the request URL to the response; no browser renders it

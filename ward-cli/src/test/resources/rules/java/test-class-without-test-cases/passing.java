@@ -8,3 +8,11 @@ class ParserTest {
 class Facts implements FactTest {
   void helper() {}
 }
+
+class SlowParserTest extends ParserTest {
+  void helper() {}
+}
+
+class TypedParserTest extends base.GenericParserTests<String> implements Runnable {
+  public void run() {}
+}

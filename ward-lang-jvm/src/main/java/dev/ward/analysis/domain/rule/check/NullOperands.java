@@ -25,7 +25,7 @@ final class NullOperands {
   private static final Pattern NAME = Pattern.compile("[A-Za-z_$][A-Za-z0-9_$]*");
   private static final Pattern NULL_LITERAL =
       Pattern.compile("(?:\\([A-Za-z0-9_.<>\\[\\]]*\\))*\\(*null\\)*");
-  private static final Pattern STRING = Pattern.compile("\"(?:[^\"\\\\]|\\\\.)*\"");
+  private static final Pattern STRING = Pattern.compile("\"(?:[^\"\\\\]|\\\\.)*+\"");
   private static final java.util.Set<String> NON_NULL_WORDS =
       java.util.Set.of("this", "true", "false");
 

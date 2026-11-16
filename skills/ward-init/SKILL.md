@@ -179,7 +179,12 @@ order:
 4. **Architecture style** (only when `strict` is selected and no `--architecture` was given).
    `layered`, `hexagonal`, or `clean`. Recommend the style the package layout supports, and quote
    the packages. Init always writes the layer boundaries of the style, the slice cycle check and the
-   feature independence table into `ward.toml`; no external tool is generated.
+   feature independence table into `ward.toml`; no external tool is generated. When the style is
+   chosen (asked here, or `--architecture` on the command line) and the project has no
+   `ward-architecture.toml`, init also writes that file once, with one starter rule for the style
+   (`allow-empty = true`) and a commented `external` example. Tell the user that the file is theirs
+   afterwards: init never changes or replaces an existing `ward-architecture.toml`, also with
+   `--overwrite` or another style, and `ward-tune` edits it with them.
    Formatting is always checked by the `ward-format` gate, which init adds to every selection.
    Ward runs no external formatter, so do not offer one. Init writes an `.editorconfig` with
    Ward's defaults only when the project has none; an existing one is kept unchanged.
@@ -258,6 +263,12 @@ Do not summarize it instead. Then explain it:
   install needs its own yes before you apply.
 - `conflict`: a user-owned file blocks initialization. Explain which file and why, and **do not
   apply**. Resolving the conflict is the user's decision. Then preview again.
+
+If the plan lists `ward-architecture.toml` as `create`, name its starter rule
+(`lower-layers-do-not-call-controllers`, `domain-is-innermost` or `entities-do-not-know-use-cases`)
+and say that it can fail on the first run like any other rule. If the plan lists it as `keep`, the
+user's file stays as it is, even when the style they chose now differs from the one it was written
+for.
 
 If the plan creates an `ArchitectureTest.java`, compare its directory with the base package you found
 during inspection. Init uses the package shared by all main sources, so they normally match. If they

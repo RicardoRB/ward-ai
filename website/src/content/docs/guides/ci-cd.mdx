@@ -58,7 +58,7 @@ jobs:
 
       - name: Install Ward
         env:
-          WARD_VERSION: v0.9.1
+          WARD_VERSION: v0.10.0
         run: |
           curl -fsSL https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.sh | sh
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
@@ -190,7 +190,7 @@ ward:
     - apt-get update -qq
     - apt-get install -y -qq curl
     # Install the JDK, build tool, and standalone gate tools required by the project here.
-    - export WARD_VERSION="v0.9.1"
+    - export WARD_VERSION="v0.10.0"
     - curl -fsSL https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.sh | sh
     - export PATH="$HOME/.local/bin:$PATH"
   script:
@@ -225,7 +225,7 @@ pipeline {
       steps {
         sh '''
           set -eu
-          export WARD_VERSION="v0.9.1"
+          export WARD_VERSION="v0.10.0"
           curl -fsSL https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.sh | sh
           export PATH="$HOME/.local/bin:$PATH"
           ward check --profile default,ci --format json > ward-report.json
@@ -261,7 +261,7 @@ jobs:
           name: Install Ward
           command: |
             set -eu
-            export WARD_VERSION="v0.9.1"
+            export WARD_VERSION="v0.10.0"
             curl -fsSL https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.sh | sh
             echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$BASH_ENV"
       - run:
@@ -298,7 +298,7 @@ steps:
   # Add the runtime and standalone tools required by the project before this step.
   - bash: |
       set -eu
-      export WARD_VERSION="v0.9.1"
+      export WARD_VERSION="v0.10.0"
       curl -fsSL https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.sh | sh
       export PATH="$HOME/.local/bin:$PATH"
       ward check --profile default,ci --format json > ward-report.json
@@ -329,7 +329,7 @@ pipelines:
             - apt-get update -qq
             - apt-get install -y -qq curl
             # Install the runtime and standalone gate tools required by the project here.
-            - export WARD_VERSION="v0.9.1"
+            - export WARD_VERSION="v0.10.0"
             - curl -fsSL https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.sh | sh
             - export PATH="$HOME/.local/bin:$PATH"
             - ward check --profile default,ci --format json > ward-report.json
@@ -347,13 +347,15 @@ build. Add a `branches` pipeline for pushes when quality gates should run outsid
   local checks, while `pre-push` is the cumulative local tier. Existing hand-authored configurations
   may still select multiple profiles, such as `default,ci`, when needed.
 - **Gate evaluation:** all selected gates run and the job gets one verdict. Add `--fail-fast` to stop
-  at the first failure.
+  at the first failure. Set `WARD_JOBS: auto` in the job's `env`, or pass `--jobs auto`, to run the
+  checks that only read the sources next to the build and to analyze the files of the `ward` check
+  on every processor; see [Parallel checks](/commands/check/#parallel-checks).
 - **Exit codes:** `0` means all selected gates passed, `1` means a gate failed, and `2` means Ward
   could not run, for example because of invalid configuration. Non-zero exits fail the CI step.
 - **Reports:** `--format json` writes only the [JSON report](/reference/json-output/) to stdout, so it
   can be redirected to `ward-report.json`. Diagnostics go to stderr and remain visible in logs.
   Add `--output <path>` to write the report to a file and keep the text report in the job log.
-- **Version pinning:** set `WARD_VERSION` to a release tag such as `v0.9.1` for reproducible builds.
+- **Version pinning:** set `WARD_VERSION` to a release tag such as `v0.10.0` for reproducible builds.
   Leaving it unset installs the latest release.
 - **Working directories:** run Ward from the repository root, or configure the provider's working
   directory so `ward.toml` and the project files resolve correctly.

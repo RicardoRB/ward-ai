@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 /**
  * Reports each public method named {@code test...} in a test class that has no test annotation. A
  * test class is one whose name matches the pattern, or one that extends {@code TestCase}. A method
- * with parameters is not a test method of any JUnit version, so it is never reported. When {@code
- * junit4Only} is set, only a file that uses JUnit 4 is read.
+ * with parameters, or one that returns a value, is not a test method of any JUnit version, so it
+ * is never reported. When {@code junit4Only} is set, only a file that uses JUnit 4 is read.
  */
 public final class UnitTestMissingAnnotationCheck implements UnitCheck {
   private static final String TEST_CASE = "TestCase";
@@ -52,6 +52,7 @@ public final class UnitTestMissingAnnotationCheck implements UnitCheck {
         .flatMap(member -> JUnitMembers.method(member).stream())
         .filter(method -> JUnitMembers.name(method).startsWith("test"))
         .filter(JUnitMethods::hasNoParameters)
+        .filter(UnitTestMissingAnnotationCheck::returnsVoid)
         .map(
             method ->
                 CheckSupport.at(
@@ -60,6 +61,14 @@ public final class UnitTestMissingAnnotationCheck implements UnitCheck {
                 )
         )
         .toList();
+  }
+
+  /** A method that returns a value is a helper: a test method of any JUnit version is void. */
+  private static boolean returnsVoid(final SyntaxNode method) {
+    return SyntaxWalk.leaves(method).stream()
+        .findFirst()
+        .filter(leaf -> "void".equals(SyntaxWalk.text(leaf)))
+        .isPresent();
   }
 
   private boolean isTestClass(final SyntaxNode clazz) {

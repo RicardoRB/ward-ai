@@ -7,13 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * Matches a regular expression against lines, comments, string literals, the file name or the file
  * header. A forbidding rule reports each matching item beyond {@code limit}; a requiring rule
  * reports the file once when fewer than {@code limit} items match. The user options are {@code
- * pattern}, {@code limit} and {@code header-lines}.
+ * pattern}, {@code limit} and {@code header-lines}. A finding on a line starts at column 1, or at
+ * the match when the rule asks for the match's position.
  */
 public final class TextMatchCheck implements UnitCheck {
   private static final Span FILE_START = new Span(1, 1, 1, 1, 0, 0);
@@ -47,8 +49,23 @@ public final class TextMatchCheck implements UnitCheck {
 
   private RuleMatch report(final Item hit) {
     return CheckSupport.at(
-        hit.span(),
+        rule.atMatch() ? matchSpan(hit) : hit.span(),
         CheckSupport.fill(message, hit.text().strip(), String.valueOf(rule.limit()))
+    );
+  }
+
+  /** The span of the first match within a line item. */
+  private Span matchSpan(final Item hit) {
+    final Matcher matcher = rule.pattern().matcher(hit.text());
+    matcher.find();
+    final Span line = hit.span();
+    return new Span(
+        line.startLine(),
+        matcher.start() + 1,
+        line.startLine(),
+        matcher.end() + 1,
+        line.startOffset() + matcher.start(),
+        line.startOffset() + matcher.end()
     );
   }
 
@@ -59,7 +76,10 @@ public final class TextMatchCheck implements UnitCheck {
   private List<Item> items(final SyntaxNode root, final SourceFile file) {
     final Target target = rule.target();
     if (target == Target.LINES) {
-      return lines(file);
+      return lines(file.lines());
+    }
+    if (target == Target.CODE) {
+      return lines(CodeLines.of(root, file));
     }
     if (target == Target.FILENAME) {
       return List.of(new Item(file.name(), FILE_START));
@@ -88,11 +108,11 @@ public final class TextMatchCheck implements UnitCheck {
     return List.of(new Item(String.join("\n", lines.subList(0, count)), FILE_START));
   }
 
-  private static List<Item> lines(final SourceFile file) {
+  private static List<Item> lines(final List<String> lines) {
     final List<Item> items = new ArrayList<>();
     int offset = 0;
     int number = 1;
-    for (final String line : file.lines()) {
+    for (final String line : lines) {
       items.add(lineItem(line, number, offset));
       offset += line.length() + 1;
       number++;
@@ -113,6 +133,8 @@ public final class TextMatchCheck implements UnitCheck {
   public enum Target {
     /** Each line of the file. */
     LINES,
+    /** The lines of the file, with string literals and comments blanked. */
+    CODE,
     /** Each comment node. */
     COMMENTS,
     /** Each node of the filter's kinds, such as string literals. */
@@ -131,18 +153,50 @@ public final class TextMatchCheck implements UnitCheck {
    * @param required whether the pattern must match, instead of being forbidden
    * @param limit with {@code required} the fewest matching items; otherwise the most allowed
    * @param headerLines how many lines the header has, for {@link Target#HEADER}
+   * @param atMatch whether a finding starts at the match instead of the line, for {@link
+   *     Target#LINES} and {@link Target#CODE}
    */
-  public record Rule(Target target, Pattern pattern, boolean required, int limit, int headerLines) {
+  public record Rule(
+      Target target,
+      Pattern pattern,
+      boolean required,
+      int limit,
+      int headerLines,
+      boolean atMatch
+  ) {
     /**
      * Validates the fields.
      *
-     * @throws IllegalArgumentException if the limit or header size is negative
+     * @throws IllegalArgumentException if the limit or header size is negative, or the match
+     *     position is asked for a target that is not made of lines
      */
     public Rule {
       Objects.requireNonNull(target, "target");
       Objects.requireNonNull(pattern, "pattern");
       CheckSupport.nonNegative(limit, "limit");
       CheckSupport.nonNegative(headerLines, "header-lines");
+      if (atMatch && target != Target.LINES && target != Target.CODE) {
+        throw new IllegalArgumentException("the match position needs the lines or code target");
+      }
+    }
+
+    /**
+     * Creates a rule whose findings start at their line.
+     *
+     * @param target what to match
+     * @param pattern the regular expression, searched for anywhere in the item
+     * @param required whether the pattern must match, instead of being forbidden
+     * @param limit with {@code required} the fewest matching items; otherwise the most allowed
+     * @param headerLines how many lines the header has, for {@link Target#HEADER}
+     */
+    public Rule(
+        final Target target,
+        final Pattern pattern,
+        final boolean required,
+        final int limit,
+        final int headerLines
+    ) {
+      this(target, pattern, required, limit, headerLines, false);
     }
   }
 }

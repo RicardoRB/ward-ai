@@ -37,6 +37,8 @@ pattern = "[a-z][a-zA-Z0-9]*"
 message = "function name '{value}' does not match the name pattern of this rule"
 '''
 
+# The properties of an object or a companion object are left to object-property-naming, which
+# accepts the names of constants there.
 [[rules]]
 id = "ward:kotlin/property-name"
 language = "kotlin"
@@ -48,6 +50,7 @@ options.pattern = { type = "regex" }
 body = '''
 check = "text-pattern"
 kinds = ["propertyDeclaration"]
+not-inside = ["objectDeclaration", "companionObject"]
 modifiers = ["modifierList", "annotation"]
 excluded = "const"
 name = "simpleIdentifier"

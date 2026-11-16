@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
  * is not one plain literal, or an argument array, is not read.
  */
 public final class JavaLenientFormatCheck implements RuleCheck {
-  private static final Pattern LITERAL = Pattern.compile("^\"(?:[^\"\\\\]|\\\\.)*\"$");
+  private static final Pattern LITERAL = Pattern.compile("^\"(?:[^\"\\\\]|\\\\.)*+\"$");
   private static final String PLACEHOLDER = "%s";
   private static final String PRECONDITIONS = "com.google.common.base.Preconditions";
   private static final String VERIFY = "com.google.common.base.Verify";

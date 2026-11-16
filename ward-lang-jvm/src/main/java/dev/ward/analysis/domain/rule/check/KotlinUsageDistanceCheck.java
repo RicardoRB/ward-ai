@@ -25,7 +25,6 @@ public final class KotlinUsageDistanceCheck implements UnitCheck {
   private static final String PROPERTY = "propertyDeclaration";
   private static final String VARIABLE = "variableDeclaration";
   private static final String VAR = "var";
-  private static final String IDENTIFIER = "Identifier";
   private static final String VALUE = "{value}";
 
   private final String message;
@@ -77,9 +76,8 @@ public final class KotlinUsageDistanceCheck implements UnitCheck {
       return Optional.empty();
     }
     return KotlinDocs.childrenOf(property.get(), VARIABLE).stream()
-        .flatMap(variable -> SyntaxWalk.leaves(variable).stream())
-        .filter(leaf -> IDENTIFIER.equals(leaf.kind()))
-        .findFirst();
+        .findFirst()
+        .flatMap(KotlinDocs::firstName);
   }
 
   private static boolean isVar(final SyntaxNode property) {

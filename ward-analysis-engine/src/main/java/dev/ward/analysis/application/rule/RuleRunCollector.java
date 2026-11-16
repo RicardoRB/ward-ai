@@ -9,7 +9,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-/** Gathers the outcomes of one engine run and returns them in the stable order. */
+/**
+ * Gathers the outcomes of one engine run and returns them in the stable order. Not thread-safe:
+ * each unit under analysis has its own, and the run adds them up on one thread.
+ */
 final class RuleRunCollector {
   private static final Comparator<String> NULLS_FIRST =
       Comparator.nullsFirst(Comparator.naturalOrder());
@@ -32,6 +35,13 @@ final class RuleRunCollector {
 
   void notRun(final RuleNotRun skipped) {
     notRun.add(skipped);
+  }
+
+  /** Adds everything {@code other} gathered, after what this collector already holds. */
+  void addAll(final RuleRunCollector other) {
+    findings.addAll(other.findings);
+    errors.addAll(other.errors);
+    notRun.addAll(other.notRun);
   }
 
   RuleRunResult result() {

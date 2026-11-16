@@ -72,11 +72,16 @@ final class InitChanges {
     pomChange = files.buildTools().apply(project, gates, preset, approval);
     ruleFileChange = files.ruleFiles().apply(project, preset, gates);
     for (final OwnedSection section :
-        OwnedSections.withEditorConfig(
-            OwnedSections.of(catalog, project, selection, gates, ruleFileChange.preserved()),
+        OwnedSections.withArchitectureFile(
+            OwnedSections.withEditorConfig(
+                OwnedSections.of(catalog, project, selection, gates, ruleFileChange.preserved()),
+                project,
+                gates,
+                files.configuration().read(OwnedSections.editorConfigPath(project))
+            ),
             project,
-            gates,
-            files.configuration().read(OwnedSections.editorConfigPath(project))
+            selection,
+            files.configuration().exists(OwnedSections.architectureFilePath(project))
         )) {
       sectionChanges.add(files.sections().apply(section));
     }

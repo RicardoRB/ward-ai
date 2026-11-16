@@ -13,6 +13,7 @@ import dev.ward.domain.project.Project;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
@@ -54,6 +55,7 @@ public final class GatePrerequisites {
 
   /** The prerequisite checks of one run. */
   public final class RunPrerequisites {
+    private final ReentrantLock lock = new ReentrantLock();
     private boolean inspected;
     private ToolchainSnapshot toolchain = UNKNOWN_TOOLCHAIN;
 
@@ -153,11 +155,17 @@ public final class GatePrerequisites {
     }
 
     private ToolchainSnapshot runtime(final Project project) {
-      if (!inspected) {
-        inspected = true;
-        toolchain = inspect(project).orElse(UNKNOWN_TOOLCHAIN);
+      // Gates of one run may end on different threads.
+      lock.lock();
+      try {
+        if (!inspected) {
+          inspected = true;
+          toolchain = inspect(project).orElse(UNKNOWN_TOOLCHAIN);
+        }
+        return toolchain;
+      } finally {
+        lock.unlock();
       }
-      return toolchain;
     }
 
     private Optional<ToolchainSnapshot> inspect(final Project project) {

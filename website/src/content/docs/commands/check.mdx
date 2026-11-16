@@ -6,7 +6,7 @@ description: Run configured quality gates.
 `ward check` runs the quality gates configured in `ward.toml` and reports the result.
 
 ```sh
-ward check [-C <dir>] [--format text|json|sarif] [--severity error|warning|info] [--output <path>] [--profile <name>[,...]] [--path <path>] [--fail-fast] [--learn-after <n>]
+ward check [-C <dir>] [--format text|json|sarif] [--severity error|warning|info] [--output <path>] [--profile <name>[,...]] [--path <path>] [--fail-fast] [--jobs <n>|auto] [--learn-after <n>]
 ```
 
 ## Options
@@ -20,6 +20,7 @@ ward check [-C <dir>] [--format text|json|sarif] [--severity error|warning|info]
 | `--output <path>` | Write the JSON or SARIF report to a file. See [Writing the report to a file](#writing-the-report-to-a-file). | stdout |
 | `--path <path>` | Run a [partial check](#partial-checks) for an edited file. Repeat for several. | no partial check |
 | `--fail-fast` | Stop after the first gate that does not pass. | off |
+| `--jobs <n>\|auto` | Work on up to `n` threads at once: checks, and the files that the `ward` check analyzes; `auto` is one per processor. See [Parallel checks](#parallel-checks). | `WARD_JOBS`, or `1` |
 | `--learn-after <n>` | Record recurring rule findings after `n` occurrences. Must be at least `1`. See [Learning](#learning). | off |
 | `--offline` | Make no network request. The [`vulnerabilities`](/configuration/vulnerabilities/) check then reads its stored databases, and ends with an execution error that names `ward vulnerabilities update` when one is missing, stale or corrupt. Other gates are not affected. | off |
 | `--verbose` | Print diagnostics to stderr. See [Verbose diagnostics](#verbose-diagnostics). | off |
@@ -34,6 +35,55 @@ An invalid option value is a usage error and produces no partial report.
 - With `--fail-fast`, Ward stops after the first gate that fails, is unavailable, or hits an
   execution error. Later gates are listed as skipped (`not run (fail-fast)`).
 - A gate whose standalone tool is missing is reported as unavailable.
+
+### Parallel checks
+
+By default the checks run one after another, and the `ward` check analyzes one file at a time.
+`--jobs <n>` lets up to `n` threads work at once, and `--jobs auto` uses one per processor. The
+environment variable `WARD_JOBS` sets the same value for a caller whose command line you do not
+want to change, such as a Git hook or a CI workflow; the option wins.
+
+```sh
+ward check --profile pre-push --jobs auto
+WARD_JOBS=auto git push
+```
+
+Ward decides which checks may overlap; `ward.toml` needs no change:
+
+- `ward-format`, `secrets`, and `ward` without `java-classpath` read the sources and write only
+  under `.ward`. They run next to any other check.
+- Every other check runs one at a time, in the order of `ward.toml`. This covers every check with a
+  `command`, and `coverage`, `crap`, `license`, `vulnerabilities` and `build-policy`, which read
+  the reports of a command or may start the build tool. So `coverage` still runs after `tests`.
+
+`--jobs` is one limit for the whole command. A running check counts as one job, and so does each
+file that the `ward` check analyzes, so `--jobs 8` never has more than 8 threads at work: while
+`secrets` and `ward-format` run, the `ward` check analyzes up to 6 files at once, and up to 8 when
+they have ended. The `ward` check parses the files and runs the per-file rules on several threads;
+type facts, the rules that read the whole project (architecture, duplicate code, unused
+definitions) and the `.ward` cache stay on one thread. `secrets` and `ward-format` read one file
+at a time.
+
+With more than one job the syntax trees of every file under analysis are in memory at the same
+time, and they are dropped when the rules of the file are done. If a machine runs short of memory,
+use a lower number instead of `auto`.
+
+Measured on Ward's own repository on a 10-core machine, a cold `ward` check takes about 2.4 to 3.4
+times less wall time with 4 jobs than with 1. More jobs still help, less: 10 jobs take another 16 to
+20 % off, for about 30 % more CPU time. So `--jobs 4` is a good choice where the machine is shared,
+and `auto` where the check should end as soon as possible.
+
+The findings of the `ward` check, their order and its `.ward` cache are the same for every `--jobs`
+value, and a cache written with one value is read with any other.
+
+The report is the same for every `--jobs` value: the checks are listed in the order of `ward.toml`,
+with the same findings and exit code, and the progress lines of two checks are never mixed. Only
+the durations differ. With `--fail-fast`, a check that has not started does not start after a
+failure, a running check runs to its end, and every check after the first one that did not pass is
+listed as `not run (fail-fast)`, also when it had already run.
+
+Do not use `--jobs` with a profile in which a command check rewrites source files, such as a
+formatter that writes: a check that runs next to it could read a file while it changes.
 
 For Maven and Gradle projects, built-in test commands prefer the project wrapper (`./mvnw` or
 `./gradlew`) and fall back to `mvn` or `gradle`. Commands configured explicitly in `ward.toml` are

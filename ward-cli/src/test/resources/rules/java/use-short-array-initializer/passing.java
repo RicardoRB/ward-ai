@@ -5,4 +5,8 @@ class Passing {
     int[] c;
     c = new int[] {1};
   }
+  Object[] nested = {null, new int[] {3, 6}};
+  int size() {
+    return java.util.Arrays.asList(new Object[] {1, new int[] {2}}).size();
+  }
 }

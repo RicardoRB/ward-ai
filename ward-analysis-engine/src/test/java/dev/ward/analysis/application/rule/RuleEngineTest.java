@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 class RuleEngineTest {
   private static final String JAVA_LENGTH = "ward:java/method-length";
@@ -124,13 +126,17 @@ class RuleEngineTest {
     assertThat(parsed).containsExactly(FAILING_UNIT, "Good.java");
   }
 
-  @Test
-  void recordsRuleFailureAndContinuesWithTheNextUnit() {
+  @ParameterizedTest
+  @CsvSource({"false, the rule could not run", "true, the rule ran out of stack on this file"})
+  void recordsRuleFailureAndContinuesWithTheNextUnit(final boolean overflow, final String reason) {
     final RuleRunResult result =
         engine(
             Map.of(
                 THROWING_RULE,
                 root -> {
+                  if (overflow) {
+                    throw new StackOverflowError();
+                  }
                   throw new AnalysisFailedException("boom");
                 }
             )
@@ -143,8 +149,8 @@ class RuleEngineTest {
 
     assertThat(result.executionErrors())
         .containsExactly(
-            new RuleExecutionError(THROWING_RULE, UNIT_A, "the rule could not run"),
-            new RuleExecutionError(THROWING_RULE, "B.java", "the rule could not run")
+            new RuleExecutionError(THROWING_RULE, UNIT_A, reason),
+            new RuleExecutionError(THROWING_RULE, "B.java", reason)
         );
     assertThat(result.findings()).isEmpty();
   }

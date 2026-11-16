@@ -16,6 +16,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -27,9 +28,12 @@ import java.util.regex.Pattern;
  */
 public final class KotlinUnusedParameterCheck implements RuleCheck {
   private static final String NAME = "{value}";
-  private static final Pattern ALLOWED_NAMES = Pattern.compile("ignored|expected");
+  private static final char OPEN = '(';
+  private static final char CLOSE = ')';
+  private static final Pattern FUN = Pattern.compile("(?<![\\w$])fun(?![\\w$])");
+  private static final Pattern ALLOWED_NAMES = Pattern.compile("ignored|expected|_");
   private static final Set<String> SIGNATURE_MODIFIERS =
-      Set.of("override", "open", "abstract", "operator", "actual", "expect");
+      Set.of("override", "open", "abstract", "operator", "actual", "expect", "external");
 
   private final String message;
 
@@ -58,7 +62,10 @@ public final class KotlinUnusedParameterCheck implements RuleCheck {
     final UnitScopes scopes = view.scopes();
     final List<RuleMatch> found = new ArrayList<>();
     for (final Scope scope : scopes.scopes()) {
-      if (scope.kind() == ScopeKind.FUNCTION && !scope.open() && !signature(scope, unit.text())) {
+      if (scope.kind() == ScopeKind.FUNCTION
+          && !scope.open()
+          && !signature(scope, unit.text())
+          && !bodiless(scope, unit.text())) {
         scope.bindings().stream()
             .filter(binding -> unused(binding, scopes, unit.text()))
             .forEach(binding -> found.add(match(binding)));
@@ -77,6 +84,31 @@ public final class KotlinUnusedParameterCheck implements RuleCheck {
         && !ALLOWED_NAMES.matcher(binding.name()).matches()
         && scopes.usesOf(binding).stream().noneMatch(use -> use.access() != ReferenceAccess.WRITE)
         && !KotlinDeclarations.usedElsewhere(text, binding.name(), binding.declaration());
+  }
+
+  /** A function of an interface, or any other without a body, cannot use its parameters. */
+  private static boolean bodiless(final Scope scope, final String text) {
+    final String function = text.substring(scope.span().startOffset(), scope.span().endOffset());
+    final Matcher fun = FUN.matcher(function);
+    final int open = fun.find() ? function.indexOf(OPEN, fun.end()) : -1;
+    final int close = open < 0 ? -1 : closing(function, open);
+    return close >= 0 && function.indexOf('{', close) < 0 && function.indexOf('=', close) < 0;
+  }
+
+  /** Returns the offset of the parenthesis that closes the one at {@code open}, or -1. */
+  private static int closing(final String text, final int open) {
+    int depth = 0;
+    int close = -1;
+    for (int index = open; index < text.length() && close < 0; index++) {
+      final char current = text.charAt(index);
+      if (current == OPEN) {
+        depth++;
+      } else if (current == CLOSE) {
+        depth--;
+        close = depth == 0 ? index : -1;
+      }
+    }
+    return close;
   }
 
   private static boolean signature(final Scope scope, final String text) {

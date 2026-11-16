@@ -7,10 +7,10 @@
 # checkstyle anchor-differs: 3
 # checkstyle approximation: 18
 # checkstyle tool-silent: 8
-# errorprone agree: 18
+# errorprone agree: 17
 # errorprone agree-lines: 63
 # errorprone anchor-differs: 1
-# errorprone approximation: 7
+# errorprone approximation: 8
 # errorprone not-comparable: 120
 # errorprone tool-silent: 15
 # nullaway agree-lines: 5
@@ -19,13 +19,13 @@
 # nullaway not-comparable: 18
 # nullaway tool-silent: 3
 # pmd agree: 105
-# pmd agree-lines: 108
+# pmd agree-lines: 107
 # pmd anchor-differs: 20
-# pmd approximation: 20
+# pmd approximation: 21
 # pmd tool-silent: 35
-# spotbugs agree-lines: 168
-# spotbugs anchor-differs: 42
-# spotbugs approximation: 16
+# spotbugs agree-lines: 169
+# spotbugs anchor-differs: 40
+# spotbugs approximation: 17
 # spotbugs not-comparable: 120
 # spotbugs tool-silent: 125
 aa-assertion-of-arguments	spotbugs	AA_ASSERTION_OF_ARGUMENTS	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
@@ -400,7 +400,7 @@ extends-auto-value	errorprone	ExtendsAutoValue	tool-silent	the tool reports noth
 extends-object	errorprone	ExtendsObject	not-comparable	the fixture does not compile
 extends-object	pmd	ExtendsObject	agree-lines	
 fall-through	checkstyle	FallThrough	agree	
-fall-through	errorprone	FallThrough	agree	
+fall-through	errorprone	FallThrough	approximation	Error Prone accepts a fall-through comment that matches \bfalls?.?through\b, so it reports the case after // fallthru (line 33 of the passing fixture); Ward accepts falls?[ -]?thr(u|ough), the default reliefPattern of Checkstyle's FallThrough, which agrees
 fall-through	pmd	ImplicitSwitchFallThrough	agree	
 fe-floating-point-equality	spotbugs	FE_FLOATING_POINT_EQUALITY	agree-lines	
 fe-test-if-equal-to-not-a-number	spotbugs	FE_TEST_IF_EQUAL_TO_NOT_A_NUMBER	agree-lines	
@@ -505,7 +505,7 @@ iju-suite-not-static	spotbugs	IJU_SUITE_NOT_STATIC	not-comparable	the fixture do
 iju-teardown-no-super	spotbugs	IJU_TEARDOWN_NO_SUPER	not-comparable	the fixture does not compile
 il-container-added-to-itself	spotbugs	IL_CONTAINER_ADDED_TO_ITSELF	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 il-infinite-loop	spotbugs	IL_INFINITE_LOOP	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
-il-infinite-recursive-loop	spotbugs	IL_INFINITE_RECURSIVE_LOOP	anchor-differs	tool lines [3], on passing [], fixture [2]
+il-infinite-recursive-loop	spotbugs	IL_INFINITE_RECURSIVE_LOOP	anchor-differs	tool lines [3, 7], on passing [], fixture [2, 6]
 illegal-catch	checkstyle	IllegalCatch	agree	
 illegal-catch	pmd	AvoidCatchingGenericException	agree-lines	
 illegal-identifier-name	checkstyle	IllegalIdentifierName	agree	
@@ -534,7 +534,7 @@ index-of-char	errorprone	IndexOfChar	agree-lines
 inefficient-empty-string-check	pmd	InefficientEmptyStringCheck	agree	
 inefficient-string-buffering	pmd	InefficientStringBuffering	agree-lines	
 inexact-varargs-conditional	errorprone	InexactVarargsConditional	agree-lines	
-infinite-recursion	errorprone	InfiniteRecursion	anchor-differs	tool lines [3, 6], on passing [], fixture [2, 5]
+infinite-recursion	errorprone	InfiniteRecursion	anchor-differs	tool lines [10, 3, 6], on passing [], fixture [2, 5, 9]
 inject-more-than-one-scope-annotation-on-class	errorprone	InjectMoreThanOneScopeAnnotationOnClass	not-comparable	the fixture does not compile
 inject-on-member-and-constructor	errorprone	InjectOnMemberAndConstructor	not-comparable	the fixture does not compile
 inline-me-validator	errorprone	InlineMeValidator	not-comparable	the fixture does not compile
@@ -774,7 +774,7 @@ np-clone-could-return-null	spotbugs	NP_CLONE_COULD_RETURN_NULL	not-comparable	th
 np-closing-null	spotbugs	NP_CLOSING_NULL	agree-lines	
 np-dereference-of-readline-value	spotbugs	NP_DEREFERENCE_OF_READLINE_VALUE	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 np-equals-should-handle-null-argument	spotbugs	NP_EQUALS_SHOULD_HANDLE_NULL_ARGUMENT	anchor-differs	tool lines [1], on passing [], fixture [2]
-np-guaranteed-deref	spotbugs	NP_GUARANTEED_DEREF	anchor-differs	tool lines [9], on passing [], fixture [7]
+np-guaranteed-deref	spotbugs	NP_GUARANTEED_DEREF	agree-lines	
 np-guaranteed-deref-on-exception-path	spotbugs	NP_GUARANTEED_DEREF_ON_EXCEPTION_PATH	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 np-immediate-dereference-of-readline	spotbugs	NP_IMMEDIATE_DEREFERENCE_OF_READLINE	agree-lines	
 np-load-of-known-null-value	spotbugs	NP_LOAD_OF_KNOWN_NULL_VALUE	agree-lines	
@@ -990,7 +990,7 @@ session-attribute-injection	-	-	no-counterpart
 set-unrecognized	errorprone	SetUnrecognized	not-comparable	the fixture does not compile
 sf-dead-store-due-to-switch-fallthrough	spotbugs	SF_DEAD_STORE_DUE_TO_SWITCH_FALLTHROUGH	anchor-differs	tool lines [8], on passing [], fixture [4]
 sf-dead-store-due-to-switch-fallthrough-to-throw	spotbugs	SF_DEAD_STORE_DUE_TO_SWITCH_FALLTHROUGH_TO_THROW	not-comparable	the fixture does not compile
-sf-switch-fallthrough	spotbugs	SF_SWITCH_FALLTHROUGH	anchor-differs	tool lines [6], on passing [], fixture [7]
+sf-switch-fallthrough	spotbugs	SF_SWITCH_FALLTHROUGH	approximation	SpotBugs reads class files, which keep no comments, so it reports a fall-through that a // falls-through comment marks as meant (line 25 of the passing fixture); Ward reads the comment, as Checkstyle's FallThrough does. On the violating fixture SpotBugs anchors each fall-through on the line before the next label, Ward on the label
 sf-switch-no-default	spotbugs	SF_SWITCH_NO_DEFAULT	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 short-class-name	pmd	ShortClassName	agree	
 should-have-even-args	errorprone	ShouldHaveEvenArgs	not-comparable	the fixture does not compile
@@ -1068,7 +1068,7 @@ swl-sleep-with-lock-held	spotbugs	SWL_SLEEP_WITH_LOCK_HELD	agree-lines
 system-exit-outside-main	errorprone	SystemExitOutsideMain	agree-lines	
 system-println	pmd	SystemPrintln	agree	
 temporal-accessor-get-chrono-field	errorprone	TemporalAccessorGetChronoField	agree-lines	
-test-class-without-test-cases	pmd	TestClassWithoutTestCases	agree-lines	
+test-class-without-test-cases	pmd	TestClassWithoutTestCases	approximation	PMD finds inherited test methods through resolved types: it leaves SlowParserTest, whose superclass is in the file, and reports TypedParserTest (line 16 of the passing fixture), whose superclass base.GenericParserTests it cannot resolve; Ward has no types and takes a superclass named as a test class for one that has tests
 test-exception-checker	errorprone	TestExceptionChecker	not-comparable	the fixture does not compile
 test-parameters-not-initialized	errorprone	TestParametersNotInitialized	not-comparable	the fixture does not compile
 text-block-google-style-formatting	checkstyle	TextBlockGoogleStyleFormatting	approximation	Checkstyle also reports the closing delimiter on its own line

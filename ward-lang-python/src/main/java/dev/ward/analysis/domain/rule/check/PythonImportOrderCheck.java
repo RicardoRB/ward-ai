@@ -12,21 +12,30 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Reports a module-level import that comes after an import of a later group, like pylint's {@code
  * wrong-import-order}. The groups are {@code __future__}, standard library, third party, first
  * party and relative imports, in that order. A first-party package is one that the project has a
- * file for, and everything else is third party. This is a project check: it reads the whole
- * project's trees to find the first-party packages.
+ * file for, and everything else is third party. An import nested in a {@code try}, an {@code if} or
+ * another statement is not judged and does not count, as in pylint. This is a project check: it
+ * reads the whole project's trees to find the first-party packages.
  */
 public final class PythonImportOrderCheck implements RuleCheck, ProjectCheck {
   private static final Set<String> IMPORTS = Set.of("import_name", "import_from");
-  private static final Set<String> SCOPES = Set.of("funcdef", "classdef");
-  private static final Pattern FROM = Pattern.compile("^from([\\w.]+)import");
-  private static final Pattern PLAIN = Pattern.compile("^import(\\w+)");
+  private static final Set<String> NESTING =
+      Set.of(
+          "funcdef",
+          "classdef",
+          "try_stmt",
+          "if_stmt",
+          "while_stmt",
+          "for_stmt",
+          "with_stmt",
+          "match_stmt"
+      );
+  private static final String FROM = "from";
+  private static final int MODULE_LEAF = 1;
   private static final String FUTURE = "__future__";
   private static final String PACKAGE_SEPARATOR = ".";
   private static final String PATH_SEPARATOR = "/";
@@ -97,25 +106,22 @@ public final class PythonImportOrderCheck implements RuleCheck, ProjectCheck {
     return found;
   }
 
-  /** The group of a module-level import, or empty for an import inside a function or class. */
+  /** The group of a module-level import, or empty for an import nested in another statement. */
   private static Optional<Integer> groupOf(
       final SyntaxWalk.Visit visit,
       final Set<String> firstParty
   ) {
-    if (visit.ancestors().stream().anyMatch(ancestor -> SCOPES.contains(ancestor.kind()))) {
+    final List<SyntaxNode> leaves = SyntaxWalk.leaves(visit.node());
+    if (leaves.size() <= MODULE_LEAF
+        || visit.ancestors().stream().anyMatch(ancestor -> NESTING.contains(ancestor.kind()))) {
       return Optional.empty();
     }
-    final String text = SyntaxWalk.text(visit.node());
-    final Matcher from = FROM.matcher(text);
-    if (from.find()) {
-      return Optional.of(
-          from.group(1).startsWith(PACKAGE_SEPARATOR)
-              ? RELATIVE_GROUP
-              : groupOfModule(from.group(1), firstParty)
-      );
-    }
-    final Matcher plain = PLAIN.matcher(text);
-    return plain.find() ? Optional.of(groupOfModule(plain.group(1), firstParty)) : Optional.empty();
+    // The module is read from its token: the text without spaces of "from importlib import x"
+    // does not show where the module name ends.
+    final String module = SyntaxWalk.text(leaves.get(MODULE_LEAF));
+    final boolean relative =
+        FROM.equals(SyntaxWalk.text(leaves.get(0))) && module.startsWith(PACKAGE_SEPARATOR);
+    return Optional.of(relative ? RELATIVE_GROUP : groupOfModule(module, firstParty));
   }
 
   private static int groupOfModule(final String module, final Set<String> firstParty) {

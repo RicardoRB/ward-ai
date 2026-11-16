@@ -5,4 +5,12 @@ class Violating {
   void loop() {
     this.loop();
   }
+
+  int twice(int n) {
+    return twice(n);
+  }
+
+  int twice(long n) {
+    return 2;
+  }
 }

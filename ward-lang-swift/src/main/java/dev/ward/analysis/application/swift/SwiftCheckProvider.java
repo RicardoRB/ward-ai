@@ -4,6 +4,7 @@ import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.CheckProvider;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.ConstructorGroupCheck;
+import dev.ward.analysis.domain.rule.check.DocSummaryCheck;
 import dev.ward.analysis.domain.rule.check.ImportSortCheck;
 import dev.ward.analysis.domain.rule.check.JavadocMethodCheck;
 import dev.ward.analysis.domain.rule.check.UnusedImportCheck;
@@ -46,6 +47,10 @@ public final class SwiftCheckProvider implements CheckProvider {
     checks.put(
         "swift-javadoc-method",
         toml -> new JavadocMethodCheck(TomlValues.required(toml, MESSAGE))
+    );
+    checks.put(
+        "swift-doc-summary",
+        toml -> new DocSummaryCheck(TomlValues.required(toml, MESSAGE))
     );
     checks.put(
         "swift-parameter-alignment",
