@@ -38,7 +38,9 @@ const isGone = async (pid: number, timeoutMs = 2_000): Promise<boolean> => {
 };
 
 const snapshot = () =>
-  GLOBAL_PATHS.map((path) => (existsSync(path) ? `${path}:${statSync(path).mtimeMs}` : `${path}:absent`));
+GLOBAL_PATHS.map(
+  (path) => (existsSync(path) ? `${path}:${statSync(path).mtimeMs}` : `${path}:absent`)
+);
 
 describe("disposable fixtures", () => {
   test("a built Ward launcher is required, not skipped", () => {
@@ -51,9 +53,24 @@ describe("disposable fixtures", () => {
     const fixture = await createFixture({ harness: "codex", ward: launcher! });
     try {
       const base = dirname(fixture.root);
-      expect(readFileSync(join(fixture.root, ".codex/hooks.json"), "utf8")).toContain("ward-owned: codex-native-hooks v1");
-      expect(readFileSync(join(fixture.root, ".codex/hooks/ward.sh"), "utf8")).toContain("ward hook native --agent codex");
-      for (const key of ["HOME", "XDG_CONFIG_HOME", "XDG_CACHE_HOME", "XDG_DATA_HOME", "CODEX_HOME", "CLAUDE_CONFIG_DIR", "COPILOT_HOME", "TMPDIR"]) {
+      expect(readFileSync(join(fixture.root, ".codex/hooks.json"), "utf8")).toContain(
+        "ward-owned: codex-native-hooks v1"
+      );
+      expect(readFileSync(join(fixture.root, ".codex/hooks/ward.sh"), "utf8")).toContain(
+        "ward hook native --agent codex"
+      );
+      for (
+        const key of [
+          "HOME",
+          "XDG_CONFIG_HOME",
+          "XDG_CACHE_HOME",
+          "XDG_DATA_HOME",
+          "CODEX_HOME",
+          "CLAUDE_CONFIG_DIR",
+          "COPILOT_HOME",
+          "TMPDIR"
+        ]
+      ) {
         expect(fixture.env[key].startsWith(base)).toBe(true);
       }
       expect(fixture.env.PATH).toBe(SYSTEM_PATH);
@@ -72,17 +89,22 @@ describe("disposable fixtures", () => {
       error = caught;
     }
     expect(error).toBeInstanceOf(FixtureError);
-    expect((error as Error).message).toMatch(/^ward integrate not-a-harness did not succeed \(exit \d+\)$/);
+    expect((error as Error).message).toMatch(
+      /^ward integrate not-a-harness did not succeed \(exit \d+\)$/
+    );
   });
 });
 
 describe("owned processes", () => {
   test("a deadline terminates the whole process group", async () => {
-    const result = await run(["/bin/sh", "-c", "sleep 30 & echo $!; sleep 30"], {
-      cwd: "/",
-      env: { PATH: SYSTEM_PATH },
-      timeoutMs: 300,
-    });
+    const result = await run(
+      ["/bin/sh", "-c", "sleep 30 & echo $!; sleep 30"],
+      {
+        cwd: "/",
+        env: { PATH: SYSTEM_PATH },
+        timeoutMs: 300,
+      }
+    );
     expect(result.timedOut).toBe(true);
     const background = Number(result.stdout.trim());
     expect(background).toBeGreaterThan(0);
@@ -91,17 +113,23 @@ describe("owned processes", () => {
   });
 
   test("descendants left behind by a finished command are cleaned up", async () => {
-    const result = await run(["/bin/sh", "-c", "(sleep 30 &) ; echo started"], {
-      cwd: "/",
-      env: { PATH: SYSTEM_PATH },
-      timeoutMs: 5_000,
-    });
+    const result = await run(
+      ["/bin/sh", "-c", "(sleep 30 &) ; echo started"],
+      {
+        cwd: "/",
+        env: { PATH: SYSTEM_PATH },
+        timeoutMs: 5_000,
+      }
+    );
     expect(result.exitCode).toBe(0);
     expect(result.timedOut).toBe(false);
   });
 
   test("the environment is exactly what the caller passes", async () => {
-    const result = await run(["/usr/bin/env"], { cwd: "/", env: { PATH: SYSTEM_PATH, ONLY: "1" }, timeoutMs: 5_000 });
+    const result = await run(
+      ["/usr/bin/env"],
+      { cwd: "/", env: { PATH: SYSTEM_PATH, ONLY: "1" }, timeoutMs: 5_000 }
+    );
     expect(result.stdout.trim().split("\n").sort()).toEqual(["ONLY=1", `PATH=${SYSTEM_PATH}`]);
   });
 

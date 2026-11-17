@@ -46,36 +46,39 @@ const EVENTS = [
 ];
 
 /** Applies the documented Copilot hook file rules; returns the reasons a handler would be lost. */
-function copilotRejects(json: string): string[] {
-  let config: any;
-  try {
-    config = JSON.parse(json);
-  } catch {
-    return ["not JSON"];
-  }
-  const errors: string[] = [];
-  if (config.version !== 1) errors.push("version is not 1");
-  for (const [event, handlers] of Object.entries(config.hooks ?? {})) {
-    if (!EVENTS.includes(event)) errors.push(`unknown event ${event}`);
-    (handlers as any[]).forEach((handler, index) => {
-      const where = `${event}[${index}]`;
-      if ((handler.type ?? "command") !== "command") errors.push(`${where} is not a command`);
-      if (![handler.bash, handler.command, handler.powershell, handler.exec].some((c) => typeof c === "string")) {
-        errors.push(`${where} has no command`);
+function copilotRejects(json: string): string[] { let config: any; try {
+  config = JSON.parse(json);
+} catch {
+  return ["not JSON"];
+} const errors: string[] = []; if (config.version !== 1) errors.push("version is not 1"); for (
+  const [event, handlers] of Object.entries(config.hooks ?? {})
+) {
+  if (!EVENTS.includes(event)) errors.push(`unknown event ${event}`);
+  (handlers as any[]).forEach((handler, index) => {
+    const where = `${event}[${index}]`;
+    if ((handler.type ?? "command") !== "command") errors.push(`${where} is not a command`);
+    if (
+      ![handler.bash, handler.command, handler.powershell, handler.exec].some(
+        (c) => typeof c === "string"
+      )
+    ) {
+      errors.push(`${where} has no command`);
+    }
+    if (handler.matcher !== undefined) {
+      try {
+        new RegExp(`^(?:${handler.matcher})$`);
+      } catch {
+        errors.push(`${where} matcher is invalid`);
       }
-      if (handler.matcher !== undefined) {
-        try {
-          new RegExp(`^(?:${handler.matcher})$`);
-        } catch {
-          errors.push(`${where} matcher is invalid`);
-        }
-      }
-      if (Object.values(handler.env ?? {}).some((v) => typeof v !== "string")) errors.push(`${where} env is not strings`);
-      if (handler.timeoutSec !== undefined && typeof handler.timeoutSec !== "number") errors.push(`${where} timeoutSec`);
-    });
-  }
-  return errors;
-}
+    }
+    if (Object.values(handler.env ?? {}).some((v) => typeof v !== "string")) errors.push(
+      `${where} env is not strings`
+    );
+    if (handler.timeoutSec !== undefined && typeof handler.timeoutSec !== "number") errors.push(
+      `${where} timeoutSec`
+    );
+  });
+} return errors; }
 
 let fixture: Fixture;
 let config: any;
@@ -89,7 +92,10 @@ beforeAll(async () => {
   bin = join(dirname(fixture.root), "ward-bin");
   log = join(dirname(fixture.root), "ward-log");
   writeRecordingWrapper(bin, log, ward);
-  await run(["/usr/bin/git", "init", "-q"], { cwd: fixture.root, env: fixture.env, timeoutMs: 30_000 });
+  await run(
+    ["/usr/bin/git", "init", "-q"],
+    { cwd: fixture.root, env: fixture.env, timeoutMs: 30_000 }
+  );
   mkdirSync(join(fixture.root, "src/main/java"), { recursive: true });
 });
 
@@ -99,32 +105,45 @@ afterAll(() => {
 });
 
 const handlers = (event: string, tool?: string, cfg = config) =>
-  ((cfg.hooks[event] ?? []) as any[]).filter(
-    (h) => tool === undefined || h.matcher === undefined || new RegExp(`^(?:${h.matcher})$`).test(tool),
-  );
+((cfg.hooks[event] ?? []) as any[]).filter(
+  (h) => tool === undefined || h.matcher === undefined || new RegExp(`^(?:${h.matcher})$`).test(
+    tool
+  ),
+);
 
 /** Runs a handler like Copilot: its bash command through the shell, with its env and the event on stdin. */
 async function launch(f: Fixture, handler: any, payload: unknown, cwd = f.root) {
   const before = recordedInvocations(log).length;
   const env = { ...f.env, ...handler.env, PATH: `${bin}:${SYSTEM_PATH}` };
-  const stdin = typeof payload === "string" ? payload : JSON.stringify({ session_id: "s", timestamp: "t", cwd, ...(payload as object) });
+  const stdin = typeof payload === "string" ? payload : JSON.stringify({
+    session_id: "s",
+    timestamp: "t",
+    cwd,
+    ...(payload as object)
+  });
   const result = await run(["/bin/sh", "-c", handler.bash], { cwd, env, stdin, timeoutMs: 60_000 });
   return { result, invocations: recordedInvocations(log).slice(before) };
 }
 
 const tool = (event: string, name: string, input: Record<string, unknown>, cwd?: string) =>
-  launch(fixture, handlers(event, name)[0], { hook_event_name: event, tool_name: name, tool_input: input }, cwd);
+launch(
+  fixture,
+  handlers(event, name)[0],
+  { hook_event_name: event, tool_name: name, tool_input: input },
+  cwd
+);
 
 describe("generated hook file against the Copilot CLI 1.0.98 hooks reference", () => {
   test("Copilot accepts every generated handler", () => {
-    expect(copilotRejects(readFileSync(join(fixture.root, ".github/hooks/ward.json"), "utf8"))).toEqual([]);
+    expect(
+      copilotRejects(readFileSync(join(fixture.root, ".github/hooks/ward.json"), "utf8"))
+    ).toEqual([]);
   });
 
   test("negative control: the legacy hook file loses its handlers", () => {
-    expect(copilotRejects(readFileSync(join(import.meta.dir, "legacy-hooks.json.txt"), "utf8"))).toEqual([
-      "version is not 1",
-      "preToolUse[0] has no command",
-    ]);
+    expect(
+      copilotRejects(readFileSync(join(import.meta.dir, "legacy-hooks.json.txt"), "utf8"))
+    ).toEqual(["version is not 1", "preToolUse[0] has no command"]);
   });
 
   test("checks run after edits and at Stop, and nothing runs before a tool", () => {
@@ -142,21 +161,29 @@ describe("generated hook file against the Copilot CLI 1.0.98 hooks reference", (
 
   test("the ownership marker is in each handler's env", () => {
     for (const event of Object.keys(config.hooks)) {
-      for (const h of config.hooks[event]) expect(h.env.WARD_OWNERSHIP).toContain("ward-owned: copilot-native-hooks v1");
+      for (const h of config.hooks[event]) expect(h.env.WARD_OWNERSHIP).toContain(
+        "ward-owned: copilot-native-hooks v1"
+      );
     }
   });
 });
 
 describe("hook execution", () => {
-
-
-
-
   test("a failing check after an edit reaches the agent as additionalContext", async () => {
     writeFileSync(join(fixture.root, "FAIL"), "");
     try {
-      const { result, invocations } = await tool("PostToolUse", "edit", { path: join(fixture.root, "src/main/java/A.java") });
-      expect(invocations.map((i) => i.argv)).toEqual([["hook", "native", "--agent", "copilot", "--event-stdin"]]);
+      const { result, invocations } = await tool(
+        "PostToolUse",
+        "edit",
+        { path: join(fixture.root, "src/main/java/A.java") }
+      );
+      expect(invocations.map((i) => i.argv)).toEqual([[
+        "hook",
+        "native",
+        "--agent",
+        "copilot",
+        "--event-stdin"
+      ]]);
       expect(result.exitCode).toBe(0);
       expect(JSON.parse(result.stdout).additionalContext).toContain("Ward quality findings");
     } finally {
@@ -165,7 +192,11 @@ describe("hook execution", () => {
   });
 
   test("a clean edit is silent", async () => {
-    const { result } = await tool("PostToolUse", "edit", { path: join(fixture.root, "src/main/java/A.java") });
+    const { result } = await tool(
+      "PostToolUse",
+      "edit",
+      { path: join(fixture.root, "src/main/java/A.java") }
+    );
     expect([result.exitCode, result.stdout.trim()]).toEqual([0, ""]);
   });
 
@@ -173,7 +204,11 @@ describe("hook execution", () => {
     writeFileSync(join(fixture.root, "FAIL"), "");
     try {
       const stop = (active: boolean) =>
-        launch(fixture, handlers("Stop")[0], { hook_event_name: "Stop", stop_reason: "end_turn", stop_hook_active: active });
+      launch(
+        fixture,
+        handlers("Stop")[0],
+        { hook_event_name: "Stop", stop_reason: "end_turn", stop_hook_active: active }
+      );
       const first = await stop(false);
       expect(first.result.exitCode).toBe(0);
       const decision = JSON.parse(first.result.stdout);
@@ -186,5 +221,4 @@ describe("hook execution", () => {
       rmSync(join(fixture.root, "FAIL"), { force: true });
     }
   });
-
 });

@@ -20,7 +20,15 @@ import { cleanupOwnedProcesses, run, SYSTEM_PATH } from "../src/process";
 // (`file_path`); the documentation does not list them, so a live capture must confirm them.
 // The real Ward answers behind a recording wrapper.
 
-const EVENTS = ["SessionStart", "UserPromptSubmit", "PreToolUse", "Stop", "StopFailure", "PermissionRequest", "SessionEnd"];
+const EVENTS = [
+  "SessionStart",
+  "UserPromptSubmit",
+  "PreToolUse",
+  "Stop",
+  "StopFailure",
+  "PermissionRequest",
+  "SessionEnd"
+];
 const MARKER = "# ward-owned: junie-native-hooks v1";
 const STOP_TIMEOUT_SECONDS = 600;
 
@@ -36,7 +44,10 @@ beforeAll(async () => {
   bin = join(dirname(fixture.root), "ward-bin");
   log = join(dirname(fixture.root), "ward-log");
   writeRecordingWrapper(bin, log, ward);
-  await run(["/usr/bin/git", "init", "-q"], { cwd: fixture.root, env: fixture.env, timeoutMs: 30_000 });
+  await run(
+    ["/usr/bin/git", "init", "-q"],
+    { cwd: fixture.root, env: fixture.env, timeoutMs: 30_000 }
+  );
   mkdirSync(join(fixture.root, "src/main/java"), { recursive: true });
 });
 
@@ -46,18 +57,18 @@ afterAll(() => {
 });
 
 const hooks = (event: string, tool?: string, cfg = config) =>
-  ((cfg.hooks[event] ?? []) as any[])
-    .filter((group) => tool === undefined || !group.matcher || new RegExp(group.matcher).test(tool))
-    .flatMap((group) => group.hooks);
+((cfg.hooks[event] ?? []) as any[])
+.filter((group) => tool === undefined || !group.matcher || new RegExp(group.matcher).test(tool))
+.flatMap((group) => group.hooks);
 
 /** Runs a hook like Junie: the command through `sh -c` in the session directory, the event on stdin. */
 async function launch(f: Fixture, hook: any, payload: unknown, cwd = f.root) {
   const before = recordedInvocations(log).length;
   const env = { ...f.env, CLAUDE_PROJECT_DIR: cwd, PATH: `${bin}:${SYSTEM_PATH}` };
   const stdin =
-    typeof payload === "string"
-      ? payload
-      : JSON.stringify({ session_id: "s", timestamp: "2026-10-16T00:00:00Z", ...(payload as object) });
+  typeof payload === "string"
+  ? payload
+  : JSON.stringify({ session_id: "s", timestamp: "2026-10-16T00:00:00Z", ...(payload as object) });
   const result = await run(["/bin/sh", "-c", hook.command], { cwd, env, stdin, timeoutMs: 60_000 });
   const text = result.stdout.trim();
   let output: any;
@@ -72,7 +83,11 @@ async function launch(f: Fixture, hook: any, payload: unknown, cwd = f.root) {
 }
 
 const stop = (active: boolean) =>
-  launch(fixture, hooks("Stop")[0], { hook_event_name: "Stop", stop_hook_active: active, last_assistant_message: "done" });
+launch(
+  fixture,
+  hooks("Stop")[0],
+  { hook_event_name: "Stop", stop_hook_active: active, last_assistant_message: "done" }
+);
 
 const blocking = (output: any) => output?.decision === "block" || output?.decision === "deny";
 
@@ -107,17 +122,17 @@ describe("generated config against the Junie CLI hook contract", () => {
 });
 
 describe("hook execution", () => {
-
-
-
-
-
-
   test("failing checks at Stop block the stop once with the findings", async () => {
     writeFileSync(join(fixture.root, "FAIL"), "");
     try {
       const { output, invocations } = await stop(false);
-      expect(invocations.map((i) => i.argv)).toEqual([["hook", "native", "--agent", "junie", "--event-stdin"]]);
+      expect(invocations.map((i) => i.argv)).toEqual([[
+        "hook",
+        "native",
+        "--agent",
+        "junie",
+        "--event-stdin"
+      ]]);
       expect(output.decision).toBe("block");
       expect(output.reason).toContain("format");
     } finally {
@@ -135,5 +150,4 @@ describe("hook execution", () => {
       rmSync(join(fixture.root, "FAIL"), { force: true });
     }
   });
-
 });

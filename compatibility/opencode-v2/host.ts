@@ -12,11 +12,11 @@
  */
 export interface ToolResult {
   output?: unknown;
-  content?: string | ReadonlyArray<{ type: "text"; text: string }>;
+  content?: string | ReadonlyArray< { type: "text"; text: string } >;
   metadata?: Record<string, unknown>;
 }
 
-export type Content = { type: "text"; text: string }[];
+export type Content = { type: "text"; text: string } [];
 
 export class Refusal extends Error {}
 export class Defect extends Error {}
@@ -45,79 +45,75 @@ export class Host {
     const register = (map: Map<string, Callback[]>) => async (name: string, callback: Callback) => {
       map.set(name, [...(map.get(name) ?? []), callback]);
       let active = true;
-      return {
-        dispose: async () => {
-          if (!active) return;
-          active = false;
-          map.set(name, (map.get(name) ?? []).filter((entry) => entry !== callback));
-        },
-      };
+      return { dispose: async () => {
+        if (!active) return;
+        active = false;
+        map.set(name, (map.get(name) ?? []).filter((entry) => entry !== callback));
+      }, };
     };
-    return {
-      location: { directory: this.directory },
-      tool: { hook: register(this.toolHooks) },
-      session: {
-        hook: register(this.sessionHooks),
-        get: async ({ sessionID }: { sessionID: string }) => {
-          const directory = this.sessions.get(sessionID);
-          if (this.sessionLookupFails || !directory) throw new Error(`session ${sessionID} not found`);
-          return { id: sessionID, location: { directory } };
-        },
-        prompt: async (input: Prompt) => {
-          if (typeof input?.text !== "string") throw new Error("session.prompt requires text");
-          if (input.delivery !== undefined && input.delivery !== "steer" && input.delivery !== "queue") {
-            throw new Error(`invalid delivery ${input.delivery}`);
-          }
-          this.prompts.push(input);
-          // Prompts submitted through session.prompt run the prompt hook (docs: build/plugins).
-          await this.runSessionHook("prompt", {
-            sessionID: input.sessionID,
-            prompt: { text: input.text },
-            metadata: input.metadata,
-            delivery: input.delivery ?? "queue",
-          });
-          return { id: `prompt-${this.prompts.length}` };
-        },
-      },
-      event: {
-        subscribe: (options?: { signal?: AbortSignal }) => this.stream(options?.signal),
-      },
-    };
+    return { location: { directory: this.directory }, tool: {
+      hook: register(this.toolHooks)
+    }, session: { hook: register(this.sessionHooks), get: async ({ sessionID } : {
+      sessionID: string
+    }) => {
+      const directory = this.sessions.get(sessionID);
+      if (this.sessionLookupFails || !directory) throw new Error(`session ${sessionID} not found`);
+      return { id: sessionID, location: { directory } };
+    }, prompt: async (input: Prompt) => {
+      if (typeof input?.text !== "string") throw new Error("session.prompt requires text");
+      if (
+        input.delivery !== undefined && input.delivery !== "steer" && input.delivery !== "queue"
+      ) {
+        throw new Error(`invalid delivery ${input.delivery}`);
+      }
+      this.prompts.push(input);
+      // Prompts submitted through session.prompt run the prompt hook (docs: build/plugins).
+      await this.runSessionHook(
+        "prompt",
+        {
+          sessionID: input.sessionID,
+          prompt: { text: input.text },
+          metadata: input.metadata,
+          delivery: input.delivery ?? "queue",
+        }
+      );
+      return { id: `prompt-${this.prompts.length}` };
+    }, }, event: { subscribe: (options?: {
+      signal?: AbortSignal
+    }) => this.stream(options?.signal), }, };
   }
 
   private stream(signal?: AbortSignal): AsyncIterable<unknown> {
     const host = this;
-    return {
-      [Symbol.asyncIterator]() {
-        const queue: unknown[] = [];
-        let wake: (() => void) | undefined;
-        const listener = (event: unknown) => {
-          queue.push(event);
-          wake?.();
-        };
-        host.listeners.push(listener);
-        host.subscriptions++;
-        const stop = () => {
-          host.listeners = host.listeners.filter((entry) => entry !== listener);
-          wake?.();
-        };
-        signal?.addEventListener("abort", stop, { once: true });
-        return {
-          async next() {
-            while (queue.length === 0) {
-              if (signal?.aborted || !host.listeners.includes(listener)) return { done: true, value: undefined };
-              await new Promise<void>((resolve) => (wake = resolve));
-              wake = undefined;
-            }
-            return { done: false, value: queue.shift() };
-          },
-          async return() {
-            stop();
-            return { done: true, value: undefined };
-          },
-        };
-      },
-    };
+    return { [Symbol.asyncIterator]() {
+      const queue: unknown[] = [];
+      let wake: (() => void) | undefined;
+      const listener = (event: unknown) => {
+        queue.push(event);
+        wake?.();
+      };
+      host.listeners.push(listener);
+      host.subscriptions++;
+      const stop = () => {
+        host.listeners = host.listeners.filter((entry) => entry !== listener);
+        wake?.();
+      };
+      signal?.addEventListener("abort", stop, { once: true });
+      return { async next() {
+        while (queue.length === 0) {
+          if (signal?.aborted || !host.listeners.includes(listener)) return {
+            done: true,
+            value: undefined
+          };
+          await new Promise<void>((resolve) => (wake = resolve));
+          wake = undefined;
+        }
+        return { done: false, value: queue.shift() };
+      }, async return () {
+        stop();
+        return { done: true, value: undefined };
+      }, };
+    }, };
   }
 
   emit(event: unknown): void {
@@ -125,13 +121,9 @@ export class Host {
   }
 
   idle(sessionID: string, directory = this.sessions.get(sessionID)): void {
-    this.emit({
-      id: `evt-${Math.random()}`,
-      created: Date.now(),
-      type: "session.idle",
-      ...(directory ? { location: { directory } } : {}),
-      data: { sessionID },
-    });
+    this.emit({ id: `evt-${Math.random()}`, created: Date.now(), type: "session.idle", ...(directory ? {
+      location: { directory }
+    } : {}), data: { sessionID }, });
   }
 
   async runSessionHook(name: string, event: unknown): Promise<void> {
@@ -139,7 +131,11 @@ export class Host {
   }
 
   /** Runs `execute.before` like the host: any rejection refuses the call. */
-  async before(event: { tool: string; sessionID: string; input: unknown }): Promise<void> {
+  async before(event: {
+    tool: string;
+    sessionID: string;
+    input: unknown
+  }): Promise<void> {
     for (const callback of this.toolHooks.get("execute.before") ?? []) {
       try {
         await callback({ agent: "build", messageID: "m1", id: "call-1", ...event });
@@ -156,14 +152,24 @@ export class Host {
     input: unknown;
     status?: "completed" | "error";
     result?: ToolResult;
-    error?: { message: string };
-  }): Promise<{ event: any; content?: Content }> {
-    const full: any = { agent: "build", messageID: "m1", id: "call-1", status: "completed", ...event };
+    error?: {
+      message: string
+    };
+  }): Promise< { event: any; content?: Content } > {
+    const full: any = {
+      agent: "build",
+      messageID: "m1",
+      id: "call-1",
+      status: "completed",
+      ...event
+    };
     for (const callback of this.toolHooks.get("execute.after") ?? []) {
       try {
         await callback(full);
       } catch (error) {
-        throw new Defect(`execute.after rejected: ${error instanceof Error ? error.message : String(error)}`);
+        throw new Defect(
+          `execute.after rejected: ${error instanceof Error ? error.message : String(error)}`
+        );
       }
     }
     if (full.status !== "completed") return { event: full };
@@ -174,5 +180,8 @@ export class Host {
 export function normalizeContent(value: ToolResult["content"], output?: unknown): Content {
   if (typeof value === "string") return [{ type: "text", text: value }];
   if (value !== undefined && value.length > 0) return [...value] as Content;
-  return [{ type: "text", text: typeof output === "string" ? output : (JSON.stringify(output) ?? String(output)) }];
+  return [{
+    type: "text",
+    text: typeof output === "string" ? output : (JSON.stringify(output) ?? String(output))
+  }];
 }

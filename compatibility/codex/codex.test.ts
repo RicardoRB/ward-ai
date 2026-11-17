@@ -30,29 +30,24 @@ const EVENTS = [
 ];
 
 /** Applies Codex 0.163.0's hooks.json parsing rules; returns the reasons Codex would reject it. */
-function codexRejects(json: string): string[] {
-  let config: any;
-  try {
-    config = JSON.parse(json);
-  } catch {
-    return ["not JSON"];
-  }
-  const errors: string[] = [];
-  for (const key of Object.keys(config)) {
-    if (key !== "description" && key !== "hooks") errors.push(`unknown field ${key}`);
-  }
-  for (const [event, groups] of Object.entries(config.hooks ?? {})) {
-    if (!EVENTS.includes(event)) continue; // ignored by serde, not an error
-    for (const group of groups as any[]) {
-      const handlers = group.hooks ?? [];
-      if (handlers.length === 0) errors.push(`${event} group has no handlers`);
-      for (const handler of handlers) {
-        if (handler.type !== "command" || typeof handler.command !== "string") errors.push(`${event} handler is not a command`);
-      }
+function codexRejects(json: string): string[] { let config: any; try {
+  config = JSON.parse(json);
+} catch {
+  return ["not JSON"];
+} const errors: string[] = []; for (const key of Object.keys(config)) {
+  if (key !== "description" && key !== "hooks") errors.push(`unknown field ${key}`);
+} for (const [event, groups] of Object.entries(config.hooks ?? {})) {
+  if (!EVENTS.includes(event)) continue; // ignored by serde, not an error
+  for (const group of groups as any[]) {
+    const handlers = group.hooks ?? [];
+    if (handlers.length === 0) errors.push(`${event} group has no handlers`);
+    for (const handler of handlers) {
+      if (handler.type !== "command" || typeof handler.command !== "string") errors.push(
+        `${event} handler is not a command`
+      );
     }
   }
-  return errors;
-}
+} return errors; }
 
 function matcherMatches(matcher: string | undefined, tool: string): boolean {
   if (!matcher || matcher === "*") return true;
@@ -72,7 +67,10 @@ beforeAll(async () => {
   bin = join(dirname(fixture.root), "ward-bin");
   log = join(dirname(fixture.root), "ward-log");
   writeRecordingWrapper(bin, log, ward);
-  await run(["/usr/bin/git", "init", "-q"], { cwd: fixture.root, env: fixture.env, timeoutMs: 30_000 });
+  await run(
+    ["/usr/bin/git", "init", "-q"],
+    { cwd: fixture.root, env: fixture.env, timeoutMs: 30_000 }
+  );
   mkdirSync(join(fixture.root, "src/main/java"), { recursive: true });
 });
 
@@ -82,13 +80,27 @@ afterAll(() => {
 });
 
 const handler = (event: string, tool?: string, cfg = config) =>
-  (cfg.hooks[event] as any[]).filter((group) => tool === undefined || matcherMatches(group.matcher, tool)).flatMap((group) => group.hooks);
+(cfg.hooks[event] as any[]).filter(
+  (group) => tool === undefined || matcherMatches(group.matcher, tool)
+).flatMap((group) => group.hooks);
 
 /** Runs a handler like Codex: through the shell, in the session cwd, with the event on stdin. */
-async function launch(f: Fixture, command: string, payload: unknown, cwd = join(f.root, "src/main/java")) {
+async function launch(
+  f: Fixture,
+  command: string,
+  payload: unknown,
+  cwd = join(f.root, "src/main/java")
+) {
   const before = recordedInvocations(log).length;
   const env = { ...f.env, PATH: `${bin}:${SYSTEM_PATH}` };
-  const stdin = typeof payload === "string" ? payload : JSON.stringify({ session_id: "s", turn_id: "t", cwd, model: "m", permission_mode: "default", ...(payload as object) });
+  const stdin = typeof payload === "string" ? payload : JSON.stringify({
+    session_id: "s",
+    turn_id: "t",
+    cwd,
+    model: "m",
+    permission_mode: "default",
+    ...(payload as object)
+  });
   const result = await run(["/bin/sh", "-c", command], { cwd, env, stdin, timeoutMs: 60_000 });
   return { result, invocations: recordedInvocations(log).slice(before) };
 }
@@ -99,10 +111,9 @@ describe("generated hooks.json against the Codex 0.163.0 schema", () => {
   });
 
   test("negative control: Codex rejects the legacy configuration", () => {
-    expect(codexRejects(readFileSync(join(import.meta.dir, "legacy-hooks.json.txt"), "utf8"))).toEqual([
-      "unknown field wardOwnership",
-      "PostToolUse group has no handlers",
-    ]);
+    expect(
+      codexRejects(readFileSync(join(import.meta.dir, "legacy-hooks.json.txt"), "utf8"))
+    ).toEqual(["unknown field wardOwnership", "PostToolUse group has no handlers"]);
   });
 
   test("checks run after patches and at Stop, and nothing runs before a tool", () => {
@@ -118,21 +129,28 @@ describe("generated hooks.json against the Codex 0.163.0 schema", () => {
 });
 
 describe("hook execution from a subdirectory of the repository", () => {
-
-
-
-
-
   test("a failing check after a patch exits 2 with the findings on stderr", async () => {
     writeFileSync(join(fixture.root, "FAIL"), "");
     try {
-      const { result, invocations } = await launch(fixture, handler("PostToolUse", "apply_patch")[0].command, {
-        hook_event_name: "PostToolUse",
-        tool_name: "apply_patch",
-        tool_input: { command: "*** Begin Patch\n*** Update File: src/main/java/A.java\n*** End Patch" },
-        tool_response: "ok",
-      });
-      expect(invocations.map((i) => i.argv)).toEqual([["hook", "native", "--agent", "codex", "--event-stdin"]]);
+      const { result, invocations } = await launch(
+        fixture,
+        handler("PostToolUse", "apply_patch")[0].command,
+        {
+          hook_event_name: "PostToolUse",
+          tool_name: "apply_patch",
+          tool_input: {
+            command: "*** Begin Patch\n*** Update File: src/main/java/A.java\n*** End Patch"
+          },
+          tool_response: "ok",
+        }
+      );
+      expect(invocations.map((i) => i.argv)).toEqual([[
+        "hook",
+        "native",
+        "--agent",
+        "codex",
+        "--event-stdin"
+      ]]);
       expect(result.exitCode).toBe(2);
       expect(result.stderr).toContain("Ward quality findings");
     } finally {
@@ -143,7 +161,11 @@ describe("hook execution from a subdirectory of the repository", () => {
   test("Stop findings continue the turn once with decision block, then only report", async () => {
     writeFileSync(join(fixture.root, "FAIL"), "");
     try {
-      const stop = (active: boolean) => launch(fixture, handler("Stop")[0].command, { hook_event_name: "Stop", stop_hook_active: active, last_assistant_message: "done" });
+      const stop = (active: boolean) => launch(
+        fixture,
+        handler("Stop")[0].command,
+        { hook_event_name: "Stop", stop_hook_active: active, last_assistant_message: "done" }
+      );
       const first = await stop(false);
       expect(first.result.exitCode).toBe(0);
       expect(JSON.parse(first.result.stdout)).toMatchObject({ decision: "block" });
@@ -157,8 +179,11 @@ describe("hook execution from a subdirectory of the repository", () => {
   });
 
   test("a clean Stop is silent", async () => {
-    const { result } = await launch(fixture, handler("Stop")[0].command, { hook_event_name: "Stop", stop_hook_active: false });
+    const { result } = await launch(
+      fixture,
+      handler("Stop")[0].command,
+      { hook_event_name: "Stop", stop_hook_active: false }
+    );
     expect([result.exitCode, result.stdout.trim()]).toEqual([0, ""]);
   });
-
 });

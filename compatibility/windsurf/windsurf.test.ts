@@ -32,23 +32,21 @@ const EVENTS = [
 ];
 
 /** Applies the documented hooks.json shape; returns what Cascade could not run. */
-function cascadeRejects(json: string): string[] {
-  let config: any;
-  try {
-    config = JSON.parse(json);
-  } catch {
-    return ["not JSON"];
-  }
-  const errors: string[] = [];
-  for (const [event, hooks] of Object.entries(config.hooks ?? {})) {
-    if (!EVENTS.includes(event)) errors.push(`unknown event ${event}`);
-    (hooks as any[]).forEach((hook, index) => {
-      if (typeof hook.command !== "string" && typeof hook.powershell !== "string") errors.push(`${event}[${index}] has no command`);
-      if (hook.show_output !== undefined && typeof hook.show_output !== "boolean") errors.push(`${event}[${index}] show_output`);
-    });
-  }
-  return errors;
-}
+function cascadeRejects(json: string): string[] { let config: any; try {
+  config = JSON.parse(json);
+} catch {
+  return ["not JSON"];
+} const errors: string[] = []; for (const [event, hooks] of Object.entries(config.hooks ?? {})) {
+  if (!EVENTS.includes(event)) errors.push(`unknown event ${event}`);
+  (hooks as any[]).forEach((hook, index) => {
+    if (typeof hook.command !== "string" && typeof hook.powershell !== "string") errors.push(
+      `${event}[${index}] has no command`
+    );
+    if (hook.show_output !== undefined && typeof hook.show_output !== "boolean") errors.push(
+      `${event}[${index}] show_output`
+    );
+  });
+} return errors; }
 
 let fixture: Fixture;
 let config: any;
@@ -74,16 +72,28 @@ async function launch(f: Fixture, event: string, toolInfo: unknown, cfg = config
   const before = recordedInvocations(log).length;
   const env = { ...f.env, PATH: `${bin}:${SYSTEM_PATH}` };
   const stdin =
-    typeof toolInfo === "string"
-      ? toolInfo
-      : JSON.stringify({ agent_action_name: event, trajectory_id: "t", execution_id: "e", timestamp: "2026-10-16T00:00:00Z", model_name: "m", tool_info: toolInfo });
-  const result = await run(["/bin/bash", "-c", cfg.hooks[event][0].command], { cwd: f.root, env, stdin, timeoutMs: 60_000 });
+  typeof toolInfo === "string"
+  ? toolInfo
+  : JSON.stringify({
+    agent_action_name: event,
+    trajectory_id: "t",
+    execution_id: "e",
+    timestamp: "2026-10-16T00:00:00Z",
+    model_name: "m",
+    tool_info: toolInfo
+  });
+  const result = await run(
+    ["/bin/bash", "-c", cfg.hooks[event][0].command],
+    { cwd: f.root, env, stdin, timeoutMs: 60_000 }
+  );
   return { result, invocations: recordedInvocations(log).slice(before) };
 }
 
 describe("generated hooks.json against the Cascade hooks reference", () => {
   test("Cascade can run every generated hook", () => {
-    expect(cascadeRejects(readFileSync(join(fixture.root, ".windsurf/hooks.json"), "utf8"))).toEqual([]);
+    expect(
+      cascadeRejects(readFileSync(join(fixture.root, ".windsurf/hooks.json"), "utf8"))
+    ).toEqual([]);
   });
 
   test("only the check after writes is registered, and it is shown to the user", () => {
@@ -99,17 +109,25 @@ describe("generated hooks.json against the Cascade hooks reference", () => {
 });
 
 describe("hook execution", () => {
-
   test("a failing check after a write is reported on stderr for the Cascade UI", async () => {
     writeFileSync(join(fixture.root, "FAIL"), "");
     try {
-      const { result, invocations } = await launch(fixture, "post_write_code", { file_path: join(fixture.root, "src/A.java"), edits: [] });
-      expect(invocations.map((i) => i.argv)).toEqual([["hook", "native", "--agent", "windsurf", "--event-stdin"]]);
+      const { result, invocations } = await launch(
+        fixture,
+        "post_write_code",
+        { file_path: join(fixture.root, "src/A.java"), edits: [] }
+      );
+      expect(invocations.map((i) => i.argv)).toEqual([[
+        "hook",
+        "native",
+        "--agent",
+        "windsurf",
+        "--event-stdin"
+      ]]);
       expect(result.exitCode).toBe(2);
       expect(result.stderr).toContain("Ward quality findings");
     } finally {
       rmSync(join(fixture.root, "FAIL"), { force: true });
     }
   });
-
 });

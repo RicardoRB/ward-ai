@@ -15,11 +15,14 @@ const TURN_TIMEOUT_MS = 240_000;
 function prepare(fixture: Fixture): void {
   const home = join(fixture.env.HOME, ".gemini");
   mkdirSync(home, { recursive: true });
-  writeFileSync(join(home, "trustedFolders.json"), JSON.stringify({ [fixture.root]: "TRUST_FOLDER" }));
+  writeFileSync(
+    join(home, "trustedFolders.json"),
+    JSON.stringify({ [fixture.root]: "TRUST_FOLDER" })
+  );
 }
 
 const turn = (context: LiveContext, prompt: string) =>
-  context.run([context.runtime.executable, "-p", prompt, "--approval-mode", "yolo"], TURN_TIMEOUT_MS);
+context.run([context.runtime.executable, "-p", prompt, "--approval-mode", "yolo"], TURN_TIMEOUT_MS);
 
 export const geminiDriver: LiveDriver = {
   harness: "gemini",

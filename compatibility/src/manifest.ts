@@ -31,7 +31,10 @@ export interface Harness {
   discovery: string[];
   capabilities: Record<Capability, CapabilitySupport>;
   capabilityNotes?: Partial<Record<Capability, string>>;
-  verification: { mode: "automated" | "witnessed"; prerequisites: string[] };
+  verification: {
+    mode: "automated" | "witnessed";
+    prerequisites: string[]
+  };
 }
 
 export interface Manifest {
@@ -57,9 +60,9 @@ export function loadManifest(path = MANIFEST_PATH): Manifest {
 }
 
 /** Reads the registered harness IDs from Ward's canonical adapter registry. */
-export function registeredHarnessIds(source = readFileSync(SUPPORTED_AGENTS, "utf8")): string[] {
-  return [...source.matchAll(/new Definition\("([^"]+)"/g)].map((match) => match[1]);
-}
+export function registeredHarnessIds(
+  source = readFileSync(SUPPORTED_AGENTS, "utf8")
+): string[] { return [...source.matchAll(/new Definition\("([^"]+)"/g)].map((match) => match[1]); }
 
 export function isExactVersion(version: unknown): boolean {
   return typeof version === "string" && EXACT_VERSION.test(version);
@@ -72,42 +75,45 @@ export function findHarness(manifest: Manifest, id: string): Harness {
 }
 
 /** Returns every inventory and pinning problem; an empty list means the manifest is valid. */
-export function validateManifest(manifest: Manifest, registered: string[]): string[] {
-  const errors: string[] = [];
-  if (manifest.schemaVersion !== 1) errors.push(`unsupported schemaVersion ${manifest.schemaVersion}`);
-  const ids = manifest.harnesses.map((harness) => harness.id);
-  for (const id of new Set(ids.filter((id, index) => ids.indexOf(id) !== index))) {
-    errors.push(`duplicate manifest entry ${id}`);
-  }
-  for (const id of registered.filter((id) => !ids.includes(id))) {
-    errors.push(`registered adapter ${id} has no compatibility manifest entry`);
-  }
-  for (const id of ids.filter((id) => !registered.includes(id))) {
-    errors.push(`manifest entry ${id} is not a registered adapter`);
-  }
-  for (const harness of manifest.harnesses) errors.push(...validateHarness(harness));
-  return errors;
-}
+export function validateManifest(
+  manifest: Manifest,
+  registered: string[]
+): string[] { const errors: string[] = []; if (manifest.schemaVersion !== 1) errors.push(
+  `unsupported schemaVersion ${manifest.schemaVersion}`
+); const ids = manifest.harnesses.map((harness) => harness.id); for (
+  const id of new Set(ids.filter((id, index) => ids.indexOf(id) !== index))
+) {
+  errors.push(`duplicate manifest entry ${id}`);
+} for (const id of registered.filter((id) => !ids.includes(id))) {
+  errors.push(`registered adapter ${id} has no compatibility manifest entry`);
+} for (const id of ids.filter((id) => !registered.includes(id))) {
+  errors.push(`manifest entry ${id} is not a registered adapter`);
+} for (const harness of manifest.harnesses) errors.push(
+  ...validateHarness(harness)
+); return errors; }
 
 type Report = (message: string) => unknown;
 
-function validateHarness(harness: Harness): string[] {
-  const errors: string[] = [];
-  const at: Report = (message) => errors.push(`${harness.id}: ${message}`);
-  validateRuntime(harness, at);
-  errors.push(...validateInstall(harness).map((message) => `${harness.id}: ${message}`));
-  validateContracts(harness, at);
-  if (!harness.provenance?.length || !harness.provenance.every(isHttps)) {
-    at("provenance must list authoritative https URLs");
-  }
-  if (!harness.discovery?.length) at("discovery paths are required");
-  if (!harness.platforms?.length) at("platform constraints are required");
-  validateCapabilities(harness, at);
-  const mode = harness.verification?.mode;
-  if (mode !== "automated" && mode !== "witnessed") at("verification mode must be automated or witnessed");
-  if (!harness.verification?.prerequisites?.length) at("verification prerequisites must be named");
-  return errors;
-}
+function validateHarness(
+  harness: Harness
+): string[] { const errors: string[] = []; const at: Report = (message) => errors.push(
+  `${harness.id}: ${message}`
+); validateRuntime(harness, at); errors.push(
+  ...validateInstall(harness).map((message) => `${harness.id}: ${message}`)
+); validateContracts(harness, at); if (
+  !harness.provenance?.length || !harness.provenance.every(isHttps)
+) {
+  at("provenance must list authoritative https URLs");
+} if (!harness.discovery?.length) at("discovery paths are required"); if (
+  !harness.platforms?.length
+) at("platform constraints are required"); validateCapabilities(
+  harness,
+  at
+); const mode = harness.verification?.mode; if (mode !== "automated" && mode !== "witnessed") at(
+  "verification mode must be automated or witnessed"
+); if (!harness.verification?.prerequisites?.length) at(
+  "verification prerequisites must be named"
+); return errors; }
 
 function validateRuntime(harness: Harness, at: Report): void {
   const runtime = harness.runtime;
@@ -115,7 +121,9 @@ function validateRuntime(harness: Harness, at: Report): void {
   if (!/^WARD_COMPAT_[A-Z_]+_BIN$/.test(runtime?.executableEnv ?? "")) {
     at("runtime executableEnv must be WARD_COMPAT_<ID>_BIN");
   }
-  if (!isExactVersion(runtime?.version)) at(`runtime version ${runtime?.version} is not an exact release`);
+  if (!isExactVersion(runtime?.version)) at(
+    `runtime version ${runtime?.version} is not an exact release`
+  );
   if (!Array.isArray(runtime?.versionCommand) || runtime.versionCommand.length === 0) {
     at("runtime versionCommand is required");
   }
@@ -137,7 +145,9 @@ function validateContracts(harness: Harness, at: Report): void {
     if (!isExactVersion(contract.version)) {
       at(`contract package ${contract.name}@${contract.version} is not an exact release`);
     } else if (contract.matchesRuntime && contract.version !== runtime?.version) {
-      at(`contract package ${contract.name}@${contract.version} does not match runtime ${runtime?.version}`);
+      at(
+        `contract package ${contract.name}@${contract.version} does not match runtime ${runtime?.version}`
+      );
     }
   }
 }
@@ -157,22 +167,22 @@ function validateCapabilities(harness: Harness, at: Report): void {
   if (extra.length) at(`unknown capabilities ${extra.join(", ")}`);
 }
 
-function validateInstall(harness: Harness): string[] {
-  const install = harness.runtime?.install;
-  if (!Array.isArray(install)) return ["runtime install must be a list"];
-  if (install.length === 0) return [];
-  // Only isolated npm installs pinned to the runtime release are allowed; anything else could
-  // change global state or resolve a floating version.
-  const [tool, verb, prefix, dir, spec, ...rest] = install;
-  if (tool !== "npm" || verb !== "install" || prefix !== "--prefix" || dir !== "${TOOLS}" || rest.length) {
-    return ["runtime install must be `npm install --prefix ${TOOLS} <package>@<version>`"];
-  }
-  const at = spec?.lastIndexOf("@") ?? -1;
-  if (at <= 0 || spec.slice(at + 1) !== harness.runtime.version) {
-    return [`runtime install ${spec} is not pinned to ${harness.runtime.version}`];
-  }
-  return [];
-}
+function validateInstall(
+  harness: Harness
+): string[] { const install = harness.runtime?.install; if (!Array.isArray(install)) return [
+  "runtime install must be a list"
+]; if (install.length === 0) return [];
+// Only isolated npm installs pinned to the runtime release are allowed; anything else could
+// change global state or resolve a floating version.
+const [tool, verb, prefix, dir, spec, ...rest] = install; if (
+  tool !== "npm" || verb !== "install" || prefix !== "--prefix" || dir !== "${TOOLS}" || rest.length
+) {
+  return ["runtime install must be `npm install --prefix ${TOOLS} <package>@<version>`"];
+} const at = spec?.lastIndexOf("@") ?? -1; if (
+  at <= 0 || spec.slice(at + 1) !== harness.runtime.version
+) {
+  return [`runtime install ${spec} is not pinned to ${harness.runtime.version}`];
+} return []; }
 
 function isHttps(value: unknown): boolean {
   return typeof value === "string" && value.startsWith("https://");

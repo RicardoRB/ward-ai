@@ -1,5 +1,11 @@
 import { describe, expect, test } from "bun:test";
-import { isExactVersion, loadManifest, registeredHarnessIds, validateManifest, type Manifest } from "../src/manifest";
+import {
+  isExactVersion,
+  loadManifest,
+  registeredHarnessIds,
+  validateManifest,
+  type Manifest
+} from "../src/manifest";
 
 const manifest = loadManifest();
 const registered = registeredHarnessIds();
@@ -29,7 +35,9 @@ describe("compatibility inventory", () => {
     );
     const withoutAmp = clone();
     withoutAmp.harnesses = withoutAmp.harnesses.filter((h) => h.id !== "amp");
-    expect(validateManifest(withoutAmp, registered)).toContain("registered adapter amp has no compatibility manifest entry");
+    expect(validateManifest(withoutAmp, registered)).toContain(
+      "registered adapter amp has no compatibility manifest entry"
+    );
   });
 
   test("rejects entries that are not registered and duplicates", () => {
@@ -38,14 +46,29 @@ describe("compatibility inventory", () => {
     expect(validateManifest(extra, registered)).toContain("duplicate manifest entry opencode");
   });
 
-  test.each(["latest", "^2.0.30", "~1.0.0", "1.x", "*", ">=0.1.0", "", "2.0"])("rejects floating version %p", (version) => {
+  test.each([
+    "latest",
+    "^2.0.30",
+    "~1.0.0",
+    "1.x",
+    "*",
+    ">=0.1.0",
+    "",
+    "2.0"
+  ])("rejects floating version %p", (version) => {
     expect(isExactVersion(version)).toBe(false);
     const floating = clone();
     floating.harnesses[2].runtime.version = version;
-    expect(validateManifest(floating, registered).some((e) => e.startsWith("codex: runtime version"))).toBe(true);
+    expect(
+      validateManifest(floating, registered).some((e) => e.startsWith("codex: runtime version"))
+    ).toBe(true);
   });
 
-  test.each(["2.0.30", "0.0.1792123242-g03edc7", "2026.10.14-941492e"])("accepts exact release %p", (version) => {
+  test.each([
+    "2.0.30",
+    "0.0.1792123242-g03edc7",
+    "2026.10.14-941492e"
+  ])("accepts exact release %p", (version) => {
     expect(isExactVersion(version)).toBe(true);
   });
 
@@ -60,24 +83,42 @@ describe("compatibility inventory", () => {
   test("rejects an install that is global or not pinned to the runtime release", () => {
     const global = clone();
     global.harnesses[2].runtime.install = ["npm", "install", "-g", "@openai/codex@0.163.0"];
-    expect(validateManifest(global, registered).some((e) => e.startsWith("codex: runtime install must be"))).toBe(true);
+    expect(
+      validateManifest(global, registered).some(
+        (e) => e.startsWith("codex: runtime install must be")
+      )
+    ).toBe(true);
     const unpinned = clone();
-    unpinned.harnesses[2].runtime.install = ["npm", "install", "--prefix", "${TOOLS}", "@openai/codex@latest"];
-    expect(validateManifest(unpinned, registered)).toContain("codex: runtime install @openai/codex@latest is not pinned to 0.163.0");
+    unpinned.harnesses[2].runtime.install = [
+      "npm",
+      "install",
+      "--prefix",
+      "${TOOLS}",
+      "@openai/codex@latest"
+    ];
+    expect(validateManifest(unpinned, registered)).toContain(
+      "codex: runtime install @openai/codex@latest is not pinned to 0.163.0"
+    );
   });
 
   test("an unsupported capability needs provenance and cannot be an unknown value", () => {
     const unexplained = clone();
     unexplained.harnesses[2].capabilities["turn-end"] = "unsupported";
-    expect(validateManifest(unexplained, registered)).toContain("codex: unsupported capability turn-end needs a provenance note");
+    expect(validateManifest(unexplained, registered)).toContain(
+      "codex: unsupported capability turn-end needs a provenance note"
+    );
     const unknown = clone();
     (unknown.harnesses[2].capabilities as any).feedback = "maybe";
-    expect(validateManifest(unknown, registered)).toContain("codex: capability feedback must be supported or unsupported");
+    expect(validateManifest(unknown, registered)).toContain(
+      "codex: capability feedback must be supported or unsupported"
+    );
   });
 
   test("a version pattern must capture the version", () => {
     const noGroup = clone();
     noGroup.harnesses[2].runtime.versionPattern = "^codex-cli \\S+$";
-    expect(validateManifest(noGroup, registered)).toContain("codex: runtime versionPattern must capture the version");
+    expect(validateManifest(noGroup, registered)).toContain(
+      "codex: runtime versionPattern must capture the version"
+    );
   });
 });

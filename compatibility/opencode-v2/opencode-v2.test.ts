@@ -1,5 +1,14 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test } from "bun:test";
-import { mkdirSync, mkdtempSync, readdirSync, realpathSync, renameSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+import {
+  mkdirSync,
+  mkdtempSync,
+  readdirSync,
+  realpathSync,
+  renameSync,
+  rmSync,
+  symlinkSync,
+  writeFileSync
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { recordedInvocations, writeStub, type Invocation } from "../src/execute";
@@ -81,7 +90,9 @@ async function withoutWard(body: () => Promise<void>): Promise<void> {
 const invocations = (): Invocation[] => recordedInvocations(logDir);
 
 async function load(file: string): Promise<any> {
-  return (await import(`${fixture.root}/.opencode/plugins/${file}?run=${sequence}-${Math.random()}`)).default;
+  return (
+    await import(`${fixture.root}/.opencode/plugins/${file}?run=${sequence}-${Math.random()}`)
+  ).default;
 }
 
 async function setup(file: string, host: Host): Promise<() => Promise<void>> {
@@ -119,16 +130,34 @@ describe("post-edit quality check", () => {
     respond("check", 0, JSON.stringify({ passed: true }));
     const host = sessionHost();
     await setup("ward-edit-write.js", host);
-    const { content } = await host.after({ tool: "edit", sessionID: "s1", input: { filePath: "src/A.java" }, result: { content: "Edit applied." } });
-    expect(invocations().map((i) => [i.argv, i.cwd, i.stdin])).toEqual([[checkFor("src/A.java"), realpathSync(fixture.root), ""]]);
+    const { content } = await host.after({
+      tool: "edit",
+      sessionID: "s1",
+      input: { filePath: "src/A.java" },
+      result: { content: "Edit applied." }
+    });
+    expect(invocations().map((i) => [i.argv, i.cwd, i.stdin])).toEqual([[
+      checkFor("src/A.java"),
+      realpathSync(fixture.root),
+      ""
+    ]]);
     expect(content).toEqual([{ type: "text", text: "Edit applied." }]);
   });
 
   test("a failing check is delivered in the result the model reads without crashing the call", async () => {
-    respond("check", 1, JSON.stringify({ passed: false, gates: [{ id: "format", status: "FAILED" }] }));
+    respond(
+      "check",
+      1,
+      JSON.stringify({ passed: false, gates: [{ id: "format", status: "FAILED" }] })
+    );
     const host = sessionHost();
     await setup("ward-edit-write.js", host);
-    const { content } = await host.after({ tool: "write", sessionID: "s1", input: { filePath: "src/A.java" }, result: { content: "Wrote file." } });
+    const { content } = await host.after({
+      tool: "write",
+      sessionID: "s1",
+      input: { filePath: "src/A.java" },
+      result: { content: "Wrote file." }
+    });
     expect(content?.[0]).toEqual({ type: "text", text: "Wrote file." });
     const feedback = content?.slice(1).map((part) => part.text).join("\n") ?? "";
     expect(feedback).toContain("Ward quality check failed");
@@ -136,25 +165,55 @@ describe("post-edit quality check", () => {
   });
 
   test("learning prompts are delivered on a passing check", async () => {
-    respond("check", 0, JSON.stringify({ passed: true, learning: { prompts: [{ instruction: "Run the formatter before editing." }] } }));
+    respond(
+      "check",
+      0,
+      JSON.stringify({
+        passed: true,
+        learning: { prompts: [{ instruction: "Run the formatter before editing." }] }
+      })
+    );
     const host = sessionHost();
     await setup("ward-edit-write.js", host);
-    const { content } = await host.after({ tool: "edit", sessionID: "s1", input: { filePath: "a" }, result: { content: "ok" } });
+    const { content } = await host.after({
+      tool: "edit",
+      sessionID: "s1",
+      input: { filePath: "a" },
+      result: { content: "ok" }
+    });
     expect(content?.map((part) => part.text)).toEqual(["ok", "Run the formatter before editing."]);
   });
 
   test("learning prompts accompany a failing check", async () => {
-    respond("check", 1, JSON.stringify({ passed: false, learning: { prompts: [{ instruction: "Keep tests green." }] } }));
+    respond(
+      "check",
+      1,
+      JSON.stringify({
+        passed: false,
+        learning: { prompts: [{ instruction: "Keep tests green." }] }
+      })
+    );
     const host = sessionHost();
     await setup("ward-edit-write.js", host);
-    const { content } = await host.after({ tool: "edit", sessionID: "s1", input: { filePath: "a" }, result: { content: "ok" } });
+    const { content } = await host.after({
+      tool: "edit",
+      sessionID: "s1",
+      input: { filePath: "a" },
+      result: { content: "ok" }
+    });
     expect(content?.map((part) => part.text).join("\n")).toContain("Keep tests green.");
   });
 
   test("an original tool failure is preserved and never triggers a check", async () => {
     const host = sessionHost();
     await setup("ward-edit-write.js", host);
-    const { event } = await host.after({ tool: "edit", sessionID: "s1", input: {}, status: "error", error: { message: "no match" } });
+    const { event } = await host.after({
+      tool: "edit",
+      sessionID: "s1",
+      input: {},
+      status: "error",
+      error: { message: "no match" }
+    });
     expect(event.error).toEqual({ message: "no match" });
     expect(invocations()).toEqual([]);
   });
@@ -162,7 +221,12 @@ describe("post-edit quality check", () => {
   test("non-edit tools are ignored", async () => {
     const host = sessionHost();
     await setup("ward-edit-write.js", host);
-    await host.after({ tool: "read", sessionID: "s1", input: { filePath: "a" }, result: { content: "x" } });
+    await host.after({
+      tool: "read",
+      sessionID: "s1",
+      input: { filePath: "a" },
+      result: { content: "x" }
+    });
     expect(invocations()).toEqual([]);
   });
 
@@ -193,16 +257,32 @@ describe("post-edit quality check", () => {
       tool: "apply_patch",
       sessionID: "s1",
       input: { patchText: "*** Begin Patch" },
-      result: { content: "done", metadata: { files: [{ filePath: from, movePath: to }, { filePath: join(fixture.root, "src/A.java") }, { filePath: from }] } },
+      result: {
+        content: "done",
+        metadata: {
+          files: [
+            { filePath: from, movePath: to },
+            { filePath: join(fixture.root, "src/A.java") },
+            { filePath: from }
+          ]
+        }
+      },
     });
-    expect(invocations().map((i) => i.argv)).toEqual([checkFor(from, to, join(fixture.root, "src/A.java"))]);
+    expect(invocations().map((i) => i.argv)).toEqual([
+      checkFor(from, to, join(fixture.root, "src/A.java"))
+    ]);
   });
 
   test("the newer patch tool's path argument targets the check", async () => {
     respond("check", 0, "{}");
     const host = sessionHost();
     await setup("ward-edit-write.js", host);
-    await host.after({ tool: "patch", sessionID: "s1", input: { path: "docs/a/guide.md" }, result: { content: "ok" } });
+    await host.after({
+      tool: "patch",
+      sessionID: "s1",
+      input: { path: "docs/a/guide.md" },
+      result: { content: "ok" }
+    });
     expect(invocations().map((i) => i.argv)).toEqual([checkFor("docs/a/guide.md")]);
   });
 
@@ -210,7 +290,12 @@ describe("post-edit quality check", () => {
     const host = sessionHost();
     await setup("ward-edit-write.js", host);
     await withoutWard(async () => {
-      const { content } = await host.after({ tool: "edit", sessionID: "s1", input: { filePath: "a" }, result: { content: "ok" } });
+      const { content } = await host.after({
+        tool: "edit",
+        sessionID: "s1",
+        input: { filePath: "a" },
+        result: { content: "ok" }
+      });
       expect(content?.map((part) => part.text).join("\n")).toContain("Ward could not run");
     });
   });
@@ -222,7 +307,12 @@ describe("session location", () => {
     const host = sessionHost();
     host.sessions.set("s2", otherCheckout);
     await setup("ward-edit-write.js", host);
-    await host.after({ tool: "edit", sessionID: "s2", input: { filePath: "a" }, result: { content: "ok" } });
+    await host.after({
+      tool: "edit",
+      sessionID: "s2",
+      input: { filePath: "a" },
+      result: { content: "ok" }
+    });
     expect(invocations().map((i) => i.cwd)).toEqual([otherCheckout]);
   });
 
@@ -231,18 +321,42 @@ describe("session location", () => {
     const host = sessionHost();
     host.sessions.set("s2", otherCheckout);
     await setup("ward-edit-write.js", host);
-    await host.after({ tool: "edit", sessionID: "s1", input: { filePath: "a" }, result: { content: "ok" } });
-    await host.after({ tool: "edit", sessionID: "s2", input: { filePath: "a" }, result: { content: "ok" } });
+    await host.after({
+      tool: "edit",
+      sessionID: "s1",
+      input: { filePath: "a" },
+      result: { content: "ok" }
+    });
+    await host.after({
+      tool: "edit",
+      sessionID: "s2",
+      input: { filePath: "a" },
+      result: { content: "ok" }
+    });
     host.sessions.set("s1", otherCheckout);
-    await host.after({ tool: "edit", sessionID: "s1", input: { filePath: "a" }, result: { content: "ok" } });
-    expect(invocations().map((i) => i.cwd)).toEqual([realpathSync(fixture.root), otherCheckout, otherCheckout]);
+    await host.after({
+      tool: "edit",
+      sessionID: "s1",
+      input: { filePath: "a" },
+      result: { content: "ok" }
+    });
+    expect(invocations().map((i) => i.cwd)).toEqual([
+      realpathSync(fixture.root),
+      otherCheckout,
+      otherCheckout
+    ]);
   });
 
   test("a failed location lookup skips the check instead of guessing a directory", async () => {
     const host = sessionHost();
     host.sessionLookupFails = true;
     await setup("ward-edit-write.js", host);
-    const { content } = await host.after({ tool: "edit", sessionID: "s1", input: { filePath: "a" }, result: { content: "ok" } });
+    const { content } = await host.after({
+      tool: "edit",
+      sessionID: "s1",
+      input: { filePath: "a" },
+      result: { content: "ok" }
+    });
     expect(invocations()).toEqual([]);
     expect(content).toEqual([{ type: "text", text: "ok" }]);
   });
@@ -253,7 +367,12 @@ describe("plugin disposal", () => {
     respond("check", 1, "late findings", "", 0.3);
     const host = sessionHost();
     const dispose = await setup("ward-edit-write.js", host);
-    const pending = host.after({ tool: "edit", sessionID: "s1", input: { filePath: "a" }, result: { content: "ok" } });
+    const pending = host.after({
+      tool: "edit",
+      sessionID: "s1",
+      input: { filePath: "a" },
+      result: { content: "ok" }
+    });
     await Bun.sleep(50);
     await dispose();
     expect(host.toolHooks.get("execute.after")).toEqual([]);
@@ -268,7 +387,12 @@ describe("plugin disposal", () => {
     await first();
     await setup("ward-edit-write.js", host);
     expect(host.toolHooks.get("execute.after")?.length).toBe(1);
-    await host.after({ tool: "edit", sessionID: "s1", input: { filePath: "a" }, result: { content: "ok" } });
+    await host.after({
+      tool: "edit",
+      sessionID: "s1",
+      input: { filePath: "a" },
+      result: { content: "ok" }
+    });
     expect(invocations().length).toBe(1);
   });
 });
@@ -276,5 +400,7 @@ describe("plugin disposal", () => {
 test("the host emulation treats an execute.after rejection as a defect", async () => {
   const host = new Host("/tmp");
   host.toolHooks.set("execute.after", [() => Promise.reject(new Error("boom"))]);
-  await expect(host.after({ tool: "edit", sessionID: "s1", input: {}, result: { content: "x" } })).rejects.toThrow(Defect);
+  await expect(
+    host.after({ tool: "edit", sessionID: "s1", input: {}, result: { content: "x" } })
+  ).rejects.toThrow(Defect);
 });

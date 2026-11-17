@@ -1,7 +1,13 @@
 import { createHash } from "node:crypto";
 import { chmodSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { aggregate, record, type Assertion, type MatrixReport, type ScenarioRecord } from "./evidence";
+import {
+  aggregate,
+  record,
+  type Assertion,
+  type MatrixReport,
+  type ScenarioRecord
+} from "./evidence";
 import { recordedInvocations, type Invocation } from "./execute";
 import { createFixture, wardLauncher, type Fixture, type WardLauncher } from "./fixture";
 import { findHarness, loadManifest, REPO_ROOT, type Harness, type Manifest } from "./manifest";
@@ -58,9 +64,7 @@ export function writeRecordingWrapper(dir: string, log: string, launcher: WardLa
   mkdirSync(log, { recursive: true });
   const quoted = launcher.argv.map((part) => `'${part.replaceAll("'", "'\\''")}'`).join(" ");
   const path = join(dir, "ward");
-  writeFileSync(
-    path,
-    `#!/bin/sh
+  writeFileSync(path, `#!/bin/sh
 # Records that a native harness event reached Ward, then runs the real Ward CLI.
 i=0
 while ! mkdir '${log}'/"$i" 2>/dev/null; do i=$((i + 1)); [ "$i" -gt 100000 ] && break; done
@@ -69,18 +73,25 @@ pwd -P > '${log}'/"$i"/cwd
 : > '${log}'/"$i"/stdin
 : > '${log}'/"$i"/complete
 exec ${quoted} "$@"
-`,
-  );
+`);
   chmodSync(path, 0o755);
 }
 
 export function sha256(path: string): string | undefined {
-  return existsSync(path) ? createHash("sha256").update(readFileSync(path)).digest("hex") : undefined;
+  return existsSync(path) ? createHash("sha256").update(readFileSync(path)).digest(
+    "hex"
+  ) : undefined;
 }
 
 export function sourceRevision(): string {
-  const head = Bun.spawnSync(["git", "rev-parse", "HEAD"], { cwd: REPO_ROOT }).stdout.toString().trim();
-  const dirty = Bun.spawnSync(["git", "status", "--porcelain"], { cwd: REPO_ROOT }).stdout.toString().trim();
+  const head = Bun.spawnSync(
+    ["git", "rev-parse", "HEAD"],
+    { cwd: REPO_ROOT }
+  ).stdout.toString().trim();
+  const dirty = Bun.spawnSync(
+    ["git", "status", "--porcelain"],
+    { cwd: REPO_ROOT }
+  ).stdout.toString().trim();
   return dirty ? `${head}+dirty` : head;
 }
 
@@ -102,54 +113,94 @@ export async function runLive(requested: string[], options: LiveOptions): Promis
   const manifest = options.manifest ?? loadManifest();
   const revision = options.revision ?? sourceRevision();
   const records: ScenarioRecord[] = [];
-  for (const id of requested) records.push(...(await runHarness(findHarness(manifest, id), options, revision)));
+  for (const id of requested) records.push(
+    ...(await runHarness(findHarness(manifest, id), options, revision))
+  );
   return aggregate(records, requested, "automated-live");
 }
 
-async function runHarness(harness: Harness, options: LiveOptions, revision: string): Promise<ScenarioRecord[]> {
+async function runHarness(
+  harness: Harness,
+  options: LiveOptions,
+  revision: string
+): Promise<ScenarioRecord[]> {
   const expected = { runtimeVersion: harness.runtime.version, sourceRevision: revision };
   const blockedAll = (scenarios: string[], prerequisite: string, driverImplemented = true) =>
-    scenarios.map((scenario) =>
-      record(
-        {
-          harness: harness.id,
-          scenario,
-          level: "automated-live",
-          claimed: "blocked",
-          assertions: [],
-          durationMs: 0,
-          sourceRevision: revision,
-          ...(driverImplemented ? { prerequisite } : { driverImplemented: false }),
-        },
-        expected,
-      ),
-    );
+  scenarios.map((
+    scenario
+  ) => record({ harness: harness.id, scenario, level: "automated-live", claimed: "blocked", assertions: [], durationMs: 0, sourceRevision: revision, ...(driverImplemented ? {
+    prerequisite
+  } : {
+    driverImplemented: false
+  }), }, expected,),);
   const driver = options.drivers[harness.id];
   if (!driver) return blockedAll(["live-smoke"], "", false);
   if (harness.verification.mode === "witnessed") {
-    return blockedAll(driver.scenarios.map((s) => s.id), `${harness.label} requires a witnessed procedure`);
+    return blockedAll(
+      driver.scenarios.map((s) => s.id),
+      `${harness.label} requires a witnessed procedure`
+    );
   }
-  const runtime = await preflight(harness, { toolsDir: options.toolsDir, env: options.env, home: options.home });
+  const runtime = await preflight(
+    harness,
+    { toolsDir: options.toolsDir, env: options.env, home: options.home }
+  );
   if (runtime.status !== "ready" || !runtime.executable) {
     return blockedAll(driver.scenarios.map((s) => s.id), runtime.prerequisite ?? "runtime");
   }
   const missing = driver.missingPrerequisites(options.env);
   const launcher = wardLauncher(options.env);
-  if (!launcher) return blockedAll(driver.scenarios.map((s) => s.id), "built Ward launcher (./mvnw package)");
+  if (!launcher) return blockedAll(
+    driver.scenarios.map((s) => s.id),
+    "built Ward launcher (./mvnw package)"
+  );
 
   const records: ScenarioRecord[] = [];
   for (const scenario of driver.scenarios) {
-    const base = { harness: harness.id, scenario: scenario.id, level: "automated-live" as const, sourceRevision: revision, runtimeVersion: runtime.foundVersion };
+    const base = {
+      harness: harness.id,
+      scenario: scenario.id,
+      level: "automated-live" as const,
+      sourceRevision: revision,
+      runtimeVersion: runtime.foundVersion
+    };
     if (scenario.unsupported) {
-      records.push(record({ ...base, claimed: "unsupported", unsupportedProvenance: scenario.unsupported, assertions: [], durationMs: 0 }, expected));
+      records.push(
+        record(
+          {
+            ...base,
+            claimed: "unsupported",
+            unsupportedProvenance: scenario.unsupported,
+            assertions: [],
+            durationMs: 0
+          },
+          expected
+        )
+      );
       continue;
     }
     if (scenario.notImplemented || !scenario.execute) {
-      records.push(record({ ...base, claimed: "blocked", driverImplemented: false, assertions: [], durationMs: 0 }, expected));
+      records.push(
+        record(
+          { ...base, claimed: "blocked", driverImplemented: false, assertions: [], durationMs: 0 },
+          expected
+        )
+      );
       continue;
     }
     if (missing.length && scenario.requiresCredentials !== false) {
-      records.push(record({ ...base, claimed: "blocked", prerequisite: missing.join(", "), assertions: [], durationMs: 0 }, expected));
+      records.push(
+        record(
+          {
+            ...base,
+            claimed: "blocked",
+            prerequisite: missing.join(", "),
+            assertions: [],
+            durationMs: 0
+          },
+          expected
+        )
+      );
       continue;
     }
     const started = performance.now();
@@ -160,9 +211,15 @@ async function runHarness(harness: Harness, options: LiveOptions, revision: stri
       const log = join(dirname(fixture.root), "ward-log");
       writeRecordingWrapper(wrapperDir, log, launcher);
       const credentials = Object.fromEntries(
-        CREDENTIAL_ALLOWLIST.filter((name) => options.env[name]).map((name) => [name, options.env[name] as string]),
+        CREDENTIAL_ALLOWLIST.filter((name) => options.env[name]).map(
+          (name) => [name, options.env[name] as string]
+        ),
       );
-      const env = { ...fixture.env, ...credentials, PATH: `${wrapperDir}:${dirname(runtime.executable)}:${SYSTEM_PATH}` };
+      const env = {
+        ...fixture.env,
+        ...credentials,
+        PATH: `${wrapperDir}:${dirname(runtime.executable)}:${SYSTEM_PATH}`
+      };
       const context: LiveContext = {
         harness,
         runtime: runtime as LiveContext["runtime"],
@@ -172,11 +229,30 @@ async function runHarness(harness: Harness, options: LiveOptions, revision: stri
         run: (argv, timeoutMs) => run(argv, { cwd: fixture.root, env, timeoutMs }),
       };
       const assertions = await scenario.execute(context);
-      records.push(record({ ...base, claimed: "pass", assertions, durationMs: Math.round(performance.now() - started) }, expected));
+      records.push(
+        record(
+          {
+            ...base,
+            claimed: "pass",
+            assertions,
+            durationMs: Math.round(performance.now() - started)
+          },
+          expected
+        )
+      );
     } catch (error) {
       records.push(
         record(
-          { ...base, claimed: "fail", assertions: [{ name: "scenario completed", passed: false, detail: error instanceof Error ? error.message : String(error) }], durationMs: Math.round(performance.now() - started) },
+          {
+            ...base,
+            claimed: "fail",
+            assertions: [{
+              name: "scenario completed",
+              passed: false,
+              detail: error instanceof Error ? error.message : String(error)
+            }],
+            durationMs: Math.round(performance.now() - started)
+          },
           expected,
         ),
       );

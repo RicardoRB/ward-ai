@@ -19,8 +19,32 @@ import { cleanupOwnedProcesses, run, SYSTEM_PATH } from "../src/process";
 //   run_commands {commands: [..]}.
 // The real Ward answers behind a recording wrapper.
 
-const EVENTS = ["TaskStart", "TaskResume", "TaskCancel", "TaskComplete", "TaskError", "PreToolUse", "PostToolUse", "UserPromptSubmit", "PreCompact", "SessionShutdown"];
-const EXTENSIONS = ["", ".sh", ".bash", ".zsh", ".js", ".mjs", ".cjs", ".ts", ".mts", ".cts", ".py", ".ps1"];
+const EVENTS = [
+  "TaskStart",
+  "TaskResume",
+  "TaskCancel",
+  "TaskComplete",
+  "TaskError",
+  "PreToolUse",
+  "PostToolUse",
+  "UserPromptSubmit",
+  "PreCompact",
+  "SessionShutdown"
+];
+const EXTENSIONS = [
+  "",
+  ".sh",
+  ".bash",
+  ".zsh",
+  ".js",
+  ".mjs",
+  ".cjs",
+  ".ts",
+  ".mts",
+  ".cts",
+  ".py",
+  ".ps1"
+];
 
 /** Lists the hook files Cline discovers in a directory, by event. */
 function discovered(dir: string): Record<string, string> {
@@ -36,10 +60,16 @@ function discovered(dir: string): Record<string, string> {
 }
 
 /** Interprets hook stdout the way @cline/core does. */
-function control(stdout: string): { cancel?: boolean; reason?: string; context?: string } | undefined {
+function control(stdout: string): {
+  cancel?: boolean;
+  reason?: string;
+  context?: string
+} | undefined {
   const text = stdout.trim();
   if (!text) return undefined;
-  const lines = text.split("\n").map((l) => l.trim()).filter((l) => l.startsWith("HOOK_CONTROL\t")).map((l) => l.slice(13));
+  const lines = text.split("\n").map((l) => l.trim()).filter(
+    (l) => l.startsWith("HOOK_CONTROL\t")
+  ).map((l) => l.slice(13));
   let parsed: any;
   try {
     parsed = JSON.parse(lines.length > 0 ? lines[lines.length - 1] : text);
@@ -47,7 +77,9 @@ function control(stdout: string): { cancel?: boolean; reason?: string; context?:
     return undefined; // logged and ignored
   }
   const context = parsed.context ?? parsed.contextModification;
-  return parsed.cancel === true ? { cancel: true, reason: parsed.errorMessage ?? context } : { context: context ?? parsed.errorMessage };
+  return parsed.cancel === true ? { cancel: true, reason: parsed.errorMessage ?? context } : {
+    context: context ?? parsed.errorMessage
+  };
 }
 
 let fixture: Fixture;
@@ -74,16 +106,34 @@ afterAll(() => {
 async function launch(file: string, f: Fixture, payload: unknown, cwd = f.root) {
   const before = recordedInvocations(log).length;
   const stdin = typeof payload === "string" ? payload : JSON.stringify(payload);
-  const result = await run(["/bin/bash", file], { cwd, env: { ...f.env, PATH: `${bin}:${SYSTEM_PATH}` }, stdin, timeoutMs: 60_000 });
-  return { result, control: control(result.stdout), invocations: recordedInvocations(log).slice(before) };
+  const result = await run(
+    ["/bin/bash", file],
+    { cwd, env: { ...f.env, PATH: `${bin}:${SYSTEM_PATH}` }, stdin, timeoutMs: 60_000 }
+  );
+  return {
+    result,
+    control: control(result.stdout),
+    invocations: recordedInvocations(log).slice(before)
+  };
 }
 
-const base = (f: Fixture, hookName: string) => ({ clineVersion: "3.0.72", hookName, timestamp: "2026-10-16T00:00:00Z", taskId: "t", workspaceRoots: [f.root], userId: "u" });
+const base = (f: Fixture, hookName: string) => ({
+  clineVersion: "3.0.72",
+  hookName,
+  timestamp: "2026-10-16T00:00:00Z",
+  taskId: "t",
+  workspaceRoots: [f.root],
+  userId: "u"
+});
 const post = (toolName: string, input: Record<string, string>) =>
-  launch(hooks.PostToolUse, fixture, {
+launch(
+  hooks.PostToolUse,
+  fixture,
+  {
     ...base(fixture, "tool_result"),
     postToolUse: { toolName, parameters: input, result: "ok", success: true, executionTimeMs: 1 },
-  });
+  }
+);
 
 describe("generated hook files against Cline 3.0.72", () => {
   test("Cline discovers the check as the PostToolUse hook and nothing else", () => {
@@ -99,22 +149,35 @@ describe("generated hook files against Cline 3.0.72", () => {
   });
 
   test("the hook file carries the ownership marker", () => {
-    for (const file of Object.values(hooks)) expect(readFileSync(file, "utf8")).toContain("ward-owned: cline-native-hooks v1");
+    for (const file of Object.values(hooks)) expect(readFileSync(file, "utf8")).toContain(
+      "ward-owned: cline-native-hooks v1"
+    );
   });
 });
 
 describe("hook execution", () => {
-
   test("tools that change nothing never reach Ward", async () => {
-    const { control, invocations } = await post("read_files", { files: '[{"path":"src/main/java/A.java"}]' });
+    const { control, invocations } = await post(
+      "read_files",
+      { files: '[{"path":"src/main/java/A.java"}]' }
+    );
     expect([control, invocations.length]).toEqual([undefined, 0]);
   });
 
   test("a failing check after an edit is appended to the tool result", async () => {
     writeFileSync(join(fixture.root, "FAIL"), "");
     try {
-      const { control, invocations } = await post("editor", { path: "src/main/java/A.java", new_text: "x" });
-      expect(invocations.map((i) => i.argv)).toEqual([["hook", "native", "--agent", "cline", "--event-stdin"]]);
+      const { control, invocations } = await post(
+        "editor",
+        { path: "src/main/java/A.java", new_text: "x" }
+      );
+      expect(invocations.map((i) => i.argv)).toEqual([[
+        "hook",
+        "native",
+        "--agent",
+        "cline",
+        "--event-stdin"
+      ]]);
       expect(control?.context).toContain("Ward quality findings");
     } finally {
       rmSync(join(fixture.root, "FAIL"), { force: true });
@@ -125,5 +188,4 @@ describe("hook execution", () => {
     expect((await post("editor", { path: "src/main/java/A.java" })).control).toBeUndefined();
     expect((await post("run_commands", { commands: '["ls"]' })).invocations.length).toBe(0);
   });
-
 });

@@ -11,16 +11,16 @@ import { hookScenarios } from "./hook-scenarios";
 const TURN_TIMEOUT_MS = 240_000;
 
 const turn = (context: LiveContext, prompt: string) =>
-  context.run(
-    [
-      context.runtime.executable,
-      "--config-location",
-      ".junie/config.json",
-      `--auth=${context.env.JUNIE_API_KEY ?? ""}`,
-      prompt,
-    ],
-    TURN_TIMEOUT_MS,
-  );
+context.run(
+  [
+    context.runtime.executable,
+    "--config-location",
+    ".junie/config.json",
+    `--auth=${context.env.JUNIE_API_KEY ?? ""}`,
+    prompt,
+  ],
+  TURN_TIMEOUT_MS,
+);
 
 export const junieDriver: LiveDriver = {
   harness: "junie",

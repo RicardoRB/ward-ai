@@ -9,7 +9,7 @@ import { hookScenarios } from "./hook-scenarios";
 const TURN_TIMEOUT_MS = 240_000;
 
 const turn = (context: LiveContext, prompt: string) =>
-  context.run([context.runtime.executable, "exec", "--auto", "high", prompt], TURN_TIMEOUT_MS);
+context.run([context.runtime.executable, "exec", "--auto", "high", prompt], TURN_TIMEOUT_MS);
 
 export const factoryDroidDriver: LiveDriver = {
   harness: "factory-droid",

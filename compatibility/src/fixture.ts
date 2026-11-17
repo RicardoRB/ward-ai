@@ -1,11 +1,24 @@
-import { accessSync, appendFileSync, constants, cpSync, existsSync, mkdirSync, mkdtempSync, rmSync, statSync } from "node:fs";
+import {
+  accessSync,
+  appendFileSync,
+  constants,
+  cpSync,
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  rmSync,
+  statSync
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { REPO_ROOT } from "./manifest";
 import { run, SYSTEM_PATH, type RunResult } from "./process";
 
 /** The trusted offline Maven fixture whose stub mvnw is the only command gates execute. */
-export const TRUSTED_FIXTURE = join(REPO_ROOT, "ward-cli/src/test/resources/fixtures/maven-project");
+export const TRUSTED_FIXTURE = join(
+  REPO_ROOT,
+  "ward-cli/src/test/resources/fixtures/maven-project"
+);
 
 export interface WardLauncher {
   argv: string[];
@@ -19,12 +32,18 @@ export function wardLauncher(env: Record<string, string | undefined>): WardLaunc
   const explicit = env.WARD_COMPAT_WARD;
   if (explicit) return executable(explicit) ? { argv: [explicit] } : undefined;
   // Use the most recently built launcher so a stale native image never stands in for a newer JAR.
-  const candidates: { argv: string[]; built: number }[] = [];
+  const candidates: {
+    argv: string[];
+    built: number
+  } [] = [];
   const native = join(REPO_ROOT, "ward-cli", "target", "ward");
   if (executable(native)) candidates.push({ argv: [native], built: statSync(native).mtimeMs });
   const jar = join(REPO_ROOT, "ward-cli", "target", "ward.jar");
   const java = env.JAVA_HOME ? join(env.JAVA_HOME, "bin", "java") : "/usr/bin/java";
-  if (executable(java) && existsSync(jar)) candidates.push({ argv: [java, "-jar", jar], built: statSync(jar).mtimeMs });
+  if (executable(java) && existsSync(jar)) candidates.push({
+    argv: [java, "-jar", jar],
+    built: statSync(jar).mtimeMs
+  });
   candidates.sort((a, b) => b.built - a.built);
   if (candidates.length > 0) return { argv: candidates[0].argv };
   return undefined;
@@ -58,7 +77,9 @@ export async function createFixture(options: FixtureOptions): Promise<Fixture> {
   const root = join(base, "project");
   const home = join(base, "home");
   cpSync(TRUSTED_FIXTURE, root, { recursive: true });
-  for (const dir of [home, join(home, ".config"), join(home, ".cache"), join(home, ".local", "share")]) {
+  for (
+    const dir of [home, join(home, ".config"), join(home, ".cache"), join(home, ".local", "share")]
+  ) {
     mkdirSync(dir, { recursive: true });
   }
   const env: Record<string, string> = {
@@ -82,11 +103,25 @@ export async function createFixture(options: FixtureOptions): Promise<Fixture> {
   };
   try {
     const ward = (args: string[]) =>
-      run([...options.ward.argv, ...args, "-C", root], { cwd: root, env, timeoutMs: options.timeoutMs ?? 60_000 });
-    await expectSuccess("ward init", ward(["init", "--integration", "none", ...(options.gates ?? ["compile"]).flatMap((gate) => ["--gate", gate])]));
+    run(
+      [...options.ward.argv, ...args, "-C", root],
+      { cwd: root, env, timeoutMs: options.timeoutMs ?? 60_000 }
+    );
+    await expectSuccess(
+      "ward init",
+      ward([
+        "init",
+        "--integration",
+        "none",
+        ...(options.gates ?? ["compile"]).flatMap((gate) => ["--gate", gate])
+      ])
+    );
     // Init's own edit-profile gates run inside Ward, so a stub command gate gives tests a failure they
     // control: the fixture's stub mvnw fails while a FAIL file exists.
-    appendFileSync(join(root, "ward.toml"), '\n[checks.format]\nenabled = true\nprofiles = ["default", "edit"]\ncommand = "./mvnw format"\n');
+    appendFileSync(
+      join(root, "ward.toml"),
+      '\n[checks.format]\nenabled = true\nprofiles = ["default", "edit"]\ncommand = "./mvnw format"\n'
+    );
     await expectSuccess(`ward integrate ${options.harness}`, ward(["integrate", options.harness]));
     return fixture;
   } catch (error) {

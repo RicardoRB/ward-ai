@@ -1,4 +1,11 @@
-import { chmodSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import {
+  chmodSync,
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  writeFileSync
+} from "node:fs";
 import { dirname, join } from "node:path";
 import type { Assertion } from "./evidence";
 import type { Fixture } from "./fixture";
@@ -6,14 +13,14 @@ import { run, SYSTEM_PATH, type RunResult } from "./process";
 
 /** Documented registration shapes; each harness declares which one its runtime reads. */
 export type RegistrationShape =
-  /** event -> [{ matcher?, hooks: [{ type: "command", command }] }] (Claude Code, Codex, Gemini, Factory). */
-  | "matcher-groups"
-  /** { version: 1, hooks: event -> [{ command }] } (Cursor). */
-  | "versioned-commands"
-  /** { hooks: event -> [{ command }] } (Windsurf). */
-  | "commands"
-  /** { version: 1, hooks: event -> [{ type: "command", bash }] } (Copilot CLI). */
-  | "copilot";
+/** event -> [{ matcher?, hooks: [{ type: "command", command }] }] (Claude Code, Codex, Gemini, Factory). */
+| "matcher-groups"
+/** { version: 1, hooks: event -> [{ command }] } (Cursor). */
+| "versioned-commands"
+/** { hooks: event -> [{ command }] } (Windsurf). */
+| "commands"
+/** { version: 1, hooks: event -> [{ type: "command", bash }] } (Copilot CLI). */
+| "copilot";
 
 export interface Registration {
   event: string;
@@ -27,50 +34,55 @@ export class InvalidRegistration extends Error {}
  * Parses a generated configuration strictly against its documented shape. Entries a real runtime
  * would ignore or reject raise {@link InvalidRegistration} instead of being silently accepted.
  */
-export function registrations(json: string, shape: RegistrationShape, root = "hooks"): Registration[] {
-  let config: any;
-  try {
-    config = JSON.parse(json);
-  } catch {
-    throw new InvalidRegistration("configuration is not valid JSON");
-  }
-  if ((shape === "versioned-commands" || shape === "copilot") && config?.version !== 1) {
-    throw new InvalidRegistration("configuration must declare version 1");
-  }
-  const events = root ? config?.[root] : config;
-  if (!events || typeof events !== "object" || Array.isArray(events)) {
-    throw new InvalidRegistration(`configuration has no ${root || "event"} object`);
-  }
-  const found: Registration[] = [];
-  for (const [event, entries] of Object.entries(events)) {
-    if (!Array.isArray(entries)) throw new InvalidRegistration(`${event} must be a list`);
-    entries.forEach((entry: any, index: number) => {
-      const where = `${event}[${index}]`;
-      if (shape === "matcher-groups") {
-        if (!Array.isArray(entry?.hooks) || entry.hooks.length === 0) {
-          throw new InvalidRegistration(`${where} must be a matcher group with a hooks list`);
-        }
-        entry.hooks.forEach((handler: any, inner: number) => {
-          if (handler?.type !== "command" || typeof handler.command !== "string" || !handler.command) {
-            throw new InvalidRegistration(`${where}.hooks[${inner}] must be a command handler`);
-          }
-          found.push({ event, command: handler.command, ...(entry.matcher ? { matcher: entry.matcher } : {}) });
-        });
-      } else if (shape === "copilot") {
-        if (entry?.type !== "command" || typeof entry.bash !== "string" || !entry.bash) {
-          throw new InvalidRegistration(`${where} must be a command entry with a bash command`);
-        }
-        found.push({ event, command: entry.bash, ...(entry.matcher ? { matcher: entry.matcher } : {}) });
-      } else {
-        if (typeof entry?.command !== "string" || !entry.command || entry.hooks !== undefined) {
-          throw new InvalidRegistration(`${where} must be a flat command entry`);
-        }
-        found.push({ event, command: entry.command, ...(entry.matcher ? { matcher: entry.matcher } : {}) });
+export function registrations(
+  json: string,
+  shape: RegistrationShape,
+  root = "hooks"
+): Registration[] { let config: any; try {
+  config = JSON.parse(json);
+} catch {
+  throw new InvalidRegistration("configuration is not valid JSON");
+} if ((shape === "versioned-commands" || shape === "copilot") && config?.version !== 1) {
+  throw new InvalidRegistration("configuration must declare version 1");
+} const events = root ? config?.[root] : config; if (
+  !events || typeof events !== "object" || Array.isArray(events)
+) {
+  throw new InvalidRegistration(`configuration has no ${root || "event"} object`);
+} const found: Registration[] = []; for (const [event, entries] of Object.entries(events)) {
+  if (!Array.isArray(entries)) throw new InvalidRegistration(`${event} must be a list`);
+  entries.forEach((entry: any, index: number) => {
+    const where = `${event}[${index}]`;
+    if (shape === "matcher-groups") {
+      if (!Array.isArray(entry?.hooks) || entry.hooks.length === 0) {
+        throw new InvalidRegistration(`${where} must be a matcher group with a hooks list`);
       }
-    });
-  }
-  return found;
-}
+      entry.hooks.forEach((handler: any, inner: number) => {
+        if (
+          handler?.type !== "command" || typeof handler.command !== "string" || !handler.command
+        ) {
+          throw new InvalidRegistration(`${where}.hooks[${inner}] must be a command handler`);
+        }
+        found.push({ event, command: handler.command, ...(entry.matcher ? {
+          matcher: entry.matcher
+        } : {}) });
+      });
+    } else if (shape === "copilot") {
+      if (entry?.type !== "command" || typeof entry.bash !== "string" || !entry.bash) {
+        throw new InvalidRegistration(`${where} must be a command entry with a bash command`);
+      }
+      found.push({ event, command: entry.bash, ...(entry.matcher ? {
+        matcher: entry.matcher
+      } : {}) });
+    } else {
+      if (typeof entry?.command !== "string" || !entry.command || entry.hooks !== undefined) {
+        throw new InvalidRegistration(`${where} must be a flat command entry`);
+      }
+      found.push({ event, command: entry.command, ...(entry.matcher ? {
+        matcher: entry.matcher
+      } : {}) });
+    }
+  });
+} return found; }
 
 export interface Invocation {
   argv: string[];
@@ -125,10 +137,7 @@ export interface ExecutionHarness {
    * Runs one registered command the way a harness launches hook commands: through `sh -c` in
    * `cwd`, with the event payload on stdin and the recording stub first on PATH.
    */
-  execute(command: string, options: { cwd: string; stdin: string; env?: Record<string, string>; stub?: StubBehavior }): Promise<{
-    result: RunResult;
-    invocations: Invocation[];
-  }>;
+  execute(command: string, options: { cwd: string; stdin: string; env?: Record<string, string>; stub?: StubBehavior }): Promise< { result: RunResult; invocations: Invocation[]; } >;
 }
 
 /** Writes the recording stub into `dir` and returns its path. */
@@ -141,9 +150,7 @@ export function writeStub(dir: string): string {
 }
 
 /** Reads every invocation the stub recorded under `dir`, in order. */
-export function recordedInvocations(dir: string): Invocation[] {
-  return readInvocations(dir);
-}
+export function recordedInvocations(dir: string): Invocation[] { return readInvocations(dir); }
 
 export function executionHarness(fixture: Fixture): ExecutionHarness {
   const base = dirname(fixture.root);
@@ -153,14 +160,13 @@ export function executionHarness(fixture: Fixture): ExecutionHarness {
   writeFileSync(join(stubBin, "ward"), STUB);
   chmodSync(join(stubBin, "ward"), 0o755);
   let sequence = 0;
-  return {
-    stubBin,
-    log,
-    async execute(command, options) {
-      const runLog = join(log, String(sequence++));
-      mkdirSync(runLog, { recursive: true });
-      const stub = options.stub ?? {};
-      const result = await run(["/bin/sh", "-c", command], {
+  return { stubBin, log, async execute(command, options) {
+    const runLog = join(log, String(sequence++));
+    mkdirSync(runLog, { recursive: true });
+    const stub = options.stub ?? {};
+    const result = await run(
+      ["/bin/sh", "-c", command],
+      {
         cwd: options.cwd,
         stdin: options.stdin,
         timeoutMs: 30_000,
@@ -173,23 +179,25 @@ export function executionHarness(fixture: Fixture): ExecutionHarness {
           WARD_STUB_STDOUT: stub.stdout ?? "",
           WARD_STUB_STDERR: stub.stderr ?? "",
         },
-      });
-      return { result, invocations: readInvocations(runLog) };
-    },
-  };
+      }
+    );
+    return { result, invocations: readInvocations(runLog) };
+  }, };
 }
 
-function readInvocations(dir: string): Invocation[] {
-  if (!existsSync(dir)) return [];
-  return readdirSync(dir)
-    .filter((entry) => existsSync(join(dir, entry, "complete")))
-    .sort((a, b) => Number(a) - Number(b))
-    .map((entry) => {
-      const at = join(dir, entry);
-      const argv = readFileSync(join(at, "argv"), "utf8").split("\0").slice(0, -1);
-      return { argv, cwd: readFileSync(join(at, "cwd"), "utf8").trim(), stdin: readFileSync(join(at, "stdin"), "utf8") };
-    });
-}
+function readInvocations(dir: string): Invocation[] { if (
+  !existsSync(dir)
+) return []; return readdirSync(dir).filter(
+  (entry) => existsSync(join(dir, entry, "complete"))
+).sort((a, b) => Number(a) - Number(b)).map((entry) => {
+  const at = join(dir, entry);
+  const argv = readFileSync(join(at, "argv"), "utf8").split("\0").slice(0, -1);
+  return {
+    argv,
+    cwd: readFileSync(join(at, "cwd"), "utf8").trim(),
+    stdin: readFileSync(join(at, "stdin"), "utf8")
+  };
+}); }
 
 /** Records named assertions so evidence reflects exactly what was executed. */
 export class Assertions {
@@ -202,7 +210,9 @@ export class Assertions {
 
   /** The generated artifact reached Ward exactly once with these arguments. */
   invokedWard(invocations: Invocation[], argv: string[]): boolean {
-    const passed = invocations.length === 1 && JSON.stringify(invocations[0].argv) === JSON.stringify(argv);
+    const passed = invocations.length === 1 && JSON.stringify(
+      invocations[0].argv
+    ) === JSON.stringify(argv);
     return this.check(
       `invokes ward ${argv.join(" ")}`,
       passed,
