@@ -29,15 +29,22 @@ final class NativeTypeFactsBindings {
    * @param projectRoot the project root
    * @param frontend the parser that every language reads sources with, shared with the other passes
    * @param classpathFile the project's {@code java-classpath} file, if it has one
+   * @param jdkHome the JDK to read JDK types from; without one Java and Kotlin get no source, so
+   *     their rules that need types are reported as not run
    */
   static Map<AnalysisLanguage, TypeFacts> forProject(
       final Path projectRoot,
       final LanguageFrontend frontend,
-      final Optional<Path> classpathFile
+      final Optional<Path> classpathFile,
+      final Optional<Path> jdkHome
   ) {
     final Map<AnalysisLanguage, TypeFacts> sources = new EnumMap<>(AnalysisLanguage.class);
-    new NativeJvmTypes(projectRoot, frontend)
-        .facts(classpathFile)
+    jdkHome
+        .flatMap(
+            home -> new NativeJvmTypes(projectRoot, frontend, Optional.of(home)).facts(
+                classpathFile
+            )
+        )
         .ifPresent(
             facts -> {
               sources.put(AnalysisLanguage.JAVA, facts);

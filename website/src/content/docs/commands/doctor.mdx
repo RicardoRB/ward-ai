@@ -72,7 +72,10 @@ do not depend on native resolvers.
 
 The Java and Kotlin resolver types the project sources and reads library and JDK classes directly
 from class files: the jars and directories of the `java-classpath` file, and the JDK `lib/modules`
-image found through `JAVA_HOME` or the running JDK. It never starts `javac`. Each jar is indexed once
+image of the first JDK Ward finds: `JAVA_HOME`, the `java` on `PATH`, `/usr/libexec/java_home` on macOS,
+then the running JDK. When none is found, the Java and Kotlin `TYPES` rules are reported as not run
+("no JDK was found") and report no finding, so a native binary without `JAVA_HOME` never reports
+false findings from unknown JDK types. It never starts `javac`. Each jar is indexed once
 and the index is kept under `.ward/cache/types/`, named by the SHA-256 of the jar.
 
 The TypeScript and JavaScript resolver types the project sources and reads declarations as text,

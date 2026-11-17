@@ -28,7 +28,15 @@ class GateExtensionBindingsModuleTest {
             rules,
             new MetricMatcher(),
             sources(),
-            codec(),
+            new AnalysisServices(
+                codec(),
+                new dev.ward.infrastructure.analysis.jvm.JdkLocator(
+                    new dev.ward.domain.FakeCommandExecutor(1, "", ""),
+                    name -> null,
+                    java.util.Optional.empty(),
+                    "Linux"
+                )
+            ),
             "test"
         );
 
