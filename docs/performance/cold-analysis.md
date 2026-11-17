@@ -323,3 +323,61 @@ diff -r /tmp/cache-1 /tmp/cache-10
 
 For the native binary replace `java -jar ward-cli/target/ward.jar` with the binary built by
 `./mvnw -Pnative -DskipTests native:compile`; add `-XX:+PrintGC` for the collection log.
+
+## One tree walk for the `forbidden-node` rules (#630)
+
+Numbers for #630, the OpenSpec change `share-forbidden-node-walk`, measured on 2026-11-17 on the same
+machine (Apple M4, 10 cores, 32 GB, Temurin 25.0.4, JVM jar).
+
+**What changed.** Each of the 145 `forbidden-node` rules used to walk the whole tree of every file
+(`NodeFilter.select`, and a copy of the ancestors of every node it kept). Now the engine builds one
+`NodeIndex` per file, in one walk made on first use, over the union of the kinds the rules want; each
+rule reads its kinds from it. The rules still run in rule order on the same nodes, so the findings and
+their order do not change. A check run without an index (a bare tree) walks the tree itself.
+
+**Method.** `ward check --profile wardonly --jobs 1 --severity info --format json` on this tree
+(a profile that holds only the `ward` check, added to `ward.toml` for the measurement and not
+committed), each run from an empty `.ward`. Before: the jar of `0.11.0`. After: the jar of this change.
+Runs alternate between the two jars. The machine was **not quiet**: three other sessions were running
+builds, and the 1-minute load average was 8 to 36 at the start of every run (see the table), well
+above the 3 that earlier measurements waited for. Wall time is therefore not usable; the rows below
+are given as they came, and the conclusion rests on the JFR sample shares.
+
+| Run | Load (1 min) at start | Wall time | CPU (user + sys) | Instructions |
+|---|---|---|---|---|
+| Before 1 | 36.5 | 412 s | 350 s | 4.50 × 10¹² |
+| After 1 | 33.3 | 173 s | 284 s | 4.25 × 10¹² |
+| Before 2 | 24.3 | 302 s | 324 s | 4.57 × 10¹² |
+| After 2 | 24.5 | 139 s | 253 s | 4.16 × 10¹² |
+| Before 3 | 16.1 | 136 s | 232 s | 3.99 × 10¹² |
+| After 3 | 34.0 | 321 s | 328 s | 4.32 × 10¹² |
+
+- Wall time and CPU time move by a factor of 3 with the load alone (Before 1 against Before 3, the
+  same jar), more than any difference between the jars. The instruction count is less sensitive but
+  still varies by 14 % between runs of one jar. **These six runs do not show a gain.**
+
+A JFR profile of each jar, run one after the other at a lower load (9.4 and 4.2 at the start), counts
+the execution samples whose stack holds the method:
+
+| Work | Before (10,551 samples) | After (9,526 samples) |
+|---|---|---|
+| `NodeFilter.select` | 14.5 % | 6.0 % |
+| `ForbiddenNodeCheck` (whole check) | 25.0 % | 18.7 % |
+| `NodeIndex.collect` (the shared walk) | 0 % | 0.1 % |
+| Total samples | 10,551 | 9,526 (0.90×) |
+
+- The shared walk costs 0.1 % of the samples; the walks it replaces cost about 8.5 points of the
+  run. The total number of samples fell by 10 %.
+- **What is left of `forbidden-node`** (18.7 %) is not the walk: it is the conditions of the rules,
+  above all building the text of a node for the `text` pattern (`SyntaxWalk.text`) and the parent's
+  text. That is the next candidate, and not part of this task.
+- One profile per jar is one measurement; the 10 % is of the same order as the noise in the table
+  above. It was not repeated at a low load because the machine did not reach one during this task.
+
+**Same findings.** The three pairs of JSON reports are byte-identical once `durationMs` is set to 0
+(15 findings of the `ward` check). The `.ward` caches of "Before 1" and "After 1" (19,536 files,
+175 MB) were compared with `diff -r`: no difference. The final jar (after a last small change to `NodeFilter`) gave a
+JSON report identical to "Before 1"; its `.ward` was not compared, because the cache is keyed by
+file content and the sources had changed since "Before 1". The scenario test is
+`SharedNodeWalkTest#oneTreeWalkPerFile` (60 rules over one tree, one walk, same matches as the
+rule's own walk).

@@ -1,7 +1,9 @@
 package dev.ward.analysis.domain.rule.check;
 
+import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.RuleMatch;
+import dev.ward.analysis.domain.rule.UnitViews;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -51,8 +53,26 @@ public final class ForbiddenNodeCheck implements UnitCheck {
   }
 
   @Override
+  public Set<String> nodeKinds() {
+    return filter.plainKinds();
+  }
+
+  @Override
+  public List<RuleMatch> matchesIn(
+      final SyntaxNode root,
+      final UnitViews views,
+      final SourceUnit unit
+  ) {
+    return report(filter.select(root, SourceFile.of(unit), views.nodes()));
+  }
+
+  @Override
   public List<RuleMatch> check(final SyntaxNode root, final SourceFile file) {
-    return filter.select(root, file).stream()
+    return report(filter.select(root, file));
+  }
+
+  private List<RuleMatch> report(final List<SyntaxWalk.Visit> visits) {
+    return visits.stream()
         .filter(condition::holds)
         .map(
             v ->

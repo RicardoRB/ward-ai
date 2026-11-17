@@ -7,8 +7,10 @@ import dev.ward.analysis.domain.rule.FlowView;
 import dev.ward.analysis.domain.rule.Measured;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import dev.ward.analysis.domain.rule.ScopeView;
+import dev.ward.analysis.domain.rule.UnitViews;
 import dev.ward.analysis.domain.types.UnitTypeFacts;
 import java.util.List;
+import java.util.Set;
 
 /** One check of a declarative rule, run over the syntax tree of a source unit. */
 @FunctionalInterface
@@ -74,6 +76,27 @@ public interface RuleCheck {
       final SourceUnit unit
   ) {
     return matches(root, flow, unit);
+  }
+
+  /** The node kinds this check reads from the shared node index of a unit; none by default. */
+  default Set<String> nodeKinds() {
+    return Set.of();
+  }
+
+  /**
+   * Returns the places in {@code root} where the check fails, given everything the engine derived
+   * from the unit. A check that does not read the shared node index needs only the overload with
+   * the separate views.
+   *
+   * @throws dev.ward.analysis.domain.port.AnalysisFailedException if the check cannot run on the
+   *     tree
+   */
+  default List<RuleMatch> matchesIn(
+      final SyntaxNode root,
+      final UnitViews views,
+      final SourceUnit unit
+  ) {
+    return matches(root, views.flow(), views.scopes(), views.types(), unit);
   }
 
   /**
