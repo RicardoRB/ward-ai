@@ -8,6 +8,10 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Added
+
+- Taint support for Swift (#605). Swift bodies are lowered to the flow IR, and three taint rules follow a URL query or a server request to a sensitive call: `ward:swift/command-injection` (`Process`, `system`), `ward:swift/sql-injection` (SQLite C API, FMDB, SQLite.swift, GRDB) and `ward:swift/path-injection` (`FileManager`, `FileHandle`, `fopen`). A sanitizing member such as `lastPathComponent` can now be named in a taint specification.
+
 ### Fixed
 
 - Python rules report fewer false positives on web applications (#597). `naming` accepts the unittest names (`setUp`, `tearDown`, ...); `unused-method` knows the methods Django calls by name (`clean_<field>`, admin, command and URL-converter hooks); `redefined-builtin` ignores a class attribute such as `help`; `hardcoded-temp-file` skips test files; `constant-name` skips `*.conf.py` and no longer reads a keyword argument of a call as the assignment; `redefined-while-unused` and `unused-import` accept `import a` followed by `import a.b` and the two branches of one `if` or `try`; `used-before-assignment` and `undefined-loop-variable` no longer read the variable of a comprehension as a read of the function; `unused-argument` reads names in f-strings; `type-name` accepts a leading underscore; `too-few-public-methods` skips a `Meta` class. The generic `identifier-case` measure takes `exempt-names`, and `forbidden-node` takes `not-parent-path`. CTFd (Flask) is measured by the new `FlaskCorpusSmokeTest`.

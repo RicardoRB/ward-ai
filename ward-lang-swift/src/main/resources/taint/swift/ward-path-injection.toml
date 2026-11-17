@@ -1,0 +1,207 @@
+# File paths of Swift code, written for Ward from the Apple Foundation FileManager, FileHandle, Data and NSString
+# documentation: a path or file URL names a file, so a value that holds ../ steps out of the directory it was joined to.
+# lastPathComponent keeps the last name only, which is the clean part of a path.
+
+[[sinks]]
+kind = "call"
+name = "contents"
+receiver = "FileManager"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "createFile"
+receiver = "FileManager"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "removeItem"
+receiver = "FileManager"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "copyItem"
+receiver = "FileManager"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "moveItem"
+receiver = "FileManager"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "contentsOfDirectory"
+receiver = "FileManager"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "createDirectory"
+receiver = "FileManager"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "fileExists"
+receiver = "FileManager"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "attributesOfItem"
+receiver = "FileManager"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "destinationOfSymbolicLink"
+receiver = "FileManager"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "createSymbolicLink"
+receiver = "FileManager"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "linkItem"
+receiver = "FileManager"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "FileHandle(forReadingAtPath:)"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "FileHandle(forWritingAtPath:)"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "FileHandle(forUpdatingAtPath:)"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "FileHandle(forReadingFrom:)"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "FileHandle(forWritingTo:)"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "FileHandle(forUpdating:)"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "NSData(contentsOfFile:)"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "String(contentsOfFile:)"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "NSString(contentsOfFile:)"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "InputStream(fileAtPath:)"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "OutputStream(toFileAtPath:)"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "fopen"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "write"
+receiver = "Data"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "write"
+receiver = "String"
+arguments = [0]
+
+[[sanitizers]]
+kind = "member"
+name = "lastPathComponent"
+
+[[sanitizers]]
+kind = "call"
+name = "Int"
+
+[[sanitizers]]
+kind = "call"
+name = "Int8"
+
+[[sanitizers]]
+kind = "call"
+name = "Int16"
+
+[[sanitizers]]
+kind = "call"
+name = "Int32"
+
+[[sanitizers]]
+kind = "call"
+name = "Int64"
+
+[[sanitizers]]
+kind = "call"
+name = "UInt"
+
+[[sanitizers]]
+kind = "call"
+name = "UInt8"
+
+[[sanitizers]]
+kind = "call"
+name = "UInt16"
+
+[[sanitizers]]
+kind = "call"
+name = "UInt32"
+
+[[sanitizers]]
+kind = "call"
+name = "UInt64"
+
+[[sanitizers]]
+kind = "call"
+name = "Double"
+
+[[sanitizers]]
+kind = "call"
+name = "Float"
+
+[[sanitizers]]
+kind = "call"
+name = "Bool"
+
+[[sanitizers]]
+kind = "call"
+name = "UUID(uuidString:)"

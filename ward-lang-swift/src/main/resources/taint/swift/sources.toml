@@ -1,0 +1,113 @@
+# Untrusted input of Swift code, written for Ward from the Apple Foundation, UIKit and Vapor documentation named in the
+# catalog rows. A URL query is data of whoever built the link (a deep link, a redirect, a request). A member is matched
+# by the type of its receiver where the source states it (see SwiftFlowSites), and the server request by its name.
+
+[[sources]]
+kind = "member"
+name = "queryItems"
+receiver = "URLComponents"
+
+[[sources]]
+kind = "member"
+name = "query"
+receiver = "URLComponents"
+
+[[sources]]
+kind = "member"
+name = "percentEncodedQuery"
+receiver = "URLComponents"
+
+[[sources]]
+kind = "member"
+name = "percentEncodedQueryItems"
+receiver = "URLComponents"
+
+[[sources]]
+kind = "member"
+name = "query"
+receiver = "URL"
+
+[[sources]]
+kind = "member"
+name = "fragment"
+receiver = "URL"
+
+[[sources]]
+kind = "member"
+name = "webpageURL"
+receiver = "NSUserActivity"
+
+[[sources]]
+kind = "member"
+name = "string"
+receiver = "UIPasteboard"
+
+[[sources]]
+kind = "member"
+name = "query"
+qualifier = "req"
+
+[[sources]]
+kind = "member"
+name = "query"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "parameters"
+qualifier = "req"
+
+[[sources]]
+kind = "member"
+name = "parameters"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "content"
+qualifier = "req"
+
+[[sources]]
+kind = "member"
+name = "content"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "body"
+qualifier = "req"
+
+[[sources]]
+kind = "member"
+name = "body"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "headers"
+qualifier = "req"
+
+[[sources]]
+kind = "member"
+name = "headers"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "cookies"
+qualifier = "req"
+
+[[sources]]
+kind = "member"
+name = "cookies"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "url"
+qualifier = "req"
+
+[[sources]]
+kind = "member"
+name = "url"
+qualifier = "request"

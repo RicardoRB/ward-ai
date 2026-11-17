@@ -205,7 +205,7 @@ sources = ["https://www.mongodb.com/docs/manual/reference/operator/query/", "htt
 [[rule]]
 name = "path-injection"
 cwe = ["CWE-22"]
-sources = ["https://docs.python.org/3/library/functions.html#open", "https://docs.python.org/3/library/os.path.html#os.path.basename", "https://werkzeug.palletsprojects.com/en/stable/utils/#werkzeug.utils.secure_filename", "https://cwe.mitre.org/data/definitions/22.html"]
+sources = ["https://docs.python.org/3/library/functions.html#open", "https://docs.python.org/3/library/os.path.html#os.path.basename", "https://werkzeug.palletsprojects.com/en/stable/utils/#werkzeug.utils.secure_filename", "https://cwe.mitre.org/data/definitions/22.html", "https://developer.apple.com/documentation/foundation/filemanager", "https://developer.apple.com/documentation/foundation/filehandle", "https://developer.apple.com/documentation/foundation/url/lastpathcomponent", "https://developer.apple.com/documentation/foundation/urlcomponents/queryitems"]
 
 [[rule]]
 name = "permissive-cors"

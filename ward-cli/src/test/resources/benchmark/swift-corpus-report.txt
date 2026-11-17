@@ -7,7 +7,7 @@
 # Regenerate: ./mvnw -pl ward-cli -am -Dtest=SwiftCorpusSmokeTest -Dward.corpus.swift=<dir> -Djacoco.skip=true -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
 alamofire | files 101 | not analysed 0
 sample-food-truck | files 82 | not analysed 0
-rules 130 | not run (need type facts) 1 | findings 6653
+rules 133 | not run (need type facts) 1 | findings 6653
 ward:swift/abbreviation-as-word-in-name | findings 453 | labelled 3 | tp 3 | fp 0 | un 0
 ward:swift/annotation-location | findings 51 | labelled 3 | tp 3 | fp 0 | un 0
 ward:swift/assign-only-property | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -133,7 +133,10 @@ ward:swift/void-function-in-ternary | findings 0 | labelled 0 | tp 0 | fp 0 | un
 ward:swift/void-return | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/xctfail-message | findings 3 | labelled 3 | tp 3 | fp 0 | un 0
 security | ward:swift/cleartext-url | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+security | ward:swift/command-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 security | ward:swift/hard-coded-credential | findings 4 | labelled 3 | tp 3 | fp 0 | un 0
+security | ward:swift/path-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+security | ward:swift/sql-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 security | ward:swift/userdefaults-secret | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 security | ward:swift/weak-cipher | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 security | ward:swift/weak-hash | findings 0 | labelled 0 | tp 0 | fp 0 | un 0

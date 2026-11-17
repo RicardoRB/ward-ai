@@ -63,6 +63,7 @@ final class TaintSpecFiles {
   private static final Set<String> SOURCE_KINDS = Set.of("call", "member", "parameter", LITERAL);
   private static final Set<String> SINK_KINDS = Set.of("call", "member-write", STRING);
   private static final Set<String> CALL_KIND = Set.of("call");
+  private static final Set<String> SANITIZER_KINDS = Set.of("call", "member");
 
   private TaintSpecFiles() {}
 
@@ -112,7 +113,7 @@ final class TaintSpecFiles {
     return new TaintSpec(
         entries(file, toml, SOURCES, SOURCE_KINDS),
         entries(file, toml, SINKS, SINK_KINDS),
-        entries(file, toml, SANITIZERS, CALL_KIND),
+        entries(file, toml, SANITIZERS, SANITIZER_KINDS),
         entries(file, toml, PROPAGATORS, CALL_KIND)
     );
   }

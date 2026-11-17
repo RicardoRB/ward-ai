@@ -24,6 +24,7 @@ public final class SwiftRuleFiles implements RuleFileProvider {
           "rules/swift/part-3.toml",
           "rules/swift/performance.toml",
           "rules/swift/scope-style.toml",
+          "rules/swift/security-taint.toml",
           "rules/swift/security.toml",
           "rules/swift/style.toml"
       );

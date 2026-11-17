@@ -10,14 +10,13 @@ import dev.ward.analysis.domain.jvm.KotlinControlFlow;
 import dev.ward.analysis.domain.jvm.KotlinScopeAnalysis;
 import dev.ward.analysis.domain.node.NodeControlFlow;
 import dev.ward.analysis.domain.node.NodeScopeAnalysis;
-import dev.ward.analysis.domain.port.ControlFlowLowering;
-import dev.ward.analysis.domain.port.ControlFlowResult;
 import dev.ward.analysis.domain.port.LanguageFrontend;
 import dev.ward.analysis.domain.python.PythonControlFlow;
 import dev.ward.analysis.domain.python.PythonScopes;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.check.NodeImplicitUse;
 import dev.ward.analysis.domain.scope.CachedScopes;
+import dev.ward.analysis.domain.swift.SwiftControlFlow;
 import dev.ward.analysis.domain.swift.SwiftScopeAnalysis;
 import java.util.List;
 import java.util.Set;
@@ -36,9 +35,6 @@ public final class GateFrontends {
           NodeImplicitUse.configFileNames().stream()
       )
           .collect(Collectors.toUnmodifiableSet());
-
-  private static final ControlFlowLowering NO_GRAPHS =
-      (unit, tree) -> new ControlFlowResult(List.of(), List.of());
 
   private GateFrontends() {}
 
@@ -89,14 +85,14 @@ public final class GateFrontends {
   }
 
   private static List<FrontendSupport> compiledLanguages(final LanguageFrontend frontend) {
-    final Set<RuleCapability> symbols = symbolCapabilities();
+    final Set<RuleCapability> swift = swiftCapabilities();
     final Set<RuleCapability> graphs = graphCapabilities();
     return List.of(
         new FrontendSupport(
             AnalysisLanguage.SWIFT,
             frontend,
-            symbols,
-            NO_GRAPHS,
+            swift,
+            new SwiftControlFlow(),
             new CachedScopes(new SwiftScopeAnalysis(ClasspathBuiltinNames.swift()))
         ),
         new FrontendSupport(
@@ -121,8 +117,15 @@ public final class GateFrontends {
   }
 
   // The sets are built per call, not in static fields: a native image must not freeze enum sets.
-  private static Set<RuleCapability> symbolCapabilities() {
-    return Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS, RuleCapability.SCOPES);
+  private static Set<RuleCapability> swiftCapabilities() {
+    return Set.of(
+        RuleCapability.SYNTAX,
+        RuleCapability.SYMBOLS,
+        RuleCapability.SCOPES,
+        RuleCapability.CFG,
+        RuleCapability.DATAFLOW,
+        RuleCapability.TAINT
+    );
   }
 
   private static Set<RuleCapability> graphCapabilities() {
