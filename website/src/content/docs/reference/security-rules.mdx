@@ -136,6 +136,20 @@ function is imported from.
 | `ward:javascript/weak-gcm-tag-length` | CWE-328, CWE-353 | error | standard, strict | A GCM `authTagLength` below 12, or a GCM decipher created without `authTagLength`, which accepts a truncated tag |
 | `ward:javascript/weak-argon2-parameters` | CWE-916 | error | standard, strict | `argon2.hash` with `memoryCost` below 19456 KiB or `timeCost` below 2 |
 
+### AWS CDK (TypeScript only)
+
+These `ward:typescript/cdk-*` rules read `aws-cdk-lib` code and report a setting only when it is
+written explicitly; a missing setting is never reported. They have no JavaScript or Python
+counterpart. Layer-1 `Cfn*` constructs, omitted encryption settings, open egress and the
+`BLOCK_ACLS` constant are not reported.
+
+| Rule | CWE | Severity | Presets | What it reports |
+|---|---|---|---|---|
+| `ward:typescript/cdk-public-bucket` | CWE-732 | error | standard, strict | A `Bucket` with `publicReadAccess: true` or a `PUBLIC_READ` ACL, a `BlockPublicAccess` with a flag set to `false`, or a `grantPublicAccess` call |
+| `ward:typescript/cdk-unencrypted-storage` | CWE-311 | warning | standard, strict | `UNENCRYPTED` on a `Bucket` or `Queue`, `encrypted: false` on a `Volume` or an EBS block device, `storageEncrypted: false` on an RDS instance or cluster |
+| `ward:typescript/cdk-open-security-group` | CWE-284 | error | standard, strict | An ingress rule from `0.0.0.0/0` or `::/0` on any port (`Peer.anyIpv4()`, `Peer.ipv4('0.0.0.0/0')`, `allowFromAnyIpv4`) |
+| `ward:typescript/cdk-wildcard-iam-policy` | CWE-269 | error | standard, strict | A `PolicyStatement` that is not a `Deny` and lists `*` in both `actions` and `resources` |
+
 ## Python
 
 The Python injection rules are taint rules: a value read from a Flask, Django or FastAPI request

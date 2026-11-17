@@ -32,6 +32,7 @@ public final class NodeRuleFiles implements RuleFileProvider {
           "rules/node/naming.toml",
           "rules/node/problem.toml",
           "rules/node/regexp.toml",
+          "rules/node/security-aws-cdk.toml",
           "rules/node/security-config.toml",
           "rules/node/security-crypto.toml",
           "rules/node/security-injection.toml",

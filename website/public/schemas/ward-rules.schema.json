@@ -51569,6 +51569,82 @@
         }
       }
     },
+    "ward:typescript/cdk-open-security-group": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/cdk-public-bucket": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/cdk-unencrypted-storage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/cdk-wildcard-iam-policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:typescript/class-type-parameter-name": {
       "type": "object",
       "additionalProperties": false,
@@ -61644,6 +61720,10 @@
               "typescript.await-thenable",
               "typescript.ban-ts-comment",
               "typescript.catch-parameter-name",
+              "typescript.cdk-open-security-group",
+              "typescript.cdk-public-bucket",
+              "typescript.cdk-unencrypted-storage",
+              "typescript.cdk-wildcard-iam-policy",
               "typescript.class-type-parameter-name",
               "typescript.cleartext-transport",
               "typescript.command-injection",
@@ -64628,6 +64708,10 @@
               "typescript.await-thenable",
               "typescript.ban-ts-comment",
               "typescript.catch-parameter-name",
+              "typescript.cdk-open-security-group",
+              "typescript.cdk-public-bucket",
+              "typescript.cdk-unencrypted-storage",
+              "typescript.cdk-wildcard-iam-policy",
               "typescript.class-type-parameter-name",
               "typescript.cleartext-transport",
               "typescript.command-injection",
@@ -72874,6 +72958,18 @@
             },
             "catch-parameter-name": {
               "$ref": "#/$defs/ward:typescript~1catch-parameter-name"
+            },
+            "cdk-open-security-group": {
+              "$ref": "#/$defs/ward:typescript~1cdk-open-security-group"
+            },
+            "cdk-public-bucket": {
+              "$ref": "#/$defs/ward:typescript~1cdk-public-bucket"
+            },
+            "cdk-unencrypted-storage": {
+              "$ref": "#/$defs/ward:typescript~1cdk-unencrypted-storage"
+            },
+            "cdk-wildcard-iam-policy": {
+              "$ref": "#/$defs/ward:typescript~1cdk-wildcard-iam-policy"
             },
             "class-type-parameter-name": {
               "$ref": "#/$defs/ward:typescript~1class-type-parameter-name"

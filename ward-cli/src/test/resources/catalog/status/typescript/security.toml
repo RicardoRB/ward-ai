@@ -1,5 +1,9 @@
 # Status of the security rows in typescript: "implemented" or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
+cdk-open-security-group = "implemented"
+cdk-public-bucket = "implemented"
+cdk-unencrypted-storage = "implemented"
+cdk-wildcard-iam-policy = "implemented"
 cleartext-transport = "implemented"
 cookie-broad-scope = "implemented"
 cookie-missing-http-only = "implemented"

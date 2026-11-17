@@ -3,7 +3,7 @@
 # Every ward:typescript/* and ward:javascript/* rule ran with its default options, whatever its preset, over every .ts, .js and .mjs file outside node_modules.
 # A labelled finding is true (tp), false (fp) or undetermined (un), as read from the code at its line; the labels are in got-labels.txt. Every finding of a security rule is labelled; of another rule, the first 3 in path order. Rules without a finding are not listed. The cost of the run is in got-cost.txt.
 # Regenerate: ./mvnw -pl ward-cli -am -Dtest=GotBenchmarkSmokeTest -Dward.benchmark.got=<dir> -Dward.benchmark.write=true -Djacoco.skip=true -Dsurefire.failIfNoSpecifiedTests=false test
-files 96 | not analysed 0 | rules 682 | rules with findings 62 | findings 5627
+files 96 | not analysed 0 | rules 686 | rules with findings 62 | findings 5627
 ward:javascript/hard-coded-secret | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:javascript/line-length | findings 3 | labelled 3 | tp 3 | fp 0 | un 0
 ward:javascript/magic-number | findings 2 | labelled 2 | tp 2 | fp 0 | un 0

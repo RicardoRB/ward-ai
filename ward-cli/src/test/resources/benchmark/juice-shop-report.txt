@@ -44,6 +44,10 @@ ward:javascript/weak-key-size | findings 0 | tp 0 | fp 0 | un 0
 ward:javascript/wildcard-post-message | findings 0 | tp 0 | fp 0 | un 0
 ward:javascript/xml-external-entities | findings 0 | tp 0 | fp 0 | un 0
 ward:javascript/xss | findings 0 | tp 0 | fp 0 | un 0
+ward:typescript/cdk-open-security-group | findings 0 | tp 0 | fp 0 | un 0
+ward:typescript/cdk-public-bucket | findings 0 | tp 0 | fp 0 | un 0
+ward:typescript/cdk-unencrypted-storage | findings 0 | tp 0 | fp 0 | un 0
+ward:typescript/cdk-wildcard-iam-policy | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/cleartext-transport | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/cookie-broad-scope | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/cookie-missing-http-only | findings 2 | tp 2 | fp 0 | un 0
