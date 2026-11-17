@@ -114,6 +114,27 @@ public record GateResult(
     );
   }
 
+  /** Returns a copy of this result with {@code elapsed} as its duration. */
+  public GateResult withDuration(final Duration elapsed) {
+    return new GateResult(
+        name,
+        type,
+        status,
+        command,
+        exitCode,
+        elapsed,
+        stdout,
+        stderr,
+        summary,
+        errors,
+        warnings,
+        findings,
+        scope,
+        prerequisite,
+        sections
+    );
+  }
+
   /** Returns a copy of this result carrying {@code gateFindings}. */
   public GateResult withFindings(final GateFindings gateFindings) {
     return new GateResult(

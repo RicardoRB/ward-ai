@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.domain.config.WardException;
+import dev.ward.domain.gate.FindingExtractor;
 import dev.ward.domain.gate.CheckReport;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.GateStatus;
@@ -25,7 +26,8 @@ class QualityGateRunnerParallelTest {
 
   private final Project project =
       new Project(Path.of("/p"), Language.JAVA, BuildTool.MAVEN, Framework.NONE);
-  private final QualityGateRunner runner = new QualityGateRunner();
+  private final QualityGateRunner runner =
+      new QualityGateRunner(FindingExtractor.NONE, new GatePrerequisites(), () -> 0L);
 
   @Test
   void independentGatesRunAtTheSameTime() {
