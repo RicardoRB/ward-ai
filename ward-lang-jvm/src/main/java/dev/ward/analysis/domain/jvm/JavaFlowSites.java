@@ -44,6 +44,7 @@ final class JavaFlowSites implements FlowSites {
   private final Map<String, String> declared = new HashMap<>();
   private final JavaParameterSites parameters;
   private final JavaCreationTypes creations;
+  private final JavaFieldSites fieldSites;
 
   /**
    * Creates the finder of one body.
@@ -51,17 +52,20 @@ final class JavaFlowSites implements FlowSites {
    * @param types the imports and package of the file
    * @param skipped reports the nodes that the lowering added as blocks of their own
    * @param fields the fields of the classes around the body, whose types the body can call through
+   * @param fieldSites the reads and writes of those fields that the body names alone
    */
   JavaFlowSites(
       final JavaTypeNames types,
       final Predicate<SyntaxNode> skipped,
-      final List<JavaClassFields.Field> fields
+      final List<JavaClassFields.Field> fields,
+      final JavaFieldSites fieldSites
   ) {
     this.types = types;
     this.skipped = skipped;
     this.parameters = new JavaParameterSites(types, declared);
     this.creations = new JavaCreationTypes(types);
     fields.forEach(field -> field.declareIn(declared, creations));
+    this.fieldSites = fieldSites;
   }
 
   @Override
@@ -97,11 +101,12 @@ final class JavaFlowSites implements FlowSites {
       creation(node, parts.get(1), found);
       return;
     }
+    if (parts.size() == 1 && fieldSites.isBare(node)) {
+      found.add(fieldSites.read(node));
+      return;
+    }
     if (parts.size() == MEMBER_PARTS && ASSIGN.equals(JavaFlowSyntax.text(parts.get(1)))) {
-      children(node, found);
-      JavaLiteralSites.of(parts.get(2), JavaLiteralSites.VALUE).ifPresent(found::add);
-      creations.assign(JavaFlowSyntax.text(parts.get(0)), parts.get(2));
-      JavaStoreSites.of(parts.get(0), parts.get(2), node.span()).ifPresent(found::add);
+      assignment(node, parts, found);
       return;
     }
     if (parts.size() != MEMBER_PARTS || !DOT.equals(JavaFlowSyntax.text(parts.get(1)))) {
@@ -129,6 +134,27 @@ final class JavaFlowSites implements FlowSites {
       );
     } else {
       children(node, found);
+    }
+  }
+
+  /** An assignment: a store site for a member target, a field write for a bare field name. */
+  private void assignment(
+      final SyntaxNode node,
+      final List<SyntaxNode> parts,
+      final List<FlowSite> found
+  ) {
+    final boolean field = fieldSites.isBare(parts.get(0));
+    if (field) {
+      walk(parts.get(2), found);
+    } else {
+      children(node, found);
+    }
+    JavaLiteralSites.of(parts.get(2), JavaLiteralSites.VALUE).ifPresent(found::add);
+    creations.assign(JavaFlowSyntax.text(parts.get(0)), parts.get(2));
+    if (field) {
+      found.add(fieldSites.write(parts.get(0), parts.get(2), node.span()));
+    } else {
+      JavaStoreSites.of(parts.get(0), parts.get(2), node.span()).ifPresent(found::add);
     }
   }
 
@@ -196,18 +222,14 @@ final class JavaFlowSites implements FlowSites {
           JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(declarator), VARIABLE_INITIALIZER);
       if (id != null) {
         final String name = JavaFlowSyntax.text(JavaSyntaxNames.identifierOf(id));
-        declareType(name, type);
+        if (type != null) {
+          declared.put(name, JavaFlowSyntax.text(type));
+        }
         creations.declare(name, initializer);
       }
       if (initializer != null) {
         JavaLiteralSites.of(initializer, JavaLiteralSites.VALUE).ifPresent(found::add);
       }
-    }
-  }
-
-  private void declareType(final String name, final SyntaxNode type) {
-    if (type != null) {
-      declared.put(name, JavaFlowSyntax.text(type));
     }
   }
 

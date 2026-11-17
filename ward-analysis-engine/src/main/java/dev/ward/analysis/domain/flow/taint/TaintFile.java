@@ -72,9 +72,10 @@ public final class TaintFile {
     if (!methods.isEmpty()) {
       effective = summarized(spec, methods);
     }
+    final Map<String, Set<String>> fields = TaintFields.of(own, effective);
     final List<TaintFinding> found = new ArrayList<>();
     for (final ControlFlowGraph graph : own) {
-      found.addAll(TaintAnalysis.run(graph, effective));
+      found.addAll(TaintAnalysis.run(graph, TaintFields.specFor(graph, effective, fields)));
     }
     return found;
   }

@@ -153,6 +153,11 @@ record LocalMethod(
     return Optional.of(new LocalMethod(method.name, owner, arity, graph, false));
   }
 
+  /** The owner of the body of a graph, or empty when it has none. */
+  static Optional<String> ownerOf(final ControlFlowGraph graph) {
+    return parse(graph).map(LocalMethod::owner).filter(owner -> !owner.isEmpty());
+  }
+
   /** The key a call with this name and argument count looks up. */
   static String key(final String name, final int arity) {
     return name + "/" + arity;
