@@ -24,9 +24,8 @@ import java.util.regex.Pattern;
  * stored under the file's text, so a warm run reads it and parses nothing. A file that cannot be
  * parsed or lowered has no graphs, as for the analysis, and so one digest for all such files.
  *
- * <p>shortcut: the digest covers all the graphs of the file, not the taint summary of each method
- * for each rule, so an edit that keeps a method's behavior but changes its body still re-analyzes
- * its dependents; upgrade by caching the summaries that {@code TaintFile} derives per rule.
+ * <p>The digest keys the stored taint summary of {@link SummaryDigests}; a unit is keyed on it
+ * directly only when a rule gives no summary.
  */
 final class FlowDigests {
   private static final Logger LOG = Logger.getLogger(FlowDigests.class.getName());

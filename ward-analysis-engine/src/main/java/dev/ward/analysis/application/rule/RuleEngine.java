@@ -87,6 +87,22 @@ public final class RuleEngine {
     return limit.map(units, runs::fileByFile);
   }
 
+  /**
+   * Returns the taint summaries of the files of a run for {@code rules}, which the cache key of a
+   * unit reads instead of the text of the files around it.
+   */
+  public FileTaintSummaries fileSummaries(
+      final List<FrontendSupport> frontends,
+      final List<RuleDefinition> rules,
+      final DependencySnapshot snapshot
+  ) {
+    return new FileTaintSummaries(
+        supportByLanguage(frontends),
+        PreparedRule.all(rules, supportByLanguage(frontends), matcher, new RuleRunCollector()),
+        snapshot
+    );
+  }
+
   /** Returns the limit of the threads that analyze units. */
   public WorkLimit limit() {
     return limit;

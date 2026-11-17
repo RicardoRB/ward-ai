@@ -1,5 +1,6 @@
 package dev.ward.analysis.domain.rule.check;
 
+import dev.ward.analysis.domain.flow.taint.TaintSpec;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.FactNeed;
@@ -10,6 +11,7 @@ import dev.ward.analysis.domain.rule.ScopeView;
 import dev.ward.analysis.domain.rule.UnitViews;
 import dev.ward.analysis.domain.types.UnitTypeFacts;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /** One check of a declarative rule, run over the syntax tree of a source unit. */
@@ -76,6 +78,15 @@ public interface RuleCheck {
       final SourceUnit unit
   ) {
     return matches(root, flow, unit);
+  }
+
+  /**
+   * The taint specification this check runs with, whose summary of a unit's dependencies keys the
+   * unit's cached result. A check that reads no other file returns none, as this default method
+   * does.
+   */
+  default Optional<TaintSpec> taintSpec() {
+    return Optional.empty();
   }
 
   /** The node kinds this check reads from the shared node index of a unit; none by default. */

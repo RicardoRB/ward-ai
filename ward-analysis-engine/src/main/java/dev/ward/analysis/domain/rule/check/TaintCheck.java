@@ -10,6 +10,7 @@ import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Reports each value from a source that reaches a sink argument, with its path. The message may use
@@ -51,6 +52,11 @@ public final class TaintCheck implements RuleCheck {
         .forEach(finding -> found.add(match(finding)));
     found.sort(Comparator.comparingInt((RuleMatch match) -> match.span().startOffset()));
     return found;
+  }
+
+  @Override
+  public Optional<TaintSpec> taintSpec() {
+    return Optional.of(spec);
   }
 
   private RuleMatch match(final TaintFinding finding) {

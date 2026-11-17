@@ -18,4 +18,12 @@ class RuleCapabilityTest {
     assertThat(RuleCapability.SYMBOLS.readsDependencies()).isTrue();
     assertThat(RuleCapability.DATAFLOW.readsDependencies()).isFalse();
   }
+
+  @Test
+  void onlySymbolsAndScopesReadTheNamesOfTheFilesAroundTheirUnit() {
+    for (final RuleCapability capability : RuleCapability.values()) {
+      assertThat(capability.readsDependencyNames())
+          .isEqualTo(capability == RuleCapability.SYMBOLS || capability == RuleCapability.SCOPES);
+    }
+  }
 }

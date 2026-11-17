@@ -3,6 +3,7 @@ package dev.ward.application.gate;
 import dev.ward.analysis.application.rule.UnusedDefinitionFindings;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.rule.GraphRules;
+import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import java.util.EnumSet;
 import java.util.List;
@@ -16,6 +17,22 @@ final class DependencyReads {
   static boolean dependencies(final AnalysisLanguage language, final List<RuleDefinition> rules) {
     return rules.stream()
         .anyMatch(rule -> rule.covers(language) && rule.capability().readsDependencies());
+  }
+
+  /**
+   * Reports whether the key of a unit holds the names of the files around it: when a rule of the
+   * language reads them, and also when a rule reads type facts, which come from the whole project
+   * and whose results were always invalidated with these names. A language whose only dependency
+   * rules are taint rules leaves them out, since a taint rule reads the summary of the unit.
+   */
+  static boolean names(final AnalysisLanguage language, final List<RuleDefinition> rules) {
+    return rules.stream()
+        .anyMatch(
+            rule ->
+                rule.covers(language)
+                    && (rule.capability().readsDependencyNames()
+                        || rule.capability() == RuleCapability.TYPES)
+        );
   }
 
   /** Reports whether a rule of the language reads the text of the files its unit depends on. */

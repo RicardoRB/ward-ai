@@ -34,6 +34,14 @@ public enum RuleCapability {
   }
 
   /**
+   * Reports whether a rule with this capability reads the names of the files around its unit, its
+   * dependency view. A taint rule reads their flow graphs instead, never the view.
+   */
+  public boolean readsDependencyNames() {
+    return this == SYMBOLS || this == SCOPES;
+  }
+
+  /**
    * Reports whether a rule with this capability reads the bodies of the files its unit depends on,
    * so its findings change when the text of any file it reaches through the dependencies changes.
    */

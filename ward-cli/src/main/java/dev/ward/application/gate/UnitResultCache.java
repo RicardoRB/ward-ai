@@ -118,7 +118,7 @@ final class UnitResultCache {
             .toList();
     progress.step("resolving dependencies");
     final DependencySnapshot snapshot = summarize(cache, units, frontends, rules);
-    final UnitKeys unitKeys = new UnitKeys(engineVersion, unitRules, snapshot, cache, frontends);
+    final UnitKeys unitKeys = unitKeys(cache, frontends, unitRules, snapshot);
     final Map<SourceUnit, String> keys = new LinkedHashMap<>();
     final List<AnalysisFinding> reused = new ArrayList<>();
     final List<SourceUnit> misses = new ArrayList<>();
@@ -177,6 +177,25 @@ final class UnitResultCache {
             new AnalysisSummaryCache(cache, codec, engineVersion),
             DependencyReads.summarized(rules)
         );
+  }
+
+  private UnitKeys unitKeys(
+      final AnalysisCache cache,
+      final List<FrontendSupport> frontends,
+      final List<RuleDefinition> unitRules,
+      final DependencySnapshot snapshot
+  ) {
+    return new UnitKeys(
+        engineVersion,
+        unitRules,
+        snapshot,
+        new SummaryDigests(
+            cache,
+            engineVersion,
+            new FlowDigests(cache, engineVersion, frontends),
+            engine.fileSummaries(frontends, unitRules, snapshot)
+        )
+    );
   }
 
   /**
