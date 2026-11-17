@@ -426,3 +426,61 @@ per file: at most 0.5 % of a run (217 of 44,510 samples). (B) Storing derived pe
 members, lowered graphs) so that neighbour files are not reparsed is a new cache format: at most
 about 3 % of a run, since parsing is 4.5 % in total. The grammar's prediction cost
 (`adaptivePredict`) is a separate lever.
+
+## Remaining cost of the taint rule (#632)
+
+Measured on 2026-11-17 on the same machine (Apple M4, 10 cores, Temurin 25.0.4, JVM jar), `ward check
+--profile wardonly --jobs 1 --severity info --format json` on this tree (a profile with only the
+`ward` check, added to `ward.toml` for the measurement and not committed), each run from an empty
+`.ward`.
+
+**Where the time was.** A JFR profile of the jar of `0.11.0` (72,521 execution samples; the run
+took 1,626 s under load) puts `TaintFile.run` in **76 %** of the samples, not the 13 % that #569
+measured: the taint rules now run over the whole related closure of every file. Inside it:
+`TaintFile.summarize` 39 % (`returned` 21 %, `sinkParameters` 18 %), `TaintFile.methodsOf` 31 %
+(`DispatchedCalls.apply` 14 %, `CalledMethods.reachable` 10 %, `LocalMethod.parse` 8 %), and stream
+set-up as the top frame of 24 % of the samples (`AbstractPipeline.wrapSink`, `fromCharacteristics`).
+On the sources of `ward-cli` alone, a smaller project, the share is 48 %, and on `ward-cli/src/main`
+only 15 %: the cost grows with the size of the related closure, since every taint rule (about 40
+for Java) rebuilds the index of the related bodies for each file.
+
+**What changed** (all inside the taint rule; the cache key and the summary code of #604 are not
+touched):
+
+- `DispatchedCalls.apply` returned a rebuilt graph for every body, renamed call or not; it now
+  returns the graph, and each block, as they are when no call changes (the usual case).
+- `CalledMethods.reachable` re-derived the key of every external method on every pass of a fixed
+  point loop; it now indexes them by call key once and follows calls with a worklist.
+- The related bodies were parsed (a regex per graph) by `owned` and again by `indexExternal`; they
+  are parsed once (`LocalMethod.externals`).
+- Source, sink and sanitizer matching, and the call-key scan, loop over the entries instead of
+  building a stream per site.
+- `sinkParameters` built and analysed one marked copy of the body per parameter even for a body
+  with no sink site; it now skips them (`TaintSpans.mayReachSink`).
+
+**Result**, full repository, two runs per jar, alternating, no JFR:
+
+| Run | Load (1 min) at start | Wall time | Instructions | Peak memory |
+|---|---|---|---|---|
+| Before 1 | 54.0 | 1,239 s | 20.46 × 10¹² | 4.96 GB |
+| After 1 | 42.8 | 1,182 s | 10.65 × 10¹² | 4.99 GB |
+| Before 2 | 4.9 | 544 s | 18.81 × 10¹² | 5.13 GB |
+| After 2 | 4.7 | 347 s | 9.44 × 10¹² | 5.12 GB |
+
+- Instructions fell by **48 %** (20.5 and 18.8 against 10.6 and 9.4 × 10¹²); peak memory did not
+  change. Wall time is usable only for the pair at load 4.7 to 4.9: 544 s to 347 s (−36 %); the pair
+  at load 43 to 54 is not comparable.
+- Stand-in project (`ward-cli` main and test, two alternating runs each at load about 6): 2.46 and
+  2.34 × 10¹² before, 1.82 and 1.74 × 10¹² after; 101 s to 79 s.
+- Not claimed: the share of the taint rule after the change was not profiled again.
+
+**Same findings.** The JSON reports of "Before 2" and "After 2" are equal with `durationMs` set to 0
+(`ward` check), and the `.ward` caches of the same two runs (19,708 files) have no difference with
+`diff -r`. The same holds on the stand-in project (cache and JSON). Tests:
+`DispatchedCallsTest#aGraphWithNoDecidableCallIsReturnedAsItIs` pins the unchanged graph,
+`CalledMethodsTest` the transitive closure and a cycle.
+
+**Not done.** The same related index is still rebuilt once per taint rule and file; sharing it
+across the rules of a file needs a per-file holder in `FlowView` and, with `--jobs 1` (rule by rule),
+a cache of all files, so it was left out. Juliet (`benchmark/security-report.txt`) was not run: its
+archive was not downloaded in this task.
