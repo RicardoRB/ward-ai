@@ -63,11 +63,14 @@ public final class TaintFile {
       final TaintSpec spec
   ) {
     final Set<String> known = new HashSet<>(LocalMethod.owned(graphs));
-    known.addAll(LocalMethod.owned(related));
+    final List<LocalMethod> externals = LocalMethod.externals(related);
+    for (final LocalMethod external : externals) {
+      known.add(external.key());
+    }
     final Implementors implementors =
         Implementors.of(Stream.concat(graphs.stream(), related.stream()).toList());
     final List<ControlFlowGraph> own = DispatchedCalls.apply(graphs, known, implementors, spec);
-    final Map<String, LocalMethod> methods = methodsOf(own, related, known, implementors, spec);
+    final Map<String, LocalMethod> methods = methodsOf(own, externals, known, implementors, spec);
     TaintSpec effective = spec;
     if (!methods.isEmpty()) {
       effective = summarized(spec, methods);
@@ -83,7 +86,7 @@ public final class TaintFile {
   /** The methods of the file and the reachable ones of other files, with their calls resolved. */
   private static Map<String, LocalMethod> methodsOf(
       final List<ControlFlowGraph> own,
-      final List<ControlFlowGraph> related,
+      final List<LocalMethod> related,
       final Set<String> known,
       final Implementors implementors,
       final TaintSpec spec
@@ -145,7 +148,7 @@ public final class TaintFile {
   private static Set<Integer> sinkParameters(final LocalMethod method, final TaintSpec seeded) {
     final Set<Integer> sinks = new TreeSet<>();
     final List<String> parameters = method.parameters();
-    if (parameters.size() != method.arity()) {
+    if (parameters.size() != method.arity() || !TaintSpans.mayReachSink(method.graph(), seeded)) {
       return sinks;
     }
     for (int index = 0; index < parameters.size(); index++) {

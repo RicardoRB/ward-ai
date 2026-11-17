@@ -4,10 +4,10 @@ import dev.ward.analysis.domain.ir.BasicBlock;
 import dev.ward.analysis.domain.ir.ControlFlowGraph;
 import dev.ward.analysis.domain.ir.FlowSite;
 import dev.ward.analysis.domain.ir.FlowSiteKind;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Stream;
 
 /**
  * Names the class of a call's receiver, so a call through a variable, a field or a parameter
@@ -39,16 +39,26 @@ final class DispatchedCalls {
     return graphs.stream().map(graph -> apply(graph, known, implementors, spec)).toList();
   }
 
-  /** Returns the graph with the qualifier of each decidable call set to the owner's name. */
+  /**
+   * Returns the graph with the qualifier of each decidable call set to the owner's name; the graph
+   * itself when no call changes, which is the usual case, so nothing is rebuilt for it.
+   */
   static ControlFlowGraph apply(
       final ControlFlowGraph graph,
       final Set<String> known,
       final Implementors implementors,
       final TaintSpec spec
   ) {
-    final List<BasicBlock> blocks =
-        graph.blocks().stream().map(block -> apply(block, known, implementors, spec)).toList();
-    return new ControlFlowGraph(graph.body(), graph.span(), blocks, graph.entry(), graph.exit());
+    final List<BasicBlock> blocks = new ArrayList<>(graph.blocks().size());
+    boolean changed = false;
+    for (final BasicBlock block : graph.blocks()) {
+      final BasicBlock applied = apply(block, known, implementors, spec);
+      changed |= applied != block;
+      blocks.add(applied);
+    }
+    return changed
+        ? new ControlFlowGraph(graph.body(), graph.span(), blocks, graph.entry(), graph.exit())
+        : graph;
   }
 
   private static BasicBlock apply(
@@ -57,9 +67,16 @@ final class DispatchedCalls {
       final Implementors implementors,
       final TaintSpec spec
   ) {
-    final List<FlowSite> sites =
-        block.sites().stream().map(site -> resolved(site, known, implementors, spec)).toList();
-    return new BasicBlock(block.id(), block.nodes(), block.successors(), block.accesses(), sites);
+    final List<FlowSite> sites = new ArrayList<>(block.sites().size());
+    boolean changed = false;
+    for (final FlowSite site : block.sites()) {
+      final FlowSite resolved = resolved(site, known, implementors, spec);
+      changed |= resolved != site;
+      sites.add(resolved);
+    }
+    return changed
+        ? new BasicBlock(block.id(), block.nodes(), block.successors(), block.accesses(), sites)
+        : block;
   }
 
   private static FlowSite resolved(
@@ -68,7 +85,10 @@ final class DispatchedCalls {
       final Implementors implementors,
       final TaintSpec spec
   ) {
-    if (site.kind() != FlowSiteKind.CALL || site.qualifier().isEmpty() || matched(site, spec)) {
+    if (site.kind() != FlowSiteKind.CALL || site.qualifier().isEmpty() || TaintSpans.matched(
+        site,
+        spec
+    )) {
       return site;
     }
     return ownerOf(site, known, implementors).map(owner -> named(site, owner)).orElse(site);
@@ -90,15 +110,26 @@ final class DispatchedCalls {
   }
 
   private static Optional<String> directOwner(final FlowSite site, final Set<String> known) {
-    final Optional<String> created =
-        site.annotations().stream()
-            .filter(annotation -> annotation.startsWith(CREATED_AS))
-            .map(annotation -> annotation.substring(CREATED_AS.length()))
-            .findFirst();
-    return created.or(site::receiverType).stream()
-        .flatMap(type -> Stream.of(type, simpleName(type)))
-        .filter(owner -> known.contains(owner + "#" + callKey(site)))
-        .findFirst();
+    final Optional<String> type = createdAs(site).or(site::receiverType);
+    if (type.isEmpty()) {
+      return Optional.empty();
+    }
+    final String suffix = "#" + callKey(site);
+    final String full = type.get();
+    if (known.contains(full + suffix)) {
+      return Optional.of(full);
+    }
+    final String simple = simpleName(full);
+    return known.contains(simple + suffix) ? Optional.of(simple) : Optional.empty();
+  }
+
+  private static Optional<String> createdAs(final FlowSite site) {
+    for (final String annotation : site.annotations()) {
+      if (annotation.startsWith(CREATED_AS)) {
+        return Optional.of(annotation.substring(CREATED_AS.length()));
+      }
+    }
+    return Optional.empty();
   }
 
   private static String simpleName(final String type) {
@@ -107,12 +138,6 @@ final class DispatchedCalls {
 
   private static String callKey(final FlowSite site) {
     return LocalMethod.key(site.name(), site.arguments().size());
-  }
-
-  private static boolean matched(final FlowSite site, final TaintSpec spec) {
-    return Stream.of(spec.sources(), spec.sinks(), spec.sanitizers())
-        .flatMap(List::stream)
-        .anyMatch(entry -> entry.matches(site));
   }
 
   private static FlowSite named(final FlowSite site, final String owner) {

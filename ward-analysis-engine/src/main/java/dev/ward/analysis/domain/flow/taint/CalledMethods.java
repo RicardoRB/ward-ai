@@ -4,11 +4,14 @@ import dev.ward.analysis.domain.ir.BasicBlock;
 import dev.ward.analysis.domain.ir.ControlFlowGraph;
 import dev.ward.analysis.domain.ir.FlowSite;
 import dev.ward.analysis.domain.ir.FlowSiteKind;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /** Picks the methods that the calls of a file can reach, so the analysis reads only those. */
 final class CalledMethods {
@@ -35,15 +38,21 @@ final class CalledMethods {
       LocalMethod> external
   ) {
     final Map<String, LocalMethod> kept = new HashMap<>();
-    final Set<String> calls = callKeys(graphs);
-    boolean grown = !external.isEmpty();
-    while (grown) {
-      grown = false;
-      for (final LocalMethod method : external.values()) {
-        if (calls.contains(LocalMethod.key(method.name(), method.arity()))
-            && kept.putIfAbsent(method.key(), method) == null) {
-          calls.addAll(callKeys(List.of(method.graph())));
-          grown = true;
+    final Map<String, List<LocalMethod>> byCall =
+        external.values().stream()
+            .collect(
+                Collectors.groupingBy(method -> LocalMethod.key(method.name(), method.arity()))
+            );
+    final Set<String> seen = new HashSet<>();
+    final Deque<String> pending = new ArrayDeque<>(callKeys(graphs));
+    while (!pending.isEmpty()) {
+      final String call = pending.pop();
+      if (!seen.add(call)) {
+        continue;
+      }
+      for (final LocalMethod method : byCall.getOrDefault(call, List.of())) {
+        if (kept.putIfAbsent(method.key(), method) == null) {
+          pending.addAll(callKeys(List.of(method.graph())));
         }
       }
     }
@@ -54,9 +63,11 @@ final class CalledMethods {
     final Set<String> calls = new HashSet<>();
     for (final ControlFlowGraph graph : graphs) {
       for (final BasicBlock block : graph.blocks()) {
-        block.sites().stream()
-            .filter(site -> site.kind() == FlowSiteKind.CALL)
-            .forEach(site -> calls.add(callKey(site)));
+        for (final FlowSite site : block.sites()) {
+          if (site.kind() == FlowSiteKind.CALL) {
+            calls.add(callKey(site));
+          }
+        }
       }
     }
     return calls;
