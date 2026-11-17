@@ -11,6 +11,7 @@ import dev.ward.analysis.domain.rule.check.KotlinEmptyBlockCheck;
 import dev.ward.analysis.domain.rule.check.KotlinEmptyConstructorCheck;
 import dev.ward.analysis.domain.rule.check.KotlinEmptyWhenCheck;
 import dev.ward.analysis.domain.rule.check.KotlinFunctionCountCheck;
+import dev.ward.analysis.domain.rule.check.KotlinFunctionNameCheck;
 import dev.ward.analysis.domain.rule.check.KotlinMatchingDeclarationNameCheck;
 import dev.ward.analysis.domain.rule.check.KotlinMemberNameCheck;
 import dev.ward.analysis.domain.rule.check.KotlinNameShadowingCheck;
@@ -53,6 +54,14 @@ final class KotlinDeclarationChecks {
   private static Map<String, CheckFactory> nameChecks() {
     return Map.ofEntries(
         entry("kotlin-empty-block", KotlinDeclarationChecks::emptyBlock),
+        entry(
+            "kotlin-function-name",
+            toml ->
+                new KotlinFunctionNameCheck(
+                    TomlValues.required(toml, "pattern"),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "kotlin-complex-condition",
             toml ->

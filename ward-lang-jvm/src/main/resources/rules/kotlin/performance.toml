@@ -36,9 +36,7 @@ severity = "error"
 category = "performance"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["valueArgument"]
-text = '^\*'
+check = "kotlin-spread-operator"
 message = "spread operator copies the array; pass the elements or use a list"
 '''
 

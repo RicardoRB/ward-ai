@@ -40,8 +40,8 @@ ward:kotlin/function-length | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/o
 ward:kotlin/function-length | okio/okio-testing-support/src/commonMain/kotlin/okio/AbstractFileSystemTest.kt:145 | tp | a test body longer than 60 lines
 ward:kotlin/function-length | okio/okio/src/commonMain/kotlin/okio/internal/Buffer.kt:1552 | tp | the body is longer than 60 lines
 ward:kotlin/function-name | okio/okio-testing-support/src/wasmWasiMain/kotlin/okio/internal/preview1/Preview1Env.kt:26 | tp | snake_case name that mirrors an imported system call
-ward:kotlin/function-name | okio/okio/src/nativeTest/kotlin/okio/DeflaterTest.kt:258 | fp | a factory function named after the type it returns, which the Kotlin conventions allow
 ward:kotlin/function-name | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/internal/preview1/Preview1.kt:197 | tp | snake_case name that mirrors an imported system call
+ward:kotlin/function-name | okio/okio/src/zlibTest/kotlin/okio/GzipSourceTest.kt:39 | tp | a test name with an underscore, which is not lower camel case
 ward:kotlin/hidden-field | okio/okio/src/hashFunctions/kotlin/okio/internal/Md5.kt:88 | tp | a parameter or local value has the name of a property of the class
 ward:kotlin/hidden-field | okio/okio-testing-support/src/commonMain/kotlin/okio/AbstractFileSystemTest.kt:238 | tp | a parameter or local value has the name of a property of the class
 ward:kotlin/hidden-field | okio/okio/src/hashFunctions/kotlin/okio/internal/Sha512.kt:106 | tp | a parameter or local value has the name of a property of the class
@@ -91,8 +91,8 @@ ward:kotlin/one-statement-per-line | okio/okio/src/nativeTest/kotlin/okio/Deflat
 ward:kotlin/one-statement-per-line | okio/okio/src/nativeTest/kotlin/okio/DeflaterSinkTest.kt:96 | tp | two statements separated by a semicolon inside a one-line lambda
 ward:kotlin/one-statement-per-line | okio/okio/src/nativeTest/kotlin/okio/InflaterSourceTest.kt:163 | tp | two statements separated by a semicolon inside a one-line lambda
 ward:kotlin/overload-methods-declaration-order | okio/okio/src/commonMain/kotlin/okio/BufferedSource.kt:339 | tp | another function stands between the two overloads
-ward:kotlin/overload-methods-declaration-order | okio/okio-testing-support/src/commonMain/kotlin/okio/AbstractFileSystemTest.kt:2721 | un | a member function and an extension function declared in the class share the name; whether they are overloads is debatable
-ward:kotlin/overload-methods-declaration-order | okio/okio/src/jvmMain/kotlin/okio/ByteString.kt:310 | un | a member function and an extension function declared in the class share the name; whether they are overloads is debatable
+ward:kotlin/overload-methods-declaration-order | okio/okio/src/jvmMain/kotlin/okio/RealBufferedSink.kt:94 | tp | writeAll stands between this write and the write overloads before it
+ward:kotlin/overload-methods-declaration-order | okio/okio/src/jvmMain/kotlin/okio/NioFileSystemWrappingFileSystem.kt:65 | tp | listOrNull stands between the two list overloads
 ward:kotlin/parameter-count | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/internal/preview1/Preview1.kt:112 | tp | more than five parameters
 ward:kotlin/parameter-count | okio/okio/src/jvmTest/kotlin/okio/ZipBuilder.kt:39 | tp | more than five parameters
 ward:kotlin/parameter-count | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/internal/preview1/Preview1.kt:93 | tp | more than five parameters
@@ -104,8 +104,8 @@ ward:kotlin/require-empty-line-before-block-tag-group | okio/okio/src/commonMain
 ward:kotlin/require-empty-line-before-block-tag-group | spring-petclinic-kotlin/src/main/kotlin/org/springframework/samples/petclinic/owner/OwnerRepository.kt:38 | tp | the first block tag follows a text line
 ward:kotlin/single-line-javadoc | okio/okio/src/commonMain/kotlin/okio/Base64.kt:24 | tp | a one-line KDoc that only holds a block tag
 ward:kotlin/spread-operator | spring-petclinic-kotlin/src/main/kotlin/org/springframework/samples/petclinic/PetClinicApplication.kt:31 | tp | an array is spread into a vararg call
-ward:kotlin/spread-operator | okio/okio/src/jvmMain/kotlin/okio/-DeprecatedOkio.kt:126 | fp | the function passes its own vararg parameter on, which Kotlin does without a copy
 ward:kotlin/spread-operator | okio/okio/src/commonTest/kotlin/okio/ByteStringTest.kt:234 | tp | an array is spread into a vararg call
+ward:kotlin/spread-operator | okio/okio/src/commonMain/kotlin/okio/TypedOptions.kt:47 | tp | an array built in the call is spread into a vararg call
 ward:kotlin/string-template | okio/build-support/src/main/kotlin/platforms.kt:106 | tp | braces around a plain name in a template
 ward:kotlin/summary-javadoc | spring-petclinic-kotlin/src/main/kotlin/org/springframework/samples/petclinic/vet/VetRepository.kt:22 | tp | the first sentence does not end with a period
 ward:kotlin/summary-javadoc | okio/okio/src/commonMain/kotlin/okio/Base64.kt:24 | tp | the comment only holds an author tag
@@ -134,7 +134,6 @@ ward:kotlin/use-or-empty | okio/okio/src/commonMain/kotlin/okio/internal/FileSys
 ward:kotlin/use-or-empty | spring-petclinic-kotlin/src/main/kotlin/org/springframework/samples/petclinic/model/NamedEntity.kt:37 | tp | an elvis operator with an empty string or list
 ward:kotlin/use-require | okio/okio/src/commonMain/kotlin/okio/Segment.kt:162 | tp | an if that only throws IllegalArgumentException
 ward:kotlin/use-require | okio/okio/src/commonMain/kotlin/okio/Segment.kt:163 | tp | an if that only throws IllegalArgumentException
-ward:kotlin/utility-class-with-public-constructor | okio/okio/src/nonJvmMain/kotlin/okio/NonJvmPlatform.kt:34 | fp | an actual class has to stay a class to match its expect declaration
 ward:kotlin/value-parameter-comment | okio/okio/src/jvmMain/kotlin/okio/ForwardingTimeout.kt:25 | tp | an end-of-line comment after an annotation of a constructor parameter
 ward:kotlin/var-could-be-val | okio/okio-nodefilesystem/src/commonMain/kotlin/okio/NodeJsFileSystem.kt:29 | tp | a private var of an object that nothing assigns again
 ward:kotlin/var-could-be-val | okio/okio/src/zlibTest/kotlin/okio/ZipFileSystemGoTest.kt:30 | tp | a private var that the file never assigns again
