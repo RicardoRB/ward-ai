@@ -29,7 +29,9 @@ class DispatchedCallsTest {
     final BasicBlock block = new BasicBlock(0, List.of(), List.of(), List.of(), List.of(site));
     final ControlFlowGraph graph =
         new ControlFlowGraph("A#m(0)", SPAN, List.of(block, exit()), 0, 1);
-    return DispatchedCalls.apply(graph, KNOWN, spec).blocks().get(0).sites().get(0).qualifier();
+    return DispatchedCalls.apply(graph, KNOWN, Implementors.of(List.of()), spec).blocks().get(
+        0
+    ).sites().get(0).qualifier();
   }
 
   private static BasicBlock exit() {

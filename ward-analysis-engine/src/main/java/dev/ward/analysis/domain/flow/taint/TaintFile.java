@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 /**
  * Taint analysis over all the bodies of one file, so that a value can cross a method boundary
@@ -63,8 +64,10 @@ public final class TaintFile {
   ) {
     final Set<String> known = new HashSet<>(LocalMethod.owned(graphs));
     known.addAll(LocalMethod.owned(related));
-    final List<ControlFlowGraph> own = DispatchedCalls.apply(graphs, known, spec);
-    final Map<String, LocalMethod> methods = methodsOf(own, related, known, spec);
+    final Implementors implementors =
+        Implementors.of(Stream.concat(graphs.stream(), related.stream()).toList());
+    final List<ControlFlowGraph> own = DispatchedCalls.apply(graphs, known, implementors, spec);
+    final Map<String, LocalMethod> methods = methodsOf(own, related, known, implementors, spec);
     TaintSpec effective = spec;
     if (!methods.isEmpty()) {
       effective = summarized(spec, methods);
@@ -81,6 +84,7 @@ public final class TaintFile {
       final List<ControlFlowGraph> own,
       final List<ControlFlowGraph> related,
       final Set<String> known,
+      final Implementors implementors,
       final TaintSpec spec
   ) {
     final Map<String, LocalMethod> methods = CalledMethods.local(own, LocalMethod.index(own));
@@ -89,7 +93,9 @@ public final class TaintFile {
             (key, method) ->
                 methods.put(
                     key,
-                    method.withGraph(DispatchedCalls.apply(method.graph(), known, spec))
+                    method.withGraph(
+                        DispatchedCalls.apply(method.graph(), known, implementors, spec)
+                    )
                 )
         );
     return methods;

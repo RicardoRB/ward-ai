@@ -58,6 +58,9 @@ public final class JavaControlFlow implements ControlFlowLowering {
       final List<JavaClassFields.Field> fields =
           isType ? JavaClassFields.merged(outer, node) : outer;
       lowerBody(node, scope, fields);
+      if (isType) {
+        graphs.addAll(JavaSupertypes.of(node, scope, types));
+      }
       for (final SyntaxNode child : node.children()) {
         visit(child, scope, fields);
       }

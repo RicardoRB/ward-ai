@@ -33,48 +33,63 @@ final class DispatchedCalls {
   static List<ControlFlowGraph> apply(
       final List<ControlFlowGraph> graphs,
       final Set<String> known,
+      final Implementors implementors,
       final TaintSpec spec
   ) {
-    return graphs.stream().map(graph -> apply(graph, known, spec)).toList();
+    return graphs.stream().map(graph -> apply(graph, known, implementors, spec)).toList();
   }
 
   /** Returns the graph with the qualifier of each decidable call set to the owner's name. */
   static ControlFlowGraph apply(
       final ControlFlowGraph graph,
       final Set<String> known,
+      final Implementors implementors,
       final TaintSpec spec
   ) {
     final List<BasicBlock> blocks =
-        graph.blocks().stream().map(block -> apply(block, known, spec)).toList();
+        graph.blocks().stream().map(block -> apply(block, known, implementors, spec)).toList();
     return new ControlFlowGraph(graph.body(), graph.span(), blocks, graph.entry(), graph.exit());
   }
 
   private static BasicBlock apply(
       final BasicBlock block,
       final Set<String> known,
+      final Implementors implementors,
       final TaintSpec spec
   ) {
     final List<FlowSite> sites =
-        block.sites().stream().map(site -> resolved(site, known, spec)).toList();
+        block.sites().stream().map(site -> resolved(site, known, implementors, spec)).toList();
     return new BasicBlock(block.id(), block.nodes(), block.successors(), block.accesses(), sites);
   }
 
   private static FlowSite resolved(
       final FlowSite site,
       final Set<String> known,
+      final Implementors implementors,
       final TaintSpec spec
   ) {
     if (site.kind() != FlowSiteKind.CALL || site.qualifier().isEmpty() || matched(site, spec)) {
       return site;
     }
-    return ownerOf(site, known).map(owner -> named(site, owner)).orElse(site);
+    return ownerOf(site, known, implementors).map(owner -> named(site, owner)).orElse(site);
   }
 
   /**
    * The owner that the call reaches: the type of the receiver with its package, or else its simple
    * name, which only a body without a package (Kotlin, Node) can have as its owner.
    */
-  private static Optional<String> ownerOf(final FlowSite site, final Set<String> known) {
+  private static Optional<String> ownerOf(
+      final FlowSite site,
+      final Set<String> known,
+      final Implementors implementors
+  ) {
+    final Optional<String> direct = directOwner(site, known);
+    return direct.isPresent()
+        ? direct
+        : implementors.only(site.receiverType(), known, callKey(site));
+  }
+
+  private static Optional<String> directOwner(final FlowSite site, final Set<String> known) {
     final Optional<String> created =
         site.annotations().stream()
             .filter(annotation -> annotation.startsWith(CREATED_AS))
