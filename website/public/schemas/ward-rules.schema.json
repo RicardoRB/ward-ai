@@ -48027,6 +48027,25 @@
         }
       }
     },
+    "ward:swift/command-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:swift/comment-spacing": {
       "type": "object",
       "additionalProperties": false,
@@ -50120,6 +50139,25 @@
         }
       }
     },
+    "ward:swift/path-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:swift/pattern-matching-keywords": {
       "type": "object",
       "additionalProperties": false,
@@ -50672,6 +50710,25 @@
       }
     },
     "ward:swift/sorted-first-last": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:swift/sql-injection": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -61541,6 +61598,7 @@
               "swift.class-type-parameter-name",
               "swift.cleartext-url",
               "swift.closure-parameter-position",
+              "swift.command-injection",
               "swift.comment-spacing",
               "swift.compiler-protocol-init",
               "swift.complexity",
@@ -61646,6 +61704,7 @@
               "swift.override-in-extension",
               "swift.parameter-count",
               "swift.parameter-name",
+              "swift.path-injection",
               "swift.pattern-matching-keywords",
               "swift.period-spacing",
               "swift.prefer-asset-symbols",
@@ -61676,6 +61735,7 @@
               "swift.shorthand-operator",
               "swift.shorthand-optional-binding",
               "swift.sorted-first-last",
+              "swift.sql-injection",
               "swift.static-operator",
               "swift.static-over-final-class",
               "swift.static-variable-name",
@@ -64529,6 +64589,7 @@
               "swift.class-type-parameter-name",
               "swift.cleartext-url",
               "swift.closure-parameter-position",
+              "swift.command-injection",
               "swift.comment-spacing",
               "swift.compiler-protocol-init",
               "swift.complexity",
@@ -64634,6 +64695,7 @@
               "swift.override-in-extension",
               "swift.parameter-count",
               "swift.parameter-name",
+              "swift.path-injection",
               "swift.pattern-matching-keywords",
               "swift.period-spacing",
               "swift.prefer-asset-symbols",
@@ -64664,6 +64726,7 @@
               "swift.shorthand-operator",
               "swift.shorthand-optional-binding",
               "swift.sorted-first-last",
+              "swift.sql-injection",
               "swift.static-operator",
               "swift.static-over-final-class",
               "swift.static-variable-name",
@@ -72416,6 +72479,9 @@
             "closure-parameter-position": {
               "$ref": "#/$defs/ward:swift~1closure-parameter-position"
             },
+            "command-injection": {
+              "$ref": "#/$defs/ward:swift~1command-injection"
+            },
             "comment-spacing": {
               "$ref": "#/$defs/ward:swift~1comment-spacing"
             },
@@ -72731,6 +72797,9 @@
             "parameter-name": {
               "$ref": "#/$defs/ward:swift~1parameter-name"
             },
+            "path-injection": {
+              "$ref": "#/$defs/ward:swift~1path-injection"
+            },
             "pattern-matching-keywords": {
               "$ref": "#/$defs/ward:swift~1pattern-matching-keywords"
             },
@@ -72820,6 +72889,9 @@
             },
             "sorted-first-last": {
               "$ref": "#/$defs/ward:swift~1sorted-first-last"
+            },
+            "sql-injection": {
+              "$ref": "#/$defs/ward:swift~1sql-injection"
             },
             "static-operator": {
               "$ref": "#/$defs/ward:swift~1static-operator"
