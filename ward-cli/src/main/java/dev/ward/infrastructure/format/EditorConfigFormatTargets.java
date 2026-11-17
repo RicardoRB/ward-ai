@@ -6,9 +6,11 @@ import dev.ward.domain.format.FormatConfiguration;
 import dev.ward.domain.format.FormatTarget;
 import dev.ward.domain.format.FormatTargets;
 import dev.ward.domain.process.CommandExecutor;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import javax.inject.Inject;
 
 /** Selects the project's files and resolves their settings from the {@code .editorconfig} files. */
@@ -33,5 +35,22 @@ public final class EditorConfigFormatTargets implements FormatTargets {
   ) {
     final FormatConfiguration configuration = new EditorConfigFormatConfiguration(root);
     return new FormatFileSelection(configuration, executor).select(root, declared);
+  }
+
+  @Override
+  public Path projectRoot(final Path start) {
+    final Path directory = start.toAbsolutePath().normalize();
+    return nearestWith("ward.toml", directory)
+        .or(() -> nearestWith(".git", directory))
+        .orElse(directory);
+  }
+
+  private static Optional<Path> nearestWith(final String name, final Path directory) {
+    for (Path candidate = directory; candidate != null; candidate = candidate.getParent()) {
+      if (Files.exists(candidate.resolve(name))) {
+        return Optional.of(candidate);
+      }
+    }
+    return Optional.empty();
   }
 }
