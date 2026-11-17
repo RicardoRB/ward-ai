@@ -72,7 +72,11 @@ public final class ExposedStateCheck implements UnitCheck {
   public List<RuleMatch> check(final SyntaxNode root, final SourceFile file) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(MemberDeclarations.CLASS))) {
-      final Map<String, String> fields = ClassFieldTypes.of(visit.node(), criteria.staticFields());
+      final Map<String, String> fields = ClassFieldTypes.of(
+          visit.node(),
+          criteria.staticFields(),
+          criteria.store()
+      );
       for (final SyntaxNode member : ClassMembers.callableMembers(visit.node())) {
         if (criteria.store()) {
           stores(member, fields, matches);

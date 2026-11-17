@@ -78,9 +78,7 @@ severity = "error"
 category = "style"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["classDeclaration"]
-text = '^class\w+(?:<[^{>]*>)?(?:implements(?![^{]*Serializable)[^{]*)?\{.*transient'
+check = "transient-in-plain-class"
 message = "transient field of a class that is not Serializable has no effect"
 '''
 

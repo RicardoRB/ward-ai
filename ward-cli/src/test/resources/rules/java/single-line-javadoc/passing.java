@@ -9,3 +9,10 @@ class Passing {
     return 2;
   }
 }
+
+class Mentions {
+  /** A method that is annotated @Deprecated in its text. */
+  int old() {
+    return 3;
+  }
+}

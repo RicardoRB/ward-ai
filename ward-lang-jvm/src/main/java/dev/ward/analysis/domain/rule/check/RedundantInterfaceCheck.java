@@ -61,7 +61,11 @@ public final class RedundantInterfaceCheck implements RuleCheck {
       provided.addAll(closure(simpleName(other), supers));
     }
     listed.stream()
-        .filter(type -> provided.contains(simpleName(type)))
+        .filter(
+            type ->
+                !simpleName(type).equals(JavaNodes.name(declaration))
+                    && provided.contains(simpleName(type))
+        )
         .forEach(
             type ->
                 matches.add(

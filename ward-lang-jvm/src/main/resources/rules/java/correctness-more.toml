@@ -171,6 +171,6 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["classDeclaration"]
-text = '^class(\w+)extends[\w.<>,]+(?:implements[\w.<>,]+)?\{[\s\S]*booleanequals\((?:final)?Object(\w+)\)\{[^}]*\2instanceof\1'
+text = '^class(\w+)extends(?!(?:java\.lang\.)?(?:Number|Thread|Object|Format|Throwable|\w*Exception|\w*Error)(?:implements|\{))[\w.<>,]+(?:implements[\w.<>,]+)?\{[\s\S]*booleanequals\((?:final)?Object(\w+)\)\{[^}]*\2instanceof\1'
 message = "equals of a subclass tests instanceof its own class, so x.equals(y) and y.equals(x) can differ"
 '''

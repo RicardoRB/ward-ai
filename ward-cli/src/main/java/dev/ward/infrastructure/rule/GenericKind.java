@@ -20,7 +20,7 @@ enum GenericKind {
   ),
   FORBIDDEN_NODE(
       "forbidden-node",
-      List.of("text", "with-child", "parent", "parent-path"),
+      List.of("text", "with-child", "parent", "parent-path", "parent-text"),
       List.of(option("text", RuleOptionType.REGEX))
   ),
   REQUIRED_NODE("required-node", List.of("child", "descendant", "skip", "sibling"), List.of()),

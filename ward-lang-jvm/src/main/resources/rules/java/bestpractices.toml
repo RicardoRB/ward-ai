@@ -12,6 +12,7 @@ body = '''
 check = "forbidden-node"
 kinds = ["statement"]
 with-child = ["'assert'"]
+sources = "test"
 message = "assert statement; use an assertion method of the test framework"
 '''
 
@@ -209,7 +210,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["methodCall"]
-text = '^(assertTrue\(.*(==|!=)|assertFalse\(.*(==|!=)|assertTrue\(!|assertFalse\(!|assertEquals\((true|false),)'
+text = '^(assertTrue\((?!.*(?:\|\||&&)).*(==|!=)|assertFalse\((?!.*(?:\|\||&&)).*(==|!=)|assertTrue\(!|assertFalse\(!|assertEquals\((true|false),)'
 message = "assertion can be simplified to a more specific assertion"
 '''
 

@@ -28,7 +28,10 @@ public final class JavadocLayoutCheck implements UnitCheck {
   private static final String OPEN = "/**";
   private static final String CLOSE = "*/";
   private static final Pattern INLINE_TAG = Pattern.compile("\\{@[^}]*}");
-  private static final Pattern BLOCK_TAG = Pattern.compile("@[A-Za-z]+");
+  private static final Pattern BLOCK_TAG = Pattern.compile(
+      "@(?:author|deprecated|exception|hidden|param|provides|return|see|serial|serialData|"
+          + "serialField|since|throws|uses|version|apiNote|implSpec|implNote)\\b"
+  );
 
   private final Mode mode;
   private final String message;

@@ -94,9 +94,7 @@ severity = "error"
 category = "concurrency"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["statement>'if'"]
-text = '^if\((\w+)==null\)\{?\1=new[\w.]+\('
+check = "lazy-initialization"
 message = "lazy initialization of a field is not thread-safe; initialize it eagerly or hold it in a holder class"
 '''
 

@@ -40,6 +40,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["methodCall"]
+parent-text = '^(?!this\.setAccessible\(|setAccessible\(|(?!(?:java\.lang\.reflect\.)?AccessibleObject\.)[A-Z][A-Z0-9_]*[a-z]\w*\.setAccessible\()'
 text = '^setAccessible\((?!false\))'
 message = "setAccessible alters access to private members; avoid it or justify the use"
 '''
@@ -137,7 +138,7 @@ body = '''
 check = "forbidden-node"
 kinds = ["methodDeclaration"]
 not-modifiers = ["public"]
-text = '^[^({]*clone\(\)'
+text = '^[^({]*[^\W_]clone\(\)'
 message = "clone method must be public; Cloneable classes override Object.clone with a public method"
 '''
 
@@ -151,7 +152,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["classDeclaration"]
-text = '(?s)^(?!.*Cloneable)(?=.*\wclone\(\))'
+text = '(?s)^(?![^{]*extends)(?!.*Cloneable)(?=.*[^\W_]clone\(\))'
 message = "class declares clone but does not implement Cloneable"
 '''
 
@@ -557,7 +558,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["methodDeclaration"]
-text = '^[^({]*clone\(\)(?!(?s).*super\.clone\(\))'
+text = '^[^({]*[^\W_]clone\(\)(?!(?s).*super\.clone\(\))'
 message = "clone should be implemented with super.clone()"
 '''
 
@@ -658,7 +659,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["methodDeclaration"]
-text = '^[^({]*equals\((?!(?:final)?(?:java\.lang\.)?Object\w*\))'
+text = '^[^({]*[^\W_]equals\((?!(?:final)?(?:java\.lang\.)?Object\w*\))'
 message = "equals with a parameter other than Object overloads Object.equals instead of overriding it"
 '''
 

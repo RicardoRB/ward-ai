@@ -5,3 +5,10 @@ final class SizeTest {
     assertNotNull(name);
   }
 }
+
+final class JoinedTest {
+  void checks(int a, int b, int c) {
+    assertTrue(a != b || a != c);
+    assertTrue(a == b && b != c);
+  }
+}

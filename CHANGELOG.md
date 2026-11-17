@@ -8,6 +8,10 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Fixed
+
+- Java rules report fewer false positives on real code (#627). A field that a method called by the constructor, or a `@BeforeEach`-style method, sets is initialized (`uwf-field-not-initialized-in-constructor`). A zero-length array field is not exposed state (`ei-expose-rep`, `method-returns-internal-array`, `ms-expose-rep`). A project's own `setAccessible` helper is not reflection (`avoid-accessibility-alteration`). A class with an `extends` clause is not reported for a transient field or a missing `Cloneable` (`se-transient-field-of-nonserializable-class`, `clone-method-must-implement-cloneable`, `cn-implements-clone-but-not-cloneable`). `equals` of a subclass of `Number`, `Thread` or `Format` is not asymmetric (`eq-overriding-equals-not-symmetric`). A `long` compared with the `int` limits is a range check (`int-vacuous-comparison`). A parameter given a default value is not a lazy singleton (`non-thread-safe-singleton`). `else`, a comment and `if` is an else-if chain (`control-statement-braces`). `test_clone` and `test_equals` are not `clone` and `equals` (five clone and equals rules). `assert-statement-in-test` reads test sources only, and the one- and two-finding rules of #581 are tightened (see the pull request).
+
 ## [0.10.0] - 2026-11-16
 
 ### Added

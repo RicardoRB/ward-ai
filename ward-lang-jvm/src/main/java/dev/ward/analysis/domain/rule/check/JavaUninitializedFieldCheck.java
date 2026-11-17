@@ -3,10 +3,12 @@ package dev.ward.analysis.domain.rule.check;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Reports a private reference field that no constructor or initializer sets, that other methods
@@ -14,6 +16,9 @@ import java.util.regex.Pattern;
  * UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR does.
  */
 public final class JavaUninitializedFieldCheck implements RuleCheck {
+  private static final Set<String> BEFORE =
+      Set.of("BeforeEach", "BeforeAll", "Before", "BeforeClass", "PostConstruct");
+
   private final String message;
 
   /**
@@ -69,12 +74,47 @@ public final class JavaUninitializedFieldCheck implements RuleCheck {
             "(?:\\b|\\.)" + name + "[!=]=null|null[!=]=" + name + "\\b|requireNonNull\\(" + name
         );
     final List<SyntaxNode> methods = ClassShapes.methods(clazz);
-    final List<SyntaxNode> setUp = new ArrayList<>(ClassShapes.constructors(clazz));
-    setUp.addAll(ClassShapes.initializers(clazz));
+    final List<SyntaxNode> setUp = setUpMembers(clazz, methods);
     return setUp.stream().noneMatch(member -> assigns(member, name))
         && methods.stream().anyMatch(member -> assigns(member, name))
         && methods.stream().anyMatch(member -> dereferences(member, name))
         && !nullTest.matcher(text).find();
+  }
+
+  /**
+   * Returns what runs before the methods of a class are used: its constructors, its initializers,
+   * its {@code @BeforeEach}-style methods, and the methods those call by name, as far as it goes.
+   */
+  private static List<SyntaxNode> setUpMembers(
+      final SyntaxNode clazz,
+      final List<SyntaxNode> methods
+  ) {
+    final List<SyntaxNode> setUp = new ArrayList<>(ClassShapes.constructors(clazz));
+    setUp.addAll(ClassShapes.initializers(clazz));
+    methods.stream()
+        .filter(method -> !Collections.disjoint(JUnitMembers.annotations(method), BEFORE))
+        .forEach(setUp::add);
+    boolean grew = true;
+    while (grew) {
+      final String text = setUp.stream().map(SyntaxWalk::text).collect(Collectors.joining());
+      final List<SyntaxNode> called =
+          methods.stream()
+              .filter(method -> !setUp.contains(method) && calls(text, nameOf(method)))
+              .toList();
+      setUp.addAll(called);
+      grew = !called.isEmpty();
+    }
+    return setUp;
+  }
+
+  private static String nameOf(final SyntaxNode method) {
+    return JUnitMembers.name(ClassMembers.declarationOf(method));
+  }
+
+  private static boolean calls(final String text, final String method) {
+    return Pattern.compile("(?:(?<![\\w.])|(?<=this\\.))" + Pattern.quote(method) + "\\(")
+        .matcher(text)
+        .find();
   }
 
   private static boolean dereferences(final SyntaxNode member, final String name) {

@@ -3,3 +3,8 @@ class Copy implements Cloneable {
     return super.clone();
   }
 }
+
+class Named {
+  void test_clone() {
+  }
+}

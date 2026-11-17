@@ -66,7 +66,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["expression"]
-text = '^[^()]*(<<|>>>?)(?!=)[^()]*[-+][^()]*$'
+text = '^[^()]*(<<|>>>?)(?!=)[^()\[\]]*[-+][^()]*$'
 message = "{value} shifts by an unparenthesized sum; add parentheses to show the precedence"
 '''
 
@@ -218,7 +218,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["classBodyDeclaration"]
-text = 'booleanequals\(\s*(final)?Object\w+\)\s*\{\s*returntrue;\s*\}'
+text = '^(?:@\w+(?:\([^)]*\))?|public|protected|private|final|static)*booleanequals\(\s*(final)?Object\w+\)\s*\{\s*returntrue;\s*\}'
 message = "equals(Object) always returns true"
 '''
 
@@ -372,7 +372,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["classBodyDeclaration"]
-text = 'voidrun\(\s*\)(throws[^{]*)?\{[\s\S]*assert\w*\s*\('
+text = '^(?:@\w+(?:\([^)]*\))?|public|protected|private|final|static|synchronized)*voidrun\(\s*\)(throws[^{]*)?\{[\s\S]*assert\w*\s*\('
 message = "assertion in run() is not reported to the test runner; assert on the test thread"
 '''
 

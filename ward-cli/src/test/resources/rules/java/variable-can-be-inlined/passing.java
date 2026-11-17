@@ -13,3 +13,10 @@ class Passing {
   void log() {
   }
 }
+class Annotated {
+  java.util.List<String> cast(Object value) {
+    @SuppressWarnings("unchecked")
+    final java.util.List<String> list = (java.util.List<String>) value;
+    return list;
+  }
+}

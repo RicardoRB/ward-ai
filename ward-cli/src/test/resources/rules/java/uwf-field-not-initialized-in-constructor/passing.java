@@ -22,3 +22,37 @@ final class Check {
     return other.length();
   }
 }
+
+final class SetByConstructorHelper {
+  private String title;
+
+  SetByConstructorHelper() {
+    prepare();
+  }
+
+  private void prepare() {
+    fill();
+  }
+
+  private void fill() {
+    title = "x";
+  }
+
+  int length() {
+    return title.length();
+  }
+}
+
+final class SetBeforeEachTest {
+  private String subject;
+
+  @BeforeEach
+  void setUp() {
+    subject = "x";
+  }
+
+  @Test
+  void measures() {
+    subject.length();
+  }
+}

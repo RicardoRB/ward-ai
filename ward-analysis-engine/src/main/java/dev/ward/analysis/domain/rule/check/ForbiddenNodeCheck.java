@@ -72,12 +72,14 @@ public final class ForbiddenNodeCheck implements UnitCheck {
    * @param parent kinds of which the parent must be, if not empty
    * @param path the kinds of the ancestors, nearest first, as {@code parent>grandparent}; each step
    *     may list alternatives as {@code a|b}; empty does not limit
+   * @param parentText a pattern that must be found in the parent's text, if any
    */
   public record Condition(
       Optional<Pattern> text,
       Set<String> withChild,
       Set<String> parent,
-      String path
+      String path,
+      Optional<Pattern> parentText
   ) {
     /** The condition that every node meets. */
     public static final Condition ANY = new Condition(Optional.empty(), Set.of(), Set.of());
@@ -91,6 +93,16 @@ public final class ForbiddenNodeCheck implements UnitCheck {
       this(text, withChild, parent, "");
     }
 
+    /** Creates a condition without a pattern on the parent. */
+    public Condition(
+        final Optional<Pattern> text,
+        final Set<String> withChild,
+        final Set<String> parent,
+        final String path
+    ) {
+      this(text, withChild, parent, path, Optional.empty());
+    }
+
     /**
      * Copies the sets.
      *
@@ -99,13 +111,18 @@ public final class ForbiddenNodeCheck implements UnitCheck {
     public Condition {
       Objects.requireNonNull(text, "text");
       Objects.requireNonNull(path, "path");
+      Objects.requireNonNull(parentText, "parentText");
       withChild = Set.copyOf(withChild);
       parent = Set.copyOf(parent);
     }
 
     boolean holds(final SyntaxWalk.Visit visit) {
       // The text of a node is costly to build, so the conditions on its kind come first.
-      return childOk(visit.node()) && parentOk(visit) && pathOk(visit) && textOk(visit.node());
+      return childOk(visit.node())
+          && parentOk(visit)
+          && pathOk(visit)
+          && parentTextOk(visit)
+          && textOk(visit.node());
     }
 
     private boolean textOk(final SyntaxNode node) {
@@ -162,6 +179,13 @@ public final class ForbiddenNodeCheck implements UnitCheck {
       }
       final List<SyntaxNode> up = visit.ancestors();
       return !up.isEmpty() && parent.contains(up.get(up.size() - 1).kind());
+    }
+
+    private boolean parentTextOk(final SyntaxWalk.Visit visit) {
+      final List<SyntaxNode> up = visit.ancestors();
+      return parentText.isEmpty()
+          || !up.isEmpty()
+          && parentText.get().matcher(SyntaxWalk.text(up.get(up.size() - 1))).find();
     }
 
     private boolean pathOk(final SyntaxWalk.Visit visit) {
