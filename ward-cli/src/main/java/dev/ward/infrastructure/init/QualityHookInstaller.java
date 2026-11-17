@@ -3,7 +3,9 @@ package dev.ward.infrastructure.init;
 import dev.ward.domain.agent.IntegrationResult;
 import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.config.WardException;
+import dev.ward.domain.init.HookPlacement;
 import dev.ward.domain.init.QualityHookChange;
+import dev.ward.domain.init.QualityHookChange.HooksPathChange;
 import dev.ward.domain.init.QualityHookChange.HookSnapshot;
 import dev.ward.domain.init.QualityHookGeneration;
 import dev.ward.domain.project.Project;
@@ -14,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.inject.Inject;
 
 /**
@@ -40,9 +43,9 @@ public final class QualityHookInstaller implements QualityHookGeneration {
   }
 
   @Override
-  public QualityHookChange apply(final Project project) {
+  public QualityHookChange apply(final Project project, final HookPlacement placement) {
     final HookSection section = new HookSection(project.projectPath());
-    final List<Path> paths = paths(project);
+    final List<Path> paths = paths(project, placement);
     try {
       final List<String> originals = new ArrayList<>();
       for (final Path path : paths) {
@@ -62,6 +65,7 @@ public final class QualityHookInstaller implements QualityHookGeneration {
           QualityHookFileOperations.update(originals.get(1), section, PRE_PUSH),
           changed
       );
+      final HooksPathChange hooksPath = pointHooksPath(project, placement, changed);
       final IntegrationResult result =
           changed.isEmpty()
               ? new IntegrationResult(
@@ -74,15 +78,42 @@ public final class QualityHookInstaller implements QualityHookGeneration {
                   changed,
                   "Installed Ward quality hooks."
               );
-      return new QualityHookChange(snapshots, result);
+      return new QualityHookChange(snapshots, result, hooksPath);
     } catch (IOException e) {
       throw new UncheckedIOException("Could not update quality hooks", e);
     }
   }
 
+  /** Sets {@code core.hooksPath} when the placement asks for it and it is not set already. */
+  private HooksPathChange pointHooksPath(
+      final Project project,
+      final HookPlacement placement,
+      final List<String> changed
+  ) {
+    if (!placement.setHooksPath()) {
+      return HooksPathChange.UNCHANGED;
+    }
+    final Optional<String> previous = hooksDirectory.configuredPath(project);
+    if (previous.filter(placement.sharedFolder()::equals).isPresent()) {
+      return HooksPathChange.UNCHANGED;
+    }
+    hooksDirectory.setPath(project, placement.sharedFolder());
+    changed.add("core.hooksPath");
+    return new HooksPathChange(
+        true,
+        project.root().toAbsolutePath().normalize(),
+        previous.orElse(null)
+    );
+  }
+
   @Override
-  public List<PlannedFileChange> plan(final Project project) {
-    final List<Path> paths = paths(project);
+  public Optional<String> hooksPath(final Project project) {
+    return hooksDirectory.configuredPath(project);
+  }
+
+  @Override
+  public List<PlannedFileChange> plan(final Project project, final HookPlacement placement) {
+    final List<Path> paths = paths(project, placement);
     final HookSection section;
     try {
       section = new HookSection(project.projectPath());
@@ -143,12 +174,12 @@ public final class QualityHookInstaller implements QualityHookGeneration {
 
   /** Removes only this project's Ward section, and hook files that held nothing else. */
   @Override
-  public IntegrationResult remove(final Project project) {
+  public IntegrationResult remove(final Project project, final boolean dryRun) {
     final HookSection section = new HookSection(project.projectPath());
     try {
       final List<String> changed = new ArrayList<>();
-      for (final Path path : paths(project)) {
-        removeHook(path, section, changed);
+      for (final Path path : paths(project, HookPlacement.GIT_RUNS)) {
+        removeHook(path, section, changed, dryRun);
       }
       return changed.isEmpty()
           ? new IntegrationResult(
@@ -159,22 +190,28 @@ public final class QualityHookInstaller implements QualityHookGeneration {
           : new IntegrationResult(
               IntegrationResult.Status.REMOVED,
               changed,
-              "Removed Ward quality hooks."
+              dryRun ? "Would remove Ward quality hooks." : "Removed Ward quality hooks."
           );
     } catch (IOException e) {
       throw new UncheckedIOException("Could not remove quality hooks", e);
     }
   }
 
-  private List<Path> paths(final Project project) {
-    final Path hooks = hooksDirectory.resolve(project);
+  private List<Path> paths(final Project project, final HookPlacement placement) {
+    final Path hooks =
+        placement.isShared()
+            ? project.repositoryRoot().toAbsolutePath().normalize().resolve(
+                placement.sharedFolder()
+            )
+            : hooksDirectory.resolve(project);
     return List.of(hooks.resolve(PRE_COMMIT), hooks.resolve(PRE_PUSH));
   }
 
   private static void removeHook(
       final Path path,
       final HookSection section,
-      final List<String> changed
+      final List<String> changed,
+      final boolean dryRun
   ) throws IOException {
     if (!Files.exists(path)) {
       return;
@@ -182,6 +219,10 @@ public final class QualityHookInstaller implements QualityHookGeneration {
     final String content = Files.readString(path);
     QualityHookFileOperations.rejectMalformed(path, content, section);
     if (!QualityHookFileOperations.contains(content, section)) {
+      return;
+    }
+    if (dryRun) {
+      changed.add(path.toString());
       return;
     }
     final String remaining = QualityHookFileOperations.removeSection(content, section);
@@ -201,6 +242,9 @@ public final class QualityHookInstaller implements QualityHookGeneration {
       return;
     }
     try {
+      if (change.hooksPath().changed()) {
+        hooksDirectory.restorePath(change.hooksPath().root(), change.hooksPath().previous());
+      }
       for (final HookSnapshot snapshot : change.snapshots()) {
         if (!snapshot.existed()) {
           Files.deleteIfExists(snapshot.path());

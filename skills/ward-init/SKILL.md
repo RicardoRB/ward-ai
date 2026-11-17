@@ -194,7 +194,10 @@ order:
    `opencode`, or `codex`), plus any other the user names, including `junie` for Junie CLI. `none` is valid.
 7. **Git quality hooks.** These add Ward sections to `.git/hooks/pre-commit` and `pre-push`
    without replacing existing hook logic; they print `--format json` reports so agents can act on findings. Recommend them when the project has no CI, and mention that
-   they slow down commits and pushes.
+   they slow down commits and pushes. For a team, offer `--shared-hooks` (a committed `.githooks`
+   folder every clone shares); init prints the `git config core.hooksPath .githooks` command for
+   teammates and asks before it sets `core.hooksPath` here. On a project that already has
+   `ward.toml`, `--quality-hooks` or `--shared-hooks` alone changes only the hooks.
 8. **CI workflow** (only for GitHub repositories: a `github.com` remote or a `.github/` directory).
    `--ci github` writes `.github/workflows/ward.yml`, which runs the `ci` profile, installs the
    gate tools, and uploads SARIF to code scanning. Recommend it when the project has no workflow that

@@ -17,6 +17,7 @@ as a whole is not that yes.
 | Architecture style | `--architecture <style>` | `layered` (default), `hexagonal`, or `clean`. It sets the layer boundaries of `[[checks.ward.layers]]` in `ward.toml`, which init always writes. Only the `strict` preset asks for it, so an interactive run offers the choice there | No A chosen style also writes a starter `ward-architecture.toml` once, when the project has none; init never changes an existing one. |
 | Agent integrations | `--integration <id>[,<id>...]` | `none`, or any of `claude-code`, `opencode`, `codex`, `cursor`, `copilot`, `gemini`, `windsurf`, `cline`, `factory-droid`, `amp`, `junie` | No |
 | Git quality hooks | `--quality-hooks` | Present to install; leave it out to skip | No |
+| Shared Git hooks | `--shared-hooks[=<dir>]` | Present to write the hooks into a tracked folder (default `.githooks`) every clone shares; implies `--quality-hooks`. Ask before it sets `core.hooksPath` (`--yes` sets an unset one) | No |
 | CI workflow | `--ci github` | `github`. Leave it out to skip | No |
 | Agent rules in `AGENTS.md` | `--agent-rules` | Present to write the section; leave it out to skip | No |
 | Remove quality hooks | `--remove-quality-hooks` | Present to remove Ward's hook sections | No |

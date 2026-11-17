@@ -5,10 +5,31 @@ import java.nio.file.Path;
 import java.util.List;
 
 /** Snapshot and result for one quality-hook installation transaction. */
-public record QualityHookChange(List<HookSnapshot> snapshots, IntegrationResult result) {
+public record QualityHookChange(
+    List<HookSnapshot> snapshots,
+    IntegrationResult result,
+    HooksPathChange hooksPath
+) {
   /** Copies the snapshots. */
   public QualityHookChange {
     snapshots = List.copyOf(snapshots);
+  }
+
+  /** A change that left {@code core.hooksPath} alone. */
+  public QualityHookChange(final List<HookSnapshot> snapshots, final IntegrationResult result) {
+    this(snapshots, result, HooksPathChange.UNCHANGED);
+  }
+
+  /**
+   * What init did to {@code core.hooksPath}, used to restore it.
+   *
+   * @param changed whether init set the value
+   * @param root the directory the value was set from
+   * @param previous the value before, or {@code null} when it was unset
+   */
+  public record HooksPathChange(boolean changed, Path root, String previous) {
+    /** No change was made. */
+    public static final HooksPathChange UNCHANGED = new HooksPathChange(false, null, null);
   }
 
   /**

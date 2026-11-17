@@ -10,7 +10,7 @@ Gradle, TypeScript, and JavaScript projects; see [Node projects](#node-projects)
 in a Node project.
 
 ```sh
-ward init [-C <dir>] [--project <dir>]... [--preset <standard|strict>] [--integration <none|agent>[,...]] [--quality-hooks] [--remove-quality-hooks] [--ci github] [--agent-rules] [--gate <id>[,...]] [--install-tool <gate>[,...]] [--architecture <style>] [--overwrite] [--dry-run] [--accept-compatibility-updates] [--replace-scripts] [--yes]
+ward init [-C <dir>] [--project <dir>]... [--preset <standard|strict>] [--integration <none|agent>[,...]] [--quality-hooks] [--shared-hooks[=<dir>]] [--remove-quality-hooks] [--ci github] [--agent-rules] [--gate <id>[,...]] [--install-tool <gate>[,...]] [--architecture <style>] [--overwrite] [--dry-run] [--accept-compatibility-updates] [--replace-scripts] [--yes]
 ```
 
 <Aside type="tip">
@@ -33,7 +33,8 @@ each choice for this codebase, and runs `init` with explicit options after you a
 | `--scheme <name>` | Xcode scheme that a Swift project's tests run, when the project has several. With `--yes`, a project with several schemes needs this option. |
 | `--install-tool <gate>[,...]` | Accepted for compatibility; init installs no gate tool, so it has no effect. |
 | `--quality-hooks` | Add Ward checks to the Git pre-commit and pre-push hooks. |
-| `--remove-quality-hooks` | Remove only Ward's sections from those hooks. |
+| `--shared-hooks[=<dir>]` | Write the quality hooks into a tracked folder of the repository, `.githooks` unless you name another, so every clone shares them. Implies `--quality-hooks`. See [Shared hooks](/integrations/quality-hooks/#shared-hooks). |
+| `--remove-quality-hooks` | Remove only Ward's sections from those hooks. With `--dry-run`, list the files and change nothing. |
 | `--ci github` | Write a GitHub Actions workflow that runs the `ci` profile. |
 | `--agent-rules` | Write the selected gates' limits into a Ward-owned section of `AGENTS.md`. |
 | `--overwrite` | Replace an existing `ward.toml` without asking. |
@@ -652,6 +653,12 @@ sections to `.git/hooks/pre-commit` and `.git/hooks/pre-push`:
 - `--remove-quality-hooks` removes only Ward's marked sections. It keeps your content, executable
   permissions, and other Ward integrations.
 - A malformed or duplicate marker is reported as a conflict and left unchanged.
+- On a project that already has `ward.toml`, `--quality-hooks` and `--shared-hooks` change only the
+  hooks: init does not ask to overwrite `ward.toml` and leaves it alone, unless you also pass a
+  setup option such as `--preset`, `--gate`, `--integration`, `--ci` or `--overwrite`.
+- `--shared-hooks` writes the sections into a tracked folder and prints
+  `git config core.hooksPath .githooks` for teammates. See
+  [Shared hooks](/integrations/quality-hooks/#shared-hooks).
 
 ### CI workflow
 

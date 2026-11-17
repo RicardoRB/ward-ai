@@ -40,6 +40,11 @@ public class GeneratedFileOptions {
     return ci;
   }
 
+  /** Returns whether any generated file besides the hooks is requested. */
+  boolean anyRequested() {
+    return ci != null || agentRules || architectureOrNull() != null;
+  }
+
   /** Returns whether the agent rules section is requested. */
   boolean agentRules() {
     return agentRules;
