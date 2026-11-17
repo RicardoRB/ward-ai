@@ -381,3 +381,48 @@ JSON report identical to "Before 1"; its `.ward` was not compared, because the c
 file content and the sources had changed since "Before 1". The scenario test is
 `SharedNodeWalkTest#oneTreeWalkPerFile` (60 rules over one tree, one walk, same matches as the
 rule's own walk).
+
+## Parsing cost per file (#631)
+
+Measured on 2026-11-17, same machine and jar as #630 (Apple M4, Temurin 25.0.4), `ward check --profile
+wardonly --jobs 1 --severity info --format json` on this tree (a profile with only the `ward` check,
+added to `ward.toml` for the measurement and not committed), each run from an empty `.ward`.
+**The machine was loaded** (1-minute load 15 to 24 at the start of every run, other sessions were
+building), so wall time is not usable.
+
+**Where parsing goes.** In the JFR profile (44,510 execution samples) frames of the ANTLR frontend are
+in 4.5 % of the samples, not the 17 % of the #569 profile; `ParseCache.parse` is in 3.9 %.
+Inside them the cost is the grammar's adaptive prediction (`ParserATNSimulator.adaptivePredict`
+3.6 %), the lexer 0.7 %, and the tree mapping 0.3 %. The callers of `parse` are five passes, each
+reading every file in turn: dependency summaries (735 samples), type facts (272), `UnitTrees` (220),
+`RelatedFlows` (218), `FlowDigests` (217).
+
+**Repeated parses.** An instrumented jar (one line at the parse call, not committed) counted the
+parses of one run: **22,601 parses of 7,899 distinct files** (62.4 million characters parsed, 15.3
+million distinct). 3,316 files were parsed once, 1,274 three times, 1,082 four times and 2,227
+five times. Each pass walks all files before the next starts, so the 8 MB LRU of `ParseCache` has
+dropped a file before the next pass asks for it again.
+
+**Tried: a cache sized by the heap** (a quarter of the heap at 90 bytes of tree per character,
+between 8 and 64 MB of source). The findings were identical: the `.ward` caches of the two jars on
+the same tree (19,704 files) have no difference with `diff -r`, and the JSON reports are equal with
+`durationMs` set to 0. The parse share fell, but the run did not get cheaper:
+
+| Jar | Samples with `ParseCache.parse` | Instructions (no JFR) | Peak memory | GC collections (JFR run) |
+|---|---|---|---|---|
+| Before (8 MB cache) | 1,755 (3.9 %) | 19.6 × 10¹² | 5.0 GB | 937 |
+| After (heap-sized cache) | 1,232 (2.0 %) | 23.2 × 10¹² (23.1 with JFR) | 4.1 GB | 1,301 |
+
+Parsing fell by 30 % of its samples, but the whole run executed 18 % more instructions in two runs,
+and the JVM did 39 % more collections: the trees kept alive for the later passes cost the garbage
+collector more than the reparses cost. **The change was not kept.** Parsing as a share of this run
+is 4.5 %, so even free reuse would gain less than 4 %.
+
+**What would help instead** (not done, with upper bounds). Of the five callers, only the dependency
+summary and the flow digest sweep the whole project; `UnitTrees` parses the file being analyzed,
+and `NativeJvmTypeFacts` and `RelatedFlows` parse other files on demand. (A) Fusing the dependency
+summary and the flow digest into one visit needs no new format and saves one of about three parses
+per file: at most 0.5 % of a run (217 of 44,510 samples). (B) Storing derived per-file data (type
+members, lowered graphs) so that neighbour files are not reparsed is a new cache format: at most
+about 3 % of a run, since parsing is 4.5 % in total. The grammar's prediction cost
+(`adaptivePredict`) is a separate lever.
