@@ -35,6 +35,7 @@ final class KotlinAccesses implements VariableAccesses {
   private final List<Span> nested;
   private final Map<Integer, Integer> writeEnds;
   private final KotlinView view;
+  private final List<VariableAccess> implicit;
 
   /**
    * Creates the finder of one body.
@@ -42,19 +43,18 @@ final class KotlinAccesses implements VariableAccesses {
    * @param scopes the scopes of the file
    * @param body the span of the body, whose declarations are the locals
    * @param nested the spans of the functions and classes inside the body, which are other bodies
-   * @param writeEnds the end offset of the assignment or declaration of each written name, by the
-   *     start offset of the name
+   * @param hints the write ends and the implicit reads of the body
    * @param view which part of a node is shown
    */
   KotlinAccesses(
       final UnitScopes scopes,
       final Span body,
       final List<Span> nested,
-      final Map<Integer,
-      Integer> writeEnds,
+      final Hints hints,
       final KotlinView view
   ) {
-    this.writeEnds = writeEnds;
+    this.implicit = List.copyOf(hints.implicit());
+    this.writeEnds = hints.writeEnds();
     this.view = view;
     this.references = scopes.references();
     this.body = body;
@@ -75,9 +75,24 @@ final class KotlinAccesses implements VariableAccesses {
         found.add(keyed(reference));
       }
     }
+    for (final VariableAccess read : implicit) {
+      if (read.span().startOffset() >= span.startOffset()
+          && read.span().endOffset() <= span.endOffset()) {
+        found.add(new Keyed(read.span().startOffset(), read));
+      }
+    }
     found.sort(Comparator.comparingInt(Keyed::key));
     return found.stream().map(Keyed::access).filter(view::shows).toList();
   }
+
+  /**
+   * What the scope analysis does not give a body.
+   *
+   * @param writeEnds the end offset of the assignment or declaration of each written name, by the
+   *     start offset of the name
+   * @param implicit the reads of {@code this} that no name reference records
+   */
+  record Hints(Map<Integer, Integer> writeEnds, List<VariableAccess> implicit) {}
 
   /** An access and the offset at which it happens. */
   private record Keyed(int key, VariableAccess access) {}

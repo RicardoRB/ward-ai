@@ -52,16 +52,21 @@ final class KotlinFlowSites implements FlowSites {
   private final Map<String, String> constructed = new HashMap<>();
   private final KotlinParameterSites parameters;
   private final KotlinView view;
+  private final Map<String, String> returns;
 
   /**
    * Creates the finder of one body.
    *
    * @param types the imports and package of the file
    * @param view which part of a node is shown
+   * @param file the types that the file declares for names its bodies share
    */
-  KotlinFlowSites(final JavaTypeNames types, final KotlinView view) {
+  KotlinFlowSites(final JavaTypeNames types, final KotlinView view, final KotlinFileTypes file) {
     this.types = types;
     this.view = view;
+    this.returns = file.returns();
+    declared.putAll(file.declared());
+    constructed.putAll(file.constructed());
     this.parameters = new KotlinParameterSites(types, declared);
   }
 
@@ -103,7 +108,11 @@ final class KotlinFlowSites implements FlowSites {
     final List<SyntaxNode> parts = KotlinFlowSyntax.parts(property);
     for (int index = 0; index < parts.size() - 1; index++) {
       if (ASSIGN.equals(KotlinFlowSyntax.tokenText(parts.get(index)))) {
-        final String type = createdType(parts.get(index + 1));
+        final String type = KotlinCalls.createdType(parts.get(index + 1));
+        final String returned = returns.get(KotlinCalls.calledName(parts.get(index + 1)));
+        if (type.isEmpty() && returned != null) {
+          declared.put(KotlinFlowSyntax.text(KotlinScopeWalk.simple(variable)), returned);
+        }
         if (!type.isEmpty()) {
           final String name = KotlinFlowSyntax.text(KotlinScopeWalk.simple(variable));
           declared.put(name, type);
@@ -111,19 +120,6 @@ final class KotlinFlowSites implements FlowSites {
         }
       }
     }
-  }
-
-  /** The type that an expression constructs, or an empty string when it is not just {@code T()}. */
-  private static String createdType(final SyntaxNode expression) {
-    final SyntaxNode value = KotlinFlowSyntax.unwrap(expression);
-    final List<SyntaxNode> parts = KotlinFlowSyntax.parts(value);
-    if (!POSTFIX.equals(value.kind())
-        || parts.size() != 2
-        || !KotlinCalls.startsWithCall(parts.subList(1, 2))) {
-      return "";
-    }
-    final String name = KotlinCalls.nameOf(parts.get(0));
-    return !name.isEmpty() && Character.isUpperCase(name.charAt(0)) ? name : "";
   }
 
   /** Records the declared type of a local, a for variable or a lambda parameter. */

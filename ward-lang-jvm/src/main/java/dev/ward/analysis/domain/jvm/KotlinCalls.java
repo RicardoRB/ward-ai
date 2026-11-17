@@ -12,6 +12,7 @@ final class KotlinCalls {
   private static final String VALUE_ARGUMENT = "valueArgument";
   private static final String EXPRESSION = "expression";
   private static final String IS = "is";
+  private static final String POSTFIX = "postfixUnaryExpression";
   private static final int SINGLE = 1;
 
   private KotlinCalls() {}
@@ -19,6 +20,24 @@ final class KotlinCalls {
   /** Drops the {@code ?} of a nullable type, which no import names. */
   static String erasedNullability(final String written) {
     return written.replaceAll("\\?+$", "");
+  }
+
+  /** The type that an expression constructs, or an empty string when it is not just {@code T()}. */
+  static String createdType(final SyntaxNode expression) {
+    final String name = calledName(expression);
+    return !name.isEmpty() && Character.isUpperCase(name.charAt(0)) ? name : "";
+  }
+
+  /** The name of the function that an expression calls with no receiver, or an empty string. */
+  static String calledName(final SyntaxNode expression) {
+    final SyntaxNode value = KotlinFlowSyntax.unwrap(expression);
+    final List<SyntaxNode> parts = KotlinFlowSyntax.parts(value);
+    if (!POSTFIX.equals(value.kind())
+        || parts.size() != 2
+        || !KotlinCalls.startsWithCall(parts.subList(1, 2))) {
+      return "";
+    }
+    return KotlinCalls.nameOf(parts.get(0));
   }
 
   static boolean startsWithCall(final List<SyntaxNode> operations) {

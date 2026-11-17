@@ -70,4 +70,13 @@ class Subject {
       Runtime.getRuntime().exec("run " + port)
     }
   }
+
+  fun sanitizedThis(request: HttpServletRequest) {
+    request.getParameter("x").run { Runtime.getRuntime().exec(Integer.parseInt(this).toString()) }
+  }
+
+  fun fixedReceiverIsClean() {
+    "fixed".run { Runtime.getRuntime().exec(this) }
+    with("fixed") { Runtime.getRuntime().exec(trim()) }
+  }
 }
