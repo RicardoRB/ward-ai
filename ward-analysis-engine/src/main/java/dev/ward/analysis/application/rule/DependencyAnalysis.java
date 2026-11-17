@@ -11,6 +11,8 @@ import dev.ward.analysis.domain.port.DependencySupport;
 import dev.ward.analysis.domain.port.ParseResult;
 import dev.ward.analysis.domain.port.WorkLimit;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -65,10 +67,26 @@ public final class DependencyAnalysis {
    * @throws NullPointerException if the units or the cache are missing
    */
   public DependencySnapshot analyze(final List<SourceUnit> units, final FileSummaryCache cache) {
+    return analyze(units, cache, EnumSet.allOf(AnalysisLanguage.class));
+  }
+
+  /**
+   * Like {@link #analyze(List, FileSummaryCache)}, and parses only the units of {@code needed} and
+   * of the languages that share a resolver with one of them, since an edge of a needed file can
+   * reach a file of such a language.
+   *
+   * @throws NullPointerException if an argument is missing
+   */
+  public DependencySnapshot analyze(
+      final List<SourceUnit> units,
+      final FileSummaryCache cache,
+      final Set<AnalysisLanguage> needed
+  ) {
+    final Set<AnalysisLanguage> parsed = withResolverPeers(needed);
     final Map<String, FileSummary> summaries = new TreeMap<>();
     final List<SourceUnit> fresh = new ArrayList<>();
     for (final SourceUnit unit : units) {
-      if (summarized(unit)) {
+      if (parsed.contains(unit.language()) && summarized(unit)) {
         cache.read(unit)
             .ifPresentOrElse(summary -> summaries.put(unit.path(), summary), () -> fresh.add(unit));
       }
@@ -96,6 +114,17 @@ public final class DependencyAnalysis {
         DependencyEntries.of(dependencies),
         units.stream().collect(Collectors.toMap(SourceUnit::path, unit -> unit, (a, b) -> a))
     );
+  }
+
+  private Set<AnalysisLanguage> withResolverPeers(final Set<AnalysisLanguage> needed) {
+    final Set<AnalysisLanguage> parsed = EnumSet.noneOf(AnalysisLanguage.class);
+    parsed.addAll(needed);
+    for (final Set<AnalysisLanguage> group : ResolverGroups.of(dependencies).values()) {
+      if (!Collections.disjoint(group, needed)) {
+        parsed.addAll(group);
+      }
+    }
+    return parsed;
   }
 
   private static List<FileSummary> summariesOf(

@@ -117,9 +117,7 @@ final class UnitResultCache {
             .filter(rule -> !UnusedDefinitionFindings.isUnusedDefinitionRule(rule))
             .toList();
     progress.step("resolving dependencies");
-    final DependencySnapshot snapshot =
-        new DependencyAnalysis(frontends, dependencies, engine.limit())
-            .analyze(units, new AnalysisSummaryCache(cache, codec, engineVersion));
+    final DependencySnapshot snapshot = summarize(cache, units, frontends, rules);
     final UnitKeys unitKeys = new UnitKeys(engineVersion, unitRules, snapshot, cache, frontends);
     final Map<SourceUnit, String> keys = new LinkedHashMap<>();
     final List<AnalysisFinding> reused = new ArrayList<>();
@@ -165,6 +163,20 @@ final class UnitResultCache {
         ),
         snapshot.graph()
     );
+  }
+
+  private DependencySnapshot summarize(
+      final AnalysisCache cache,
+      final List<SourceUnit> units,
+      final List<FrontendSupport> frontends,
+      final List<RuleDefinition> rules
+  ) {
+    return new DependencyAnalysis(frontends, dependencies, engine.limit())
+        .analyze(
+            units,
+            new AnalysisSummaryCache(cache, codec, engineVersion),
+            DependencyReads.summarized(rules)
+        );
   }
 
   /**

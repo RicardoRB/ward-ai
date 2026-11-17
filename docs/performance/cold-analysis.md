@@ -99,7 +99,8 @@ Shares of the samples of "After, run 1" (15,235 samples):
 - **The `ward` gate summarizes files of languages that no selected rule reads.** The rule set
   selects Java, but the dependency step also parses the TypeScript, JavaScript and Python fixtures
   of this repository: 6.2 % of the samples after the fixes. Leaving them out changes the dependency
-  graph that the gate stores, so it is not a change with obviously equal results.
+  graph that the gate stores, so it is not a change with obviously equal results. Done in #633, see
+  "Dependency step and unselected languages (#633)".
 - **The analysis is single-threaded.** Running checks in parallel is #577. Analyzing files in
   parallel inside one check is #585; see "Parallel file analysis" below.
 - **`durationMs` is 0** in the JSON report for the `format`, `ward` and `secrets` checks. A report
@@ -484,3 +485,50 @@ touched):
 across the rules of a file needs a per-file holder in `FlowView` and, with `--jobs 1` (rule by rule),
 a cache of all files, so it was left out. Juliet (`benchmark/security-report.txt`) was not run: its
 archive was not downloaded in this task.
+
+## Dependency step and unselected languages (#633)
+
+Measured on 2026-11-17 on the same machine (Apple M4, 10 cores, Temurin 25.0.4, JVM jar), `ward check
+--profile wardonly --jobs 1 --severity info --format json` on a copy of this tree (a profile with only
+the `ward` check, in the copy only), each run from an empty `.ward`. The rule set selects Java.
+
+**Share now.** A JFR profile of the jar of `0.11.0` at `87dc3c71c` (30,746 execution samples):
+`DependencyAnalysis.summarizeFresh` (parse and summarize of every file, all languages) is in 3.05 %
+of the samples, `TaintFile.run` in 60 %. So the whole dependency step is 3 %, not the 6 % of #569,
+and the files of unselected languages are only part of it (3,307 of 19,710 files: 1,243 Python, 1,067
+TypeScript, 775 JavaScript, 107 TSX, 34 other).
+
+**Change.** `DependencyAnalysis.analyze(units, cache, needed)` summarizes only the languages in
+`needed` and the languages that share a resolver with one of them (Java and Kotlin: an edge of a Java
+file can reach a Kotlin file). `DependencyReads.summarized(rules)` names a language when a selected
+rule covers it and reads dependencies (symbols, scopes, taint), or is a graph rule or an
+unused-definition rule. Without a selected rule of that kind the language is not parsed. Scenario test:
+`DependencyStepLanguagesTest`.
+
+**Findings.** Same inputs, two jars:
+
+- This repository: the JSON reports of the old and the new jar are equal with `durationMs` zeroed
+  (twice). In the `.ward` caches, 19,710 files against 16,403: the 3,307 missing files are exactly the
+  stored summaries of the `.ts`, `.tsx`, `.js`, `.jsx`, `.mjs`, `.cjs` and `.py` files, and the
+  reverse-dependency index differs because it has no edges of those languages. Every stored unit
+  result is byte-identical. A `diff -r` of the whole cache cannot be empty by construction: the
+  skipped languages' summaries are what the change stops computing and storing.
+- A fixture written for this (a Maven project with two Java files, two TypeScript, one JavaScript
+  and one Python file; rules `unused-import`, `unused-private-method`, `unused-local-variable`,
+  `command-injection` over Java only): equal JSON with `durationMs` zeroed (4 findings); the cache
+  of the new jar lacks the 4 summaries of the non-Java files and the index lacks the `b.ts` to `a.ts`
+  edge; nothing else differs.
+
+**Whole run, no JFR, alternating:**
+
+| Run | Load (1 min), start → end | Wall time | Instructions | Peak memory |
+|---|---|---|---|---|
+| New, run 1 | 3.0 → 4.0 | 336 s | 8.18 × 10¹² | 6.0 GB |
+| Base, run 1 | 3.9 → 3.5 | 353 s | 9.64 × 10¹² | 5.0 GB |
+| New, run 2 | 3.7 → 3.7 | 349 s | 9.57 × 10¹² | 4.9 GB |
+| Base, run 2 | 3.7 → 4.5 | 344 s | 9.62 × 10¹² | 5.0 GB |
+
+The two new runs differ by 15 % among themselves, more than the effect: run 1 is 15 % lower than its
+base, run 2 is 0.5 % lower. The profile bounds the gain: at most 3 % (the whole dependency step),
+about 0.5 to 1.5 % given the share of unselected files. Peak memory did not change beyond the spread.
+The load was 3 to 4 (other sessions building); wall time is not usable.
