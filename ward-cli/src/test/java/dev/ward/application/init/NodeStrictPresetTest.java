@@ -86,6 +86,7 @@ class NodeStrictPresetTest {
             null,
             false,
             null,
+            false,
             false
         );
 

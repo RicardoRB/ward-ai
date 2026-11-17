@@ -158,6 +158,7 @@ class NodeInitFilesTest {
         ci,
         agentRules,
         null,
+        false,
         false
     );
   }

@@ -13,6 +13,11 @@ public interface NativeHarnessLifecycle extends AgentIntegration {
   /** Returns the files installing under {@code root} would write. */
   NativeArtifactPlan artifacts(Path root);
 
+  /** Returns the files installing {@code request} under {@code root} would write. */
+  default NativeArtifactPlan artifacts(final Path root, final IntegrationRequest request) {
+    return artifacts(root);
+  }
+
   @Override
   default boolean installed(final Path projectRoot) {
     return NativeIntegrationSupport.installed(projectRoot, artifacts(projectRoot));
@@ -43,12 +48,21 @@ public interface NativeHarnessLifecycle extends AgentIntegration {
   }
 
   @Override
+  default List<PlannedFileChange> plan(final Path root, final IntegrationRequest request) {
+    return NativeArtifactPlans.plannedChanges(artifacts(root, request));
+  }
+
+  @Override
   default IntegrationResult integrate(final Path projectRoot, final boolean remove) {
     return integrate(projectRoot, remove ? IntegrationRequest.REMOVE : IntegrationRequest.INSTALL);
   }
 
   @Override
   default IntegrationResult integrate(final Path projectRoot, final IntegrationRequest request) {
-    return NativeIntegrationSupport.integrate(projectRoot, request, artifacts(projectRoot));
+    return NativeIntegrationSupport.integrate(
+        projectRoot,
+        request,
+        artifacts(projectRoot, request)
+    );
   }
 }

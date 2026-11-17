@@ -63,6 +63,7 @@ class NodeCoverageSelectionTest {
             null,
             false,
             null,
+            false,
             false
         )
     );

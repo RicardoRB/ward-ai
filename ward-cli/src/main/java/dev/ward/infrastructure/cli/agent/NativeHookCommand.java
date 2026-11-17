@@ -6,6 +6,7 @@ import dev.ward.domain.agent.NativeHookInput;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.json.JsonCodec;
 import dev.ward.domain.json.JsonCodecException;
+import dev.ward.domain.secrets.PromptInput;
 import dev.ward.infrastructure.cli.ExitCodes;
 import dev.ward.infrastructure.cli.ProjectOptions;
 import java.io.InputStream;
@@ -68,8 +69,13 @@ public final class NativeHookCommand implements Callable<Integer> {
   public Integer call() {
     try {
       final NativeHookProtocol protocol = protocol();
+      final String payload = eventStdin ? NativeHookEvents.payload(input) : "";
+      final Optional<PromptInput> prompt = NativeHookEvents.prompt(payload, protocol, codec);
+      if (prompt.isPresent()) {
+        return submitPrompt(protocol, prompt.get());
+      }
       final NativeHookInput event =
-          eventStdin ? NativeHookEvents.read(input, protocol, codec) : NativeHookInput.empty();
+          eventStdin ? NativeHookEvents.parse(payload, protocol, codec) : NativeHookInput.empty();
       if (protocol.turnEnds(event)) {
         return NativeHookTurnEnd.deliver(
             protocol,
@@ -100,6 +106,13 @@ public final class NativeHookCommand implements Callable<Integer> {
           );
       return ExitCodes.ERROR;
     }
+  }
+
+  /** Blocks a prompt that holds a secret through the harness's own rejection; else lets it go. */
+  private Integer submitPrompt(final NativeHookProtocol protocol, final PromptInput prompt) {
+    HookPrompts.blockReason(hookChecks, options.directory(), prompt)
+        .ifPresent(reason -> output().println(protocol.blockPrompt(reason)));
+    return ExitCodes.OK;
   }
 
   private NativeHookProtocol protocol() {

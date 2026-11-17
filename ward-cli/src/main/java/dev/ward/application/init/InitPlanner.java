@@ -73,7 +73,7 @@ final class InitPlanner {
             WardArchitecture.of(selection, project, files.architectureTables())
         )
     );
-    changes.addAll(installer.plan(project, selection.integrations()));
+    changes.addAll(installer.plan(project, selection.integrations(), selection.promptHook()));
     if (selection.qualityHooks()) {
       changes.addAll(catalog.get().qualityHooks().plan(project));
     }

@@ -5,6 +5,7 @@ import dev.ward.domain.config.WardException;
 import dev.ward.domain.gate.CheckReport;
 import dev.ward.domain.json.JsonCodec;
 import dev.ward.domain.learning.LearningOutcome;
+import dev.ward.domain.secrets.PromptInput;
 import dev.ward.infrastructure.cli.ExitCodes;
 import dev.ward.infrastructure.cli.ProjectOptions;
 import java.io.PrintWriter;
@@ -83,6 +84,11 @@ public final class ClaudeCodeHookCommand implements Callable<Integer> {
     }
     final ClaudeHookEvent event =
         readsPayload() ? ClaudeHookEvent.read(stdin.stream(), codec) : new ClaudeHookEvent();
+    if (event.isPrompt()) {
+      HookPrompts.blockReason(hookChecks, options.directory(), new PromptInput(event.prompt))
+          .ifPresent(reason -> output().println(ClaudeHookResponses.blockStop(codec, reason)));
+      return ExitCodes.OK;
+    }
     final boolean stop = event.isStop();
     LOGGER.log(Level.INFO, () -> "event=claude-hook-start kind=" + (stop ? "stop" : "post-tool"));
     final FutureTask<Integer> execution =

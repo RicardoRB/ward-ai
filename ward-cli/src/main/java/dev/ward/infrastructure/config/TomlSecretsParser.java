@@ -22,7 +22,16 @@ final class TomlSecretsParser {
   private static final String HISTORY_SINCE = "history-since";
   private static final String EXCLUDE_PATHS = "exclude-paths";
   private static final Set<String> KEYS =
-      Set.of("uses", "enabled", "profiles", "paths", SCAN_HISTORY, HISTORY_SINCE, EXCLUDE_PATHS);
+      Set.of(
+          "uses",
+          "enabled",
+          "profiles",
+          "paths",
+          "prompts",
+          SCAN_HISTORY,
+          HISTORY_SINCE,
+          EXCLUDE_PATHS
+      );
 
   private TomlSecretsParser() {}
 
@@ -38,7 +47,12 @@ final class TomlSecretsParser {
     }
     final boolean scan = scanHistory(where, gate);
     final Optional<LocalDate> since = since(where, gate, scan);
-    return new SecretsOptions(scan, since, excludePaths(where, gate));
+    return new SecretsOptions(
+        scan,
+        since,
+        excludePaths(where, gate),
+        TomlPromptsParser.parse(where, type, gate)
+    );
   }
 
   private static boolean scanHistory(final String where, final TomlTable gate) {

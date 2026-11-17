@@ -30,6 +30,7 @@ final class TomlGateParser {
     final List<String> command = TomlCommandParser.parse(where, gate, uses);
     final String type = type(uses, command);
     final boolean enabled = enabled(where, gate);
+    TomlPromptsParser.parse(where, type, gate);
     return new GateConfiguration(
         name,
         type,

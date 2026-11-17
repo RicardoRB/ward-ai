@@ -37,6 +37,9 @@ public final class SecretScanCheck implements TextCheck {
     if (skipsFile(file.path())) {
       return List.of();
     }
+    if (rule.path().isPresent() && !file.hasPath()) {
+      return List.of();
+    }
     if (rule.path().isPresent()) {
       final boolean onPath = rule.path().get().matcher(file.path()).find();
       if (rule.regex().isEmpty()) {

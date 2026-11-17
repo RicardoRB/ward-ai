@@ -46,6 +46,14 @@ public final class IntegrateCommand implements Callable<Integer> {
   @Option(names = "--remove", description = "Remove only Ward-owned integration content.")
   private boolean remove;
 
+  @Option(
+      names = "--prompt-hook",
+      description =
+          "Also register the hook that blocks a prompt containing a secret, when the agent has a"
+              + " prompt event that can reject a prompt."
+  )
+  private boolean promptHook;
+
   private final IntegrationService service;
   private final InputStream input;
 
@@ -67,7 +75,11 @@ public final class IntegrateCommand implements Callable<Integer> {
       agent = selectAgent();
     }
     final IntegrationResult result =
-        service.integrate(agent, options.directory(), new IntegrationRequest(remove));
+        service.integrate(
+            agent,
+            options.directory(),
+            new IntegrationRequest(remove).withPromptHook(promptHook)
+        );
     output().printf("%s: %s%n", result.status(), result.message());
     if (!result.capabilities().isEmpty()) {
       output()

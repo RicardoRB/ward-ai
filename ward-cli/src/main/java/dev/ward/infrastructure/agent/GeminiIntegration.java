@@ -44,12 +44,21 @@ public final class GeminiIntegration implements NativeHarnessAdapter {
    */
   @Override
   public String configContent() {
+    return configContent(false);
+  }
+
+  @Override
+  public String configContent(final boolean prompts) {
     return "{\n  \"hooks\": {\n"
         + "    \"AfterTool\": ["
         + group("^(write_file|replace)$", "post", CHECK_TIMEOUT_MILLIS)
         + "],\n    \"AfterAgent\": ["
         + group(null, "post", CHECK_TIMEOUT_MILLIS)
-        + "]\n  }\n}\n";
+        + "]"
+        + (prompts
+            ? ",\n    \"BeforeAgent\": [" + group(null, "post", CHECK_TIMEOUT_MILLIS) + "]"
+            : "")
+        + "\n  }\n}\n";
   }
 
   private static String group(final String matcher, final String phase, final int timeout) {

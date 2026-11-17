@@ -28,19 +28,30 @@ public final class SecretGates {
    * @throws WardException if a rule file is unusable
    */
   public QualityGate create(final GateConfiguration check, final List<String> focus) {
+    return new SecretGate(check, setup(check), ports, history, focus);
+  }
+
+  /**
+   * Builds the scan of agent prompts for {@code check}.
+   *
+   * @throws WardException if a rule file is unusable
+   */
+  public PromptScan promptScan(final GateConfiguration check) {
+    return new PromptScan(check, setup(check), ports);
+  }
+
+  private RuleSetup setup(final GateConfiguration check) {
     final AnalysisRuleLoad loaded = ports.rules().load();
     if (!loaded.configurationErrors().isEmpty()) {
       throw new WardException(String.join(" ", loaded.configurationErrors()));
     }
     final List<RuleDefinition> text =
         loaded.rules().stream().filter(rule -> rule.capability() == RuleCapability.TEXT).toList();
-    final RuleSetup setup =
-        new ConfiguredRuleSetup(
-            check.name(),
-            check.rulesFile(),
-            new ConfiguredRuleSetup.Choices(text, false, loaded.rules(), List.of()),
-            ports.rules()
-        );
-    return new SecretGate(check, setup, ports, history, focus);
+    return new ConfiguredRuleSetup(
+        check.name(),
+        check.rulesFile(),
+        new ConfiguredRuleSetup.Choices(text, false, loaded.rules(), List.of()),
+        ports.rules()
+    );
   }
 }

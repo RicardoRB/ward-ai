@@ -79,6 +79,15 @@ public class InitCommand implements Callable<Integer> {
   private Boolean qualityHooks;
 
   @Option(
+      names = "--prompt-hook",
+      description =
+          "Also register the agent hook that blocks a prompt containing a secret, for the"
+              + " integrations that have a prompt event. It scans only while ward.toml has"
+              + " [checks.secrets.prompts] enabled = true."
+  )
+  private boolean promptHook;
+
+  @Option(
       names = "--shared-hooks",
       arity = "0..1",
       paramLabel = "<dir>",
@@ -204,7 +213,7 @@ public class InitCommand implements Callable<Integer> {
       apply.hooks(chosen, sharedHooks, dryRun, terminal, yesOption);
       return ExitCodes.OK;
     }
-    final List<InitApply.Target> targets =
+    final List<InitApply.Target> resolved =
         new InitTargetAnswers(
             answers(),
             new InitPrompts(wizard, confirmations, new QuestionProgress(output())),
@@ -213,9 +222,11 @@ public class InitCommand implements Callable<Integer> {
             output()
         )
             .resolve(init, chosen);
+    final List<InitApply.Target> targets = InitPromptHook.select(resolved, promptHook);
     if (targets.isEmpty()) {
       return ExitCodes.OK;
     }
+    InitPromptHook.report(output(), targets, promptHook);
     final InitApply.Target first = targets.getFirst();
     final int exit =
         targets.equals(List.of(first))

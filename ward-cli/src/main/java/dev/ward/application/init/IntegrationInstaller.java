@@ -43,13 +43,14 @@ final class IntegrationInstaller {
   void install(
       final Project project,
       final List<String> ids,
+      final boolean promptHook,
       final List<IntegrationResult> installed
   ) {
     for (final String id : ids) {
       if (InitSetupCatalog.NO_INTEGRATION.equals(id)) {
         continue;
       }
-      final IntegrationResult result = install(project, id);
+      final IntegrationResult result = install(project, id, promptHook);
       installed.add(result);
       if (result.status() == IntegrationResult.Status.CONFLICT) {
         throw new WardException(
@@ -62,7 +63,11 @@ final class IntegrationInstaller {
   }
 
   /** Plans each selected integration's install, in selection order, without writing. */
-  List<PlannedFileChange> plan(final Project project, final List<String> ids) {
+  List<PlannedFileChange> plan(
+      final Project project,
+      final List<String> ids,
+      final boolean promptHook
+  ) {
     if (ids.stream().noneMatch(id -> !InitSetupCatalog.NO_INTEGRATION.equals(id))) {
       return List.of();
     }
@@ -77,7 +82,11 @@ final class IntegrationInstaller {
               return adapter
                   .plan(
                       root(project, adapter),
-                      request(project, adapter, IntegrationRequest.INSTALL)
+                      request(
+                          project,
+                          adapter,
+                          IntegrationRequest.INSTALL.withPromptHook(promptHook)
+                      )
                   )
                   .stream();
             }
@@ -119,13 +128,20 @@ final class IntegrationInstaller {
     }
   }
 
-  private IntegrationResult install(final Project project, final String id) {
+  private IntegrationResult install(
+      final Project project,
+      final String id,
+      final boolean promptHook
+  ) {
     if (integrations.isEmpty()) {
       throw new WardException("Agent integrations are unavailable in this runtime.");
     }
     final AgentIntegration adapter = integration(id);
     return adapter
-        .integrate(root(project, adapter), request(project, adapter, IntegrationRequest.INSTALL))
+        .integrate(
+            root(project, adapter),
+            request(project, adapter, IntegrationRequest.INSTALL.withPromptHook(promptHook))
+        )
         .withCapabilities(adapter.capabilities());
   }
 

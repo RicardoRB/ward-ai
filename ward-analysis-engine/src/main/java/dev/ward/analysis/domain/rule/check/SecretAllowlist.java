@@ -65,7 +65,10 @@ public final class SecretAllowlist {
   }
 
   boolean pathMatches(final String path) {
-    return !paths.isEmpty() && pathAnswers.computeIfAbsent(path, this::searchPaths);
+    return !paths.isEmpty() && !path.isEmpty() && pathAnswers.computeIfAbsent(
+        path,
+        this::searchPaths
+    );
   }
 
   private boolean searchPaths(final String path) {

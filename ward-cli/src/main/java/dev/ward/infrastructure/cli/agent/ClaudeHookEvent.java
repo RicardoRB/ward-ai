@@ -18,12 +18,15 @@ public final class ClaudeHookEvent {
   private static final int MAX_PAYLOAD_BYTES = 1_048_576;
 
   private static final String STOP = "Stop";
+  private static final String PROMPT = "UserPromptSubmit";
 
   @JsonProperty("hook_event_name")
   public String hookEventName;
 
   @JsonProperty("tool_input")
   public ToolInput toolInput;
+
+  public String prompt;
 
   @JsonProperty("stop_hook_active")
   public boolean stopHookActive;
@@ -50,6 +53,10 @@ public final class ClaudeHookEvent {
       LOGGER.log(Level.INFO, "event=claude-hook-payload-ignored reason=invalid-json");
       return new ClaudeHookEvent();
     }
+  }
+
+  boolean isPrompt() {
+    return PROMPT.equals(hookEventName) && prompt != null;
   }
 
   boolean isStop() {

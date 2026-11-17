@@ -7,7 +7,12 @@ import java.util.function.Predicate;
 
 /** Operations for preserving unrelated hook entries while adding or removing Ward hooks. */
 final class ClaudeHookSettings {
-  private static final List<String> MANAGED_EVENTS = List.of("PostToolUse", "Stop", "PreToolUse");
+  private static final List<String> MANAGED_EVENTS = List.of(
+      "PostToolUse",
+      "Stop",
+      "PreToolUse",
+      "UserPromptSubmit"
+  );
 
   private ClaudeHookSettings() {}
 

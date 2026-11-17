@@ -32,6 +32,8 @@ import picocli.CommandLine;
 
 /** Runs {@code init} against a temporary Maven project with real adapters and chosen input. */
 final class InitCommandFixture {
+  /** The agent integrations init offers; tests may replace them before running. */
+  Set<dev.ward.domain.agent.AgentIntegration> integrations = Set.of(new ClaudeCodeIntegration());
   private final Path root;
   private final BuildToolConfiguration buildTools;
   private final String[] executables;
@@ -137,7 +139,7 @@ final class InitCommandFixture {
   private InitService service() {
     return new InitService(
         new ProjectDetector(new FileSystemProjectInspection()),
-        Set.of(new ClaudeCodeIntegration()),
+        integrations,
         new InitSetupCatalog(
             new dev.ward.application.init.InitPorts(
                 new FakeEnvironmentInspection(executables) {

@@ -169,6 +169,12 @@ platform = "iOS Simulator"
 `platform` without `-destination`, or `platform` on another check, is a configuration error that
 names the key and the allowed values.
 
+## Prompt scanning
+
+An optional `[checks.<name>.prompts]` table turns on the scan of agent prompts for a check. It holds
+`enabled` (default `false`). Only `secrets` checks support it: the table on any other check is a
+configuration error that names the check. See [Scanning prompts](/configuration/secrets/#scanning-prompts).
+
 ## Partial checks
 
 An optional `[checks.<name>.paths]` table controls how a check responds to an edited path passed to

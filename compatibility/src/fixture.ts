@@ -63,6 +63,8 @@ export interface FixtureOptions {
   timeoutMs?: number;
   /** Gates passed to `ward init`; defaults to `compile`; init always adds `ward` and `ward-format`. */
   gates?: string[];
+  /** Also registers the prompt hook, which turns on `[checks.secrets.prompts]`. */
+  promptHook?: boolean;
 }
 
 export class FixtureError extends Error {}
@@ -122,7 +124,14 @@ export async function createFixture(options: FixtureOptions): Promise<Fixture> {
       join(root, "ward.toml"),
       '\n[checks.format]\nenabled = true\nprofiles = ["default", "edit"]\ncommand = "./mvnw format"\n'
     );
-    await expectSuccess(`ward integrate ${options.harness}`, ward(["integrate", options.harness]));
+    if (options.promptHook) {
+      // `ward integrate --prompt-hook` enables the prompts table of this check itself.
+      appendFileSync(join(root, "ward.toml"), '\n[checks.secrets]\nuses = "secrets"\n');
+    }
+    await expectSuccess(
+      `ward integrate ${options.harness}`,
+      ward(["integrate", options.harness, ...(options.promptHook ? ["--prompt-hook"] : [])])
+    );
     return fixture;
   } catch (error) {
     fixture.cleanup();
