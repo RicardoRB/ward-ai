@@ -7,7 +7,7 @@ uses = "ward-format"
 profiles = ["default", "pre-commit", "pre-push", "ci"]
 
 [checks.format.paths]
-match = ["**/*.java"]
+match = ["**/*.{java,kt,kts,ts,tsx,js,jsx,mjs,cjs,py,swift}"]
 full = [".editorconfig", "ward.toml"]
 
 # Ward's own rules replace the Checkstyle, PMD and SpotBugs gates (#347). ward-rules.toml lists the
