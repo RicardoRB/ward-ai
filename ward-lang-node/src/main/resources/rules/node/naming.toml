@@ -6,7 +6,6 @@ language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
 category = "naming"
-presets = ["standard", "strict"]
 body = ""
 
 [[rules]]
@@ -15,7 +14,6 @@ language = "JAVASCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
 category = "naming"
-presets = ["standard", "strict"]
 body = ""
 
 [[rules]]

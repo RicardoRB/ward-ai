@@ -7,7 +7,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "correctness"
-presets = ["standard", "strict"]
 body = '''
 check = "identifier-pattern"
 kinds = ["fieldDeclaration"]

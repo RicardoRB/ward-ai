@@ -140,16 +140,6 @@ ward:python/missing-function-docstring | CTFd/__init__.py:81 | tp | the function
 ward:python/missing-function-docstring | CTFd/__init__.py:153 | tp | the function has no docstring
 ward:python/missing-function-docstring | CTFd/__init__.py:168 | tp | the function has no docstring
 ward:python/missing-function-docstring | CTFd/__init__.py:182 | tp | the function has no docstring
-ward:python/missing-javadoc-method | CTFd/__init__.py:73 | tp | the function has no docstring
-ward:python/missing-javadoc-method | CTFd/__init__.py:81 | tp | the function has no docstring
-ward:python/missing-javadoc-method | CTFd/__init__.py:153 | tp | the function has no docstring
-ward:python/missing-javadoc-method | CTFd/__init__.py:168 | tp | the function has no docstring
-ward:python/missing-javadoc-method | CTFd/__init__.py:182 | tp | the function has no docstring
-ward:python/missing-javadoc-type | CTFd/__init__.py:40 | tp | the class has no docstring
-ward:python/missing-javadoc-type | CTFd/__init__.py:51 | tp | the class has no docstring
-ward:python/missing-javadoc-type | CTFd/api/v1/awards.py:22 | tp | the class has no docstring
-ward:python/missing-javadoc-type | CTFd/api/v1/awards.py:26 | tp | the class has no docstring
-ward:python/missing-javadoc-type | CTFd/api/v1/awards.py:40 | tp | the class has no docstring
 ward:python/missing-module-docstring | CTFd/__init__.py:1 | tp | the module has no docstring
 ward:python/missing-module-docstring | CTFd/admin/__init__.py:1 | tp | the module has no docstring
 ward:python/missing-module-docstring | CTFd/admin/challenges.py:1 | tp | the module has no docstring

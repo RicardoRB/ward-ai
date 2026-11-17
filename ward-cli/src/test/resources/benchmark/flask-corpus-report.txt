@@ -4,7 +4,7 @@
 # A labelled finding is true (tp), false (fp) or undetermined (un), as read from the code at its line; the labels are in flask-corpus-labels.txt. Every finding of a security rule is labelled; of another rule, its first 5 findings in path order.
 # The measured cost of the run is in flask-corpus-cost.txt.
 # Regenerate: ./mvnw -pl ward-cli -am -Djacoco.skip=true -Dtest=FlaskCorpusSmokeTest -Dward.benchmark.flask-corpus=<dir> -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
-files 333 | findings 4854
+files 333 | findings 3695
 ward:python/abbreviation-as-word-in-name | findings 21 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/abstract-base-class-without-abstract-method | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/abstract-class-instantiated | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -184,8 +184,6 @@ ward:python/method-name | findings 14 | labelled 5 | tp 0 | fp 0 | un 5
 ward:python/misplaced-format-function | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/missing-class-docstring | findings 316 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/missing-function-docstring | findings 843 | labelled 5 | tp 5 | fp 0 | un 0
-ward:python/missing-javadoc-method | findings 843 | labelled 5 | tp 5 | fp 0 | un 0
-ward:python/missing-javadoc-type | findings 316 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/missing-kwoa | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/missing-module-docstring | findings 275 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/missing-parentheses-for-call-in-test | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -262,7 +260,6 @@ ward:python/redefined-argument-from-local | findings 0 | labelled 0 | tp 0 | fp 
 ward:python/redefined-builtin | findings 22 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/redefined-slots-in-subclass | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/redefined-while-unused | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:python/redundant-keyword-arg | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/redundant-tuple-in-exception-handler | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/redundant-u-string-prefix | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/redundant-unittest-assert | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -328,12 +325,9 @@ ward:python/too-many-nested-blocks | findings 10 | labelled 5 | tp 5 | fp 0 | un
 ward:python/too-many-positional-arguments | findings 10 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/too-many-positional-sub-patterns | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/too-many-public-methods | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:python/too-many-star-expressions | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/too-many-statements | findings 27 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/trailing-comma-tuple | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:python/trailing-whitespace | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/true-false-comparison | findings 69 | labelled 5 | tp 0 | fp 5 | un 0
-ward:python/truncated-format-string | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/try-except-continue | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
 ward:python/try-except-raise | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/type-comparison | findings 3 | labelled 3 | tp 3 | fp 0 | un 0

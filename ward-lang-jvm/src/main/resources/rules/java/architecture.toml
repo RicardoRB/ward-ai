@@ -22,7 +22,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "architecture"
-presets = ["strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["expression"]

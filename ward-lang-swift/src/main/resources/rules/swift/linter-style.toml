@@ -247,7 +247,6 @@ language = "swift"
 capability = "SYNTAX"
 severity = "warning"
 category = "correctness"
-presets = ["standard", "strict"]
 body = '''
 check = "identifier-pattern"
 kinds = ["constant_declaration", "variable_declaration", "function_declaration", "enum_case_name"]

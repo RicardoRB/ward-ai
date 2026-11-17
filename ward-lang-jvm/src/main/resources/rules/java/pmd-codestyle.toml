@@ -50,7 +50,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "style"
-presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["variableDeclaratorId"]
@@ -262,7 +261,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "style"
-presets = ["standard", "strict"]
 options.pattern = { type = "regex" }
 body = '''
 check = "identifier-pattern"

@@ -175,7 +175,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "concurrency"
-presets = ["standard", "strict"]
 body = '''
 check = "guarded-by"
 skip-private = true

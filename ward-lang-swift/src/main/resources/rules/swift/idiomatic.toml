@@ -455,7 +455,6 @@ language = "swift"
 capability = "SYNTAX"
 severity = "warning"
 category = "style"
-presets = ["strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["declaration_modifier"]

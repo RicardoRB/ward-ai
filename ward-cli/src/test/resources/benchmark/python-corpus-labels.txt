@@ -91,16 +91,6 @@ ward:python/missing-function-docstring | hc/accounts/admin.py:61 | tp | the func
 ward:python/missing-function-docstring | hc/accounts/admin.py:149 | tp | the function has no docstring
 ward:python/missing-function-docstring | hc/accounts/admin.py:170 | tp | the function has no docstring
 ward:python/missing-function-docstring | hc/accounts/admin.py:177 | tp | the function has no docstring
-ward:python/missing-javadoc-method | hc/accounts/admin.py:51 | tp | the public function has no docstring; the same place as missing-function-docstring
-ward:python/missing-javadoc-method | hc/accounts/admin.py:61 | tp | the public function has no docstring; the same place as missing-function-docstring
-ward:python/missing-javadoc-method | hc/accounts/admin.py:149 | tp | the public function has no docstring; the same place as missing-function-docstring
-ward:python/missing-javadoc-method | hc/accounts/admin.py:170 | tp | the public function has no docstring; the same place as missing-function-docstring
-ward:python/missing-javadoc-method | hc/accounts/admin.py:177 | tp | the public function has no docstring; the same place as missing-function-docstring
-ward:python/missing-javadoc-type | hc/accounts/admin.py:46 | tp | the public class has no docstring; the same place as missing-class-docstring
-ward:python/missing-javadoc-type | hc/accounts/admin.py:71 | tp | the public class has no docstring; the same place as missing-class-docstring
-ward:python/missing-javadoc-type | hc/accounts/admin.py:77 | tp | the public class has no docstring; the same place as missing-class-docstring
-ward:python/missing-javadoc-type | hc/accounts/admin.py:78 | tp | the public class has no docstring; the same place as missing-class-docstring
-ward:python/missing-javadoc-type | hc/accounts/admin.py:252 | tp | the public class has no docstring; the same place as missing-class-docstring
 ward:python/missing-module-docstring | docker/gunicorn.conf.py:1 | tp | the module has no docstring
 ward:python/missing-module-docstring | hc/accounts/admin.py:1 | tp | the module has no docstring
 ward:python/missing-module-docstring | hc/accounts/backends.py:1 | tp | the module has no docstring

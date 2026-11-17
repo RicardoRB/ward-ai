@@ -70,7 +70,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "style"
-presets = ["strict"]
 body = '''
 check = "fields-at-start"
 message = "field is declared after a method, constructor or nested type; declare fields at the top of the class"

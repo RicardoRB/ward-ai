@@ -566,7 +566,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "style"
-presets = ["standard", "strict"]
 body = '''
 check = "type-name-mismatch"
 message = "type '{value}' is not named after its file"

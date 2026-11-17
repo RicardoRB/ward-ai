@@ -6,7 +6,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "style"
-presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["integerLiteral"]

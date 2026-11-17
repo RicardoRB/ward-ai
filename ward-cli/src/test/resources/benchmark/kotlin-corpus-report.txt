@@ -6,7 +6,7 @@
 # Regenerate: ./mvnw -pl ward-cli -am -Dtest=KotlinCorpusSmokeTest -Dward.corpus.kotlin=<dir> -Djacoco.skip=true -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
 okio | files 313 | not analysed 0
 spring-petclinic-kotlin | files 38 | not analysed 0
-rules 156 | not run (need type facts) 10 | findings 4536
+rules 154 | not run (need type facts) 10 | findings 4454
 ward:kotlin/array-primitive | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/avoid-referential-equality | not run
 ward:kotlin/backing-property-naming | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -34,7 +34,6 @@ ward:kotlin/empty-try-block | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/empty-when-block | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/empty-while-block | findings 4 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/enum-entry-name-case | findings 77 | labelled 3 | tp 3 | fp 0 | un 0
-ward:kotlin/enum-naming | findings 77 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/environment-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/equals-always-returns-true-or-false | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/equals-null-call | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -92,7 +91,6 @@ ward:kotlin/no-single-line-block-comment | findings 34 | labelled 3 | tp 3 | fp 
 ward:kotlin/no-unit-return | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/object-literal-to-lambda | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/object-property-naming | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:kotlin/one-statement-per-line | findings 5 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/optional-abstract-keyword | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/overload-methods-declaration-order | findings 43 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/parameter-count | findings 11 | labelled 3 | tp 3 | fp 0 | un 0

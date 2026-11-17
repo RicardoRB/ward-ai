@@ -26,6 +26,8 @@ filters combine.
 | `--selected` | Keeps only the rules that `ward-rules.toml` selects. Without the file, the `standard` preset applies. |
 | `--format text\|json` | Output format (default `text`). With `json`, stdout holds only the JSON document `{"rules": [...]}`. |
 
+**One place, one finding.** A preset never reports the same file, line and column twice for the same reason. Where two rules did (for example `missing-javadoc-method` and `missing-function-docstring` in Python, or `method-name` and `nm-method-naming-convention` in Java), one stays in `standard` and `strict` and the other belongs to no preset: it stays in the catalog, and `ward rules list --preset none` shows it, so `include` can still turn it on. A pair that reports the same place for different reasons stays in the preset on purpose. Both lists are checked by a test, so a new duplicate fails the build.
+
 A filter value that is not known is a usage error, and the command names the valid values.
 
 ## show

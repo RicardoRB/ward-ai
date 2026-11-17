@@ -85,7 +85,6 @@ language = "swift"
 capability = "SYNTAX"
 severity = "warning"
 category = "style"
-presets = ["standard", "strict"]
 body = '''
 check = "swift-generic-type-name"
 message = "generic type name should be alphanumeric, start with an uppercase letter and have at most 20 characters"

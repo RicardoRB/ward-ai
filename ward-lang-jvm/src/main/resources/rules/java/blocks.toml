@@ -9,7 +9,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "style"
-presets = ["standard", "strict"]
 options.allow-empty-loop-body = { type = "boolean" }
 body = '''
 check = "need-braces"
@@ -65,7 +64,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "style"
-presets = ["strict"]
 options.allow-in-switch-case = { type = "boolean" }
 body = '''
 check = "avoid-nested-blocks"
@@ -79,7 +77,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "style"
-presets = ["strict"]
 options.option = { type = "enum", values = ["alone", "same"] }
 body = '''
 check = "right-curly"

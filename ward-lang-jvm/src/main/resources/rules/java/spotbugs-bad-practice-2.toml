@@ -76,7 +76,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "correctness"
-presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["classDeclaration"]

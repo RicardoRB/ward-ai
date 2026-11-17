@@ -418,7 +418,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "complexity"
-presets = ["strict"]
 options.ignore-annotated-by = { type = "string-list" }
 body = '''
 check = "hide-utility-class-constructor"
@@ -503,7 +502,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "complexity"
-presets = ["strict"]
 options.allow-public-final-fields = { type = "boolean" }
 options.allow-public-immutable-fields = { type = "boolean" }
 options.package-allowed = { type = "boolean" }
@@ -529,7 +527,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "complexity"
-presets = ["strict"]
 options.ignored-annotations = { type = "string-list" }
 options.required-javadoc-phrase = { type = "regex" }
 body = '''

@@ -128,7 +128,6 @@ language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
 category = "style"
-presets = ["standard", "strict"]
 body = '''
 check = "node-overload-grouping"
 message = "overloaded method must be declared next to its other overloads"

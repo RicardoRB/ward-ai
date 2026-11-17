@@ -24,9 +24,6 @@ ward:kotlin/empty-while-block | okio/okio/src/zlibTest/kotlin/okio/GzipSinkTest.
 ward:kotlin/enum-entry-name-case | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/internal/preview1/Errno.kt:132 | tp | lower-case entry, named after the constant of an external interface
 ward:kotlin/enum-entry-name-case | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/internal/preview1/Errno.kt:192 | tp | lower-case entry, named after the constant of an external interface
 ward:kotlin/enum-entry-name-case | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/internal/preview1/Errno.kt:39 | tp | lower-case entry, named after the constant of an external interface
-ward:kotlin/enum-naming | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/internal/preview1/Errno.kt:132 | tp | lower-case entry, named after the constant of an external interface
-ward:kotlin/enum-naming | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/internal/preview1/Errno.kt:192 | tp | lower-case entry, named after the constant of an external interface
-ward:kotlin/enum-naming | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/internal/preview1/Errno.kt:39 | tp | lower-case entry, named after the constant of an external interface
 ward:kotlin/file-length | okio/okio-fakefilesystem/src/commonMain/kotlin/okio/fakefilesystem/FakeFileSystem.kt:15 | tp | the file is longer than 500 lines
 ward:kotlin/file-length | okio/okio/src/commonTest/kotlin/okio/ByteStringTest.kt:15 | tp | the file is longer than 500 lines
 ward:kotlin/file-length | okio/okio/src/commonMain/kotlin/okio/BufferedSource.kt:15 | tp | the file is longer than 500 lines
@@ -87,9 +84,6 @@ ward:kotlin/no-name-shadowing | okio/okio/src/commonMain/kotlin/okio/internal/Bu
 ward:kotlin/no-single-line-block-comment | okio/okio/src/commonMain/kotlin/okio/Utf8.kt:193 | tp | a block comment on one line that switches a linter rule
 ward:kotlin/no-single-line-block-comment | okio/okio/src/jvmTest/kotlin/okio/TestUtil.kt:279 | tp | a block comment on one line that switches a linter rule
 ward:kotlin/no-single-line-block-comment | okio/okio/src/commonMain/kotlin/okio/internal/Buffer.kt:1023 | tp | a block comment on one line that switches a linter rule
-ward:kotlin/one-statement-per-line | okio/okio/src/nativeTest/kotlin/okio/DeflaterSinkTest.kt:104 | tp | two statements separated by a semicolon inside a one-line lambda
-ward:kotlin/one-statement-per-line | okio/okio/src/nativeTest/kotlin/okio/DeflaterSinkTest.kt:96 | tp | two statements separated by a semicolon inside a one-line lambda
-ward:kotlin/one-statement-per-line | okio/okio/src/nativeTest/kotlin/okio/InflaterSourceTest.kt:163 | tp | two statements separated by a semicolon inside a one-line lambda
 ward:kotlin/overload-methods-declaration-order | okio/okio/src/commonMain/kotlin/okio/BufferedSource.kt:339 | tp | another function stands between the two overloads
 ward:kotlin/overload-methods-declaration-order | okio/okio/src/jvmMain/kotlin/okio/RealBufferedSink.kt:94 | tp | writeAll stands between this write and the write overloads before it
 ward:kotlin/overload-methods-declaration-order | okio/okio/src/jvmMain/kotlin/okio/NioFileSystemWrappingFileSystem.kt:65 | tp | listOrNull stands between the two list overloads

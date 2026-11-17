@@ -50,9 +50,6 @@ ward:swift/google-right-curly | sample-food-truck/FoodTruckKit/Sources/Store/Sto
 ward:swift/hidden-field | alamofire/Source/Core/Session.swift:971 | tp | a parameter or local has the name of a property of the type
 ward:swift/hidden-field | alamofire/Tests/ServerTrustEvaluatorTests.swift:130 | un | a local in a static function; the property it would hide was not found by reading the file
 ward:swift/hidden-field | alamofire/Example/Source/DetailViewController.swift:109 | tp | a local bound by if let has the name of a property of the type
-ward:swift/identifier-name | alamofire/Source/Features/EventMonitor.swift:707 | tp | the name is longer than 40 characters or shorter than 3
-ward:swift/identifier-name | alamofire/Tests/RequestTests.swift:1433 | tp | the name is longer than 40 characters or shorter than 3
-ward:swift/identifier-name | alamofire/Source/Alamofire.swift:37 | tp | AF starts with a capital letter and has two characters
 ward:swift/inclusive-language | alamofire/Example/Source/MasterViewController.swift:2 | un | the word is in the file header comment, as part of the file name
 ward:swift/inclusive-language | alamofire/Example/Source/MasterViewController.swift:28 | tp | the type name contains master
 ward:swift/inclusive-language | alamofire/Source/Features/URLEncodedFormEncoder.swift:176 | fp | the word is part of a URL in a documentation comment (a branch name), which the author cannot change
@@ -72,12 +69,6 @@ ward:swift/local-final-variable-name | alamofire/Tests/ConcurrencyTests.swift:83
 ward:swift/magic-number | sample-food-truck/App/Truck/SocialFeedPostView.swift:71 | tp | a number literal other than -1, 0, 1 and 2 in an expression
 ward:swift/magic-number | alamofire/Source/Features/RequestCompression.swift:108 | tp | a number literal other than -1, 0, 1 and 2 in an expression
 ward:swift/magic-number | alamofire/Tests/RequestInterceptorTests.swift:519 | tp | a number literal other than -1, 0, 1 and 2 in an expression
-ward:swift/member-name | alamofire/Source/Features/EventMonitor.swift:322 | tp | the property name starts with an underscore or a capital letter
-ward:swift/member-name | alamofire/Tests/InspectorEventMonitor.swift:46 | tp | the property name starts with an underscore or a capital letter
-ward:swift/member-name | alamofire/Source/Alamofire.swift:37 | tp | AF is a global constant in capitals
-ward:swift/method-name | alamofire/Source/Core/DownloadRequest.swift:372 | tp | the method name has an underscore
-ward:swift/method-name | alamofire/Tests/TLSEvaluationTests.swift:160 | tp | the method name has an underscore
-ward:swift/method-name | alamofire/Source/Core/DataRequest.swift:243 | tp | the method name has an underscore
 ward:swift/missing-javadoc-type | sample-food-truck/FoodTruckKit/Sources/Donut/DonutView.swift:57 | tp | a public type without a documentation comment
 ward:swift/missing-javadoc-type | alamofire/Tests/NSLoggingEventMonitor.swift:28 | tp | a public type without a documentation comment
 ward:swift/missing-javadoc-type | sample-food-truck/FoodTruckKit/Sources/Account/AccountStore.swift:19 | tp | a public type without a documentation comment
@@ -93,9 +84,6 @@ ward:swift/multiple-closures-with-trailing-closure | alamofire/Tests/CombineTest
 ward:swift/multiple-variable-declarations | alamofire/Tests/AuthenticationTests.swift:89 | tp | one let declares two constants
 ward:swift/multiple-variable-declarations | alamofire/Tests/AuthenticationTests.swift:181 | tp | one let declares two constants
 ward:swift/multiple-variable-declarations | alamofire/Tests/AuthenticationTests.swift:61 | tp | one let declares two constants
-ward:swift/naming | sample-food-truck/App/Store/StoreSupportView.swift:42 | tp | the name has an underscore
-ward:swift/naming | alamofire/Tests/TLSEvaluationTests.swift:159 | tp | the name has an underscore
-ward:swift/naming | sample-food-truck/App/Account/AccountView.swift:115 | tp | the name has an underscore
 ward:swift/nesting | sample-food-truck/Widgets/SegmentedGauge.swift:101 | tp | a type declared inside a type that is itself nested
 ward:swift/nesting | alamofire/Source/Core/WebSocketRequest.swift:44 | tp | a type declared inside a type that is itself nested
 ward:swift/nesting | alamofire/Tests/SessionTests.swift:193 | tp | a type declared inside a type that is itself nested

@@ -80,7 +80,6 @@ language = "kotlin"
 capability = "SYNTAX"
 severity = "error"
 category = "naming"
-presets = ["standard", "strict"]
 options.pattern = { type = "regex" }
 body = '''
 check = "text-pattern"

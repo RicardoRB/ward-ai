@@ -25,7 +25,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "naming"
-presets = ["standard", "strict"]
 options.pattern = { type = "regex" }
 body = '''
 check = "text-pattern"
@@ -43,7 +42,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "naming"
-presets = ["standard", "strict"]
 options.pattern = { type = "regex" }
 body = '''
 check = "text-pattern"
@@ -227,7 +225,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "naming"
-presets = ["standard", "strict"]
 options.pattern = { type = "regex" }
 body = '''
 check = "identifier-pattern"
