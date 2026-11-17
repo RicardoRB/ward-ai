@@ -20,11 +20,13 @@ import dev.ward.analysis.domain.rule.check.UndefinedNameCheck;
 import dev.ward.analysis.domain.rule.check.UnreachableCodeCheck;
 import dev.ward.analysis.domain.rule.check.UnreferencedNameCheck;
 import dev.ward.analysis.domain.rule.check.UnusedAssignmentCheck;
+import dev.ward.analysis.domain.rule.check.UnresolvedNameCheck;
 import dev.ward.analysis.domain.rule.check.UnusedBindingCheck;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Pattern;
 import org.tomlj.TomlParseResult;
 
 /**
@@ -67,14 +69,8 @@ public final class CoreCheckProvider implements CheckProvider {
             "unused-assignment",
             toml -> new UnusedAssignmentCheck(TomlValues.required(toml, MESSAGE))
         ),
-        entry(
-            "undefined-name",
-            toml ->
-                new UndefinedNameCheck(
-                    TomlValues.required(toml, MESSAGE),
-                    Set.copyOf(TomlValues.optionalStrings(toml, "env"))
-                )
-        ),
+        entry("undefined-name", CoreCheckProvider::undefinedName),
+        entry("unresolved-name", CoreCheckProvider::unresolvedName),
         entry("unused-binding", toml -> new UnusedBindingCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "unreachable-code",
@@ -98,6 +94,20 @@ public final class CoreCheckProvider implements CheckProvider {
         ),
         entry("preceding-comment", CoreCheckProvider::precedingComment),
         entry("secret-scan", SecretScanFactory::create)
+    );
+  }
+
+  private static RuleCheck undefinedName(final TomlParseResult toml) {
+    return new UndefinedNameCheck(
+        TomlValues.required(toml, MESSAGE),
+        Set.copyOf(TomlValues.optionalStrings(toml, "env"))
+    );
+  }
+
+  private static RuleCheck unresolvedName(final TomlParseResult toml) {
+    return new UnresolvedNameCheck(
+        TomlValues.required(toml, MESSAGE),
+        Pattern.compile(TomlValues.required(toml, "names"))
     );
   }
 

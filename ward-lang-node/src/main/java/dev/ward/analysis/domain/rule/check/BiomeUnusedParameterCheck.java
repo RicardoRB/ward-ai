@@ -17,7 +17,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Reports each function or arrow parameter that nothing reads. A name that starts with {@code _} is
+ * Reports each function or arrow parameter that nothing reads, except the parameters of an overload
+ * signature, which have no body to read them. A name that starts with {@code _} is
  * left alone. A destructured parameter is reported only when {@code ignoreRestSiblings} is false,
  * since the rule cannot yet tell which destructured names sit next to a rest element. shortcut:
  * with ignoreRestSiblings true every destructured parameter is skipped, not only the siblings of a
@@ -77,6 +78,7 @@ public final class BiomeUnusedParameterCheck implements RuleCheck {
 
   private boolean unused(final Binding binding, final UnitScopes scopes) {
     return binding.kind() == BindingKind.PARAMETER
+        && !binding.has(BindingFlag.TYPE_ONLY)
         && !binding.name().startsWith(IGNORED_PREFIX)
         && !(ignoreRestSiblings && binding.has(BindingFlag.DESTRUCTURED))
         && scopes.usesOf(binding).stream().noneMatch(use -> use.access() != ReferenceAccess.WRITE);

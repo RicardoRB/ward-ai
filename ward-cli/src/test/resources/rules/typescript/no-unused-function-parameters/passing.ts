@@ -13,3 +13,16 @@ const listen = (onConnection?: (socket: object) => void) => (socket: object) => 
   onConnection?.(socket);
 };
 console.log(cancelAll, listen);
+
+function parse(text: string): number;
+function parse(text: string, radix: number): number;
+function parse(text: string, radix?: number): number {
+  return Number.parseInt(text, radix);
+}
+
+export const create = <T extends object>(Factory: new (options: object) => T): {value: T} => {
+  const value: T = new Factory({});
+  return {value};
+};
+
+export {parse};

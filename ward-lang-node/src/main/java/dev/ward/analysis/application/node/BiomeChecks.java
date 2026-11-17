@@ -20,6 +20,7 @@ import dev.ward.analysis.domain.rule.check.BiomeUnreachableSuperCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUnusedParameterCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUselessFragmentsCheck;
 import dev.ward.analysis.domain.rule.check.BiomeVoidElementChildrenCheck;
+import dev.ward.analysis.domain.rule.check.NodeUnsafeFinallyCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import java.util.HashMap;
 import java.util.List;
@@ -58,6 +59,10 @@ final class BiomeChecks {
         entry(
             "node-namespace-access",
             toml -> new BiomeNamespaceAccessCheck(TomlValues.required(toml, MESSAGE))
+        ),
+        entry(
+            "node-unsafe-finally",
+            toml -> new NodeUnsafeFinallyCheck(TomlValues.required(toml, MESSAGE))
         ),
         entry("node-unused-parameter", BiomeChecks::unusedParameter),
         entry(

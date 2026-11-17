@@ -74,9 +74,18 @@ final class NodeScopeExpressions {
       if (OPTIONAL_CHAIN.equals(operator)) {
         optionalTail(parts.get(2));
       }
+    } else if (isNewOfName(parts)) {
+      read(NodeScopeNames.nameOf(parts.get(1)));
+      visit.accept(parts.get(2));
     } else {
       parts.forEach(visit);
     }
+  }
+
+  /** {@code new C(...)}: the grammar keeps the constructor as a bare identifier, not an expression. */
+  private static boolean isNewOfName(final List<SyntaxNode> parts) {
+    return "new".equals(NodeFlowSyntax.text(parts.get(0)))
+        && NodeScopeNames.nameOf(parts.get(1)) != null;
   }
 
   /**

@@ -272,6 +272,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["elementList"]
+parent-path = "arrayLiteral>singleExpression"
 text = '^(,|[^\x22\x27\x60\[\]]*?,,)'
 message = "unexpected comma in middle of array"
 '''
@@ -286,6 +287,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["elementList"]
+parent-path = "arrayLiteral>singleExpression"
 text = '^(,|[^\x22\x27\x60\[\]]*?,,)'
 message = "unexpected comma in middle of array"
 '''
@@ -298,9 +300,7 @@ severity = "ERROR"
 category = "correctness"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["returnStatement", "throwStatement", "breakStatement", "continueStatement"]
-inside = ["finallyProduction"]
+check = "node-unsafe-finally"
 message = "unsafe jump out of a finally block"
 '''
 
@@ -312,9 +312,7 @@ severity = "ERROR"
 category = "correctness"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["returnStatement", "throwStatement", "breakStatement", "continueStatement"]
-inside = ["finallyProduction"]
+check = "node-unsafe-finally"
 message = "unsafe jump out of a finally block"
 '''
 

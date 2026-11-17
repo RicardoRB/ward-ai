@@ -9,3 +9,7 @@ export function local() {
 export function socket() {
   return new WebSocket('wss://feed.example.com/live');
 }
+
+export function withCredentials(port: number) {
+  return fetch(`http://user:secret@localhost:${port}/health`);
+}

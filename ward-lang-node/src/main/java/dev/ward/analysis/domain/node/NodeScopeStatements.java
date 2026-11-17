@@ -20,6 +20,8 @@ final class NodeScopeStatements {
   private static final String ARRAY_LITERAL = "arrayLiteral";
 
   private static final String CONST = "const";
+  private static final Set<String> DECLARATION_KEYWORDS = Set.of(CONST, "let", "var");
+  private static final int INDEX_ACCESS = 4;
 
   private final NodeScopeWalk walk;
 
@@ -37,7 +39,7 @@ final class NodeScopeStatements {
       final String token = NodeFlowSyntax.text(parts.get(index));
       final boolean iterates = "in".equals(token) || "of".equals(token);
       if (iterates && index > 0 && SINGLE.equals(parts.get(index - 1).kind())) {
-        walk.names.target(parts.get(index - 1), false);
+        iteratedTarget(parts.get(index - 1));
       } else if (!(index + 1 < parts.size()
           && isIterator(parts.get(index + 1))
           && SINGLE.equals(parts.get(index).kind()))) {
@@ -45,6 +47,34 @@ final class NodeScopeStatements {
       }
     }
     walk.builder.close();
+  }
+
+  /**
+   * The target of {@code for (... of ...)} written as an expression. The grammar reads {@code
+   * const [a, b]} as an index access on a name {@code const}, so that form declares the names
+   * between the brackets; any other target is written to.
+   */
+  private void iteratedTarget(final SyntaxNode target) {
+    final List<SyntaxNode> parts = NodeFlowSyntax.parts(target);
+    final String keyword = parts.isEmpty() ? "" : NodeFlowSyntax.text(parts.get(0));
+    if (parts.size() == INDEX_ACCESS
+        && DECLARATION_KEYWORDS.contains(keyword)
+        && "[".equals(NodeFlowSyntax.text(parts.get(1)))) {
+      final boolean isVar = "var".equals(keyword);
+      final Set<BindingFlag> flags = EnumSet.of(isVar ? BindingFlag.HOISTED : BindingFlag.LEXICAL);
+      if (CONST.equals(keyword)) {
+        flags.add(BindingFlag.CONST);
+      }
+      walk.names.declare(
+          parts.get(2),
+          isVar ? walk.builder.nearest(HOIST_TARGETS) : walk.builder.current(),
+          CONST.equals(keyword) ? BindingKind.CONSTANT : BindingKind.VARIABLE,
+          flags,
+          true
+      );
+    } else {
+      walk.names.target(target, false);
+    }
   }
 
   static boolean isIterator(final SyntaxNode part) {
@@ -116,6 +146,18 @@ final class NodeScopeStatements {
         : NodeFlowSyntax.allOf(NodeFlowSyntax.parts(list), "variableDeclaration");
   }
 
+  /** Visits what follows the target; the type parameters of a generic arrow are scoped to it. */
+  private void visitInitializer(final SyntaxNode declaration, final List<SyntaxNode> parts) {
+    final boolean generic = NodeFlowSyntax.firstOf(parts, "typeParameters") != null;
+    if (generic) {
+      walk.builder.open(ScopeKind.FUNCTION, declaration.span());
+    }
+    parts.stream().skip(1).forEach(walk::visit);
+    if (generic) {
+      walk.builder.close();
+    }
+  }
+
   /** Declares the target of one declarator under the keyword's rules, then visits the rest. */
   void declareVariable(final SyntaxNode declaration, final String keyword, final boolean loop) {
     final List<SyntaxNode> parts = NodeFlowSyntax.parts(declaration);
@@ -129,7 +171,7 @@ final class NodeScopeStatements {
     if (walk.exporting && scope == UnitScopes.MODULE_ID) {
       flags.add(BindingFlag.EXPORTED);
     }
-    parts.stream().skip(1).forEach(walk::visit);
+    visitInitializer(declaration, parts);
     walk.names.declare(
         parts.get(0),
         scope,

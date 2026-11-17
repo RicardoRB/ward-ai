@@ -12,6 +12,7 @@ module
   variable typed @16:5 [lexical]
   block @4:1
     type P @4:13 [type_only]
+    function @4:35
   block @5:1
   function @6:1
     type R @6:12 [type_only]
