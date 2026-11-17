@@ -79,18 +79,18 @@ final class JavaDocBuilder {
       // would not survive a second run.
       final boolean spaced = atom.gapSpace() && !stack.current().startsList();
       stack.current().add(Document.text((spaced ? SPACE : EMPTY) + atom.text()));
-      separator.endComment(atom.lineComment());
+      separator.endComment(atom.lineComment(), !spaced && JavaAtom.nextOnSameLine(atoms, position));
       return;
     }
     // A block comment that opens a list with the first item beside it keeps the item there, as it
     // does when the comment follows the parenthesis on its line.
-    final boolean nextOnSameLine =
-        position + 1 < atoms.size() && atoms.get(position + 1).newlines() == 0;
     final boolean besideItem =
-        !atom.lineComment() && stack.current().startsList() && nextOnSameLine;
+        !atom.lineComment()
+            && stack.current().startsList()
+            && JavaAtom.nextOnSameLine(atoms, position);
     flush(JavaBreak.HARD, atom);
     stack.current().add(Document.text(atom.text()));
-    separator.endComment(!besideItem);
+    separator.endComment(!besideItem, besideItem);
   }
 
   private void emitCode(final JavaAtom atom) {
@@ -197,7 +197,10 @@ final class JavaDocBuilder {
     }
     final boolean insideStatement =
         previous.comment() || next.comment() && !JavaBreakRules.endsStatement(previous.text());
-    if (frame.continuations().active() && insideStatement) {
+    if (frame.continuations().active() && insideStatement || JavaBreakRules.continuesAfterComment(
+        previous,
+        next
+    )) {
       frame.continuations().continueLine(continuationLevels, JavaBreakRules.lineKind(next.text()));
       return;
     }

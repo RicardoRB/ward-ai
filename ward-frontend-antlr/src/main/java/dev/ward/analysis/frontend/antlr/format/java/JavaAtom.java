@@ -68,6 +68,17 @@ record JavaAtom(int index, String text, int type, int newlines, boolean gapSpace
     return type == JavaLexer.LINE_COMMENT;
   }
 
+  /**
+   * Tells whether the atom after {@code index} follows it on the same line.
+   *
+   * @param atoms the atoms in source order
+   * @param index the position of the atom before
+   * @return true when a next atom exists and no line break precedes it
+   */
+  static boolean nextOnSameLine(final List<JavaAtom> atoms, final int index) {
+    return index + 1 < atoms.size() && atoms.get(index + 1).newlines() == 0;
+  }
+
   private static int countNewlines(final CharSequence gap) {
     int count = 0;
     for (int i = 0; i < gap.length(); i++) {

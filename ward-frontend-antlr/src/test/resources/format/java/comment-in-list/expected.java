@@ -13,7 +13,7 @@ class Rules {
                 "first" // the reason beside the item
         );
         builder.name(
-                /* a block reason */"second",
+                /* a block reason */ "second",
                 "a long item that makes this list break into lines",
                 3
         );

@@ -79,6 +79,17 @@ final class JavaBreakRules {
   }
 
   /**
+   * Tells whether a token after a comment can only continue an expression, as a dot or an operator.
+   *
+   * @param previous the token before
+   * @param next the token after
+   * @return true when {@code next} continues the expression that {@code previous} ends in
+   */
+  static boolean continuesAfterComment(final JavaAtom previous, final JavaAtom next) {
+    return previous.comment() && !next.comment() && lineKind(next.text()) > PLAIN_LINE;
+  }
+
+  /**
    * Tells whether a token ends a statement, so a line break after it is not a continuation.
    *
    * @param text the token text

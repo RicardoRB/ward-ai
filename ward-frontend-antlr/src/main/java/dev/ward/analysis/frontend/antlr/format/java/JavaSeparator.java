@@ -70,12 +70,15 @@ final class JavaSeparator {
    * Records a comment. A line comment always leaves a break after it.
    *
    * @param lineComment whether the comment is a line comment
+   * @param spaceAfter whether a block comment is followed by a space before the next token
    */
-  void endComment(final boolean lineComment) {
+  void endComment(final boolean lineComment, final boolean spaceAfter) {
     afterBlockClose = false;
     afterAnnotation = false;
     if (lineComment) {
       pending = JavaBreak.HARD;
+    } else if (spaceAfter) {
+      pending = JavaBreak.SPACE;
     }
   }
 
