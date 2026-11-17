@@ -425,6 +425,67 @@ jobs:
           -Dward.parity.enforcer=true
           test
 
+  # Runs every corpus smoke test (Java, Kotlin, Swift, Python, Flask, got, Juice Shop) over its
+  # pinned archive and compares the per-rule counts with the committed reports, so a rule change that
+  # brings back a skipped file or a false positive fails here. corpus/fetch-corpora.sh checks every
+  # archive against its sha-256 before unpacking it; the archives are cached by that manifest and
+  # never committed, installed or run. The tests check the hash again through their own properties.
+  corpus:
+    name: Corpus smoke tests
+    if: inputs.compatibility-matrices && needs.changes.outputs.code == 'true'
+    needs: changes
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - name: Cache the Maven repository
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-${{ runner.os }}-
+
+      - name: Restore the corpus archives
+        uses: actions/cache@v5
+        with:
+          path: ${{ runner.temp }}/corpus-archives
+          key: corpus-archives-${{ hashFiles('ward-cli/src/test/resources/corpus/archives.txt') }}
+
+      - name: Download and check the corpus archives
+        run: >-
+          sh ward-cli/src/test/resources/corpus/fetch-corpora.sh
+          ward-cli/src/test/resources/corpus/archives.txt
+          "$RUNNER_TEMP/corpus-archives" "$RUNNER_TEMP/corpus"
+
+      - name: Run the corpus smoke tests
+        run: |
+          set -eu
+          corpus="$RUNNER_TEMP/corpus"
+          ./mvnw -B -pl ward-cli -am \
+            -Djacoco.skip=true \
+            -Dsurefire.failIfNoSpecifiedTests=false \
+            -Dtest='JavaCorpusSmokeTest,KotlinCorpusSmokeTest,SwiftCorpusSmokeTest,PythonCorpusSmokeTest,FlaskCorpusSmokeTest,GotBenchmarkSmokeTest,JuiceShopBenchmarkSmokeTest' \
+            -Dward.corpus.java="$corpus/java" -Dward.corpus.java.archives="$corpus/archives/java" \
+            -Dward.corpus.kotlin="$corpus/kotlin" -Dward.corpus.kotlin.archives="$corpus/archives/kotlin" \
+            -Dward.corpus.swift="$corpus/swift" -Dward.corpus.swift.archives="$corpus/archives/swift" \
+            -Dward.benchmark.python-corpus="$corpus/python/healthchecks-5.0.3" \
+            -Dward.benchmark.python-corpus.archive="$corpus/archives/python/healthchecks.tar.gz" \
+            -Dward.benchmark.flask-corpus="$corpus/flask/CTFd-3.8.9" \
+            -Dward.benchmark.flask-corpus.archive="$corpus/archives/flask/ctfd.tar.gz" \
+            -Dward.benchmark.got="$corpus/got/got-16.2.0" \
+            -Dward.benchmark.got.archive="$corpus/archives/got/got.tar.gz" \
+            -Dward.benchmark.juice-shop="$corpus/juice/juice-shop-20.4.0" \
+            -Dward.benchmark.juice-shop.archive="$corpus/archives/juice/juice-shop.tar.gz" \
+            test
+
   # Runs the real oasdiff on the base and revision of every OpenAPI breaking-change fixture and
   # compares its error-level results with the native rules; every difference must be listed in
   # ward-cli/src/test/resources/parity/oasdiff-approximations.txt.
