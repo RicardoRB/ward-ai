@@ -160,7 +160,8 @@ final class GenericChecks {
         TomlValues.optionalStrings(toml, "with-child"),
         TomlValues.optionalStrings(toml, "parent"),
         toml.getString("parent-path", () -> ""),
-        Optional.ofNullable(toml.getString("parent-text")).map(Pattern::compile)
+        Optional.ofNullable(toml.getString("parent-text")).map(Pattern::compile),
+        toml.getString("not-parent-path", () -> "")
     );
   }
 

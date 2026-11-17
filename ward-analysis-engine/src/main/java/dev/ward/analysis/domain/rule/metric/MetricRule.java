@@ -36,6 +36,7 @@ record MetricRule(
    * @param exempt the alternative ancestor paths, nearest ancestor first, below which a node is not
    *     measured; a node whose parent is {@code a} and whose grandparent is {@code b} is exempt
    *     under {@code a/b}
+   * @param exemptNames the declared names that a name-style measure does not check
    */
   record MetricRuleKeys(
       String name,
@@ -43,6 +44,7 @@ record MetricRule(
       Set<String> receivers,
       Set<String> nested,
       Set<String> decisions,
-      List<List<String>> exempt
+      List<List<String>> exempt,
+      Set<String> exemptNames
   ) {}
 }

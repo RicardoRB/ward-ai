@@ -31,3 +31,6 @@ Ward 0.9.1 refused rules/python/too-many-public-methods/violating.py ("formattin
 source that ends with a blank line has one more line-break token than its formatted text, and the safety check
 compared them. Every Python file that ends with a blank line was refused. Fixed in PythonFormatSyntax; now 0 refused,
 and the 1,180 valid files keep their AST and tokens (2 fixtures are invalid Python on purpose).
+
+## Rerun for #597 (0.11.0)
+The report was regenerated after the false-positive fixes of #597: 7,728 findings (7,962 before). The cost above is from 0.10.0 and was not measured again.

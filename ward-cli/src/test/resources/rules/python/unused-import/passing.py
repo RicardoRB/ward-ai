@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import email
+import email.policy
 import hashlib
 import json
 import os
@@ -15,4 +17,4 @@ cache: dict[str, "Y"] = {}
 
 
 def encode(path: os.PathLike, item: "Y") -> "Optional[str]":
-    return json.dumps(os.fspath(path))
+    return json.dumps(os.fspath(path)) + email.policy.default.linesep

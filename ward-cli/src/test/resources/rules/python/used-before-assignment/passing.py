@@ -6,3 +6,9 @@ try:
 except ImportError:
     json = None
 print(json)
+
+
+def keyed(rows):
+    pairs = {email.name: email for email in rows}
+    email = "last"
+    return pairs, email

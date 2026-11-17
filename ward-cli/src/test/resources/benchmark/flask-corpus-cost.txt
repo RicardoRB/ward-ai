@@ -1,0 +1,14 @@
+# Measured cost of Ward's Python rules on CTFd 3.8.9 (333 .py files, about 47,000 lines). Hand-written, not compared by a test.
+# Measured on 2026-11-17 in the test JVM of FlaskCorpusSmokeTest (OpenJDK 25, no cache, not the native binary), Apple M4,
+# 10 cores. Other sessions were building on the machine: the 1-minute load average was 35 to 40 during the runs, so the
+# wall time is an upper bound and says little about an idle machine.
+
+## FlaskCorpusSmokeTest (standard preset and every security rule, 425 rules)
+wall 75 s to 215 s for the whole test (analysis, label check, report), by machine load (1-minute load average 35 to 40)
+
+## Files without analysis
+0 of 333. No syntax diagnostic and no frontend failure.
+
+## What was not measured
+The gate (`ward check`) cold and cached, and `ward format`, were not run on this corpus: the Healthchecks corpus
+(python-corpus-cost.txt) holds those numbers, and a load average above 35 would make them meaningless.

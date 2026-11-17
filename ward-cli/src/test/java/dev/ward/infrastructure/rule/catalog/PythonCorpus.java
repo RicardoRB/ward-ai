@@ -17,17 +17,24 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 /**
- * The source of Healthchecks, a Django application (BSD-3-Clause), read from an extracted release
+ * The source of a pinned Python application, read from an extracted release
  * archive. The source is never part of the repository and is only read: nothing in it is installed
  * or run.
  */
 final class PythonCorpus {
-  /** The release the committed report measures. */
-  static final String TAG = "v5.0.3";
-
-  /** The SHA-256 of the source archive {@code healthchecks-v5.0.3.tar.gz} of that tag. */
-  static final String ARCHIVE_SHA256 =
-      "ee1b93bf0719f948a8693ac06c7d571394fb65723d0faf21cd0374721afa964e";
+  /** Healthchecks, a Django application. */
+  static final PythonCorpusSpec HEALTHCHECKS =
+      new PythonCorpusSpec(
+          "Healthchecks",
+          "v5.0.3",
+          "ee1b93bf0719f948a8693ac06c7d571394fb65723d0faf21cd0374721afa964e",
+          "BSD-3-Clause, a Django application",
+          "python-corpus-report.txt",
+          "python-corpus-labels.txt",
+          "python-corpus-cost.txt",
+          "PythonCorpusSmokeTest",
+          "ward.benchmark.python-corpus"
+      );
 
   private static final String EXTENSION = ".py";
 

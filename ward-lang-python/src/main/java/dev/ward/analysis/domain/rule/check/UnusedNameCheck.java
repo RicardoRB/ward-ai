@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * Reports a parameter of a plain function that its body never mentions ({@code unused-argument}),
@@ -24,6 +25,9 @@ public final class UnusedNameCheck implements RuleCheck {
     UNUSED_PRIVATE_MEMBER
   }
 
+  private static final Pattern F_STRING =
+      Pattern.compile("^(?i:f|rf|fr)[\"'][\\s\\S]*\\{");
+  private static final Pattern WORD = Pattern.compile("[A-Za-z_]\\w*");
   private static final String FUNCTION = "funcdef";
   private static final String CLASS = "classdef";
   private static final String DECORATED = "decorated";
@@ -76,8 +80,16 @@ public final class UnusedNameCheck implements RuleCheck {
   private static Set<String> usedNames(final SyntaxNode function) {
     final Set<String> used = new HashSet<>();
     SyntaxWalk.leaves(function.children().get(function.children().size() - 1))
-        .forEach(leaf -> used.add(SyntaxWalk.text(leaf)));
+        .forEach(leaf -> addNames(SyntaxWalk.text(leaf), used));
     return used;
+  }
+
+  /** A leaf is one name, or an f-string whose replacement fields read every word it holds. */
+  private static void addNames(final String text, final Set<String> used) {
+    used.add(text);
+    if (F_STRING.matcher(text).find()) {
+      WORD.matcher(text).results().forEach(word -> used.add(word.group()));
+    }
   }
 
   private void privateMembers(final SyntaxNode root, final List<RuleMatch> found) {

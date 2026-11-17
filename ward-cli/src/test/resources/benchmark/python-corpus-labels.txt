@@ -26,9 +26,6 @@ ward:python/consider-using-f-string | hc/api/admin.py:250 | tp | a literal forma
 ward:python/consider-using-f-string | hc/api/management/commands/settelegramwebhook.py:32 | tp | a literal formatted with the percent operator
 ward:python/consider-using-f-string | hc/api/models.py:241 | tp | a literal formatted with the percent operator
 ward:python/consider-using-get | hc/api/views.py:105 | tp | a membership test followed by a read of the same key
-ward:python/constant-name | docker/gunicorn.conf.py:3 | fp | gunicorn reads its settings by these lower-case names
-ward:python/constant-name | docker/gunicorn.conf.py:6 | fp | gunicorn reads its settings by these lower-case names
-ward:python/constant-name | docker/gunicorn.conf.py:19 | fp | gunicorn reads its settings by these lower-case names
 ward:python/constant-name | manage.py:15 | un | a module-level name assigned in an except handler; not a constant, but pylint asks the same
 ward:python/duplicate-code | hc/accounts/tests/test_add_totp.py:14 | un | the measured token run was not compared by hand with its other place; test and migration boilerplate
 ward:python/duplicate-code | hc/accounts/tests/test_add_webauthn.py:18 | un | the measured token run was not compared by hand with its other place; test and migration boilerplate
@@ -47,14 +44,6 @@ ward:python/function-length | hc/api/models.py:493 | tp | the function spans the
 ward:python/function-length | hc/api/views.py:181 | tp | the function spans the stated lines, counted again
 ward:python/global-statement | hc/lib/s3.py:33 | tp | a module-level client is cached through a global statement
 ward:python/hardcoded-bind-all-interfaces | hc/api/management/commands/smtpd.py:132 | tp | the default listen address of the mail listener command is every interface
-ward:python/hardcoded-temp-file | hc/integrations/signal/tests/test_add.py:9 | fp | the path is a setting value or an expected value in a test; no file is created
-ward:python/hardcoded-temp-file | hc/integrations/signal/tests/test_edit.py:11 | fp | the path is a setting value or an expected value in a test; no file is created
-ward:python/hardcoded-temp-file | hc/integrations/signal/tests/test_notify.py:72 | fp | the path is a setting value or an expected value in a test; no file is created
-ward:python/hardcoded-temp-file | hc/integrations/signal/tests/test_notify.py:118 | fp | the path is a setting value or an expected value in a test; no file is created
-ward:python/hardcoded-temp-file | hc/integrations/signal/tests/test_notify.py:175 | fp | the path is a setting value or an expected value in a test; no file is created
-ward:python/hardcoded-temp-file | hc/integrations/signal/tests/test_notify.py:222 | fp | the path is a setting value or an expected value in a test; no file is created
-ward:python/hardcoded-temp-file | hc/integrations/signal/tests/test_signal_captcha.py:54 | fp | the path is a setting value or an expected value in a test; no file is created
-ward:python/hardcoded-temp-file | hc/integrations/signal/tests/test_verify_signal_number.py:12 | fp | the path is a setting value or an expected value in a test; no file is created
 ward:python/hashlib-insecure-hash-function | hc/api/models.py:434 | un | SHA-1 builds a bucket key or an identifier, not a signature or a password hash; the weak function is there, the harm is not shown
 ward:python/hashlib-insecure-hash-function | hc/api/models.py:1490 | un | SHA-1 builds a bucket key or an identifier, not a signature or a password hash; the weak function is there, the harm is not shown
 ward:python/hashlib-insecure-hash-function | hc/api/models.py:1505 | un | SHA-1 builds a bucket key or an identifier, not a signature or a password hash; the weak function is there, the harm is not shown
@@ -158,20 +147,12 @@ ward:python/raise-without-from-inside-except | hc/api/models.py:765 | tp | a new
 ward:python/raise-without-from-inside-except | hc/api/transports.py:164 | tp | a new exception is raised in a handler without from
 ward:python/raise-without-from-inside-except | hc/api/views.py:123 | tp | a new exception is raised in a handler without from
 ward:python/raise-without-from-inside-except | hc/api/views.py:130 | tp | a new exception is raised in a handler without from
-ward:python/redefined-builtin | hc/accounts/management/commands/createsuperuser.py:17 | fp | a class attribute that the command API of Django requires by this name; a class attribute hides no built-in
-ward:python/redefined-builtin | hc/accounts/management/commands/pruneusers.py:15 | fp | a class attribute that the command API of Django requires by this name; a class attribute hides no built-in
-ward:python/redefined-builtin | hc/accounts/management/commands/senddeletionscheduled.py:19 | fp | a class attribute that the command API of Django requires by this name; a class attribute hides no built-in
-ward:python/redefined-builtin | hc/accounts/management/commands/sendflappingnotices.py:19 | fp | a class attribute that the command API of Django requires by this name; a class attribute hides no built-in
-ward:python/redefined-builtin | hc/accounts/management/commands/sendinactivitynotices.py:29 | fp | a class attribute that the command API of Django requires by this name; a class attribute hides no built-in
-ward:python/redefined-while-unused | hc/api/management/commands/smtpd.py:4 | fp | importing a submodule binds the same package name again and adds the submodule
-ward:python/redefined-while-unused | hc/test.py:19 | fp | the two imports are in the two branches of one if
 ward:python/self-cls-assignment | hc/api/models.py:511 | tp | the method assigns to its first parameter
 ward:python/self-cls-assignment | hc/api/models.py:1147 | tp | the method assigns to its first parameter
 ward:python/suspicious-non-cryptographic-random-usage | hc/accounts/models.py:380 | fp | a random minute offset that spreads report e-mails; not a security value
 ward:python/too-few-public-methods | hc/accounts/backends.py:11 | un | a framework class with a fixed small interface; the count is right
 ward:python/too-few-public-methods | hc/accounts/middleware.py:15 | un | a framework class with a fixed small interface; the count is right
 ward:python/too-few-public-methods | hc/accounts/middleware.py:28 | un | a framework class with a fixed small interface; the count is right
-ward:python/too-few-public-methods | hc/accounts/models.py:618 | fp | the Meta options class of a Django model holds no method by design
 ward:python/too-few-public-methods | hc/api/middleware.py:7 | un | a framework class with a fixed small interface; the count is right
 ward:python/too-many-branches | hc/accounts/views.py:362 | tp | a view of 181 lines with a branch per form action
 ward:python/too-many-branches | hc/api/views.py:181 | un | a size measure; the branches were not recounted by hand
@@ -195,7 +176,6 @@ ward:python/too-many-statements | hc/accounts/views.py:362 | tp | a view of 181 
 ward:python/too-many-statements | hc/api/views.py:315 | un | a size measure; the statements were not recounted by hand
 ward:python/too-many-statements | hc/lib/curl.py:55 | un | a size measure; the statements were not recounted by hand
 ward:python/try-except-continue | hc/api/management/commands/pruneobjects.py:28 | un | the handler skips names that are not UUIDs on purpose
-ward:python/undefined-loop-variable | hc/api/management/commands/pruneobjects.py:38 | fp | the name is the variable of a list comprehension, which has its own scope
 ward:python/ungrouped-imports | hc/api/management/commands/smtpd.py:8 | tp | two imports of one package are separated by imports of others
 ward:python/ungrouped-imports | hc/api/views.py:8 | tp | two imports of one package are separated by imports of others
 ward:python/ungrouped-imports | hc/integrations/email/transport.py:5 | tp | two imports of one package are separated by imports of others
@@ -211,8 +191,6 @@ ward:python/unused-argument | hc/accounts/migrations/0020_auto_20190112_1950.py:
 ward:python/unused-argument | hc/accounts/migrations/0036_fill_profile_reports.py:11 | un | the signature of the callback is fixed by the migration API of Django
 ward:python/unused-argument | hc/accounts/migrations/0041_fill_role.py:11 | un | the signature of the callback is fixed by the migration API of Django
 ward:python/unused-argument | hc/accounts/migrations/0049_convert_email_lowercase.py:13 | un | the signature of the callback is fixed by the migration API of Django
-ward:python/unused-attribute | hc/accounts/management/commands/createsuperuser.py:87 | fp | a field of the user model of Django, read by the framework
-ward:python/unused-import | hc/api/management/commands/smtpd.py:3 | fp | the next line imports a submodule of the same package, and the code reads it through this name
 ward:python/unused-import | hc/api/tests/test_smtpd.py:3 | tp | the name is not read in the module
 ward:python/unused-import | hc/integrations/apprise/apps.py:26 | un | imported only to test that the package is installed
 ward:python/unused-import | hc/integrations/shell/transport.py:3 | tp | the name is not read in the module
@@ -222,11 +200,6 @@ ward:python/unused-loop-control-variable | hc/api/management/commands/sendreport
 ward:python/unused-loop-control-variable | hc/lib/date.py:110 | tp | the body repeats without reading the loop variable
 ward:python/unused-loop-control-variable | hc/lib/date.py:128 | tp | the body repeats without reading the loop variable
 ward:python/unused-loop-control-variable | hc/lib/date.py:141 | tp | the body repeats without reading the loop variable
-ward:python/unused-method | hc/accounts/admin.py:51 | fp | the framework calls the method by its name
-ward:python/unused-method | hc/accounts/backends.py:12 | fp | the framework calls the method by its name
-ward:python/unused-method | hc/accounts/forms.py:36 | fp | the framework calls the method by its name
-ward:python/unused-method | hc/accounts/forms.py:53 | fp | the framework calls the method by its name
-ward:python/unused-method | hc/accounts/forms.py:75 | fp | the framework calls the method by its name
 ward:python/unused-property | hc/api/models.py:974 | un | a template may read the property; templates are not analysed
 ward:python/unused-property | hc/api/models.py:1006 | un | a template may read the property; templates are not analysed
 ward:python/unused-property | hc/api/models.py:1197 | un | a template may read the property; templates are not analysed
@@ -241,7 +214,6 @@ ward:python/use-maxsplit-arg | hc/api/models.py:1110 | tp | only the first part 
 ward:python/use-maxsplit-arg | hc/api/models.py:1471 | tp | only the first part of the split is read
 ward:python/use-maxsplit-arg | hc/api/models.py:1475 | tp | only the first part of the split is read
 ward:python/use-maxsplit-arg | hc/api/models.py:1486 | tp | only the first part of the split is read
-ward:python/used-before-assignment | hc/integrations/signal/tests/test_notify.py:503 | fp | the name is the variable of a dict comprehension
 ward:python/useless-expression | hc/api/tests/test_flip_model.py:81 | un | an attribute is read on purpose inside assertRaises
 ward:python/variable-declaration-usage-distance | hc/accounts/tests/test_signup.py:28 | un | a distance measure of a style convention; not recounted by hand
 ward:python/variable-declaration-usage-distance | hc/api/models.py:624 | un | a distance measure of a style convention; not recounted by hand
@@ -253,3 +225,10 @@ ward:python/zip-without-explicit-strict | hc/api/admin.py:106 | tp | zip is call
 ward:python/zip-without-explicit-strict | hc/api/admin.py:120 | tp | zip is called without strict
 ward:python/zip-without-explicit-strict | hc/front/templatetags/asciitable.py:36 | tp | zip is called without strict
 ward:python/zip-without-explicit-strict | hc/integrations/prometheus/views.py:109 | tp | zip is called without strict
+ward:python/too-few-public-methods | hc/api/models.py:169 | tp | a plain class with one public method besides the constructor
+ward:python/unused-import | hc/logs/tests/test_sendlogs.py:3 | tp | the name is not read in the module
+ward:python/unused-method | hc/accounts/models.py:391 | tp | no file of the project calls the method
+ward:python/unused-method | hc/accounts/models.py:507 | fp | a Django template calls the method (project.get_n_down); Ward reads no template
+ward:python/unused-method | hc/accounts/models.py:528 | tp | no file of the project calls the method
+ward:python/unused-method | hc/accounts/models.py:538 | fp | a Django template calls the property (project.auth_metrics_url); Ward reads no template
+ward:python/unused-method | hc/api/models.py:436 | fp | a Django template calls the method (check.filter_any); Ward reads no template

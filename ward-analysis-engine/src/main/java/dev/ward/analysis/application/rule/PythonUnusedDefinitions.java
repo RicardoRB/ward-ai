@@ -7,7 +7,7 @@ import java.util.Set;
 
 /**
  * The Python unused-function and unused-class rules: a definition is exempt when it is a dunder, a
- * test, or the {@code main} entry point, and the files scanned exclude package roots, test modules
+ * test, a Django form cleaner, or the {@code main} entry point, and the files scanned exclude package roots, test modules
  * and setup scripts, whose definitions are found by name.
  */
 final class PythonUnusedDefinitions implements UnusedDefinitionStrategy {
@@ -43,6 +43,9 @@ final class PythonUnusedDefinitions implements UnusedDefinitionStrategy {
   private static final String DUNDER = "__";
   private static final String TEST_PREFIX = "test";
   private static final String ENTRY_FUNCTION = "main";
+  // Django calls clean_<field> of a form by name.
+  private static final String FORM_CLEANER = "clean_";
+  private static final String METHOD_KIND = "method";
   // Files whose definitions are found by name: package roots, test discovery and setup scripts.
   private static final Set<String> DISCOVERED_FILES =
       Set.of("__init__.py", "__main__.py", "conftest.py", "setup.py");
@@ -66,6 +69,7 @@ final class PythonUnusedDefinitions implements UnusedDefinitionStrategy {
     final String name = symbol.name();
     return (name.startsWith(DUNDER) && name.endsWith(DUNDER))
         || name.startsWith(TEST_PREFIX)
+        || name.startsWith(FORM_CLEANER) && METHOD_KIND.equals(symbol.kind())
         || ENTRY_FUNCTION.equals(name);
   }
 }

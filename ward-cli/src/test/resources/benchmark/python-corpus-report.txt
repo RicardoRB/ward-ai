@@ -4,7 +4,7 @@
 # A labelled finding is true (tp), false (fp) or undetermined (un), as read from the code at its line; the labels are in python-corpus-labels.txt. Every finding of a security rule is labelled; of another rule, its first 5 findings in path order.
 # The measured cost of the run is in python-corpus-cost.txt.
 # Regenerate: ./mvnw -pl ward-cli -am -Djacoco.skip=true -Dtest=PythonCorpusSmokeTest -Dward.benchmark.python-corpus=<dir> -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
-files 657 | findings 7962
+files 657 | findings 7728
 ward:python/abbreviation-as-word-in-name | findings 11 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/abstract-base-class-without-abstract-method | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/abstract-class-instantiated | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -71,7 +71,7 @@ ward:python/consider-using-min-builtin | findings 0 | labelled 0 | tp 0 | fp 0 |
 ward:python/consider-using-sys-exit | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/consider-using-ternary | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/consider-using-with | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:python/constant-name | findings 4 | labelled 4 | tp 0 | fp 3 | un 1
+ward:python/constant-name | findings 1 | labelled 1 | tp 0 | fp 0 | un 1
 ward:python/contextmanager-generator-missing-cleanup | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/continue-outside-loop | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/cyclic-import | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -115,7 +115,7 @@ ward:python/hardcoded-bind-all-interfaces | findings 1 | labelled 1 | tp 1 | fp 
 ward:python/hardcoded-password-default | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/hardcoded-password-func-arg | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/hardcoded-password-string | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:python/hardcoded-temp-file | findings 8 | labelled 8 | tp 0 | fp 8 | un 0
+ward:python/hardcoded-temp-file | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/hashlib-insecure-hash-function | findings 6 | labelled 6 | tp 0 | fp 0 | un 6
 ward:python/hidden-field | findings 53 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/if-tuple | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -201,7 +201,7 @@ ward:python/multiple-starred-expressions | findings 0 | labelled 0 | tp 0 | fp 0
 ward:python/mutable-argument-default | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/mutable-contextvar-default | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/named-expr-without-context | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:python/naming | findings 193 | labelled 5 | tp 0 | fp 1 | un 4
+ward:python/naming | findings 53 | labelled 5 | tp 0 | fp 1 | un 4
 ward:python/nan-comparison | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/nested-min-max | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/no-classmethod-decorator | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -259,9 +259,9 @@ ward:python/raising-non-exception | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/re-sub-positional-args | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/redeclared-assigned-name | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/redefined-argument-from-local | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:python/redefined-builtin | findings 28 | labelled 5 | tp 0 | fp 5 | un 0
+ward:python/redefined-builtin | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/redefined-slots-in-subclass | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:python/redefined-while-unused | findings 2 | labelled 2 | tp 0 | fp 2 | un 0
+ward:python/redefined-while-unused | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/redundant-keyword-arg | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/redundant-tuple-in-exception-handler | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/redundant-u-string-prefix | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -317,7 +317,7 @@ ward:python/suspicious-pickle-usage | findings 0 | labelled 0 | tp 0 | fp 0 | un
 ward:python/template-autoescape-disabled | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/template-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/todo-comment | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:python/too-few-public-methods | findings 14 | labelled 5 | tp 0 | fp 1 | un 4
+ward:python/too-few-public-methods | findings 10 | labelled 5 | tp 1 | fp 0 | un 4
 ward:python/too-many-ancestors | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/too-many-boolean-expressions | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/too-many-branches | findings 7 | labelled 5 | tp 1 | fp 0 | un 4
@@ -348,7 +348,7 @@ ward:python/undefined-export | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/undefined-local | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/undefined-local-with-import-star-usage | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/undefined-local-with-nested-import-star-usage | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:python/undefined-loop-variable | findings 1 | labelled 1 | tp 0 | fp 1 | un 0
+ward:python/undefined-loop-variable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/undefined-name | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/unexpected-keyword-arg | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/unexpected-special-method-signature | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -379,12 +379,12 @@ ward:python/untrusted-deserialization | findings 0 | labelled 0 | tp 0 | fp 0 | 
 ward:python/untrusted-redirect | findings 4 | labelled 4 | tp 0 | fp 4 | un 0
 ward:python/untrusted-request-url | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/unused-annotation | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:python/unused-argument | findings 38 | labelled 5 | tp 0 | fp 0 | un 5
-ward:python/unused-attribute | findings 1 | labelled 1 | tp 0 | fp 1 | un 0
-ward:python/unused-import | findings 7 | labelled 5 | tp 3 | fp 1 | un 1
+ward:python/unused-argument | findings 32 | labelled 5 | tp 0 | fp 0 | un 5
+ward:python/unused-attribute | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:python/unused-import | findings 6 | labelled 5 | tp 4 | fp 0 | un 1
 ward:python/unused-local-variable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/unused-loop-control-variable | findings 5 | labelled 5 | tp 5 | fp 0 | un 0
-ward:python/unused-method | findings 51 | labelled 5 | tp 0 | fp 5 | un 0
+ward:python/unused-method | findings 12 | labelled 5 | tp 2 | fp 3 | un 0
 ward:python/unused-private-member | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/unused-property | findings 3 | labelled 3 | tp 0 | fp 0 | un 3
 ward:python/use-implicit-booleaness-not-comparison | findings 8 | labelled 5 | tp 4 | fp 1 | un 0
@@ -392,7 +392,7 @@ ward:python/use-implicit-booleaness-not-len | findings 1 | labelled 1 | tp 1 | f
 ward:python/use-maxsplit-arg | findings 11 | labelled 5 | tp 4 | fp 1 | un 0
 ward:python/use-sequence-for-iteration | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/use-yield-from | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:python/used-before-assignment | findings 1 | labelled 1 | tp 0 | fp 1 | un 0
+ward:python/used-before-assignment | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/used-prior-global-declaration | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/useless-comparison | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/useless-contextlib-suppress | findings 0 | labelled 0 | tp 0 | fp 0 | un 0

@@ -73,13 +73,16 @@ public final class ForbiddenNodeCheck implements UnitCheck {
    * @param path the kinds of the ancestors, nearest first, as {@code parent>grandparent}; each step
    *     may list alternatives as {@code a|b}; empty does not limit
    * @param parentText a pattern that must be found in the parent's text, if any
+   * @param notPath an ancestor path, in the syntax of {@code path}, that the node must not follow;
+   *     empty does not limit
    */
   public record Condition(
       Optional<Pattern> text,
       Set<String> withChild,
       Set<String> parent,
       String path,
-      Optional<Pattern> parentText
+      Optional<Pattern> parentText,
+      String notPath
   ) {
     /** The condition that every node meets. */
     public static final Condition ANY = new Condition(Optional.empty(), Set.of(), Set.of());
@@ -100,7 +103,18 @@ public final class ForbiddenNodeCheck implements UnitCheck {
         final Set<String> parent,
         final String path
     ) {
-      this(text, withChild, parent, path, Optional.empty());
+      this(text, withChild, parent, path, Optional.empty(), "");
+    }
+
+    /** Creates a condition without a path the node must not follow. */
+    public Condition(
+        final Optional<Pattern> text,
+        final Set<String> withChild,
+        final Set<String> parent,
+        final String path,
+        final Optional<Pattern> parentText
+    ) {
+      this(text, withChild, parent, path, parentText, "");
     }
 
     /**
@@ -112,6 +126,7 @@ public final class ForbiddenNodeCheck implements UnitCheck {
       Objects.requireNonNull(text, "text");
       Objects.requireNonNull(path, "path");
       Objects.requireNonNull(parentText, "parentText");
+      Objects.requireNonNull(notPath, "notPath");
       withChild = Set.copyOf(withChild);
       parent = Set.copyOf(parent);
     }
@@ -121,6 +136,7 @@ public final class ForbiddenNodeCheck implements UnitCheck {
       return childOk(visit.node())
           && parentOk(visit)
           && pathOk(visit)
+          && (notPath.isEmpty() || !follows(notPath, visit))
           && parentTextOk(visit)
           && textOk(visit.node());
     }
@@ -189,10 +205,11 @@ public final class ForbiddenNodeCheck implements UnitCheck {
     }
 
     private boolean pathOk(final SyntaxWalk.Visit visit) {
-      if (path.isEmpty()) {
-        return true;
-      }
-      final String[] steps = path.split(">");
+      return path.isEmpty() || follows(path, visit);
+    }
+
+    private static boolean follows(final String ancestors, final SyntaxWalk.Visit visit) {
+      final String[] steps = ancestors.split(">");
       final List<SyntaxNode> up = visit.ancestors();
       if (up.size() < steps.length) {
         return false;

@@ -28,7 +28,7 @@ body = '''
 check = "identifier-pattern"
 kinds = ["classdef"]
 name = "NAME"
-pattern = "^[A-Z][a-zA-Z0-9]*$"
+pattern = "^_*[A-Z][a-zA-Z0-9]*$"
 message = "class name '{value}' must be CapWords"
 '''
 

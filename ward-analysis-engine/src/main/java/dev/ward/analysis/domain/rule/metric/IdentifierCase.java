@@ -6,8 +6,8 @@ import java.util.Optional;
 
 /**
  * Checks a declared name against the style its node kind requires. A name is a declaration's child,
- * or the target of a plain assignment such as {@code x = 1}. Dunder names and operators are not
- * checked, and leading underscores are ignored.
+ * or the target of a plain assignment such as {@code x = 1}. Dunder names, operators and the names
+ * the rule exempts are not checked, and leading underscores are ignored.
  */
 final class IdentifierCase implements Measure {
   private static final String ASSIGN = "=";
@@ -21,7 +21,9 @@ final class IdentifierCase implements Measure {
       final MetricRule rule
   ) {
     final Optional<String> declared = declared(node, rule);
-    if (declared.isEmpty() || skipped(declared.get())) {
+    if (declared.isEmpty()
+        || skipped(declared.get())
+        || rule.keys().exemptNames().contains(declared.get())) {
       return Optional.empty();
     }
     final String bare = declared.get().replace(BACKTICK, "").replaceFirst("^_+", "");

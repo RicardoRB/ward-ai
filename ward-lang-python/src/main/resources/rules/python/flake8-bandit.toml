@@ -83,6 +83,7 @@ body = '''
 check = "forbidden-node"
 kinds = ["STRING"]
 text = "^[\"']/tmp/"
+sources = "main"
 message = "hardcoded /tmp path; use tempfile instead"
 '''
 
