@@ -3,3 +3,6 @@
 
 # Java sources formatted with ward format, and the switch to the ward gates (#576)
 bdb4b1b71accc49b456a5792616fea0fd9b614cc
+
+# Python, TypeScript, JavaScript, Kotlin and Swift sources formatted with ward format (#608)
+eaac6b1228a33e81fe8094fb9bafebff03d2792a
