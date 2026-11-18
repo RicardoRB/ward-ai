@@ -15,6 +15,7 @@ import org.antlr.v4.runtime.atn.DecisionInfo;
 import org.antlr.v4.runtime.atn.ParseInfo;
 import org.antlr.v4.runtime.atn.ParserATNSimulator;
 import org.antlr.v4.runtime.atn.ProfilingATNSimulator;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -75,9 +76,66 @@ class QuickPredictionTest {
               + " get area() { return 1; } constructor() { this.size = 2; } protected async grow(by) {} }",
           "export const made = new Thing(1); export function build() {} export type * from './x';",
           "export = legacy; class extends Base {}; let = 1; export default class {}",
+          "const f = async (x): Promise<void> => {}; const g = async (x): () => void => () => {};",
+          "const h = ok ? async (x) : y => y; switch (k) { case async (x): z => z; }",
+          "class A { get a(): { b: number } { return 1; } set a(v) {} static get #p() { return 2; }"
+              + " get 'q'(): number[] { return []; } get r(): Map<string, number> { return m; } }",
+          "declare class B { get a(): number; set a(v: number); }",
+          "if (a) if (b) c(); else d(); else e(); if (a) f()\nelse = 1",
+          "type A = { a: 1 }; type B = { a: 1 } | C; type D<T> = { a: T } extends E ? F : G;",
+          "type H = { a: 1 }[]; type I = { a: 1 }\nconst x = 1; export type J = { a: 1 }; export type { K };",
+          "export type * from './m'; export type = 1; type = 2; type\nX = 3;",
+          "new a.b.c(1)(2).d;",
+          "new a.b;",
+          "new a.b(1).c(2); new a.b(1).c; new a.b(1)?.c(2);",
+          "new a.b<T>(1);",
+          "new (a.b)(1);",
+          "new a.b(1)[2];",
+          "const x: A = { get: 1, set: 2 }; class C { get(): void {} set = 1; get = 2; }",
       }
   )
   void sourceHasTheTreeOfTheAdaptivePrediction(final String source) {
+    assertThat(tree(parser(source))).isEqualTo(tree(adaptiveParser(source)));
+  }
+
+  @ParameterizedTest
+  @ValueSource(
+      strings = {
+          "const load = async (id: string): Promise<number> => { %s };",
+          "class Box { get size(): number { %s } set size(value: number) { %s } }",
+          "const made = new a.b(1, () => { %s });",
+          "if (ready) { run(); } else { %s }",
+          "type Config<T> = { %t }; export type Options = { %t };",
+      }
+  )
+  @DisplayName("a construct that read far")
+  void constructThatReadFarIsDecidedWithinAFewTokens(final String template) {
+    // Given
+    final StringBuilder body = new StringBuilder();
+    for (int index = 0; index < STATEMENTS; index++) {
+      body.append("const value").append(index).append(" = await load(").append(index)
+          .append(").then(result => result.body); ");
+    }
+    final StringBuilder members = new StringBuilder();
+    for (int index = 0; index < STATEMENTS; index++) {
+      members.append("key").append(index).append("?: (x: string, y: Array<number>) => void; ");
+    }
+    final String source = template.replace("%s", body).replace("%t", members) + "\n";
+    final TypeScriptParser parser = parser(source);
+    parser.setProfile(true);
+
+    // When
+    parser.program();
+
+    // Then
+    final ParserATNSimulator simulator =
+        ((QuickPredictingSimulator)parser.getInterpreter()).adaptive();
+    final long longest =
+        Arrays.stream(new ParseInfo((ProfilingATNSimulator)simulator).getDecisionInfo())
+            .mapToLong(decision -> Math.max(decision.SLL_MaxLook, decision.LL_MaxLook))
+            .max()
+            .orElseThrow();
+    assertThat(longest).isLessThanOrEqualTo(SHORT_LOOKAHEAD);
     assertThat(tree(parser(source))).isEqualTo(tree(adaptiveParser(source)));
   }
 
