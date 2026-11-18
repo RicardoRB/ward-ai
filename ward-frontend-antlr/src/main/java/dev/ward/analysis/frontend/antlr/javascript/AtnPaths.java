@@ -7,7 +7,6 @@ import java.util.Set;
 import org.antlr.v4.runtime.atn.ATN;
 import org.antlr.v4.runtime.atn.ATNState;
 import org.antlr.v4.runtime.atn.ActionTransition;
-import org.antlr.v4.runtime.atn.AtomTransition;
 import org.antlr.v4.runtime.atn.DecisionState;
 import org.antlr.v4.runtime.atn.EpsilonTransition;
 import org.antlr.v4.runtime.atn.RuleTransition;
@@ -34,12 +33,12 @@ final class AtnPaths {
 
   /**
    * Returns the alternative of a decision that starts, after any optional part, with a call of the
-   * rule and, when {@code token} is not negative, may then continue with that token.
+   * rule.
    */
-  static int alternativeTo(final DecisionState decision, final int rule, final int token) {
+  static int alternativeTo(final DecisionState decision, final int rule) {
     for (int alt = 0; alt < decision.getNumberOfTransitions(); alt++) {
       for (final RuleTransition call : calls(decision.transition(alt).target)) {
-        if (call.ruleIndex == rule && (token < 0 || continuesWith(call.followState, token))) {
+        if (call.ruleIndex == rule) {
           return alt + 1;
         }
       }
@@ -62,22 +61,6 @@ final class AtnPaths {
       }
     }
     return calls;
-  }
-
-  static boolean continuesWith(final ATNState start, final int token) {
-    final List<ATNState> pending = new ArrayList<>(List.of(start));
-    final Set<ATNState> seen = new HashSet<>(pending);
-    while (!pending.isEmpty()) {
-      for (final Transition transition : pending.remove(pending.size() - 1).getTransitions()) {
-        if (transition instanceof AtomTransition atom && atom.label == token) {
-          return true;
-        }
-        if (passes(transition) && seen.add(transition.target)) {
-          pending.add(transition.target);
-        }
-      }
-    }
-    return false;
   }
 
   /** Tells whether a transition reads no token, calls no rule and tests no predicate. */

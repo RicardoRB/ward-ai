@@ -75,7 +75,7 @@ final class QuickDecisions {
     operatorAlternatives = byToken(primary);
     newAlternatives = alternativesOf(primary, JavaScriptParser.New);
     functionAlternative =
-        AtnPaths.alternativeTo(primary, JavaScriptParser.RULE_anonymousFunction, -1);
+        AtnPaths.alternativeTo(primary, JavaScriptParser.RULE_anonymousFunction);
     loop = AtnPaths.expressionLoop(atn);
     suffixes = suffixes(atn, loop);
     ifElse = first(atn, JavaScriptParser.RULE_ifStatement);
