@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -41,7 +42,14 @@ class RepositoryPrePushScopeTest {
   }
 
   @ParameterizedTest(name = "{0}")
-  @ValueSource(strings = {"README.md", "website/src/content/docs/a.mdx", "docs/performance/x.md"})
+  @ValueSource(
+      strings = {
+          "CHANGELOG.md",
+          "docs/performance/x.md",
+          "website/src/pages/index.astro",
+          "website/public/logo.svg"
+      }
+  )
   @DisplayName("a push without code skips the test gates")
   void aPushWithoutCodeSkipsTheTestGates(final String path) throws IOException {
     // Given a push that changes only documentation or website files
@@ -62,7 +70,23 @@ class RepositoryPrePushScopeTest {
           "ward-cli/src/main/resources/rules/a.toml",
           ".mvn/maven.config",
           "mvnw",
-          "ward.toml"
+          "ward.toml",
+          "ward-rules.toml",
+          "ward-architecture.toml",
+          ".editorconfig",
+          "README.md",
+          "AGENTS.md",
+          "skills/ward-init/SKILL.md",
+          ".claude-plugin/plugin.json",
+          ".claude/settings.json",
+          ".opencode/plugins/ward-edit-write.js",
+          ".githooks/pre-push",
+          ".github/workflows/verify.yml",
+          "website/public/schemas/ward-rules.schema.json",
+          "website/src/content/docs/commands/check.mdx",
+          "compatibility/drivers/DRIVERS.ts",
+          "install.sh",
+          "install.ps1"
       }
   )
   @DisplayName("a push with code, build or configuration files runs the test gates")
@@ -73,6 +97,29 @@ class RepositoryPrePushScopeTest {
 
     // Then all three run
     assertThat(selected).isTrue();
+  }
+
+  @Test
+  @DisplayName("the three test gates select the same files")
+  void theThreeTestGatesSelectTheSameFiles() throws IOException {
+    // Given the paths tables of the tests, coverage and crap checks
+    // When their match and full lists are read
+    final List<String> tests = patterns("tests");
+
+    // Then coverage and crap list exactly the same patterns as tests
+    assertThat(tests).isNotEmpty();
+    assertThat(patterns("coverage")).isEqualTo(tests);
+    assertThat(patterns("crap")).isEqualTo(tests);
+  }
+
+  private static List<String> patterns(final String check) throws IOException {
+    final TomlTable paths =
+        Toml.parse(Files.readString(ROOT.resolve("ward.toml"), StandardCharsets.UTF_8))
+            .getTableOrEmpty("checks." + check + ".paths");
+    return Stream.of("match", "full")
+        .flatMap(key -> paths.getArrayOrEmpty(key).toList().stream())
+        .map(String::valueOf)
+        .toList();
   }
 
   @Test

@@ -24,7 +24,10 @@ ratios, not absolute values. Command: `./mvnw test jacoco:report` (the `tests` g
    engine and runner. Java is the longest language, so a per-language split alone leaves Java
    (about 190 s under load) as the wall time.
 2. `tests`, `coverage` and `crap` carry `[checks.<name>.paths]` (`match` Java, POM, resources,
-   `.mvn`, `mvnw`; `full` `ward.toml`). The pre-push hook passes the pushed files as `--path`.
+   `.mvn`, `mvnw` and every repository file a test reads: `ward-rules.toml`, `ward-architecture.toml`,
+   `.editorconfig`, `README.md`, `AGENTS.md`, `skills/`, `.claude-plugin/`, `.claude/`, `.opencode/`,
+   `.githooks/`, `.github/`, `website/public/schemas/`, `website/src/content/docs/`, `compatibility/`,
+   `install.sh`, `install.ps1`; `full` `ward.toml`; the three lists are identical). The pre-push hook passes the pushed files as `--path`.
    Proven with `ward check --profile pre-push --path=README.md` and
    `--path=website/astro.config.mjs`: `tests`, `coverage` and `crap` are `SKIPPED`; with
    `--path=src/A.java` they run.
@@ -38,7 +41,8 @@ ratios, not absolute values. Command: `./mvnw test jacoco:report` (the `tests` g
 | Run | Load (start / end) | Command | Total |
 |---|---|---|---|
 | `-T 3` | 42 / 30 | `./mvnw -T 3 test jacoco:report` | 426 s (ward-cli 329 s) |
-| pre-push | 17 / 17 | `WARD_JOBS=auto ward check --profile pre-push`, all 11 checks green | 430 s |
+| pre-push (first version) | 17 / 17 | `WARD_JOBS=auto ward check --profile pre-push`, all 11 checks green | 430 s |
+| pre-push (with the wider `match`) | 25 / 19 | same, all 11 checks green | 553 s |
 
 The earlier pre-push of the same tree, which failed only on two style findings in new test code,
 took 521 s at load 39 / 18 and 659 s at load 17 to 35 (failed on one formatting finding). The

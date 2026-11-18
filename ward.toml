@@ -50,8 +50,10 @@ profiles = ["pre-push", "ci"]
 # jacoco:report writes the per-module XML that the coverage and crap gates read.
 command = "./mvnw test jacoco:report"
 
-# A push of only documentation or website files has nothing for the tests, coverage and crap
-# gates to measure; `full` keeps them running when their own configuration changes.
+# A push of only documentation or website pages has nothing for the tests, coverage and crap
+# gates to measure. `match` lists the Java and build files and every repository file a test reads
+# (rules, hooks, skills, schemas, docs content, manifests); `full` keeps the gates running when
+# their own configuration changes. Keep the three lists identical (RepositoryPrePushScopeTest).
 [checks.tests.paths]
 match = [
   "**/*.java",
@@ -60,6 +62,22 @@ match = [
   "**/src/test/resources/**",
   ".mvn/**",
   "mvnw",
+  "ward-rules.toml",
+  "ward-architecture.toml",
+  ".editorconfig",
+  "README.md",
+  "AGENTS.md",
+  "skills/**",
+  ".claude-plugin/**",
+  ".claude/**",
+  ".opencode/**",
+  ".githooks/**",
+  ".github/**",
+  "website/public/schemas/**",
+  "website/src/content/docs/**",
+  "compatibility/**",
+  "install.sh",
+  "install.ps1",
 ]
 full = ["ward.toml"]
 
@@ -78,6 +96,22 @@ match = [
   "**/src/test/resources/**",
   ".mvn/**",
   "mvnw",
+  "ward-rules.toml",
+  "ward-architecture.toml",
+  ".editorconfig",
+  "README.md",
+  "AGENTS.md",
+  "skills/**",
+  ".claude-plugin/**",
+  ".claude/**",
+  ".opencode/**",
+  ".githooks/**",
+  ".github/**",
+  "website/public/schemas/**",
+  "website/src/content/docs/**",
+  "compatibility/**",
+  "install.sh",
+  "install.ps1",
 ]
 full = ["ward.toml"]
 
@@ -96,6 +130,22 @@ match = [
   "**/src/test/resources/**",
   ".mvn/**",
   "mvnw",
+  "ward-rules.toml",
+  "ward-architecture.toml",
+  ".editorconfig",
+  "README.md",
+  "AGENTS.md",
+  "skills/**",
+  ".claude-plugin/**",
+  ".claude/**",
+  ".opencode/**",
+  ".githooks/**",
+  ".github/**",
+  "website/public/schemas/**",
+  "website/src/content/docs/**",
+  "compatibility/**",
+  "install.sh",
+  "install.ps1",
 ]
 full = ["ward.toml"]
 
