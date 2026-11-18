@@ -18,16 +18,16 @@
 # nullaway approximation: 2
 # nullaway not-comparable: 18
 # nullaway tool-silent: 3
-# pmd agree: 105
+# pmd agree: 104
 # pmd agree-lines: 107
-# pmd anchor-differs: 20
-# pmd approximation: 21
+# pmd anchor-differs: 19
+# pmd approximation: 23
 # pmd tool-silent: 35
-# spotbugs agree-lines: 169
+# spotbugs agree-lines: 168
 # spotbugs anchor-differs: 40
 # spotbugs approximation: 17
-# spotbugs not-comparable: 120
-# spotbugs tool-silent: 125
+# spotbugs not-comparable: 124
+# spotbugs tool-silent: 122
 aa-assertion-of-arguments	spotbugs	AA_ASSERTION_OF_ARGUMENTS	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 abbreviation-as-word-in-name	checkstyle	AbbreviationAsWordInName	approximation	Ward's default pattern rejects any two consecutive capitals, as Google style does; Checkstyle allows up to four by default
 abstract-class-name	checkstyle	AbstractClassName	agree-lines	
@@ -165,12 +165,12 @@ class-name	errorprone	ClassName	tool-silent	the tool reports nothing on the fixt
 class-type-parameter-name	checkstyle	ClassTypeParameterName	approximation	the passing fixture uses names such as KeyT, which Checkstyle's default pattern (one capital letter) rejects
 cleartext-transport	-	-	no-counterpart	
 clone-method-must-be-public	pmd	CloneMethodMustBePublic	agree-lines	
-clone-method-must-implement-cloneable	pmd	CloneMethodMustImplementCloneable	anchor-differs	tool lines [2], on passing [], fixture [1]
+clone-method-must-implement-cloneable	pmd	CloneMethodMustImplementCloneable	approximation	Ward leaves a class with an extends clause, whose superclass may implement Cloneable (line 8 of the passing fixture, Zone extends Base); PMD reports it when it cannot resolve the superclass
 clone-method-return-type-must-match-class-name	pmd	CloneMethodReturnTypeMustMatchClassName	agree-lines	
 close-resource	pmd	CloseResource	approximation	PMD wants a finally block or try-with-resources and reports the direct close() of the passing fixture; Ward accepts a direct close()
 cn-idiom	spotbugs	CN_IDIOM	agree-lines	
 cn-idiom-no-super-call	spotbugs	CN_IDIOM_NO_SUPER_CALL	not-comparable	the fixture does not compile
-cn-implements-clone-but-not-cloneable	spotbugs	CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
+cn-implements-clone-but-not-cloneable	spotbugs	CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE	not-comparable	the fixture does not compile
 cnt-rough-constant-value	spotbugs	CNT_ROUGH_CONSTANT_VALUE	agree-lines	
 co-abstract-self	spotbugs	CO_ABSTRACT_SELF	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 co-compareto-incorrect-floating	spotbugs	CO_COMPARETO_INCORRECT_FLOATING	agree-lines	
@@ -350,7 +350,7 @@ environment-injection	-	-	no-counterpart
 eos-bad-end-of-stream-check	spotbugs	EOS_BAD_END_OF_STREAM_CHECK	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 eq-abstract-self	spotbugs	EQ_ABSTRACT_SELF	agree-lines	
 eq-always-false	spotbugs	EQ_ALWAYS_FALSE	anchor-differs	tool lines [3], on passing [], fixture [2]
-eq-always-true	spotbugs	EQ_ALWAYS_TRUE	anchor-differs	tool lines [3], on passing [], fixture [2]
+eq-always-true	spotbugs	EQ_ALWAYS_TRUE	anchor-differs	tool lines [11, 3], on passing [], fixture [10, 2]
 eq-check-for-operand-not-compatible-with-this	spotbugs	EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS	not-comparable	the fixture does not compile
 eq-compareto-use-object-equals	spotbugs	EQ_COMPARETO_USE_OBJECT_EQUALS	agree-lines	
 eq-comparing-class-names	spotbugs	EQ_COMPARING_CLASS_NAMES	anchor-differs	tool lines [3], on passing [], fixture [2]
@@ -658,7 +658,7 @@ method-length	checkstyle	MethodLength	tool-silent	the tool reports nothing on th
 method-name	checkstyle	MethodName	agree	
 method-name	pmd	MethodNamingConventions	agree	
 method-no-init	nullaway	METHOD_NO_INIT	not-comparable	the fixture does not compile
-method-returns-internal-array	pmd	MethodReturnsInternalArray	agree	
+method-returns-internal-array	pmd	MethodReturnsInternalArray	approximation	a zero-length array field exposes no state, so Ward leaves it; PMD skips the static final one and reports the instance field initialized with {} (line 18 of the passing fixture)
 method-type-parameter-name	checkstyle	MethodTypeParameterName	approximation	the passing fixture uses names such as KeyT, which Checkstyle's default pattern (one capital letter) rejects
 method-with-same-name-as-enclosing-class	pmd	MethodWithSameNameAsEnclosingClass	agree-lines	
 mf-class-masks-field	spotbugs	MF_CLASS_MASKS_FIELD	not-comparable	the fixture does not compile
@@ -928,7 +928,7 @@ return-from-finally-block	pmd	ReturnFromFinallyBlock	agree
 return-nullable	nullaway	RETURN_NULLABLE	approximation	NullAway also reports `return null` in the unmarked class (passing line 31); Ward leaves classes it does not treat as annotated alone
 return-nullable-generic	nullaway	RETURN_NULLABLE_GENERIC	not-comparable	the fixture does not compile
 return-value-ignored	errorprone	ReturnValueIgnored	agree-lines	
-ri-redundant-interfaces	spotbugs	RI_REDUNDANT_INTERFACES	agree-lines	
+ri-redundant-interfaces	spotbugs	RI_REDUNDANT_INTERFACES	not-comparable	the fixture does not compile
 right-curly	checkstyle	RightCurly	agree	
 rp-c-repeated-conditional-test	spotbugs	RpC_REPEATED_CONDITIONAL_TEST	approximation	SpotBugs reports the repeated operand of || (line 3) but not the repeated else-if test (line 7), which Ward reports
 rr-not-checked	spotbugs	RR_NOT_CHECKED	agree-lines	
@@ -979,7 +979,7 @@ se-private-read-resolve-not-inherited	spotbugs	SE_PRIVATE_READ_RESOLVE_NOT_INHER
 se-read-resolve-is-static	spotbugs	SE_READ_RESOLVE_IS_STATIC	anchor-differs	tool lines [1], on passing [], fixture [2]
 se-read-resolve-must-return-object	spotbugs	SE_READ_RESOLVE_MUST_RETURN_OBJECT	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 se-transient-field-not-restored	spotbugs	SE_TRANSIENT_FIELD_NOT_RESTORED	not-comparable	the fixture does not compile
-se-transient-field-of-nonserializable-class	spotbugs	SE_TRANSIENT_FIELD_OF_NONSERIALIZABLE_CLASS	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
+se-transient-field-of-nonserializable-class	spotbugs	SE_TRANSIENT_FIELD_OF_NONSERIALIZABLE_CLASS	not-comparable	the fixture does not compile
 sealed-should-have-permits-list	checkstyle	SealedShouldHavePermitsList	agree-lines	
 self-assertion	errorprone	SelfAssertion	not-comparable	the fixture does not compile
 self-assignment	errorprone	SelfAssignment	agree-lines	
@@ -1206,7 +1206,7 @@ useless-string-value-of	pmd	UselessStringValueOf	agree-lines
 uuf-unused-field	spotbugs	UUF_UNUSED_FIELD	anchor-differs	tool lines [1], on passing [], fixture [2]
 uuf-unused-public-or-protected-field	spotbugs	UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD	approximation	SpotBugs reports the class of the unused public field (line 2) and a public class of the passing fixture (line 11); Ward reports the field (line 3)
 uw-uncond-wait	spotbugs	UW_UNCOND_WAIT	agree-lines	
-uwf-field-not-initialized-in-constructor	spotbugs	UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
+uwf-field-not-initialized-in-constructor	spotbugs	UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR	not-comparable	the fixture does not compile
 uwf-null-field	spotbugs	UWF_NULL_FIELD	agree-lines	
 uwf-unwritten-field	spotbugs	UWF_UNWRITTEN_FIELD	anchor-differs	tool lines [5], on passing [], fixture [2]
 uwf-unwritten-public-or-protected-field	spotbugs	UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD	anchor-differs	tool lines [7], on passing [], fixture [3]
