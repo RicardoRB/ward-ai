@@ -25,7 +25,7 @@ class PresetDuplicatesTest {
   private static final List<RuleDefinition> SHIPPED = CatalogRuleDefinitions.shipped();
 
   /** Fixtures the engine cannot yet run with every rule together (see the report of #599). */
-  private static final Set<String> SKIPPED = Set.of("ward:typescript/tls-verification-disabled");
+  private static final Set<String> SKIPPED = Set.of();
 
   private static final int FUNCTION_LINE = 4;
 

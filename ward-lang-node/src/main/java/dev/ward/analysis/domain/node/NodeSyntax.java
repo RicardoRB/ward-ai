@@ -31,10 +31,18 @@ final class NodeSyntax {
         || IDENTIFIER.equals(kind);
   }
 
-  /** Returns the first identifier token under a node, which holds the name, or null. */
+  /**
+   * Returns the first identifier token under a node, which holds the name, or null. A name that is
+   * a contextual keyword, such as {@code global} or {@code async}, is a token of its own kind
+   * directly under the identifier node.
+   */
   static SyntaxNode leafOf(final SyntaxNode node) {
     if (LEAF.equals(node.kind())) {
       return node;
+    }
+    if (isName(node.kind()) && node.children().size() == 1
+        && node.children().get(0).children().isEmpty()) {
+      return node.children().get(0);
     }
     for (final SyntaxNode child : node.children()) {
       final SyntaxNode leaf = leafOf(child);
