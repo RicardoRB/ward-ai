@@ -114,4 +114,43 @@ class SecretScanPromptTest extends SecretGateTestSupport {
     // Then it is sent
     assertThat(found).isEmpty();
   }
+
+  @Test
+  @DisplayName("a ward-rules.toml setting for a secret rule is honoured on the prompt path")
+  void aRulesFileSettingForASecretRuleIsHonoured() throws IOException {
+    // Given a ward-rules.toml that tunes a Java rule and one secret rule, and a secret in two files
+    final String secret = fixture("github-pat", "violating.txt");
+    write(
+        "ward-rules.toml",
+        "version = 1\n[select]\npreset = \"none\"\nlanguages = [\"java\"]\n"
+            + "include = [\"java.method-length\"]\n[rules.java.method-length]\n"
+            + "[rules.secrets.github-pat]\nexclude-paths = [\"docs/**\"]\n"
+    );
+    write("docs/a.txt", "token: " + secret + "\n");
+    write("src/b.txt", "token: " + secret + "\n");
+
+    // When I submit a prompt that attaches both
+    final List<PromptFinding> found =
+        scan(prompts(List.of())).scan(root, new PromptInput("see @docs/a.txt and @src/b.txt"));
+
+    // Then the rule skips docs/** as the file says, still finds the secret elsewhere, and the Java
+    // entries of the file neither break nor slow the prompt path
+    assertThat(found).contains(new PromptFinding("src/b.txt", RULE, 1, "token: ".length() + 1));
+    assertThat(found)
+        .noneMatch(finding -> RULE.equals(finding.ruleId()) && "docs/a.txt".equals(finding.file()));
+  }
+
+  @Test
+  @DisplayName("a ward-rules.toml exclusion of a secret rule is honoured on the prompt path")
+  void aRulesFileExclusionOfASecretRuleIsHonoured() throws IOException {
+    // Given a ward-rules.toml that excludes one secret rule
+    final String secret = fixture("github-pat", "violating.txt");
+    write("ward-rules.toml", "version = 1\n[select]\nexclude = [\"secrets.github-pat\"]\n");
+
+    // When I submit a prompt with the secret
+    final List<PromptFinding> found = scan(prompts(List.of())).scan(root, new PromptInput(secret));
+
+    // Then that rule does not report it
+    assertThat(found).noneMatch(finding -> RULE.equals(finding.ruleId()));
+  }
 }
