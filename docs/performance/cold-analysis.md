@@ -532,3 +532,84 @@ The two new runs differ by 15 % among themselves, more than the effect: run 1 is
 base, run 2 is 0.5 % lower. The profile bounds the gain: at most 3 % (the whole dependency step),
 about 0.5 to 1.5 % given the share of unselected files. Peak memory did not change beyond the spread.
 The load was 3 to 4 (other sessions building); wall time is not usable.
+
+## Native binary: time in garbage collection (#601)
+
+Numbers for #601, the OpenSpec change `reduce-native-gc-time`, measured on 2026-11-18 (Apple M4,
+10 cores, 32 GB, GraalVM CE 25.5.5, native binary built from `0.11.0` plus this change). Load (1
+minute) was 3 to 5 during the timed runs, with other sessions building, so compare ratios, not
+seconds. Each run is `ward check --profile default --severity info --format json --jobs <n>` from an
+empty `.ward`, with `-XX:+PrintGC` for the collection log (the totals sum the pause times of the log).
+
+**What changed.** `native-image.properties` sets `-R:InitialCollectionPolicy=BySpaceAndTime` as the
+default of the serial collector. No heap size is built in. A user can still override it at run time
+with `-XX:InitialCollectionPolicy=Adaptive2`. It is in the properties file that the release build
+reads, so the CI native job and the releases pick it up; `NativeGcOptionsTest` checks it.
+
+**Why.** The default policy (`Adaptive2`) keeps the old generation close to the live set, so a full
+collection of about 1.7 s ran every 2 s with 1 job. `BySpaceAndTime` sizes the generations from the
+time spent collecting.
+
+### Before and after (default memory: 80 % of 32 GB)
+
+| Run | Wall time | Collections (time) | Full collections (time) | Peak memory |
+|---|---|---|---|---|
+| Base, 1 job, run 1 | 905 s | 14,983 (365 s) | 161 (284 s) | 2.4 GB |
+| Base, 1 job, run 2 | 908 s | 14,971 (368 s) | 162 (288 s) | 2.4 GB |
+| New, 1 job, run 1 | 582 s | 2,383 (40 s) | 12 (21 s) | 4.0 GB |
+| New, 1 job, run 2 | 580 s | 2,383 (40 s) | 12 (21 s) | 4.0 GB |
+| New, final binary, 1 job | 578 s | 2,383 (40 s) | 12 (20 s) | 4.0 GB |
+| Base, 10 jobs, run 1 | 267 s | 652 (87 s) | 38 (49 s) | 3.2 GB |
+| Base, 10 jobs, run 2 | 288 s | 694 (94 s) | 40 (55 s) | 3.1 GB |
+| New, 10 jobs, run 1 | 253 s | 2,409 (74 s) | 27 (38 s) | 3.0 GB |
+| New, 10 jobs, run 2 | 253 s | 2,409 (73 s) | 27 (37 s) | 2.9 GB |
+| New, final binary, 10 jobs | 253 s | 2,409 (74 s) | 27 (38 s) | 3.0 GB |
+
+"New" runs 1 and 2 passed the policy as a run-time flag to the baseline binary; "final binary" is
+the binary built with the property. With 1 job GC fell from 40 % of the run to 7 % and the run is
+36 % faster; with 10 jobs GC fell by 15 to 20 % and the run by 5 to 12 %. The heap now grows into
+the memory the machine has (peak 4.0 GB instead of 2.4 GB with 1 job), which is the cost.
+
+### Options tried
+
+First 120 s of a cold run with 1 job, load 3 to 4 (collections, full collections):
+
+| Option | Time in collections | Full collections |
+|---|---|---|
+| Default (two runs) | 39.1 s, 38.0 s | 59, 58 |
+| `-XX:MaxHeapFree` 256 MB / 512 MB / 1 GB | 38.8 s / 38.5 s / 35.7 s | 58 / 57 / 53 |
+| `-XX:+CollectYoungGenerationSeparately` | 38.4 s | 57 |
+| `-XX:InitialCollectionPolicy=BySpaceAndTime` | **5.4 s** | **5** |
+
+Under `MaxRAM` 2 GB, 10 jobs, first 120 s: default 27.0 s (24 full); `BySpaceAndTime` 8.1 s (8);
+with `PercentTimeInIncrementalCollection` 20: 16.2 s (23); 80: 6.5 s (4); `Adaptive`: 18.6 s (17). With
+1 job: default 36.8 s (56), `BySpaceAndTime` 6.1 s (7). The default `PercentTimeInIncrementalCollection`
+of 50 is kept. `-Xms` was not tried: a fixed minimum heap is not allowed.
+
+### Same result
+
+The `.ward` cache of the new binary on the same tree (10 jobs) equals that of the baseline binary
+(1 job and 10 jobs): `diff -r` prints nothing. (A run after adding this change's own files differs
+by the cache entries of those files.) `NativeWardGateSmokeTest` and `NativeFormatSmokeTest` pass with
+the final binary.
+
+### A machine with 2 GB
+
+No 2 GB machine was available. It was simulated with `-XX:MaxRAM=2147483648`, which makes the binary
+size its heap (80 %, 1.6 GB) as if the machine had 2 GB; it is not a hard memory limit
+(no container). Whole runs of this repository:
+
+| Run (`MaxRAM` 2 GB) | Result | Wall time | GC time | Peak memory |
+|---|---|---|---|---|
+| Base, 1 job | `OutOfMemoryError` | 395 s | 245 s | 1.9 GB |
+| New, 1 job | `OutOfMemoryError` | 337 s | 187 s | 1.9 GB |
+| Base, 10 jobs | finished | 1,364 s | 1,186 s | 2.1 GB |
+| New, 10 jobs | finished | 1,812 s | 1,634 s | 1.8 GB |
+
+One run each, load 2 to 5. **Finding:** this repository does not fit a 1.6 GB heap with 1 job, before
+or after the change (the rule-by-rule loop keeps the trees of the files the taint rule follows), so
+the story's "starts and finishes" holds here only with several jobs, and there both binaries spend
+most of the time collecting, with the new one slower (+33 %, a single run each). `ward --version`
+and `ward check` on small projects start and finish (`NativeWardGateSmokeTest`). The 2 GB case of
+this repository is a follow-up: bounding the live set (parse cache, kept graphs) matters more there
+than the collector policy.
