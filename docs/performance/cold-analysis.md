@@ -808,3 +808,140 @@ instructions retired do not depend on the load.
 | After (2) | 15.1 | 4.02 s | 1.19 × 10¹¹ | 1.44 GB |
 
 Instructions fall by 57 % and peak memory by about 49 %.
+
+## #668 cold-run growth
+
+Measured on 2026-11-18, Apple M4, 10 cores, Temurin 25, JVM jars built with `./mvnw -DskipTests package`
+in three `git worktree` folders, one build at a time: **A** = `87dc3c71c` (the #633 base), **B** =
+`3fbf356fa` (the commit just before #604), **C** = `38f5547a1` (the `0.11.0` code). Every run is
+`/usr/bin/time -l java -jar <jar> check --profile wardonly --severity info --format json --jobs <n>`
+from an empty `.ward`, over one of two trees made with `git archive`: **F**, the fixed tree at
+`38f5547a1` (19,509 files, the same for all three jars), or the jar's own tree (A at `87dc3c71c`,
+19,401 files; B at `3fbf356fa`, 19,490 files). `wardonly` is the `ward` check alone (profile added
+in the copies only); all trees hold the same `ward-rules.toml` (318 rules), so every jar ran the
+same rule selection and none rejected a rule. Every run reports 12 findings, and the findings of
+the three jars at `--jobs 1` are equal. Each run started when the 1-minute load average was under 4
+(a wait loop); the loads below are that starting value. The machine was busy with other builds, so
+the load rose during several runs (to 5–6 at `--jobs 1`, 13–18 at `--jobs auto`); instructions retired do
+not depend on it, wall time here is only a rough guide. Corpora were not used.
+
+| Jar | Tree | Jobs | Run | Start load | Instructions | Wall | Peak memory |
+|---|---|---|---|---|---|---|---|
+| A | A (own) | 1 | 1 | 3.9 | 9.54 × 10¹² | 336 s | 5.0 GB |
+| A | F | 1 | 1 | 3.8 | 9.80 × 10¹² | 353 s | 5.8 GB |
+| A | F | auto | 1 | 4.0 | 5.95 × 10¹² | 111 s | 5.8 GB |
+| B | B (own) | 1 | 1 | 4.0 | 10.15 × 10¹² | 379 s | 4.6 GB |
+| B | F | 1 | 1 | 3.8 | 9.23 × 10¹² | 345 s | 5.7 GB |
+| B | F | 1 | 2 | 4.0 | 9.79 × 10¹² | 345 s | 4.8 GB |
+| B | F | auto | 1 | 3.9 | 5.95 × 10¹² | 108 s | 4.9 GB |
+| B | F | auto | 2 | 4.0 | 6.01 × 10¹² | 109 s | 4.7 GB |
+| C | F (= own) | 1 | 1 | 3.9 | 14.44 × 10¹² | 576 s | 5.8 GB |
+| C | F (= own) | 1 | 2 | 3.9 | 13.71 × 10¹² | 576 s | 5.8 GB |
+| C | F (= own) | auto | 1 | 3.7 | 9.14 × 10¹² | 329 s | 5.6 GB |
+| C | F (= own) | auto | 2 | 3.9 | 8.94 × 10¹² | 331 s | 6.3 GB |
+
+Rounds were not repeated for the own-tree cells and for A (one run each): the spread between the two
+runs of one cell is 0.6 × 10¹² (B, `--jobs 1`) and 0.7 × 10¹² (C), about 6 and 5 %. The numbers of the #602 section reproduce (C at `--jobs 1`: 14.4 and 13.7 against 14.4 there; at
+`--jobs auto`: 9.1 and 8.9 against 8.95).
+
+### The split (`--jobs 1`, instructions)
+
+From A on its own tree (9.54 × 10¹²) to C on its own tree (14.07 × 10¹², mean of two), growth
++4.5 × 10¹² (+47 %):
+
+- **(a) Tree and rule set: at most 0.3 × 10¹² (about 3 %, and inside the spread).** The same jar A
+  on its tree and on the tree of `38f5547a1`: 9.54 against 9.80 (+2.7 %); B on its tree against the
+  fixed tree goes the other way (10.15 against 9.23 and 9.79). The tree grew by 108 files and the
+  jars by many rule definitions, but the selection is the same 318 rules, so the growth of the rule
+  set does not reach this run.
+- **(b) #604: +4.6 × 10¹² (+48 %), all of the growth.** B on the fixed tree (9.51 × 10¹², mean of
+  two) to C on the fixed tree (14.07 × 10¹²). The commits between B and C are `b884fe849` (#604) and
+  the TypeScript and JavaScript quick prediction of #502, which a Java-only run does not parse. A to B
+  is −0.3 × 10¹² (A 9.80, B 9.51), inside the spread.
+- **(c) Anything else: 0 ± 0.6 × 10¹²**, the spread of repeated runs.
+
+`--jobs auto` has the same step: B 5.98 × 10¹² (mean) to C 9.04 × 10¹², +3.1 × 10¹² (+51 %).
+
+### The `--jobs auto` regression
+
+**On the same tree, `--jobs auto` went from about 110 s to 330 s between B (`3fbf356fa`) and C
+(`38f5547a1`), and the range that did it is `b884fe849` (#604).** On the fixed tree F, A takes 111 s,
+B 108 and 109 s, C 329 and 331 s (the load rose to 13–18 during the `--jobs auto` runs of A, B and C alike,
+so it is not the load; the two runs of each cell agree to 1 %). Parallel speed-up against `--jobs 1`
+fell from 3.2× (A, B) to 1.75× (C). The reason is in the code: `UnitResultCache.analyze` computes the
+cache key of every unit in one `for` loop on the calling thread (`unitKeys.of(unit)`), and #604 put the
+taint summary into that key (`SummaryDigests` → `FileTaintSummaries.of` → `TaintFileSummary.of`;
+`SummaryDigests.known` is a plain `HashMap`). Only the analysis of the missed units runs on the
+analysis threads. The cold cost of the summary is therefore a serial section (Amdahl): about 220 s
+of wall time added at `--jobs auto`.
+
+### JFR of the tip jar (C on F)
+
+`settings=profile`, started under load 10 (`--jobs 1`) and 27 (`--jobs auto`), so the sample
+counts are usable and the wall times (1,543 s and 1,658 s) are not; instructions retired were 14.9
+and 11.7 × 10¹² with JFR.
+
+| Share of execution samples | `--jobs 1` (67,815) | `--jobs auto` (63,099) |
+|---|---|---|
+| `UnitKeys.of` (cache keys), on `main` | 51.5 % | 64.8 % |
+| of it `SummaryDigests` (summary computation) | 48.2 % | 60.8 % |
+| of it `FileTaintSummaries.of` | 45.7 % | 57.5 % |
+| of it `FlowDigests` | 2.5 % | 3.4 % |
+| rule execution (`ruleByRule` / `fileByFile`) | 44.9 % | 30.9 % |
+| of it `TaintFile.run` | 32.8 % | 22.2 % |
+| `DependencyAnalysis` (dependency step) | 0.9 % | 1.3 % |
+
+So the summary for the cache key is **about 48 % of the cold run at `--jobs 1`** (consistent with
++48 % instructions measured), and `main` alone carries 52 % of the samples at `--jobs 1`, 66 % at
+`--jobs auto`.
+
+### Why `--jobs 1` retires about 35 % more than `--jobs auto`
+
+The gap is not new: A retires 9.80 against 5.95 × 10¹² (−39 %), B 9.51 against 5.98 (−37 %), C
+14.07 against 9.04 (−36 %), the same findings. It is in rule execution, not in the key phase.
+`RuleEngine.analyzed` runs `UnitRuns.ruleByRule` with one thread and `UnitRuns.fileByFile` otherwise.
+In the two profiles the key phase has similar cost (32.7k and 38.3k samples), but rule execution is
+30.4k samples rule by rule against 19.5k file by file, and `TaintFile.run` 22.2k against 14.0k. The hot
+frames inside `TaintFile.run` are the same in both (`TaintSpans.firstMatch`, `DispatchedCalls.apply`,
+`LocalMethod.parse` and `key`, `CalledMethods.callKeys`), with more samples in the rule-by-rule order
+(`TaintSpans.firstMatch` 2,428 against 1,380; `DispatchedCalls.apply` 1,183 against 499). It is the
+same code run more, not another code path. GC pauses are not the cause (7.9 s and 11.4 s in total, 635
+and 611 young collections). **Not isolated:** why the rule-by-rule order does more taint work; I did
+not find a cache that one order uses and the other does not (`TaintFile.run` builds its
+`TaintContext` per call in both). Candidates to test: concurrent G1 marking threads (not in the
+execution samples) with trees alive for the whole run, and work repeated per rule on a unit. #585
+chose rule by rule for the native collector (472 s against 336 s).
+
+### Recommendation
+
+Sharing the summary between the cache key and the taint rule is worth it, in two steps:
+
+1. **Parallelize the key loop** (compute `unitKeys.of` on the analysis threads, `SummaryDigests.known`
+   as a `ConcurrentHashMap`). Same instructions, no change of the cache format; the expected gain is
+   most of the 220 s at `--jobs auto` (back towards 110–150 s), nothing at `--jobs 1`.
+2. **Share the work of the summary with `TaintFile.run`** (the `TaintContext` and the reachable-method
+   sets both build per file). The upper bound is the whole of #604's cold cost: B to C, −32 % of
+   instructions at `--jobs 1` (14.1 → 9.5 × 10¹²) and −34 % at `--jobs auto`. A realistic gain is part
+   of it, because the key still needs a summary before the rule runs; it is not measured.
+
+A cached run is not affected (it is what #604 buys), so this is a cold-run cost, not a release
+blocker.
+
+### Not verified
+
+No third round and one run each for A, the own-tree cells and `--jobs auto` on A (the priority
+changed to Rust in 0.13.0, so the matrix was stopped after round 2 of the tip and B cells); the
+rule-set growth was not measured by itself (same `ward-rules.toml` for every jar, so the extra rule
+definitions of the tip are not selected); the cause of the `--jobs` gap is not isolated; no async
+profiler (JFR execution samples only cover Java threads); the native binary; JFR runs started under load
+10 and 27.
+
+### How to reproduce
+
+```bash
+git worktree add --detach <dir-A> 87dc3c71c      # also 3fbf356fa and 38f5547a1
+./mvnw -q -DskipTests package                    # in each, one at a time
+git archive 38f5547a1 | tar -x -C <tree-F>       # add "wardonly" to [checks.ward] profiles
+cd <tree-F> && rm -rf .ward && /usr/bin/time -l java -jar <jar> check --profile wardonly \
+  --severity info --format json --jobs 1
+```
