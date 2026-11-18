@@ -647,3 +647,113 @@ file are identical between base and new on both corpora. What reads far now: typ
 intersections or conditional types, and the arrow functions of the TypeScript grammar that are not
 async. They are the next step if parsing matters on a corpus; on this repository it is 4.5 % of a
 cold run (see above).
+
+## #602 closing measurement
+
+Last item of #602: `api-compat` and a large project. Measured on 2026-11-18 on the same machine
+(Apple M4, 10 cores, Temurin 25.0.5, JVM jar built from `0.11.0` at `38f5547a1`, which has #601, #604
+and #502). Each run is one process, `/usr/bin/time -l`, no JFR, `--severity info --format json`; the
+load is the 1-minute load average when the run started. Another project's builds raised the load to
+70 for part of the first pass; every wall time below comes from the second pass, with the load under
+4. The first pass is kept only for its instruction counts (the instructions do not depend on the
+load). Corpora are only measured, never committed: Commons Lang `rel/commons-lang-3.22.0` (638 Java
+files) and Spring PetClinic `500158f7…` (50 Java files), each copied to a scratch directory, put in a
+Git repository with one commit tagged `v1.0.0`, and a `ward.toml` with only the gate under test.
+
+### `api-compat`
+
+Setup: profile with only `api-compat`, `base` set (on the corpora the working tree equals `v1.0.0`, so
+the findings are 0 and only the cost of reading two revisions is measured; on this repository the base
+is `v0.10.0`, which gives 10 findings, a real diff). The gate has no cache: there is no `.ward` after a
+run, so "cold" and "cached" are the same thing, and two runs are two samples.
+
+| Project | Run | Load | Wall time | Instructions | Peak memory |
+|---|---|---|---|---|---|
+| PetClinic | 1 | 3.5 | 1.38 s | 2.47 × 10¹⁰ | 0.40 GB |
+| PetClinic | 2 | 3.7 | 1.33 s | 2.26 × 10¹⁰ | 0.37 GB |
+| Commons Lang | 1 | 3.5 | 6.99 s | 8.64 × 10¹⁰ | 1.24 GB |
+| Commons Lang | 2 | 3.9 | 7.01 s | 8.50 × 10¹⁰ | 1.25 GB |
+| This repository | 1 | 3.5 | 68.9 s | 3.00 × 10¹¹ | 2.63 GB |
+| This repository | 2 | 3.8 | 68.4 s | 3.04 × 10¹¹ | 2.73 GB |
+
+Spread between the two runs: under 1 % in wall time. System time is large on this repository (21 s of
+69 s CPU) and small elsewhere.
+
+**JFR profile** (this repository, one run, `settings=profile`: 743 Java execution samples, 2,812
+native-method samples):
+
+- **One Git process per file.** A shim in front of `git` counted 6,006 calls in one run: 3,014
+  `git cat-file -e <commit>:<path>` (existence check) and 2,966 `git show <commit>:<path>` (content),
+  24 `ls-tree`, 2 `rev-parse` (`GitRevisionFiles`, called from `ApiSources.read`). In the native
+  samples, `ProcessImpl.forkAndExec` and `waitForProcessExit0` are the top frames next to
+  `FileInputStream.readBytes` of the child's pipe. A single `git show` or `cat-file -e` costs about
+  10 ms in a shell loop (1.0 s for 100 calls), so 6,006 calls account for about 60 s of the 68 s
+  wall time (estimate from the per-call cost, not a measured in-process share). Reading the same blobs
+  through one `git cat-file --batch` took 0.1 s for all the `.java` files of this repository.
+- **ANTLR Java parse.** 76 % of the Java samples are `JavaApiSurfaceReader.read` → `ParseCache.parse`
+  → `JavaParser.*` (prediction: `ParserATNSimulator.closure_`, `getEpsilonTarget`,
+  `FlexibleHashMap.put` on top). The surface reader parses every file in full to read declarations and
+  signatures, method bodies included.
+
+**What a future task should target.** (1) Replace the per-file `git show` / `git cat-file -e` by one
+`git cat-file --batch` (or `--batch-all-objects` over the `ls-tree` list) per revision: it removes about
+6,000 process starts, nearly all of the wall time of the gate here and 90 % or more of the system
+time; no change of results. (2) After that, the parse is the cost: the API surface needs no method body,
+so a cheaper read (skipping bodies) would cut the CPU the profile shows, but it changes what is parsed
+and needs its own equivalence test on the `api-compat` fixtures.
+
+### A large project: the `ward` check
+
+Setup: profile `wardonly` with only the `ward` check, the strict `ward-rules.toml` of this repository
+(copied to the corpora), each cold run from an empty `.ward`, then a cached run on the `.ward` it
+wrote. "Default" jobs is 1 (`$WARD_JOBS` unset), so the two columns are `--jobs 1` and `--jobs auto`
+(10 threads). This repository has about 19,700 files with the fixtures (the largest project on disk;
+the other corpora, Swift 51 MB and Juice Shop 34 MB, are not Java and not larger by file count).
+Wall times come from runs that started under load 4, except where marked.
+
+| Project | Jobs | Run | Load | Wall time | Instructions | Peak memory |
+|---|---|---|---|---|---|---|
+| PetClinic cold | 1 | 1 | 3.8 | 2.60 s | 1.11 × 10¹¹ | 0.50 GB |
+| PetClinic cold | 1 | 2 | 3.8 | 2.51 s | 1.08 × 10¹¹ | 0.51 GB |
+| PetClinic cold | auto | 1 | 3.8 | 1.99 s | 9.3 × 10¹⁰ | 0.51 GB |
+| PetClinic cold | auto | 2 | 4.0 | 1.99 s | 9.3 × 10¹⁰ | 0.49 GB |
+| PetClinic cached | 1 / auto | 1, 2 | 3.8–4.0 | 1.2 s | 4.8–5.0 × 10¹⁰ | 0.44 GB |
+| Commons Lang cold | 1 | 1 | 4.0 | 77.4 s | 2.27 × 10¹² | 3.94 GB |
+| Commons Lang cold | 1 | 2 | 3.8 | 77.6 s | 2.25 × 10¹² | 3.84 GB |
+| Commons Lang cold | auto | 1 | 3.8 | 40.5 s | 1.76 × 10¹² | 4.71 GB |
+| Commons Lang cold | auto | 2 | 3.7 | 40.5 s | 1.79 × 10¹² | 4.81 GB |
+| Commons Lang cached | 1 / auto | 1, 2 | 3.8–4.0 | 7.3–7.5 s | 1.46–1.51 × 10¹¹ | 0.44 GB |
+| This repository cold | 1 | 1 | 3.7 | 578 s | 1.44 × 10¹³ | 5.78 GB |
+| This repository cold | auto | 1 | 5.1 | 332 s | 8.95 × 10¹² | 5.98 GB |
+| This repository cold | auto | 2 | 10.1 (not quiet) | 336 s | 9.36 × 10¹² | 5.93 GB |
+| This repository cached | 1 | 1 | 4.0 | 28.0 s | 4.28 × 10¹¹ | 0.80 GB |
+| This repository cached | auto | 1, 2 | 14.3 (not quiet) | 29 s | 4.4–4.5 × 10¹¹ | 0.73–0.87 GB |
+
+First-pass runs under load 10 to 70 (not used for wall time) retired the same instructions within the
+spread: Commons Lang `--jobs 1` 2.17–2.28 × 10¹², `--jobs auto` 1.78–1.97 × 10¹², this repository
+`--jobs 1` 1.38–1.50 × 10¹³ (second run, load 12: 600 s), `--jobs auto` 9.0–9.4 × 10¹².
+
+Findings:
+
+- **Parallel is 1.7 to 1.9 times faster in wall time and retires fewer instructions.** This
+  repository: 578 s → 332 s (1.74×); Commons Lang 77.5 s → 40.5 s (1.9×); PetClinic 2.5 s → 2.0 s.
+  The `--jobs auto` run uses the file-by-file path, the `--jobs 1` run the rule-by-rule path, and the
+  instruction count differs by 35 % (14.4 × 10¹² against 8.95 × 10¹²) for the same findings. Not
+  investigated: where the extra 5 × 10¹² instructions of the one-thread path go.
+- **A cached run costs 5 % of a cold one** on this repository (28 s of 578 s) and 10 % on Commons
+  Lang, and does not depend on the jobs. The 28 s still read and hash 19,700 files.
+- **Peak memory is 5.8 to 6.0 GB** on this repository whatever the jobs, 3.8 to 4.8 GB on Commons Lang
+  (638 files), 0.5 GB on PetClinic. Commons Lang costs about 3.5 × 10⁹ instructions per file against
+  about 0.7 × 10⁹ for this repository's files (14.4 × 10¹² / 19,700), so the cost per file is not
+  linear: the taint and dependency rules of #632 dominate on code with long methods and deep call
+  chains.
+- **Against #633**: that section measured 9.6 × 10¹² instructions and 344 s with `--jobs 1` on a copy
+  of the tree at `87dc3c71c`. The same command now retires 14.4 × 10¹² and takes 578 s. The tree and the
+  rule set have grown since (new fixtures and rules landed in between, e.g. the Swift taint rules and
+  the TypeScript CDK rules), and the copy used then was not kept, so the increase is not attributed.
+  It is the first number to re-check at the next performance task.
+
+Not verified: native binary; `--jobs auto` on 10 cores only (no 2 or 4 thread points); one quiet run of
+this repository at `--jobs 1`, one quiet run at `--jobs auto` (the second was at load 10); no JFR of
+the `ward` gate at this tip (the profile of #632/#633 is the latest); the load on the quiet runs was
+3.5 to 4.0, not idle, because of macOS system daemons (`AMPDevicesAgent` alone used a core).
