@@ -194,8 +194,9 @@ order:
    `opencode`, or `codex`), plus any other the user names, including `junie` for Junie CLI. `none` is valid.
    Optionally offer `--prompt-hook` for an integration that has a prompt event (`claude-code`,
    `codex`, `cursor`, `gemini`, `factory-droid`): it blocks a prompt that contains a secret before it is
-   sent. It scans only after the user adds `[checks.secrets.prompts]` with `enabled = true` to
-   `ward.toml`, which needs a `secrets` check; say so, and never add it silently.
+   sent. With a `secrets` gate, init also writes `[checks.secrets.prompts]` with `enabled = true`
+   into the new `ward.toml`; without the gate, say that no prompt is scanned until a `secrets` check is added.
+   It is opt-in: never pass the option unless the user agrees.
 7. **Git quality hooks.** These add Ward sections to `.git/hooks/pre-commit` and `pre-push`
    without replacing existing hook logic; they print `--format json` reports so agents can act on findings. Recommend them when the project has no CI, and mention that
    they slow down commits and pushes. For a team, offer `--shared-hooks` (a committed `.githooks`

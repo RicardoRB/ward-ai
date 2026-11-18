@@ -10,6 +10,14 @@ public interface AnalysisRuleSource {
   AnalysisRuleLoad load();
 
   /**
+   * Loads only the secret rules, which are all a prompt scan runs. The default loads every rule.
+   * An implementation may skip the rules of the other languages and their checks.
+   */
+  default AnalysisRuleLoad loadSecrets() {
+    return load();
+  }
+
+  /**
    * Reads the rule configuration file of the project at {@code root}. {@code file} is the
    * project-relative path set by {@code rules-file}, or {@code null} for {@code ward-rules.toml}.
    * Returns empty when the default file does not exist, and a file that reports a problem when a

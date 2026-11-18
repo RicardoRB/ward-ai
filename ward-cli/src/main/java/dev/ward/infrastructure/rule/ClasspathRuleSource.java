@@ -57,6 +57,24 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
     return new AnalysisRuleLoad(rules, errors);
   }
 
+  /**
+   * Loads only the secret rule file, without building each rule: a rule that cannot be compiled is
+   * an execution error of the scan that runs it, so nothing passes silently.
+   */
+  @Override
+  public AnalysisRuleLoad loadSecrets() {
+    final List<RuleDefinition> rules = new ArrayList<>();
+    final List<String> errors = new ArrayList<>();
+    for (final String resource : new SecretRuleFiles().ruleFiles()) {
+      try {
+        rules.addAll(RuleFileReader.read(resource));
+      } catch (final RuleConfigurationException exception) {
+        errors.add(exception.getMessage());
+      }
+    }
+    return new AnalysisRuleLoad(rules, errors);
+  }
+
   private static List<RuleDefinition> concat(
       final List<RuleDefinition> loaded,
       final List<RuleDefinition> file

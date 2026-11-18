@@ -35,7 +35,15 @@ final class InitPromptHook {
     }
     final Set<String> ids = new LinkedHashSet<>();
     targets.forEach(target -> ids.addAll(target.selection().integrations()));
-    SupportedAgents.withoutPromptHook(List.copyOf(ids))
+    final List<String> unsupported = SupportedAgents.withoutPromptHook(List.copyOf(ids));
+    if (unsupported.size() < ids.stream().filter(SupportedAgents.ids()::contains).count()
+        && targets.stream().anyMatch(target -> !target.selection().gates().contains("secrets"))) {
+      out.println(
+          "Prompt hook installed, but a project without a secrets gate scans no prompts:"
+              + " add a secrets check and [checks.secrets.prompts] to ward.toml."
+      );
+    }
+    unsupported
         .forEach(
             id ->
                 out.printf(

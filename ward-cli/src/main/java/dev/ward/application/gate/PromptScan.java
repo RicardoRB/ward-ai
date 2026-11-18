@@ -55,22 +55,19 @@ public final class PromptScan {
     }
     final List<RuleDefinition> rules =
         set.rules().stream().filter(rule -> rule.capability() == RuleCapability.TEXT).toList();
-    final TextRules text = new TextRules(ports.matcher(), rules);
     final List<AnalysisFinding> found = new ArrayList<>();
     final List<String> failures = new ArrayList<>();
-    collect(
-        text.run(List.of(new TextFile(TextFile.NO_PATH, input.message()))),
-        set,
-        found,
-        failures
-    );
+    final List<TextFile> texts = new ArrayList<>();
+    texts.add(new TextFile(TextFile.NO_PATH, input.message()));
     final List<String> files = PromptFiles.relative(root, input);
     if (!files.isEmpty()) {
       final TextRead read =
           ports.sources().readText(root, files, SecretHistoryScan.excluding(excluded));
       read.errors().forEach(error -> failures.add(describe(error.ruleId(), error.path())));
-      collect(text.run(read.files()), set, found, failures);
+      texts.addAll(read.files());
     }
+    final TextRules text = new TextRules(ports.matcher(), PromptKeywords.relevant(rules, texts));
+    collect(text.run(texts), set, found, failures);
     if (!failures.isEmpty()) {
       throw new WardException(
           "Ward could not scan the whole prompt (" + String.join("; ", failures) + ")."

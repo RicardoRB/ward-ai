@@ -27,6 +27,11 @@ public final class ProjectRuleSource implements AnalysisRuleSource {
   }
 
   @Override
+  public AnalysisRuleLoad loadSecrets() {
+    return packaged.loadSecrets();
+  }
+
+  @Override
   public Optional<RuleConfigFile> configuration(final Path root, final String file) {
     return RuleConfigFileReader.read(root, file);
   }

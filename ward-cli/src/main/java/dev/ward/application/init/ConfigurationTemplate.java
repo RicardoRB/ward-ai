@@ -38,10 +38,27 @@ public final class ConfigurationTemplate {
       final Project project,
       final WardArchitecture architecture
   ) {
+    return render(gates, preset, project, architecture, false);
+  }
+
+  /**
+   * Renders the configuration as above; with {@code promptHook} the {@code secrets} check also gets
+   * an enabled {@code [checks.secrets.prompts]} table, so the prompt hook scans.
+   */
+  static String render(
+      final List<InitGateOption> gates,
+      final QualityPreset preset,
+      final Project project,
+      final WardArchitecture architecture,
+      final boolean promptHook
+  ) {
     final StringBuilder content = new StringBuilder(SECTION_CAPACITY * (gates.size() + 1));
     content.append(VERSION);
     for (final InitGateOption gate : gates) {
       appendGate(content, gate, preset, project);
+      if (promptHook && SupportedQualityGates.SECRETS.equals(gate.id())) {
+        content.append("\n[checks.secrets.prompts]\nenabled = true\n");
+      }
     }
     if (architecture.any()) {
       WardGateTemplate.append(content, architecture);

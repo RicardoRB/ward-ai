@@ -6,6 +6,8 @@ import dev.ward.domain.secrets.PromptInput;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -23,14 +25,21 @@ final class HookPrompts {
 
   private HookPrompts() {}
 
-  /** Returns the reason to block {@code prompt}, or empty to let it through. */
+  /**
+   * Returns the reason to block {@code prompt}, or empty to let it through. A scan that cannot run,
+   * for a known reason or an unexpected one, blocks the prompt with a reason that names no prompt
+   * content: a prompt is never sent unscanned.
+   */
   static Optional<String> blockReason(
       final HookChecks checks,
       final Path directory,
       final PromptInput prompt
   ) {
+    final FutureTask<List<PromptFinding>> scan =
+        new FutureTask<>(() -> checks.prompts().scan(directory, prompt));
+    scan.run();
     try {
-      final List<PromptFinding> found = checks.prompts().scan(directory, prompt);
+      final List<PromptFinding> found = scan.get();
       if (found.isEmpty()) {
         LOGGER.log(Level.INFO, "event=prompt-hook decision=allow");
         return Optional.empty();
@@ -44,13 +53,21 @@ final class HookPrompts {
                   )
       );
       return Optional.of(message(found));
-    } catch (WardException exception) {
-      LOGGER.log(Level.INFO, "event=prompt-hook decision=block reason=scan-failed");
-      return Optional.of(
-          "Ward could not scan this prompt, so it was not sent: "
-              + NativeHookMessages.safeMessage(exception)
-      );
+    } catch (InterruptedException exception) {
+      Thread.currentThread().interrupt();
+      return Optional.of(failure(exception));
+    } catch (ExecutionException exception) {
+      return Optional.of(failure(exception.getCause()));
     }
+  }
+
+  private static String failure(final Throwable cause) {
+    LOGGER.log(Level.INFO, "event=prompt-hook decision=block reason=scan-failed");
+    final String why =
+        cause instanceof WardException
+            ? NativeHookMessages.safeMessage((WardException)cause)
+            : "unexpected error";
+    return "Ward could not scan this prompt, so it was not sent: " + why;
   }
 
   private static String message(final List<PromptFinding> found) {

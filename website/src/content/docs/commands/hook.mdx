@@ -59,9 +59,9 @@ See [native harness integrations](/integrations/native-harnesses/).
 ## Prompt hook
 
 A prompt hook blocks a prompt that holds a secret before the agent sends it to the model. It is opt-in
-twice: `ward integrate <agent> --prompt-hook` (or `ward init --prompt-hook`) registers it, and it
-scans only while `ward.toml` has [`[checks.secrets.prompts]`](/configuration/secrets/#scanning-prompts)
-with `enabled = true`.
+by flag: `ward integrate <agent> --prompt-hook` (or `ward init --prompt-hook`) registers the hook and
+enables [`[checks.secrets.prompts]`](/configuration/secrets/#scanning-prompts) in `ward.toml`. It scans only
+while that table has `enabled = true`.
 
 It needs no new command: the prompt event reaches the same adapters, `ward hook claude-code
 --event-stdin` and `ward hook native --agent <agent> --event-stdin`, and the generated wrapper is
@@ -96,7 +96,9 @@ Remove the secret from the prompt, and rotate it if it was ever shared.
 ```
 
 If Ward cannot scan the whole prompt (a rule over its budget, an unreadable attached file, a broken rule
-file), the prompt is blocked too, with the reason and no prompt text. Nothing about the prompt is written to
+file, any unexpected error), the prompt is blocked too, with a message that says the scan could not run and
+names no prompt content (`Ward could not scan this prompt, so it was not sent: …`). A prompt is never sent unscanned.
+A prompt scan loads only the secret rules, unless the project has a `ward-rules.toml`. Nothing about the prompt is written to
 `.ward`, the cache or a report; with `--verbose` the diagnostics hold only rule ids and the decision.
 
 ## Nested projects

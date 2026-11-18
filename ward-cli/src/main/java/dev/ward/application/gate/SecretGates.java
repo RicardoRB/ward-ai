@@ -37,11 +37,26 @@ public final class SecretGates {
    * @throws WardException if a rule file is unusable
    */
   public PromptScan promptScan(final GateConfiguration check) {
-    return new PromptScan(check, setup(check), ports);
+    return new PromptScan(check, promptSetup(check), ports);
+  }
+
+  /**
+   * Loads only the secret rules, unless the project has a rule configuration file: that file may
+   * name rules of any language, so it is resolved against the whole catalog.
+   */
+  private RuleSetup promptSetup(final GateConfiguration check) {
+    return (root, release) ->
+        (ports.rules().configuration(root, check.rulesFile()).isPresent()
+            ? setup(check)
+            : setup(check, ports.rules().loadSecrets()))
+            .resolve(root, release);
   }
 
   private RuleSetup setup(final GateConfiguration check) {
-    final AnalysisRuleLoad loaded = ports.rules().load();
+    return setup(check, ports.rules().load());
+  }
+
+  private RuleSetup setup(final GateConfiguration check, final AnalysisRuleLoad loaded) {
     if (!loaded.configurationErrors().isEmpty()) {
       throw new WardException(String.join(" ", loaded.configurationErrors()));
     }

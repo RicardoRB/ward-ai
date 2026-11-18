@@ -2,6 +2,7 @@ package dev.ward.infrastructure.cli.agent;
 
 import dev.ward.application.agent.HookScope;
 import dev.ward.application.gate.HookCheckFixtures;
+import dev.ward.application.gate.PromptScanner;
 import dev.ward.application.learning.LearningService;
 import dev.ward.domain.process.CommandResult;
 import dev.ward.infrastructure.agent.NativeHarnessAdapter;
@@ -27,9 +28,15 @@ final class PromptHookRun {
   final StringWriter out = new StringWriter();
   final StringWriter err = new StringWriter();
   private final Path root;
+  private final PromptScanner scanner;
 
   PromptHookRun(final Path root) {
+    this(root, HookCheckFixtures.prompts());
+  }
+
+  PromptHookRun(final Path root, final PromptScanner scanner) {
     this.root = root;
+    this.scanner = scanner;
   }
 
   private HookChecks checks() {
@@ -38,7 +45,7 @@ final class PromptHookRun {
             (command, directory) -> new CommandResult(0, "", "", Duration.ZERO)
         ),
         HookScope.ALWAYS,
-        HookCheckFixtures.prompts()
+        scanner
     );
   }
 

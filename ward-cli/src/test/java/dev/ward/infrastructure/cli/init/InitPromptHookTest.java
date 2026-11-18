@@ -55,4 +55,55 @@ class InitPromptHookTest {
     assertThat(Files.readString(root.resolve(".claude/settings.json")))
         .contains("UserPromptSubmit");
   }
+
+  @Test
+  @DisplayName("the prompt hook also turns on prompt scanning")
+  void thePromptHookAlsoTurnsOnPromptScanning() throws IOException {
+    // Given a project, a supported agent and the secrets gate
+    final InitCommandFixture init = new InitCommandFixture(root);
+
+    // When I run ward init with --prompt-hook
+    final int exit =
+        init.run(
+            "",
+            "--preset",
+            "standard",
+            "--gate",
+            "secrets",
+            "--integration",
+            "claude-code",
+            "--prompt-hook",
+            "--yes"
+        );
+
+    // Then ward.toml enables the prompts table of the secrets check
+    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
+    assertThat(init.configuration()).contains("[checks.secrets.prompts]\nenabled = true\n");
+  }
+
+  @Test
+  @DisplayName("without the prompt hook nothing about prompts is written")
+  void withoutThePromptHookNothingAboutPromptsIsWritten() throws IOException {
+    // Given the same project
+    final InitCommandFixture init = new InitCommandFixture(root);
+
+    // When I run ward init without --prompt-hook
+    final int exit =
+        init.run(
+            "",
+            "--preset",
+            "standard",
+            "--gate",
+            "secrets",
+            "--integration",
+            "claude-code",
+            "--yes"
+        );
+
+    // Then neither ward.toml nor the Claude settings mention prompts
+    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
+    assertThat(init.configuration()).doesNotContain("prompts");
+    assertThat(Files.readString(root.resolve(".claude/settings.json")))
+        .doesNotContain("UserPromptSubmit");
+  }
 }
