@@ -6,6 +6,11 @@ cwe = ["CWE-530"]
 sources = ["https://developer.android.com/guide/topics/manifest/application-element#allowbackup", "https://developer.android.com/identity/data/autobackup", "https://cwe.mitre.org/data/definitions/530.html"]
 
 [[rule]]
+name = "argument-injection"
+cwe = ["CWE-88"]
+sources = ["https://cwe.mitre.org/data/definitions/88.html", "https://docs.python.org/3/library/subprocess.html#frequently-used-arguments", "https://docs.python.org/3/library/subprocess.html#popen-constructor", "https://docs.python.org/3/library/asyncio-subprocess.html#asyncio.create_subprocess_exec"]
+
+[[rule]]
 name = "cdk-open-security-group"
 cwe = ["CWE-284"]
 sources = ["https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.SecurityGroup.html", "https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.Peer.html", "https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.Connections.html", "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html", "https://cwe.mitre.org/data/definitions/284.html"]

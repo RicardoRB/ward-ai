@@ -1,0 +1,28 @@
+# Argument vectors: a list or tuple given to a subprocess function without a shell is the program followed by its
+# arguments (Python subprocess documentation). The lowering gives that vector the site argument-vector, so a value that
+# the user controls cannot choose the program or start an option such as a leading dash (CWE-88). The program and the
+# arguments of asyncio.create_subprocess_exec are positional.
+
+[[sinks]]
+kind = "call"
+name = "argument-vector"
+receiver = "subprocess"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "create_subprocess_exec"
+receiver = "asyncio"
+arguments = [0, 1, 2, 3]
+
+[[sanitizers]]
+kind = "call"
+name = "int"
+
+[[sanitizers]]
+kind = "call"
+name = "float"
+
+[[sanitizers]]
+kind = "call"
+name = "bool"

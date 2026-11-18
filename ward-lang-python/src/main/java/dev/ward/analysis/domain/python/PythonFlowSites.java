@@ -6,10 +6,12 @@ import dev.ward.analysis.domain.ir.FlowSites;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * Finds the flow sites of one Python statement: calls and member reads, with the module of their
@@ -23,10 +25,16 @@ final class PythonFlowSites implements FlowSites {
   private static final String DOT = ".";
   private static final String AWAIT = "await";
   private static final String SUBPROCESS = "subprocess";
+  private static final String HANDLE = "database-handle";
+  private static final String VECTOR = "argument-vector";
+  private static final Pattern HANDLE_SOURCE =
+      Pattern.compile("(?:[A-Za-z_][\\w.]*\\.)?(?:connect|cursor)\\(.*\\)", Pattern.DOTALL);
   private static final Set<String> OTHER_BODIES =
       Set.of("funcdef", "classdef", "decorated", "async_funcdef", "lambdef", "lambdef_nocond");
 
   private final Map<String, String> imports;
+  /** Names of this body assigned from a call to {@code cursor} or {@code connect}, so far. */
+  private final Set<String> handles = new HashSet<>();
 
   /**
    * Creates the finder of one body.
@@ -41,7 +49,29 @@ final class PythonFlowSites implements FlowSites {
   public List<FlowSite> of(final SyntaxNode node) {
     final List<FlowSite> found = new ArrayList<>();
     walk(node, found);
+    learn(node);
     return found;
+  }
+
+  /**
+   * Records what a plain assignment binds: a name assigned from a call to {@code cursor} or {@code
+   * connect} is a database handle until it is assigned something else. shortcut: statement order
+   * stands for flow order and only plain names are followed (no attributes, no {@code with ... as});
+   * upgrade by following the scope bindings.
+   */
+  private void learn(final SyntaxNode node) {
+    final List<SyntaxNode> parts = node.children();
+    if (!"expr_stmt".equals(node.kind())
+        || parts.size() != PythonSyntax.THREE_PARTS
+        || !PythonSyntax.isToken(parts.get(1), "=")) {
+      return;
+    }
+    final String target = Chain.text(parts.get(0));
+    if (HANDLE_SOURCE.matcher(Chain.text(parts.get(2))).matches()) {
+      handles.add(target);
+    } else {
+      handles.remove(target);
+    }
   }
 
   private void walk(final SyntaxNode node, final List<FlowSite> found) {
@@ -81,7 +111,7 @@ final class PythonFlowSites implements FlowSites {
     if (PythonCallArguments.opens(trailer, OPEN_CALL)) {
       final List<SyntaxNode> values = PythonCallArguments.values(trailer);
       values.forEach(value -> walk(value, found));
-      call(chain, values, trailer).ifPresent(found::add);
+      found.addAll(call(chain, values, trailer));
       chain.afterCall(trailer);
     } else if (PythonCallArguments.opens(trailer, OPEN_INDEX)) {
       trailer.children().forEach(child -> walk(child, found));
@@ -107,65 +137,68 @@ final class PythonFlowSites implements FlowSites {
     );
   }
 
-  private Optional<FlowSite> call(
+  private List<FlowSite> call(
       final Chain chain,
       final List<SyntaxNode> values,
       final SyntaxNode trailer
   ) {
     if (chain.name().isEmpty()) {
-      return Optional.empty();
+      return List.of();
     }
     final String qualifier = chain.qualifier();
     final String imported = qualifier.isEmpty() ? imports.get(chain.name()) : null;
     if (imported != null) {
       final int dot = imported.lastIndexOf(DOT);
       final String module = dot < 0 ? "" : imported.substring(0, dot);
-      return Optional.of(
+      return withVector(
           site(
               imported.substring(dot + 1),
               "",
               Optional.of(module).filter(m -> !m.isEmpty()),
               chain,
-              spans(module, values, trailer)
-          )
+              PythonCallArguments.spans(module, values, trailer)
+          ),
+          values,
+          trailer
       );
     }
-    final Optional<String> receiver = receiverOf(qualifier);
-    return Optional.of(
-        site(chain.name(), qualifier, receiver, chain, spans(receiver.orElse(""), values, trailer))
+    final Optional<String> receiver =
+        receiverOf(qualifier).or(
+            () -> Optional.of(HANDLE).filter(h -> handles.contains(qualifier))
+        );
+    return withVector(
+        site(
+            chain.name(),
+            qualifier,
+            receiver,
+            chain,
+            PythonCallArguments.spans(receiver.orElse(""), values, trailer)
+        ),
+        values,
+        trailer
     );
   }
 
-  /**
-   * The spans of the arguments. A list or tuple given to a {@code subprocess} function without
-   * {@code shell=True} is the program and its arguments, which no shell reads, so it stands for no
-   * command text: its span is empty. shortcut: the program named by the vector's first item is not
-   * followed (that is argument injection, not shell injection); upgrade with a rule of its own.
-   */
-  private static List<Span> spans(
-      final String module,
+  /** The call site, and for a vector given to {@code subprocess} the site of the vector. */
+  private static List<FlowSite> withVector(
+      final FlowSite call,
       final List<SyntaxNode> values,
       final SyntaxNode trailer
   ) {
-    final List<Span> spans = new ArrayList<>(values.stream().map(SyntaxNode::span).toList());
-    if (SUBPROCESS.equals(module)
-        && !values.isEmpty()
-        && PythonCallArguments.isSequenceDisplay(values.get(0))
-        && !PythonCallArguments.passes(trailer, "shell", "True")) {
-      final Span vector = spans.get(0);
-      spans.set(
-          0,
-          new Span(
-              vector.startLine(),
-              vector.startColumn(),
-              vector.startLine(),
-              vector.startColumn(),
-              vector.startOffset(),
-              vector.startOffset()
-          )
-      );
+    if (!PythonCallArguments.isVector(call.receiverType().orElse(""), values, trailer)) {
+      return List.of(call);
     }
-    return spans;
+    final FlowSite vector =
+        new FlowSite(
+            FlowSiteKind.CALL,
+            VECTOR,
+            "",
+            Optional.of(SUBPROCESS),
+            List.of(),
+            List.of(values.get(0).span()),
+            call.span()
+        );
+    return List.of(call, vector);
   }
 
   private static FlowSite site(
@@ -256,7 +289,7 @@ final class PythonFlowSites implements FlowSites {
       );
     }
 
-    private static String text(final SyntaxNode node) {
+    static String text(final SyntaxNode node) {
       final StringBuilder text = new StringBuilder();
       PythonSyntax.tokens(node).forEach(token -> text.append(PythonSyntax.text(token)));
       return text.toString();

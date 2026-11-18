@@ -33453,6 +33453,25 @@
         }
       }
     },
+    "ward:python/argument-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:python/arguments-differ": {
       "type": "object",
       "additionalProperties": false,
@@ -60872,6 +60891,7 @@
               "python.ambiguous-function-name",
               "python.ambiguous-variable-name",
               "python.anomalous-unicode-escape-in-string",
+              "python.argument-injection",
               "python.arguments-differ",
               "python.arguments-out-of-order",
               "python.arguments-renamed",
@@ -63863,6 +63883,7 @@
               "python.ambiguous-function-name",
               "python.ambiguous-variable-name",
               "python.anomalous-unicode-escape-in-string",
+              "python.argument-injection",
               "python.arguments-differ",
               "python.arguments-out-of-order",
               "python.arguments-renamed",
@@ -70288,6 +70309,9 @@
             },
             "anomalous-unicode-escape-in-string": {
               "$ref": "#/$defs/ward:python~1anomalous-unicode-escape-in-string"
+            },
+            "argument-injection": {
+              "$ref": "#/$defs/ward:python~1argument-injection"
             },
             "arguments-differ": {
               "$ref": "#/$defs/ward:python~1arguments-differ"
