@@ -605,6 +605,21 @@ Init sets up Cargo crates and workspaces with the `standard` or `strict` preset.
 - **Doctor.** `ward doctor` reports a missing `cargo` and points to [rustup](https://rustup.rs).
 - **CI.** The generated workflow runs on `ubuntu-24.04`, which ships Rust, and adds no setup step.
 
+## C# projects
+
+Init sets up C# solutions (`.sln`, `.slnx`) and projects (`.csproj`) built with the .NET SDK, with the
+`standard` or `strict` preset. Detection reads build files only and never runs `dotnet`.
+
+- **Solutions.** A solution owns the projects it lists, so one solution of three projects is one Ward
+  project, and `dotnet build` and `dotnet test` from its root cover every member. Central package
+  management (`Directory.Packages.props`) needs nothing from init.
+- **Gates.** `dotnet-build` and `dotnet-test`. `strict` adds `-warnaserror` to both commands. A
+  directory with several solutions, or several projects and no solution, needs the command edited to
+  name its target.
+- **Files.** Init edits no `.csproj`, solution or props file, and writes no analyzer configuration.
+- **Doctor.** `ward doctor` reports a missing `dotnet` and links the .NET SDK download.
+- **CI.** The generated workflow sets up the .NET SDK for the C# job.
+
 ## Swift projects
 
 Init sets up SwiftPM packages and Xcode projects that contain Swift sources, with the `standard` or

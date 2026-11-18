@@ -10,20 +10,14 @@ import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.init.BuildModulePlanning;
 import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.domain.init.CompatibilityInspection;
-import dev.ward.domain.project.Toolchain;
 import dev.ward.domain.project.python.PythonToolConfigs;
 import dev.ward.infrastructure.init.BuildToolConfigurator;
 import dev.ward.infrastructure.init.JvmBuildToolConfigurator;
-import dev.ward.infrastructure.init.node.NodeBuildToolConfigurator;
-import dev.ward.infrastructure.init.python.PythonBuildToolConfigurator;
-import dev.ward.infrastructure.init.rust.CargoBuildToolConfigurator;
-import dev.ward.infrastructure.init.swift.SwiftBuildToolConfigurator;
 import dev.ward.infrastructure.project.gradle.GradleCompatibilityInspection;
-import java.util.Map;
 import javax.inject.Named;
 
 /** Build-file adapters, one per supported toolchain, behind the routing configurator. */
-@Module
+@Module(includes = BuildToolAdaptersModule.class)
 final class BuildToolBindingsModule {
   private BuildToolBindingsModule() {}
 
@@ -62,27 +56,5 @@ final class BuildToolBindingsModule {
       final ToolchainPorts toolchains
   ) {
     return new InitPorts(environment, node, buildTools, python, toolchains);
-  }
-
-  @Provides
-  static Map<Toolchain, BuildToolConfiguration> buildToolAdapters(
-      final JvmBuildToolConfigurator jvm,
-      final NodeBuildToolConfigurator node,
-      final PythonBuildToolConfigurator python,
-      final CargoBuildToolConfigurator rust,
-      final SwiftBuildToolConfigurator swift
-  ) {
-    return Map.of(
-        Toolchain.JVM,
-        jvm,
-        Toolchain.NODE,
-        node,
-        Toolchain.PYTHON,
-        python,
-        Toolchain.RUST,
-        rust,
-        Toolchain.SWIFT,
-        swift
-    );
   }
 }

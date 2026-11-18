@@ -42,6 +42,8 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `swift-test` | Swift tests | Run the SwiftPM package's tests. |
 | | `xcodebuild-test` | Xcode tests | Run an Xcode scheme's tests on an iPhone simulator or the Mac. |
 | | `swift-coverage` | llvm-cov / xccov | Fail below a `minimum` line coverage of production code. |
+| C# | `dotnet-build` | .NET build | Build the solution or project with `dotnet build`. |
+| | `dotnet-test` | .NET tests | Run the tests with `dotnet test`. |
 | Android | `android-lint` | Android Lint | Run `lintDebug` through the Gradle wrapper. |
 | | `android-unit-test` | Android unit tests | Run `testDebugUnitTest` through the Gradle wrapper. |
 | | `android-coverage` | AGP JaCoCo | Fail below a `minimum` line coverage of the debug unit tests. |
@@ -215,6 +217,22 @@ profiles = ["pre-push", "ci"]
 [checks.cargo-test]
 command = ["cargo", "test", "--workspace"]
 profiles = ["pre-push", "ci"]
+```
+
+## C# gates
+
+`dotnet-build` and `dotnet-test` run their `command` from the project root, exactly as written, and
+pass when it exits with code 0. Ward infers the type from the command: `dotnet build` is
+`dotnet-build` and `dotnet test` is `dotnet-test`.
+
+```toml
+[checks.dotnet-build]
+command = ["dotnet", "build"]
+profiles = ["default"]
+
+[checks.dotnet-test]
+command = ["dotnet", "test"]
+profiles = ["pre-push"]
 ```
 
 ## Swift gates

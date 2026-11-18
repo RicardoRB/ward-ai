@@ -1,6 +1,7 @@
 package dev.ward.infrastructure.project;
 
 import dev.ward.infrastructure.project.node.NodeWorkspaces;
+import dev.ward.infrastructure.project.dotnet.DotnetProjectInspection;
 import dev.ward.infrastructure.project.python.PythonWorkspaces;
 import dev.ward.infrastructure.project.rust.CargoWorkspaces;
 import java.nio.file.Files;
@@ -14,7 +15,7 @@ import org.w3c.dom.NodeList;
 
 /**
  * Decides whether a build directory is a module of an enclosing Maven or Gradle aggregator, Node
- * workspace or uv workspace.
+ * workspace, uv workspace or .NET solution.
  */
 final class BuildModules {
   private static final String MODULE = "module";
@@ -40,7 +41,8 @@ final class BuildModules {
         || mavenModules(aggregator).contains(candidate)
         || NodeWorkspaces.isMember(aggregator, candidate)
         || PythonWorkspaces.isMember(aggregator, candidate)
-        || CargoWorkspaces.isMember(aggregator, candidate);
+        || CargoWorkspaces.isMember(aggregator, candidate)
+        || DotnetProjectInspection.isMember(aggregator, candidate);
   }
 
   /** Returns the module directories that the POM in {@code dir} lists, resolved and normalized. */

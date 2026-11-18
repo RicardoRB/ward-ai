@@ -1,5 +1,6 @@
 package dev.ward.application.init;
 
+import dev.ward.application.init.dotnet.DotnetInitSupport;
 import dev.ward.application.init.jvm.JvmInitSupport;
 import dev.ward.application.init.node.NodeInitSupport;
 import dev.ward.application.init.python.PythonInitSupport;
@@ -29,7 +30,9 @@ public final class InitToolchains {
               Toolchain.RUST,
               new RustInitSupport(),
               Toolchain.SWIFT,
-              new SwiftInitSupport()
+              new SwiftInitSupport(),
+              Toolchain.DOTNET,
+              new DotnetInitSupport()
           )
       );
 
@@ -78,7 +81,7 @@ public final class InitToolchains {
   /** Returns the message explaining that init cannot configure {@code project}'s toolchain. */
   static String unsupported(final Project project) {
     return "Ward init supports Maven, Gradle, TypeScript, JavaScript, Python (uv, Poetry, pip), Rust"
-        + " (Cargo) and Swift (SwiftPM, Xcode) projects; "
+        + " (Cargo), Swift (SwiftPM, Xcode) and C# (.NET) projects; "
         + project.buildTool().displayName()
         + " projects are not supported yet.";
   }

@@ -39,7 +39,10 @@ final class ArchitectureToolchainTest {
               "CompositeToolInstaller",
               "routes tool installation to the adapter of each toolchain"
           ),
-          Map.entry("ToolchainArchitectureTables", "answers each toolchain's architecture tables"),
+          Map.entry(
+              "ListedFileProjects",
+              "detects the Python, Swift and .NET projects that no fixed marker file names"
+          ),
           Map.entry(
               "FileSystemProjectInspection",
               "detects a directory's project with each toolchain's check"

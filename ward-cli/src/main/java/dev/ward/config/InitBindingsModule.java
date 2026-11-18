@@ -24,6 +24,7 @@ import dev.ward.infrastructure.init.ToolchainArchitectureTables;
 import dev.ward.infrastructure.init.node.NodeRuleFileTargets;
 import dev.ward.infrastructure.init.python.PythonRuleFileTargets;
 import dev.ward.infrastructure.init.rust.RustRuleFileTargets;
+import dev.ward.infrastructure.init.dotnet.DotnetRuleFileTargets;
 import dev.ward.infrastructure.init.swift.SwiftRuleFileTargets;
 import dev.ward.infrastructure.terminal.JdkTerminalCapabilities;
 import dev.ward.infrastructure.terminal.PosixRawTerminal;
@@ -31,6 +32,7 @@ import java.util.Map;
 
 @Module(
     includes = {
+        ArchitectureTablesBindingsModule.class,
         BuildToolBindingsModule.class,
         NodeBindingsModule.class,
         PythonBindingsModule.class,
@@ -68,7 +70,8 @@ interface InitBindingsModule {
       final NodeRuleFileTargets node,
       final PythonRuleFileTargets python,
       final RustRuleFileTargets rust,
-      final SwiftRuleFileTargets swift
+      final SwiftRuleFileTargets swift,
+      final DotnetRuleFileTargets dotnet
   ) {
     return Map.of(
         Toolchain.NODE,
@@ -78,7 +81,9 @@ interface InitBindingsModule {
         Toolchain.RUST,
         rust,
         Toolchain.SWIFT,
-        swift
+        swift,
+        Toolchain.DOTNET,
+        dotnet
     );
   }
 
