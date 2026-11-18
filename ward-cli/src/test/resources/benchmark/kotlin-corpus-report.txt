@@ -6,7 +6,7 @@
 # Regenerate: ./mvnw -pl ward-cli -am -Dtest=KotlinCorpusSmokeTest -Dward.corpus.kotlin=<dir> -Djacoco.skip=true -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
 okio | files 313 | not analysed 0
 spring-petclinic-kotlin | files 38 | not analysed 0
-rules 156 | not run (need type facts) 10 | findings 4572
+rules 154 | not run (need type facts) 10 | findings 4454
 ward:kotlin/array-primitive | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/avoid-referential-equality | not run
 ward:kotlin/backing-property-naming | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -34,7 +34,6 @@ ward:kotlin/empty-try-block | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/empty-when-block | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/empty-while-block | findings 4 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/enum-entry-name-case | findings 77 | labelled 3 | tp 3 | fp 0 | un 0
-ward:kotlin/enum-naming | findings 77 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/environment-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/equals-always-returns-true-or-false | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/equals-null-call | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -48,7 +47,7 @@ ward:kotlin/for-each-on-range | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/forbidden-void | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/function-expression-body | findings 170 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/function-length | findings 24 | labelled 3 | tp 3 | fp 0 | un 0
-ward:kotlin/function-name | findings 34 | labelled 3 | tp 2 | fp 1 | un 0
+ward:kotlin/function-name | findings 30 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/function-only-returning-constant | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/has-platform-type | not run
 ward:kotlin/header-splitting | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -92,13 +91,12 @@ ward:kotlin/no-single-line-block-comment | findings 34 | labelled 3 | tp 3 | fp 
 ward:kotlin/no-unit-return | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/object-literal-to-lambda | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/object-property-naming | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:kotlin/one-statement-per-line | findings 5 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/optional-abstract-keyword | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:kotlin/overload-methods-declaration-order | findings 48 | labelled 3 | tp 1 | fp 0 | un 2
+ward:kotlin/overload-methods-declaration-order | findings 43 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/parameter-count | findings 11 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/path-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/print-stack-trace | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:kotlin/property-name | findings 103 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/property-name | findings 85 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/redundant-higher-order-map-usage | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/redundant-suspend-modifier | not run
 ward:kotlin/regex-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -113,7 +111,7 @@ ward:kotlin/server-side-request-forgery | findings 0 | labelled 0 | tp 0 | fp 0 
 ward:kotlin/session-attribute-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/single-line-javadoc | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:kotlin/sleep-instead-of-delay | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:kotlin/spread-operator | findings 27 | labelled 3 | tp 2 | fp 1 | un 0
+ward:kotlin/spread-operator | findings 19 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/sql-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/string-template | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:kotlin/summary-javadoc | findings 35 | labelled 3 | tp 2 | fp 0 | un 1
@@ -156,7 +154,7 @@ ward:kotlin/use-require | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
 ward:kotlin/use-require-not-null | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/useless-call-on-not-null | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/useless-postfix-expression | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:kotlin/utility-class-with-public-constructor | findings 1 | labelled 1 | tp 0 | fp 1 | un 0
+ward:kotlin/utility-class-with-public-constructor | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/value-argument-comment | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/value-parameter-comment | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:kotlin/var-could-be-val | findings 8 | labelled 3 | tp 3 | fp 0 | un 0

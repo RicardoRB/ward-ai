@@ -52,6 +52,17 @@ public final class ControlBodyBracesCheck implements UnitCheck {
     return false;
   }
 
+  /** Returns the index of the node before a body, skipping comments between {@code else} and it. */
+  private static int beforeBody(final List<SyntaxNode> children, final int index) {
+    int before = index - 1;
+    while (before > 0
+        && !children.get(before).kind().startsWith("'")
+        && !STATEMENT.equals(children.get(before).kind())) {
+      before--;
+    }
+    return before;
+  }
+
   private static boolean isAllowed(
       final List<SyntaxNode> children,
       final int index,
@@ -63,7 +74,7 @@ public final class ControlBodyBracesCheck implements UnitCheck {
     return block
         || elseIf
         && index > 0
-        && ELSE.equals(children.get(index - 1).kind())
+        && ELSE.equals(children.get(beforeBody(children, index)).kind())
         && !parts.isEmpty()
         && IF.equals(parts.get(0).kind());
   }

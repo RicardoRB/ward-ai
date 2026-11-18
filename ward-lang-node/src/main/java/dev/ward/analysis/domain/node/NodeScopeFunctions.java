@@ -51,7 +51,9 @@ final class NodeScopeFunctions {
     walk.expressionFunction = "anonymousFunction".equals(node.kind());
     if (signature) {
       walk.builder.open(ScopeKind.FUNCTION, node.span());
+      walk.signature = true;
       walk.generic(node);
+      walk.signature = false;
       walk.builder.close();
     } else {
       walk.generic(node);
@@ -84,7 +86,13 @@ final class NodeScopeFunctions {
     for (final SyntaxNode part : parts) {
       if (pattern == null && isPatternHolder(part)) {
         pattern = part;
-        walk.names.declare(part, walk.builder.current(), BindingKind.PARAMETER, Set.of(), false);
+        walk.names.declare(
+            part,
+            walk.builder.current(),
+            BindingKind.PARAMETER,
+            walk.signature ? Set.of(BindingFlag.TYPE_ONLY) : Set.of(),
+            false
+        );
       } else {
         walk.visit(part);
       }

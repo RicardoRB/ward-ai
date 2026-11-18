@@ -29,7 +29,9 @@ class DispatchedCallsTest {
     final BasicBlock block = new BasicBlock(0, List.of(), List.of(), List.of(), List.of(site));
     final ControlFlowGraph graph =
         new ControlFlowGraph("A#m(0)", SPAN, List.of(block, exit()), 0, 1);
-    return DispatchedCalls.apply(graph, KNOWN, spec).blocks().get(0).sites().get(0).qualifier();
+    return DispatchedCalls.apply(graph, KNOWN, Implementors.of(List.of()), spec).blocks().get(
+        0
+    ).sites().get(0).qualifier();
   }
 
   private static BasicBlock exit() {
@@ -74,5 +76,24 @@ class DispatchedCallsTest {
             List.of()
         );
     assertThat(qualifierAfter(call("i", Optional.of("shop.Impl"), List.of()), sink)).isEqualTo("i");
+  }
+
+  private static ControlFlowGraph graphOf(final FlowSite site) {
+    final BasicBlock block = new BasicBlock(0, List.of(), List.of(), List.of(), List.of(site));
+    return new ControlFlowGraph("A#m(0)", SPAN, List.of(block, exit()), 0, 1);
+  }
+
+  @Test
+  void aGraphWithNoDecidableCallIsReturnedAsItIs() {
+    final ControlFlowGraph graph = graphOf(call("b", Optional.of("shop.Base"), List.of()));
+    assertThat(DispatchedCalls.apply(graph, KNOWN, Implementors.of(List.of()), EMPTY))
+        .isSameAs(graph);
+  }
+
+  @Test
+  void aGraphWithADecidableCallIsRebuilt() {
+    final ControlFlowGraph graph = graphOf(call("i", Optional.of("shop.Impl"), List.of()));
+    assertThat(DispatchedCalls.apply(graph, KNOWN, Implementors.of(List.of()), EMPTY))
+        .isNotSameAs(graph);
   }
 }

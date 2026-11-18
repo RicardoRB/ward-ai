@@ -3,7 +3,7 @@
 # Every ward:typescript/* and ward:javascript/* rule ran with its default options, whatever its preset, over every .ts, .js and .mjs file outside node_modules.
 # A labelled finding is true (tp), false (fp) or undetermined (un), as read from the code at its line; the labels are in got-labels.txt. Every finding of a security rule is labelled; of another rule, the first 3 in path order. Rules without a finding are not listed. The cost of the run is in got-cost.txt.
 # Regenerate: ./mvnw -pl ward-cli -am -Dtest=GotBenchmarkSmokeTest -Dward.benchmark.got=<dir> -Dward.benchmark.write=true -Djacoco.skip=true -Dsurefire.failIfNoSpecifiedTests=false test
-files 96 | not analysed 0 | rules 682 | rules with findings 73 | findings 6438
+files 96 | not analysed 0 | rules 686 | rules with findings 62 | findings 5627
 ward:javascript/hard-coded-secret | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:javascript/line-length | findings 3 | labelled 3 | tp 3 | fp 0 | un 0
 ward:javascript/magic-number | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
@@ -16,29 +16,26 @@ ward:javascript/no-process-env | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
 ward:javascript/no-unused-function-parameters | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:javascript/no-use-before-define | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
 ward:typescript/array-callback-return | findings 1 | labelled 1 | tp 0 | fp 0 | un 1
-ward:typescript/cleartext-transport | findings 28 | labelled 28 | tp 0 | fp 19 | un 9
+ward:typescript/cleartext-transport | findings 10 | labelled 10 | tp 0 | fp 1 | un 9
 ward:typescript/complexity | findings 5 | labelled 3 | tp 3 | fp 0 | un 0
-ward:typescript/consistent-type-imports | findings 11 | labelled 3 | tp 0 | fp 2 | un 1
 ward:typescript/dot-notation | findings 1 | labelled 1 | tp 0 | fp 1 | un 0
 ward:typescript/empty-catch-block | findings 14 | labelled 3 | tp 3 | fp 0 | un 0
 ward:typescript/file-length | findings 41 | labelled 3 | tp 3 | fp 0 | un 0
 ward:typescript/function-length | findings 142 | labelled 3 | tp 3 | fp 0 | un 0
 ward:typescript/header-injection | findings 3 | labelled 3 | tp 0 | fp 2 | un 1
 ward:typescript/hidden-field | findings 90 | labelled 3 | tp 3 | fp 0 | un 0
-ward:typescript/invalid-javadoc-position | findings 65 | labelled 3 | tp 0 | fp 3 | un 0
+ward:typescript/invalid-javadoc-position | findings 7 | labelled 3 | tp 0 | fp 0 | un 3
 ward:typescript/javadoc-leading-asterisk-align | findings 174 | labelled 3 | tp 0 | fp 0 | un 3
 ward:typescript/javadoc-method | findings 13 | labelled 3 | tp 0 | fp 0 | un 3
 ward:typescript/javadoc-missing-leading-asterisk | findings 174 | labelled 3 | tp 3 | fp 0 | un 0
 ward:typescript/line-length | findings 2475 | labelled 3 | tp 3 | fp 0 | un 0
 ward:typescript/local-variable-name | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
 ward:typescript/magic-number | findings 1236 | labelled 3 | tp 3 | fp 0 | un 0
-ward:typescript/member-name | findings 1 | labelled 1 | tp 0 | fp 1 | un 0
 ward:typescript/missing-frame-protection | findings 1 | labelled 1 | tp 0 | fp 0 | un 1
-ward:typescript/missing-javadoc-type | findings 86 | labelled 3 | tp 2 | fp 1 | un 0
+ward:typescript/missing-javadoc-type | findings 84 | labelled 3 | tp 2 | fp 0 | un 1
 ward:typescript/multiline-comment-leading-asterisk-presence | findings 9 | labelled 3 | tp 3 | fp 0 | un 0
 ward:typescript/nesting-depth | findings 10 | labelled 3 | tp 3 | fp 0 | un 0
 ward:typescript/no-confusing-void-type | findings 12 | labelled 3 | tp 3 | fp 0 | un 0
-ward:typescript/no-const-assign | findings 5 | labelled 3 | tp 0 | fp 3 | un 0
 ward:typescript/no-default-export | findings 18 | labelled 3 | tp 3 | fp 0 | un 0
 ward:typescript/no-delete | findings 25 | labelled 3 | tp 3 | fp 0 | un 0
 ward:typescript/no-explicit-any | findings 276 | labelled 3 | tp 3 | fp 0 | un 0
@@ -48,32 +45,24 @@ ward:typescript/no-namespace-import | findings 3 | labelled 3 | tp 3 | fp 0 | un
 ward:typescript/no-non-null-assertion | findings 171 | labelled 3 | tp 3 | fp 0 | un 0
 ward:typescript/no-process-env | findings 8 | labelled 3 | tp 3 | fp 0 | un 0
 ward:typescript/no-re-export-all | findings 5 | labelled 3 | tp 3 | fp 0 | un 0
-ward:typescript/no-redeclare | findings 48 | labelled 3 | tp 0 | fp 3 | un 0
 ward:typescript/no-redundant-type-constituents | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:typescript/no-script-url | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:typescript/no-self-assign | findings 2 | labelled 2 | tp 0 | fp 2 | un 0
 ward:typescript/no-skipped-tests | findings 4 | labelled 3 | tp 3 | fp 0 | un 0
-ward:typescript/no-sparse-arrays | findings 4 | labelled 3 | tp 0 | fp 3 | un 0
 ward:typescript/no-throw-literal | findings 3 | labelled 3 | tp 3 | fp 0 | un 0
-ward:typescript/no-undef | findings 594 | labelled 3 | tp 0 | fp 3 | un 0
 ward:typescript/no-undef-init | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
-ward:typescript/no-unsafe-finally | findings 25 | labelled 3 | tp 1 | fp 2 | un 0
+ward:typescript/no-unsafe-finally | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:typescript/no-unused-expressions | findings 20 | labelled 3 | tp 0 | fp 3 | un 0
-ward:typescript/no-unused-function-parameters | findings 18 | labelled 3 | tp 0 | fp 3 | un 0
+ward:typescript/no-unused-function-parameters | findings 2 | labelled 2 | tp 1 | fp 1 | un 0
 ward:typescript/no-unused-instantiation | findings 5 | labelled 3 | tp 0 | fp 0 | un 3
-ward:typescript/no-unused-template-literal | findings 2 | labelled 2 | tp 0 | fp 2 | un 0
-ward:typescript/no-use-before-define | findings 24 | labelled 3 | tp 3 | fp 0 | un 0
-ward:typescript/no-useless-escape | findings 2 | labelled 2 | tp 0 | fp 2 | un 0
+ward:typescript/no-use-before-define | findings 25 | labelled 3 | tp 3 | fp 0 | un 0
 ward:typescript/parameter-count | findings 44 | labelled 3 | tp 3 | fp 0 | un 0
 ward:typescript/parameter-name | findings 4 | labelled 3 | tp 2 | fp 0 | un 1
-ward:typescript/prefer-const | findings 9 | labelled 3 | tp 0 | fp 3 | un 0
 ward:typescript/prefer-template | findings 60 | labelled 3 | tp 3 | fp 0 | un 0
-ward:typescript/require-await | findings 76 | labelled 3 | tp 2 | fp 1 | un 0
+ward:typescript/require-await | findings 66 | labelled 3 | tp 3 | fp 0 | un 0
 ward:typescript/tls-verification-disabled | findings 161 | labelled 161 | tp 161 | fp 0 | un 0
 ward:typescript/todo-comment | findings 4 | labelled 3 | tp 3 | fp 0 | un 0
 ward:typescript/unused-assignment | findings 21 | labelled 3 | tp 0 | fp 2 | un 1
-ward:typescript/unused-local-variable | findings 2 | labelled 2 | tp 0 | fp 2 | un 0
-ward:typescript/use-global-this | findings 6 | labelled 3 | tp 0 | fp 3 | un 0
 ward:typescript/variable-declaration-usage-distance | findings 14 | labelled 3 | tp 3 | fp 0 | un 0
 ward:typescript/weak-key-size | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
-ward:typescript/xss | findings 151 | labelled 3 | tp 0 | fp 0 | un 3
+ward:typescript/xss | findings 151 | labelled 151 | tp 0 | fp 115 | un 36

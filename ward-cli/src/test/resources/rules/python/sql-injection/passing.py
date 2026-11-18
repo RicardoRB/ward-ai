@@ -37,3 +37,8 @@ class Job:
 
     def start(self):
         self.command.execute(request.args.get("step"))
+
+
+def not_a_handle(Runner):
+    handle = Runner()
+    handle.execute(request.args["id"])

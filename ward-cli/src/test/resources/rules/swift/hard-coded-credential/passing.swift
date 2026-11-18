@@ -11,3 +11,8 @@ struct LoginForm {
     let apiKeyHeader = "X-Api-Key"
     var secretQuestionTitle: String = "Your first school"
 }
+
+let host = "example.com", passwordHint = "At least twelve characters"
+
+func login(user: String = "guest", password: String = "") {}
+func sample(user: String = "guest", password: String = "example") {}

@@ -5,7 +5,9 @@ import dev.ward.analysis.domain.rule.CompiledRule;
 import dev.ward.analysis.domain.rule.Measured;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatch;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 
 /** A metric rule ready to run: it visits every node of a tree and measures the target kinds. */
@@ -30,13 +32,21 @@ final class MetricCompiledRule implements CompiledRule {
   @Override
   public List<Measured> measures(final SyntaxNode root) {
     final List<Measured> measured = new ArrayList<>();
-    collect(root, false, measured);
+    collect(root, false, new ArrayDeque<>(), measured);
     return List.copyOf(measured);
   }
 
-  private void collect(final SyntaxNode node, final boolean method, final List<Measured> measured) {
+  private void collect(
+      final SyntaxNode node,
+      final boolean method,
+      final Deque<SyntaxNode> ancestors,
+      final List<Measured> measured
+  ) {
     for (final MetricRule.Target target : rule.targets()) {
-      if (node.kind().equals(target.kind())) {
+      if (node.kind().equals(target.kind()) && !ExemptPaths.covers(
+          rule.keys().exempt(),
+          ancestors
+      )) {
         rule.measurement()
             .measure()
             .measured(node, target, method, rule)
@@ -45,28 +55,40 @@ final class MetricCompiledRule implements CompiledRule {
       }
     }
     final boolean inClass = inClassBody(node, method);
+    ancestors.push(node);
     for (final SyntaxNode child : node.children()) {
-      collect(child, inClass, measured);
+      collect(child, inClass, ancestors, measured);
     }
+    ancestors.pop();
   }
 
   @Override
   public List<RuleMatch> matches(final SyntaxNode root) {
     final List<RuleMatch> matches = new ArrayList<>();
-    visit(root, false, matches);
+    visit(root, false, new ArrayDeque<>(), matches);
     return List.copyOf(matches);
   }
 
-  private void visit(final SyntaxNode node, final boolean method, final List<RuleMatch> matches) {
+  private void visit(
+      final SyntaxNode node,
+      final boolean method,
+      final Deque<SyntaxNode> ancestors,
+      final List<RuleMatch> matches
+  ) {
     for (final MetricRule.Target target : rule.targets()) {
-      if (node.kind().equals(target.kind())) {
+      if (node.kind().equals(target.kind()) && !ExemptPaths.covers(
+          rule.keys().exempt(),
+          ancestors
+      )) {
         measure(node, target, method, matches);
       }
     }
     final boolean inClass = inClassBody(node, method);
+    ancestors.push(node);
     for (final SyntaxNode child : node.children()) {
-      visit(child, inClass, matches);
+      visit(child, inClass, ancestors, matches);
     }
+    ancestors.pop();
   }
 
   private void measure(

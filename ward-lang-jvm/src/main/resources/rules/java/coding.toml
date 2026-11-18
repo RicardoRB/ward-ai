@@ -62,7 +62,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "style"
-presets = ["strict"]
 options.illegal-classes = { type = "string-list" }
 options.ignored-method-names = { type = "string-list" }
 options.ignore-overridden-methods = { type = "boolean" }
@@ -177,7 +176,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "style"
-presets = ["strict"]
 options.max = { type = "integer", min = 0 }
 body = '''
 check = "depth"

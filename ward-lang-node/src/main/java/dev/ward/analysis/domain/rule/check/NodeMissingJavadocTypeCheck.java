@@ -14,7 +14,7 @@ import java.util.Set;
  * directly before it, like Checkstyle's MissingJavadocType. With {@code publicOnly} the check
  * covers exported declarations only, the Javadoc {@code public} scope. The keywords between the
  * comment and the declaration ({@code export}, {@code default}, {@code declare}, {@code abstract})
- * are skipped.
+ * are skipped, and so is a line comment between the javadoc and them.
  */
 public final class NodeMissingJavadocTypeCheck implements RuleCheck {
   private static final String COMMENT = "comment";
@@ -79,7 +79,10 @@ public final class NodeMissingJavadocTypeCheck implements RuleCheck {
 
   /** Whether the keywords before the declaration are preceded by a javadoc comment. */
   private static boolean documented(final List<SyntaxNode> leaves, final int position) {
-    final int before = keywordsStart(leaves, position) - 1;
+    int before = keywordsStart(leaves, position) - 1;
+    while (before >= 0 && lineComment(leaves.get(before))) {
+      before--;
+    }
     return before >= 0 && javadoc(leaves.get(before));
   }
 
@@ -104,6 +107,11 @@ public final class NodeMissingJavadocTypeCheck implements RuleCheck {
       start--;
     }
     return start;
+  }
+
+  /** A {@code //} comment, which does not detach the javadoc above it from the declaration. */
+  private static boolean lineComment(final SyntaxNode leaf) {
+    return COMMENT.equals(leaf.kind()) && text(leaf).startsWith("//");
   }
 
   private static boolean javadoc(final SyntaxNode leaf) {

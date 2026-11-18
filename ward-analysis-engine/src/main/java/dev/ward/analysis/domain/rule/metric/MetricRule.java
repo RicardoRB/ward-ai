@@ -33,12 +33,18 @@ record MetricRule(
    * @param receivers the first-parameter names that a method does not count
    * @param nested the node kinds whose decision points belong to their own scope
    * @param decisions the decision node kinds, or {@code parent>token} pairs for tokens
+   * @param exempt the alternative ancestor paths, nearest ancestor first, below which a node is not
+   *     measured; a node whose parent is {@code a} and whose grandparent is {@code b} is exempt
+   *     under {@code a/b}
+   * @param exemptNames the declared names that a name-style measure does not check
    */
   record MetricRuleKeys(
       String name,
       List<List<String>> parameterPaths,
       Set<String> receivers,
       Set<String> nested,
-      Set<String> decisions
+      Set<String> decisions,
+      List<List<String>> exempt,
+      Set<String> exemptNames
   ) {}
 }

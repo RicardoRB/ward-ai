@@ -4,7 +4,6 @@ import dev.ward.analysis.domain.ir.ControlFlowGraph;
 import dev.ward.analysis.domain.ir.FlowSiteKind;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -31,7 +30,11 @@ public final class TaintFile {
   private static final int MAX_ROUNDS = 4;
 
   /** What the callers of one method need to know about it. */
-  private record Summary(boolean returnsTaint, Set<Integer> sinkParameters) {}
+  private record Summary(boolean returnsTaint, Set<Integer> sinkParameters) {
+    static Summary of(final boolean returns, final Set<Integer> sinks) {
+      return new Summary(returns, sinks);
+    }
+  }
 
   private TaintFile() {}
 
@@ -61,35 +64,51 @@ public final class TaintFile {
       final List<ControlFlowGraph> related,
       final TaintSpec spec
   ) {
-    final Set<String> known = new HashSet<>(LocalMethod.owned(graphs));
-    known.addAll(LocalMethod.owned(related));
-    final List<ControlFlowGraph> own = DispatchedCalls.apply(graphs, known, spec);
-    final Map<String, LocalMethod> methods = methodsOf(own, related, known, spec);
-    TaintSpec effective = spec;
-    if (!methods.isEmpty()) {
-      effective = summarized(spec, methods);
-    }
+    final Prepared prepared = prepare(TaintContext.of(graphs, related), graphs, spec);
+    final Map<String, Set<String>> fields = TaintFields.of(prepared.own(), prepared.effective());
     final List<TaintFinding> found = new ArrayList<>();
-    for (final ControlFlowGraph graph : own) {
-      found.addAll(TaintAnalysis.run(graph, effective));
+    for (final ControlFlowGraph graph : prepared.own()) {
+      found.addAll(
+          TaintAnalysis.run(graph, TaintFields.specFor(graph, prepared.effective(), fields))
+      );
     }
     return found;
+  }
+
+  /** The graphs of the file with their calls resolved, and the specification they run with. */
+  record Prepared(List<ControlFlowGraph> own, TaintSpec effective) {}
+
+  static Prepared prepare(
+      final TaintContext context,
+      final List<ControlFlowGraph> graphs,
+      final TaintSpec spec
+  ) {
+    final List<ControlFlowGraph> own =
+        DispatchedCalls.apply(graphs, context.known(), context.implementors(), spec);
+    final Map<String, LocalMethod> methods = methodsOf(own, context, spec);
+    return new Prepared(own, methods.isEmpty() ? spec : summarized(spec, methods));
   }
 
   /** The methods of the file and the reachable ones of other files, with their calls resolved. */
   private static Map<String, LocalMethod> methodsOf(
       final List<ControlFlowGraph> own,
-      final List<ControlFlowGraph> related,
-      final Set<String> known,
+      final TaintContext context,
       final TaintSpec spec
   ) {
     final Map<String, LocalMethod> methods = CalledMethods.local(own, LocalMethod.index(own));
-    CalledMethods.reachable(own, LocalMethod.indexExternal(related))
+    CalledMethods.reachable(own, context.index())
         .forEach(
             (key, method) ->
                 methods.put(
                     key,
-                    method.withGraph(DispatchedCalls.apply(method.graph(), known, spec))
+                    method.withGraph(
+                        DispatchedCalls.apply(
+                            method.graph(),
+                            context.known(),
+                            context.implementors(),
+                            spec
+                        )
+                    )
                 )
         );
     return methods;
@@ -100,6 +119,9 @@ public final class TaintFile {
       final Map<String,
       LocalMethod> methods
   ) {
+    if (!TaintRelevance.anySite(methods.values(), spec)) {
+      return spec;
+    }
     Map<String, Summary> known = Map.of();
     for (int round = 0; round < MAX_ROUNDS; round++) {
       final Map<String, Summary> next = summarize(derived(spec, methods, known), methods);
@@ -125,20 +147,16 @@ public final class TaintFile {
       final boolean returns = TaintAnalysis.returned(method.graph(), spec).isPresent();
       final Set<Integer> sinks = sinkParameters(method, seeded);
       if (returns || !sinks.isEmpty()) {
-        found.put(method.key(), summary(returns, sinks));
+        found.put(method.key(), Summary.of(returns, sinks));
       }
     }
     return found;
   }
 
-  private static Summary summary(final boolean returns, final Set<Integer> sinks) {
-    return new Summary(returns, sinks);
-  }
-
   private static Set<Integer> sinkParameters(final LocalMethod method, final TaintSpec seeded) {
     final Set<Integer> sinks = new TreeSet<>();
     final List<String> parameters = method.parameters();
-    if (parameters.size() != method.arity()) {
+    if (parameters.size() != method.arity() || !TaintSpans.mayReachSink(method.graph(), seeded)) {
       return sinks;
     }
     for (int index = 0; index < parameters.size(); index++) {

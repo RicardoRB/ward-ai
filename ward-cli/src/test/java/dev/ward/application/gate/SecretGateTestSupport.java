@@ -82,34 +82,37 @@ class SecretGateTestSupport {
               sink.accept(patches);
             }
         );
-    final GateConfiguration check =
-        new GateConfiguration(
-            "secrets",
-            "secrets",
-            true,
-            List.of(),
-            Set.of("default"),
-            null,
-            null,
-            null,
-            null,
-            List.of(),
-            null,
-            List.of(),
-            List.of(),
-            List.of(),
-            null,
-            options,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null
-        );
+    final GateConfiguration check = secretsCheck(options);
     return gates
         .create(check, focus)
         .execute(new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE));
+  }
+
+  protected static GateConfiguration secretsCheck(final SecretsOptions options) {
+    return new GateConfiguration(
+        "secrets",
+        "secrets",
+        true,
+        List.of(),
+        Set.of("default"),
+        null,
+        null,
+        null,
+        null,
+        List.of(),
+        null,
+        List.of(),
+        List.of(),
+        List.of(),
+        null,
+        options,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+    );
   }
 
   /** The finding of the GitHub token rule; the generic key rule reports the same line too. */

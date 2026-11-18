@@ -11,7 +11,11 @@ ward format [--check] [--format text|json] [-C <dir>] [<path>...]
 ```
 
 With no path, it formats every selected file in the project. With paths, it formats only those
-files, or every file below a folder. Relative paths resolve against `-C`, as if `ward` ran there.
+files, or every file below a folder. Relative paths resolve against the working directory (or `-C`).
+
+Run from a subdirectory, `ward` finds the project root: the nearest folder above with `ward.toml`,
+else the nearest with `.git`. It reads that root's `.editorconfig` and formats the whole project,
+exactly as a run from the root does.
 
 ## Options
 
@@ -19,7 +23,7 @@ files, or every file below a folder. Relative paths resolve against `-C`, as if 
 |---|---|
 | `--check` | Write nothing. Exit `1` when a file needs formatting, and name each one. |
 | `--format text\|json` | Output format (default `text`). With `json`, stdout holds only the JSON report. |
-| `-C`, `--directory <dir>` | Format the project in `<dir>` instead of the current directory. |
+| `-C`, `--directory <dir>` | Run as if started in `<dir>` instead of the current directory. |
 
 ## Exit codes
 

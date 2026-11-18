@@ -27,7 +27,6 @@ language = "swift"
 capability = "SYNTAX"
 severity = "error"
 category = "naming"
-presets = ["standard", "strict"]
 options.pattern = { type = "regex" }
 body = '''
 check = "identifier-pattern"
@@ -46,7 +45,6 @@ language = "swift"
 capability = "SYNTAX"
 severity = "error"
 category = "naming"
-presets = ["standard", "strict"]
 options.pattern = { type = "regex" }
 body = '''
 check = "identifier-pattern"
@@ -89,7 +87,7 @@ kinds = ["constant_declaration"]
 modifiers = ["static"]
 name = "declaration_identifier"
 skip = ["attributes"]
-pattern = '[A-Z][A-Z0-9]*(_[A-Z0-9]+)*|serialVersionUID|serialPersistentFields'
+pattern = '`?[a-z][a-zA-Z0-9]*`?'
 message = "constant name '{value}' does not match the name pattern of this rule"
 '''
 
@@ -248,7 +246,7 @@ inside = ["class_declaration", "struct_declaration", "enum_declaration"]
 not-inside = ["function_declaration"]
 name = "declaration_identifier"
 skip = ["attributes"]
-pattern = '(^[A-Z][0-9]?$)|(^[A-Z]T$)|(^([A-Z][a-z0-9]+)+T$)'
+pattern = '[A-Z][a-zA-Z0-9]*'
 message = "type parameter name '{value}' does not match the name pattern of this rule"
 '''
 
@@ -258,7 +256,6 @@ language = "swift"
 capability = "SYNTAX"
 severity = "error"
 category = "naming"
-presets = ["standard", "strict"]
 options.pattern = { type = "regex" }
 body = '''
 check = "identifier-pattern"
@@ -266,6 +263,6 @@ kinds = ["generic_parameter"]
 inside = ["function_declaration"]
 name = "declaration_identifier"
 skip = ["attributes"]
-pattern = '(^[A-Z][0-9]?$)|(^[A-Z]T$)|(^([A-Z][a-z0-9]+)+T$)'
+pattern = '[A-Z][a-zA-Z0-9]*'
 message = "type parameter name '{value}' does not match the name pattern of this rule"
 '''

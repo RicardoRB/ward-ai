@@ -11,6 +11,9 @@ import java.util.Objects;
  *     offset in it is an offset in {@code text}
  */
 public record TextFile(String path, String text, String lower) {
+  /** The path of text that comes from no file, such as the message of an agent prompt. */
+  public static final String NO_PATH = "";
+
   private static final int UPPER_TO_LOWER = 'a' - 'A';
 
   /**
@@ -29,6 +32,11 @@ public record TextFile(String path, String text, String lower) {
     if (lower.length() != text.length()) {
       throw new IllegalArgumentException("lower must have the length of text");
     }
+  }
+
+  /** Returns whether this text comes from a file; a rule that reads paths skips text without one. */
+  public boolean hasPath() {
+    return !path.isEmpty();
   }
 
   /** Creates the file and lower-cases its text once. */

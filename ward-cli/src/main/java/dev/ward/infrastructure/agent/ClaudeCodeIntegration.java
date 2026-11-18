@@ -123,7 +123,7 @@ public final class ClaudeCodeIntegration implements AgentIntegration {
     try {
       return request.remove()
           ? remove(settings, hook, files, root)
-          : install(settings, hook, files, root);
+          : install(settings, hook, files, root, ClaudePromptSettings.template(SETTINGS, request));
     } catch (IOException e) {
       throw new UncheckedIOException(
           "Could not update Claude Code integration: " + e.getMessage(),
@@ -172,7 +172,7 @@ public final class ClaudeCodeIntegration implements AgentIntegration {
             settingsDocument.merge(
                 settings,
                 SETTINGS_MARKER,
-                files.settings(SETTINGS),
+                files.settings(ClaudePromptSettings.template(SETTINGS, request)),
                 files.owns()
             );
       } catch (ClaudeSettingsDocument.SettingsConflictException e) {
@@ -205,7 +205,8 @@ public final class ClaudeCodeIntegration implements AgentIntegration {
       final Path settings,
       final Path hook,
       final ClaudeCodeFiles files,
-      final Path root
+      final Path root,
+      final String template
   )
       throws IOException {
     final IntegrationResult hookConflict = IntegrationArtifacts.preflight(hook, HOOK_MARKER);
@@ -215,7 +216,7 @@ public final class ClaudeCodeIntegration implements AgentIntegration {
     final String settingsContent;
     try {
       settingsContent =
-          settingsDocument.merge(settings, SETTINGS_MARKER, files.settings(SETTINGS), files.owns());
+          settingsDocument.merge(settings, SETTINGS_MARKER, files.settings(template), files.owns());
     } catch (ClaudeSettingsDocument.SettingsConflictException e) {
       return new IntegrationResult(
           IntegrationResult.Status.CONFLICT,

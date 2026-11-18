@@ -76,7 +76,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "correctness"
-presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["classDeclaration"]
@@ -168,7 +167,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["classDeclaration"]
-text = '^(?![^{]*Cloneable)class[^{]*\{.*Objectclone\(\)'
+text = '^(?![^{]*(?:Cloneable|extends))class[^{]*\{.*Objectclone\(\)'
 message = "class defines clone but does not implement Cloneable"
 '''
 

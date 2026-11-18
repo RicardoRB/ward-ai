@@ -50,3 +50,6 @@ ward:typescript/unsafe-framework-trust | frontend/src/app/track-result/track-res
 ward:typescript/untrusted-redirect | routes/redirect.ts:18 | tp | the allowlist test is url.includes(allowed), so any URL that contains an allowed string is accepted
 ward:typescript/weak-hash | lib/insecurity.ts:41 | tp | MD5 is the password hash
 ward:typescript/weak-hash | lib/utils.ts:83 | fp | HMAC-SHA1 over a CTF flag, which does not rely on collision resistance
+ward:typescript/xss | routes/dataExport.ts:108 | fp | the response is a JSON object that holds the requesting user's own export, not markup
+ward:typescript/xss | routes/userProfile.ts:101 | tp | the profile page is rendered from a template filled with the user's name and sent as HTML
+ward:typescript/xss | routes/userProfile.ts:65 | tp | eval runs the code that the user's name carries, which the template then renders

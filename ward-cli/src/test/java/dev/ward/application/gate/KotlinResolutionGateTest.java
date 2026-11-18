@@ -42,7 +42,11 @@ class KotlinResolutionGateTest {
   @Test
   void theStoredReverseIndexHoldsTheEdgesOfBothLanguagesInBothDirections() throws IOException {
     copyFixture();
-    new AnalysisGate("ward", List.of(), ports())
+    new AnalysisGate(
+        "ward",
+        DependencyStepFakes.readers(AnalysisLanguage.JAVA, AnalysisLanguage.KOTLIN),
+        ports()
+    )
         .execute(new Project(root, Language.KOTLIN, BuildTool.GRADLE, Framework.NONE));
 
     final Map<String, List<String>> dependents = storedDependents();
@@ -61,12 +65,12 @@ class KotlinResolutionGateTest {
             new FrontendSupport(
                 AnalysisLanguage.JAVA,
                 new AntlrLanguageFrontend(),
-                Set.of(RuleCapability.SYNTAX)
+                Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS)
             ),
             new FrontendSupport(
                 AnalysisLanguage.KOTLIN,
                 new AntlrLanguageFrontend(),
-                Set.of(RuleCapability.SYNTAX)
+                Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS)
             )
         ),
         projectRoot -> new FileAnalysisCache(projectRoot.resolve(".ward/cache/analysis")),

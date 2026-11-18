@@ -1,0 +1,143 @@
+# SQL statements of Swift code, written for Ward from the SQLite C interface documentation, which prepares statement text
+# and binds values apart from it, and from the FMDB, GRDB and SQLite.swift documentation of the same calls. Statement text
+# is argument 0 or 1; a bound value is not text, so sqlite3_bind_* calls are no sinks.
+
+[[sinks]]
+kind = "call"
+name = "sqlite3_prepare"
+arguments = [1]
+
+[[sinks]]
+kind = "call"
+name = "sqlite3_prepare_v2"
+arguments = [1]
+
+[[sinks]]
+kind = "call"
+name = "sqlite3_prepare_v3"
+arguments = [1]
+
+[[sinks]]
+kind = "call"
+name = "sqlite3_prepare16"
+arguments = [1]
+
+[[sinks]]
+kind = "call"
+name = "sqlite3_prepare16_v2"
+arguments = [1]
+
+[[sinks]]
+kind = "call"
+name = "sqlite3_prepare16_v3"
+arguments = [1]
+
+[[sinks]]
+kind = "call"
+name = "sqlite3_exec"
+arguments = [1]
+
+[[sinks]]
+kind = "call"
+name = "executeQuery"
+receiver = "FMDatabase"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "executeUpdate"
+receiver = "FMDatabase"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "executeStatements"
+receiver = "FMDatabase"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execute"
+receiver = "Connection"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "run"
+receiver = "Connection"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "prepare"
+receiver = "Connection"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "scalar"
+receiver = "Connection"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execute"
+receiver = "Database"
+arguments = [0]
+
+[[sanitizers]]
+kind = "call"
+name = "Int"
+
+[[sanitizers]]
+kind = "call"
+name = "Int8"
+
+[[sanitizers]]
+kind = "call"
+name = "Int16"
+
+[[sanitizers]]
+kind = "call"
+name = "Int32"
+
+[[sanitizers]]
+kind = "call"
+name = "Int64"
+
+[[sanitizers]]
+kind = "call"
+name = "UInt"
+
+[[sanitizers]]
+kind = "call"
+name = "UInt8"
+
+[[sanitizers]]
+kind = "call"
+name = "UInt16"
+
+[[sanitizers]]
+kind = "call"
+name = "UInt32"
+
+[[sanitizers]]
+kind = "call"
+name = "UInt64"
+
+[[sanitizers]]
+kind = "call"
+name = "Double"
+
+[[sanitizers]]
+kind = "call"
+name = "Float"
+
+[[sanitizers]]
+kind = "call"
+name = "Bool"
+
+[[sanitizers]]
+kind = "call"
+name = "UUID(uuidString:)"
+

@@ -73,7 +73,6 @@ language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
 category = "style"
-presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["RegularExpressionLiteral"]
@@ -87,7 +86,6 @@ language = "JAVASCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
 category = "style"
-presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["RegularExpressionLiteral"]
@@ -799,7 +797,6 @@ language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
 category = "style"
-presets = ["strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["singleExpression"]
@@ -814,7 +811,6 @@ language = "JAVASCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
 category = "style"
-presets = ["strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["singleExpression"]
@@ -1444,28 +1440,26 @@ message = "import JSON modules with the type json import attribute"
 [[rules]]
 id = "ward:typescript/use-global-this"
 language = "TYPESCRIPT"
-capability = "SYNTAX"
+capability = "SCOPES"
 severity = "ERROR"
 category = "style"
 presets = ["strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["singleExpression"]
-text = '^(window|self|global)$'
+check = "unresolved-name"
+names = 'window|self|global'
 message = "use globalThis instead of the environment specific global"
 '''
 
 [[rules]]
 id = "ward:javascript/use-global-this"
 language = "JAVASCRIPT"
-capability = "SYNTAX"
+capability = "SCOPES"
 severity = "ERROR"
 category = "style"
 presets = ["strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["singleExpression"]
-text = '^(window|self|global)$'
+check = "unresolved-name"
+names = 'window|self|global'
 message = "use globalThis instead of the environment specific global"
 '''
 
@@ -1493,7 +1487,7 @@ presets = ["strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["singleExpression"]
-text = '^`[^`$\\]*`$'
+text = '^`[^`$\\\r\n]*`$'
 message = "use a plain string; the template literal has no placeholders"
 '''
 
@@ -1507,7 +1501,7 @@ presets = ["strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["singleExpression"]
-text = '^`[^`$\\]*`$'
+text = '^`[^`$\\\r\n]*`$'
 message = "use a plain string; the template literal has no placeholders"
 '''
 [[rules]]
@@ -1778,7 +1772,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "required-node"
 kinds = ["functionDeclaration>'async'", "arrowFunctionDeclaration>'async'", "propertyMemberDeclaration>propertyMemberBase>'async'"]
-descendant = ["'await'"]
+descendant = ["'await'", "yieldStatement"]
 skip = ["functionDeclaration", "anonymousFunction", "arrowFunctionDeclaration"]
 message = "async function has no 'await' expression"
 '''
@@ -1793,7 +1787,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "required-node"
 kinds = ["functionDeclaration>'async'", "anonymousFunction>'async'", "arrowFunctionDeclaration>'async'", "methodDefinition>'async'"]
-descendant = ["'await'"]
+descendant = ["'await'", "yieldStatement"]
 skip = ["functionDeclaration", "anonymousFunction", "arrowFunctionDeclaration"]
 message = "async function has no 'await' expression"
 '''

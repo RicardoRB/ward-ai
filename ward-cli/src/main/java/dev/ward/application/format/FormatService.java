@@ -42,10 +42,12 @@ public final class FormatService {
   }
 
   /**
-   * Formats the files under the given paths, or every selected file when no path is given. Relative
-   * paths are resolved against the project root, and every path must lie inside the project.
+   * Formats the files under the given paths, or every selected file of the project when no path is
+   * given. The project root is found from the working directory, so a run from a subdirectory reads
+   * the root settings and selects the same files. Relative paths are resolved against the working
+   * directory, and every path must lie inside the project.
    *
-   * @param root the project root
+   * @param directory the working directory
    * @param paths the files or folders to format
    * @param write whether to rewrite the files that need formatting
    * @return one outcome per selected file, sorted by path
@@ -53,13 +55,16 @@ public final class FormatService {
    *     file, or the configuration is invalid
    */
   public List<FormatFileOutcome> format(
-      final Path root,
+      final Path directory,
       final List<Path> paths,
       final boolean write
   ) {
+    final Path root = targets.projectRoot(directory);
+    final Path base = directory.toAbsolutePath().normalize();
+    final List<Path> resolved = paths.stream().map(base::resolve).toList();
     final List<FormatTarget> all = targets.select(root, declaredOptions());
     final List<FormatTarget> selected =
-        paths.isEmpty() ? all : FormatTargetPaths.select(root, all, paths);
+        paths.isEmpty() ? all : FormatTargetPaths.select(root, all, resolved);
     return selected.stream()
         .map(target -> evaluator.process(root, target, Optional.empty(), write))
         .toList();

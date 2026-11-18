@@ -1,0 +1,89 @@
+module
+  type Callable @1:6 [type_only]
+  type Inner @2:6 [type_only]
+  type Picked @3:6 [type_only]
+  function parse @5:10 [hoisted]
+  constant build @8:7 [const,lexical]
+  constant rows @9:7 [const,lexical]
+  constant settings @16:7 [const,lexical]
+  block @1:1
+    function @1:19
+      type A @1:20 [type_only]
+  block @2:1
+    type T @2:12 [type_only]
+    function @2:17
+      type V @2:39 [type_only]
+  block @3:1
+    type O @3:13 [type_only]
+    function @3:18
+      type K @3:21 [type_only]
+      function @3:37
+  function @4:1
+    parameter text @4:16 [type_only]
+  function @5:1
+    parameter text @5:16
+    parameter radix @5:30
+  function @8:7
+    type T @8:16 [type_only]
+    lambda @8:18
+      parameter Maker @8:19
+      function @8:26
+  block @10:1
+    constant name @10:13 [const,lexical,destructured]
+    constant count @10:19 [const,lexical,destructured]
+    block @10:35
+  block @13:1
+    variable index @13:11 [lexical,destructured]
+    block @13:37
+  function @16:20
+    parameter size @16:27 [destructured]
+    parameter label @16:37 [destructured]
+references
+  1:30 string read -> unresolved
+  1:41 A read -> function type A @1:20
+  1:45 A read -> function type A @1:20
+  2:17 T read -> block type T @2:12
+  2:27 Array read -> unresolved
+  2:44 V read -> function type V @2:39
+  2:48 never read -> unresolved
+  3:32 O read -> block type O @3:13
+  3:37 K read -> function type K @3:21
+  3:53 K read -> function type K @3:21
+  3:57 never read -> unresolved
+  3:65 O read -> block type O @3:13
+  3:67 K read -> function type K @3:21
+  4:16 text write -> function parameter text @4:16
+  4:22 string read -> unresolved
+  4:31 number read -> unresolved
+  5:16 text write -> function parameter text @5:16
+  5:22 string read -> unresolved
+  5:30 radix write -> function parameter radix @5:30
+  5:38 number read -> unresolved
+  5:47 number read -> unresolved
+  6:10 Number read -> unresolved
+  6:26 text read -> function parameter text @5:16
+  6:32 radix read -> function parameter radix @5:30
+  8:7 build write -> module constant build @8:7
+  8:19 Maker write -> lambda parameter Maker @8:19
+  8:36 T read -> function type T @8:16
+  8:46 Maker read -> lambda parameter Maker @8:19
+  9:7 rows write -> module constant rows @9:7
+  9:13 Array read -> unresolved
+  9:20 string read -> unresolved
+  9:28 number read -> unresolved
+  10:13 name write -> block constant name @10:13
+  10:19 count write -> block constant count @10:19
+  10:29 rows read -> module constant rows @9:7
+  11:3 console read -> unresolved
+  11:15 name read -> block constant name @10:13
+  11:21 count read -> block constant count @10:19
+  13:11 index write -> block variable index @13:11
+  13:21 rows read -> module constant rows @9:7
+  14:3 console read -> unresolved
+  14:15 index read -> block variable index @13:11
+  16:7 settings write -> module constant settings @16:7
+  16:27 size write -> function parameter size @16:27
+  16:37 label write -> function parameter label @16:37
+  16:45 fallback read -> unresolved
+  16:66 size read -> function parameter size @16:27
+  16:73 label read -> function parameter label @16:37

@@ -26,7 +26,7 @@ class KotlinAccessesScopeTest {
 
   @Test
   void theStatementsOfALambdaKeepTheirOrder() {
-    assertThat(of("fun f(a: String) { run { val t = a\n use(t) } }", 1))
+    assertThat(of("fun use(s: String) {}\nfun f(a: String) { run { val t = a\n use(t) } }", 1))
         .containsExactly(PARAM_A, READ_A, "w:t", "r:t");
   }
 

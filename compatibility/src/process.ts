@@ -29,12 +29,16 @@ export function run(argv: string[], options: RunOptions): Promise<RunResult> {
     let stdout = "";
     let stderr = "";
     let timedOut = false;
-    const child = spawn(argv[0], argv.slice(1), {
-      cwd: options.cwd,
-      env: options.env,
-      detached: true,
-      stdio: ["pipe", "pipe", "pipe"],
-    });
+    const child = spawn(
+      argv[0],
+      argv.slice(1),
+      {
+        cwd: options.cwd,
+        env: options.env,
+        detached: true,
+        stdio: ["pipe", "pipe", "pipe"],
+      }
+    );
     if (child.pid !== undefined) owned.add(child.pid);
     const timer = setTimeout(() => {
       timedOut = true;
@@ -49,14 +53,9 @@ export function run(argv: string[], options: RunOptions): Promise<RunResult> {
       // Descendants may outlive the leader; the group is ours to clean up either way.
       killGroup(child.pid);
       if (child.pid !== undefined) owned.delete(child.pid);
-      resolve({
-        exitCode,
-        stdout,
-        stderr,
-        timedOut,
-        ...(spawnError ? { spawnError } : {}),
-        durationMs: Math.round(performance.now() - started),
-      });
+      resolve({ exitCode, stdout, stderr, timedOut, ...(spawnError ? {
+        spawnError
+      } : {}), durationMs: Math.round(performance.now() - started), });
     };
     child.on("error", (error) => finish(null, error.message));
     // A leftover descendant holds the output pipes open, so the group is terminated as soon as the

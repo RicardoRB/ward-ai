@@ -20,6 +20,10 @@ final class InitConfirmations {
     this.answering = new Answering(terminal, out);
   }
 
+  PrintWriter out() {
+    return out;
+  }
+
   boolean overwrite(final Path file) {
     out.print(file + " already exists. Overwrite it? [y/N]: ");
     out.flush();
@@ -49,6 +53,18 @@ final class InitConfirmations {
     out.print("Install Ward pre-commit and pre-push quality hooks? [y/N]: ");
     out.flush();
     return prompt.confirm("quality-hooks");
+  }
+
+  boolean setHooksPath(final String folder) {
+    out.print("Set core.hooksPath to " + folder + " for this clone? [y/N]: ");
+    out.flush();
+    return prompt.confirm("hooks-path");
+  }
+
+  boolean replaceHooksPath(final String current, final String folder) {
+    out.print("core.hooksPath points to " + current + ". Replace it with " + folder + "? [y/N]: ");
+    out.flush();
+    return prompt.confirm("replace-hooks-path");
   }
 
   /**

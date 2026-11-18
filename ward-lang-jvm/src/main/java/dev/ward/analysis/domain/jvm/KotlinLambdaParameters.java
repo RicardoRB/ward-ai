@@ -27,7 +27,9 @@ final class KotlinLambdaParameters {
   static List<VariableAccess> writes(final KotlinSplits.Split split, final Span part) {
     final SyntaxNode list = KotlinFlowSyntax.child(split.node(), "lambdaParameters");
     final List<VariableAccess> writes = new ArrayList<>();
-    if (list == null || KotlinFlowSyntax.parts(list).isEmpty()) {
+    if (KotlinThisReads.RECEIVER_FUNCTIONS.contains(split.callee())) {
+      writes.add(parameter(KotlinThisReads.THIS, split.span(), part));
+    } else if (list == null || KotlinFlowSyntax.parts(list).isEmpty()) {
       writes.add(parameter(IT, split.span(), part));
     } else {
       declarations(list)

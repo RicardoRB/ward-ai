@@ -133,7 +133,7 @@ class NativeWardGateSmokeTest {
         .contains("Branch coverage 50% meets the minimum of 50%")
         .contains("ward:build/no-dynamic-version");
     assertThat(warm.exitCode()).isEqualTo(FAILED);
-    assertThat(warm.stdout()).isEqualTo(cold.stdout());
+    assertThat(withoutDurations(warm.stdout())).isEqualTo(withoutDurations(cold.stdout()));
   }
 
   @Test
@@ -217,4 +217,9 @@ class NativeWardGateSmokeTest {
   }
 
   private record Run(int exitCode, String stdout, String stderr) {}
+
+  /** The two runs report their own durations; everything else must match. */
+  private static String withoutDurations(final String json) {
+    return json.replaceAll("\"durationMs\":\\d+", "\"durationMs\":0");
+  }
 }

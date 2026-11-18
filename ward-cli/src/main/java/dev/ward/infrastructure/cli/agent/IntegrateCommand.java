@@ -1,6 +1,7 @@
 package dev.ward.infrastructure.cli.agent;
 
 import dev.ward.application.agent.IntegrationService;
+import dev.ward.application.init.PromptTableEnabler;
 import dev.ward.domain.agent.IntegrationRequest;
 import dev.ward.domain.agent.IntegrationResult;
 import dev.ward.domain.agent.SupportedAgents;
@@ -46,19 +47,38 @@ public final class IntegrateCommand implements Callable<Integer> {
   @Option(names = "--remove", description = "Remove only Ward-owned integration content.")
   private boolean remove;
 
+  @Option(
+      names = "--prompt-hook",
+      description =
+          "Also register the hook that blocks a prompt containing a secret, when the agent has a"
+              + " prompt event that can reject a prompt."
+  )
+  private boolean promptHook;
+
   private final IntegrationService service;
   private final InputStream input;
+  private final PromptTableEnabler prompts;
 
   /** Creates the command reading confirmations from standard input. */
   @Inject
-  public IntegrateCommand(final IntegrationService service) {
-    this(service, System.in);
+  public IntegrateCommand(final IntegrationService service, final PromptTableEnabler prompts) {
+    this(service, System.in, prompts);
   }
 
-  /** Creates the command reading confirmations from {@code input}. */
+  /** Creates the command reading confirmations from {@code input}, enabling no prompt table. */
   public IntegrateCommand(final IntegrationService service, final InputStream input) {
+    this(service, input, PromptTableEnabler.NONE);
+  }
+
+  /** Creates the command with every collaborator. */
+  public IntegrateCommand(
+      final IntegrationService service,
+      final InputStream input,
+      final PromptTableEnabler prompts
+  ) {
     this.service = service;
     this.input = input;
+    this.prompts = prompts;
   }
 
   @Override
@@ -67,7 +87,11 @@ public final class IntegrateCommand implements Callable<Integer> {
       agent = selectAgent();
     }
     final IntegrationResult result =
-        service.integrate(agent, options.directory(), new IntegrationRequest(remove));
+        service.integrate(
+            agent,
+            options.directory(),
+            new IntegrationRequest(remove).withPromptHook(promptHook)
+        );
     output().printf("%s: %s%n", result.status(), result.message());
     if (!result.capabilities().isEmpty()) {
       output()
@@ -77,7 +101,19 @@ public final class IntegrateCommand implements Callable<Integer> {
           );
     }
     result.changed().forEach(output()::println);
+    if (promptHook && !remove && result.status() != IntegrationResult.Status.CONFLICT) {
+      reportPromptHook();
+    }
     return result.status() == IntegrationResult.Status.CONFLICT ? ExitCodes.ERROR : ExitCodes.OK;
+  }
+
+  /** Enables the prompt table for an agent with a prompt hook; names an agent without one. */
+  private void reportPromptHook() {
+    if (!SupportedAgents.promptHookIds().contains(agent)) {
+      output().printf("Prompt hook is not supported for %s; none was installed.%n", agent);
+      return;
+    }
+    prompts.enable(options.directory()).ifPresent(output()::println);
   }
 
   private String selectAgent() {

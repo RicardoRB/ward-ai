@@ -36,6 +36,11 @@ public final class CodexIntegration implements NativeHarnessAdapter {
    */
   @Override
   public String configContent() {
+    return configContent(false);
+  }
+
+  @Override
+  public String configContent(final boolean prompts) {
     final String command =
         "\\\"$(git rev-parse --show-toplevel 2>/dev/null || pwd)/" + DEFINITION.hookFile() + "\\\"";
     return "{\n  \"description\": \""
@@ -47,8 +52,13 @@ public final class CodexIntegration implements NativeHarnessAdapter {
         + " post\"}]}],\n"
         + "    \"Stop\": [{\"hooks\": [{\"type\": \"command\", \"command\": \""
         + command
-        + " post\"}]}]\n"
-        + "  }\n}\n";
+        + " post\"}]}]"
+        + (prompts
+            ? ",\n    \"UserPromptSubmit\": [{\"hooks\": [{\"type\": \"command\", \"command\": \""
+                + command
+                + " post\"}]}]"
+            : "")
+        + "\n  }\n}\n";
   }
 
   @Override

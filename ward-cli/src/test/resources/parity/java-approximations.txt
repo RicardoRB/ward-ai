@@ -65,3 +65,5 @@ unit-test-should-use-test-annotation	pmd	UnitTestShouldUseTestAnnotation	PMD 7 a
 singular-field	pmd	SingularField	Ward skips a field a picocli annotation fills; PMD without picocli on its classpath reports it
 unused-local-variable	checkstyle	UnusedLocalVariable	Ward skips the bindings of case patterns, as PMD's UnusedLocalVariable does; Checkstyle reports them
 unused-local-variable	pmd	UnusedLocalVariable	PMD reports nothing on the fixture's unused local; Ward reports it and skips the case-pattern bindings, as PMD does
+clone-method-must-implement-cloneable	pmd	CloneMethodMustImplementCloneable	Ward leaves a class with an extends clause, whose superclass may implement Cloneable (line 8 of the passing fixture, Zone extends Base); PMD reports it when it cannot resolve the superclass
+method-returns-internal-array	pmd	MethodReturnsInternalArray	a zero-length array field exposes no state, so Ward leaves it; PMD skips the static final one and reports the instance field initialized with {} (line 18 of the passing fixture)

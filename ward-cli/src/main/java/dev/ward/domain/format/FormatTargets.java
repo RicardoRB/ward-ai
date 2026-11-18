@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 /** Lists the files of a project that the formatters may change, with their settings. */
-@FunctionalInterface
 public interface FormatTargets {
   /**
    * Lists the selected files, sorted by path, with each file's resolved settings.
@@ -18,4 +17,13 @@ public interface FormatTargets {
    * @throws dev.ward.domain.config.WardException if a configuration file is invalid
    */
   List<FormatTarget> select(Path root, Map<AnalysisLanguage, List<FormatOption>> declared);
+
+  /**
+   * Finds the project root for a working directory: the nearest folder at or above it that holds
+   * {@code ward.toml}, else the nearest that holds {@code .git}, else the directory itself.
+   *
+   * @param start the working directory
+   * @return the project root
+   */
+  Path projectRoot(Path start);
 }

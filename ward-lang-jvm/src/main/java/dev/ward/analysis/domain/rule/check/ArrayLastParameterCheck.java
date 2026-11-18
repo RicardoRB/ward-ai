@@ -41,10 +41,15 @@ public final class ArrayLastParameterCheck implements UnitCheck {
             parameter ->
                 CheckSupport.at(
                     parameter.span(),
-                    CheckSupport.fill(message, SyntaxWalk.text(parameter), "")
+                    CheckSupport.fill(message, printed(parameter), "")
                 )
         )
         .toList();
+  }
+
+  /** Prints the parameter with its spaces, keeping the brackets attached to their type. */
+  private static String printed(final SyntaxNode parameter) {
+    return SyntaxWalk.spacedText(parameter).replace(" [ ]", "[]");
   }
 
   private static Optional<SyntaxNode> lastParameter(final SyntaxNode parameters) {

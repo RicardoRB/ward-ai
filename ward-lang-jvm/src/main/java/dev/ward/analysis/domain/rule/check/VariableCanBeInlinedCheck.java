@@ -49,8 +49,13 @@ public final class VariableCanBeInlinedCheck implements RuleCheck {
             .flatMap(declaration -> SyntaxWalk.descendants(declaration).stream())
             .filter(node -> DECLARATOR.equals(node.kind()))
             .toList();
+    final boolean annotated =
+        JavaNodes.kid(statement, JavaNodes.LOCAL_VARIABLE).stream()
+            .flatMap(declaration -> SyntaxWalk.descendants(declaration).stream())
+            .anyMatch(node -> "annotation".equals(node.kind()));
     final boolean single =
-        declarators.size() == 1
+        !annotated
+            && declarators.size() == 1
             && declarators.get(0).children().stream().anyMatch(child -> "'='".equals(child.kind()));
     return single ? SyntaxWalk.text(declarators.get(0).children().get(0)) : "";
   }

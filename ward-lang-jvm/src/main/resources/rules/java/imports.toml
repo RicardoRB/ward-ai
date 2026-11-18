@@ -94,7 +94,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "style"
-presets = ["strict"]
 body = '''
 check = "unnecessary-qualified-type"
 message = "type '{value}' is written fully qualified but its simple name is in scope"
@@ -106,7 +105,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "style"
-presets = ["strict"]
 options.groups = { type = "string-list" }
 options.ordered = { type = "boolean" }
 options.separated = { type = "boolean" }

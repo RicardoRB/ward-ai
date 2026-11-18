@@ -8,7 +8,7 @@ import { Aside } from '@astrojs/starlight/components';
 `ward integrate` installs, refreshes, or removes the hooks that run Ward from a coding agent.
 
 ```sh
-ward integrate <agent> [-C <dir>] [--remove]
+ward integrate <agent> [-C <dir>] [--prompt-hook] [--remove]
 ```
 
 ## Options
@@ -17,6 +17,7 @@ ward integrate <agent> [-C <dir>] [--remove]
 |---|---|
 | `<agent>` | `opencode`, `claude-code`, `codex`, `cursor`, `copilot`, `gemini`, `windsurf`, `cline`, `factory-droid`, or `amp`. Without it, Ward prompts for a choice. |
 | `-C`, `--directory <dir>` | Install for the project in `<dir>` instead of the current directory. |
+| `--prompt-hook` | Also register the hook that blocks a prompt containing a secret. Only `claude-code`, `codex`, `cursor`, `gemini` and `factory-droid` have one; for another agent the option has no effect. It also enables prompt scanning in an existing `ward.toml` that has a `[checks.secrets]` check, with a Ward-owned marked block (`# ward-owned: prompt-hook v1`) at the end of the file; a `[checks.secrets.prompts]` table you wrote is never changed, and a project without the check is told how. Without the option nothing is written, and a refresh removes the prompt event (the table stays). See [Prompt hook](/commands/hook/#prompt-hook). |
 | `--remove` | Remove the Ward-owned integration files. |
 | `--verbose` | Print diagnostics to stderr. See [Verbose diagnostics](#verbose-diagnostics). |
 

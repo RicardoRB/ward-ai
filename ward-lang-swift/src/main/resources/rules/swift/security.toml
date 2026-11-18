@@ -74,7 +74,7 @@ body = '''
 check = "text-pattern"
 target = "lines"
 position = "match"
-pattern = '\b(let|var)\s+\w*([Pp]assword|[Pp]asswd|[Ss]ecret|[Ss]ecret[Kk]ey|[Aa]pi[Kk]ey|[Aa]ccess[Kk]ey|[Tt]oken|[Pp]rivate[Kk]ey)\s*(:\s*String\s*)?=\s*"[^"\s][^"]*"'
+pattern = '(?:\b(?:let|var)\s+\w*(?:[Pp]assword|[Pp]asswd|[Ss]ecret|[Ss]ecret[Kk]ey|[Aa]pi[Kk]ey|[Aa]ccess[Kk]ey|[Tt]oken|[Pp]rivate[Kk]ey)\s*(:\s*String\s*)?|(?<=,\s{1,3})\w*(?:[Pp]assword|[Pp]asswd|[Ss]ecret|[Ss]ecret[Kk]ey|[Aa]pi[Kk]ey|[Aa]ccess[Kk]ey|[Tt]oken|[Pp]rivate[Kk]ey)\s*)=\s*"[^"\s][^"]*"'
 message = "a credential is written in the source; read it from the Keychain or the environment"
 '''
 

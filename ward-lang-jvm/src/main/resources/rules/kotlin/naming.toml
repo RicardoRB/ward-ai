@@ -28,12 +28,8 @@ category = "naming"
 presets = ["standard", "strict"]
 options.pattern = { type = "regex" }
 body = '''
-check = "text-pattern"
-kinds = ["functionDeclaration"]
-modifiers = ["modifierList", "functionModifierList", "annotation"]
-name = "simpleIdentifier"
-skip = ["modifierList", "functionModifierList", "annotation", "typeParameters", "receiverType", "type", "contextParameters"]
-pattern = "[a-z][a-zA-Z0-9]*"
+check = "kotlin-function-name"
+pattern = "[a-z][a-zA-Z0-9]*|`[^`]+`"
 message = "function name '{value}' does not match the name pattern of this rule"
 '''
 
@@ -55,7 +51,7 @@ modifiers = ["modifierList", "annotation"]
 excluded = "const"
 name = "simpleIdentifier"
 skip = ["modifierList", "annotation", "type", "typeParameters", "typeConstraints", "getter", "setter"]
-pattern = "[a-z][a-zA-Z0-9]*"
+pattern = "[a-z][a-zA-Z0-9]*|`[^`]+`"
 message = "property name '{value}' does not match the name pattern of this rule"
 '''
 
@@ -84,7 +80,6 @@ language = "kotlin"
 capability = "SYNTAX"
 severity = "error"
 category = "naming"
-presets = ["standard", "strict"]
 options.pattern = { type = "regex" }
 body = '''
 check = "text-pattern"

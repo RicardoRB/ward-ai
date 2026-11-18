@@ -50,7 +50,7 @@ final class PythonDependencyIndexTest {
         new FrontendSupport(
             AnalysisLanguage.PYTHON,
             new AntlrLanguageFrontend(),
-            Set.of(RuleCapability.SYNTAX)
+            Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS)
         );
 
     final List<SourceUnit> units = pythonUnits();
@@ -60,7 +60,7 @@ final class PythonDependencyIndexTest {
         "test",
         new PythonDependencyAdapters().forProject(WORKSPACE, units)
     )
-        .run(cache, units, List.of(python), List.of());
+        .run(cache, units, List.of(python), DependencyStepFakes.readers(AnalysisLanguage.PYTHON));
 
     assertThat(entries.values())
         .anyMatch(value -> value.contains(IMPORTER) && value.contains(IMPORTED));

@@ -1,12 +1,15 @@
 package dev.ward.application.init;
 
 import dev.ward.domain.agent.IntegrationResult;
+import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.config.WardConfiguration;
 import dev.ward.domain.config.WardConfigurationReader;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.doctor.EnvironmentInspection;
+import dev.ward.domain.init.HookPlacement;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.OwnedSection;
+import dev.ward.domain.init.QualityHookChange;
 import dev.ward.domain.init.QualityHookGeneration;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.node.PackageManifests;
@@ -154,6 +157,37 @@ public final class InitSetupCatalog extends InitGeneralCatalog {
 
   /** Removes the Ward-owned quality hooks of {@code project}. */
   public IntegrationResult removeQualityHooks(final Project project) {
-    return qualityHooks.get().remove(project);
+    return removeQualityHooks(project, false);
+  }
+
+  /** Removes the quality hooks, or only lists the files it would change when {@code dryRun}. */
+  public IntegrationResult removeQualityHooks(final Project project, final boolean dryRun) {
+    return qualityHooks.get().remove(project, dryRun);
+  }
+
+  /** Describes, without writing, what installing the quality hooks at {@code placement} does. */
+  public List<PlannedFileChange> planQualityHooks(
+      final Project project,
+      final HookPlacement placement
+  ) {
+    return qualityHooks.get().plan(project, placement);
+  }
+
+  /** Installs the quality hooks at {@code placement}. */
+  public QualityHookChange installQualityHooks(
+      final Project project,
+      final HookPlacement placement
+  ) {
+    return qualityHooks.get().apply(project, placement);
+  }
+
+  /** Restores the files and {@code core.hooksPath} that {@code change} touched. */
+  public void rollbackQualityHooks(final QualityHookChange change) {
+    qualityHooks.get().rollback(change);
+  }
+
+  /** Returns this clone's {@code core.hooksPath}, when it is set. */
+  public Optional<String> hooksPath(final Project project) {
+    return qualityHooks.get().hooksPath(project);
   }
 }

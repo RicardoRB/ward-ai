@@ -11,7 +11,8 @@ import java.util.Set;
 /**
  * Reports a backslash that escapes a character which needs no escape, like ESLint {@code
  * no-useless-escape}, in string literals, template literals and regular expression literals. The
- * valid escapes depend on the context, see {@link EscapeRules}.
+ * valid escapes depend on the context, see {@link EscapeRules}. A template tagged {@code String.raw}
+ * is left alone.
  */
 public final class NodeUselessEscapeCheck implements RuleCheck {
   private static final String STRING = "StringLiteral";
@@ -23,6 +24,7 @@ public final class NodeUselessEscapeCheck implements RuleCheck {
   private static final char BACKSLASH = '\\';
   private static final char SLASH = '/';
   private static final String VALUE = "{value}";
+  private static final String RAW_TAG = "String.raw";
   private static final int ESCAPE_WIDTH = 2;
 
   private final EscapeRules rules;
@@ -47,6 +49,9 @@ public final class NodeUselessEscapeCheck implements RuleCheck {
   }
 
   private void collect(final SyntaxNode node, final List<RuleMatch> matches) {
+    if (isRawTagged(node)) {
+      return;
+    }
     if (TEMPLATE.equals(node.kind())) {
       template(node, matches);
     } else if (STRING.equals(node.kind()) || REGEX.equals(node.kind())) {
@@ -56,6 +61,14 @@ public final class NodeUselessEscapeCheck implements RuleCheck {
         collect(child, matches);
       }
     }
+  }
+
+  /** {@code String.raw`...`}: a backslash is a character of the string, never an escape. */
+  private static boolean isRawTagged(final SyntaxNode node) {
+    final List<SyntaxNode> parts = node.children();
+    return parts.size() == 2
+        && TEMPLATE.equals(parts.get(1).kind())
+        && RAW_TAG.equals(SyntaxWalk.text(parts.get(0)));
   }
 
   /** The escapes of a string or regular expression token, read from its text. */

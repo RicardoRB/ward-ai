@@ -61,7 +61,7 @@ final class InitChanges {
       final Predicate<? super CompatibilityFinding> approval
   ) {
     final QualityPreset preset = selection.preset();
-    installer.install(project, selection.integrations(), installed);
+    installer.install(project, selection.integrations(), selection.promptHook(), installed);
     if (selection.qualityHooks()) {
       qualityHookChange = qualityHooks.apply(project);
       if (qualityHookChange.result().status() == IntegrationResult.Status.CONFLICT) {

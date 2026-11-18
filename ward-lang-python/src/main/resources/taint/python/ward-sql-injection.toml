@@ -2,7 +2,8 @@
 # connection or session), Django's raw SQL or SQLAlchemy text() runs, which is argument 0. A cursor has no declared
 # type, so the methods match a receiver whose text names a cursor or a connection, as in cursor, self.cursor,
 # conn.cursor(), cur, conn, connection, db or session; an execute of any other object (an executor, a pipeline, a
-# command) is not SQL. Parameter values are bound by the driver.
+# command) is not SQL. A name assigned from a call to cursor or connect in the same body is a database handle, so its
+# methods are sinks under any name (receiver database-handle). Parameter values are bound by the driver.
 
 [[sinks]]
 kind = "call"
@@ -140,6 +141,30 @@ arguments = [0]
 kind = "call"
 name = "mogrify"
 qualifier = "*cur"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execute"
+receiver = "database-handle"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "executemany"
+receiver = "database-handle"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "executescript"
+receiver = "database-handle"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "mogrify"
+receiver = "database-handle"
 arguments = [0]
 
 [[sinks]]

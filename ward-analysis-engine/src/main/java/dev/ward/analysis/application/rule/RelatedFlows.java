@@ -43,8 +43,8 @@ final class RelatedFlows {
     return new FlowView(own.graphs(), related);
   }
 
-  /** Lowers outside the map, so no thread waits for another file; a second result is dropped. */
-  private List<ControlFlowGraph> graphsOf(final SourceUnit unit) {
+  /** The graphs of a file of the run, lowered once. Lowers outside the map, so no thread waits for another file; a second result is dropped. */
+  List<ControlFlowGraph> graphsOf(final SourceUnit unit) {
     final List<ControlFlowGraph> known = lowered.get(unit.path());
     if (known != null) {
       return known;

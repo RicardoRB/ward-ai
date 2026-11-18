@@ -47,6 +47,22 @@ final class AtnPaths {
     return NONE;
   }
 
+  /**
+   * Returns the alternative of a decision that starts with a call of {@code first} and then calls
+   * {@code second}, as {@code propertyMemberBase (getAccessor | setAccessor)} does.
+   */
+  static int alternativeAfter(final DecisionState decision, final int first, final int second) {
+    for (int alt = 0; alt < decision.getNumberOfTransitions(); alt++) {
+      for (final RuleTransition call : calls(decision.transition(alt).target)) {
+        if (call.ruleIndex == first
+            && calls(call.followState).stream().anyMatch(next -> next.ruleIndex == second)) {
+          return alt + 1;
+        }
+      }
+    }
+    return NONE;
+  }
+
   /** Returns the rule calls that {@code start} reaches over plain epsilon transitions. */
   static List<RuleTransition> calls(final ATNState start) {
     final List<RuleTransition> calls = new ArrayList<>();

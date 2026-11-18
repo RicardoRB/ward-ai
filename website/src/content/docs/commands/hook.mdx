@@ -36,6 +36,7 @@ With an event payload:
 
 - **`PostToolUse`:** a [partial check](/commands/check/) runs for the edited `tool_input.file_path`. An event
   without a path runs every gate in full.
+- **`UserPromptSubmit`:** the prompt is scanned for secrets. See [Prompt hook](#prompt-hook).
 - **`Stop`:** the full `default` quality check runs. Findings block the stop
   once, using `decision: "block"`. When `stop_hook_active` is true, or Ward cannot run, they are shown to the
   user as a `systemMessage`. This full check also catches files changed by shell commands, which send no edit
@@ -54,6 +55,51 @@ translates the findings into the harness's response shape.
   contents.
 
 See [native harness integrations](/integrations/native-harnesses/).
+
+## Prompt hook
+
+A prompt hook blocks a prompt that holds a secret before the agent sends it to the model. It is opt-in
+by flag: `ward integrate <agent> --prompt-hook` (or `ward init --prompt-hook`) registers the hook and
+enables [`[checks.secrets.prompts]`](/configuration/secrets/#scanning-prompts) in `ward.toml`. It scans only
+while that table has `enabled = true`.
+
+It needs no new command: the prompt event reaches the same adapters, `ward hook claude-code
+--event-stdin` and `ward hook native --agent <agent> --event-stdin`, and the generated wrapper is
+unchanged.
+
+| Agent | Event | How a prompt is rejected |
+|---|---|---|
+| `claude-code` | `UserPromptSubmit` | `{"decision":"block","reason":…}` on stdout, exit `0` |
+| `codex` | `UserPromptSubmit` | `{"decision":"block","reason":…}` |
+| `factory-droid` | `UserPromptSubmit` | `{"decision":"block","reason":…}` |
+| `gemini` | `BeforeAgent` | `{"decision":"deny","reason":…}` |
+| `cursor` | `beforeSubmitPrompt` | `{"continue":false,"user_message":…}` |
+
+The other agents have no documented prompt event that can reject a prompt, so they are unsupported and
+get no prompt hook: `copilot` (its `userPromptSubmitted` output cannot block), `amp` (`agent.start` cannot
+reject), `cline` (no prompt event), `junie`, `windsurf` and `opencode` (no documented way to reject a
+prompt). `ward init --prompt-hook` says so for each such integration.
+
+The input is the message and the files the prompt attaches (Cursor `attachments`) or references
+with `@path` in the message. A file keeps its path, so the check's `exclude-paths` and the rules' path
+filters apply to it. The message has no path: rules with a `path` filter and path-only rules do not run
+on it, and allowlist `paths` do not apply; allowlist `regexes` and `stopwords` do. A path outside the
+project is never read.
+
+The block message names the rule and the place, and never repeats the secret:
+
+```text
+Ward blocked this prompt: it contains a secret.
+- ward:secrets/github-pat in the message, line 2, column 1
+- ward:secrets/aws-access-token in config/app.yml, line 4, column 12
+Remove the secret from the prompt, and rotate it if it was ever shared.
+```
+
+If Ward cannot scan the whole prompt (a rule over its budget, an unreadable attached file, a broken rule
+file, any unexpected error), the prompt is blocked too, with a message that says the scan could not run and
+names no prompt content (`Ward could not scan this prompt, so it was not sent: …`). A prompt is never sent unscanned.
+A prompt scan loads only the secret rules, unless the project has a `ward-rules.toml`. Nothing about the prompt is written to
+`.ward`, the cache or a report; with `--verbose` the diagnostics hold only rule ids and the decision.
 
 ## Nested projects
 
@@ -81,5 +127,5 @@ response on stdout unchanged. They never include findings, payload contents, or 
 
 | Adapter | `0` | `1` | `2` |
 |---|---|---|---|
-| `hook claude-code` | Gates passed; always for `Stop` events | — | Gates failed or Ward could not run (reported to the agent on stderr) |
+| `hook claude-code` | Gates passed; always for `Stop` and `UserPromptSubmit` events | — | Gates failed or Ward could not run (reported to the agent on stderr) |
 | `hook native` | Depends on the harness's hook contract; see [native harness integrations](/integrations/native-harnesses/) | | |

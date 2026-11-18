@@ -53,6 +53,8 @@ final class PythonNameAccesses {
       add(node, AccessKind.READ, out);
     } else if (STRING.equals(node.kind())) {
       PythonFStrings.reads(node, excluded, out);
+    } else if (PythonComprehensionNames.isComprehension(node)) {
+      PythonComprehensionNames.reads(this, node, out);
     } else if (NAMED_EXPR.equals(node.kind())) {
       walrus(node, out);
     } else if (TRAILER.equals(node.kind())) {

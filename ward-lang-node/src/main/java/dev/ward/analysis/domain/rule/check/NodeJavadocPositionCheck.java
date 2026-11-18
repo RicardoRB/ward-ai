@@ -12,7 +12,7 @@ import java.util.TreeSet;
  * InvalidJavadocPosition. A comment inside a function or block body is never a declaration's doc.
  * Elsewhere the comment maps to the next token in the source; it is valid only when that token
  * starts a declaration, which is compared by position so the tree shape around comments does not
- * matter.
+ * matter. Other comments between the javadoc and the declaration are skipped.
  */
 public final class NodeJavadocPositionCheck implements RuleCheck {
   private static final String COMMENT = "comment";
@@ -43,6 +43,8 @@ public final class NodeJavadocPositionCheck implements RuleCheck {
           "constructorDeclaration",
           "methodDefinition",
           "propertyMemberDeclaration",
+          "typeMember",
+          "propertyAssignment",
           "fieldDefinition"
       );
 
@@ -88,6 +90,9 @@ public final class NodeJavadocPositionCheck implements RuleCheck {
     }
     if (DECLARATIONS.contains(node.kind())) {
       declarations.add(firstLeaf(node).span().startOffset());
+    }
+    if (COMMENT.equals(node.kind())) {
+      return;
     }
     if (node.children().isEmpty()) {
       if (node.span().startOffset() < node.span().endOffset()) {

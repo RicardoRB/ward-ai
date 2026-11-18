@@ -14,3 +14,16 @@ final class T {
     return DATA;
   }
 }
+
+final class EmptyConstants {
+  private static final String[] NONE = new String[0];
+  private static final int[] NOTHING = {};
+
+  public static String[] names() {
+    return NONE;
+  }
+
+  public static int[] values() {
+    return NOTHING;
+  }
+}

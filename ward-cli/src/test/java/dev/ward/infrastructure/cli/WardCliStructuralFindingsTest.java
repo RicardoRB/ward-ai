@@ -48,12 +48,12 @@ class WardCliStructuralFindingsTest extends WardCliIntegrationSupport {
 
     assertThat(run(CHECK, FORMAT_OPTION, JSON, "-C", source.toString()))
         .isEqualTo(ExitCodes.FAILED);
-    final String first = out.toString();
+    final String first = withoutDurations(out.toString());
     out.getBuffer().setLength(0);
     assertThat(run(CHECK, FORMAT_OPTION, JSON, "-C", source.toString()))
         .isEqualTo(ExitCodes.FAILED);
 
-    assertThat(out.toString()).isEqualTo(first).contains(NAMING);
+    assertThat(withoutDurations(out.toString())).isEqualTo(first).contains(NAMING);
   }
 
   @Test
@@ -75,5 +75,10 @@ class WardCliStructuralFindingsTest extends WardCliIntegrationSupport {
     final JsonTree checks = JsonTree.parse(out.toString()).get(CHECKS);
     assertThat(checks.size()).isEqualTo(1);
     assertThat(out.toString()).doesNotContain(TYPESCRIPT_PREFIX).doesNotContain(JAVASCRIPT_PREFIX);
+  }
+
+  /** Durations are real now, so two runs differ in them only. */
+  private static String withoutDurations(final String json) {
+    return json.replaceAll("\"durationMs\":\\d+", "\"durationMs\":0");
   }
 }

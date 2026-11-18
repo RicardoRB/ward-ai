@@ -1,0 +1,381 @@
+# Label of the findings of the CTFd corpus run, decided by reading the code at the line.
+# Format: rule | file:line | tp, fp or un | reason.
+# tp: the line is a real instance of what the rule names. fp: it is not. un: it cannot be decided
+# from the code alone, or it depends on a convention the project is free to choose.
+ward:python/abbreviation-as-word-in-name | CTFd/__init__.py:40 | tp | the name holds a run of capital letters
+ward:python/abbreviation-as-word-in-name | CTFd/__init__.py:51 | tp | the name holds a run of capital letters
+ward:python/abbreviation-as-word-in-name | CTFd/api/v1/schemas/__init__.py:6 | tp | the name holds a run of capital letters
+ward:python/abbreviation-as-word-in-name | CTFd/api/v1/schemas/__init__.py:10 | tp | the name holds a run of capital letters
+ward:python/abbreviation-as-word-in-name | CTFd/api/v1/schemas/__init__.py:34 | tp | the name holds a run of capital letters
+ward:python/arguments-differ | CTFd/plugins/flags/__init__.py:31 | tp | the override takes other parameters than the method it overrides
+ward:python/arguments-differ | CTFd/plugins/flags/__init__.py:56 | tp | the override takes other parameters than the method it overrides
+ward:python/arguments-renamed | CTFd/utils/uploads/uploaders.py:124 | un | the override has a different parameter list than the base method, not only another name
+ward:python/arguments-renamed | CTFd/utils/uploads/uploaders.py:263 | un | the override has a different parameter list than the base method, not only another name
+ward:python/assert-tuple | tests/challenges/test_ratings.py:570 | tp | the assert tests a non-empty tuple, which is always true
+ward:python/assert-tuple | tests/users/test_auth.py:815 | tp | the assert tests a non-empty tuple, which is always true
+ward:python/bad-staticmethod-argument | CTFd/plugins/flags/__init__.py:18 | tp | a static method takes self as its first parameter
+ward:python/broad-exception-raised | CTFd/utils/exports/__init__.py:135 | tp | the code raises the base Exception
+ward:python/broad-exception-raised | CTFd/utils/exports/__init__.py:168 | tp | the code raises the base Exception
+ward:python/broad-exception-raised | CTFd/utils/exports/__init__.py:178 | tp | the code raises the base Exception
+ward:python/broad-exception-raised | CTFd/utils/exports/__init__.py:201 | tp | the code raises the base Exception
+ward:python/broad-exception-raised | CTFd/utils/exports/__init__.py:222 | tp | the code raises the base Exception
+ward:python/cached-instance-method | CTFd/models/__init__.py:558 | fp | the decorator is a cache of the Flask extension, which keeps results outside the instance; the rule means functools caches
+ward:python/cached-instance-method | CTFd/models/__init__.py:591 | fp | the decorator is a cache of the Flask extension, which keeps results outside the instance; the rule means functools caches
+ward:python/cached-instance-method | CTFd/models/__init__.py:842 | fp | the decorator is a cache of the Flask extension, which keeps results outside the instance; the rule means functools caches
+ward:python/cached-instance-method | CTFd/models/__init__.py:849 | fp | the decorator is a cache of the Flask extension, which keeps results outside the instance; the rule means functools caches
+ward:python/complexity | CTFd/__init__.py:187 | tp | the function holds more decision points than the limit
+ward:python/complexity | CTFd/admin/__init__.py:220 | tp | the function holds more decision points than the limit
+ward:python/complexity | CTFd/api/v1/challenges.py:146 | tp | the function holds more decision points than the limit
+ward:python/complexity | CTFd/api/v1/challenges.py:335 | tp | the function holds more decision points than the limit
+ward:python/complexity | CTFd/api/v1/challenges.py:651 | tp | the function holds more decision points than the limit
+ward:python/consider-using-dict-items | CTFd/api/v1/helpers/request.py:32 | tp | the loop reads the value of each key it iterates
+ward:python/consider-using-dict-items | CTFd/utils/scoreboard/__init__.py:58 | tp | the loop reads the value of each key it iterates
+ward:python/consider-using-dict-items | CTFd/utils/security/sanitize.py:72 | tp | the loop reads the value of each key it iterates
+ward:python/consider-using-dict-items | migrations/1_2_0_upgrade_2_0_0.py:242 | tp | the loop reads the value of each key it iterates
+ward:python/consider-using-f-string | CTFd/admin/__init__.py:132 | tp | a string literal formatted with format()
+ward:python/consider-using-f-string | CTFd/admin/__init__.py:180 | tp | a string literal formatted with format()
+ward:python/consider-using-f-string | CTFd/admin/challenges.py:22 | tp | a string literal formatted with format()
+ward:python/consider-using-f-string | CTFd/admin/teams.py:20 | tp | a string literal formatted with format()
+ward:python/consider-using-f-string | CTFd/admin/users.py:23 | tp | a string literal formatted with format()
+ward:python/consider-using-in | CTFd/auth.py:457 | tp | two equality tests of one name joined by or
+ward:python/consider-using-in | CTFd/auth.py:458 | tp | two equality tests of one name joined by or
+ward:python/consider-using-max-builtin | CTFd/plugins/challenges/decay.py:37 | tp | an if that assigns the larger of two values
+ward:python/consider-using-max-builtin | CTFd/plugins/challenges/decay.py:66 | tp | an if that assigns the larger of two values
+ward:python/consider-using-max-builtin | CTFd/plugins/dynamic_challenges/decay.py:37 | tp | an if that assigns the larger of two values
+ward:python/consider-using-max-builtin | CTFd/plugins/dynamic_challenges/decay.py:66 | tp | an if that assigns the larger of two values
+ward:python/consider-using-sys-exit | CTFd/__init__.py:309 | tp | exit() is the site helper, meant for the interactive prompt
+ward:python/consider-using-sys-exit | migrations/1_2_0_upgrade_2_0_0.py:42 | tp | exit() is the site helper, meant for the interactive prompt
+ward:python/consider-using-sys-exit | ping.py:16 | tp | exit() is the site helper, meant for the interactive prompt
+ward:python/consider-using-with | CTFd/admin/__init__.py:90 | tp | a file is opened without a context manager
+ward:python/consider-using-with | CTFd/utils/initialization/__init__.py:164 | tp | a file is opened without a context manager
+ward:python/constant-name | CTFd/plugins/dynamic_challenges/migrations/93284ed9c099_add_dynamic_prefix_to_dynamic_challenge_.py:13 | un | a module-level object that is not a literal; the rule reads literals only, so check the case
+ward:python/constant-name | CTFd/plugins/dynamic_challenges/migrations/93284ed9c099_add_dynamic_prefix_to_dynamic_challenge_.py:14 | un | a module-level object that is not a literal; the rule reads literals only, so check the case
+ward:python/constant-name | CTFd/plugins/dynamic_challenges/migrations/93284ed9c099_add_dynamic_prefix_to_dynamic_challenge_.py:15 | un | a module-level object that is not a literal; the rule reads literals only, so check the case
+ward:python/constant-name | CTFd/plugins/dynamic_challenges/migrations/93284ed9c099_add_dynamic_prefix_to_dynamic_challenge_.py:16 | un | a module-level object that is not a literal; the rule reads literals only, so check the case
+ward:python/constant-name | CTFd/plugins/dynamic_challenges/migrations/b37fb68807ea_add_cascading_delete_to_dynamic_.py:10 | un | a module-level object that is not a literal; the rule reads literals only, so check the case
+ward:python/django-insecure-settings | CTFd/config.py:308 | tp | a fixed secret key in a configuration class
+ward:python/django-insecure-settings | CTFd/config.py:311 | un | a Flask configuration class for tests reuses the Django setting names; the values are test values
+ward:python/duplicate-code | CTFd/api/v1/schemas/__init__.py:44 | tp | the two places repeat the same run of tokens
+ward:python/duplicate-code | CTFd/api/v1/teams.py:85 | tp | the two places repeat the same run of tokens
+ward:python/duplicate-code | CTFd/api/v1/teams.py:549 | tp | the two places repeat the same run of tokens
+ward:python/duplicate-code | CTFd/api/v1/unlocks.py:176 | tp | the two places repeat the same run of tokens
+ward:python/duplicate-code | CTFd/api/v1/users.py:396 | tp | the two places repeat the same run of tokens
+ward:python/file-length | CTFd/api/v1/challenges.py:1 | tp | the file holds more lines than the limit
+ward:python/file-length | CTFd/api/v1/teams.py:1 | tp | the file holds more lines than the limit
+ward:python/file-length | CTFd/api/v1/users.py:1 | tp | the file holds more lines than the limit
+ward:python/file-length | CTFd/auth.py:1 | tp | the file holds more lines than the limit
+ward:python/file-length | CTFd/models/__init__.py:1 | tp | the file holds more lines than the limit
+ward:python/flask-debug-true | serve.py:43 | tp | the development entry point runs the app with debug on
+ward:python/flask-debug-true | wsgi.py:14 | tp | the development entry point runs the app with debug on
+ward:python/function-length | CTFd/__init__.py:187 | tp | the function holds more lines than the limit
+ward:python/function-length | CTFd/admin/__init__.py:220 | tp | the function holds more lines than the limit
+ward:python/function-length | CTFd/admin/statistics.py:12 | tp | the function holds more lines than the limit
+ward:python/function-length | CTFd/api/v1/challenges.py:146 | tp | the function holds more lines than the limit
+ward:python/function-length | CTFd/api/v1/challenges.py:335 | tp | the function holds more lines than the limit
+ward:python/function-redefined | tests/test_config.py:34 | fp | each class is local to its own test function, so they do not shadow each other
+ward:python/function-redefined | tests/test_config.py:46 | fp | each class is local to its own test function, so they do not shadow each other
+ward:python/hardcoded-password-default | tests/helpers.py:125 | fp | a default value of a test helper, not a secret
+ward:python/hardcoded-password-default | tests/helpers.py:169 | fp | a default value of a test helper, not a secret
+ward:python/hardcoded-password-default | tests/helpers.py:206 | fp | a default value of a test helper, not a secret
+ward:python/hardcoded-password-default | tests/helpers.py:234 | fp | a default value of a test helper, not a secret
+ward:python/hardcoded-password-default | tests/helpers.py:246 | fp | a default value of a test helper, not a secret
+ward:python/hardcoded-password-default | tests/helpers.py:407 | fp | a default value of a test helper, not a secret
+ward:python/hardcoded-password-default | tests/helpers.py:416 | fp | a default value of a test helper, not a secret
+ward:python/hardcoded-password-func-arg | populate.py:238 | fp | a fixture password in a seed script, not a secret
+ward:python/hardcoded-password-func-arg | populate.py:264 | fp | a fixture password in a seed script, not a secret
+ward:python/hashlib-insecure-hash-function | CTFd/utils/uploads/__init__.py:76 | fp | the digest names an uploaded file, it protects nothing
+ward:python/hashlib-insecure-hash-function | populate.py:204 | fp | the digest names a file or a fixture, it protects nothing
+ward:python/hidden-field | CTFd/admin/__init__.py:79 | tp | the name hides a module-level name
+ward:python/hidden-field | CTFd/api/v1/comments.py:87 | tp | the name hides a module-level name
+ward:python/hidden-field | CTFd/api/v1/comments.py:132 | tp | the name hides a module-level name
+ward:python/hidden-field | CTFd/forms/__init__.py:6 | tp | the name hides a module-level name
+ward:python/hidden-field | CTFd/plugins/__init__.py:25 | tp | the name hides a module-level name
+ward:python/illegal-catch | CTFd/cli/__init__.py:84 | tp | the handler catches Exception
+ward:python/illegal-catch | CTFd/utils/email/providers/smtp.py:74 | tp | the handler catches Exception
+ward:python/illegal-catch | CTFd/utils/exports/__init__.py:176 | tp | the handler catches Exception
+ward:python/illegal-catch | CTFd/utils/exports/__init__.py:264 | tp | the handler catches Exception
+ward:python/illegal-catch | CTFd/utils/exports/__init__.py:487 | tp | the handler catches Exception
+ward:python/import-outside-toplevel | CTFd/__init__.py:192 | tp | the import is inside a function
+ward:python/import-outside-toplevel | CTFd/__init__.py:193 | tp | the import is inside a function
+ward:python/import-outside-toplevel | CTFd/__init__.py:232 | tp | the import is inside a function
+ward:python/import-outside-toplevel | CTFd/__init__.py:266 | tp | the import is inside a function
+ward:python/import-outside-toplevel | CTFd/__init__.py:267 | tp | the import is inside a function
+ward:python/import-self | CTFd/__init__.py:19 | fp | a package imports one of its own submodules in its __init__; that is not the module importing itself
+ward:python/import-self | CTFd/admin/__init__.py:21 | fp | a package imports one of its own submodules in its __init__; that is not the module importing itself
+ward:python/import-self | CTFd/admin/__init__.py:22 | fp | a package imports one of its own submodules in its __init__; that is not the module importing itself
+ward:python/import-self | CTFd/admin/__init__.py:23 | fp | a package imports one of its own submodules in its __init__; that is not the module importing itself
+ward:python/import-self | CTFd/admin/__init__.py:24 | fp | a package imports one of its own submodules in its __init__; that is not the module importing itself
+ward:python/inconsistent-return-statements | CTFd/admin/__init__.py:79 | tp | some paths return a value and others fall off the end
+ward:python/inconsistent-return-statements | CTFd/admin/__init__.py:107 | tp | some paths return a value and others fall off the end
+ward:python/inconsistent-return-statements | CTFd/api/v1/challenges.py:651 | tp | some paths return a value and others fall off the end
+ward:python/inconsistent-return-statements | CTFd/auth.py:40 | tp | some paths return a value and others fall off the end
+ward:python/inconsistent-return-statements | CTFd/models/__init__.py:16 | tp | some paths return a value and others fall off the end
+ward:python/keyword-arg-before-vararg | CTFd/schemas/awards.py:41 | tp | a parameter with a default comes before *args
+ward:python/keyword-arg-before-vararg | CTFd/schemas/config.py:36 | tp | a parameter with a default comes before *args
+ward:python/keyword-arg-before-vararg | CTFd/schemas/files.py:11 | tp | a parameter with a default comes before *args
+ward:python/keyword-arg-before-vararg | CTFd/schemas/flags.py:11 | tp | a parameter with a default comes before *args
+ward:python/keyword-arg-before-vararg | CTFd/schemas/hints.py:36 | tp | a parameter with a default comes before *args
+ward:python/line-length | CTFd/__init__.py:44 | tp | the line is longer than the limit
+ward:python/line-length | CTFd/__init__.py:45 | tp | the line is longer than the limit
+ward:python/line-length | CTFd/__init__.py:116 | tp | the line is longer than the limit
+ward:python/line-length | CTFd/__init__.py:296 | tp | the line is longer than the limit
+ward:python/line-length | CTFd/admin/challenges.py:56 | tp | the line is longer than the limit
+ward:python/local-variable-name | CTFd/admin/statistics.py:15 | un | a name bound to a class that a factory returns keeps its class name
+ward:python/local-variable-name | CTFd/admin/submissions.py:33 | un | a name bound to a class that a factory returns keeps its class name
+ward:python/local-variable-name | CTFd/api/v1/comments.py:87 | un | a name bound to a class that a factory returns keeps its class name
+ward:python/local-variable-name | CTFd/api/v1/comments.py:132 | un | a name bound to a class that a factory returns keeps its class name
+ward:python/local-variable-name | CTFd/api/v1/shares.py:21 | un | a name bound to a class that a factory returns keeps its class name
+ward:python/method-name | CTFd/constants/__init__.py:39 | un | a factory function that returns a class keeps the class name
+ward:python/method-name | CTFd/constants/__init__.py:53 | un | a factory function that returns a class keeps the class name
+ward:python/method-name | CTFd/forms/auth.py:19 | un | a factory function that returns a class keeps the class name
+ward:python/method-name | CTFd/forms/language.py:7 | un | a factory function that returns a class keeps the class name
+ward:python/method-name | CTFd/forms/self.py:19 | un | a factory function that returns a class keeps the class name
+ward:python/missing-class-docstring | CTFd/__init__.py:40 | tp | the class has no docstring
+ward:python/missing-class-docstring | CTFd/__init__.py:51 | tp | the class has no docstring
+ward:python/missing-class-docstring | CTFd/api/v1/awards.py:22 | tp | the class has no docstring
+ward:python/missing-class-docstring | CTFd/api/v1/awards.py:26 | tp | the class has no docstring
+ward:python/missing-class-docstring | CTFd/api/v1/awards.py:40 | tp | the class has no docstring
+ward:python/missing-function-docstring | CTFd/__init__.py:73 | tp | the function has no docstring
+ward:python/missing-function-docstring | CTFd/__init__.py:81 | tp | the function has no docstring
+ward:python/missing-function-docstring | CTFd/__init__.py:153 | tp | the function has no docstring
+ward:python/missing-function-docstring | CTFd/__init__.py:168 | tp | the function has no docstring
+ward:python/missing-function-docstring | CTFd/__init__.py:182 | tp | the function has no docstring
+ward:python/missing-module-docstring | CTFd/__init__.py:1 | tp | the module has no docstring
+ward:python/missing-module-docstring | CTFd/admin/__init__.py:1 | tp | the module has no docstring
+ward:python/missing-module-docstring | CTFd/admin/challenges.py:1 | tp | the module has no docstring
+ward:python/missing-module-docstring | CTFd/admin/notifications.py:1 | tp | the module has no docstring
+ward:python/missing-module-docstring | CTFd/admin/pages.py:1 | tp | the module has no docstring
+ward:python/module-import-not-at-top-of-file | CTFd/admin/__init__.py:21 | tp | the import follows code; it is placed there on purpose to avoid a circular import
+ward:python/module-import-not-at-top-of-file | CTFd/admin/__init__.py:22 | tp | the import follows code; it is placed there on purpose to avoid a circular import
+ward:python/module-import-not-at-top-of-file | CTFd/admin/__init__.py:23 | tp | the import follows code; it is placed there on purpose to avoid a circular import
+ward:python/module-import-not-at-top-of-file | CTFd/admin/__init__.py:24 | tp | the import follows code; it is placed there on purpose to avoid a circular import
+ward:python/module-import-not-at-top-of-file | CTFd/admin/__init__.py:25 | tp | the import follows code; it is placed there on purpose to avoid a circular import
+ward:python/naming | CTFd/admin/statistics.py:15 | un | a name bound to a class or an alias keeps its CapWords name
+ward:python/naming | CTFd/admin/submissions.py:33 | un | a name bound to a class or an alias keeps its CapWords name
+ward:python/naming | CTFd/api/__init__.py:33 | un | a name bound to a class or an alias keeps its CapWords name
+ward:python/naming | CTFd/api/v1/awards.py:19 | un | a name bound to a class or an alias keeps its CapWords name
+ward:python/naming | CTFd/api/v1/challenges.py:83 | un | a name bound to a class or an alias keeps its CapWords name
+ward:python/no-else-return | CTFd/__init__.py:175 | tp | the else follows a branch that returns
+ward:python/no-else-return | CTFd/admin/__init__.py:120 | tp | the else follows a branch that returns
+ward:python/no-else-return | CTFd/admin/__init__.py:165 | tp | the else follows a branch that returns
+ward:python/no-else-return | CTFd/api/v1/challenges.py:400 | tp | the else follows a branch that returns
+ward:python/no-else-return | CTFd/api/v1/challenges.py:928 | tp | the else follows a branch that returns
+ward:python/no-method-argument | CTFd/forms/teams.py:166 | fp | a function defined inside a method is a plain function, not a method
+ward:python/no-method-argument | tests/helpers.py:76 | tp | a function in a class body takes no parameter
+ward:python/no-method-argument | tests/helpers.py:89 | tp | a function in a class body takes no parameter
+ward:python/no-method-argument | tests/helpers.py:101 | tp | a function in a class body takes no parameter
+ward:python/no-method-argument | tests/helpers.py:113 | tp | a function in a class body takes no parameter
+ward:python/parameter-count | CTFd/utils/email/providers/smtp.py:78 | tp | the function takes more parameters than the limit
+ward:python/parameter-count | tests/helpers.py:125 | tp | the function takes more parameters than the limit
+ward:python/parameter-count | tests/helpers.py:169 | tp | the function takes more parameters than the limit
+ward:python/parameter-count | tests/helpers.py:206 | tp | the function takes more parameters than the limit
+ward:python/parameter-count | tests/helpers.py:261 | tp | the function takes more parameters than the limit
+ward:python/parameter-name | CTFd/utils/email/providers/smtp.py:78 | tp | the parameter name is not snake_case
+ward:python/path-injection | CTFd/admin/__init__.py:90 | fp | the path is checked against a list of known names first, or the argument is not a path
+ward:python/path-injection | CTFd/admin/__init__.py:176 | fp | the path is checked against a list of known names first, or the argument is not a path
+ward:python/path-injection | CTFd/api/v1/exports.py:32 | fp | the path is checked against a list of known names first, or the argument is not a path
+ward:python/pointless-string-statement | CTFd/__init__.py:43 | tp | a string statement outside the docstring position has no effect
+ward:python/pointless-string-statement | CTFd/config.py:167 | tp | a string statement outside the docstring position has no effect
+ward:python/pointless-string-statement | CTFd/plugins/challenges/__init__.py:335 | tp | a string statement outside the docstring position has no effect
+ward:python/pointless-string-statement | CTFd/utils/scores/__init__.py:47 | tp | a string statement outside the docstring position has no effect
+ward:python/pointless-string-statement | CTFd/utils/scores/__init__.py:55 | tp | a string statement outside the docstring position has no effect
+ward:python/possibly-used-before-assignment | CTFd/admin/challenges.py:60 | fp | the handler calls abort(), which raises, so no path reaches the read unbound
+ward:python/possibly-used-before-assignment | CTFd/admin/challenges.py:64 | fp | the handler calls abort(), which raises, so no path reaches the read unbound
+ward:python/possibly-used-before-assignment | CTFd/api/v1/challenges.py:467 | fp | the handler calls abort(), which raises, so no path reaches the read unbound
+ward:python/possibly-used-before-assignment | CTFd/api/v1/challenges.py:491 | un | the name is set under authed() and read under the same condition
+ward:python/possibly-used-before-assignment | CTFd/api/v1/challenges.py:508 | un | the name is set under authed() and read under the same condition
+ward:python/private-member-access | CTFd/plugins/__init__.py:178 | tp | the code reaches a private member of another object
+ward:python/private-member-access | CTFd/utils/user/__init__.py:54 | fp | _fields is the public API of namedtuple
+ward:python/private-member-access | CTFd/utils/user/__init__.py:184 | fp | _fields is the public API of namedtuple
+ward:python/private-member-access | ping.py:20 | fp | _replace is the public API of the parsed URL tuple
+ward:python/private-member-access | tests/test_share.py:100 | fp | _replace is the public API of the parsed URL tuple
+ward:python/raise-without-from-inside-except | CTFd/constants/assets.py:34 | tp | an exception is raised inside a handler without a cause
+ward:python/raise-without-from-inside-except | CTFd/models/__init__.py:774 | tp | an exception is raised inside a handler without a cause
+ward:python/raise-without-from-inside-except | CTFd/models/__init__.py:776 | tp | an exception is raised inside a handler without a cause
+ward:python/raise-without-from-inside-except | CTFd/plugins/challenges/__init__.py:147 | tp | an exception is raised inside a handler without a cause
+ward:python/raise-without-from-inside-except | CTFd/plugins/dynamic_challenges/__init__.py:61 | tp | an exception is raised inside a handler without a cause
+ward:python/redefined-builtin | CTFd/__init__.py:105 | tp | a parameter or variable has the name of a built-in
+ward:python/redefined-builtin | CTFd/admin/pages.py:27 | tp | a parameter or variable has the name of a built-in
+ward:python/redefined-builtin | CTFd/constants/assets.py:37 | tp | a parameter or variable has the name of a built-in
+ward:python/redefined-builtin | CTFd/models/__init__.py:915 | tp | a parameter or variable has the name of a built-in
+ward:python/redefined-builtin | CTFd/share.py:10 | tp | a parameter or variable has the name of a built-in
+ward:python/request-without-timeout | CTFd/utils/email/providers/mailgun.py:26 | tp | the HTTP call has no timeout
+ward:python/self-cls-assignment | CTFd/plugins/challenges/__init__.py:329 | fp | a plain function, not a method; cls is only a local name
+ward:python/self-cls-assignment | CTFd/plugins/flags/__init__.py:76 | fp | a plain function, not a method; cls is only a local name
+ward:python/set-attr-with-constant | CTFd/forms/teams.py:36 | tp | setattr with a constant name
+ward:python/set-attr-with-constant | CTFd/forms/users.py:104 | tp | setattr with a constant name
+ward:python/set-attr-with-constant | CTFd/forms/users.py:138 | tp | setattr with a constant name
+ward:python/simplifiable-if-expression | CTFd/plugins/challenges/__init__.py:42 | tp | True if cond else False
+ward:python/simplify-boolean-return | CTFd/auth.py:328 | tp | an if that returns boolean literals
+ward:python/simplify-boolean-return | CTFd/teams.py:273 | tp | an if that returns boolean literals
+ward:python/simplify-boolean-return | tests/helpers.py:138 | tp | an if that returns boolean literals
+ward:python/sql-string-formatting | CTFd/utils/exports/__init__.py:247 | un | the statement is built with an f-string from a value the code read from the database
+ward:python/string-dot-format-extra-positional-arguments | tests/helpers.py:278 | un | the format call passes keyword arguments for every field
+ward:python/subprocess-without-shell-equals-true | CTFd/utils/exports/__init__.py:522 | tp | a subprocess call; its arguments need a check
+ward:python/super-with-arguments | CTFd/__init__.py:79 | tp | super() written with arguments
+ward:python/super-with-arguments | CTFd/__init__.py:90 | tp | super() written with arguments
+ward:python/super-with-arguments | CTFd/__init__.py:150 | tp | super() written with arguments
+ward:python/super-with-arguments | CTFd/__init__.py:165 | tp | super() written with arguments
+ward:python/super-with-arguments | CTFd/models/__init__.py:75 | tp | super() written with arguments
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:93 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:101 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:105 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:109 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:113 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:121 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:133 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:138 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:143 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:184 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:202 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:242 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:244 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:248 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:269 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:271 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:275 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:277 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:313 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:316 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:321 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:336 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:348 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:349 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:364 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:380 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:381 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:382 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:395 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:410 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:416 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:421 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:435 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:436 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:450 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:465 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:478 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | populate.py:482 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | tests/admin/test_config.py:57 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | tests/admin/test_config.py:58 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | tests/admin/test_config.py:167 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | tests/admin/test_config.py:168 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | tests/helpers.py:326 | fp | random picks sample data for a seed script, not a security value
+ward:python/suspicious-non-cryptographic-random-usage | tests/helpers.py:331 | fp | random picks sample data for a seed script, not a security value
+ward:python/template-injection | CTFd/admin/__init__.py:93 | fp | the template text is read from a file of a plugin whose name is checked against the plugins on disk
+ward:python/todo-comment | CTFd/__init__.py:82 | tp | a TODO comment
+ward:python/todo-comment | CTFd/__init__.py:296 | tp | a TODO comment
+ward:python/todo-comment | CTFd/admin/teams.py:64 | tp | a TODO comment
+ward:python/todo-comment | CTFd/api/v1/challenges.py:148 | tp | a TODO comment
+ward:python/todo-comment | CTFd/api/v1/challenges.py:149 | tp | a TODO comment
+ward:python/too-few-public-methods | CTFd/constants/static.py:10 | un | a small framework or interface class; the count is right
+ward:python/too-few-public-methods | CTFd/forms/__init__.py:19 | un | a small framework or interface class; the count is right
+ward:python/too-few-public-methods | CTFd/utils/email/providers/__init__.py:1 | un | a base class that declares the interface with one method
+ward:python/too-many-branches | CTFd/__init__.py:187 | tp | the function has more branches than the limit
+ward:python/too-many-branches | CTFd/admin/__init__.py:220 | tp | the function has more branches than the limit
+ward:python/too-many-branches | CTFd/api/v1/challenges.py:146 | tp | the function has more branches than the limit
+ward:python/too-many-branches | CTFd/api/v1/challenges.py:335 | tp | the function has more branches than the limit
+ward:python/too-many-branches | CTFd/api/v1/challenges.py:651 | tp | the function has more branches than the limit
+ward:python/too-many-locals | CTFd/__init__.py:187 | tp | the function has more locals than the limit
+ward:python/too-many-locals | CTFd/admin/statistics.py:12 | tp | the function has more locals than the limit
+ward:python/too-many-locals | CTFd/api/v1/challenges.py:146 | tp | the function has more locals than the limit
+ward:python/too-many-locals | CTFd/api/v1/challenges.py:335 | tp | the function has more locals than the limit
+ward:python/too-many-locals | CTFd/api/v1/challenges.py:651 | tp | the function has more locals than the limit
+ward:python/too-many-nested-blocks | CTFd/api/v1/challenges.py:997 | tp | the block is nested deeper than the limit
+ward:python/too-many-nested-blocks | CTFd/utils/exports/__init__.py:326 | tp | the block is nested deeper than the limit
+ward:python/too-many-nested-blocks | CTFd/utils/exports/__init__.py:328 | tp | the block is nested deeper than the limit
+ward:python/too-many-nested-blocks | CTFd/utils/exports/__init__.py:337 | tp | the block is nested deeper than the limit
+ward:python/too-many-nested-blocks | CTFd/utils/exports/__init__.py:342 | tp | the block is nested deeper than the limit
+ward:python/too-many-positional-arguments | CTFd/utils/email/providers/smtp.py:78 | tp | the function takes more positional parameters than the limit
+ward:python/too-many-positional-arguments | tests/helpers.py:125 | tp | the function takes more positional parameters than the limit
+ward:python/too-many-positional-arguments | tests/helpers.py:169 | tp | the function takes more positional parameters than the limit
+ward:python/too-many-positional-arguments | tests/helpers.py:206 | tp | the function takes more positional parameters than the limit
+ward:python/too-many-positional-arguments | tests/helpers.py:261 | tp | the function takes more positional parameters than the limit
+ward:python/too-many-statements | CTFd/__init__.py:187 | tp | the function has more statements than the limit
+ward:python/too-many-statements | CTFd/admin/__init__.py:220 | tp | the function has more statements than the limit
+ward:python/too-many-statements | CTFd/api/v1/challenges.py:335 | tp | the function has more statements than the limit
+ward:python/too-many-statements | CTFd/api/v1/challenges.py:651 | tp | the function has more statements than the limit
+ward:python/too-many-statements | CTFd/api/v1/unlocks.py:108 | tp | the function has more statements than the limit
+ward:python/true-false-comparison | CTFd/admin/statistics.py:20 | fp | the comparison builds a SQL expression, where is False would not
+ward:python/true-false-comparison | CTFd/admin/statistics.py:21 | fp | the comparison builds a SQL expression, where is False would not
+ward:python/true-false-comparison | CTFd/admin/statistics.py:22 | fp | the comparison builds a SQL expression, where is False would not
+ward:python/true-false-comparison | CTFd/admin/statistics.py:26 | fp | the comparison builds a SQL expression, where is False would not
+ward:python/true-false-comparison | CTFd/admin/statistics.py:27 | fp | the comparison builds a SQL expression, where is False would not
+ward:python/try-except-continue | CTFd/api/v1/challenges.py:241 | tp | the handler only continues the loop
+ward:python/try-except-continue | CTFd/utils/exports/__init__.py:311 | tp | the handler only continues the loop
+ward:python/type-comparison | CTFd/utils/helpers/models.py:13 | tp | the type of a value is compared with ==
+ward:python/type-comparison | CTFd/utils/helpers/models.py:21 | tp | the type of a value is compared with ==
+ward:python/type-comparison | tests/utils/test_events.py:15 | tp | the type of a value is compared with ==
+ward:python/type-name | CTFd/models/__init__.py:141 | un | a private class named with a leading underscore and CapWords
+ward:python/type-name | tests/helpers.py:74 | un | a private class named with a leading underscore and CapWords
+ward:python/undefined-loop-variable | tests/users/test_auth.py:657 | un | the name is read after the loop; the list is not known to be non-empty
+ward:python/ungrouped-imports | CTFd/__init__.py:12 | tp | two imports from the same package are apart
+ward:python/unnecessary-dunder-call | tests/utils/test_events.py:40 | tp | a dunder method is called directly
+ward:python/unnecessary-dunder-call | tests/utils/test_events.py:46 | tp | a dunder method is called directly
+ward:python/unnecessary-dunder-call | tests/utils/test_events.py:150 | tp | a dunder method is called directly
+ward:python/unnecessary-dunder-call | tests/utils/test_events.py:155 | tp | a dunder method is called directly
+ward:python/unnecessary-negation | CTFd/api/v1/unlocks.py:161 | tp | not applied to a comparison
+ward:python/unnecessary-pass | CTFd/forms/teams.py:242 | tp | a pass next to other statements
+ward:python/unnecessary-pass | CTFd/forms/teams.py:258 | tp | a pass next to other statements
+ward:python/unnecessary-pass | CTFd/forms/users.py:196 | tp | a pass next to other statements
+ward:python/unspecified-encoding | CTFd/cli/__init__.py:26 | tp | a text file is opened without an encoding
+ward:python/unspecified-encoding | CTFd/utils/__init__.py:33 | tp | a text file is opened without an encoding
+ward:python/unspecified-encoding | CTFd/utils/initialization/__init__.py:164 | tp | a text file is opened without an encoding
+ward:python/unspecified-encoding | CTFd/utils/plugins/__init__.py:64 | tp | a text file is opened without an encoding
+ward:python/unspecified-encoding | CTFd/utils/uploads/uploaders.py:128 | tp | a text file is opened without an encoding
+ward:python/untrusted-redirect | CTFd/auth.py:406 | fp | a validator function of the project (is_safe_url) tests the value in the condition above
+ward:python/untrusted-redirect | CTFd/auth.py:494 | tp | the redirect target comes straight from the query string
+ward:python/unused-argument | CTFd/plugins/__init__.py:25 | tp | the parameter is not read in the function
+ward:python/unused-argument | CTFd/plugins/challenges/logic.py:7 | tp | the parameter is not read in the function
+ward:python/unused-argument | CTFd/utils/uploads/__init__.py:16 | tp | the parameter is not read in the function
+ward:python/unused-argument | migrations/env.py:68 | tp | the parameter is not read in the function
+ward:python/unused-argument | tests/test_plugin_utils.py:238 | tp | the parameter is not read in the function
+ward:python/unused-attribute | CTFd/config.py:92 | fp | optionxform is a hook of the config parser that the library reads
+ward:python/unused-attribute | CTFd/constants/languages.py:71 | un | an attribute set on another object, which a library or a template reads
+ward:python/unused-import | CTFd/__init__.py:233 | un | imported so the models register with the database; the author marks it
+ward:python/unused-import | CTFd/__init__.py:234 | un | imported for its side effect (model registration), marked by the author
+ward:python/unused-import | CTFd/__init__.py:235 | un | imported for its side effect (model registration), marked by the author
+ward:python/unused-import | CTFd/__init__.py:236 | un | imported for its side effect (model registration), marked by the author
+ward:python/unused-import | CTFd/__init__.py:237 | un | imported for its side effect (model registration), marked by the author
+ward:python/unused-loop-control-variable | populate.py:186 | tp | the loop variable is not read in the body
+ward:python/unused-loop-control-variable | populate.py:201 | tp | the loop variable is not read in the body
+ward:python/unused-loop-control-variable | populate.py:214 | tp | the loop variable is not read in the body
+ward:python/unused-loop-control-variable | populate.py:219 | tp | the loop variable is not read in the body
+ward:python/unused-loop-control-variable | populate.py:348 | tp | the loop variable is not read in the body
+ward:python/unused-method | CTFd/constants/assets.py:37 | fp | a template or a library calls the method by name; Ward reads neither
+ward:python/unused-method | CTFd/schemas/config.py:14 | fp | the serialization library calls _deserialize by name
+ward:python/unused-property | CTFd/constants/config.py:39 | fp | a Jinja template reads the property; Ward reads no template
+ward:python/unused-property | CTFd/constants/config.py:45 | fp | a Jinja template reads the property; Ward reads no template
+ward:python/unused-property | CTFd/constants/config.py:52 | fp | a Jinja template reads the property; Ward reads no template
+ward:python/unused-property | CTFd/constants/config.py:58 | fp | a Jinja template reads the property; Ward reads no template
+ward:python/unused-property | CTFd/constants/config.py:62 | fp | a Jinja template reads the property; Ward reads no template
+ward:python/use-implicit-booleaness-not-comparison | CTFd/api/v1/teams.py:367 | tp | a list compared with an empty list
+ward:python/use-implicit-booleaness-not-comparison | CTFd/api/v1/teams.py:368 | tp | a list compared with an empty list
+ward:python/use-implicit-booleaness-not-comparison | CTFd/api/v1/teams.py:369 | tp | a list compared with an empty list
+ward:python/use-implicit-booleaness-not-comparison | CTFd/api/v1/teams.py:370 | tp | a list compared with an empty list
+ward:python/use-implicit-booleaness-not-comparison | CTFd/api/v1/teams.py:371 | tp | a list compared with an empty list
+ward:python/use-implicit-booleaness-not-len | CTFd/admin/statistics.py:69 | tp | len() used as a condition
+ward:python/use-maxsplit-arg | CTFd/utils/exports/__init__.py:165 | tp | only one end of the split result is read
+ward:python/use-maxsplit-arg | tests/users/test_auth.py:669 | tp | only one end of the split result is read
+ward:python/use-sequence-for-iteration | CTFd/__init__.py:348 | tp | a loop over a set literal
+ward:python/useless-else-on-loop | CTFd/models/__init__.py:604 | tp | the loop has no break, so the else always runs
+ward:python/useless-else-on-loop | CTFd/models/__init__.py:862 | tp | the loop has no break, so the else always runs
+ward:python/useless-else-on-loop | migrations/1_2_0_upgrade_2_0_0.py:248 | tp | the loop has no break, so the else always runs
+ward:python/useless-object-inheritance | CTFd/config.py:98 | tp | the class names object as its base
+ward:python/useless-object-inheritance | CTFd/plugins/challenges/__init__.py:55 | tp | the class names object as its base
+ward:python/useless-object-inheritance | CTFd/plugins/flags/__init__.py:14 | tp | the class names object as its base
+ward:python/useless-object-inheritance | CTFd/utils/events/__init__.py:12 | tp | the class names object as its base
+ward:python/useless-object-inheritance | CTFd/utils/events/__init__.py:39 | tp | the class names object as its base
+ward:python/variable-declaration-usage-distance | CTFd/admin/__init__.py:141 | tp | the variable is first read more than the allowed statements after it is set
+ward:python/variable-declaration-usage-distance | CTFd/admin/__init__.py:222 | tp | the variable is first read more than the allowed statements after it is set
+ward:python/variable-declaration-usage-distance | CTFd/admin/__init__.py:223 | tp | the variable is first read more than the allowed statements after it is set
+ward:python/variable-declaration-usage-distance | CTFd/admin/__init__.py:224 | tp | the variable is first read more than the allowed statements after it is set
+ward:python/variable-declaration-usage-distance | CTFd/admin/challenges.py:40 | tp | the variable is first read more than the allowed statements after it is set
+ward:python/wrong-import-order | CTFd/config.py:5 | un | distutils left the standard library in Python 3.12, which the lists follow; the project still supports older Pythons
+ward:python/wrong-import-order | CTFd/utils/updates/__init__.py:4 | tp | an import of an earlier group follows a later one
+ward:python/wrong-import-order | export.py:5 | tp | an import of an earlier group follows a later one
+ward:python/wrong-import-order | export.py:6 | tp | an import of an earlier group follows a later one
+ward:python/wrong-import-order | export.py:7 | tp | an import of an earlier group follows a later one
+ward:python/zip-without-explicit-strict | CTFd/forms/setup.py:79 | tp | zip without strict=
+ward:python/zip-without-explicit-strict | CTFd/plugins/flags/__init__.py:40 | tp | zip without strict=
+ward:python/zip-without-explicit-strict | CTFd/plugins/flags/__init__.py:43 | tp | zip without strict=
+ward:python/zip-without-explicit-strict | CTFd/utils/csv/__init__.py:28 | tp | zip without strict=

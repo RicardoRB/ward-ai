@@ -6,6 +6,8 @@ import dagger.Provides;
 import dev.ward.application.init.InitProjectFiles;
 import dev.ward.domain.init.ArchitectureTables;
 import dev.ward.domain.init.BuildToolConfiguration;
+import dev.ward.application.init.PromptHookConfiguration;
+import dev.ward.application.init.PromptTableEnabler;
 import dev.ward.domain.init.ConfigurationStorage;
 import dev.ward.domain.init.OwnedSectionGeneration;
 import dev.ward.domain.init.QualityHookGeneration;
@@ -52,6 +54,9 @@ interface InitBindingsModule {
 
   @Binds
   QualityHookGeneration qualityHookGeneration(QualityHookInstaller implementation);
+
+  @Binds
+  PromptTableEnabler promptTableEnabler(PromptHookConfiguration implementation);
 
   @Binds
   OwnedSectionGeneration ownedSectionGeneration(OwnedSectionWriter implementation);

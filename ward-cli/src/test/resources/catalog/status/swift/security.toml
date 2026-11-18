@@ -2,6 +2,7 @@
 
 cleartext-url = "implemented"
 hard-coded-credential = "implemented"
+path-injection = "implemented"
 userdefaults-secret = "implemented"
 weak-cipher = "implemented"
 weak-hash = "implemented"

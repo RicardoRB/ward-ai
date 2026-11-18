@@ -184,7 +184,8 @@ public class InitService {
             gates,
             selection.preset(),
             project,
-            WardArchitecture.of(selection, project, files.architectureTables())
+            WardArchitecture.of(selection, project, files.architectureTables()),
+            selection.promptHook()
         );
     final boolean created;
     if (overwrite) {

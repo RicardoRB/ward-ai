@@ -51,27 +51,24 @@ export interface Expectation {
  * and revision can report a pass. Missing prerequisites and unimplemented drivers are blocked;
  * unsupported needs provenance.
  */
-export function record(observation: ScenarioObservation, expected: Expectation = {}): ScenarioRecord {
-  const assertions = observation.assertions.map((assertion) => ({
-    name: redact(assertion.name),
-    passed: assertion.passed,
-    ...(assertion.detail === undefined ? {} : { detail: redact(assertion.detail) }),
-  }));
+export function record(
+  observation: ScenarioObservation,
+  expected: Expectation = {}
+): ScenarioRecord {
+  const assertions = observation.assertions.map(
+    (assertion) => ({
+      name: redact(assertion.name),
+      passed: assertion.passed,
+      ...(assertion.detail === undefined ? {} : { detail: redact(assertion.detail) }),
+    })
+  );
   const failed = assertions.filter((assertion) => !assertion.passed);
   const [outcome, reason] = decide(observation, expected, assertions.length, failed);
-  return {
-    schemaVersion: EVIDENCE_SCHEMA_VERSION,
-    harness: observation.harness,
-    scenario: observation.scenario,
-    level: observation.level,
-    outcome,
-    reason: redact(reason),
-    executedAssertions: assertions.length,
-    assertions,
-    durationMs: observation.durationMs,
-    ...(observation.runtimeVersion ? { runtimeVersion: observation.runtimeVersion } : {}),
-    ...(observation.sourceRevision ? { sourceRevision: observation.sourceRevision } : {}),
-  };
+  return { schemaVersion: EVIDENCE_SCHEMA_VERSION, harness: observation.harness, scenario: observation.scenario, level: observation.level, outcome, reason: redact(
+    reason
+  ), executedAssertions: assertions.length, assertions, durationMs: observation.durationMs, ...(observation.runtimeVersion ? {
+    runtimeVersion: observation.runtimeVersion
+  } : {}), ...(observation.sourceRevision ? { sourceRevision: observation.sourceRevision } : {}), };
 }
 
 function decide(
@@ -79,27 +76,37 @@ function decide(
   expected: Expectation,
   executed: number,
   failed: Assertion[],
-): [Outcome, string] {
-  if (observation.driverImplemented === false) return ["blocked", "verification driver is not implemented"];
-  if (observation.prerequisite) return ["blocked", `missing prerequisite: ${observation.prerequisite}`];
-  if (observation.claimed === "unsupported") {
-    return observation.unsupportedProvenance
-      ? ["unsupported", `capability absent: ${observation.unsupportedProvenance}`]
-      : ["blocked", "unsupported outcome lacks capability provenance"];
+): [Outcome, string] { if (observation.driverImplemented === false) return [
+  "blocked",
+  "verification driver is not implemented"
+]; if (observation.prerequisite) return [
+  "blocked",
+  `missing prerequisite: ${observation.prerequisite}`
+]; if (observation.claimed === "unsupported") {
+  return observation.unsupportedProvenance
+  ? ["unsupported", `capability absent: ${observation.unsupportedProvenance}`]
+  : ["blocked", "unsupported outcome lacks capability provenance"];
+} if (failed.length) return [
+  "fail",
+  `failed assertions: ${failed.map((a) => a.name).join(", ")}`
+]; if (observation.claimed !== "pass") return [
+  observation.claimed,
+  `driver reported ${observation.claimed}`
+]; if (executed === 0) return ["fail", "no assertions were executed"]; if (
+  expected.runtimeVersion && observation.level !== "deterministic"
+) {
+  if (observation.runtimeVersion !== expected.runtimeVersion) {
+    return [
+      "blocked",
+      `stale evidence: runtime ${observation.runtimeVersion ?? "unknown"} is not ${expected.runtimeVersion}`
+    ];
   }
-  if (failed.length) return ["fail", `failed assertions: ${failed.map((a) => a.name).join(", ")}`];
-  if (observation.claimed !== "pass") return [observation.claimed, `driver reported ${observation.claimed}`];
-  if (executed === 0) return ["fail", "no assertions were executed"];
-  if (expected.runtimeVersion && observation.level !== "deterministic") {
-    if (observation.runtimeVersion !== expected.runtimeVersion) {
-      return ["blocked", `stale evidence: runtime ${observation.runtimeVersion ?? "unknown"} is not ${expected.runtimeVersion}`];
-    }
-  }
-  if (expected.sourceRevision && observation.sourceRevision !== expected.sourceRevision) {
-    return ["blocked", `stale evidence: revision ${observation.sourceRevision ?? "unknown"} is not ${expected.sourceRevision}`];
-  }
-  return ["pass", `${executed} assertions passed`];
-}
+} if (expected.sourceRevision && observation.sourceRevision !== expected.sourceRevision) {
+  return [
+    "blocked",
+    `stale evidence: revision ${observation.sourceRevision ?? "unknown"} is not ${expected.sourceRevision}`
+  ];
+} return ["pass", `${executed} assertions passed`]; }
 
 export interface HarnessSummary {
   harness: string;
@@ -114,7 +121,6 @@ export interface MatrixReport {
   exitCode: number;
   harnesses: HarnessSummary[];
 }
-
 
 /**
  * Aggregates a requested matrix. A requested harness without records is blocked, records at a
@@ -132,11 +138,19 @@ export function aggregate(
     const has = (outcome: Outcome) => scenarios.some((r) => r.outcome === outcome);
     // Evidenced-unsupported scenarios do not fail a harness, but a harness with no executed pass
     // has no compatibility evidence at all.
-    const outcome: Outcome = has("fail") ? "fail" : has("blocked") ? "blocked" : has("pass") ? "pass" : "unsupported";
+    const outcome: Outcome = has("fail") ? "fail" : has("blocked") ? "blocked" : has(
+      "pass"
+    ) ? "pass" : "unsupported";
     return { harness, outcome, scenarios };
   });
   const success = harnesses.length > 0 && harnesses.every((h) => h.outcome === "pass");
-  return { schemaVersion: EVIDENCE_SCHEMA_VERSION, level, success, exitCode: success ? 0 : 1, harnesses };
+  return {
+    schemaVersion: EVIDENCE_SCHEMA_VERSION,
+    level,
+    success,
+    exitCode: success ? 0 : 1,
+    harnesses
+  };
 }
 
 const SECRET_PATTERNS: RegExp[] = [
@@ -151,8 +165,11 @@ const SECRET_PATTERNS: RegExp[] = [
 export function redact(text: string): string {
   let safe = text;
   for (const pattern of SECRET_PATTERNS) {
-    safe = safe.replace(pattern, (match, group: string) =>
-      match.includes("=") ? `${group}=[redacted]` : match.startsWith("Bearer") ? `${group}[redacted]` : "[redacted]",
+    safe = safe.replace(
+      pattern,
+      (match, group: string) => match.includes("=") ? `${group}=[redacted]` : match.startsWith(
+        "Bearer"
+      ) ? `${group}[redacted]` : "[redacted]",
     );
   }
   return safe.length > MAX_TEXT ? `${safe.slice(0, MAX_TEXT)}…[truncated]` : safe;

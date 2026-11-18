@@ -37,6 +37,7 @@ final class JavaBodyLowering implements JavaStatements {
 
   private final JavaAccesses accesses = new JavaAccesses();
   private final JavaFlowSites sites;
+  private final JavaFieldSites fieldSites;
   private final ControlFlowBuilder flow;
   private final JavaBranches branches;
   private final JavaLoops loops;
@@ -51,7 +52,8 @@ final class JavaBodyLowering implements JavaStatements {
    * @param fields the fields of the classes around the body
    */
   JavaBodyLowering(final JavaTypeNames types, final List<JavaClassFields.Field> fields) {
-    this.sites = new JavaFlowSites(types, accesses::isSkipped, fields);
+    this.fieldSites = new JavaFieldSites(fields);
+    this.sites = new JavaFlowSites(types, accesses::isSkipped, fields, fieldSites);
     this.flow = new ControlFlowBuilder(accesses, sites);
     this.branches = new JavaBranches(flow, accesses);
     this.loops = new JavaLoops(flow, branches, this);
@@ -76,6 +78,7 @@ final class JavaBodyLowering implements JavaStatements {
       final SyntaxNode node,
       final Span span
   ) {
+    fieldSites.shadowedBy(parameters, node);
     flow.record(
         accesses.parameters(parameters),
         parameters == null ? List.of() : sites.of(parameters)

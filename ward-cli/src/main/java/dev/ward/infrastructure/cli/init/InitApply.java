@@ -33,6 +33,17 @@ final class InitApply {
     this.printer = new InitResultPrinter(out);
   }
 
+  /** Installs the quality hooks alone, in the directory Git runs or in the shared {@code folder}. */
+  void hooks(
+      final List<Project> projects,
+      final String folder,
+      final boolean dryRun,
+      final boolean terminal,
+      final boolean yes
+  ) {
+    InitHooks.create(init.catalog(), confirmations, dryRun, terminal, yes).run(projects, folder);
+  }
+
   int run(final Project project, final InitSelection selection, final Mode mode) {
     final InitPlan plan = init.plan(project.root(), selection, mode.approved());
     if (mode.dryRun()) {

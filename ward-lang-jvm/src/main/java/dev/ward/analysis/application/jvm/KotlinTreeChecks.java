@@ -6,6 +6,7 @@ import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.KotlinLoopJumpCheck;
 import dev.ward.analysis.domain.rule.check.KotlinMayBeConstCheck;
+import dev.ward.analysis.domain.rule.check.KotlinSpreadOperatorCheck;
 import dev.ward.analysis.domain.rule.check.KotlinUnnecessaryApplyCheck;
 import dev.ward.analysis.domain.rule.check.KotlinUtilityClassCheck;
 import java.util.Map;
@@ -28,6 +29,10 @@ final class KotlinTreeChecks {
         entry(
             "kotlin-unnecessary-apply",
             toml -> new KotlinUnnecessaryApplyCheck(TomlValues.required(toml, MESSAGE))
+        ),
+        entry(
+            "kotlin-spread-operator",
+            toml -> new KotlinSpreadOperatorCheck(TomlValues.required(toml, MESSAGE))
         ),
         entry(
             "kotlin-utility-class",

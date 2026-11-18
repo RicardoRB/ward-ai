@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiFunction;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /** A rule that needs types is never passed without a native type resolver for its language. */
@@ -44,13 +45,18 @@ class TypeRuleGateTest {
       );
 
   @Test
+  @DisplayName("no JDK at all")
   void typeRuleWithoutNativeResolverIsNotRunAndTheGateIsUnavailable() {
+    // Given a Java project and no JDK anywhere Ward looks (no JVM type facts are registered)
+    // When I run the gate
     final GateResult result = gate((root, classpath) -> Map.of()).execute(PROJECT);
 
+    // Then the rule that needs JDK type facts is not run, with the reason, and reports nothing
     assertThat(result.status()).isEqualTo(GateStatus.UNAVAILABLE);
     assertThat(result.stderr())
         .contains("ward:java/data-flow not run")
-        .contains("no native type resolver is registered for JAVA yet");
+        .contains("no JDK was found");
+    assertThat(result.findings().items()).isEmpty();
   }
 
   @Test

@@ -44,6 +44,14 @@ bun test test/
 (`opencode-v2`, `amp`, `claude-code`, `codex`, `copilot`, `gemini`, `factory-droid`, `cursor`, `windsurf`, `cline`) against one Ward build. The release workflow runs it
 against each Linux and macOS native executable before publishing, so a broken integration stops the release.
 
+## Prompt hook
+
+`test/prompt-hook.test.ts` (run by `bun test test/`) generates each supported agent's integration with
+`ward integrate <agent> --prompt-hook` (`claude-code`, `codex`, `factory-droid`, `gemini`, `cursor`), runs the
+registered prompt command the way the agent documents, and checks that a fake secret from the
+`rules/secrets` fixtures is rejected in the agent's format and a clean prompt passes silently. Deterministic
+evidence only: no live driver runs a prompt turn yet.
+
 ## Runtime preflight
 
 Preflight locates each pinned runtime and checks its exact version. It never searches `PATH`, so

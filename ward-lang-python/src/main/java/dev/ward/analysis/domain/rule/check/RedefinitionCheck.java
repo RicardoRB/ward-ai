@@ -18,7 +18,9 @@ import java.util.Set;
 
 /**
  * Reports each function, class or import that rebinds a name of an earlier function, class or
- * import in the same scope before anything read the earlier one, like pyflakes {@code F811}.
+ * import in the same scope before anything read the earlier one, like pyflakes {@code F811}. A
+ * submodule import of a package that is already imported, and a definition in a branch that cannot
+ * run together with the earlier one, are not redefinitions.
  */
 public final class RedefinitionCheck implements RuleCheck {
   private static final String NAME = "{value}";
@@ -58,7 +60,7 @@ public final class RedefinitionCheck implements RuleCheck {
     final List<RuleMatch> found = new ArrayList<>();
     for (final Scope scope : scopes.scopes()) {
       if (!scope.open()) {
-        addRedefinitions(scope.bindings(), scopes, found);
+        addRedefinitions(scope.bindings(), scopes, root, found);
       }
     }
     found.sort(Comparator.comparingInt((RuleMatch match) -> match.span().startOffset()));
@@ -68,17 +70,29 @@ public final class RedefinitionCheck implements RuleCheck {
   private void addRedefinitions(
       final List<Binding> bindings,
       final UnitScopes scopes,
+      final SyntaxNode root,
       final List<RuleMatch> found
   ) {
     for (int index = 0; index < bindings.size(); index++) {
       final Binding current = bindings.get(index);
       if (DEFINITIONS.contains(current.kind())) {
         final Optional<Binding> previous = previousDefinition(bindings.subList(0, index), current);
-        if (previous.isPresent() && unusedBetween(previous.get(), current, scopes)) {
+        if (previous.isPresent()
+            && !submodule(previous.get(), current)
+            && !ExclusiveBranches.of(root, previous.get().declaration(), current.declaration())
+            && unusedBetween(previous.get(), current, scopes)) {
           found.add(new RuleMatch(current.declaration(), message.replace(NAME, current.name())));
         }
       }
     }
+  }
+
+  /** {@code import a.b} after {@code import a} binds the same package name and adds a module. */
+  private static boolean submodule(final Binding previous, final Binding current) {
+    return previous.kind() == BindingKind.IMPORT
+        && current.kind() == BindingKind.IMPORT
+        && current.origin().isPresent()
+        && current.origin().get().specifier().startsWith(current.name() + ".");
   }
 
   private static Optional<Binding> previousDefinition(

@@ -24,6 +24,7 @@ final class NodeScopeWalk {
           "generatorFunctionDeclaration",
           "anonymousFunction",
           "arrowFunctionDeclaration",
+          "generatorMethod",
           "methodDefinition",
           "constructorDeclaration",
           "getAccessor",
@@ -56,6 +57,8 @@ final class NodeScopeWalk {
   final NodeScopeExpressions expressions;
   boolean exporting;
   boolean expressionFunction;
+  /** Whether the parameters being walked belong to a signature without a body. */
+  boolean signature;
   private final List<Span> imports;
   private final Map<String, Consumer<SyntaxNode>> handlers = new HashMap<>();
   private final NodeScopeStatements statements;

@@ -59,6 +59,7 @@ class AnalysisCacheIgnoreTest {
             null,
             false,
             null,
+            false,
             false
         );
     return OwnedSections.of(catalog, JAVA, selection, gates, List.of()).stream()

@@ -13,6 +13,7 @@ import dev.ward.analysis.domain.rule.UnitViews;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
@@ -28,6 +29,7 @@ final class UnitRuns {
   private final Map<AnalysisLanguage, FrontendSupport> support;
   private final List<PreparedRule> prepared;
   private final Map<AnalysisLanguage, List<FactNeed>> needs;
+  private final Set<String> nodeKinds;
   private final DependencySnapshot snapshot;
   private final RelatedFlows related;
 
@@ -48,12 +50,13 @@ final class UnitRuns {
             );
     this.prepared = List.copyOf(prepared);
     this.needs = Map.copyOf(PreparedRule.needs(prepared));
+    this.nodeKinds = PreparedRule.nodeKinds(prepared);
     this.snapshot = snapshot;
     this.related = new RelatedFlows(support, snapshot);
   }
 
   /** The trees and the collector that one call works on. */
-  private record Work(UnitTrees trees, RuleRunCollector collector) {}
+  private record Work(UnitTrees trees, SharedNodes nodes, RuleRunCollector collector) {}
 
   /** Runs each rule on every unit, in rule order, over one set of trees and one collector. */
   RuleRunCollector ruleByRule(final List<SourceUnit> units) {
@@ -80,7 +83,11 @@ final class UnitRuns {
   }
 
   private Work work() {
-    return new Work(new UnitTrees(support, needs), new RuleRunCollector());
+    return new Work(
+        new UnitTrees(support, needs),
+        new SharedNodes(nodeKinds),
+        new RuleRunCollector()
+    );
   }
 
   private void run(final CompiledRule rule, final SourceUnit unit, final Work work) {
@@ -96,7 +103,8 @@ final class UnitRuns {
           new UnitViews(
               related.with(rule, unit, trees.flows(rule, unit, root.get(), collector)),
               trees.scopes(rule, unit, root.get(), dependencies, collector),
-              trees.types(rule, unit, root.get(), collector)
+              trees.types(rule, unit, root.get(), collector),
+              work.nodes().of(rule, unit, root.get())
           );
       rule.matches(root.get(), dependencies, views, unit)
           .forEach(match -> collector.finding(RuleFindings.of(rule.definition(), unit, match)));

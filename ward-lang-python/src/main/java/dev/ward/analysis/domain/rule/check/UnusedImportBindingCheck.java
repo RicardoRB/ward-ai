@@ -78,7 +78,7 @@ public final class UnusedImportBindingCheck implements RuleCheck {
     final List<RuleMatch> found = new ArrayList<>();
     for (final Scope scope : scopes.scopes()) {
       for (final Binding binding : scope.bindings()) {
-        if (unused(binding, scopes, reexported)) {
+        if (unused(binding, scopes, reexported) && !submoduleFollows(binding, scope)) {
           found.add(new RuleMatch(binding.declaration(), message.replace(NAME, binding.name())));
         }
       }
@@ -96,6 +96,23 @@ public final class UnusedImportBindingCheck implements RuleCheck {
         && !isFuture(binding)
         && !reexported.contains(binding.name())
         && scopes.usesOf(binding).stream().noneMatch(use -> use.access() != ReferenceAccess.WRITE);
+  }
+
+  /**
+   * A later {@code import a.b} binds the name {@code a} again, and the code reads {@code a} through
+   * that binding: the earlier {@code import a} is the package that the later import extends.
+   */
+  private static boolean submoduleFollows(final Binding binding, final Scope scope) {
+    return scope.bindings().stream()
+        .filter(other -> other.kind() == BindingKind.IMPORT && other != binding)
+        .filter(other -> other.declaration().startOffset() > binding.declaration().startOffset())
+        .anyMatch(
+            other -> other.name().equals(binding.name())
+                && other.origin()
+                    .map(ImportOrigin::specifier)
+                    .filter(specifier -> specifier.startsWith(binding.name() + "."))
+                    .isPresent()
+        );
   }
 
   private static boolean isFuture(final Binding binding) {

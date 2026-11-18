@@ -12,13 +12,17 @@ import java.util.Set;
 /**
  * Reports each function of a class body that has the name of an earlier function, when another
  * function was declared between them, so that overloads are declared together, as Checkstyle's
- * OverloadMethodsDeclarationOrder requires.
+ * OverloadMethodsDeclarationOrder requires. An extension function counts as an overload only of
+ * an extension function with the same receiver type.
  */
 public final class KotlinOverloadOrderCheck implements UnitCheck {
   private static final String CLASS_BODY = "classBody";
   private static final String MEMBER = "classMemberDeclaration";
   private static final String FUNCTION = "functionDeclaration";
   private static final String NAME = "identifier";
+  private static final String RECEIVER = "receiverType";
+  private static final String TYPE = "type";
+  private static final String DOT = ".";
 
   private final String message;
 
@@ -61,7 +65,21 @@ public final class KotlinOverloadOrderCheck implements UnitCheck {
     return member.children().stream().filter(child -> FUNCTION.equals(child.kind())).findFirst();
   }
 
+  /** The name with the receiver type, so that an extension is not an overload of a member. */
   private static String nameOf(final SyntaxNode function) {
+    final List<SyntaxNode> parts = function.children();
+    String receiver = "";
+    for (int index = 0; index + 1 < parts.size(); index++) {
+      final SyntaxNode part = parts.get(index);
+      if (RECEIVER.equals(part.kind())
+          || TYPE.equals(part.kind()) && DOT.equals(SyntaxWalk.text(parts.get(index + 1)))) {
+        receiver = SyntaxWalk.text(part);
+      }
+    }
+    return receiver + DOT + plainNameOf(function);
+  }
+
+  private static String plainNameOf(final SyntaxNode function) {
     return KotlinDocs.childrenOf(function, NAME).stream()
         .findFirst()
         .flatMap(KotlinDocs::firstName)

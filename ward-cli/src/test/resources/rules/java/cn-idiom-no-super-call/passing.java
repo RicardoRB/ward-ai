@@ -3,3 +3,8 @@ class Sample {
     return super.clone();
   }
 }
+
+class Named {
+  void test_clone() {
+  }
+}

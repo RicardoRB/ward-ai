@@ -44,3 +44,15 @@ class PassingNames {
   void go() {
   }
 }
+class PassingComment {
+  void run(boolean a, boolean b) {
+    if (a) {
+      go();
+    } else // the other case
+    if (b) {
+      go();
+    }
+  }
+  void go() {
+  }
+}

@@ -19,14 +19,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.UnaryOperator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * The type facts of a project's Java and Kotlin units, read natively from its sources, the jars of
- * its {@code java-classpath} and the JDK's {@code lib/modules}. It starts no process and needs no
- * JDK on the machine: without one, JDK types are unknown.
+ * its {@code java-classpath} and the JDK's {@code lib/modules}. It starts no process and needs a
+ * JDK image to read the JDK types: callers register no facts when they have none.
  */
 public final class NativeJvmTypes {
   private static final Logger LOGGER = Logger.getLogger(NativeJvmTypes.class.getName());
@@ -34,6 +33,7 @@ public final class NativeJvmTypes {
 
   private final Path projectRoot;
   private final LanguageFrontend frontend;
+  private final Optional<Path> jdkHome;
   private final ReentrantLock lock = new ReentrantLock();
   private final AtomicReference<Running> running = new AtomicReference<>();
 
@@ -42,16 +42,29 @@ public final class NativeJvmTypes {
 
   /** Creates the facts of the project at {@code projectRoot}, with a parser of its own. */
   public NativeJvmTypes(final Path projectRoot) {
-    this(projectRoot, new AntlrLanguageFrontend());
+    this(
+        projectRoot,
+        new AntlrLanguageFrontend(),
+        JvmClassLibraries.jdkHome(
+            Optional.ofNullable(System.getenv("JAVA_HOME")),
+            Optional.ofNullable(System.getProperty("java.home"))
+        )
+    );
   }
 
   /**
    * Creates the facts of the project at {@code projectRoot}, reading sources with {@code frontend},
-   * which the other passes of the run share so that a unit is parsed once.
+   * which the other passes of the run share so that a unit is parsed once, and the JDK at {@code
+   * jdkHome} (found by {@link JdkLocator}).
    */
-  public NativeJvmTypes(final Path projectRoot, final LanguageFrontend frontend) {
+  public NativeJvmTypes(
+      final Path projectRoot,
+      final LanguageFrontend frontend,
+      final Optional<Path> jdkHome
+  ) {
     this.projectRoot = projectRoot.toAbsolutePath().normalize();
     this.frontend = frontend;
+    this.jdkHome = jdkHome;
   }
 
   /**
@@ -81,15 +94,11 @@ public final class NativeJvmTypes {
         LOGGER.log(Level.WARNING, "event=native-types-classpath-unreadable");
       }
     }
-    final UnaryOperator<String> environment = System::getenv;
     final JvmClassLibraries libraries =
         JvmClassLibraries.open(
             projectRoot,
             entries,
-            JvmClassLibraries.jdkHome(
-                Optional.ofNullable(environment.apply("JAVA_HOME")),
-                Optional.ofNullable(System.getProperty("java.home"))
-            ),
+            jdkHome,
             Optional.of(projectRoot.resolve(CACHE_DIRECTORY))
         );
     final JvmClasses classes =

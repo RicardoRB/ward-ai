@@ -19,11 +19,24 @@ import { cleanupOwnedProcesses, run, SYSTEM_PATH } from "../src/process";
 // Tools: Create and Edit take file_path, ApplyPatch takes input (the patch), Execute takes command.
 // The real Ward answers behind a recording wrapper.
 
-const EVENTS = ["PreToolUse", "PostToolUse", "Notification", "UserPromptSubmit", "Stop", "SubagentStop", "PreCompact", "SessionStart", "SessionEnd"];
+const EVENTS = [
+  "PreToolUse",
+  "PostToolUse",
+  "Notification",
+  "UserPromptSubmit",
+  "Stop",
+  "SubagentStop",
+  "PreCompact",
+  "SessionStart",
+  "SessionEnd"
+];
 const HOOK_FIELDS = ["type", "command", "timeout", "preserveRiskLevel"];
 
 /** Applies Droid's hooks.json schema; returns why the file would load no hooks, or which events it has. */
-function droidLoads(json: string): { errors: string[]; events: string[] } {
+function droidLoads(json: string): {
+  errors: string[];
+  events: string[]
+} {
   let config: any;
   try {
     config = JSON.parse(json);
@@ -40,9 +53,15 @@ function droidLoads(json: string): { errors: string[]; events: string[] } {
     config[event].forEach((group: any, index: number) => {
       if (!Array.isArray(group?.hooks)) return errors.push(`${event}[${index}] has no hooks list`);
       for (const hook of group.hooks) {
-        if (hook.type !== "command" || typeof hook.command !== "string") errors.push(`${event}[${index}] hook is not a command`);
-        if (hook.timeout !== undefined && typeof hook.timeout !== "number") errors.push(`${event}[${index}] timeout is not a number`);
-        for (const key of Object.keys(hook)) if (!HOOK_FIELDS.includes(key)) errors.push(`${event}[${index}] hook has ${key}`);
+        if (hook.type !== "command" || typeof hook.command !== "string") errors.push(
+          `${event}[${index}] hook is not a command`
+        );
+        if (hook.timeout !== undefined && typeof hook.timeout !== "number") errors.push(
+          `${event}[${index}] timeout is not a number`
+        );
+        for (const key of Object.keys(hook)) if (!HOOK_FIELDS.includes(key)) errors.push(
+          `${event}[${index}] hook has ${key}`
+        );
       }
     });
   }
@@ -61,7 +80,10 @@ beforeAll(async () => {
   bin = join(dirname(fixture.root), "ward-bin");
   log = join(dirname(fixture.root), "ward-log");
   writeRecordingWrapper(bin, log, ward);
-  await run(["/usr/bin/git", "init", "-q"], { cwd: fixture.root, env: fixture.env, timeoutMs: 30_000 });
+  await run(
+    ["/usr/bin/git", "init", "-q"],
+    { cwd: fixture.root, env: fixture.env, timeoutMs: 30_000 }
+  );
   mkdirSync(join(fixture.root, "src/main/java"), { recursive: true });
 });
 
@@ -71,24 +93,45 @@ afterAll(() => {
 });
 
 const hooks = (event: string, tool?: string, cfg = config) =>
-  ((cfg[event] ?? []) as any[])
-    .filter((group) => tool === undefined || !group.matcher || group.matcher === "*" || new RegExp(group.matcher).test(tool))
-    .flatMap((group) => group.hooks);
+((cfg[event] ?? []) as any[])
+.filter(
+  (group) => tool === undefined || !group.matcher || group.matcher === "*" || new RegExp(
+    group.matcher
+  ).test(tool)
+)
+.flatMap((group) => group.hooks);
 
 /** Runs a hook like Droid: through the shell, in its working directory, with the event on stdin. */
 async function launch(f: Fixture, hook: any, payload: unknown, cwd = f.root) {
   const before = recordedInvocations(log).length;
-  const env = { ...f.env, FACTORY_PROJECT_DIR: cwd, DROID_PROJECT_DIR: cwd, CLAUDE_PROJECT_DIR: cwd, PATH: `${bin}:${SYSTEM_PATH}` };
+  const env = {
+    ...f.env,
+    FACTORY_PROJECT_DIR: cwd,
+    DROID_PROJECT_DIR: cwd,
+    CLAUDE_PROJECT_DIR: cwd,
+    PATH: `${bin}:${SYSTEM_PATH}`
+  };
   const stdin =
-    typeof payload === "string"
-      ? payload
-      : JSON.stringify({ session_id: "s", transcript_path: "t", cwd, permission_mode: "auto-low", ...(payload as object) });
+  typeof payload === "string"
+  ? payload
+  : JSON.stringify({
+    session_id: "s",
+    transcript_path: "t",
+    cwd,
+    permission_mode: "auto-low",
+    ...(payload as object)
+  });
   const result = await run(["/bin/sh", "-c", hook.command], { cwd, env, stdin, timeoutMs: 60_000 });
   return { result, invocations: recordedInvocations(log).slice(before) };
 }
 
 const tool = (event: string, name: string, input: Record<string, unknown>, cwd?: string) =>
-  launch(fixture, hooks(event, name)[0], { hook_event_name: event, tool_name: name, tool_input: input }, cwd);
+launch(
+  fixture,
+  hooks(event, name)[0],
+  { hook_event_name: event, tool_name: name, tool_input: input },
+  cwd
+);
 const decision = (stdout: string) => JSON.parse(stdout).hookSpecificOutput;
 
 describe("generated hooks against Factory Droid 0.243.0", () => {
@@ -101,12 +144,16 @@ describe("generated hooks against Factory Droid 0.243.0", () => {
   });
 
   test("negative control: the legacy plugin file loads no hooks, even at a discovered path", () => {
-    expect(droidLoads(readFileSync(join(import.meta.dir, "legacy-plugin.json.txt"), "utf8"))).toEqual({ errors: [], events: [] });
+    expect(
+      droidLoads(readFileSync(join(import.meta.dir, "legacy-plugin.json.txt"), "utf8"))
+    ).toEqual({ errors: [], events: [] });
   });
 
   test("checks run after edits and at Stop, and nothing runs before a tool", () => {
     expect(config.PreToolUse).toBeUndefined();
-    for (const name of ["Create", "Edit", "ApplyPatch"]) expect(hooks("PostToolUse", name).length).toBe(1);
+    for (const name of ["Create", "Edit", "ApplyPatch"]) expect(
+      hooks("PostToolUse", name).length
+    ).toBe(1);
     expect(hooks("PostToolUse", "Execute").length).toBe(0);
     expect(hooks("Stop").length).toBe(1);
   });
@@ -118,21 +165,29 @@ describe("generated hooks against Factory Droid 0.243.0", () => {
 
   test("the ownership marker is a shell comment in each command", () => {
     for (const event of ["PostToolUse", "Stop"]) {
-      for (const h of hooks(event)) expect(h.command).toEndWith("# ward-owned: factory-droid-native-hooks v1");
+      for (const h of hooks(event)) expect(h.command).toEndWith(
+        "# ward-owned: factory-droid-native-hooks v1"
+      );
     }
   });
 });
 
 describe("hook execution", () => {
-
-
-
-
   test("a failing check after an edit exits 2 with the findings on stderr", async () => {
     writeFileSync(join(fixture.root, "FAIL"), "");
     try {
-      const { result, invocations } = await tool("PostToolUse", "Create", { file_path: "src/main/java/A.java", content: "" });
-      expect(invocations.map((i) => i.argv)).toEqual([["hook", "native", "--agent", "factory-droid", "--event-stdin"]]);
+      const { result, invocations } = await tool(
+        "PostToolUse",
+        "Create",
+        { file_path: "src/main/java/A.java", content: "" }
+      );
+      expect(invocations.map((i) => i.argv)).toEqual([[
+        "hook",
+        "native",
+        "--agent",
+        "factory-droid",
+        "--event-stdin"
+      ]]);
       expect(result.exitCode).toBe(2);
       expect(result.stderr).toContain("Ward quality findings");
     } finally {
@@ -149,7 +204,16 @@ describe("hook execution", () => {
     writeFileSync(join(fixture.root, "FAIL"), "");
     try {
       const stop = (active: boolean) =>
-        launch(fixture, hooks("Stop")[0], { hook_event_name: "Stop", stop_hook_active: active, tool_execution_count: 0, elapsed_time: 1 });
+      launch(
+        fixture,
+        hooks("Stop")[0],
+        {
+          hook_event_name: "Stop",
+          stop_hook_active: active,
+          tool_execution_count: 0,
+          elapsed_time: 1
+        }
+      );
       const first = await stop(false);
       expect(first.result.exitCode).toBe(0);
       expect(JSON.parse(first.result.stdout)).toMatchObject({ decision: "block" });
@@ -161,5 +225,4 @@ describe("hook execution", () => {
       rmSync(join(fixture.root, "FAIL"), { force: true });
     }
   });
-
 });

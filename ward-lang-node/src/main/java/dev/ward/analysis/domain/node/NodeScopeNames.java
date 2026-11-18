@@ -107,6 +107,9 @@ final class NodeScopeNames {
     if (PROPERTY_ASSIGNMENT.equals(inner.kind()) && hasToken(inner, COLON)) {
       expression.accept(parts.get(0));
       declare(parts.get(parts.size() - 1), scope, kind, flags, true);
+    } else if (isPropertyDefault(inner)) {
+      declare(parts.get(0), scope, kind, flags, true);
+      expression.accept(parts.get(2));
     } else {
       for (final SyntaxNode part : parts) {
         declare(part, scope, kind, flags, destructured || isContainer(inner));
@@ -118,6 +121,14 @@ final class NodeScopeNames {
     return "arrayLiteral".equals(node.kind())
         || "objectLiteral".equals(node.kind())
         || "elementList".equals(node.kind());
+  }
+
+  /** A shorthand property with a default, {@code { id = value }}: the value is an expression. */
+  private static boolean isPropertyDefault(final SyntaxNode node) {
+    final List<SyntaxNode> parts = NodeFlowSyntax.parts(node);
+    return PROPERTY_ASSIGNMENT.equals(node.kind())
+        && parts.size() == TRIPLE
+        && EQUALS.equals(NodeFlowSyntax.text(parts.get(1)));
   }
 
   private static boolean isAssignmentWithDefault(final SyntaxNode node) {
@@ -171,6 +182,10 @@ final class NodeScopeNames {
       target(parts.get(parts.size() - 1), compound);
     } else if (isShorthand(inner)) {
       target(NodeFlowSyntax.parts(inner).get(0), compound);
+    } else if (isPropertyDefault(inner)) {
+      final List<SyntaxNode> parts = NodeFlowSyntax.parts(inner);
+      target(parts.get(0), compound);
+      expression.accept(parts.get(2));
     } else if (isAssignmentWithDefault(inner)) {
       final List<SyntaxNode> parts = NodeFlowSyntax.parts(inner);
       target(parts.get(0), compound);

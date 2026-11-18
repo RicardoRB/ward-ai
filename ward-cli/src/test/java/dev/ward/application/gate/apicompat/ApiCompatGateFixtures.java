@@ -35,7 +35,7 @@ final class ApiCompatGateFixtures {
       "package p;\npublic class Client {\n  public void open() {}\n}\n";
   static final String BROKEN = "package p;\npublic class Client { void m( }\n";
 
-  final FakeRevisions git = new FakeRevisions().ref("HEAD", "head").tag("v1.0.0");
+  final FakeRevisions git = new CountingRevisions().ref("HEAD", "head").tag("v1.0.0");
   final Map<String, String> working = new TreeMap<>();
 
   void baseline(final String path, final String text) {

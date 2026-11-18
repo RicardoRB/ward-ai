@@ -46,8 +46,9 @@ name = "append"
 from = ["receiver", 0]
 ```
 
-- `kind` is `call`, `member` or `parameter`. Sources take all three; sanitizers and propagators
-  take `call`. Sinks take `call` and `member-write`.
+- `kind` is `call`, `member` or `parameter`. Sources take all three; propagators take `call`, and
+  sanitizers take `call` and `member`. Sinks take `call` and `member-write`. A `member` sanitizer
+  cleans its receiver: `lastPathComponent` in `URL(fileURLWithPath: name).lastPathComponent`.
 - `member-write` is an assignment to a property, such as `el.innerHTML = html`. Its `name` is the
   property, its `qualifier` is the object as written, and argument 0 is the assigned value. A
   `member-write` source is a configuration error.
@@ -109,10 +110,16 @@ that order. The path is deterministic for the same source and specifications. It
 ## Bundled specifications
 
 Ward's own security rules use one specification file per weakness: `taint/java/ward-<weakness>.toml`
-`taint/node/ward-<weakness>.toml` and `taint/python/ward-<weakness>.toml`. Each lists the sinks of the platform documentation that the
+`taint/node/ward-<weakness>.toml`, `taint/python/ward-<weakness>.toml` and `taint/swift/ward-<weakness>.toml`. Each lists the sinks of the platform documentation that the
 [security rules](/reference/security-rules/) page names, the argument positions each sink guards,
 and the sanitizers of that weakness. The sources are shared: `taint/java/sources.toml` and
-`taint/node/sources.toml` and `taint/python/sources.toml`.
+`taint/node/sources.toml`, `taint/python/sources.toml` and `taint/swift/sources.toml`.
+
+In Swift a call is named by its last name, and a creation with a labelled first argument by the
+type and the label, as Apple's documentation does: `String(contentsOfFile: p)` is
+`String(contentsOfFile:)` and `String(p)` is `String`. A receiver type is known for a type name, a
+shared instance of a type, a creation, and a local or parameter whose source states its type; any
+other receiver has no type, so an entry with a `receiver` does not match it.
 
 In Python a receiver type is the module that an `import` names, so `import subprocess as sp` makes
 `sp.run(...)` a call of `run` on `subprocess`, and `from os import system` makes `system(...)` a call

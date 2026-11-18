@@ -1,0 +1,57 @@
+# Security rules for insecure AWS CDK settings (aws-cdk-lib, TypeScript). Each rule reports a setting that is written explicitly in a call or new expression; a setting that is absent is never reported.
+
+[[rules]]
+id = "ward:typescript/cdk-public-bucket"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^new(?:\w+\.)*Bucket\(.*(?:\bpublicReadAccess:true\b|\baccessControl:(?:\w+\.)*BucketAccessControl\.PUBLIC_READ(?:_WRITE)?\b).*\)$|^new(?:\w+\.)*BlockPublicAccess\(.*\b(?:blockPublicAcls|blockPublicPolicy|ignorePublicAcls|restrictPublicBuckets):false\b.*\)$|^[\w.!?]+\.grantPublicAccess\(.*\)$'
+message = "this bucket is open to anyone on the internet; keep public access blocked and grant access to named principals"
+'''
+
+[[rules]]
+id = "ward:typescript/cdk-unencrypted-storage"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^new(?:\w+\.)*(?:Bucket|Queue)\(.*\bencryption:(?:\w+\.)*(?:BucketEncryption|QueueEncryption)\.UNENCRYPTED\b.*\)$|^new(?:\w+\.)*Volume\(.*\bencrypted:false\b.*\)$|^new(?:\w+\.)*(?:DatabaseInstance|DatabaseInstanceReadReplica|DatabaseCluster)\(.*\bstorageEncrypted:false\b.*\)$|^(?:\w+\.)*BlockDeviceVolume\.ebs\(.*\bencrypted:false\b.*\)$'
+message = "this storage is created with encryption switched off; leave encryption on or name a KMS key"
+'''
+
+[[rules]]
+id = "ward:typescript/cdk-open-security-group"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^[\w.!?]+\.addIngressRule\((?:\w+\.)*Peer\.(?:anyIpv4\(\)|anyIpv6\(\)|ipv4\([\"\x27`]0\.0\.0\.0/0[\"\x27`]\)|ipv6\([\"\x27`]::/0[\"\x27`]\)),.*\)$|^[\w.!?]+\.(?:allowFromAnyIpv4|allowDefaultPortFromAnyIpv4)\(.*\)$'
+message = "this rule lets the whole internet connect; limit the source to a known address range or security group"
+'''
+
+[[rules]]
+id = "ward:typescript/cdk-wildcard-iam-policy"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^new(?:\w+\.)*PolicyStatement\((?!.*\beffect:(?:\w+\.)*Effect\.DENY\b)(?=.*\bactions:\[(?:[^\]]*,)?[\"\x27`]\*[\"\x27`](?:,[^\]]*)?\])(?=.*\bresources:\[(?:[^\]]*,)?[\"\x27`]\*[\"\x27`](?:,[^\]]*)?\]).*\)$'
+message = "this statement allows every action on every resource; list the actions and resources it needs"
+'''

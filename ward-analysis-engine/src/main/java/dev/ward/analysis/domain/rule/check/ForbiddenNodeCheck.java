@@ -1,7 +1,9 @@
 package dev.ward.analysis.domain.rule.check;
 
+import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.RuleMatch;
+import dev.ward.analysis.domain.rule.UnitViews;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -51,8 +53,26 @@ public final class ForbiddenNodeCheck implements UnitCheck {
   }
 
   @Override
+  public Set<String> nodeKinds() {
+    return filter.plainKinds();
+  }
+
+  @Override
+  public List<RuleMatch> matchesIn(
+      final SyntaxNode root,
+      final UnitViews views,
+      final SourceUnit unit
+  ) {
+    return report(filter.select(root, SourceFile.of(unit), views.nodes()));
+  }
+
+  @Override
   public List<RuleMatch> check(final SyntaxNode root, final SourceFile file) {
-    return filter.select(root, file).stream()
+    return report(filter.select(root, file));
+  }
+
+  private List<RuleMatch> report(final List<SyntaxWalk.Visit> visits) {
+    return visits.stream()
         .filter(condition::holds)
         .map(
             v ->
@@ -72,12 +92,17 @@ public final class ForbiddenNodeCheck implements UnitCheck {
    * @param parent kinds of which the parent must be, if not empty
    * @param path the kinds of the ancestors, nearest first, as {@code parent>grandparent}; each step
    *     may list alternatives as {@code a|b}; empty does not limit
+   * @param parentText a pattern that must be found in the parent's text, if any
+   * @param notPath an ancestor path, in the syntax of {@code path}, that the node must not follow;
+   *     empty does not limit
    */
   public record Condition(
       Optional<Pattern> text,
       Set<String> withChild,
       Set<String> parent,
-      String path
+      String path,
+      Optional<Pattern> parentText,
+      String notPath
   ) {
     /** The condition that every node meets. */
     public static final Condition ANY = new Condition(Optional.empty(), Set.of(), Set.of());
@@ -91,6 +116,27 @@ public final class ForbiddenNodeCheck implements UnitCheck {
       this(text, withChild, parent, "");
     }
 
+    /** Creates a condition without a pattern on the parent. */
+    public Condition(
+        final Optional<Pattern> text,
+        final Set<String> withChild,
+        final Set<String> parent,
+        final String path
+    ) {
+      this(text, withChild, parent, path, Optional.empty(), "");
+    }
+
+    /** Creates a condition without a path the node must not follow. */
+    public Condition(
+        final Optional<Pattern> text,
+        final Set<String> withChild,
+        final Set<String> parent,
+        final String path,
+        final Optional<Pattern> parentText
+    ) {
+      this(text, withChild, parent, path, parentText, "");
+    }
+
     /**
      * Copies the sets.
      *
@@ -99,13 +145,20 @@ public final class ForbiddenNodeCheck implements UnitCheck {
     public Condition {
       Objects.requireNonNull(text, "text");
       Objects.requireNonNull(path, "path");
+      Objects.requireNonNull(parentText, "parentText");
+      Objects.requireNonNull(notPath, "notPath");
       withChild = Set.copyOf(withChild);
       parent = Set.copyOf(parent);
     }
 
     boolean holds(final SyntaxWalk.Visit visit) {
       // The text of a node is costly to build, so the conditions on its kind come first.
-      return childOk(visit.node()) && parentOk(visit) && pathOk(visit) && textOk(visit.node());
+      return childOk(visit.node())
+          && parentOk(visit)
+          && pathOk(visit)
+          && (notPath.isEmpty() || !follows(notPath, visit))
+          && parentTextOk(visit)
+          && textOk(visit.node());
     }
 
     private boolean textOk(final SyntaxNode node) {
@@ -164,11 +217,19 @@ public final class ForbiddenNodeCheck implements UnitCheck {
       return !up.isEmpty() && parent.contains(up.get(up.size() - 1).kind());
     }
 
+    private boolean parentTextOk(final SyntaxWalk.Visit visit) {
+      final List<SyntaxNode> up = visit.ancestors();
+      return parentText.isEmpty()
+          || !up.isEmpty()
+          && parentText.get().matcher(SyntaxWalk.text(up.get(up.size() - 1))).find();
+    }
+
     private boolean pathOk(final SyntaxWalk.Visit visit) {
-      if (path.isEmpty()) {
-        return true;
-      }
-      final String[] steps = path.split(">");
+      return path.isEmpty() || follows(path, visit);
+    }
+
+    private static boolean follows(final String ancestors, final SyntaxWalk.Visit visit) {
+      final String[] steps = ancestors.split(">");
       final List<SyntaxNode> up = visit.ancestors();
       if (up.size() < steps.length) {
         return false;

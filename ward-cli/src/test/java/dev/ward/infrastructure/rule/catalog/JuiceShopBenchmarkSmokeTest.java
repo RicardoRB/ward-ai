@@ -29,14 +29,15 @@ import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
  * fails the test: a new finding needs a reading before it is counted.
  */
 class JuiceShopBenchmarkSmokeTest {
+  /** The SHA-256 of the source archive {@code juice-shop-v20.4.0.tar.gz} of that tag. */
+  static final String ARCHIVE_SHA256 =
+      "90551e4bcf83e7019de5bfcba8ab28b35df35b9243d91fbdc7c7e6db30c23e4e";
+
   private static final String REPORT = "benchmark/juice-shop-report.txt";
   private static final String LABELS = "benchmark/juice-shop-labels.txt";
   private static final String SECURITY = "security";
   private static final String TAG = "v20.4.0";
 
-  /** The SHA-256 of the source archive {@code juice-shop-v20.4.0.tar.gz} of that tag. */
-  private static final String ARCHIVE_SHA256 =
-      "90551e4bcf83e7019de5bfcba8ab28b35df35b9243d91fbdc7c7e6db30c23e4e";
   private static final String LANGUAGE_PREFIX = "ward:typescript/";
   private static final String JAVASCRIPT_PREFIX = "ward:javascript/";
   private static final String HEADER =

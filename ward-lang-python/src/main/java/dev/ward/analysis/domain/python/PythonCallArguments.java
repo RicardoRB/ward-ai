@@ -1,5 +1,6 @@
 package dev.ward.analysis.domain.python;
 
+import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,5 +70,46 @@ final class PythonCallArguments {
 
   static boolean opens(final SyntaxNode trailer, final String token) {
     return !trailer.children().isEmpty() && PythonSyntax.isToken(trailer.children().get(0), token);
+  }
+
+  /** Whether a call of {@code module} gives a list or tuple display as the program and arguments. */
+  static boolean isVector(
+      final String module,
+      final List<SyntaxNode> values,
+      final SyntaxNode trailer
+  ) {
+    return "subprocess".equals(module)
+        && !values.isEmpty()
+        && isSequenceDisplay(values.get(0))
+        && !passes(trailer, "shell", "True");
+  }
+
+  /**
+   * The spans of the arguments. A list or tuple given to a {@code subprocess} function without
+   * {@code shell=True} is the program and its arguments, which no shell reads, so it stands for no
+   * command text: its span is empty. shortcut: the program named by the vector's first item is not
+   * followed (the argument-vector site reports it as argument injection).
+   */
+  static List<Span> spans(
+      final String module,
+      final List<SyntaxNode> values,
+      final SyntaxNode trailer
+  ) {
+    final List<Span> spans = new ArrayList<>(values.stream().map(SyntaxNode::span).toList());
+    if (isVector(module, values, trailer)) {
+      final Span vector = spans.get(0);
+      spans.set(
+          0,
+          new Span(
+              vector.startLine(),
+              vector.startColumn(),
+              vector.startLine(),
+              vector.startColumn(),
+              vector.startOffset(),
+              vector.startOffset()
+          )
+      );
+    }
+    return spans;
   }
 }

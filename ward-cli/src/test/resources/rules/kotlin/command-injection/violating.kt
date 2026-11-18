@@ -67,4 +67,16 @@ class Subject {
     val value = with(prefix) { request.getParameter("x") }
     Runtime.getRuntime().exec(value)
   }
+
+  fun runKeepsThis(request: HttpServletRequest) {
+    request.getParameter("x").run { Runtime.getRuntime().exec(this) }
+  }
+
+  fun applyKeepsThis(request: HttpServletRequest) {
+    request.getParameter("x").apply { Runtime.getRuntime().exec(this) }
+  }
+
+  fun withKeepsThisForImplicitCalls(request: HttpServletRequest) {
+    with(request.getParameter("x")) { Runtime.getRuntime().exec(trim()) }
+  }
 }

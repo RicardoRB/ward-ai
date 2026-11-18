@@ -52,6 +52,7 @@ class SwiftInitFilesTest {
             null,
             false,
             null,
+            false,
             false
         );
 

@@ -8,7 +8,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "style"
-presets = ["standard", "strict"]
 body = '''
 check = "required-node"
 kinds = ["compilationunit", "compactCompilationUnit"]
@@ -98,7 +97,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "style"
-presets = ["strict"]
 options.ignore-numbers = { type = "string-list" }
 options.ignore-field-declaration = { type = "boolean" }
 options.ignore-annotation = { type = "boolean" }
@@ -193,7 +191,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "style"
-presets = ["strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["statement"]
@@ -271,7 +268,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "style"
-presets = ["strict"]
 body = '''
 check = "unused-private-field"
 mode = "unused"

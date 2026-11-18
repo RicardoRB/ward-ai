@@ -78,7 +78,12 @@ public final class CheckedRule implements TextCompiledRule {
       final UnitViews views,
       final SourceUnit unit
   ) {
-    return check.matches(root, views.flow(), views.scopes(), views.types(), unit);
+    return check.matchesIn(root, views, unit);
+  }
+
+  /** The check this rule runs. */
+  public RuleCheck getCheck() {
+    return check;
   }
 
   @Override

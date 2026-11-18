@@ -44,10 +44,10 @@ class SwiftDependencyIndexTest {
             new FrontendSupport(
                 AnalysisLanguage.SWIFT,
                 new AntlrLanguageFrontend(),
-                Set.of(RuleCapability.SYNTAX)
+                Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS)
             )
         ),
-        List.of()
+        DependencyStepFakes.readers(AnalysisLanguage.SWIFT)
     );
 
     final String index = entries.get(AnalysisCacheKey.index());

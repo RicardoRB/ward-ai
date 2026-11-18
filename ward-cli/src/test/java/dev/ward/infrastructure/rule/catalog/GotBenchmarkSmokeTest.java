@@ -32,6 +32,10 @@ import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
  * test.
  */
 class GotBenchmarkSmokeTest {
+  /** The SHA-256 of the source archive {@code got-v16.2.0.tar.gz} of that tag. */
+  static final String ARCHIVE_SHA256 =
+      "e562d6c1a290c35861e0052a0aadfbf93ce8c397dfb1155508bd127328f14111";
+
   /** The findings of one rule that are read and labelled, when the rule is not a security rule. */
   static final int SAMPLE = 3;
 
@@ -39,9 +43,6 @@ class GotBenchmarkSmokeTest {
   private static final String LABELS = "benchmark/got-labels.txt";
   private static final String TAG = "v16.2.0";
 
-  /** The SHA-256 of the source archive {@code got-v16.2.0.tar.gz} of that tag. */
-  private static final String ARCHIVE_SHA256 =
-      "e562d6c1a290c35861e0052a0aadfbf93ce8c397dfb1155508bd127328f14111";
   private static final String SECURITY = "security";
   private static final String TYPESCRIPT_PREFIX = "ward:typescript/";
   private static final String JAVASCRIPT_PREFIX = "ward:javascript/";

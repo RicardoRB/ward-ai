@@ -2,11 +2,14 @@ package dev.ward.infrastructure.gate;
 
 import dev.ward.domain.gate.RevisionFiles;
 import dev.ward.domain.gate.RevisionReadException;
+import dev.ward.domain.gate.RevisionSnapshot;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,11 +20,33 @@ public final class GitRevisionFiles implements RevisionFiles {
   private static final String GIT = "git";
   private static final Logger LOG = Logger.getLogger(GitRevisionFiles.class.getName());
   private final CommandExecutor executor;
+  private final ProcessStarter starter;
+
+  /** Starts a long-lived process; the adapter owns it and destroys it. */
+  @FunctionalInterface
+  interface ProcessStarter {
+    Process start(List<String> command, Path directory) throws IOException;
+  }
 
   /** Creates the adapter; {@code executor} runs Git. */
   @Inject
   public GitRevisionFiles(final CommandExecutor executor) {
+    this(executor, (command, dir) -> new ProcessBuilder(command).directory(dir.toFile()).start());
+  }
+
+  GitRevisionFiles(final CommandExecutor executor, final ProcessStarter starter) {
     this.executor = executor;
+    this.starter = starter;
+  }
+
+  @Override
+  public RevisionSnapshot open(final Path root, final String commit) {
+    final CommandResult listing =
+        executor.execute(List.of(GIT, "ls-tree", "-r", "-z", commit, "--", "."), root);
+    final Map<String, String> blobs =
+        listing.succeeded() ? GitSnapshot.blobs(listing.stdout()) : Map.of();
+    LOG.log(Level.FINE, "event=revision-open files={0}", blobs.size());
+    return new GitSnapshot(root, blobs, starter);
   }
 
   @Override

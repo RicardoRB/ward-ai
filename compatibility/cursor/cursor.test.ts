@@ -44,41 +44,45 @@ const EVENTS = [
 ];
 
 /** Applies cursor-agent's hooks.json validation; returns its errors. */
-function cursorRejects(json: string): string[] {
-  let config: any;
-  try {
-    config = JSON.parse(json);
-  } catch {
-    return ["not JSON"];
+function cursorRejects(json: string): string[] { let config: any; try {
+  config = JSON.parse(json);
+} catch {
+  return ["not JSON"];
+} const errors: string[] = []; if (typeof config.version !== "number") errors.push(
+  "Config version must be a number"
+); else if (!Number.isInteger(config.version) || config.version < 1) errors.push(
+  "Config version must be a positive integer"
+); for (const [event, scripts] of Object.entries(config.hooks ?? {})) {
+  if (!EVENTS.includes(event)) {
+    errors.push(`Unknown hook type: ${event}`);
+    continue;
   }
-  const errors: string[] = [];
-  if (typeof config.version !== "number") errors.push("Config version must be a number");
-  else if (!Number.isInteger(config.version) || config.version < 1) errors.push("Config version must be a positive integer");
-  for (const [event, scripts] of Object.entries(config.hooks ?? {})) {
-    if (!EVENTS.includes(event)) {
-      errors.push(`Unknown hook type: ${event}`);
-      continue;
-    }
-    (scripts as any[]).forEach((script, index) => {
-      if (typeof script?.command !== "string" || script.command.length === 0) errors.push(`${event}[${index}] has no command`);
-      if (script?.timeout !== undefined && typeof script.timeout !== "number") errors.push(`${event}[${index}] timeout`);
-    });
-  }
-  return errors;
-}
+  (scripts as any[]).forEach((script, index) => {
+    if (typeof script?.command !== "string" || script.command.length === 0) errors.push(
+      `${event}[${index}] has no command`
+    );
+    if (script?.timeout !== undefined && typeof script.timeout !== "number") errors.push(
+      `${event}[${index}] timeout`
+    );
+  });
+} return errors; }
 
 /** Interprets a hook process result the way cursor-agent does. */
 function cursorResponse(event: string, result: { exitCode: number; stdout: string; stderr: string }): any {
   if (result.exitCode === 2) {
     const reason = result.stdout.trim() || result.stderr.trim();
-    return ["preToolUse", "beforeShellExecution", "beforeReadFile", "beforeMCPExecution"].includes(event)
-      ? { permission: "deny", user_message: reason }
-      : {};
+    return ["preToolUse", "beforeShellExecution", "beforeReadFile", "beforeMCPExecution"].includes(
+      event
+    )
+    ? { permission: "deny", user_message: reason }
+    : {};
   }
   const text = result.stdout.trim();
   if (!text) return undefined;
   const parsed = JSON.parse(text);
-  if (event === "stop" && parsed.followup_message === undefined && parsed.decision === "block" && parsed.reason) {
+  if (
+    event === "stop" && parsed.followup_message === undefined && parsed.decision === "block" && parsed.reason
+  ) {
     return { ...parsed, followup_message: parsed.reason };
   }
   return parsed;
@@ -96,7 +100,10 @@ beforeAll(async () => {
   bin = join(dirname(fixture.root), "ward-bin");
   log = join(dirname(fixture.root), "ward-log");
   writeRecordingWrapper(bin, log, ward);
-  await run(["/usr/bin/git", "init", "-q"], { cwd: fixture.root, env: fixture.env, timeoutMs: 30_000 });
+  await run(
+    ["/usr/bin/git", "init", "-q"],
+    { cwd: fixture.root, env: fixture.env, timeoutMs: 30_000 }
+  );
   mkdirSync(join(fixture.root, "src/main/java"), { recursive: true });
 });
 
@@ -106,35 +113,60 @@ afterAll(() => {
 });
 
 const scripts = (event: string, tool?: string, cfg = config) =>
-  ((cfg.hooks[event] ?? []) as any[]).filter(
-    (s) => tool === undefined || !s.matcher || s.matcher === "*" || new RegExp(s.matcher).test(tool),
-  );
+((cfg.hooks[event] ?? []) as any[]).filter(
+  (s) => tool === undefined || !s.matcher || s.matcher === "*" || new RegExp(s.matcher).test(tool),
+);
 
 /** Runs a project hook like Cursor: through the shell from the project root, event on stdin. */
 async function launch(f: Fixture, event: string, script: any, payload: unknown) {
   const before = recordedInvocations(log).length;
-  const env = { ...f.env, CURSOR_PROJECT_DIR: f.root, CLAUDE_PROJECT_DIR: f.root, PATH: `${bin}:${SYSTEM_PATH}` };
+  const env = {
+    ...f.env,
+    CURSOR_PROJECT_DIR: f.root,
+    CLAUDE_PROJECT_DIR: f.root,
+    PATH: `${bin}:${SYSTEM_PATH}`
+  };
   const stdin =
-    typeof payload === "string"
-      ? payload
-      : JSON.stringify({ conversation_id: "c", generation_id: "g", model: "m", hook_event_name: event, workspace_roots: [f.root], ...(payload as object) });
-  const result = await run(["/bin/sh", "-c", script.command], { cwd: f.root, env, stdin, timeoutMs: 60_000 });
-  return { result, response: cursorResponse(event, result), invocations: recordedInvocations(log).slice(before) };
+  typeof payload === "string"
+  ? payload
+  : JSON.stringify({
+    conversation_id: "c",
+    generation_id: "g",
+    model: "m",
+    hook_event_name: event,
+    workspace_roots: [f.root],
+    ...(payload as object)
+  });
+  const result = await run(
+    ["/bin/sh", "-c", script.command],
+    { cwd: f.root, env, stdin, timeoutMs: 60_000 }
+  );
+  return {
+    result,
+    response: cursorResponse(event, result),
+    invocations: recordedInvocations(log).slice(before)
+  };
 }
 
 const tool = (event: string, name: string, input: Record<string, unknown>) =>
-  launch(fixture, event, scripts(event, name)[0], { tool_name: name, tool_input: input, tool_use_id: "u", cwd: fixture.root });
+launch(
+  fixture,
+  event,
+  scripts(event, name)[0],
+  { tool_name: name, tool_input: input, tool_use_id: "u", cwd: fixture.root }
+);
 
 describe("generated hooks.json against cursor-agent 2026.10.14-941492e", () => {
   test("Cursor accepts the generated configuration", () => {
-    expect(cursorRejects(readFileSync(join(fixture.root, ".cursor/hooks.json"), "utf8"))).toEqual([]);
+    expect(
+      cursorRejects(readFileSync(join(fixture.root, ".cursor/hooks.json"), "utf8"))
+    ).toEqual([]);
   });
 
   test("negative control: Cursor rejects the legacy configuration", () => {
-    expect(cursorRejects(readFileSync(join(import.meta.dir, "legacy-hooks.json.txt"), "utf8"))).toEqual([
-      "Config version must be a number",
-      "preToolUse[0] has no command",
-    ]);
+    expect(
+      cursorRejects(readFileSync(join(import.meta.dir, "legacy-hooks.json.txt"), "utf8"))
+    ).toEqual(["Config version must be a number", "preToolUse[0] has no command"]);
   });
 
   test("checks run after writes and at stop, and nothing runs before a tool", () => {
@@ -147,16 +179,21 @@ describe("generated hooks.json against cursor-agent 2026.10.14-941492e", () => {
 });
 
 describe("hook execution", () => {
-
-
-
-
-
   test("a failing check after a write is injected as additional_context", async () => {
     writeFileSync(join(fixture.root, "FAIL"), "");
     try {
-      const { response, invocations } = await tool("postToolUse", "Write", { file_path: join(fixture.root, "src/main/java/A.java"), content: "" });
-      expect(invocations.map((i) => i.argv)).toEqual([["hook", "native", "--agent", "cursor", "--event-stdin"]]);
+      const { response, invocations } = await tool(
+        "postToolUse",
+        "Write",
+        { file_path: join(fixture.root, "src/main/java/A.java"), content: "" }
+      );
+      expect(invocations.map((i) => i.argv)).toEqual([[
+        "hook",
+        "native",
+        "--agent",
+        "cursor",
+        "--event-stdin"
+      ]]);
       expect(response.additional_context).toContain("Ward quality findings");
     } finally {
       rmSync(join(fixture.root, "FAIL"), { force: true });
@@ -164,14 +201,23 @@ describe("hook execution", () => {
   });
 
   test("a clean write is silent", async () => {
-    const { result, response } = await tool("postToolUse", "Write", { file_path: join(fixture.root, "src/main/java/A.java"), content: "" });
+    const { result, response } = await tool(
+      "postToolUse",
+      "Write",
+      { file_path: join(fixture.root, "src/main/java/A.java"), content: "" }
+    );
     expect([result.exitCode, response]).toEqual([0, undefined]);
   });
 
   test("stop findings submit one follow-up, then only report", async () => {
     writeFileSync(join(fixture.root, "FAIL"), "");
     try {
-      const stop = (loops: number) => launch(fixture, "stop", scripts("stop")[0], { status: "completed", loop_count: loops });
+      const stop = (loops: number) => launch(
+        fixture,
+        "stop",
+        scripts("stop")[0],
+        { status: "completed", loop_count: loops }
+      );
       const first = await stop(0);
       expect(first.response.followup_message).toContain("format");
       const second = await stop(1);
@@ -181,5 +227,4 @@ describe("hook execution", () => {
       rmSync(join(fixture.root, "FAIL"), { force: true });
     }
   });
-
 });

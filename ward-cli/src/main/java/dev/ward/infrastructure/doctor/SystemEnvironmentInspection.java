@@ -151,6 +151,20 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
   }
 
   @Override
+  public Optional<String> missingHooksPath(final Path projectRoot) {
+    final CommandResult configured =
+        executor.execute(List.of("git", "config", "--get", "core.hooksPath"), projectRoot);
+    final String value = configured.succeeded() ? configured.stdout().strip() : "";
+    if (value.isEmpty()) {
+      return Optional.empty();
+    }
+    final CommandResult top =
+        executor.execute(List.of("git", "rev-parse", "--show-toplevel"), projectRoot);
+    final Path base = top.succeeded() ? Path.of(top.stdout().strip()) : projectRoot;
+    return Files.isDirectory(base.resolve(value)) ? Optional.empty() : Optional.of(value);
+  }
+
+  @Override
   public boolean hasReleaseTag(final Path projectRoot) {
     final CommandResult result =
         executor.execute(List.of("git", "tag", "--merged", "HEAD"), projectRoot);

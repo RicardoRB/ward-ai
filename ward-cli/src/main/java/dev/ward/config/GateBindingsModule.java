@@ -12,6 +12,7 @@ import dev.ward.domain.gate.ReportSink;
 import dev.ward.domain.gate.RevisionFiles;
 import dev.ward.domain.project.ProjectChanges;
 import dev.ward.domain.project.ProjectPaths;
+import dev.ward.application.gate.PromptGuard;
 import dev.ward.infrastructure.cli.agent.HookChecks;
 import dev.ward.infrastructure.cli.gate.JsonReportRenderer;
 import dev.ward.infrastructure.cli.gate.ReportRenderers;
@@ -45,9 +46,10 @@ interface GateBindingsModule {
       final CheckService checks,
       final ProjectDetector detector,
       final ProjectChanges changes,
-      final ProjectPaths paths
+      final ProjectPaths paths,
+      final PromptGuard prompts
   ) {
-    return new HookChecks(checks, new HookScope(detector, changes, paths));
+    return new HookChecks(checks, new HookScope(detector, changes, paths), prompts);
   }
 
   @Provides

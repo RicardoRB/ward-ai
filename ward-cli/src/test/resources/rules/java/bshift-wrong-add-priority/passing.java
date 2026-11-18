@@ -8,3 +8,11 @@ final class Shift {
     return flags;
   }
 }
+
+final class Hex {
+  private static final char[] DIGITS = {'0', '1'};
+
+  String code(char ch) {
+    return "\\u" + DIGITS[ch >> 12 & 15] + DIGITS[ch >> 8 & 15];
+  }
+}

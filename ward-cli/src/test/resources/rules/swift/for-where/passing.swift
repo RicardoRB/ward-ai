@@ -12,3 +12,9 @@ for user in users {
 for user in users {
   if user.id == 1 && user.age > 18 { }
 }
+for socket in sockets {
+  socket.onClose { error in
+    print(error)
+    if error != nil { retry() }
+  }
+}

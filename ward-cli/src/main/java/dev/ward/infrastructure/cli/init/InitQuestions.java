@@ -86,7 +86,8 @@ final class InitQuestions {
         answers.ci(),
         answers.agentRules(),
         schemeQuestions.scheme(catalog, project),
-        architectureChosen
+        architectureChosen,
+        false
     );
   }
 

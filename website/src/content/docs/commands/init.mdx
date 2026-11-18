@@ -10,7 +10,7 @@ Gradle, TypeScript, and JavaScript projects; see [Node projects](#node-projects)
 in a Node project.
 
 ```sh
-ward init [-C <dir>] [--project <dir>]... [--preset <standard|strict>] [--integration <none|agent>[,...]] [--quality-hooks] [--remove-quality-hooks] [--ci github] [--agent-rules] [--gate <id>[,...]] [--install-tool <gate>[,...]] [--architecture <style>] [--overwrite] [--dry-run] [--accept-compatibility-updates] [--replace-scripts] [--yes]
+ward init [-C <dir>] [--project <dir>]... [--preset <standard|strict>] [--integration <none|agent>[,...]] [--prompt-hook] [--quality-hooks] [--shared-hooks[=<dir>]] [--remove-quality-hooks] [--ci github] [--agent-rules] [--gate <id>[,...]] [--install-tool <gate>[,...]] [--architecture <style>] [--overwrite] [--dry-run] [--accept-compatibility-updates] [--replace-scripts] [--yes]
 ```
 
 <Aside type="tip">
@@ -29,11 +29,13 @@ each choice for this codebase, and runs `init` with explicit options after you a
 | `--preset <standard\|strict>` | Pre-select the preset's gates and rules. See [Presets and gates](#presets-and-gates). |
 | `--gate <id>[,...]` | Enable these [gates](/configuration/gates/). With `--preset`, adds to the preset's gates. |
 | `--integration <none\|agent>[,...]` | Install agent integrations. `none` cannot be combined with an agent. |
+| `--prompt-hook` | Also register the hook that blocks a prompt containing a secret, for the integrations that have a prompt event (`claude-code`, `codex`, `cursor`, `gemini`, `factory-droid`). Init names every selected integration without one and installs nothing for it. With a `secrets` gate it also writes [`[checks.secrets.prompts]`](/configuration/secrets/#scanning-prompts) with `enabled = true` into the new `ward.toml`; without the gate, init says so. Without the option nothing about prompts is written. Re-running init without the option removes the prompt event again. See [Prompt hook](/commands/hook/#prompt-hook). |
 | `--architecture <style>` | `layered` (default), `hexagonal`, or `clean`: the layer boundaries of `[[checks.ward.layers]]` in `ward.toml`, which init always writes. The wizard asks for it under `strict`. A chosen style also writes a starter [`ward-architecture.toml`](/configuration/ward-architecture/#what-ward-init-writes) when the project has none; an existing one is never changed. |
 | `--scheme <name>` | Xcode scheme that a Swift project's tests run, when the project has several. With `--yes`, a project with several schemes needs this option. |
 | `--install-tool <gate>[,...]` | Accepted for compatibility; init installs no gate tool, so it has no effect. |
 | `--quality-hooks` | Add Ward checks to the Git pre-commit and pre-push hooks. |
-| `--remove-quality-hooks` | Remove only Ward's sections from those hooks. |
+| `--shared-hooks[=<dir>]` | Write the quality hooks into a tracked folder of the repository, `.githooks` unless you name another, so every clone shares them. Implies `--quality-hooks`. See [Shared hooks](/integrations/quality-hooks/#shared-hooks). |
+| `--remove-quality-hooks` | Remove only Ward's sections from those hooks. With `--dry-run`, list the files and change nothing. |
 | `--ci github` | Write a GitHub Actions workflow that runs the `ci` profile. |
 | `--agent-rules` | Write the selected gates' limits into a Ward-owned section of `AGENTS.md`. |
 | `--overwrite` | Replace an existing `ward.toml` without asking. |
@@ -652,6 +654,12 @@ sections to `.git/hooks/pre-commit` and `.git/hooks/pre-push`:
 - `--remove-quality-hooks` removes only Ward's marked sections. It keeps your content, executable
   permissions, and other Ward integrations.
 - A malformed or duplicate marker is reported as a conflict and left unchanged.
+- On a project that already has `ward.toml`, `--quality-hooks` and `--shared-hooks` change only the
+  hooks: init does not ask to overwrite `ward.toml` and leaves it alone, unless you also pass a
+  setup option such as `--preset`, `--gate`, `--integration`, `--ci` or `--overwrite`.
+- `--shared-hooks` writes the sections into a tracked folder and prints
+  `git config core.hooksPath .githooks` for teammates. See
+  [Shared hooks](/integrations/quality-hooks/#shared-hooks).
 
 ### CI workflow
 

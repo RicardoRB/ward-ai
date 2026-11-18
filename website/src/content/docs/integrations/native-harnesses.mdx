@@ -17,6 +17,11 @@ Ward supports these project-local integrations:
 | `amp` | Amp | `.amp/plugins/ward.ts`, `.amp/plugins/ward.sh` | `tool.result` feedback, `agent.end` continuation |
 | `junie` | Junie CLI | `.junie/config.json`, `.junie/hooks/ward.sh` | turn-end feedback (`Stop`) |
 
+With `ward integrate <agent> --prompt-hook`, `codex`, `cursor`, `gemini` and `factory-droid` also register
+the prompt hook (`UserPromptSubmit`, `beforeSubmitPrompt`, `BeforeAgent`, `UserPromptSubmit`), which blocks a
+prompt that holds a secret. `copilot`, `windsurf`, `cline`, `amp` and `junie` have no documented prompt event that can
+reject a prompt, so they are unsupported and get none. See [Prompt hook](/commands/hook/#prompt-hook).
+
 Install or remove one integration with:
 
 ```sh

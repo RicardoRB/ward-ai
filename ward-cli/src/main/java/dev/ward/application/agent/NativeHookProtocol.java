@@ -3,6 +3,7 @@ package dev.ward.application.agent;
 import dev.ward.domain.agent.NativeHookInput;
 import dev.ward.domain.agent.NativeHookOutcome;
 import dev.ward.domain.json.JsonCodec;
+import dev.ward.domain.secrets.PromptInput;
 import java.util.Optional;
 
 /** Application boundary for harness-specific native hook translation. */
@@ -23,6 +24,19 @@ public interface NativeHookProtocol {
    */
   default Optional<String> postEditFeedback(final String findings) {
     return Optional.empty();
+  }
+
+  /**
+   * Returns the prompt a prompt-submit {@code payload} carries, or empty when the payload is
+   * another event or the harness has no prompt event that can reject a prompt.
+   */
+  default Optional<PromptInput> parsePrompt(final JsonCodec codec, final String payload) {
+    return Optional.empty();
+  }
+
+  /** Returns the stdout that rejects a submitted prompt for {@code reason}, in the harness format. */
+  default String blockPrompt(final String reason) {
+    return "";
   }
 
   /**

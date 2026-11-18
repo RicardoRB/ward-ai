@@ -112,7 +112,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["methodDeclaration"]
-text = '^(?!.*super\.clone\()[\w.]+clone\(\)(?:throws[\w.,]+)?\{'
+text = '^(?!.*super\.clone\()[\w.]*[^\W_]clone\(\)(?:throws[\w.,]+)?\{'
 message = "clone does not call super.clone()"
 '''
 

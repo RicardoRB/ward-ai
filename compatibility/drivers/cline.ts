@@ -20,24 +20,35 @@ const turn = (context: LiveContext, prompt: string) => {
   const provider = process.env.WARD_COMPAT_CLINE_PROVIDER as string;
   const model = process.env.WARD_COMPAT_CLINE_MODEL as string;
   return context.run(
-    [context.runtime.executable, "--yolo", "-P", provider, "-m", model, "-k", context.env[PROVIDER_KEYS[provider]], prompt],
+    [
+      context.runtime.executable,
+      "--yolo",
+      "-P",
+      provider,
+      "-m",
+      model,
+      "-k",
+      context.env[PROVIDER_KEYS[provider]],
+      prompt
+    ],
     TURN_TIMEOUT_MS,
   );
 };
 
-export const clineDriver: LiveDriver = {
-  harness: "cline",
-  missingPrerequisites: (env) => {
-    const provider = env.WARD_COMPAT_CLINE_PROVIDER ?? "";
-    const missing: string[] = [];
-    if (!PROVIDER_KEYS[provider]) missing.push(`WARD_COMPAT_CLINE_PROVIDER (one of ${Object.keys(PROVIDER_KEYS).join(", ")})`);
-    if (!env.WARD_COMPAT_CLINE_MODEL) missing.push("WARD_COMPAT_CLINE_MODEL");
-    if (PROVIDER_KEYS[provider] && !env[PROVIDER_KEYS[provider]]) missing.push(PROVIDER_KEYS[provider]);
-    return missing;
-  },
-  scenarios: hookScenarios(turn).map((scenario) =>
-    scenario.id === "turn-end-feedback-limit"
-      ? { id: scenario.id, unsupported: "TaskComplete hooks run detached; Cline ignores their output." }
-      : scenario,
-  ),
-};
+export const clineDriver: LiveDriver = { harness: "cline", missingPrerequisites: (env) => {
+  const provider = env.WARD_COMPAT_CLINE_PROVIDER ?? "";
+  const missing: string[] = [];
+  if (!PROVIDER_KEYS[provider]) missing.push(
+    `WARD_COMPAT_CLINE_PROVIDER (one of ${Object.keys(PROVIDER_KEYS).join(", ")})`
+  );
+  if (!env.WARD_COMPAT_CLINE_MODEL) missing.push("WARD_COMPAT_CLINE_MODEL");
+  if (PROVIDER_KEYS[provider] && !env[PROVIDER_KEYS[provider]]) missing.push(
+    PROVIDER_KEYS[provider]
+  );
+  return missing;
+}, scenarios: hookScenarios(turn).map(
+  (scenario) => scenario.id === "turn-end-feedback-limit" ? {
+    id: scenario.id,
+    unsupported: "TaskComplete hooks run detached; Cline ignores their output."
+  } : scenario,
+), };

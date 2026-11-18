@@ -84,9 +84,7 @@ record LocalMethod(
    * apart, so neither is indexed. A body whose simple owner name, name and arity another body
    * shares can be reached only through its full owner name.
    */
-  static Map<String, LocalMethod> indexExternal(final List<ControlFlowGraph> graphs) {
-    final List<LocalMethod> methods =
-        graphs.stream().map(LocalMethod::parseExternal).flatMap(Optional::stream).toList();
+  static Map<String, LocalMethod> indexExternal(final List<LocalMethod> methods) {
     final Map<String, Long> simple =
         methods.stream()
             .collect(Collectors.groupingBy(LocalMethod::simpleKey, Collectors.counting()));
@@ -97,6 +95,18 @@ record LocalMethod(
         .stream()
         .filter(entry -> entry.getValue().size() == 1)
         .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().get(0)));
+  }
+
+  /**
+   * The bodies of other files that have an owner, each parsed once, so that the keys that name them
+   * and their index are read from one parse of the graphs.
+   */
+  static List<LocalMethod> externals(final List<ControlFlowGraph> graphs) {
+    final List<LocalMethod> methods = new ArrayList<>();
+    for (final ControlFlowGraph graph : graphs) {
+      parseExternal(graph).ifPresent(methods::add);
+    }
+    return methods;
   }
 
   /** The {@code Owner#name/arity} keys of the bodies that have an owner. */
@@ -151,6 +161,11 @@ record LocalMethod(
             ? method.parameters().size()
             : Integer.parseInt(body.group("arity"));
     return Optional.of(new LocalMethod(method.name, owner, arity, graph, false));
+  }
+
+  /** The owner of the body of a graph, or empty when it has none. */
+  static Optional<String> ownerOf(final ControlFlowGraph graph) {
+    return parse(graph).map(LocalMethod::owner).filter(owner -> !owner.isEmpty());
   }
 
   /** The key a call with this name and argument count looks up. */

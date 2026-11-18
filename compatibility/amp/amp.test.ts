@@ -44,7 +44,10 @@ function respond(key: "hook", exit: number, stdout = "", stderr = ""): void {
 const invocations = (): Invocation[] => recordedInvocations(join(STATE, "log"));
 const payloads = () => invocations().map((i) => JSON.parse(i.stdin));
 
-async function load(fixture: Fixture, source = join(fixture.root, ".amp/plugins/ward.ts")): Promise<AmpHost> {
+async function load(
+  fixture: Fixture,
+  source = join(fixture.root, ".amp/plugins/ward.ts")
+): Promise<AmpHost> {
   const host = new AmpHost(fixture.root);
   const plugin = (await import(`${source}?run=${Math.random()}`)).default;
   plugin(host.api());
@@ -62,29 +65,62 @@ describe("post-edit check", () => {
   test("a completed edit sends the event to the wrapper's post phase and success is silent", async () => {
     respond("hook", 0);
     const host = await load(fixture);
-    const result = await host.toolResult({ tool: "edit_file", input: { path: "src/A.java" }, status: "done", output: "Edited." });
-    expect(invocations().map((i) => [i.argv, i.cwd])).toEqual([[CHECK, realpathSync(fixture.root)]]);
-    expect(payloads()).toEqual([{ event: "tool.result", tool_name: "edit_file", cwd: fixture.root, file_path: join(fixture.root, "src/A.java") }]);
+    const result = await host.toolResult({
+      tool: "edit_file",
+      input: { path: "src/A.java" },
+      status: "done",
+      output: "Edited."
+    });
+    expect(invocations().map((i) => [i.argv, i.cwd])).toEqual([[
+      CHECK,
+      realpathSync(fixture.root)
+    ]]);
+    expect(payloads()).toEqual([{
+      event: "tool.result",
+      tool_name: "edit_file",
+      cwd: fixture.root,
+      file_path: join(fixture.root, "src/A.java")
+    }]);
     expect(result).toEqual({ status: "done", output: "Edited.", error: undefined });
   });
 
   test("a failing check is appended to the output the model reads", async () => {
     respond("hook", 2, "", "Ward quality findings:\nformat FAILED");
     const host = await load(fixture);
-    const result = await host.toolResult({ tool: "create_file", input: { path: "src/B.java" }, status: "done", output: "Created." });
-    expect(result).toEqual({ status: "done", output: "Created.\n\nWard quality findings:\nformat FAILED" });
+    const result = await host.toolResult({
+      tool: "create_file",
+      input: { path: "src/B.java" },
+      status: "done",
+      output: "Created."
+    });
+    expect(result).toEqual({
+      status: "done",
+      output: "Created.\n\nWard quality findings:\nformat FAILED"
+    });
   });
 
   test("structured output is preserved as JSON ahead of the feedback", async () => {
     respond("hook", 2, "", "failed");
     const host = await load(fixture);
-    const result = await host.toolResult({ tool: "edit_file", input: { path: "a" }, status: "done", output: { diff: "+x" } });
+    const result = await host.toolResult({
+      tool: "edit_file",
+      input: { path: "a" },
+      status: "done",
+      output: { diff: "+x" }
+    });
     expect(result.output).toBe('{"diff":"+x"}\n\nfailed');
   });
 
   test("failed and cancelled tool results are preserved and never checked", async () => {
     const host = await load(fixture);
-    expect(await host.toolResult({ tool: "edit_file", input: { path: "a" }, status: "error", error: "no match" })).toEqual({
+    expect(
+      await host.toolResult({
+        tool: "edit_file",
+        input: { path: "a" },
+        status: "error",
+        error: "no match"
+      })
+    ).toEqual({
       status: "error",
       output: undefined,
       error: "no match",
@@ -101,8 +137,15 @@ describe("post-edit check", () => {
 
   test("a missing workspace or Ward failure to start is logged, not delivered", async () => {
     const host = new AmpHost(null);
-    (await import(`${join(fixture.root, ".amp/plugins/ward.ts")}?run=${Math.random()}`)).default(host.api());
-    const result = await host.toolResult({ tool: "edit_file", input: { path: "/x/a" }, status: "done", output: "ok" });
+    (await import(`${join(fixture.root, ".amp/plugins/ward.ts")}?run=${Math.random()}`)).default(
+      host.api()
+    );
+    const result = await host.toolResult({
+      tool: "edit_file",
+      input: { path: "/x/a" },
+      status: "done",
+      output: "ok"
+    });
     expect(result.output).toBe("ok");
     expect(host.logs.join("\n")).toContain("[ward] could not run");
   });
@@ -110,7 +153,12 @@ describe("post-edit check", () => {
   test("negative control: the legacy no-op plugin never reaches Ward", async () => {
     respond("hook", 2, "", "failed");
     const host = await load(fixture, legacyPlugin(fixture));
-    const result = await host.toolResult({ tool: "edit_file", input: { path: "a" }, status: "done", output: "ok" });
+    const result = await host.toolResult({
+      tool: "edit_file",
+      input: { path: "a" },
+      status: "done",
+      output: "ok"
+    });
     expect(invocations()).toEqual([]);
     expect(result.output).toBe("ok");
   });
@@ -121,7 +169,11 @@ describe("turn end", () => {
     respond("hook", 0, "Ward quality findings:\nx: missing scenario");
     const host = await load(fixture);
     expect(await host.agentEnd()).toEqual([
-      { action: "continue", userMessage: "[ward]\nWard quality findings:\nx: missing scenario", maxContinuations: 1 },
+      {
+        action: "continue",
+        userMessage: "[ward]\nWard quality findings:\nx: missing scenario",
+        maxContinuations: 1
+      },
     ]);
     expect(payloads()).toEqual([{ event: "agent.end", cwd: fixture.root }]);
   });
@@ -130,7 +182,11 @@ describe("turn end", () => {
     respond("hook", 2, "", "Ward quality findings:\ntests FAILED");
     const host = await load(fixture);
     expect(await host.agentEnd()).toEqual([
-      { action: "continue", userMessage: "[ward]\nWard quality findings:\ntests FAILED", maxContinuations: 1 },
+      {
+        action: "continue",
+        userMessage: "[ward]\nWard quality findings:\ntests FAILED",
+        maxContinuations: 1
+      },
     ]);
   });
 
@@ -146,7 +202,10 @@ describe("turn end", () => {
 
 describe("wrapper", () => {
   test("an unknown phase is an error rather than a silent check", async () => {
-    const result = Bun.spawnSync(["/bin/sh", join(fixture.root, ".amp/plugins/ward.sh")], { cwd: fixture.root });
+    const result = Bun.spawnSync(
+      ["/bin/sh", join(fixture.root, ".amp/plugins/ward.sh")],
+      { cwd: fixture.root }
+    );
     expect(result.exitCode).toBe(2);
     expect(invocations()).toEqual([]);
   });

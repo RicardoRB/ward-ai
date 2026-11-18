@@ -79,8 +79,30 @@ public class InitCommand implements Callable<Integer> {
   private Boolean qualityHooks;
 
   @Option(
+      names = "--prompt-hook",
+      description =
+          "Also register the agent hook that blocks a prompt containing a secret, for the"
+              + " integrations that have a prompt event. It scans only while ward.toml has"
+              + " [checks.secrets.prompts] enabled = true."
+  )
+  private boolean promptHook;
+
+  @Option(
+      names = "--shared-hooks",
+      arity = "0..1",
+      paramLabel = "<dir>",
+      fallbackValue = ".githooks",
+      description =
+          "Write the quality hooks into a tracked folder of the repository (default .githooks)"
+              + " that every clone shares; implies --quality-hooks."
+  )
+  private String sharedHooks;
+
+  @Option(
       names = "--remove-quality-hooks",
-      description = "Remove Ward-managed quality-hook sections without changing user content."
+      description =
+          "Remove Ward-managed quality-hook sections without changing user content. With"
+              + " --dry-run, list the files without changing them."
   )
   private boolean removeQualityHooks;
 
@@ -182,13 +204,16 @@ public class InitCommand implements Callable<Integer> {
             .map(project -> project.withXcodeScheme(schemeOptions.scheme()))
             .toList();
     if (removeQualityHooks) {
-      chosen.forEach(
-          project -> output().println(init.catalog().removeQualityHooks(project).message())
-      );
+      InitHooks.remove(init.catalog(), chosen, dryRun, output());
       return ExitCodes.OK;
     }
     final InitConfirmations confirmations = new InitConfirmations(prompt, output(), terminal);
-    final List<InitApply.Target> targets =
+    final InitApply apply = new InitApply(init, confirmations, output());
+    if (hooksOnly(init, chosen)) {
+      apply.hooks(chosen, sharedHooks, dryRun, terminal, yesOption);
+      return ExitCodes.OK;
+    }
+    final List<InitApply.Target> resolved =
         new InitTargetAnswers(
             answers(),
             new InitPrompts(wizard, confirmations, new QuestionProgress(output())),
@@ -197,14 +222,32 @@ public class InitCommand implements Callable<Integer> {
             output()
         )
             .resolve(init, chosen);
-    final InitApply apply = new InitApply(init, confirmations, output());
+    final List<InitApply.Target> targets = InitPromptHook.select(resolved, promptHook);
     if (targets.isEmpty()) {
       return ExitCodes.OK;
     }
+    InitPromptHook.report(output(), targets, promptHook);
     final InitApply.Target first = targets.getFirst();
-    return targets.equals(List.of(first))
-        ? apply.run(first.project(), first.selection(), mode(first.overwrite()))
-        : apply.runAll(targets, mode(false), options.directory().toAbsolutePath().normalize());
+    final int exit =
+        targets.equals(List.of(first))
+            ? apply.run(first.project(), first.selection(), mode(first.overwrite()))
+            : apply.runAll(targets, mode(false), options.directory().toAbsolutePath().normalize());
+    if (sharedHooks != null) {
+      apply.hooks(
+          targets.stream().map(InitApply.Target::project).toList(),
+          sharedHooks,
+          dryRun,
+          terminal,
+          yesOption
+      );
+    }
+    return exit;
+  }
+
+  private boolean hooksOnly(final InitService init, final List<Project> chosen) {
+    final boolean asked = Boolean.TRUE.equals(qualityHooks) || sharedHooks != null;
+    final boolean setupGiven = answers().setupGiven() || generatedFiles.anyRequested();
+    return asked && !setupGiven && !overwriteOption && InitHooks.allConfigured(init, chosen);
   }
 
   private InitApply.Mode mode(final boolean overwrite) {
@@ -224,7 +267,7 @@ public class InitCommand implements Callable<Integer> {
         gates,
         generatedFiles.architectureOrNull(),
         installTools,
-        qualityHooks,
+        sharedHooks != null ? Boolean.FALSE : qualityHooks,
         generatedFiles.ci(),
         generatedFiles.agentRules(),
         yesOption,

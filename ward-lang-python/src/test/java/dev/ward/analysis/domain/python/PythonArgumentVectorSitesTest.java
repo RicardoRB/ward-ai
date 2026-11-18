@@ -21,7 +21,7 @@ class PythonArgumentVectorSitesTest {
             + "    other.run([a])\n";
     final List<FlowSite> calls =
         PythonFlowSitesTest.sites(source, "f").stream().filter(
-            site -> site.kind() == FlowSiteKind.CALL
+            site -> site.kind() == FlowSiteKind.CALL && !"argument-vector".equals(site.name())
         ).toList();
 
     assertThat(calls)
@@ -30,5 +30,18 @@ class PythonArgumentVectorSitesTest {
                 .endOffset()
         )
         .containsExactly(true, true, false, false, false, false);
+  }
+
+  @Test
+  void subprocessArgumentVectorWithoutShellHasASiteOfItsOwn() {
+    final String source =
+        "import subprocess\ndef f(a):\n"
+            + "    subprocess.run(['ls', a])\n"
+            + "    subprocess.run(['ls', a], shell=True)\n"
+            + "    subprocess.run(a)\n";
+
+    assertThat(PythonFlowSitesTest.sites(source, "f"))
+        .filteredOn(site -> "argument-vector".equals(site.name()))
+        .hasSize(1);
   }
 }

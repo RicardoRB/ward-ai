@@ -1,6 +1,6 @@
 package dev.ward.analysis.frontend.antlr.typescript;
 
-import java.util.Set;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.TokenStream;
 
 /**
@@ -38,12 +38,9 @@ final class QuickPrediction {
 
   private static final int ENTER = 1;
 
-  /** The tokens that continue an expression when they are on the line of its last token. */
-  private static final Set<Integer> CALL_OR_INDEX =
-      Set.of(TypeScriptParser.OpenParen, TypeScriptParser.OpenBracket);
-
   private final TypeScriptParserBase parser;
   private final QuickDecisions decisions;
+  private final QuickSuffix suffix;
 
   /**
    * Reads the decisions from the ATN of the parser.
@@ -53,6 +50,7 @@ final class QuickPrediction {
   QuickPrediction(final TypeScriptParserBase parser) {
     this.parser = parser;
     this.decisions = new QuickDecisions(parser.getATN());
+    this.suffix = new QuickSuffix(parser, decisions);
   }
 
   /**
@@ -64,13 +62,25 @@ final class QuickPrediction {
    */
   int predict(final int decision, final TokenStream input) {
     if (decision == decisions.loop.decision) {
-      return suffix(input);
+      return suffix.predict(input);
     }
     if (decision == decisions.statement.decision) {
       return statement(input);
     }
     if (decision == decisions.primary.decision) {
       return primary(input);
+    }
+    return other(decision, input);
+  }
+
+  private int other(final int decision, final TokenStream input) {
+    if (decision == decisions.type.decision) {
+      return QuickScans.objectTypeEndsType(input) ? decisions.plainTypeAlternative : UNDECIDED;
+    }
+    if (decision == decisions.ifElse.decision) {
+      return input.LA(1) == TypeScriptParser.Else && !QuickTokens.usedAsName(input)
+          ? ENTER
+          : UNDECIDED;
     }
     if (decision == decisions.typeArguments.decision) {
       return input.LA(1) == TypeScriptParser.LessThan ? ENTER : UNDECIDED;
@@ -88,35 +98,23 @@ final class QuickPrediction {
       return QuickTokens.exportsDeclaration(input) ? ENTER : UNDECIDED;
     }
     if (decision == decisions.classElement.decision) {
-      return QuickTokens.startsMethod(input) ? decisions.memberAlternative : UNDECIDED;
+      return QuickTokens.startsMethod(input) || QuickScans.startsAccessor(input)
+          ? decisions.memberAlternative
+          : UNDECIDED;
     }
     if (decision == decisions.memberKind.decision) {
-      return QuickTokens.startsMethod(input) ? decisions.methodAlternative : UNDECIDED;
+      return memberKind(input);
     }
     return decisions.bodies.contains(decision) && input.LA(1) == TypeScriptParser.OpenBrace
         ? ENTER
         : UNDECIDED;
   }
 
-  private int suffix(final TokenStream input) {
-    final int next = input.LA(1);
-    final boolean continues =
-        next == TypeScriptParser.Dot
-            || CALL_OR_INDEX.contains(next) && parser.notLineTerminator();
-    if (!continues || next == TypeScriptParser.OpenParen && operandOfNew()) {
-      return UNDECIDED;
+  private int memberKind(final TokenStream input) {
+    if (QuickTokens.startsMethod(input)) {
+      return decisions.methodAlternative;
     }
-    for (final QuickDecisions.Suffix suffix : decisions.suffixes) {
-      if (suffix.first().contains(next) && parser.precpred(null, suffix.precedence())) {
-        return ENTER;
-      }
-    }
-    return UNDECIDED;
-  }
-
-  /** In {@code new a.b(c)} the parenthesis belongs to {@code new}, not to a call of the operand. */
-  private boolean operandOfNew() {
-    return parser.getContext().getParent() instanceof TypeScriptParser.NewExpressionContext;
+    return QuickScans.startsAccessor(input) ? decisions.accessorAlternative : UNDECIDED;
   }
 
   private int statement(final TokenStream input) {
@@ -131,15 +129,36 @@ final class QuickPrediction {
         : decisions.statementOf(keyword);
   }
 
+  /** In {@code new a.b(c)} the operand is a path of names, and the arguments belong to new. */
+  private int newForm(final TokenStream input) {
+    if (QuickTokens.newOfName(input)) {
+      return decisions.newAlternatives.get(0);
+    }
+    return QuickTokens.newOfPath(input) ? decisions.newAlternatives.get(1) : UNDECIDED;
+  }
+
+  /** A colon after {@code async (x)} may belong to a conditional or a case clause instead. */
+  private boolean inConditionalOrCase() {
+    for (ParserRuleContext context = parser.getContext(); context != null; context = context.getParent()) {
+      if (context instanceof TypeScriptParser.TernaryExpressionContext
+          || context instanceof TypeScriptParser.CaseClauseContext) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   private int primary(final TokenStream input) {
     final int first = input.LA(1);
     if (first == TypeScriptParser.Async) {
-      return QuickTokens.startsAsyncFunction(input) ? decisions.functionAlternative : UNDECIDED;
+      return QuickTokens.startsAsyncFunction(input)
+          || QuickScans.startsAsyncArrowWithReturnType(input) && !inConditionalOrCase()
+          ? decisions.functionAlternative
+          : UNDECIDED;
     }
-    final boolean settled =
-        first == TypeScriptParser.New
-            ? QuickTokens.newOfName(input)
-            : QuickTokens.operandFollows(input);
-    return settled ? decisions.operatorOf(first) : UNDECIDED;
+    if (first == TypeScriptParser.New) {
+      return newForm(input);
+    }
+    return QuickTokens.operandFollows(input) ? decisions.operatorOf(first) : UNDECIDED;
   }
 }

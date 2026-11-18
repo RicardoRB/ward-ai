@@ -6,7 +6,6 @@ language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
 category = "naming"
-presets = ["standard", "strict"]
 body = ""
 
 [[rules]]
@@ -15,7 +14,6 @@ language = "JAVASCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
 category = "naming"
-presets = ["standard", "strict"]
 body = ""
 
 [[rules]]
@@ -82,7 +80,7 @@ body = '''
 check = "identifier-pattern"
 kinds = ["propertyMemberDeclaration"]
 name = "identifierName"
-skip = ["typeAnnotation", "initializer", "propertyMemberBase", "callSignature", "functionBody"]
+skip = ["typeAnnotation", "initializer", "propertyMemberBase", "callSignature", "functionBody", "singleExpression"]
 pattern = '^#?_*[a-z$][A-Za-z0-9$]*_*$'
 message = "member name '{value}' must be camelCase"
 '''

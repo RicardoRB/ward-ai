@@ -15,4 +15,12 @@ public interface ApiSurfaces {
    * @throws ApiSurfaceException if a unit has a syntax error
    */
   List<ApiType> read(Path root, List<SourceUnit> units);
+
+  /**
+   * Returns the unit reduced to what {@link #read} needs, so the full text of a file is not kept.
+   * The default keeps the unit as it is.
+   */
+  default SourceUnit declarations(final SourceUnit unit) {
+    return unit;
+  }
 }

@@ -20,7 +20,10 @@ function prepare(fixture: Fixture): void {
 }
 
 const turn = (context: LiveContext, prompt: string) =>
-  context.run([context.runtime.executable, "-p", prompt, "--allow-all-tools", "--no-color"], TURN_TIMEOUT_MS);
+context.run(
+  [context.runtime.executable, "-p", prompt, "--allow-all-tools", "--no-color"],
+  TURN_TIMEOUT_MS
+);
 
 export const copilotDriver: LiveDriver = {
   harness: "copilot",

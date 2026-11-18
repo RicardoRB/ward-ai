@@ -81,7 +81,9 @@ final class MetricRuleBody {
         paths(pairs.getOrDefault("path", "")),
         set(pairs.get("receivers")),
         set(pairs.get("nested")),
-        set(pairs.get("decisions"))
+        set(pairs.get("decisions")),
+        paths(pairs.getOrDefault("exempt", "")),
+        set(pairs.get("exempt-names"))
     );
   }
 

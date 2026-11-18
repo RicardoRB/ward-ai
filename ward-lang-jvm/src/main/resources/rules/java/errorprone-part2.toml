@@ -8,7 +8,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "correctness"
-presets = ["standard"]
 body = '''
 check = "forbidden-node"
 kinds = ["statement"]

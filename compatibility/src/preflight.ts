@@ -29,9 +29,15 @@ export interface PreflightOptions {
  * directory, then verifies its exact version. PATH lookup is never used, so an unrelated global
  * installation cannot satisfy preflight.
  */
-export async function preflight(harness: Harness, options: PreflightOptions): Promise<PreflightResult> {
+export async function preflight(
+  harness: Harness,
+  options: PreflightOptions
+): Promise<PreflightResult> {
   const expectedVersion = harness.runtime.version;
-  const blocked = (prerequisite: string, extra: Partial<PreflightResult> = {}): PreflightResult => ({
+  const blocked = (
+    prerequisite: string,
+    extra: Partial<PreflightResult> = {}
+  ): PreflightResult => ({
     harness: harness.id,
     status: "blocked",
     expectedVersion,
@@ -46,20 +52,22 @@ export async function preflight(harness: Harness, options: PreflightOptions): Pr
       })`,
     );
   }
-  const result = await run([executable, ...harness.runtime.versionCommand], {
-    cwd: options.home,
-    env: { PATH: `${dirname(executable)}:${SYSTEM_PATH}`, HOME: options.home },
-    timeoutMs: options.timeoutMs ?? 30_000,
-  });
+  const result = await run(
+    [executable, ...harness.runtime.versionCommand],
+    {
+      cwd: options.home,
+      env: { PATH: `${dirname(executable)}:${SYSTEM_PATH}`, HOME: options.home },
+      timeoutMs: options.timeoutMs ?? 30_000,
+    }
+  );
   if (result.timedOut || result.exitCode !== 0) {
     return blocked(`${harness.runtime.executable} version command did not succeed`, { executable });
   }
   const foundVersion = parseVersion(harness, `${result.stdout}\n${result.stderr}`);
   if (foundVersion !== expectedVersion) {
-    return blocked(`version mismatch: expected ${expectedVersion}, found ${foundVersion ?? "unrecognized output"}`, {
-      executable,
-      ...(foundVersion ? { foundVersion } : {}),
-    });
+    return blocked(`version mismatch: expected ${expectedVersion}, found ${foundVersion ?? "unrecognized output"}`, { executable, ...(foundVersion ? {
+      foundVersion
+    } : {}), });
   }
   return { harness: harness.id, status: "ready", executable, expectedVersion, foundVersion };
 }
@@ -99,10 +107,7 @@ export interface InstallResult {
  * Performs the manifest's pinned install into the isolated tools directory. Harnesses without an
  * isolated install (editors, vendor installers) report the explicit executable they require.
  */
-export async function install(
-  harness: Harness,
-  options: { toolsDir: string; npm: string; home: string; timeoutMs?: number },
-): Promise<InstallResult> {
+export async function install(harness: Harness, options: { toolsDir: string; npm: string; home: string; timeoutMs?: number },): Promise<InstallResult> {
   if (harness.runtime.install.length === 0) {
     return {
       harness: harness.id,
@@ -114,20 +119,29 @@ export async function install(
     return { harness: harness.id, installed: false, prerequisite: `npm executable ${options.npm}` };
   }
   mkdirSync(options.toolsDir, { recursive: true });
-  const argv = harness.runtime.install.map((part) => (part === "${TOOLS}" ? options.toolsDir : part));
-  const result = await run([options.npm, ...argv.slice(1)], {
-    cwd: options.toolsDir,
-    // npm's own cache and config stay inside the isolated home.
-    env: {
-      PATH: `${dirname(options.npm)}:${SYSTEM_PATH}`,
-      HOME: options.home,
-      npm_config_cache: join(options.home, ".npm"),
-      npm_config_userconfig: join(options.home, ".npmrc"),
-    },
-    timeoutMs: options.timeoutMs ?? 300_000,
-  });
+  const argv = harness.runtime.install.map(
+    (part) => (part === "${TOOLS}" ? options.toolsDir : part)
+  );
+  const result = await run(
+    [options.npm, ...argv.slice(1)],
+    {
+      cwd: options.toolsDir,
+      // npm's own cache and config stay inside the isolated home.
+      env: {
+        PATH: `${dirname(options.npm)}:${SYSTEM_PATH}`,
+        HOME: options.home,
+        npm_config_cache: join(options.home, ".npm"),
+        npm_config_userconfig: join(options.home, ".npmrc"),
+      },
+      timeoutMs: options.timeoutMs ?? 300_000,
+    }
+  );
   if (result.timedOut || result.exitCode !== 0) {
-    return { harness: harness.id, installed: false, prerequisite: `pinned install of ${argv.at(-1)} failed` };
+    return {
+      harness: harness.id,
+      installed: false,
+      prerequisite: `pinned install of ${argv.at(-1)} failed`
+    };
   }
   return { harness: harness.id, installed: true };
 }

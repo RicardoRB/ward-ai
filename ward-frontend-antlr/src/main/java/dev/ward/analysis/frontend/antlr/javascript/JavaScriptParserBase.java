@@ -5,12 +5,15 @@ import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStream;
+import org.antlr.v4.runtime.atn.ParserATNSimulator;
 
 /**
  * All parser methods that used in grammar (p, prev, notLineTerminator, etc.) should start with
  * lower case char similar to parser rules.
  */
 public abstract class JavaScriptParserBase extends Parser {
+  private QuickPredictingSimulator quick;
+
   /**
    * Creates the parser over the given token stream.
    *
@@ -18,6 +21,22 @@ public abstract class JavaScriptParserBase extends Parser {
    */
   public JavaScriptParserBase(final TokenStream input) {
     super(input);
+  }
+
+  /**
+   * Returns the simulator of the generated parser behind the quick prediction of the decisions that
+   * {@link QuickPrediction} names. A profiling run replaces the simulator, and is then wrapped too.
+   */
+  @Override
+  public ParserATNSimulator getInterpreter() {
+    final ParserATNSimulator generated = super.getInterpreter();
+    if (generated == null) {
+      return null;
+    }
+    if (quick == null || quick.adaptive() != generated) {
+      quick = new QuickPredictingSimulator(this, generated);
+    }
+    return quick;
   }
 
   /** Short form for prev(final String str) */

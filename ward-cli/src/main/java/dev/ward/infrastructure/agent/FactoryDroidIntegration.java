@@ -42,12 +42,21 @@ public final class FactoryDroidIntegration implements NativeHarnessAdapter {
    */
   @Override
   public String configContent() {
+    return configContent(false);
+  }
+
+  @Override
+  public String configContent(final boolean prompts) {
     return "{\n"
         + "  \"PostToolUse\": ["
         + group("^(Create|Edit|MultiEdit|ApplyPatch)$", "post", CHECK_TIMEOUT_SECONDS)
         + "],\n  \"Stop\": ["
         + group(null, "post", CHECK_TIMEOUT_SECONDS)
-        + "]\n}\n";
+        + "]"
+        + (prompts
+            ? ",\n  \"UserPromptSubmit\": [" + group(null, "post", CHECK_TIMEOUT_SECONDS) + "]"
+            : "")
+        + "\n}\n";
   }
 
   private static String group(final String matcher, final String phase, final int timeout) {

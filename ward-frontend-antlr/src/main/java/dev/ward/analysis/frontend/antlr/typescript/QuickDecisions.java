@@ -58,6 +58,9 @@ final class QuickDecisions {
           TypeScriptParser.Delete
       );
 
+  /** The forms of {@code new}: a name and arguments, an operand and arguments, an operand. */
+  private static final int NEW_FORMS = 3;
+
   final DecisionState statement;
   final Map<Integer, Integer> statementAlternatives;
   final DecisionState primary;
@@ -70,6 +73,11 @@ final class QuickDecisions {
   final DecisionState classElement;
   final int memberAlternative;
   final DecisionState memberKind;
+  final int accessorAlternative;
+  final DecisionState ifElse;
+  final DecisionState type;
+  final int plainTypeAlternative;
+  final List<Integer> newAlternatives;
   final int methodAlternative;
   final Set<Integer> bodies;
 
@@ -102,6 +110,17 @@ final class QuickDecisions {
             TypeScriptParser.RULE_propertyMemberBase,
             TypeScriptParser.Multiply
         );
+    accessorAlternative =
+        AtnPaths.alternativeAfter(
+            memberKind,
+            TypeScriptParser.RULE_propertyMemberBase,
+            TypeScriptParser.RULE_getAccessor
+        );
+    type = first(atn, TypeScriptParser.RULE_type_);
+    plainTypeAlternative =
+        AtnPaths.alternativeTo(type, TypeScriptParser.RULE_unionOrIntersectionOrPrimaryType, -1);
+    ifElse = first(atn, TypeScriptParser.RULE_ifStatement);
+    newAlternatives = alternativesOf(primary, TypeScriptParser.New);
     bodies = bodies(atn);
   }
 
@@ -124,9 +143,28 @@ final class QuickDecisions {
         && operatorAlternatives.keySet().containsAll(PREFIX_OPERATORS)
         && operatorAlternatives.containsKey(TypeScriptParser.New)
         && !suffixes.isEmpty()
-        && Stream.of(functionAlternative, memberAlternative, methodAlternative)
+        && newAlternatives.size() >= NEW_FORMS
+        && Stream.of(
+            functionAlternative,
+            memberAlternative,
+            methodAlternative,
+            accessorAlternative,
+            plainTypeAlternative
+        )
             .noneMatch(alternative -> alternative == AtnPaths.NONE)
         && bodies.size() >= BODY_RULES.size();
+  }
+
+  private static List<Integer> alternativesOf(final DecisionState decision, final int token) {
+    final List<Integer> alternatives = new ArrayList<>();
+    for (int alt = 0; alt < decision.getNumberOfTransitions(); alt++) {
+      if (AtnPaths.firstTransition(
+          decision.transition(alt).target
+      ) instanceof AtomTransition atom && atom.label == token) {
+        alternatives.add(alt + 1);
+      }
+    }
+    return alternatives;
   }
 
   private static DecisionState first(final ATN atn, final int rule) {

@@ -34,6 +34,14 @@ public interface EnvironmentInspection {
     return Optional.empty();
   }
 
+  /**
+   * Returns the {@code core.hooksPath} of the repository of {@code projectRoot} when it names a
+   * folder that does not exist, so that Git runs no hook; empty otherwise.
+   */
+  default Optional<String> missingHooksPath(final Path projectRoot) {
+    return Optional.empty();
+  }
+
   /** Returns whether a release tag, such as {@code v1.2.3}, is reachable from {@code HEAD}. */
   default boolean hasReleaseTag(final Path projectRoot) {
     return false;

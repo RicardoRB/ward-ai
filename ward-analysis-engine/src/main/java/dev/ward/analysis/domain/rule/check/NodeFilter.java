@@ -1,10 +1,12 @@
 package dev.ward.analysis.domain.rule.check;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.rule.NodeIndex;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The nodes a generic check looks at: the node kinds, and the filters every kind shares. A kind may
@@ -60,13 +62,36 @@ public record NodeFilter(
     );
   }
 
+  /** The node kinds the filter looks at, without the children that narrow a selector. */
+  Set<String> plainKinds() {
+    return kinds.stream().map(NodeFilter::parentOf).collect(Collectors.toSet());
+  }
+
   /** Returns the nodes of the kinds that pass the filters, each with its ancestors. */
   List<SyntaxWalk.Visit> select(final SyntaxNode root, final SourceFile file) {
+    return select(root, file, NodeIndex.NONE);
+  }
+
+  /** Like {@link #select(SyntaxNode, SourceFile)}, reading the nodes from {@code index} if it has them. */
+  List<SyntaxWalk.Visit> select(
+      final SyntaxNode root,
+      final SourceFile file,
+      final NodeIndex index
+  ) {
     if (!sources.admits(file.path())) {
       return List.of();
     }
-    final Set<String> plain = kinds.stream().map(NodeFilter::parentOf).collect(Collectors.toSet());
-    return SyntaxWalk.visits(root, plain).stream()
+    final Set<String> plain = plainKinds();
+    final Stream<SyntaxWalk.Visit> visits =
+        index
+            .visits(plain)
+            .map(
+                entries ->
+                    entries.stream()
+                        .map(entry -> new SyntaxWalk.Visit(entry.node(), entry.ancestors()))
+            )
+            .orElseGet(() -> SyntaxWalk.visits(root, plain).stream());
+    return visits
         .filter(visit -> isKind(visit.node()))
         .filter(this::contextAdmits)
         .filter(this::modifiersAdmit)

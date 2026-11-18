@@ -3,3 +3,8 @@ class Copy implements Cloneable {
     return this;
   }
 }
+
+class Named {
+  void test_clone() {
+  }
+}

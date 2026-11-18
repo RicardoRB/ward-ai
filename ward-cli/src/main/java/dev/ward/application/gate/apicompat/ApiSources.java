@@ -3,6 +3,7 @@ package dev.ward.application.gate.apicompat;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.domain.gate.RevisionFiles;
+import dev.ward.domain.gate.RevisionSnapshot;
 import dev.ward.domain.gate.WorkingFiles;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -41,13 +42,9 @@ final class ApiSources {
   Sources atBaseline(final Baseline baseline) {
     final RevisionFiles git = ports.revisions();
     final String commit = baseline.commit();
-    return read(
-        new Tree(
-            path -> git.read(root, commit, path),
-            directory -> git.files(root, commit, directory),
-            " at " + baseline.ref()
-        )
-    );
+    try (RevisionSnapshot snapshot = git.open(root, commit)) {
+      return read(new Tree(snapshot::read, snapshot::files, " at " + baseline.ref()));
+    }
   }
 
   /** Returns the Java and Kotlin files of the main source roots in the working tree. */
@@ -70,6 +67,7 @@ final class ApiSources {
             .distinct()
             .sorted()
             .map(path -> unit(path, tree.read().apply(path), "Cannot read " + path + tree.where()))
+            .map(ports.surfaces()::declarations)
             .toList();
     return new Sources(units, modules);
   }

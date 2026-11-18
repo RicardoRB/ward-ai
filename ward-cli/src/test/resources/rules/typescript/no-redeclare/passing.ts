@@ -34,3 +34,26 @@ enum Color {
 namespace Color {
   export const count = 1;
 }
+
+export const storeA = {
+  set(key: string, entry: unknown) {
+    return [key, entry];
+  },
+};
+export const storeB = {
+  set(key: string, entry: unknown) {
+    return [key, entry];
+  },
+};
+export const first = <T>(item: T) => item;
+export const second = <T>(item: T) => item;
+
+export class Cache {
+  constructor({
+    store = new Map<string, number>(),
+    lookup = fetchLookup,
+  }: {store?: Map<string, number>; lookup?: () => void} = {}) {
+    this.store = store;
+    this.lookup = lookup;
+  }
+}

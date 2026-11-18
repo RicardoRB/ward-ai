@@ -47,12 +47,12 @@ class NodeDependencyGateTest {
                 new FrontendSupport(
                     AnalysisLanguage.TYPESCRIPT,
                     new AntlrLanguageFrontend(),
-                    Set.of(RuleCapability.SYNTAX)
+                    Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS)
                 ),
                 new FrontendSupport(
                     AnalysisLanguage.JAVASCRIPT,
                     new AntlrLanguageFrontend(),
-                    Set.of(RuleCapability.SYNTAX)
+                    Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS)
                 )
             ),
             projectRoot -> new FileAnalysisCache(cacheRoot),
@@ -63,7 +63,16 @@ class NodeDependencyGateTest {
         );
     final Project project = new Project(root, Language.TYPESCRIPT, BuildTool.NPM, Framework.NONE);
 
-    final GateResult result = new AnalysisGate("ward", List.of(), ports).execute(project);
+    final GateResult result = new AnalysisGate(
+        "ward",
+        DependencyStepFakes.readers(
+            "unused-assignment",
+            "",
+            AnalysisLanguage.TYPESCRIPT,
+            AnalysisLanguage.JAVASCRIPT
+        ),
+        ports
+    ).execute(project);
 
     assertThat(result.status()).isEqualTo(GateStatus.PASSED);
     final String index =

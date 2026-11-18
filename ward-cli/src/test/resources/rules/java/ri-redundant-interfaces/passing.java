@@ -3,3 +3,4 @@ interface Other {}
 class Base implements Shape {}
 class Child extends Base implements Other {}
 
+class Builder implements org.example.Builder<String> {}

@@ -32,7 +32,9 @@ async function main(args: string[]): Promise<number> {
     else ids.push(args[i]);
   }
   const manifest = loadManifest();
-  const requested = ids.length === 1 && ids[0] === "all" ? manifest.harnesses.map((h) => h.id) : ids;
+  const requested = ids.length === 1 && ids[0] === "all" ? manifest.harnesses.map(
+    (h) => h.id
+  ) : ids;
   if (requested.length === 0) {
     console.error(USAGE);
     return 2;
@@ -43,8 +45,13 @@ async function main(args: string[]): Promise<number> {
   for (const id of requested) {
     const harness = findHarness(manifest, id);
     if (installRequested) {
-      const installed = await install(harness, { toolsDir, npm: npm ?? Bun.which("npm") ?? "npm", home });
-      if (!installed.installed) console.log(JSON.stringify({ harness: id, status: "blocked", prerequisite: installed.prerequisite }));
+      const installed = await install(
+        harness,
+        { toolsDir, npm: npm ?? Bun.which("npm") ?? "npm", home }
+      );
+      if (!installed.installed) console.log(
+        JSON.stringify({ harness: id, status: "blocked", prerequisite: installed.prerequisite })
+      );
     }
     const result = await preflight(harness, { toolsDir, env: process.env, home });
     if (result.status === "ready") ready++;
@@ -65,14 +72,19 @@ async function live(args: string[]): Promise<number> {
     else ids.push(args[i]);
   }
   const manifest = loadManifest();
-  const requested = ids.length === 1 && ids[0] === "all" ? manifest.harnesses.map((h) => h.id) : ids;
+  const requested = ids.length === 1 && ids[0] === "all" ? manifest.harnesses.map(
+    (h) => h.id
+  ) : ids;
   if (requested.length === 0) {
     console.error(USAGE);
     return 2;
   }
   const home = join(toolsDir, "home");
   mkdirSync(home, { recursive: true });
-  const report = await runLive(requested, { env: process.env, toolsDir, home, drivers: DRIVERS, manifest });
+  const report = await runLive(
+    requested,
+    { env: process.env, toolsDir, home, drivers: DRIVERS, manifest }
+  );
   console.log(JSON.stringify(report, null, 2));
   return report.exitCode;
 }

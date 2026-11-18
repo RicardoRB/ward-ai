@@ -38,6 +38,30 @@ A hook manager that regenerates its hook files, such as husky or lefthook, may d
 when it rewrites them. Add `ward check --profile pre-commit` to that manager's configuration
 instead.
 
+## Shared hooks
+
+`.git/hooks` is not committed, so each clone has to install the hooks itself. To commit them, ask
+for a shared folder:
+
+```sh
+ward init --quality-hooks --shared-hooks          # .githooks
+ward init --shared-hooks=tools/hooks              # another folder, relative to the repository
+```
+
+- Init writes `pre-commit` and `pre-push` into the folder, executable, with the same marked
+  sections. Existing content, permissions and markers are kept, and a second run changes nothing.
+- It prints `git config core.hooksPath .githooks` for teammates to run once after cloning.
+- It sets `core.hooksPath` for the current clone only when you agree: the wizard asks, and `--yes`
+  sets it when it is unset. A `core.hooksPath` that points elsewhere is never replaced unless you
+  answer yes to the question; `--yes` does not replace it.
+- Shared hooks are opt-in. Without `--shared-hooks`, init keeps writing where Git runs hooks.
+- On a project that already has `ward.toml`, `--quality-hooks` and `--shared-hooks` change only the
+  hooks, not `ward.toml`.
+- `--dry-run` lists the files and writes nothing, and so does
+  `ward init --remove-quality-hooks --dry-run`. The removal looks in the directory Git runs.
+- [`ward doctor`](/commands/doctor/) warns when `core.hooksPath` names a folder that does not
+  exist, because Git then runs no hook.
+
 ## Nested projects
 
 When the project sits below the repository root, for example `apps/api` in a monorepo, Ward adds

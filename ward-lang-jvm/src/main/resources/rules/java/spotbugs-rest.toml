@@ -7,7 +7,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "correctness"
-presets = ["standard", "strict"]
 body = '''
 check = "identifier-pattern"
 kinds = ["fieldDeclaration"]
@@ -54,10 +53,7 @@ severity = "error"
 category = "style"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["expression"]
-with-child = ["'<'", "'>'", "'<='", "'>='"]
-text = '(?:>=Integer\.MIN_VALUE|<Integer\.MIN_VALUE|<=Integer\.MAX_VALUE|>Integer\.MAX_VALUE)$'
+check = "int-limit-comparison"
 message = "this int comparison with Integer.MIN_VALUE or MAX_VALUE is always true or always false"
 '''
 

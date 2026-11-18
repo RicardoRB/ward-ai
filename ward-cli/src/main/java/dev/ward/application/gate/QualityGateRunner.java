@@ -21,6 +21,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntFunction;
+import java.util.function.LongSupplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
@@ -35,6 +36,7 @@ public class QualityGateRunner {
 
   private final FindingExtractor findingExtractor;
   private final GatePrerequisites prerequisites;
+  private final LongSupplier nanoClock;
 
   /** Creates a runner that extracts no findings and explains only missing executables. */
   public QualityGateRunner() {
@@ -54,8 +56,18 @@ public class QualityGateRunner {
       final FindingExtractor findingExtractor,
       final GatePrerequisites prerequisites
   ) {
+    this(findingExtractor, prerequisites, System::nanoTime);
+  }
+
+  /** Creates a runner that measures gate durations with {@code nanoClock}. */
+  QualityGateRunner(
+      final FindingExtractor findingExtractor,
+      final GatePrerequisites prerequisites,
+      final LongSupplier nanoClock
+  ) {
     this.findingExtractor = findingExtractor;
     this.prerequisites = prerequisites;
+    this.nanoClock = nanoClock;
   }
 
   /** Runs every gate in order, without progress output. */
@@ -197,6 +209,17 @@ public class QualityGateRunner {
       this.limit = new WorkLimit(Math.max(SERIAL, options.jobs()));
     }
 
+    /**
+     * Native gates run no process and report no duration: give them the time the runner measured, so
+     * the report never shows 0 ms for a gate that ran.
+     */
+    private GateResult withMeasuredDuration(final GateResult result, final long startNanos) {
+      if (!result.duration().isZero() || result.status() == GateStatus.SKIPPED) {
+        return result;
+      }
+      return result.withDuration(Duration.ofNanos(nanoClock.getAsLong() - startNanos));
+    }
+
     /** Keeps gates after {@code index} that have not started from starting. */
     void stopAfter(final int index) {
       lastToRun.accumulateAndGet(index, Math::min);
@@ -208,24 +231,27 @@ public class QualityGateRunner {
         return null;
       }
       final QualityGate gate = gates.get(index);
-      final long start = System.nanoTime();
+      final long start = nanoClock.getAsLong();
       final Instant gateStart = Instant.now();
       LOGGER.log(Level.INFO, () -> "event=gate-start gate=" + gate.name());
       final GateResult result =
-          withFindings(
-              project,
-              checks.attach(
+          withMeasuredDuration(
+              withFindings(
                   project,
-                  limit.holding(
-                      () ->
-                          gate.execute(
-                              project,
-                              step -> progress.step(index, gate.name(), step),
-                              limit
-                          )
-                  )
+                  checks.attach(
+                      project,
+                      limit.holding(
+                          () ->
+                              gate.execute(
+                                  project,
+                                  step -> progress.step(index, gate.name(), step),
+                                  limit
+                              )
+                      )
+                  ),
+                  gateStart
               ),
-              gateStart
+              start
           );
       LOGGER.log(
           Level.INFO,
@@ -235,7 +261,7 @@ public class QualityGateRunner {
                   + " status="
                   + result.status()
                   + " duration-ms="
-                  + TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start)
+                  + TimeUnit.NANOSECONDS.toMillis(nanoClock.getAsLong() - start)
       );
       if (options.failFast() && result.status() != GateStatus.PASSED) {
         stopAfter(index);

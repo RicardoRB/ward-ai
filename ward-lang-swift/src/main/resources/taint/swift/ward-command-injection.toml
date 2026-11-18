@@ -1,0 +1,130 @@
+# Operating-system commands of Swift code, written for Ward from the Apple Foundation Process documentation and the
+# C library: the program, its arguments and the directory are fixed by the code or by whoever supplies them. Process is
+# found by the type its receiver states (see SwiftFlowSites).
+
+[[sinks]]
+kind = "member-write"
+name = "arguments"
+receiver = "Process"
+arguments = [0]
+
+[[sinks]]
+kind = "member-write"
+name = "launchPath"
+receiver = "Process"
+arguments = [0]
+
+[[sinks]]
+kind = "member-write"
+name = "executableURL"
+receiver = "Process"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "run"
+receiver = "Process"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "launchedProcess"
+receiver = "Process"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "system"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "popen"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execv"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execvp"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execl"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execlp"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "posix_spawn"
+arguments = [1]
+
+[[sinks]]
+kind = "call"
+name = "posix_spawnp"
+arguments = [1]
+
+[[sanitizers]]
+kind = "call"
+name = "Int"
+
+[[sanitizers]]
+kind = "call"
+name = "Int8"
+
+[[sanitizers]]
+kind = "call"
+name = "Int16"
+
+[[sanitizers]]
+kind = "call"
+name = "Int32"
+
+[[sanitizers]]
+kind = "call"
+name = "Int64"
+
+[[sanitizers]]
+kind = "call"
+name = "UInt"
+
+[[sanitizers]]
+kind = "call"
+name = "UInt8"
+
+[[sanitizers]]
+kind = "call"
+name = "UInt16"
+
+[[sanitizers]]
+kind = "call"
+name = "UInt32"
+
+[[sanitizers]]
+kind = "call"
+name = "UInt64"
+
+[[sanitizers]]
+kind = "call"
+name = "Double"
+
+[[sanitizers]]
+kind = "call"
+name = "Float"
+
+[[sanitizers]]
+kind = "call"
+name = "Bool"
+
+[[sanitizers]]
+kind = "call"
+name = "UUID(uuidString:)"
+

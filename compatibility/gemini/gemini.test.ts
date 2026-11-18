@@ -35,35 +35,37 @@ const EVENTS = [
 ];
 
 /** Applies hookRegistry's rules; returns the definitions Gemini would discard. */
-function geminiDiscards(json: string): string[] {
-  let config: any;
-  try {
-    config = JSON.parse(json);
-  } catch {
-    return ["not JSON"];
+function geminiDiscards(json: string): string[] { let config: any; try {
+  config = JSON.parse(json);
+} catch {
+  return ["not JSON"];
+} const errors: string[] = []; for (
+  const [event, definitions] of Object.entries(config.hooks ?? {})
+) {
+  if (["enabled", "disabled", "notifications"].includes(event)) continue;
+  if (!EVENTS.includes(event)) {
+    errors.push(`unknown event ${event}`);
+    continue;
   }
-  const errors: string[] = [];
-  for (const [event, definitions] of Object.entries(config.hooks ?? {})) {
-    if (["enabled", "disabled", "notifications"].includes(event)) continue;
-    if (!EVENTS.includes(event)) {
-      errors.push(`unknown event ${event}`);
-      continue;
+  (definitions as any[]).forEach((definition, index) => {
+    if (!Array.isArray(definition?.hooks)) {
+      errors.push(`${event}[${index}] has no hooks list`);
+      return;
     }
-    (definitions as any[]).forEach((definition, index) => {
-      if (!Array.isArray(definition?.hooks)) {
-        errors.push(`${event}[${index}] has no hooks list`);
-        return;
-      }
-      for (const hook of definition.hooks) {
-        if (hook.type !== "command" || !hook.command) errors.push(`${event}[${index}] hook is not a command`);
-      }
-    });
-  }
-  return errors;
-}
+    for (const hook of definition.hooks) {
+      if (hook.type !== "command" || !hook.command) errors.push(
+        `${event}[${index}] hook is not a command`
+      );
+    }
+  });
+} return errors; }
 
 /** Interprets a hook process result the way hookRunner does. */
-function geminiOutput(result: { exitCode: number; stdout: string; stderr: string }): any {
+function geminiOutput(result: {
+  exitCode: number;
+  stdout: string;
+  stderr: string
+}): any {
   const text = result.stdout.trim() || result.stderr.trim();
   if (!text) return undefined;
   try {
@@ -89,7 +91,10 @@ beforeAll(async () => {
   bin = join(dirname(fixture.root), "ward-bin");
   log = join(dirname(fixture.root), "ward-log");
   writeRecordingWrapper(bin, log, ward);
-  await run(["/usr/bin/git", "init", "-q"], { cwd: fixture.root, env: fixture.env, timeoutMs: 30_000 });
+  await run(
+    ["/usr/bin/git", "init", "-q"],
+    { cwd: fixture.root, env: fixture.env, timeoutMs: 30_000 }
+  );
   mkdirSync(join(fixture.root, "src/main/java"), { recursive: true });
 });
 
@@ -99,33 +104,58 @@ afterAll(() => {
 });
 
 const hooks = (event: string, tool?: string, cfg = config) =>
-  ((cfg.hooks[event] ?? []) as any[])
-    .filter((group) => tool === undefined || !group.matcher || new RegExp(group.matcher).test(tool))
-    .flatMap((group) => group.hooks);
+((cfg.hooks[event] ?? []) as any[])
+.filter((group) => tool === undefined || !group.matcher || new RegExp(group.matcher).test(tool))
+.flatMap((group) => group.hooks);
 
 /** Runs a hook like Gemini: expanded command through the shell, in the session cwd, event on stdin. */
 async function launch(f: Fixture, hook: any, payload: unknown, cwd = f.root) {
   const before = recordedInvocations(log).length;
-  const env = { ...f.env, GEMINI_PROJECT_DIR: cwd, GEMINI_CWD: cwd, CLAUDE_PROJECT_DIR: cwd, PATH: `${bin}:${SYSTEM_PATH}` };
+  const env = {
+    ...f.env,
+    GEMINI_PROJECT_DIR: cwd,
+    GEMINI_CWD: cwd,
+    CLAUDE_PROJECT_DIR: cwd,
+    PATH: `${bin}:${SYSTEM_PATH}`
+  };
   const command = hook.command.replace(/\$GEMINI_PROJECT_DIR/g, `'${cwd}'`);
   const stdin =
-    typeof payload === "string"
-      ? payload
-      : JSON.stringify({ session_id: "s", transcript_path: "t", cwd, timestamp: "2026-10-16T00:00:00Z", ...(payload as object) });
+  typeof payload === "string"
+  ? payload
+  : JSON.stringify({
+    session_id: "s",
+    transcript_path: "t",
+    cwd,
+    timestamp: "2026-10-16T00:00:00Z",
+    ...(payload as object)
+  });
   const result = await run(["/bin/sh", "-c", command], { cwd, env, stdin, timeoutMs: 60_000 });
-  return { result, output: geminiOutput(result), invocations: recordedInvocations(log).slice(before) };
+  return {
+    result,
+    output: geminiOutput(result),
+    invocations: recordedInvocations(log).slice(before)
+  };
 }
 
 const tool = (event: string, name: string, input: Record<string, unknown>, cwd?: string) =>
-  launch(fixture, hooks(event, name)[0], { hook_event_name: event, tool_name: name, tool_input: input }, cwd);
+launch(
+  fixture,
+  hooks(event, name)[0],
+  { hook_event_name: event, tool_name: name, tool_input: input },
+  cwd
+);
 
 describe("generated settings against Gemini CLI 0.64.0", () => {
   test("Gemini registers every generated hook", () => {
-    expect(geminiDiscards(readFileSync(join(fixture.root, ".gemini/settings.json"), "utf8"))).toEqual([]);
+    expect(
+      geminiDiscards(readFileSync(join(fixture.root, ".gemini/settings.json"), "utf8"))
+    ).toEqual([]);
   });
 
   test("negative control: Gemini discards the legacy post-tool and turn-end hooks", () => {
-    expect(geminiDiscards(readFileSync(join(import.meta.dir, "legacy-settings.json.txt"), "utf8"))).toEqual([
+    expect(
+      geminiDiscards(readFileSync(join(import.meta.dir, "legacy-settings.json.txt"), "utf8"))
+    ).toEqual([
       "AfterTool[0] has no hooks list",
       "AfterAgent[0] has no hooks list",
       "SessionEnd[0] has no hooks list",
@@ -147,21 +177,29 @@ describe("generated settings against Gemini CLI 0.64.0", () => {
 
   test("the ownership marker is in each hook's description", () => {
     for (const event of Object.keys(config.hooks)) {
-      for (const h of hooks(event)) expect(h.description).toContain("ward-owned: gemini-native-hooks v1");
+      for (const h of hooks(event)) expect(h.description).toContain(
+        "ward-owned: gemini-native-hooks v1"
+      );
     }
   });
 });
 
 describe("hook execution", () => {
-
-
-
-
   test("a failing check after an edit is appended to the tool result without failing the edit", async () => {
     writeFileSync(join(fixture.root, "FAIL"), "");
     try {
-      const { output, invocations } = await tool("AfterTool", "replace", { file_path: "src/main/java/A.java" });
-      expect(invocations.map((i) => i.argv)).toEqual([["hook", "native", "--agent", "gemini", "--event-stdin"]]);
+      const { output, invocations } = await tool(
+        "AfterTool",
+        "replace",
+        { file_path: "src/main/java/A.java" }
+      );
+      expect(invocations.map((i) => i.argv)).toEqual([[
+        "hook",
+        "native",
+        "--agent",
+        "gemini",
+        "--event-stdin"
+      ]]);
       expect(blocking(output)).toBe(false);
       expect(output.hookSpecificOutput.additionalContext).toContain("Ward quality findings");
     } finally {
@@ -170,7 +208,11 @@ describe("hook execution", () => {
   });
 
   test("a clean edit is silent", async () => {
-    const { result } = await tool("AfterTool", "write_file", { file_path: "src/main/java/A.java", content: "" });
+    const { result } = await tool(
+      "AfterTool",
+      "write_file",
+      { file_path: "src/main/java/A.java", content: "" }
+    );
     expect([result.exitCode, result.stdout.trim()]).toEqual([0, ""]);
   });
 
@@ -178,7 +220,16 @@ describe("hook execution", () => {
     writeFileSync(join(fixture.root, "FAIL"), "");
     try {
       const after = (active: boolean) =>
-        launch(fixture, hooks("AfterAgent")[0], { hook_event_name: "AfterAgent", prompt: "p", prompt_response: "done", stop_hook_active: active });
+      launch(
+        fixture,
+        hooks("AfterAgent")[0],
+        {
+          hook_event_name: "AfterAgent",
+          prompt: "p",
+          prompt_response: "done",
+          stop_hook_active: active
+        }
+      );
       const first = await after(false);
       expect(blocking(first.output)).toBe(true);
       expect(first.output.reason).toContain("format");
@@ -190,5 +241,4 @@ describe("hook execution", () => {
       rmSync(join(fixture.root, "FAIL"), { force: true });
     }
   });
-
 });

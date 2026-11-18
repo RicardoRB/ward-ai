@@ -192,9 +192,17 @@ order:
    and say the user installs it by hand.
 6. **Agent integration.** Recommend the harness you are running in (for example `claude-code`,
    `opencode`, or `codex`), plus any other the user names, including `junie` for Junie CLI. `none` is valid.
+   Optionally offer `--prompt-hook` for an integration that has a prompt event (`claude-code`,
+   `codex`, `cursor`, `gemini`, `factory-droid`): it blocks a prompt that contains a secret before it is
+   sent. With a `secrets` gate, init also writes `[checks.secrets.prompts]` with `enabled = true`
+   into the new `ward.toml`; without the gate, say that no prompt is scanned until a `secrets` check is added.
+   It is opt-in: never pass the option unless the user agrees.
 7. **Git quality hooks.** These add Ward sections to `.git/hooks/pre-commit` and `pre-push`
    without replacing existing hook logic; they print `--format json` reports so agents can act on findings. Recommend them when the project has no CI, and mention that
-   they slow down commits and pushes.
+   they slow down commits and pushes. For a team, offer `--shared-hooks` (a committed `.githooks`
+   folder every clone shares); init prints the `git config core.hooksPath .githooks` command for
+   teammates and asks before it sets `core.hooksPath` here. On a project that already has
+   `ward.toml`, `--quality-hooks` or `--shared-hooks` alone changes only the hooks.
 8. **CI workflow** (only for GitHub repositories: a `github.com` remote or a `.github/` directory).
    `--ci github` writes `.github/workflows/ward.yml`, which runs the `ci` profile, installs the
    gate tools, and uploads SARIF to code scanning. Recommend it when the project has no workflow that

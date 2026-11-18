@@ -30,6 +30,7 @@ class ClasspathRuleSourceTest {
           "node-variable-distance",
           "reassigned-binding",
           "undefined-name",
+          "unresolved-name",
           "unused-binding"
       );
 

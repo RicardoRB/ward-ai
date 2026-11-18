@@ -40,6 +40,11 @@ public final class CursorIntegration implements NativeHarnessAdapter {
   /** Cursor validates only {@code version} and {@code hooks}, so the marker is a top-level key. */
   @Override
   public String configContent() {
+    return configContent(false);
+  }
+
+  @Override
+  public String configContent(final boolean prompts) {
     return "{\n  \"version\": 1,\n  \"wardOwnership\": \""
         + NativeHookText.marker(DEFINITION.id())
         + "\",\n  \"hooks\": {\n"
@@ -47,7 +52,11 @@ public final class CursorIntegration implements NativeHarnessAdapter {
         + hook("^(Write|Delete)$", "post", CHECK_TIMEOUT_SECONDS)
         + "],\n    \"stop\": ["
         + hook(null, "post", CHECK_TIMEOUT_SECONDS)
-        + "]\n  }\n}\n";
+        + "]"
+        + (prompts
+            ? ",\n    \"beforeSubmitPrompt\": [" + hook(null, "post", CHECK_TIMEOUT_SECONDS) + "]"
+            : "")
+        + "\n  }\n}\n";
   }
 
   private static String hook(final String matcher, final String phase, final int timeout) {

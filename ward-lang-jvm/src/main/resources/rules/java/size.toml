@@ -243,7 +243,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "complexity"
-presets = ["strict"]
 options.max = { type = "integer", min = 0 }
 body = '''
 check = "class-coupling"

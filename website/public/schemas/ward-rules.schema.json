@@ -33453,6 +33453,25 @@
         }
       }
     },
+    "ward:python/argument-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:python/arguments-differ": {
       "type": "object",
       "additionalProperties": false,
@@ -48027,6 +48046,25 @@
         }
       }
     },
+    "ward:swift/command-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:swift/comment-spacing": {
       "type": "object",
       "additionalProperties": false,
@@ -49675,25 +49713,6 @@
         }
       }
     },
-    "ward:swift/missing-switch-default": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:swift/modifier-order": {
       "type": "object",
       "additionalProperties": false,
@@ -50136,6 +50155,25 @@
         "pattern": {
           "type": "string",
           "description": "A regular expression."
+        }
+      }
+    },
+    "ward:swift/path-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -50709,6 +50747,25 @@
         }
       }
     },
+    "ward:swift/sql-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:swift/static-operator": {
       "type": "object",
       "additionalProperties": false,
@@ -51177,25 +51234,6 @@
         }
       }
     },
-    "ward:swift/unused-imports": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:swift/unused-local-variable": {
       "type": "object",
       "additionalProperties": false,
@@ -51589,6 +51627,82 @@
       }
     },
     "ward:typescript/catch-parameter-name": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/cdk-open-security-group": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/cdk-public-bucket": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/cdk-unencrypted-storage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/cdk-wildcard-iam-policy": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -60777,6 +60891,7 @@
               "python.ambiguous-function-name",
               "python.ambiguous-variable-name",
               "python.anomalous-unicode-escape-in-string",
+              "python.argument-injection",
               "python.arguments-differ",
               "python.arguments-out-of-order",
               "python.arguments-renamed",
@@ -61503,6 +61618,7 @@
               "swift.class-type-parameter-name",
               "swift.cleartext-url",
               "swift.closure-parameter-position",
+              "swift.command-injection",
               "swift.comment-spacing",
               "swift.compiler-protocol-init",
               "swift.complexity",
@@ -61585,7 +61701,6 @@
               "swift.method-name",
               "swift.method-type-parameter-name",
               "swift.missing-javadoc-type",
-              "swift.missing-switch-default",
               "swift.modifier-order",
               "swift.multiline-comment-leading-asterisk-presence",
               "swift.multiple-closures-with-trailing-closure",
@@ -61609,6 +61724,7 @@
               "swift.override-in-extension",
               "swift.parameter-count",
               "swift.parameter-name",
+              "swift.path-injection",
               "swift.pattern-matching-keywords",
               "swift.period-spacing",
               "swift.prefer-asset-symbols",
@@ -61639,6 +61755,7 @@
               "swift.shorthand-operator",
               "swift.shorthand-optional-binding",
               "swift.sorted-first-last",
+              "swift.sql-injection",
               "swift.static-operator",
               "swift.static-over-final-class",
               "swift.static-variable-name",
@@ -61663,7 +61780,6 @@
               "swift.unused-control-flow-label",
               "swift.unused-declaration",
               "swift.unused-enumerated",
-              "swift.unused-imports",
               "swift.unused-local-variable",
               "swift.unused-optional-binding",
               "swift.unused-parameter",
@@ -61684,6 +61800,10 @@
               "typescript.await-thenable",
               "typescript.ban-ts-comment",
               "typescript.catch-parameter-name",
+              "typescript.cdk-open-security-group",
+              "typescript.cdk-public-bucket",
+              "typescript.cdk-unencrypted-storage",
+              "typescript.cdk-wildcard-iam-policy",
               "typescript.class-type-parameter-name",
               "typescript.cleartext-transport",
               "typescript.command-injection",
@@ -63763,6 +63883,7 @@
               "python.ambiguous-function-name",
               "python.ambiguous-variable-name",
               "python.anomalous-unicode-escape-in-string",
+              "python.argument-injection",
               "python.arguments-differ",
               "python.arguments-out-of-order",
               "python.arguments-renamed",
@@ -64489,6 +64610,7 @@
               "swift.class-type-parameter-name",
               "swift.cleartext-url",
               "swift.closure-parameter-position",
+              "swift.command-injection",
               "swift.comment-spacing",
               "swift.compiler-protocol-init",
               "swift.complexity",
@@ -64571,7 +64693,6 @@
               "swift.method-name",
               "swift.method-type-parameter-name",
               "swift.missing-javadoc-type",
-              "swift.missing-switch-default",
               "swift.modifier-order",
               "swift.multiline-comment-leading-asterisk-presence",
               "swift.multiple-closures-with-trailing-closure",
@@ -64595,6 +64716,7 @@
               "swift.override-in-extension",
               "swift.parameter-count",
               "swift.parameter-name",
+              "swift.path-injection",
               "swift.pattern-matching-keywords",
               "swift.period-spacing",
               "swift.prefer-asset-symbols",
@@ -64625,6 +64747,7 @@
               "swift.shorthand-operator",
               "swift.shorthand-optional-binding",
               "swift.sorted-first-last",
+              "swift.sql-injection",
               "swift.static-operator",
               "swift.static-over-final-class",
               "swift.static-variable-name",
@@ -64649,7 +64772,6 @@
               "swift.unused-control-flow-label",
               "swift.unused-declaration",
               "swift.unused-enumerated",
-              "swift.unused-imports",
               "swift.unused-local-variable",
               "swift.unused-optional-binding",
               "swift.unused-parameter",
@@ -64670,6 +64792,10 @@
               "typescript.await-thenable",
               "typescript.ban-ts-comment",
               "typescript.catch-parameter-name",
+              "typescript.cdk-open-security-group",
+              "typescript.cdk-public-bucket",
+              "typescript.cdk-unencrypted-storage",
+              "typescript.cdk-wildcard-iam-policy",
               "typescript.class-type-parameter-name",
               "typescript.cleartext-transport",
               "typescript.command-injection",
@@ -70184,6 +70310,9 @@
             "anomalous-unicode-escape-in-string": {
               "$ref": "#/$defs/ward:python~1anomalous-unicode-escape-in-string"
             },
+            "argument-injection": {
+              "$ref": "#/$defs/ward:python~1argument-injection"
+            },
             "arguments-differ": {
               "$ref": "#/$defs/ward:python~1arguments-differ"
             },
@@ -72374,6 +72503,9 @@
             "closure-parameter-position": {
               "$ref": "#/$defs/ward:swift~1closure-parameter-position"
             },
+            "command-injection": {
+              "$ref": "#/$defs/ward:swift~1command-injection"
+            },
             "comment-spacing": {
               "$ref": "#/$defs/ward:swift~1comment-spacing"
             },
@@ -72620,9 +72752,6 @@
             "missing-javadoc-type": {
               "$ref": "#/$defs/ward:swift~1missing-javadoc-type"
             },
-            "missing-switch-default": {
-              "$ref": "#/$defs/ward:swift~1missing-switch-default"
-            },
             "modifier-order": {
               "$ref": "#/$defs/ward:swift~1modifier-order"
             },
@@ -72691,6 +72820,9 @@
             },
             "parameter-name": {
               "$ref": "#/$defs/ward:swift~1parameter-name"
+            },
+            "path-injection": {
+              "$ref": "#/$defs/ward:swift~1path-injection"
             },
             "pattern-matching-keywords": {
               "$ref": "#/$defs/ward:swift~1pattern-matching-keywords"
@@ -72782,6 +72914,9 @@
             "sorted-first-last": {
               "$ref": "#/$defs/ward:swift~1sorted-first-last"
             },
+            "sql-injection": {
+              "$ref": "#/$defs/ward:swift~1sql-injection"
+            },
             "static-operator": {
               "$ref": "#/$defs/ward:swift~1static-operator"
             },
@@ -72854,9 +72989,6 @@
             "unused-enumerated": {
               "$ref": "#/$defs/ward:swift~1unused-enumerated"
             },
-            "unused-imports": {
-              "$ref": "#/$defs/ward:swift~1unused-imports"
-            },
             "unused-local-variable": {
               "$ref": "#/$defs/ward:swift~1unused-local-variable"
             },
@@ -72922,6 +73054,18 @@
             },
             "catch-parameter-name": {
               "$ref": "#/$defs/ward:typescript~1catch-parameter-name"
+            },
+            "cdk-open-security-group": {
+              "$ref": "#/$defs/ward:typescript~1cdk-open-security-group"
+            },
+            "cdk-public-bucket": {
+              "$ref": "#/$defs/ward:typescript~1cdk-public-bucket"
+            },
+            "cdk-unencrypted-storage": {
+              "$ref": "#/$defs/ward:typescript~1cdk-unencrypted-storage"
+            },
+            "cdk-wildcard-iam-policy": {
+              "$ref": "#/$defs/ward:typescript~1cdk-wildcard-iam-policy"
             },
             "class-type-parameter-name": {
               "$ref": "#/$defs/ward:typescript~1class-type-parameter-name"

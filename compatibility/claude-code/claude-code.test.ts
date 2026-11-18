@@ -33,33 +33,45 @@ afterAll(() => {
   cleanupOwnedProcesses();
 });
 
-function handlers(event: string): (Registration & { args?: string[] })[] {
-  const groups = settings.hooks?.[event] ?? [];
-  const found = registrations(JSON.stringify({ hooks: { [event]: groups } }), "matcher-groups");
-  // Re-attach exec-form arguments, which the shared parser does not model.
-  return found.map((registration, index) => {
-    const handler = groups.flatMap((group: any) => group.hooks)[index];
-    return Array.isArray(handler?.args) ? { ...registration, args: handler.args } : registration;
-  });
-}
+function handlers(event: string): (
+  Registration & { args?: string[] }
+)[] { const groups = settings.hooks?.[event] ?? []; const found = registrations(
+  JSON.stringify({ hooks: { [event]: groups } }),
+  "matcher-groups"
+);
+// Re-attach exec-form arguments, which the shared parser does not model.
+return found.map((registration, index) => {
+  const handler = groups.flatMap((group: any) => group.hooks)[index];
+  return Array.isArray(handler?.args) ? { ...registration, args: handler.args } : registration;
+}); }
 
 const matches = (registration: Registration, tool: string) =>
-  registration.matcher === undefined || new RegExp(registration.matcher).test(tool);
+registration.matcher === undefined || new RegExp(registration.matcher).test(tool);
 
 /** Launches one handler like Claude Code, from `cwd`, with the event on stdin. */
-async function launch(registration: Registration & { args?: string[] }, payload: unknown, cwd: string) {
+async function launch(
+  registration: Registration & { args?: string[] },
+  payload: unknown,
+  cwd: string
+) {
   const before = recordedInvocations(log).length;
   const env = { ...fixture.env, PATH: `${bin}:${SYSTEM_PATH}`, CLAUDE_PROJECT_DIR: fixture.root };
   const stdin = typeof payload === "string" ? payload : JSON.stringify(payload);
   const argv = registration.args
-    ? [registration.command.replaceAll("${CLAUDE_PROJECT_DIR}", fixture.root), ...registration.args]
-    : ["/bin/sh", "-c", registration.command];
+  ? [registration.command.replaceAll("${CLAUDE_PROJECT_DIR}", fixture.root), ...registration.args]
+  : ["/bin/sh", "-c", registration.command];
   const result = await run(argv, { cwd, env, stdin, timeoutMs: 60_000 });
   return { result, invocations: recordedInvocations(log).slice(before) };
 }
 
 function payload(event: string, extra: Record<string, unknown> = {}) {
-  return { session_id: `s${session++}`, cwd: fixture.root, hook_event_name: event, permission_mode: "default", ...extra };
+  return {
+    session_id: `s${session++}`,
+    cwd: fixture.root,
+    hook_event_name: event,
+    permission_mode: "default",
+    ...extra
+  };
 }
 
 describe("generated settings", () => {
@@ -72,12 +84,16 @@ describe("generated settings", () => {
   test("the matcher selects the edit tools after a call", () => {
     const [post] = handlers("PostToolUse");
     expect(["Edit", "Write", "MultiEdit"].every((tool) => matches(post, tool))).toBe(true);
-    expect(["Read", "Bash", "NotebookEdit", "EditOther"].some((tool) => matches(post, tool))).toBe(false);
+    expect(["Read", "Bash", "NotebookEdit", "EditOther"].some((tool) => matches(post, tool))).toBe(
+      false
+    );
   });
 
   test("hook commands are anchored at the project directory", () => {
     for (const event of ["PostToolUse", "Stop"]) {
-      for (const handler of handlers(event)) expect(handler.command.startsWith("${CLAUDE_PROJECT_DIR}/.claude/hooks/")).toBe(true);
+      for (const handler of handlers(event)) expect(
+        handler.command.startsWith("${CLAUDE_PROJECT_DIR}/.claude/hooks/")
+      ).toBe(true);
     }
   });
 });
@@ -86,7 +102,10 @@ describe("hook execution from a subdirectory", () => {
   test("a post-edit hook still reaches Ward for the project when the session is in a subdirectory", async () => {
     const { result, invocations } = await launch(
       handlers("PostToolUse")[0],
-      payload("PostToolUse", { tool_name: "Edit", tool_input: { file_path: join(fixture.root, "src/A.java") } }),
+      payload(
+        "PostToolUse",
+        { tool_name: "Edit", tool_input: { file_path: join(fixture.root, "src/A.java") } }
+      ),
       join(fixture.root, "src/main/java"),
     );
     expect(invocations.map((i) => i.argv)).toEqual([
@@ -99,14 +118,28 @@ describe("hook execution from a subdirectory", () => {
 describe("Ward responses through the generated hooks", () => {
   test("a passing check after an edit exits 0", async () => {
     rmSync(join(fixture.root, "FAIL"), { force: true });
-    const { result } = await launch(handlers("PostToolUse")[0], payload("PostToolUse", { tool_name: "Write", tool_input: { file_path: join(fixture.root, "src/A.java") } }), fixture.root);
+    const { result } = await launch(
+      handlers("PostToolUse")[0],
+      payload(
+        "PostToolUse",
+        { tool_name: "Write", tool_input: { file_path: join(fixture.root, "src/A.java") } }
+      ),
+      fixture.root
+    );
     expect(result.exitCode).toBe(0);
   });
 
   test("a failing check exits 2 with the findings on stderr, which Claude Code shows to Claude", async () => {
     writeFileSync(join(fixture.root, "FAIL"), "");
     try {
-      const { result } = await launch(handlers("PostToolUse")[0], payload("PostToolUse", { tool_name: "Edit", tool_input: { file_path: join(fixture.root, "src/A.java") } }), fixture.root);
+      const { result } = await launch(
+        handlers("PostToolUse")[0],
+        payload(
+          "PostToolUse",
+          { tool_name: "Edit", tool_input: { file_path: join(fixture.root, "src/A.java") } }
+        ),
+        fixture.root
+      );
       expect(result.exitCode).toBe(2);
       expect(result.stderr).toContain("format");
     } finally {
@@ -117,12 +150,20 @@ describe("Ward responses through the generated hooks", () => {
   test("turn-end findings block the stop once, then reach only the user", async () => {
     writeFileSync(join(fixture.root, "FAIL"), "");
     try {
-      const first = await launch(handlers("Stop")[0], payload("Stop", { stop_hook_active: false }), fixture.root);
+      const first = await launch(
+        handlers("Stop")[0],
+        payload("Stop", { stop_hook_active: false }),
+        fixture.root
+      );
       expect(first.result.exitCode).toBe(0);
       const block = JSON.parse(first.result.stdout);
       expect(block.decision).toBe("block");
       expect(block.reason).toContain("format");
-      const second = await launch(handlers("Stop")[0], payload("Stop", { stop_hook_active: true }), fixture.root);
+      const second = await launch(
+        handlers("Stop")[0],
+        payload("Stop", { stop_hook_active: true }),
+        fixture.root
+      );
       const message = JSON.parse(second.result.stdout);
       expect(message.decision).toBeUndefined();
       expect(message.systemMessage).toContain("format");
@@ -136,7 +177,14 @@ describe("Ward responses through the generated hooks", () => {
     // file has an over-long line while it exists, so the learned problem is Ward's line-length rule.
     const source = join(fixture.root, "src/A.java");
     const edit = () =>
-      launch(handlers("PostToolUse")[0], payload("PostToolUse", { tool_name: "Edit", tool_input: { file_path: join(fixture.root, "src/A.java") } }), fixture.root);
+    launch(
+      handlers("PostToolUse")[0],
+      payload(
+        "PostToolUse",
+        { tool_name: "Edit", tool_input: { file_path: join(fixture.root, "src/A.java") } }
+      ),
+      fixture.root
+    );
     rmSync(join(fixture.root, ".ward"), { recursive: true, force: true });
     const passes = [];
     for (let episode = 0; episode < 3; episode++) {
@@ -158,7 +206,11 @@ describe("Ward responses through the generated hooks", () => {
   });
 
   test("a clean turn end lets Claude stop", async () => {
-    const { result } = await launch(handlers("Stop")[0], payload("Stop", { stop_hook_active: false }), fixture.root);
+    const { result } = await launch(
+      handlers("Stop")[0],
+      payload("Stop", { stop_hook_active: false }),
+      fixture.root
+    );
     expect([result.exitCode, result.stdout.trim()]).toEqual([0, ""]);
   });
 });
@@ -169,9 +221,14 @@ describe("settings ownership", () => {
     rmSync(root, { recursive: true, force: true });
     mkdirSync(join(root, ".claude"), { recursive: true });
     writeFileSync(join(root, "pom.xml"), readFileSync(join(fixture.root, "pom.xml")));
-    const text = JSON.stringify({ hooks: { Stop: [{ hooks: [{ type: "command", command: ".claude/hooks/ward-edit-write" }] }] } });
+    const text = JSON.stringify({
+      hooks: { Stop: [{ hooks: [{ type: "command", command: ".claude/hooks/ward-edit-write" }] }] }
+    });
     writeFileSync(join(root, ".claude/settings.json"), text);
-    const result = await run([...fixture.ward.argv, "integrate", "claude-code", "-C", root], { cwd: root, env: fixture.env, timeoutMs: 60_000 });
+    const result = await run(
+      [...fixture.ward.argv, "integrate", "claude-code", "-C", root],
+      { cwd: root, env: fixture.env, timeoutMs: 60_000 }
+    );
     expect(result.stdout).toContain("CONFLICT");
     expect(readFileSync(join(root, ".claude/settings.json"), "utf8")).toBe(text);
   });
@@ -182,18 +239,31 @@ describe("settings ownership", () => {
     mkdirSync(join(root, ".claude/hooks"), { recursive: true });
     writeFileSync(join(root, "pom.xml"), readFileSync(join(fixture.root, "pom.xml")));
     const guard = ".claude/hooks/ward-openspec-guard";
-    writeFileSync(join(root, guard), "#!/bin/sh\n# ward-owned: openspec-guard v1\nexec ward hook claude-code --guard-approved-specs\n");
+    writeFileSync(
+      join(root, guard),
+      "#!/bin/sh\n# ward-owned: openspec-guard v1\nexec ward hook claude-code --guard-approved-specs\n"
+    );
     writeFileSync(
       join(root, ".claude/settings.json"),
       JSON.stringify({
         wardOwnership: "ward-owned: claude-code-edit-write v1",
-        hooks: { PreToolUse: [{ matcher: "^(Edit|Write)$", hooks: [{ type: "command", command: "${CLAUDE_PROJECT_DIR}/" + guard }] }] },
+        hooks: {
+          PreToolUse: [{
+            matcher: "^(Edit|Write)$",
+            hooks: [{ type: "command", command: "${CLAUDE_PROJECT_DIR}/" + guard }]
+          }]
+        },
       }),
     );
-    const result = await run([...fixture.ward.argv, "integrate", "claude-code", "-C", root], { cwd: root, env: fixture.env, timeoutMs: 60_000 });
+    const result = await run(
+      [...fixture.ward.argv, "integrate", "claude-code", "-C", root],
+      { cwd: root, env: fixture.env, timeoutMs: 60_000 }
+    );
     expect(result.exitCode).toBe(0);
     expect(existsSync(join(root, guard))).toBe(false);
-    expect(JSON.parse(readFileSync(join(root, ".claude/settings.json"), "utf8")).hooks.PreToolUse).toBeUndefined();
+    expect(
+      JSON.parse(readFileSync(join(root, ".claude/settings.json"), "utf8")).hooks.PreToolUse
+    ).toBeUndefined();
   });
 
   test("user hooks and permissions survive install, refresh and removal, and legacy entries are replaced", async () => {
@@ -207,16 +277,24 @@ describe("settings ownership", () => {
       permissions: { allow: ["Bash(npm test)"] },
       hooks: {
         PreToolUse: [{ matcher: "Bash", hooks: [{ type: "command", command: "./user-hook.sh" }] }],
-        PostToolUse: [{ matcher: "^(Edit|Write|MultiEdit)$", hooks: [{ type: "command", command: ".claude/hooks/ward-edit-write" }] }],
+        PostToolUse: [{
+          matcher: "^(Edit|Write|MultiEdit)$",
+          hooks: [{ type: "command", command: ".claude/hooks/ward-edit-write" }]
+        }],
       },
     };
     writeFileSync(join(root, ".claude/settings.json"), JSON.stringify(user, null, 2));
-    const ward = (args: string[]) => run([...fixture.ward.argv, ...args, "-C", root], { cwd: root, env: fixture.env, timeoutMs: 60_000 });
+    const ward = (args: string[]) => run(
+      [...fixture.ward.argv, ...args, "-C", root],
+      { cwd: root, env: fixture.env, timeoutMs: 60_000 }
+    );
     expect((await ward(["integrate", "claude-code"])).exitCode).toBe(0);
     const merged = JSON.parse(readFileSync(join(root, ".claude/settings.json"), "utf8"));
     expect(merged.permissions).toEqual(user.permissions);
     expect(merged.hooks.PreToolUse).toContainEqual(user.hooks.PreToolUse[0]);
-    const postCommands = merged.hooks.PostToolUse.flatMap((group: any) => group.hooks.map((h: any) => h.command));
+    const postCommands = merged.hooks.PostToolUse.flatMap(
+      (group: any) => group.hooks.map((h: any) => h.command)
+    );
     expect(postCommands).toEqual(["${CLAUDE_PROJECT_DIR}/.claude/hooks/ward-edit-write"]);
     expect((await ward(["integrate", "claude-code"])).exitCode).toBe(0);
     expect(JSON.parse(readFileSync(join(root, ".claude/settings.json"), "utf8"))).toEqual(merged);

@@ -38,3 +38,8 @@ class Store:
 
 def manager(User):
     return User.objects.raw("SELECT * FROM users WHERE name = '" + request.args["name"] + "'")
+
+
+def renamed():
+    handle = sqlite3.connect("app.db").cursor()
+    handle.execute("SELECT * FROM t WHERE id = " + request.args["id"])

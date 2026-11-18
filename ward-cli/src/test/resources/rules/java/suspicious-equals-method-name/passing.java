@@ -3,3 +3,8 @@ class Point {
     return false;
   }
 }
+
+class Named {
+  void test_equals() {
+  }
+}

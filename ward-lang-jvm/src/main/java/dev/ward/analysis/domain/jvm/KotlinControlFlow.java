@@ -54,7 +54,13 @@ public final class KotlinControlFlow implements ControlFlowLowering {
     final UnitScopes scopes = new KotlinScopeAnalysis(environments -> Set.of()).analyze(unit, tree);
     final Map<Integer, Integer> writeEnds = new HashMap<>();
     KotlinWriteEnds.collect(tree, writeEnds);
-    final Collector collector = new Collector(scopes, KotlinTypeNames.of(tree), writeEnds);
+    final Collector collector = new Collector(
+        scopes,
+        KotlinTypeNames.of(tree),
+        writeEnds,
+        KotlinThisReads.functions(tree),
+        KotlinFileTypes.of(tree)
+    );
     collector.visit(tree, "", false);
     return new ControlFlowResult(collector.graphs, List.of());
   }
@@ -64,14 +70,20 @@ public final class KotlinControlFlow implements ControlFlowLowering {
     private final UnitScopes scopes;
     private final JavaTypeNames types;
     private final Map<Integer, Integer> writeEnds;
+    private final Set<String> functions;
+    private final KotlinFileTypes fileTypes;
     private final List<ControlFlowGraph> graphs = new ArrayList<>();
 
     Collector(
         final UnitScopes scopes,
         final JavaTypeNames types,
         final Map<Integer,
-        Integer> writeEnds
+        Integer> writeEnds,
+        final Set<String> functions,
+        final KotlinFileTypes fileTypes
     ) {
+      this.fileTypes = fileTypes;
+      this.functions = functions;
       this.scopes = scopes;
       this.types = types;
       this.writeEnds = writeEnds;
@@ -148,11 +160,17 @@ public final class KotlinControlFlow implements ControlFlowLowering {
       final Span span = owner.span();
       final KotlinView view = new KotlinView();
       final KotlinAccesses accesses =
-          new KotlinAccesses(scopes, span, nested(owner), writeEnds, view);
+          new KotlinAccesses(
+              scopes,
+              span,
+              nested(owner),
+              new KotlinAccesses.Hints(writeEnds, KotlinThisReads.of(owner, functions)),
+              view
+          );
       final List<VariableAccess> entry =
           parameters == null ? List.of() : KotlinAccesses.parameters(scopes, parameters.span());
       graphs.add(
-          new KotlinBodyLowering(accesses, new KotlinFlowSites(types, view), view)
+          new KotlinBodyLowering(accesses, new KotlinFlowSites(types, view, fileTypes), view)
               .lower(name, entry, parameters, body, span)
       );
     }

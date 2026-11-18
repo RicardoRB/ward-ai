@@ -57,5 +57,4 @@ language = "swift"
 capability = "SYNTAX"
 severity = "warning"
 category = "naming"
-presets = ["standard", "strict"]
-body = "measure=identifier-case; node=struct_declaration:cap,class_declaration:cap,protocol_declaration:cap,union_style_enum:cap,raw_value_style_enum:cap,function_declaration:camel,identifier_pattern:camel,enum_case_name:camel; name=struct_name|class_name|protocol_name|enum_name|function_name|declaration_identifier; message={name} should be {expected}"
+body = "measure=identifier-case; node=struct_declaration:cap,class_declaration:cap,protocol_declaration:cap,union_style_enum:cap,raw_value_style_enum:cap,function_declaration:camel,identifier_pattern:camel,enum_case_name:camel; name=struct_name|class_name|protocol_name|enum_name|function_name|declaration_identifier; exempt=pattern/case_item_list; message={name} should be {expected}"

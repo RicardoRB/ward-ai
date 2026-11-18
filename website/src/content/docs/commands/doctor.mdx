@@ -27,7 +27,7 @@ per check:
 [OK] configuration Configuration is present.
 [OK] integration   Configured integrations: codex=installed [[FEEDBACK, POST_EDIT, TURN_END]].
 [OK] native        Native executable present.
-[OK] ward          v0.10.0 is the latest release.
+[OK] ward          v0.11.0 is the latest release.
 ```
 
 | Check | Status | Meaning |
@@ -57,6 +57,7 @@ per check:
 | `configuration` | `OK` / `ERROR` | `ward.toml` exists in the project root; otherwise run `ward init`. |
 | `integration` | `OK` / `WARNING` | Lists configured project-local agent integrations as `id=status [capabilities]`. `installed` means the integration's files are present and Ward-owned; it does not show that the harness has loaded them. `WARNING` means none is configured (`No supported agent integration configured.`) or one is incomplete or outdated; re-run `ward integrate <agent>` to repair it. For a project in a monorepo, agent integrations are looked up at the repository root, where `ward init` installs them. |
 | `rule configuration` | `OK` / `ERROR` | For each enabled `ward` check that has a `ward-rules.toml` (or the `rules-file` it names): `OK` with the number of selected rules, or one `ERROR` per problem, each naming the file, the table and the key. The `ward` gate fails with the same problems. |
+| `git-hooks` | `WARNING` | Only when `core.hooksPath` names a folder that does not exist: Git runs no hook, and the message names the folder. Create it, or run `ward init --shared-hooks`. |
 | `native` | `OK` / `WARNING` | `target/ward` or `ward-cli/target/ward` exists in the current directory. This is a development check for the Ward repository. |
 | `ward` | `OK` / `WARNING` | Compares the running version with the latest GitHub release, looking it up now rather than using the [update check](/reference/environment-variables/) cache. `WARNING` means a newer release exists (the line shows how to install it) or the latest release could not be determined, for example offline. `OK` also covers development builds and `WARD_NO_UPDATE_CHECK`, which skip the lookup. |
 
@@ -72,7 +73,10 @@ do not depend on native resolvers.
 
 The Java and Kotlin resolver types the project sources and reads library and JDK classes directly
 from class files: the jars and directories of the `java-classpath` file, and the JDK `lib/modules`
-image found through `JAVA_HOME` or the running JDK. It never starts `javac`. Each jar is indexed once
+image of the first JDK Ward finds: `JAVA_HOME`, the `java` on `PATH`, `/usr/libexec/java_home` on macOS,
+then the running JDK. When none is found, the Java and Kotlin `TYPES` rules are reported as not run
+("no JDK was found") and report no finding, so a native binary without `JAVA_HOME` never reports
+false findings from unknown JDK types. It never starts `javac`. Each jar is indexed once
 and the index is kept under `.ward/cache/types/`, named by the SHA-256 of the jar.
 
 The TypeScript and JavaScript resolver types the project sources and reads declarations as text,

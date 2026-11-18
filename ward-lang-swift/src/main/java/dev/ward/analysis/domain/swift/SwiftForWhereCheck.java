@@ -17,6 +17,7 @@ public final class SwiftForWhereCheck implements RuleCheck {
   private static final String FOR_IN = "for_in_statement";
   private static final int SINGLE = 1;
   private static final String IF = "if_statement";
+  private static final String BRANCH = "branch_statement";
   private static final String BODY = "code_block";
   private static final String WHERE = "where_clause";
   private static final String ELSE = "else_clause";
@@ -58,7 +59,8 @@ public final class SwiftForWhereCheck implements RuleCheck {
     return SwiftTrees.child(loop, BODY)
         .map(body -> statements(body, new ArrayList<>()))
         .filter(statements -> statements.size() == 1)
-        .flatMap(statements -> SwiftTrees.descendants(statements.get(0), IF).stream().findFirst());
+        .flatMap(statements -> SwiftTrees.child(statements.get(0), BRANCH))
+        .flatMap(branch -> SwiftTrees.child(branch, IF));
   }
 
   /** Collects the statements of a block, not those nested inside them. */

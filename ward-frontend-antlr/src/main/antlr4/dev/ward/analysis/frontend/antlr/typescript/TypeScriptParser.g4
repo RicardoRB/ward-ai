@@ -736,7 +736,7 @@ formalParameterList
     ;
 
 formalParameterArg
-    : decorator? accessibilityModifier? assignable '?'? typeAnnotation? (
+    : decorator? (accessibilityModifier ReadOnly? | ReadOnly)? assignable '?'? typeAnnotation? (
         '=' singleExpression
     )? // ECMAScript 6: Initialization
     ;

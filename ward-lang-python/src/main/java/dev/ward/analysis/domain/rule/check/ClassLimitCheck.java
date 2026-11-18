@@ -32,6 +32,8 @@ public final class ClassLimitCheck implements RuleCheck {
   private static final String FUNCTION = "funcdef";
   private static final String EXPRESSION = "expr_stmt";
   private static final String PUBLIC_PREFIX = "_";
+  // The Meta class of a Django model or form holds options, and is not meant to have methods.
+  private static final String OPTIONS_CLASS = "Meta";
 
   private final Problem problem;
   private final int limit;
@@ -81,6 +83,7 @@ public final class ClassLimitCheck implements RuleCheck {
     }
     return !ancestors.stream().anyMatch(a -> "decorated".equals(a.kind()))
         && !ModuleDefinitions.hasBases(definition)
+        && !ModuleDefinitions.definedName(definition).filter(OPTIONS_CLASS::equals).isPresent()
         && count < limit;
   }
 

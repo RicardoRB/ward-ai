@@ -7,6 +7,7 @@ import dev.ward.analysis.application.rule.RuleFileReader;
 import dev.ward.analysis.domain.port.AnalysisFailedException;
 import dev.ward.analysis.domain.rule.RuleConfigurationException;
 import dev.ward.analysis.domain.rule.RuleDefinition;
+import dev.ward.analysis.domain.rule.RuleMatcher;
 import dev.ward.application.gate.AnalysisRuleLoad;
 import dev.ward.application.gate.AnalysisRuleSource;
 import java.util.ArrayList;
@@ -42,12 +43,31 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
   public AnalysisRuleLoad load() {
     final List<RuleDefinition> rules = new ArrayList<>();
     final List<String> errors = new ArrayList<>();
+    final RuleMatcher matcher = BundledRuleMatchers.create();
     for (final String resource : resources) {
       try {
         final List<RuleDefinition> file = RuleFileReader.read(resource);
-        file.forEach(rule -> checkBody(resource, rule));
+        file.forEach(rule -> checkBody(matcher, resource, rule));
         RuleDefinitions.requireUnique(concat(rules, file));
         rules.addAll(file);
+      } catch (final RuleConfigurationException exception) {
+        errors.add(exception.getMessage());
+      }
+    }
+    return new AnalysisRuleLoad(rules, errors);
+  }
+
+  /**
+   * Loads only the secret rule file, without building each rule: a rule that cannot be compiled is
+   * an execution error of the scan that runs it, so nothing passes silently.
+   */
+  @Override
+  public AnalysisRuleLoad loadSecrets() {
+    final List<RuleDefinition> rules = new ArrayList<>();
+    final List<String> errors = new ArrayList<>();
+    for (final String resource : new SecretRuleFiles().ruleFiles()) {
+      try {
+        rules.addAll(RuleFileReader.read(resource));
       } catch (final RuleConfigurationException exception) {
         errors.add(exception.getMessage());
       }
@@ -65,9 +85,13 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
   }
 
   /** Builds the rule once so that a body that cannot be used is reported with its file. */
-  private static void checkBody(final String resource, final RuleDefinition definition) {
+  private static void checkBody(
+      final RuleMatcher matcher,
+      final String resource,
+      final RuleDefinition definition
+  ) {
     try {
-      BundledRuleMatchers.create().compile(definition);
+      matcher.compile(definition);
     } catch (final AnalysisFailedException exception) {
       throw RuleFileProblems.problem(
           resource,

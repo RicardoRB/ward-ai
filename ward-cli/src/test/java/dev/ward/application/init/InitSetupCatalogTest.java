@@ -200,13 +200,13 @@ class InitSetupCatalogTest {
     assertThat(catalog.gates(project, null))
         .extracting(InitGateOption::id)
         .containsExactlyInAnyOrderElementsOf(
-            QualityGateFactory.SUPPORTED_GATES.stream()
             // OpenAPI gates are offered only when the project commits a spec.
-            .filter(id -> !id.startsWith("openapi-"))
-            // The analysis gate is written by hand in ward.toml; init does not offer it.
-            .filter(id -> !SupportedQualityGates.ANALYSIS.equals(id))
-            // Node gates are run by check only; init does not offer them for JVM projects.
-            .filter(id -> !NODE_GATES.contains(id))
+            QualityGateFactory.SUPPORTED_GATES.stream()
+                .filter(id -> !id.startsWith("openapi-"))
+                // The analysis gate is written by hand in ward.toml; init does not offer it.
+                .filter(id -> !SupportedQualityGates.ANALYSIS.equals(id))
+                // Node gates are run by check only; init does not offer them for JVM projects.
+                .filter(id -> !NODE_GATES.contains(id))
                 .filter(id -> !PYTHON_GATES.contains(id))
                 // Swift init arrives later; check runs Swift gates only.
                 .filter(id -> !SWIFT_GATES.contains(id))

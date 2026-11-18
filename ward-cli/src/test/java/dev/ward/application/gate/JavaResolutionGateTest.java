@@ -122,7 +122,7 @@ class JavaResolutionGateTest {
   private AnalysisGate gate(final String javaClasspath) {
     return new AnalysisGate(
         "ward",
-        List.of(),
+        DependencyStepFakes.readers(AnalysisLanguage.JAVA),
         new AnalysisPorts(
             () -> new AnalysisRuleLoad(List.of(), List.of()),
             new MetricMatcher(),
@@ -131,7 +131,7 @@ class JavaResolutionGateTest {
                 new FrontendSupport(
                     AnalysisLanguage.JAVA,
                     new AntlrLanguageFrontend(),
-                    Set.of(RuleCapability.SYNTAX)
+                    Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS)
                 )
             ),
             projectRoot -> new FileAnalysisCache(projectRoot.resolve(".ward/cache/analysis")),

@@ -133,6 +133,7 @@ public final class DoctorService {
         )
     );
     diagnoseIntegrations(project.get(), openCode, findings);
+    diagnoseHooksPath(root, findings);
     findings.add(
         check(
             "native",
@@ -210,6 +211,24 @@ public final class DoctorService {
   private static IntegrationHealth health(final Project project, final AgentIntegration adapter) {
     final boolean shared = adapter.installsAtRepositoryRoot();
     return adapter.health(project.installRoot(shared), project.installPath(shared));
+  }
+
+  private void diagnoseHooksPath(final Path root, final List<Finding> findings) {
+    environment
+        .missingHooksPath(root)
+        .ifPresent(
+            folder ->
+                findings.add(
+                    new Finding(
+                        "git-hooks",
+                        Status.WARNING,
+                        "Git runs no hook: core.hooksPath points to '"
+                            + folder
+                            + "', which does not exist. Create the folder, or run 'ward init"
+                            + " --shared-hooks' to write the hooks there."
+                    )
+                )
+        );
   }
 
   private void diagnoseConfiguration(

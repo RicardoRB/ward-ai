@@ -23,6 +23,7 @@ pmd = ["EmptyCatchBlock"]
 checkstyle = ["EmptyCatchBlock"]
 ruff = ["S110"]
 
+# Swift (#596): the `else` of a multi-line `guard` has no brace before it.
 [[rule]]
 name = "google-right-curly"
 not-applicable = { python = "Python blocks are indentation-based, so there are no braces to place" }

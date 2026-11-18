@@ -7,3 +7,14 @@ class Singleton {
     return INSTANCE;
   }
 }
+
+class Defaulted {
+  private final Object context;
+
+  Defaulted(Object context) {
+    if (context == null) {
+      context = new Object();
+    }
+    this.context = context;
+  }
+}

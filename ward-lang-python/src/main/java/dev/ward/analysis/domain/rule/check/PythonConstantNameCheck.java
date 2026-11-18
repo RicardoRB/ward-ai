@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -21,13 +22,18 @@ import java.util.regex.Pattern;
  * literal, like pylint's {@code invalid-name} for constants. A name assigned more than once is a
  * variable and is left alone, as pylint does, and so are functions and classes. Pylint holds only
  * names whose value infers to a constant to the constant style, so {@code app = Flask(__name__)} or
- * {@code urlpatterns = [...]} are variables.
+ * {@code urlpatterns = [...]} are variables. A tool configuration module ({@code *.conf.py}) is
+ * not checked, because the tool fixes the names of its settings.
  */
 public final class PythonConstantNameCheck implements RuleCheck {
   private static final String NAME = "{value}";
   private static final Pattern CONSTANT = Pattern.compile("[A-Z_][A-Z0-9_]*|__.*__");
   private static final String ASSIGNMENT = "expr_stmt";
   private static final String EQUALS = "=";
+  private static final Set<String> OPENERS = Set.of("(", "[", "{");
+  private static final Set<String> CLOSERS = Set.of(")", "]", "}");
+  // A module such as gunicorn.conf.py holds settings that a tool reads by their lower-case names.
+  private static final String TOOL_CONFIG = ".conf.py";
 
   /**
    * A token of a literal value: a number, a plain string, {@code True}, {@code False}, {@code
@@ -69,6 +75,9 @@ public final class PythonConstantNameCheck implements RuleCheck {
   ) {
     final UnitScopes scopes = view.scopes();
     final List<RuleMatch> found = new ArrayList<>();
+    if (unit.path().endsWith(TOOL_CONFIG)) {
+      return found;
+    }
     for (final Binding binding : scopes.module().bindings()) {
       if (isConstantCandidate(binding, scopes) && assignsLiteral(root, binding)) {
         found.add(new RuleMatch(binding.declaration(), message.replace(NAME, binding.name())));
@@ -100,10 +109,28 @@ public final class PythonConstantNameCheck implements RuleCheck {
   private static boolean valueIsLiteral(final SyntaxNode assignment) {
     final List<String> tokens =
         SyntaxWalk.leaves(assignment).stream().map(SyntaxWalk::text).toList();
-    final List<String> value = tokens.subList(tokens.lastIndexOf(EQUALS) + 1, tokens.size());
-    return tokens.contains(EQUALS)
+    final int assign = lastAssignment(tokens);
+    final List<String> value = tokens.subList(assign + 1, tokens.size());
+    return assign >= 0
         && !value.isEmpty()
         && value.stream().allMatch(token -> LITERAL_TOKEN.matcher(token).matches());
+  }
+
+  /** The last {@code =} outside any bracket, so a keyword argument of a call is not the assignment. */
+  private static int lastAssignment(final List<String> tokens) {
+    int depth = 0;
+    int last = -1;
+    for (int index = 0; index < tokens.size(); index++) {
+      final String token = tokens.get(index);
+      if (OPENERS.contains(token)) {
+        depth++;
+      } else if (CLOSERS.contains(token)) {
+        depth--;
+      } else if (depth == 0 && EQUALS.equals(token)) {
+        last = index;
+      }
+    }
+    return last;
   }
 
   private static long assignments(final Binding binding, final UnitScopes scopes) {

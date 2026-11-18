@@ -9,10 +9,12 @@ import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleExecutionError;
 import dev.ward.analysis.domain.rule.RuleMatcher;
 import dev.ward.analysis.domain.rule.RuleNotRun;
+import dev.ward.analysis.domain.rule.check.CheckedRule;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -62,6 +64,19 @@ record PreparedRule(Optional<CompiledRule> rule, List<AnalysisLanguage> runnable
                 Collectors.mapping(Map.Entry::getValue, Collectors.toList())
             )
         );
+  }
+
+  /** The node kinds that the prepared rules read from the shared node index. */
+  static Set<String> nodeKinds(final List<PreparedRule> prepared) {
+    return prepared.stream()
+        .flatMap(item -> item.rule().stream())
+        .flatMap(rule -> kindsOf(rule).stream())
+        .collect(Collectors.toUnmodifiableSet());
+  }
+
+  /** The node kinds {@code rule} reads from the shared node index; none for a rule of no check. */
+  static Set<String> kindsOf(final CompiledRule rule) {
+    return rule instanceof CheckedRule checked ? checked.getCheck().nodeKinds() : Set.of();
   }
 
   private static PreparedRule of(

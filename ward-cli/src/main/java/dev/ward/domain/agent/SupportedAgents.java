@@ -5,6 +5,10 @@ import java.util.stream.Collectors;
 
 /** Canonical agent integration identifiers and display names. */
 public final class SupportedAgents {
+  /** The agents with a hook event that fires on a prompt and can reject it. */
+  private static final List<String> PROMPT_HOOK_IDS =
+      List.of("claude-code", "codex", "cursor", "gemini", "factory-droid");
+
   private static final List<Definition> DEFINITIONS =
       List.of(
           new Definition("opencode", "OpenCode"),
@@ -29,6 +33,18 @@ public final class SupportedAgents {
   public record Definition(String id, String label) {}
 
   private SupportedAgents() {}
+
+  /** Returns the agents in {@code ids} that have no prompt hook, in the order given. */
+  public static List<String> withoutPromptHook(final List<String> ids) {
+    return ids.stream()
+        .filter(id -> ids().contains(id) && !PROMPT_HOOK_IDS.contains(id))
+        .toList();
+  }
+
+  /** Returns the agents that have a prompt hook. */
+  public static List<String> promptHookIds() {
+    return PROMPT_HOOK_IDS;
+  }
 
   /** Returns every supported agent, in menu order. */
   public static List<Definition> definitions() {

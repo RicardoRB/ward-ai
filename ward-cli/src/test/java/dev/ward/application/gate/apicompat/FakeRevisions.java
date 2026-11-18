@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.TreeMap;
 
 /** An in-memory repository: refs to commits, tags, and files per commit. */
-final class FakeRevisions implements RevisionFiles {
+class FakeRevisions implements RevisionFiles {
   final Map<String, String> refs = new HashMap<>();
   final List<String> reachable = new ArrayList<>();
   final List<String> atHead = new ArrayList<>();

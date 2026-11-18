@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  * same-named local variable hides a dead definition; upgrade by resolving imports per file.
  * Decorated definitions are left out because decorators register them (routes, fixtures, entry
  * points). Like vulture, a {@code getattr} or {@code hasattr} string literal uses the attribute it
- * names, and importing {@code unittest} or {@code mock} uses the names of their bundled whitelists.
+ * names, and importing {@code unittest}, {@code mock} or {@code django} uses the names of their whitelists.
  */
 final class PythonTopLevelDefinitions {
   private static final Pattern IDENTIFIER = Pattern.compile("[A-Za-z_]\\w*");
@@ -56,6 +56,32 @@ final class PythonTopLevelDefinitions {
           "maxDiff",
           "subTest"
       );
+  // Hooks that Django calls by name: forms, model fields, admin classes, management commands, URL
+  // converters and authentication backends. A name of this set is used when the module uses Django.
+  private static final Set<String> DJANGO_WHITELIST =
+      Set.of(
+          "clean",
+          "lookups",
+          "queryset",
+          "get_user",
+          "authenticate",
+          "add_arguments",
+          "handle",
+          "to_python",
+          "to_url",
+          "model_post_init",
+          "get_queryset",
+          "save_model",
+          "get_urls",
+          "has_add_permission",
+          "has_change_permission",
+          "has_delete_permission",
+          "has_view_permission",
+          "is_staff",
+          "is_superuser",
+          "is_active"
+      );
+  private static final String DJANGO = "django";
   private static final Set<String> MOCK_WHITELIST = Set.of("return_value", "side_effect");
 
   private PythonTopLevelDefinitions() {}
@@ -96,6 +122,9 @@ final class PythonTopLevelDefinitions {
     }
     if (names.contains(MOCK)) {
       names.addAll(MOCK_WHITELIST);
+    }
+    if (names.contains(DJANGO)) {
+      names.addAll(DJANGO_WHITELIST);
     }
     return names;
   }

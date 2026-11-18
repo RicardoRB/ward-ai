@@ -1,6 +1,6 @@
 ---
 title: Security rules
-description: The security rules Ward provides for Java, JavaScript, TypeScript and Python, the weakness each one reports, and what it does not see.
+description: The security rules Ward provides for Java, JavaScript, TypeScript, Python and Swift, the weakness each one reports, and what it does not see.
 ---
 
 Ward reports common security weaknesses in source code with its own rules, so a project needs no
@@ -136,6 +136,20 @@ function is imported from.
 | `ward:javascript/weak-gcm-tag-length` | CWE-328, CWE-353 | error | standard, strict | A GCM `authTagLength` below 12, or a GCM decipher created without `authTagLength`, which accepts a truncated tag |
 | `ward:javascript/weak-argon2-parameters` | CWE-916 | error | standard, strict | `argon2.hash` with `memoryCost` below 19456 KiB or `timeCost` below 2 |
 
+### AWS CDK (TypeScript only)
+
+These `ward:typescript/cdk-*` rules read `aws-cdk-lib` code and report a setting only when it is
+written explicitly; a missing setting is never reported. They have no JavaScript or Python
+counterpart. Layer-1 `Cfn*` constructs, omitted encryption settings, open egress and the
+`BLOCK_ACLS` constant are not reported.
+
+| Rule | CWE | Severity | Presets | What it reports |
+|---|---|---|---|---|
+| `ward:typescript/cdk-public-bucket` | CWE-732 | error | standard, strict | A `Bucket` with `publicReadAccess: true` or a `PUBLIC_READ` ACL, a `BlockPublicAccess` with a flag set to `false`, or a `grantPublicAccess` call |
+| `ward:typescript/cdk-unencrypted-storage` | CWE-311 | warning | standard, strict | `UNENCRYPTED` on a `Bucket` or `Queue`, `encrypted: false` on a `Volume` or an EBS block device, `storageEncrypted: false` on an RDS instance or cluster |
+| `ward:typescript/cdk-open-security-group` | CWE-284 | error | standard, strict | An ingress rule from `0.0.0.0/0` or `::/0` on any port (`Peer.anyIpv4()`, `Peer.ipv4('0.0.0.0/0')`, `allowFromAnyIpv4`) |
+| `ward:typescript/cdk-wildcard-iam-policy` | CWE-269 | error | standard, strict | A `PolicyStatement` that is not a `Deny` and lists `*` in both `actions` and `resources` |
+
 ## Python
 
 The Python injection rules are taint rules: a value read from a Flask, Django or FastAPI request
@@ -165,9 +179,17 @@ Python rules match the call or assignment as written.
 
 ## Swift
 
-The Swift rules read the source lines, because Swift has no taint analysis yet, and report the line.
-A name that holds a literal and says token, secret or password is reported even when the literal is
-only a label.
+The Swift weakness rules read the source lines and report the line. A name that holds a literal and
+says token, secret or password is reported even when the literal is only a label.
+
+The three injection rules are taint rules: a value read from a URL query (`URLComponents.queryItems`
+and `query`, `URL.query`, `NSUserActivity.webpageURL`, `UIPasteboard.string`) or from a server request
+(`req.query`, `req.parameters`, `req.content`, `req.body`, `req.headers`, `req.cookies` and the same
+on `request`) reaches a sensitive call in the same function, or through the functions of the same
+file. A receiver is typed when its source says so: a type name, a shared instance such as
+`FileManager.default`, a creation such as `Process()`, and a local or parameter with a type
+annotation or a creation. A number conversion (`Int(x)`, `Double(x)`, `UUID(uuidString:)`) cleans a
+value, and for paths so does `lastPathComponent`.
 
 | Rule | CWE | Severity | Presets | What it reports |
 |---|---|---|---|---|
@@ -177,6 +199,9 @@ only a label.
 | `ward:swift/weak-random` | CWE-338 | error | standard, strict | `rand`, `random`, `srand`, `drand48` and `lrand48` of the C library |
 | `ward:swift/hard-coded-credential` | CWE-798 | error | standard, strict | A password, secret, token or API key declared with a string literal |
 | `ward:swift/userdefaults-secret` | CWE-312 | error | standard, strict | A password, secret or token stored in `UserDefaults` |
+| `ward:swift/command-injection` | CWE-78, CWE-88 | error | standard, strict | A URL or request value is the program or an argument of a `Process` (`arguments`, `launchPath`, `executableURL`, `Process.run`) or of `system`, `popen` and `exec*` |
+| `ward:swift/sql-injection` | CWE-89 | error | standard, strict | A URL or request value is part of the statement text of `sqlite3_prepare*` or `sqlite3_exec`, or of the FMDB, SQLite.swift and GRDB calls listed in the specification; bind it as a parameter |
+| `ward:swift/path-injection` | CWE-22 | error | standard, strict | A URL or request value is part of the path that `FileManager`, `FileHandle`, `fopen` or the file initializers of `String` and `NSData` open; keep `lastPathComponent` |
 
 ## Kotlin
 
@@ -224,7 +249,3 @@ argument is a lambda's value is checked where the lambda is written, not inside 
 | `ward:kotlin/regex-injection` | CWE-1333, CWE-400 | error | standard, strict | Request data compiled as a regular expression, inside one function |
 | `ward:kotlin/environment-injection` | CWE-15, CWE-454 | error | standard, strict | Untrusted data as an environment variable of a started process (`ProcessBuilder.environment().put`, the `envp` of `Runtime.exec`) |
 | `ward:kotlin/session-attribute-injection` | CWE-501 | warning | strict | Untrusted data stored with `HttpSession.setAttribute` or `putValue`, where the application treats it as trusted |
-
-## Later
-
-Taint rules for Swift are planned.

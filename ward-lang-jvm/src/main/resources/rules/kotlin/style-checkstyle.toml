@@ -83,7 +83,6 @@ language = "kotlin"
 capability = "SYNTAX"
 severity = "error"
 category = "style"
-presets = ["standard", "strict"]
 body = '''
 check = "kotlin-one-statement-per-line"
 message = "only one statement may start on a line"

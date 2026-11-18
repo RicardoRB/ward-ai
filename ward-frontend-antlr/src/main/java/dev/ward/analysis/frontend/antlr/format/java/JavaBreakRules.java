@@ -28,6 +28,7 @@ final class JavaBreakRules {
   private static final Set<String> NONE_BEFORE =
       Set.of(CLOSE_PAREN, CLOSE_BRACKET, COMMA, SEMICOLON);
 
+  private static final String TYPE_PARAMETERS_OPEN = "<";
   private static final int PLAIN_LINE = 0;
   private static final int CONDITIONAL_LINE = 1;
   private static final int OPERATOR_LINE = 2;
@@ -76,6 +77,21 @@ final class JavaBreakRules {
       return OPERATOR_LINE;
     }
     return CONDITIONAL.contains(text) ? CONDITIONAL_LINE : PLAIN_LINE;
+  }
+
+  /**
+   * Tells whether a token after a comment can only continue an expression, as a dot or an operator.
+   * A {@code <} is left out: after a comment it opens the type parameters of a member.
+   *
+   * @param previous the token before
+   * @param next the token after
+   * @return true when {@code next} continues the expression that {@code previous} ends in
+   */
+  static boolean continuesAfterComment(final JavaAtom previous, final JavaAtom next) {
+    return previous.comment()
+        && !next.comment()
+        && !TYPE_PARAMETERS_OPEN.equals(next.text())
+        && lineKind(next.text()) > PLAIN_LINE;
   }
 
   /**

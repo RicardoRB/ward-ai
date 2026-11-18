@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * Reports a class whose body holds only a companion object, as detekt's {@code
  * UtilityClassWithPublicConstructor} does. A class with a supertype, a primary constructor, or a
- * modifier such as open, abstract, sealed or interface is left alone, since it is not a plain
+ * modifier such as open, abstract, sealed, interface, actual or expect is left alone, since it is not a plain
  * utility class.
  */
 public final class KotlinUtilityClassCheck implements RuleCheck {
@@ -19,7 +19,17 @@ public final class KotlinUtilityClassCheck implements RuleCheck {
   private static final String MEMBER = "classMemberDeclaration";
   private static final String COMPANION = "companionObject";
   private static final Set<String> NOT_PLAIN =
-      Set.of("interface", "open", "abstract", "sealed", "annotation", "enum", "inner");
+      Set.of(
+          "interface",
+          "open",
+          "abstract",
+          "sealed",
+          "annotation",
+          "enum",
+          "inner",
+          "actual",
+          "expect"
+      );
   private static final Set<String> NOT_PLAIN_CHILDREN =
       Set.of("primaryConstructor", "delegationSpecifiers");
 

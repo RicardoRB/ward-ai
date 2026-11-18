@@ -34,6 +34,15 @@ public interface AgentIntegration extends AgentAdapter {
     return false;
   }
 
+  /**
+   * Returns whether the agent has a hook event that fires on a submitted prompt and can reject it,
+   * so that {@link IntegrationRequest#promptHook()} installs something, as {@link SupportedAgents}
+   * lists.
+   */
+  default boolean supportsPromptHook() {
+    return SupportedAgents.promptHookIds().contains(id());
+  }
+
   /** Returns what the installed integration enforces; the default is nothing. */
   default Set<IntegrationCapability> capabilities() {
     return Set.of();

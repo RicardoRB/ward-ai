@@ -1,0 +1,42 @@
+# Injection rules for Swift: untrusted input from a URL query or a server request reaches a sensitive call within one
+# body, or through the functions of one file. Each follows the taint specifications taint/swift/ward-<weakness>.toml
+# and taint/swift/sources.toml, written from the Apple, SQLite and Vapor documentation named in the catalog rows.
+
+[[rules]]
+id = "ward:swift/command-injection"
+language = "swift"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/swift/sources.toml", "taint/swift/ward-command-injection.toml"]
+message = "untrusted data from {source} reaches {sink}, which decides the program or the arguments of a process; run a fixed program and check the value against a list"
+'''
+
+[[rules]]
+id = "ward:swift/sql-injection"
+language = "swift"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/swift/sources.toml", "taint/swift/ward-sql-injection.toml"]
+message = "untrusted data from {source} is part of the SQL text that {sink} prepares; bind it as a parameter instead"
+'''
+
+[[rules]]
+id = "ward:swift/path-injection"
+language = "swift"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/swift/sources.toml", "taint/swift/ward-path-injection.toml"]
+message = "untrusted data from {source} is part of the file path that {sink} opens; keep the last path component only and join it to a fixed directory"
+'''

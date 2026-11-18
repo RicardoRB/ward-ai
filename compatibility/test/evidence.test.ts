@@ -47,14 +47,23 @@ describe("scenario records", () => {
 
   test("unsupported requires capability provenance", () => {
     expect(record(live({ claimed: "unsupported" }), expected).outcome).toBe("blocked");
-    expect(record(live({ claimed: "unsupported", unsupportedProvenance: "docs say no pre-hook" }), expected).outcome).toBe(
-      "unsupported",
-    );
+    expect(
+      record(
+        live({ claimed: "unsupported", unsupportedProvenance: "docs say no pre-hook" }),
+        expected
+      ).outcome
+    ).toBe("unsupported");
   });
 
   test("a failed assertion fails regardless of the claimed outcome", () => {
-    const result = record(live({ assertions: [{ name: "feedback delivered", passed: false }] }), expected);
-    expect(result).toMatchObject({ outcome: "fail", reason: "failed assertions: feedback delivered" });
+    const result = record(
+      live({ assertions: [{ name: "feedback delivered", passed: false }] }),
+      expected
+    );
+    expect(result).toMatchObject({
+      outcome: "fail",
+      reason: "failed assertions: feedback delivered"
+    });
   });
 });
 
@@ -63,7 +72,11 @@ describe("matrix aggregation", () => {
 
   test("a mixed matrix is non-success and preserves each outcome", () => {
     const report = aggregate(
-      [pass("codex"), record(live({ harness: "gemini", prerequisite: "GEMINI_API_KEY" }), expected), record(live({ harness: "amp", assertions: [{ name: "x", passed: false }] }), expected)],
+      [
+        pass("codex"),
+        record(live({ harness: "gemini", prerequisite: "GEMINI_API_KEY" }), expected),
+        record(live({ harness: "amp", assertions: [{ name: "x", passed: false }] }), expected)
+      ],
       ["codex", "gemini", "amp"],
       "automated-live",
     );
@@ -90,11 +103,16 @@ describe("matrix aggregation", () => {
 
   test("witnessed evidence never satisfies an automated matrix", () => {
     const witnessed = record(live({ level: "witnessed-live" }), expected);
-    expect(aggregate([witnessed], ["codex"], "automated-live").harnesses[0].outcome).toBe("blocked");
+    expect(aggregate([witnessed], ["codex"], "automated-live").harnesses[0].outcome).toBe(
+      "blocked"
+    );
   });
 
   test("an all-unsupported harness has no evidence and is not a success", () => {
-    const unsupported = record(live({ claimed: "unsupported", unsupportedProvenance: "no hooks" }), expected);
+    const unsupported = record(
+      live({ claimed: "unsupported", unsupportedProvenance: "no hooks" }),
+      expected
+    );
     const report = aggregate([unsupported], ["codex"], "automated-live");
     expect(report.harnesses[0].outcome).toBe("unsupported");
     expect(report.success).toBe(false);
@@ -105,14 +123,23 @@ describe("matrix aggregation", () => {
   });
 
   test("evidenced unsupported scenarios do not fail a passing harness", () => {
-    const unsupported = record(live({ scenario: "turn-end", claimed: "unsupported", unsupportedProvenance: "post-hooks only" }), expected);
+    const unsupported = record(
+      live({
+        scenario: "turn-end",
+        claimed: "unsupported",
+        unsupportedProvenance: "post-hooks only"
+      }),
+      expected
+    );
     expect(aggregate([pass("codex"), unsupported], ["codex"], "automated-live").success).toBe(true);
   });
 });
 
 describe("redaction", () => {
   test("credential-shaped values are removed", () => {
-    const text = redact("OPENAI_API_KEY=sk-abcdefghijklmnop token ghp_abcdefghijkl Authorization: Bearer abc.def AIzaSyABCDEFGHIJ");
+    const text = redact(
+      "OPENAI_API_KEY=sk-abcdefghijklmnop token ghp_abcdefghijkl Authorization: Bearer abc.def AIzaSyABCDEFGHIJ"
+    );
     expect(text).not.toContain("sk-abcdefghijklmnop");
     expect(text).not.toContain("ghp_abcdefghijkl");
     expect(text).not.toContain("abc.def");
@@ -125,7 +152,12 @@ describe("redaction", () => {
   });
 
   test("records redact assertion details", () => {
-    const result = record(live({ assertions: [{ name: "ok", passed: true, detail: "GEMINI_API_KEY=AIzaSyABCDEFGHIJ" }] }), expected);
+    const result = record(
+      live({
+        assertions: [{ name: "ok", passed: true, detail: "GEMINI_API_KEY=AIzaSyABCDEFGHIJ" }]
+      }),
+      expected
+    );
     expect(result.assertions[0].detail).toBe("GEMINI_API_KEY=[redacted]");
   });
 });

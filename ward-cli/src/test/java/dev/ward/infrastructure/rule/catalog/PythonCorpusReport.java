@@ -19,21 +19,20 @@ final class PythonCorpusReport {
   /** How many findings of a rule that is not a security rule need a label. */
   static final int SAMPLE = 5;
 
-  private static final String LABELS = "benchmark/python-corpus-labels.txt";
   private static final String SECURITY = "security";
   private static final int FIELDS = 4;
   private static final String SEPARATOR = " \\| ";
   private static final String HEADER =
-      "# Healthchecks %s (BSD-3-Clause, a Django application) against Ward's Python rules.\n"
+      "# %s %s (%s) against Ward's Python rules.\n"
           + "# Archive sha-256 %s.\n"
           + "# Every ward:python/* rule of the standard preset and every Python rule of category"
           + " security ran over every .py file of the archive.\n"
           + "# A labelled finding is true (tp), false (fp) or undetermined (un), as read from the"
-          + " code at its line; the labels are in python-corpus-labels.txt. Every finding of a"
+          + " code at its line; the labels are in %s. Every finding of a"
           + " security rule is labelled; of another rule, its first %d findings in path order.\n"
-          + "# The measured cost of the run is in python-corpus-cost.txt.\n"
-          + "# Regenerate: ./mvnw -pl ward-cli -am -Djacoco.skip=true -Dtest=PythonCorpusSmokeTest"
-          + " -Dward.benchmark.python-corpus=<dir> -Dward.benchmark.write=true"
+          + "# The measured cost of the run is in %s.\n"
+          + "# Regenerate: ./mvnw -pl ward-cli -am -Djacoco.skip=true -Dtest=%s"
+          + " -D%s=<dir> -Dward.benchmark.write=true"
           + " -Dsurefire.failIfNoSpecifiedTests=false test\n";
 
   /** A finding in a place of the source. */
@@ -83,6 +82,7 @@ final class PythonCorpusReport {
   }
 
   static String report(
+      final PythonCorpusSpec spec,
       final List<RuleDefinition> rules,
       final int files,
       final Map<String,
@@ -91,7 +91,17 @@ final class PythonCorpusReport {
       String> labels
   ) {
     final StringBuilder report = new StringBuilder(
-        HEADER.formatted(PythonCorpus.TAG, PythonCorpus.ARCHIVE_SHA256, SAMPLE)
+        HEADER.formatted(
+            spec.title(),
+            spec.tag(),
+            spec.description(),
+            spec.sha256(),
+            spec.labels(),
+            SAMPLE,
+            spec.cost(),
+            spec.testClass(),
+            spec.property()
+        )
     );
     final int total = found.values().stream().mapToInt(List::size).sum();
     report.append("files %d | findings %d%n".formatted(files, total));
@@ -159,9 +169,12 @@ final class PythonCorpusReport {
     return text.toString();
   }
 
-  static Map<Place, String> labels() throws IOException {
+  static Map<Place, String> labels(final PythonCorpusSpec spec) throws IOException {
     final Map<Place, String> labels = new LinkedHashMap<>();
-    Files.readAllLines(Path.of("src/test/resources").resolve(LABELS), StandardCharsets.UTF_8)
+    Files.readAllLines(
+        Path.of("src/test/resources").resolve("benchmark/" + spec.labels()),
+        StandardCharsets.UTF_8
+    )
         .stream()
         .filter(text -> !text.startsWith("#") && !text.isBlank())
         .map(text -> text.split(SEPARATOR, FIELDS))

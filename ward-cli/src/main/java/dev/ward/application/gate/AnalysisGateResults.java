@@ -116,7 +116,10 @@ final class AnalysisGateResults {
             .map(Enum::name)
             .sorted()
             .collect(Collectors.joining(", "));
-    return "no native type resolver is registered for " + languages + " yet";
+    return languages.contains("JAVA") || languages.contains("KOTLIN")
+        ? "no JDK was found (looked at JAVA_HOME, java on PATH and java_home on macOS), so JDK"
+            + " types are unknown; set JAVA_HOME"
+        : "no native type resolver is registered for " + languages + " yet";
   }
 
   private static String errorLine(final RuleExecutionError error) {

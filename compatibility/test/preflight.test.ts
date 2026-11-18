@@ -1,5 +1,13 @@
 import { afterAll, describe, expect, test } from "bun:test";
-import { chmodSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+  chmodSync,
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { findHarness, loadManifest, REPO_ROOT } from "../src/manifest";
@@ -20,7 +28,11 @@ function script(name: string, body: string): string {
   return path;
 }
 
-const options = (env: Record<string, string> = {}, toolsDir = join(base, "no-tools")) => ({ toolsDir, env, home });
+const options = (env: Record<string, string> = {}, toolsDir = join(base, "no-tools")) => ({
+  toolsDir,
+  env,
+  home
+});
 
 describe("runtime preflight", () => {
   test("a missing runtime is blocked and names the exact prerequisite", async () => {
@@ -33,11 +45,15 @@ describe("runtime preflight", () => {
 
   test("an editor runtime without an isolated installer names only the executable override", async () => {
     const result = await preflight(windsurf, options());
-    expect(result.prerequisite).toBe("windsurf 1.126.0 (set WARD_COMPAT_WINDSURF_BIN to an absolute executable path)");
+    expect(result.prerequisite).toBe(
+      "windsurf 1.126.0 (set WARD_COMPAT_WINDSURF_BIN to an absolute executable path)"
+    );
   });
 
   test("PATH and relative overrides never satisfy preflight", async () => {
-    expect((await preflight(codex, options({ WARD_COMPAT_CODEX_BIN: "codex", PATH: "/usr/bin" }))).status).toBe("blocked");
+    expect(
+      (await preflight(codex, options({ WARD_COMPAT_CODEX_BIN: "codex", PATH: "/usr/bin" }))).status
+    ).toBe("blocked");
   });
 
   test("a version mismatch is explicit non-success", async () => {
@@ -65,7 +81,10 @@ describe("runtime preflight", () => {
   });
 
   test("the exact pinned version is ready and runs with the isolated HOME", async () => {
-    const pinned = script("codex-pinned", `[ "$HOME" = "${home}" ] || exit 9\necho "codex-cli 0.163.0"`);
+    const pinned = script(
+      "codex-pinned",
+      `[ "$HOME" = "${home}" ] || exit 9\necho "codex-cli 0.163.0"`
+    );
     expect(await preflight(codex, options({ WARD_COMPAT_CODEX_BIN: pinned }))).toMatchObject({
       status: "ready",
       foundVersion: "0.163.0",
@@ -83,16 +102,24 @@ describe("runtime preflight", () => {
 
   test("the manifest version patterns parse the documented version output", () => {
     expect(parseVersion(findHarness(manifest, "opencode"), "opencode v2.0.30")).toBe("2.0.30");
-    expect(parseVersion(findHarness(manifest, "claude-code"), "2.1.292 (Claude Code)")).toBe("2.1.292");
+    expect(parseVersion(findHarness(manifest, "claude-code"), "2.1.292 (Claude Code)")).toBe(
+      "2.1.292"
+    );
   });
 });
 
 describe("pinned isolated install", () => {
   test("installs only into the tools directory with the pinned package and isolated npm state", async () => {
     const record = join(base, "npm-args");
-    const npm = script("npm-ok", `printf '%s\\n' "$@" > "${record}"\necho "$HOME" >> "${record}"\necho "$npm_config_cache" >> "${record}"`);
+    const npm = script(
+      "npm-ok",
+      `printf '%s\\n' "$@" > "${record}"\necho "$HOME" >> "${record}"\necho "$npm_config_cache" >> "${record}"`
+    );
     const tools = join(base, "install-tools");
-    expect(await install(codex, { toolsDir: tools, npm, home })).toEqual({ harness: "codex", installed: true });
+    expect(await install(codex, { toolsDir: tools, npm, home })).toEqual({
+      harness: "codex",
+      installed: true
+    });
     expect(readFileSync(record, "utf8").trim().split("\n")).toEqual([
       "install",
       "--prefix",
@@ -113,13 +140,17 @@ describe("pinned isolated install", () => {
   });
 
   test("a missing npm is a named prerequisite", async () => {
-    expect((await install(codex, { toolsDir: join(base, "t3"), npm: join(base, "absent-npm"), home })).prerequisite).toBe(
-      `npm executable ${join(base, "absent-npm")}`,
-    );
+    expect(
+      (
+        await install(codex, { toolsDir: join(base, "t3"), npm: join(base, "absent-npm"), home })
+      ).prerequisite
+    ).toBe(`npm executable ${join(base, "absent-npm")}`);
   });
 
   test("harnesses without an isolated installer are never installed", async () => {
-    expect(await install(windsurf, { toolsDir: join(base, "t4"), npm: "/usr/bin/true", home })).toEqual({
+    expect(
+      await install(windsurf, { toolsDir: join(base, "t4"), npm: "/usr/bin/true", home })
+    ).toEqual({
       harness: "windsurf",
       installed: false,
       prerequisite: "Windsurf has no isolated installer; set WARD_COMPAT_WINDSURF_BIN",
@@ -130,23 +161,29 @@ describe("pinned isolated install", () => {
 
 describe("preflight command", () => {
   test("exits non-zero and reports blocked runtimes as JSON", async () => {
-    const child = Bun.spawn(["bun", "run", "src/cli.ts", "preflight", "--tools", join(base, "cli-tools"), "codex"], {
-      cwd: join(REPO_ROOT, "compatibility"),
-      env: { PATH: process.env.PATH ?? "", HOME: home },
-      stdout: "pipe",
-      stderr: "pipe",
-    });
+    const child = Bun.spawn(
+      ["bun", "run", "src/cli.ts", "preflight", "--tools", join(base, "cli-tools"), "codex"],
+      {
+        cwd: join(REPO_ROOT, "compatibility"),
+        env: { PATH: process.env.PATH ?? "", HOME: home },
+        stdout: "pipe",
+        stderr: "pipe",
+      }
+    );
     const stdout = await new Response(child.stdout).text();
     expect(await child.exited).toBe(1);
     expect(JSON.parse(stdout.trim())).toMatchObject({ harness: "codex", status: "blocked" });
   });
 
   test("an empty request is a usage error", async () => {
-    const child = Bun.spawn(["bun", "run", "src/cli.ts", "preflight"], {
-      cwd: join(REPO_ROOT, "compatibility"),
-      env: { PATH: process.env.PATH ?? "", HOME: home },
-      stderr: "pipe",
-    });
+    const child = Bun.spawn(
+      ["bun", "run", "src/cli.ts", "preflight"],
+      {
+        cwd: join(REPO_ROOT, "compatibility"),
+        env: { PATH: process.env.PATH ?? "", HOME: home },
+        stderr: "pipe",
+      }
+    );
     expect(await child.exited).toBe(2);
   });
 });

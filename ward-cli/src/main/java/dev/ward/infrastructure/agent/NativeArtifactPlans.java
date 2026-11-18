@@ -12,7 +12,11 @@ final class NativeArtifactPlans {
   private NativeArtifactPlans() {}
 
   /** Builds the files an adapter would write. */
-  static NativeArtifactPlan of(final NativeHarnessAdapter adapter, final Path projectRoot) {
+  static NativeArtifactPlan of(
+      final NativeHarnessAdapter adapter,
+      final Path projectRoot,
+      final boolean prompts
+  ) {
     final Path root = projectRoot.toAbsolutePath().normalize();
     final NativeAgentIntegration.Definition definition = adapter.definition();
     return new NativeArtifactPlan(
@@ -20,7 +24,7 @@ final class NativeArtifactPlans {
         root.resolve(definition.configFile()),
         definition.hasHookFile() ? root.resolve(definition.hookFile()) : null,
         NativeHookText.marker(adapter.id()),
-        adapter.configContent(),
+        adapter.configContent(prompts),
         definition.hasHookFile() ? adapter.hookContent() : null,
         adapter.capabilities(),
         definition.legacyFiles().stream().map(root::resolve).toList()

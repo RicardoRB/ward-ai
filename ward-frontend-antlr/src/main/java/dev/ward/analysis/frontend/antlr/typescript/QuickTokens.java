@@ -6,6 +6,20 @@ import org.antlr.v4.runtime.TokenStream;
 
 /** Tells from the next tokens which construct starts, for {@link QuickPrediction}. */
 final class QuickTokens {
+  /** The most tokens read to find the parenthesis that closes the parameters of an arrow. */
+  static final int MAX_PARAMETER_TOKENS = 256;
+
+  /** The modifiers that may precede the name of a class member. */
+  static final Set<Integer> MEMBER_MODIFIERS =
+      Set.of(
+          TypeScriptParser.Public,
+          TypeScriptParser.Private,
+          TypeScriptParser.Protected,
+          TypeScriptParser.Static,
+          TypeScriptParser.Override,
+          TypeScriptParser.Async
+      );
+
   private static final int SECOND = 2;
   private static final int THIRD = 3;
   private static final int FOURTH = 4;
@@ -71,22 +85,9 @@ final class QuickTokens {
           TypeScriptParser.Interface,
           TypeScriptParser.Enum,
           TypeScriptParser.Declare,
-          TypeScriptParser.Namespace
+          TypeScriptParser.Namespace,
+          TypeScriptParser.TypeAlias
       );
-
-  /** The modifiers that may precede the name of a class member. */
-  private static final Set<Integer> MEMBER_MODIFIERS =
-      Set.of(
-          TypeScriptParser.Public,
-          TypeScriptParser.Private,
-          TypeScriptParser.Protected,
-          TypeScriptParser.Static,
-          TypeScriptParser.Override,
-          TypeScriptParser.Async
-      );
-
-  /** The most tokens read to find the parenthesis that closes the parameters of an arrow. */
-  private static final int MAX_PARAMETER_TOKENS = 256;
 
   private QuickTokens() {}
 
@@ -106,10 +107,24 @@ final class QuickTokens {
         && input.LA(THIRD) == TypeScriptParser.OpenParen;
   }
 
+  /** Tells whether the tokens are {@code new a.b(}, a path of one or more dots. */
+  static boolean newOfPath(final TokenStream input) {
+    int offset = SECOND;
+    while (input.LA(offset) == TypeScriptParser.Identifier
+        && input.LA(offset + 1) == TypeScriptParser.Dot) {
+      offset += SECOND;
+    }
+    return offset > SECOND
+        && input.LA(offset) == TypeScriptParser.Identifier
+        && input.LA(offset + 1) == TypeScriptParser.OpenParen;
+  }
+
   static boolean exportsDeclaration(final TokenStream input) {
     return input.LA(1) == TypeScriptParser.Export
         && EXPORTED_DECLARATION.contains(input.LA(SECOND))
-        && !AFTER_A_NAME.contains(input.LA(THIRD));
+        && !AFTER_A_NAME.contains(input.LA(THIRD))
+        && (input.LA(SECOND) != TypeScriptParser.TypeAlias
+            || input.LA(THIRD) == TypeScriptParser.Identifier);
   }
 
   /** Tells whether the tokens are the modifiers of a class member, a plain name and a {@code (}. */

@@ -72,7 +72,6 @@ language = "python"
 capability = "DATAFLOW"
 severity = "error"
 category = "security"
-presets = ["standard", "strict"]
 body = '''
 check = "taint"
 specs = ["taint/python/sources.toml", "taint/python/ward-untrusted-request-url.toml"]
@@ -103,4 +102,17 @@ body = '''
 check = "taint"
 specs = ["taint/python/sources.toml", "taint/python/ward-template-injection.toml"]
 message = "untrusted data from {source} is the template text of {sink}; pass it as a template variable instead"
+'''
+
+[[rules]]
+id = "ward:python/argument-injection"
+language = "python"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/python/sources.toml", "taint/python/ward-argument-injection.toml"]
+message = "untrusted data from {source} becomes the program or an option of the argument list that {sink} runs; validate it against an allow-list and put -- before values that are not options"
 '''

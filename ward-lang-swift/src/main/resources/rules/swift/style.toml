@@ -38,9 +38,7 @@ severity = "error"
 category = "style"
 presets = ["standard", "strict"]
 body = '''
-check = "text-pattern"
-target = "lines"
-pattern = '^\s*(else|catch)\b'
+check = "swift-right-curly"
 message = "else and catch must follow the closing brace on the same line"
 '''
 
@@ -70,20 +68,6 @@ check = "literal"
 kinds = ["numeric_literal"]
 ignore = ["-1", "0", "1", "2"]
 message = "'{value}' is a magic number"
-'''
-
-[[rules]]
-id = "ward:swift/missing-switch-default"
-language = "swift"
-capability = "SYNTAX"
-severity = "error"
-category = "style"
-presets = ["standard", "strict"]
-body = '''
-check = "required-node"
-kinds = ["switch_statement"]
-descendant = ["default_label"]
-message = "switch statement has no default case"
 '''
 
 [[rules]]

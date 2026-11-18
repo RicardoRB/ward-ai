@@ -13,6 +13,10 @@ executable `.claude/hooks/ward-edit-write`, and registers the same hook for two 
 | `PostToolUse` (`Edit`, `Write`, `MultiEdit`) | After each file edit | Runs a partial quality check of the `edit` profile for the edited file |
 | `Stop` | When Claude finishes its turn | Runs the full default quality check |
 
+With `ward integrate claude-code --prompt-hook` Ward also registers `UserPromptSubmit`, which blocks a prompt
+that holds a secret (`decision: "block"`) while `[checks.secrets.prompts]` is enabled in `ward.toml`. See
+[Prompt hook](/commands/hook/#prompt-hook).
+
 Make sure `ward` is on `PATH`. The generated hook runs
 `ward hook claude-code --learn-after 3 --event-stdin` for the project directory.
 
