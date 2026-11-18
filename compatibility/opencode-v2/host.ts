@@ -39,7 +39,11 @@ export class Host {
   subscriptions = 0;
   private listeners: ((event: unknown) => void)[] = [];
 
-  constructor(readonly directory: string) {}
+  readonly directory: string;
+
+  constructor(directory: string) {
+    this.directory = directory;
+  }
 
   context(): unknown {
     const register = (map: Map<string, Callback[]>) => async (name: string, callback: Callback) => {

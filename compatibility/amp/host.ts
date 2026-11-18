@@ -26,7 +26,11 @@ export class AmpHost {
   readonly handlers = new Map<string, Handler[]>();
   readonly logs: string[] = [];
 
-  constructor(readonly root: string | null) {}
+  readonly root: string | null;
+
+  constructor(root: string | null) {
+    this.root = root;
+  }
 
   api(): unknown {
     const uri = (path: string) => ({ toString: () => `file://${path}`, path });
