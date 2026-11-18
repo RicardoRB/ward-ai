@@ -5,6 +5,7 @@ import dev.ward.analysis.domain.api.ApiType;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
+import dev.ward.analysis.frontend.antlr.DeclarationText;
 import dev.ward.application.gate.apicompat.ApiSurfaces;
 import dev.ward.infrastructure.rule.BundledLanguages;
 import java.nio.file.Path;
@@ -19,6 +20,11 @@ public final class JvmApiSurfaces implements ApiSurfaces {
   /** Creates the adapter. */
   @Inject
   public JvmApiSurfaces() {}
+
+  @Override
+  public SourceUnit declarations(final SourceUnit unit) {
+    return DeclarationText.of(unit);
+  }
 
   @Override
   public List<ApiType> read(final Path root, final List<SourceUnit> units) {

@@ -67,6 +67,7 @@ final class ApiSources {
             .distinct()
             .sorted()
             .map(path -> unit(path, tree.read().apply(path), "Cannot read " + path + tree.where()))
+            .map(ports.surfaces()::declarations)
             .toList();
     return new Sources(units, modules);
   }

@@ -782,3 +782,29 @@ rise (2.62 to 2.74 GB against 2.67 GB; run-to-run spread is of that size). Only 
 was under load 4; three of the four loads were 4.1 to 4.6 because another project was running, so the
 wall times are slightly pessimistic. The remaining 10 s are the API-surface parse (the next item of
 #667, not done here).
+
+## #670 api-compat reads declarations only
+
+`ApiSources` reduces each Java and Kotlin file to its declarations as it reads it
+(`ApiSurfaces.declarations`, `DeclarationText` in `ward-frontend-antlr`): the lexer finds the blocks
+that are bodies of functions, constructors, initializers and accessors and blanks their text, with
+line breaks and offsets kept, so every location is unchanged. The frontend and the surface readers
+are unchanged, and so is the parse of the `ward` rules. Blocks of uncertain role stay as written (after
+`=`, `by` or `default`, enum constant bodies, Kotlin expression bodies and delegates). The full text of
+a file is garbage as soon as it is reduced, so the baseline no longer holds every source text. A syntax
+error inside a body is no longer reported by this gate.
+
+Measured on 2026-11-18, `api-compat` only, `base = v0.10.0`, this repository at `13acf1eec`, JVM jar
+before and after, one process per run, `/usr/bin/time -l`, `--severity info --format json`. The
+findings are identical: 10 findings, the same JSON apart from durations. The machine was under
+heavy load from other sessions (1-minute load 15 to 19, not below 4), so wall times are indicative;
+instructions retired do not depend on the load.
+
+| Run | Load | Wall time | Instructions | Peak memory |
+|---|---|---|---|---|
+| Before (1) | 19.3 | 10.96 s | 2.77 × 10¹¹ | 2.72 GB |
+| Before (2) | 16.7 | 11.06 s | 2.80 × 10¹¹ | 2.81 GB |
+| After (1) | 16.7 | 3.90 s | 1.20 × 10¹¹ | 1.41 GB |
+| After (2) | 15.1 | 4.02 s | 1.19 × 10¹¹ | 1.44 GB |
+
+Instructions fall by 57 % and peak memory by about 49 %.
