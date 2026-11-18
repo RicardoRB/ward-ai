@@ -14,12 +14,20 @@ grammar fixes and quick prediction (0 diagnostics)      |  30.5 s (load 9.7)
 original grammar                    | 198.5 s (load not recorded), 136.4 s (load about 7)
 grammar fixes, adaptive prediction  | 132.2 s (load about 8)
 grammar fixes and quick prediction  |  41.4 s (load 10.7)
-# 17 s of each row is one vendored JavaScript file; the JavaScript grammar has no quick prediction.
+# 17 s of each row is one vendored JavaScript file; the JavaScript grammar had no quick prediction then.
+
+## Parse time after #502 (quick prediction for five more TypeScript constructs and for JavaScript)
+# 0.11.0 at b884fe849, one AntlrLanguageFrontend, every .ts/.tsx/.js/.mjs file outside node_modules,
+# load average 4 to 5 in every run, base and new alternated; the tree hash of every file is equal.
+got (98 files)                  | base 19.4 s (21.4 s on the previous tip), new 17.3 s and 17.1 s
+Juice Shop (680 files)          | base 27.8 s and 27.6 s, new 24.9 s and 27.5 s
+Juice Shop, JavaScript files    | base 7.9 s and 7.9 s, new 5.4 s and 5.8 s
+# The numbers of the rows above were taken on another machine state and are not comparable with these.
 
 ## Lookahead of the decisions that #502 lists, test/pagination.ts of got
 original: the expression loop read up to 631 tokens (73,841 in total with SLL, 67,257 again with
 full LL), the statement rule up to 634.
-now: the expression loop, the statement keywords and the prefix operators are decided from one or two
+now (#583): the expression loop, the statement keywords and the prefix operators are decided from one or two
 tokens. What still reads far, in the three slowest files: an async arrow function with a return
 type (about 700 tokens), a getter or setter of a class (about 750), `new a.b(...)` (about 600), an
 `else` branch (about 540) and a `type` alias (about 230).
@@ -33,3 +41,6 @@ Maven run, peak resident set | 2.03 GB, as /usr/bin/time -l reports it for the M
 ## ward format over a copy of got (JVM, ward.jar of this change)
 98 files: 93 written, 5 unchanged, 0 refused; a second run changes nothing; the TypeScript 5.9.3
 parser reports no syntax error in the formatted copy.
+
+# After #502 the five constructs above are decided within a few tokens (QuickPredictionTest, "a construct that read far").
+# What still reads far: union, intersection and conditional types, and non-async arrow functions.

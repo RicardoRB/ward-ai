@@ -613,3 +613,37 @@ most of the time collecting, with the new one slower (+33 %, a single run each).
 and `ward check` on small projects start and finish (`NativeWardGateSmokeTest`). The 2 GB case of
 this repository is a follow-up: bounding the live set (parse cache, kept graphs) matters more there
 than the collector policy.
+
+## Quick prediction for more TypeScript constructs and for JavaScript (#502)
+
+`QuickPrediction` (#583) answered the hot TypeScript decisions from one or two tokens, but five
+constructs still read 230 to 750 tokens in `got`. It now also answers: an async arrow function with
+a return type (`async (x): T => ...`, not in a conditional or a case clause, where the colon may
+belong to them), a class getter or setter (`get name(...)` with a body, not a signature), `new a.b(...)`
+(the form with a path of names, and the loop decision after it, when no further `(`, `[`, `.` or `<`
+follows the arguments), an `else` after the statement of an `if`, and a type that starts with an
+object type that nothing continues (`type X = { ... }`, `export type`). The JavaScript grammar had no
+quick prediction; it has one now for the expression loop, the statement keywords, the prefix
+operators, `async` and `new`, and `else` (package `frontend.antlr.javascript`, the same classes as
+the TypeScript ones without the type rules). Every answer returns the alternative that adaptive
+prediction returns on a valid program, so the trees are the same: `QuickPredictionTest` of both
+languages compares them on every syntax fixture and on sources written for each construct, and found
+that adaptive prediction gives `new a.b(1)(2)` the first arguments as a call of the operand, which
+the quick answer leaves to it.
+
+Parse time (one `AntlrLanguageFrontend` in one JVM, every `.ts`, `.tsx`, `.js` and `.mjs` file outside
+`node_modules`, DFA cache cold, 0.11.0 at b884fe849, machine load average 4 to 5 during every run;
+the base jar is 0.11.0 without this change, run alternately with the new one):
+
+| Corpus | Base | New |
+|---|---|---|
+| `got` v16.2.0 (98 files) | 19.4 s (21.4 s on the previous tip) | 17.3 s, 17.1 s |
+| Juice Shop v20.4.0 (680 files), total | 27.8 s, 27.6 s | 24.9 s, 27.5 s |
+| Juice Shop, JavaScript files only | 7.9 s, 7.9 s | 5.4 s, 5.8 s |
+
+The gain is about 12 % on `got` and about 30 % on the JavaScript files, and none that the noise of
+Juice Shop's TypeScript (19.4 to 21.6 s) hides. A syntax tree hash and the diagnostic count of every
+file are identical between base and new on both corpora. What reads far now: types that are unions,
+intersections or conditional types, and the arrow functions of the TypeScript grammar that are not
+async. They are the next step if parsing matters on a corpus; on this repository it is 4.5 % of a
+cold run (see above).
