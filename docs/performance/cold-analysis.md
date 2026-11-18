@@ -757,3 +757,28 @@ Not verified: native binary; `--jobs auto` on 10 cores only (no 2 or 4 thread po
 this repository at `--jobs 1`, one quiet run at `--jobs auto` (the second was at load 10); no JFR of
 the `ward` gate at this tip (the profile of #632/#633 is the latest); the load on the quiet runs was
 3.5 to 4.0, not idle, because of macOS system daemons (`AMPDevicesAgent` alone used a core).
+
+## #667 api-compat reads the baseline with one Git process
+
+`GitRevisionFiles.open` lists a revision with one `git ls-tree -r -z` and reads each blob through one
+long-lived `git cat-file --batch` (write one blob id, read that one object back; at most one unparsed
+blob is held by the reader, the only new data is the path to blob id listing). The snapshot is closed
+by a try-with-resources in `ApiSources.atBaseline`, so the process is destroyed on every path.
+
+Measured on 2026-11-18, same machine and setup as the #602 measurement (profile with only
+`api-compat`, `base = v0.10.0`, this repository at `e0095ca6a`, JVM jar before and after, one process
+per run, `/usr/bin/time -l`, `--format json`). Git calls come from a shim in front of `git` in a
+separate run. The findings are identical: 10 findings, the same JSON apart from durations.
+
+| Run | Load | Wall time | Instructions | Peak memory | Git processes |
+|---|---|---|---|---|---|
+| Before (1) | 4.1 | 76.8 s | 2.92 × 10¹¹ | 2.67 GB | 6,006 |
+| Before (2) | 4.6 | 72.1 s | 2.89 × 10¹¹ | 2.67 GB | 6,006 |
+| After (1) | 3.6 | 11.3 s | 2.78 × 10¹¹ | 2.74 GB | 4 |
+| After (2) | 4.6 | 10.2 s | 2.76 × 10¹¹ | 2.62 GB | 4 |
+
+The four processes are 2 `rev-parse`, 1 `ls-tree -r` and 1 `cat-file --batch`. Peak memory does not
+rise (2.62 to 2.74 GB against 2.67 GB; run-to-run spread is of that size). Only the first "after" run
+was under load 4; three of the four loads were 4.1 to 4.6 because another project was running, so the
+wall times are slightly pessimistic. The remaining 10 s are the API-surface parse (the next item of
+#667, not done here).

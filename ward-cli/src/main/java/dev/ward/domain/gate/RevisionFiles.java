@@ -30,6 +30,29 @@ public interface RevisionFiles {
    */
   Optional<String> read(Path root, String commit, String path);
 
+  /**
+   * Opens {@code commit} for many reads; the caller closes it. The default reads each file through
+   * {@link #read} and {@link #files}.
+   */
+  default RevisionSnapshot open(final Path root, final String commit) {
+    return new RevisionSnapshot() {
+      @Override
+      public Optional<String> read(final String path) {
+        return RevisionFiles.this.read(root, commit, path);
+      }
+
+      @Override
+      public List<String> files(final String directory) {
+        return RevisionFiles.this.files(root, commit, directory);
+      }
+
+      @Override
+      public void close() {
+        // nothing is held
+      }
+    };
+  }
+
   /** Returns the names of the tags reachable from {@code commit}, in no particular order. */
   List<String> tagsReachableFrom(Path root, String commit);
 

@@ -11,4 +11,9 @@ public class RevisionReadException extends RuntimeException {
   public RevisionReadException(final String message) {
     super(message);
   }
+
+  /** Creates the exception for a file that Git could not read, with its cause. */
+  public RevisionReadException(final String message, final Throwable cause) {
+    super(message, cause);
+  }
 }
