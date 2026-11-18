@@ -8,22 +8,50 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-11-18
+
 ### Added
 
+- Agent prompts that contain a secret are blocked before they are sent (#621). `ward init --prompt-hook` and `ward integrate --prompt-hook` add the prompt event to the Claude Code, Codex, Cursor, Gemini and Factory Droid hooks and write `[checks.secrets.prompts]`; the `ward:secrets` rules scan the message and its attached files, and a prompt is blocked when the scan fails for any reason, with a message that names no prompt content. The `[checks.<check>.prompts]` table is generic, and only `secrets` supports it: a `prompts` table on another check is a configuration error.
+- `ward init --shared-hooks[=<dir>]` writes the quality hooks into a committed folder (`.githooks` by default) and points `core.hooksPath` at it, also on an already configured project, so every clone runs the same checks (#619). `--remove-quality-hooks` honours `--dry-run`, and `ward doctor` warns when `core.hooksPath` names a missing folder.
+- Java taint follows calls on an interface or abstract receiver to its single project implementor, and values through the fields of one class (#603).
 - Taint support for Swift (#605). Swift bodies are lowered to the flow IR, and three taint rules follow a URL query or a server request to a sensitive call: `ward:swift/command-injection` (`Process`, `system`), `ward:swift/sql-injection` (SQLite C API, FMDB, SQLite.swift, GRDB) and `ward:swift/path-injection` (`FileManager`, `FileHandle`, `fopen`). A sanitizing member such as `lastPathComponent` can now be named in a taint specification.
-
-### Fixed
-
-- Python rules report fewer false positives on web applications (#597). `naming` accepts the unittest names (`setUp`, `tearDown`, ...); `unused-method` knows the methods Django calls by name (`clean_<field>`, admin, command and URL-converter hooks); `redefined-builtin` ignores a class attribute such as `help`; `hardcoded-temp-file` skips test files; `constant-name` skips `*.conf.py` and no longer reads a keyword argument of a call as the assignment; `redefined-while-unused` and `unused-import` accept `import a` followed by `import a.b` and the two branches of one `if` or `try`; `used-before-assignment` and `undefined-loop-variable` no longer read the variable of a comprehension as a read of the function; `unused-argument` reads names in f-strings; `type-name` accepts a leading underscore; `too-few-public-methods` skips a `Meta` class. The generic `identifier-case` measure takes `exempt-names`, and `forbidden-node` takes `not-parent-path`. CTFd (Flask) is measured by the new `FlaskCorpusSmokeTest`.
-- Java rules report fewer false positives on real code (#627). A field that a method called by the constructor, or a `@BeforeEach`-style method, sets is initialized (`uwf-field-not-initialized-in-constructor`). A zero-length array field is not exposed state (`ei-expose-rep`, `method-returns-internal-array`, `ms-expose-rep`). A project's own `setAccessible` helper is not reflection (`avoid-accessibility-alteration`). A class with an `extends` clause is not reported for a transient field or a missing `Cloneable` (`se-transient-field-of-nonserializable-class`, `clone-method-must-implement-cloneable`, `cn-implements-clone-but-not-cloneable`). `equals` of a subclass of `Number`, `Thread` or `Format` is not asymmetric (`eq-overriding-equals-not-symmetric`). A `long` compared with the `int` limits is a range check (`int-vacuous-comparison`). A parameter given a default value is not a lazy singleton (`non-thread-safe-singleton`). `else`, a comment and `if` is an else-if chain (`control-statement-braces`). `test_clone` and `test_equals` are not `clone` and `equals` (five clone and equals rules). `assert-statement-in-test` reads test sources only, and the one- and two-finding rules of #581 are tightened (see the pull request).
+- TypeScript security rules for insecure AWS CDK settings (#606): `ward:typescript/cdk-public-bucket`, `cdk-unencrypted-storage`, `cdk-open-security-group` and `cdk-wildcard-iam-policy`.
+- `ward:python/argument-injection` (CWE-88) reports a tainted value passed as an option to a command (#636).
+- Kotlin taint tracks `this` and implicit receivers in scope functions and infers receiver types from the declarations of the file (#635).
 
 ### Changed
 
+- A preset never reports the same place twice for the same reason (#599): 113 rules that duplicate another rule leave the presets and stay in the catalog (`presets/duplicates-dropped.txt`).
 - Swift rules follow Swift conventions instead of Java ones (#596). `constant-name` expects lowerCamelCase and `class-type-parameter-name` and `method-type-parameter-name` expect UpperCamelCase names, as the Swift API Design Guidelines name them. `hidden-field` also leaves the parameters of an initializer with modifiers (`public init(value:)`). `naming` no longer reads `case NAME:` of a switch as a declaration, `custom-import-order` compares only imports of the same `#if` branch, `large-tuple` skips the payload of an enumeration case, `google-right-curly` skips the `else` of a multi-line `guard`, and `for-where` needs the `if` to be the loop body itself. `hard-coded-credential` checks every constant of a declaration with several.
+- The native binary uses the `BySpaceAndTime` collector policy, with no heap size built in (#601). On this repository a cold `ward` check with one job spends about 40 s instead of 365 s in garbage collection and finishes about 36 % sooner; peak memory with one job rises from 2.4 GB to 4.0 GB.
+- Faster cold analysis (#602, #502): the taint rule rebuilds no graph and parses related bodies once (about 48 % fewer instructions per cold run), the dependency step parses only the languages a selected rule reads, the `forbidden-node` rules of a file share one tree walk, and quick prediction covers more TypeScript constructs and JavaScript (parse time about 12 % lower on `got`, about 30 % on JavaScript files). Findings are unchanged.
+- The analysis cache keys a file on its text and the taint summary of the files it calls, instead of the text of its whole dependency closure (#604): an edit elsewhere that keeps the summary keeps the cached result. A cold run computes the summary once more, which costs roughly 20 to 60 % more instructions.
+- Native checks report their measured duration (#634).
+- `api-compat` reads the baseline revision through one `git ls-tree` and one `git cat-file --batch` process instead of one `git` process per file (#667), and reads only declarations, without method bodies (#670). On this repository the gate goes from about 72 s to 4 s and its peak memory from 2.7 GB to 1.4 GB, with the same findings. A syntax error inside a method body is no longer reported by `api-compat`.
+- This repository is formatted by `ward format` in every language and runs the corpus smoke tests in CI (#608, #600). Its pre-push skips the test gates when a push changes no code or file a test reads.
+
+### Fixed
+
+- The native binary without `JAVA_HOME` finds the JDK on `PATH`, through `/usr/libexec/java_home` on macOS or the running JDK; with none, the Java and Kotlin `TYPES` rules are reported as not run and report no finding, so results no longer depend on the environment (#593).
+- Python rules report fewer false positives on web applications (#597). `naming` accepts the unittest names (`setUp`, `tearDown`, ...); `unused-method` knows the methods Django calls by name (`clean_<field>`, admin, command and URL-converter hooks); `redefined-builtin` ignores a class attribute such as `help`; `hardcoded-temp-file` skips test files; `constant-name` skips `*.conf.py` and no longer reads a keyword argument of a call as the assignment; `redefined-while-unused` and `unused-import` accept `import a` followed by `import a.b` and the two branches of one `if` or `try`; `used-before-assignment` and `undefined-loop-variable` no longer read the variable of a comprehension as a read of the function; `unused-argument` reads names in f-strings; `type-name` accepts a leading underscore; `too-few-public-methods` skips a `Meta` class. The generic `identifier-case` measure takes `exempt-names`, and `forbidden-node` takes `not-parent-path`. CTFd (Flask) is measured by the new `FlaskCorpusSmokeTest`.
+- Java rules report fewer false positives on real code (#627). A field that a method called by the constructor, or a `@BeforeEach`-style method, sets is initialized (`uwf-field-not-initialized-in-constructor`). A zero-length array field is not exposed state (`ei-expose-rep`, `method-returns-internal-array`, `ms-expose-rep`). A project's own `setAccessible` helper is not reflection (`avoid-accessibility-alteration`). A class with an `extends` clause is not reported for a transient field or a missing `Cloneable` (`se-transient-field-of-nonserializable-class`, `clone-method-must-implement-cloneable`, `cn-implements-clone-but-not-cloneable`). `equals` of a subclass of `Number`, `Thread` or `Format` is not asymmetric (`eq-overriding-equals-not-symmetric`). A `long` compared with the `int` limits is a range check (`int-vacuous-comparison`). A parameter given a default value is not a lazy singleton (`non-thread-safe-singleton`). `else`, a comment and `if` is an else-if chain (`control-statement-braces`). `test_clone` and `test_equals` are not `clone` and `equals` (five clone and equals rules). `assert-statement-in-test` reads test sources only, and the one- and two-finding rules of #581 are tightened (see the pull request).
+- Kotlin rules report fewer false positives on real code (#628): backticked names and factory functions in `property-name` and `function-name`, spreads of an own vararg in `spread-operator`, extensions as overloads only of the same receiver, and `actual`/`expect` classes in `utility-class-with-public-constructor`.
+- TypeScript and JavaScript rules report fewer false positives on real code (#598): scope analysis reads type parameters of call signatures and function types, `infer` and mapped-type variables, destructuring and overload signatures, and `no-unsafe-finally`, `use-global-this`, `no-useless-escape`, `no-unused-template-literal`, `no-sparse-arrays`, `member-name`, `require-await` and `cleartext-transport` are fixed.
+- The Java formatter keeps comment spacing and chain continuation, and keeps the member indent of a generic declaration that follows a comment (#629, #640).
+- `ward format` run from a subdirectory finds the project root and formats only the files below it (#637).
+- The TypeScript grammar accepts `readonly` parameter properties.
+- A TypeScript or JavaScript function named with a contextual keyword such as `global` or `async` no longer ends the analysis with a `NullPointerException` (#638).
+- Python SQL sinks are matched by the scope facts of the receiver, so a cursor stored under another name is a sink (#636).
 
 ### Removed
 
 - `ward:swift/unused-imports` and `ward:swift/missing-switch-default` leave Swift (#596): Swift code does not write the module name it uses, and the compiler rejects a switch that is not exhaustive.
+
+### Known issues
+
+- A cold run of this repository does not fit a 2 GB heap with one job (#641).
+- A cold run with `--jobs auto` computes the cache keys of #604 on one thread, so on many cores it can take about three times longer than 0.10.0 (on this repository 110 s against 330 s); with `--jobs 1` it costs about 48 % more instructions (#668).
 
 ## [0.10.0] - 2026-11-16
 
@@ -543,6 +571,8 @@ Initial release, published as `sentinel-ai`.
 - A bounded quality loop and a typed gate registry.
 - Starlight documentation site.
 
+[0.11.0]: https://github.com/RicardoRB/ward-ai/compare/v0.10.0...v0.11.0
+[0.10.0]: https://github.com/RicardoRB/ward-ai/compare/v0.9.1...v0.10.0
 [0.9.1]: https://github.com/RicardoRB/ward-ai/compare/v0.9.0...v0.9.1
 [0.9.0]: https://github.com/RicardoRB/ward-ai/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/RicardoRB/ward-ai/compare/v0.5.0...v0.8.0
