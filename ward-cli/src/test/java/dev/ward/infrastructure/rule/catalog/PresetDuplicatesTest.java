@@ -17,10 +17,13 @@ import java.util.Map;
 import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 /** A preset reports one place once: duplicates on the rule fixtures need an explicit reason. */
+@Execution(ExecutionMode.CONCURRENT)
 class PresetDuplicatesTest {
   private static final List<RuleDefinition> SHIPPED = CatalogRuleDefinitions.shipped();
 

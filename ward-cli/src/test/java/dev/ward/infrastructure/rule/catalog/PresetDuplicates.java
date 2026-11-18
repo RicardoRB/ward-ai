@@ -11,10 +11,10 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -63,19 +63,9 @@ final class PresetDuplicates {
       final AnalysisLanguage language,
       final List<Fixture> fixtures
   ) throws IOException {
-    final RuleEngine engine = new RuleEngine(BundledRuleMatchers.create());
-    final RuleFixtureRunner runner = new RuleFixtureRunner();
-    final Set<String> covers = new HashSet<>();
-    for (final Fixture fixture : fixtures) {
-      final SourceUnit unit = unit(fixture, language);
-      final List<AnalysisFinding> found =
-          engine.run(List.of(unit), runner.frontends(), rules).findings();
-      final Set<String> own = ownPlaces(found, fixture.ruleId());
-      found.stream()
-          .filter(finding -> !finding.ruleId().equals(fixture.ruleId()))
-          .filter(finding -> own.contains(place(finding)))
-          .forEach(finding -> covers.add(fixture.ruleId() + " + " + finding.ruleId()));
-    }
+    final Set<String> covers = ConcurrentHashMap.newKeySet();
+    // One engine and runner per fixture: the fixtures run in parallel and share no parser state.
+    fixtures.parallelStream().forEach(fixture -> covers.addAll(coversOf(rules, language, fixture)));
     final Set<String> pairs = new TreeSet<>();
     for (final String cover : covers) {
       final String[] ids = cover.split(" \\+ ");
@@ -84,6 +74,27 @@ final class PresetDuplicates {
       }
     }
     return pairs;
+  }
+
+  private static Set<String> coversOf(
+      final List<RuleDefinition> rules,
+      final AnalysisLanguage language,
+      final Fixture fixture
+  ) {
+    try {
+      final List<AnalysisFinding> found =
+          new RuleEngine(BundledRuleMatchers.create())
+              .run(List.of(unit(fixture, language)), new RuleFixtureRunner().frontends(), rules)
+              .findings();
+      final Set<String> own = ownPlaces(found, fixture.ruleId());
+      return found.stream()
+          .filter(finding -> !finding.ruleId().equals(fixture.ruleId()))
+          .filter(finding -> own.contains(place(finding)))
+          .map(finding -> fixture.ruleId() + " + " + finding.ruleId())
+          .collect(Collectors.toSet());
+    } catch (final IOException exception) {
+      throw new UncheckedIOException(exception);
+    }
   }
 
   private static Set<String> ownPlaces(final List<AnalysisFinding> found, final String ruleId) {
