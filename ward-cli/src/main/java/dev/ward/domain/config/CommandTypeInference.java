@@ -70,6 +70,8 @@ public final class CommandTypeInference {
           new Rule("pytest", sequence("pytest")),
           new Rule("mutmut", sequence("mutmut", "run")),
           new Rule("django-check", sequence("manage.py", "check")),
+          new Rule("cargo-clippy", sequence("cargo", "clippy")),
+          new Rule("cargo-test", sequence("cargo", "test")),
           new Rule("swift-build", sequence("swift", "build")),
           new Rule("swift-test", sequence("swift", "test")),
           new Rule("xcodebuild-test", sequence("xcodebuild", "test")),

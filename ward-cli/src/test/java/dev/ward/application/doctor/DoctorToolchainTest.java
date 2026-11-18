@@ -23,12 +23,10 @@ class DoctorToolchainTest {
   @Test
   void unsupportedToolchainWarnsWithoutMentioningMaven() {
     final List<Finding> findings =
-        diagnose(new Project(ROOT, Language.RUST, BuildTool.CARGO, Framework.NONE));
+        diagnose(new Project(ROOT, Language.GO, BuildTool.GO, Framework.NONE));
 
     assertThat(findings)
-        .contains(
-            new Finding("cargo", Status.WARNING, "Ward does not check the Cargo toolchain yet.")
-        );
+        .contains(new Finding("go", Status.WARNING, "Ward does not check the Go toolchain yet."));
     assertThat(findings).extracting(Finding::message).noneMatch(m -> m.contains("Maven"));
   }
 

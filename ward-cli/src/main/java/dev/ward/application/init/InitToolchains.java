@@ -3,6 +3,7 @@ package dev.ward.application.init;
 import dev.ward.application.init.jvm.JvmInitSupport;
 import dev.ward.application.init.node.NodeInitSupport;
 import dev.ward.application.init.python.PythonInitSupport;
+import dev.ward.application.init.rust.RustInitSupport;
 import dev.ward.application.init.swift.SwiftInitSupport;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.project.Project;
@@ -25,6 +26,8 @@ public final class InitToolchains {
               new NodeInitSupport(),
               Toolchain.PYTHON,
               new PythonInitSupport(),
+              Toolchain.RUST,
+              new RustInitSupport(),
               Toolchain.SWIFT,
               new SwiftInitSupport()
           )
@@ -74,8 +77,8 @@ public final class InitToolchains {
 
   /** Returns the message explaining that init cannot configure {@code project}'s toolchain. */
   static String unsupported(final Project project) {
-    return "Ward init supports Maven, Gradle, TypeScript, JavaScript, Python (uv, Poetry, pip) and"
-        + " Swift (SwiftPM, Xcode) projects; "
+    return "Ward init supports Maven, Gradle, TypeScript, JavaScript, Python (uv, Poetry, pip), Rust"
+        + " (Cargo) and Swift (SwiftPM, Xcode) projects; "
         + project.buildTool().displayName()
         + " projects are not supported yet.";
   }

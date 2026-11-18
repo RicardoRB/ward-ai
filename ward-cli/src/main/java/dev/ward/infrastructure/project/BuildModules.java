@@ -2,6 +2,7 @@ package dev.ward.infrastructure.project;
 
 import dev.ward.infrastructure.project.node.NodeWorkspaces;
 import dev.ward.infrastructure.project.python.PythonWorkspaces;
+import dev.ward.infrastructure.project.rust.CargoWorkspaces;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
@@ -27,7 +28,7 @@ final class BuildModules {
   /**
    * Returns whether {@code candidate} belongs to the build at {@code aggregator}: listed in its
    * Maven {@code <modules>}, including profile modules, below its Gradle settings file, matched by
-   * its Node workspace patterns, or listed as a uv workspace member.
+   * its Node workspace patterns, listed as a uv workspace member, or listed as a Cargo workspace member.
    */
   static boolean isModuleOf(final Path aggregator, final Path candidate) {
     if (aggregator.equals(candidate) || !candidate.startsWith(aggregator)) {
@@ -38,7 +39,8 @@ final class BuildModules {
     return hasAny(aggregator, GRADLE_SETTINGS) && hasAny(candidate, GRADLE_BUILDS)
         || mavenModules(aggregator).contains(candidate)
         || NodeWorkspaces.isMember(aggregator, candidate)
-        || PythonWorkspaces.isMember(aggregator, candidate);
+        || PythonWorkspaces.isMember(aggregator, candidate)
+        || CargoWorkspaces.isMember(aggregator, candidate);
   }
 
   /** Returns the module directories that the POM in {@code dir} lists, resolved and normalized. */

@@ -16,6 +16,7 @@ import dev.ward.infrastructure.init.BuildToolConfigurator;
 import dev.ward.infrastructure.init.JvmBuildToolConfigurator;
 import dev.ward.infrastructure.init.node.NodeBuildToolConfigurator;
 import dev.ward.infrastructure.init.python.PythonBuildToolConfigurator;
+import dev.ward.infrastructure.init.rust.CargoBuildToolConfigurator;
 import dev.ward.infrastructure.init.swift.SwiftBuildToolConfigurator;
 import dev.ward.infrastructure.project.gradle.GradleCompatibilityInspection;
 import java.util.Map;
@@ -68,6 +69,7 @@ final class BuildToolBindingsModule {
       final JvmBuildToolConfigurator jvm,
       final NodeBuildToolConfigurator node,
       final PythonBuildToolConfigurator python,
+      final CargoBuildToolConfigurator rust,
       final SwiftBuildToolConfigurator swift
   ) {
     return Map.of(
@@ -77,6 +79,8 @@ final class BuildToolBindingsModule {
         node,
         Toolchain.PYTHON,
         python,
+        Toolchain.RUST,
+        rust,
         Toolchain.SWIFT,
         swift
     );

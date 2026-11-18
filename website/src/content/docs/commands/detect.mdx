@@ -39,6 +39,9 @@ ward detect [-C <dir>]
 - Python projects are recognized from `pyproject.toml`, `setup.py`, `setup.cfg`, or a file whose
   name matches `requirements*.txt`. A Maven or Gradle build in the same directory keeps its
   precedence.
+- Rust projects are recognized from `Cargo.toml`, read without running `cargo`. The members that a
+  workspace root lists in `workspace.members`, minus its `workspace.exclude`, are grouped as modules
+  of the root, as uv workspace members are.
 - Swift projects are recognized from `Package.swift` (SwiftPM), a `*.xcworkspace` or `*.xcodeproj`
   directory (Xcode), `Project.swift` or `Workspace.swift` (Tuist), or `project.yml` (XcodeGen). A
   Maven, Gradle, Node or Python marker in the same directory keeps its precedence. See

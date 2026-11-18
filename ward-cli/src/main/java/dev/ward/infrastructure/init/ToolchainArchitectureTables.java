@@ -6,6 +6,7 @@ import dev.ward.domain.project.Toolchain;
 import dev.ward.infrastructure.init.maven.MavenCodeRoot;
 import dev.ward.infrastructure.init.node.NodeArchitectureTables;
 import dev.ward.infrastructure.init.python.PythonArchitectureTables;
+import dev.ward.infrastructure.init.rust.RustArchitectureTables;
 import dev.ward.infrastructure.init.swift.SwiftArchitectureTables;
 import java.util.List;
 import javax.inject.Inject;
@@ -15,6 +16,7 @@ public final class ToolchainArchitectureTables implements ArchitectureTables {
   private final JavaArchitectureTables jvm;
   private final NodeArchitectureTables node;
   private final PythonArchitectureTables python;
+  private final RustArchitectureTables rust;
   private final SwiftArchitectureTables swift;
 
   /** Creates the router that Dagger injects. */
@@ -23,11 +25,13 @@ public final class ToolchainArchitectureTables implements ArchitectureTables {
       final JavaArchitectureTables jvm,
       final NodeArchitectureTables node,
       final PythonArchitectureTables python,
+      final RustArchitectureTables rust,
       final SwiftArchitectureTables swift
   ) {
     this.jvm = jvm;
     this.node = node;
     this.python = python;
+    this.rust = rust;
     this.swift = swift;
   }
 
@@ -51,6 +55,7 @@ public final class ToolchainArchitectureTables implements ArchitectureTables {
     return switch (toolchain) {
       case NODE -> node;
       case PYTHON -> python;
+      case RUST -> rust;
       case SWIFT -> swift;
       case JVM -> jvm;
       default -> jvm;

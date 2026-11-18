@@ -50,6 +50,8 @@ class InitSetupCatalogTest {
   private static final Set<String> SWIFT_GATES =
       Set.of("harmonize", "swift-build", "swift-test", "xcodebuild-test", "swift-coverage");
 
+  private static final Set<String> RUST_GATES = Set.of("cargo-clippy", "cargo-test");
+
   private static final double STRICT_LINE_MINIMUM = 0.85;
   private static final double STRICT_BRANCH_MINIMUM = 0.75;
   private static final int STRICT_MUTATION_THRESHOLD = 60;
@@ -210,6 +212,8 @@ class InitSetupCatalogTest {
                 .filter(id -> !PYTHON_GATES.contains(id))
                 // Swift init arrives later; check runs Swift gates only.
                 .filter(id -> !SWIFT_GATES.contains(id))
+                // Rust gates are offered only for Cargo projects.
+                .filter(id -> !RUST_GATES.contains(id))
                 // The ward-format gate is in every selection, not offered as a choice.
                 .filter(id -> !SupportedQualityGates.FORMAT.equals(id))
                 // Android gates are offered only for Android projects.

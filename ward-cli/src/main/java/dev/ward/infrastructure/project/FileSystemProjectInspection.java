@@ -11,6 +11,7 @@ import dev.ward.infrastructure.project.gradle.GradleAndroidModules;
 import dev.ward.infrastructure.project.jvm.JvmSourceLanguages;
 import dev.ward.infrastructure.project.node.NodeProjectInspection;
 import dev.ward.infrastructure.project.python.PythonProjectInspection;
+import dev.ward.infrastructure.project.rust.CargoWorkspaces;
 import dev.ward.infrastructure.project.swift.SwiftProjectInspection;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -63,10 +64,7 @@ public final class FileSystemProjectInspection implements ProjectInspection {
           new Marker(PythonProjectInspection.SETUP_PY, PythonProjectInspection::project),
           new Marker(PythonProjectInspection.SETUP_CFG, PythonProjectInspection::project),
           new Marker("go.mod", dir -> new Project(dir, Language.GO, BuildTool.GO, Framework.NONE)),
-          new Marker(
-              "Cargo.toml",
-              dir -> new Project(dir, Language.RUST, BuildTool.CARGO, Framework.NONE)
-          )
+          new Marker(CargoWorkspaces.MANIFEST, CargoWorkspaces::project)
       );
 
   /** Creates the stateless adapter that Dagger injects. */

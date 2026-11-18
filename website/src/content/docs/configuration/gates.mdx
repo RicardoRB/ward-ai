@@ -36,6 +36,8 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `pytest` | pytest | Run the project's automated tests. |
 | | `django-check` | Django system checks | Run `manage.py check` on a Django project. |
 | | `mutmut` | mutmut 3 | Run mutation testing, optionally with a `minimum` score. |
+| Rust | `cargo-clippy` | Clippy | Run `cargo clippy` over the workspace; any warning fails. |
+| | `cargo-test` | Cargo tests | Run `cargo test` over the workspace. |
 | Swift | `swift-build` | Swift build | Compile the SwiftPM package. |
 | | `swift-test` | Swift tests | Run the SwiftPM package's tests. |
 | | `xcodebuild-test` | Xcode tests | Run an Xcode scheme's tests on an iPhone simulator or the Mac. |
@@ -197,6 +199,22 @@ their `command` from the project root, exactly as written, and pass when it exit
 [checks.mypy]
 command = ["uv", "run", "mypy", "-O", "json", "src"]
 profiles = ["pre-push"]
+```
+
+## Rust gates
+
+`cargo-clippy` and `cargo-test` run their `command` from the project root, exactly as written, and
+pass when it exits with code 0. When `uses` is omitted, Ward infers the type from the command:
+`cargo clippy` is `cargo-clippy` and `cargo test` is `cargo-test`.
+
+```toml
+[checks.cargo-clippy]
+command = ["cargo", "clippy", "--workspace", "--all-targets", "--", "-D", "warnings"]
+profiles = ["pre-push", "ci"]
+
+[checks.cargo-test]
+command = ["cargo", "test", "--workspace"]
+profiles = ["pre-push", "ci"]
 ```
 
 ## Swift gates

@@ -586,6 +586,25 @@ It keeps the Gradle setup and adds the Android gates.
 - **Doctor.** `ward doctor` warns when neither `ANDROID_HOME` nor `ANDROID_SDK_ROOT` names an existing
   directory, and when the Android Gradle Plugin needs a newer JDK or Gradle than the build runs on.
 
+## Rust projects
+
+Init sets up Cargo crates and workspaces with the `standard` or `strict` preset. It reads
+`Cargo.toml` and never runs `cargo`; `Cargo.toml` is never edited.
+
+- **Workspaces.** A workspace root is one project; the members listed in `workspace.members` are its
+  modules. The gates run with `--workspace`, so every member is checked, and `strict` writes each
+  member's `src` directory as a root of `[checks.ward.cycles]`.
+- **Gates.** `ward-format` runs in every profile, then `cargo-clippy` and `cargo-test` in `pre-push`
+  and `ci`.
+
+  | Gate | `standard` command | `strict` |
+  |---|---|---|
+  | `cargo-clippy` | `cargo clippy --workspace --all-targets -- -D warnings` | adds `--all-features` |
+  | `cargo-test` | `cargo test --workspace` | adds `--all-features` |
+
+- **Doctor.** `ward doctor` reports a missing `cargo` and points to [rustup](https://rustup.rs).
+- **CI.** The generated workflow runs on `ubuntu-24.04`, which ships Rust, and adds no setup step.
+
 ## Swift projects
 
 Init sets up SwiftPM packages and Xcode projects that contain Swift sources, with the `standard` or
