@@ -21,6 +21,7 @@ public final class AnalysisLanguageToolchains {
       case PYTHON -> Optional.of(Toolchain.PYTHON);
       case SWIFT -> Optional.of(Toolchain.SWIFT);
       case RUST -> Optional.of(Toolchain.RUST);
+      case CSHARP -> Optional.of(Toolchain.DOTNET);
       case OPENAPI, ANDROID -> Optional.empty();
     };
   }

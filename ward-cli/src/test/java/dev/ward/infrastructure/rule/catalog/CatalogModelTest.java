@@ -73,6 +73,7 @@ class CatalogModelTest {
             AnalysisLanguage.PYTHON,
             AnalysisLanguage.SWIFT,
             AnalysisLanguage.RUST,
+            AnalysisLanguage.CSHARP,
             AnalysisLanguage.OPENAPI,
             AnalysisLanguage.ANDROID
         );

@@ -262,7 +262,7 @@ final class ArchitectureBoundarySupport {
    */
   private static boolean isGeneratedFrontendPackage(final String packageName) {
     return packageName.matches(
-        "dev\\.ward\\.analysis\\.(frontend\\.antlr|domain\\.node|domain\\.jvm|domain\\.python|domain\\.swift|domain\\.rust|domain\\.openapi|domain\\.android|application\\.(?:jvm|node|python|swift|rust|openapi|android)|infrastructure\\.node)(\\..*)?"
+        "dev\\.ward\\.analysis\\.(frontend\\.antlr|domain\\.node|domain\\.jvm|domain\\.python|domain\\.swift|domain\\.rust|domain\\.csharp|domain\\.openapi|domain\\.android|application\\.(?:jvm|node|python|swift|rust|csharp|openapi|android)|infrastructure\\.node)(\\..*)?"
     );
   }
 

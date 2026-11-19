@@ -23,6 +23,19 @@ import org.junit.jupiter.params.provider.MethodSource;
  * refused. A language formatter passes by adding fixtures; this class needs no change.
  */
 class FormatterFixturesTest {
+  private static final Map<AnalysisLanguage, String> EXTENSIONS =
+      Map.ofEntries(
+          Map.entry(AnalysisLanguage.JAVA, "java"),
+          Map.entry(AnalysisLanguage.KOTLIN, "kt"),
+          Map.entry(AnalysisLanguage.TYPESCRIPT, "ts"),
+          Map.entry(AnalysisLanguage.JAVASCRIPT, "js"),
+          Map.entry(AnalysisLanguage.PYTHON, "py"),
+          Map.entry(AnalysisLanguage.SWIFT, "swift"),
+          Map.entry(AnalysisLanguage.RUST, "rs"),
+          Map.entry(AnalysisLanguage.CSHARP, "cs"),
+          Map.entry(AnalysisLanguage.OPENAPI, "yaml"),
+          Map.entry(AnalysisLanguage.ANDROID, "xml")
+      );
   private static final String FIXTURE_ROOT = "/format";
   private static final Map<AnalysisLanguage, FormatSyntax> SYNTAX =
       Map.of(AnalysisLanguage.JAVA, new FakeFormatSyntax());
@@ -89,16 +102,6 @@ class FormatterFixturesTest {
   }
 
   private static String extension(final AnalysisLanguage language) {
-    return switch (language) {
-      case JAVA -> "java";
-      case KOTLIN -> "kt";
-      case TYPESCRIPT -> "ts";
-      case JAVASCRIPT -> "js";
-      case PYTHON -> "py";
-      case SWIFT -> "swift";
-      case RUST -> "rs";
-      case OPENAPI -> "yaml";
-      case ANDROID -> "xml";
-    };
+    return EXTENSIONS.get(language);
   }
 }

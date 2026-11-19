@@ -107,6 +107,7 @@ public final class DuplicateTokens {
         case PYTHON -> python();
         case SWIFT -> swift();
         case RUST -> rust();
+        case CSHARP -> csharp();
         case OPENAPI, ANDROID -> new Vocabulary(Set.of(), Set.of(), Set.of());
       };
     }
@@ -128,6 +129,24 @@ public final class DuplicateTokens {
           ),
           Set.of("IDENTIFIER"),
           Set.of("annotation")
+      );
+    }
+
+    private static Vocabulary csharp() {
+      return new Vocabulary(
+          Set.of(
+              "Integer_Literal",
+              "Real_Literal",
+              "Character_Literal",
+              "String_Literal",
+              "Raw_String_Literal",
+              "Interpolated_Raw_String",
+              "'true'",
+              "'false'",
+              "'null'"
+          ),
+          Set.of("Simple_Identifier"),
+          Set.of("attributes")
       );
     }
 

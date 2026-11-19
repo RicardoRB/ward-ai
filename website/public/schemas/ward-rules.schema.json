@@ -176,6 +176,43 @@
         }
       }
     },
+    "ward:csharp/duplicate-code": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "min-tokens": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "ignore-literals": {
+          "type": "boolean"
+        },
+        "ignore-identifiers": {
+          "type": "boolean"
+        },
+        "ignore-annotations": {
+          "type": "boolean"
+        },
+        "max-duplicated-percent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
     "ward:java/aa-assertion-of-arguments": {
       "type": "object",
       "additionalProperties": false,
@@ -59157,6 +59194,7 @@
               "python",
               "swift",
               "rust",
+              "csharp",
               "openapi",
               "android"
             ]
@@ -59201,6 +59239,7 @@
               "android.hardcoded-text",
               "android.missing-content-description",
               "android.unused-resources",
+              "csharp.duplicate-code",
               "java.aa-assertion-of-arguments",
               "java.abbreviation-as-word-in-name",
               "java.abstract-class-name",
@@ -62193,6 +62232,7 @@
               "android.hardcoded-text",
               "android.missing-content-description",
               "android.unused-resources",
+              "csharp.duplicate-code",
               "java.aa-assertion-of-arguments",
               "java.abbreviation-as-word-in-name",
               "java.abstract-class-name",
@@ -65207,6 +65247,15 @@
             },
             "unused-resources": {
               "$ref": "#/$defs/ward:android~1unused-resources"
+            }
+          }
+        },
+        "csharp": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "duplicate-code": {
+              "$ref": "#/$defs/ward:csharp~1duplicate-code"
             }
           }
         },

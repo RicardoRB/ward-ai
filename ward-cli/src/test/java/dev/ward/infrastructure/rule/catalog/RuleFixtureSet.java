@@ -46,6 +46,8 @@ record RuleFixtureSet(AnalysisLanguage language, String name, Path directory) {
           "py",
           AnalysisLanguage.SWIFT,
           "swift",
+          AnalysisLanguage.CSHARP,
+          "cs",
           AnalysisLanguage.OPENAPI,
           "yaml",
           AnalysisLanguage.ANDROID,

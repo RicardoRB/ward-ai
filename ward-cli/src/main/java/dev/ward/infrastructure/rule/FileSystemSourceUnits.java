@@ -42,7 +42,8 @@ public final class FileSystemSourceUnits implements AnalysisSourceUnits {
           Map.entry("cjs", AnalysisLanguage.JAVASCRIPT),
           Map.entry("py", AnalysisLanguage.PYTHON),
           Map.entry("swift", AnalysisLanguage.SWIFT),
-          Map.entry("rs", AnalysisLanguage.RUST)
+          Map.entry("rs", AnalysisLanguage.RUST),
+          Map.entry("cs", AnalysisLanguage.CSHARP)
       );
   private static final Set<String> SKIPPED_DIRECTORIES =
       Set.of("target", "build", "dist", "node_modules", "mutants");

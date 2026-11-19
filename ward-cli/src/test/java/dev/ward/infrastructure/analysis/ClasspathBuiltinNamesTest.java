@@ -47,6 +47,10 @@ class ClasspathBuiltinNamesTest {
     assertThat(ClasspathBuiltinNames.java().of(Set.of())).contains("String", "System", "Math");
     assertThat(ClasspathBuiltinNames.kotlin().of(Set.of()))
         .contains("println", "listOf", "require");
-    assertThat(ClasspathBuiltinNames.swift().of(Set.of())).contains("print", "Int", "fatalError");
+    assertThat(ClasspathBuiltinNames.forLanguage("swift").of(Set.of())).contains(
+        "print",
+        "Int",
+        "fatalError"
+    );
   }
 }

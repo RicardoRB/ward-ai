@@ -78,14 +78,15 @@ public final class ClasspathBuiltinNames implements BuiltinNames {
     return new ClasspathBuiltinNames("jvm/builtins", List.of("kotlin"), List.of());
   }
 
-  /** The names the Swift standard library provides. */
-  public static ClasspathBuiltinNames swift() {
-    return new ClasspathBuiltinNames("swift/builtins", List.of("swift"), List.of());
-  }
-
-  /** The names the Rust prelude and the primitive types provide. */
-  public static ClasspathBuiltinNames rust() {
-    return new ClasspathBuiltinNames("rust/builtins", List.of("rust"), List.of());
+  /**
+   * The names a language provides without an import, read from the one environment named after it:
+   * the Swift standard library, the Rust prelude and primitive types, or C#'s top-level {@code
+   * args} and implicit usings.
+   *
+   * @param language the resource directory and environment, such as {@code swift}
+   */
+  public static ClasspathBuiltinNames forLanguage(final String language) {
+    return new ClasspathBuiltinNames(language + "/builtins", List.of(language), List.of());
   }
 
   @Override

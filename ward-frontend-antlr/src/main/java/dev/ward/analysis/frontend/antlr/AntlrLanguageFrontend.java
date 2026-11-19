@@ -51,6 +51,7 @@ public final class AntlrLanguageFrontend implements LanguageFrontend {
       case PYTHON -> pythonSession();
       case SWIFT -> CompiledLanguageSessions.swift();
       case RUST -> CompiledLanguageSessions.rust();
+      case CSHARP -> CompiledLanguageSessions.csharp();
       // OpenAPI documents and Android XML are data that their own frontends read, not ANTLR.
       case OPENAPI, ANDROID ->
           unit -> {

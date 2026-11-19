@@ -17,7 +17,8 @@ public final class ToolchainArchitectureTables implements ArchitectureTables {
   @Inject
   public ToolchainArchitectureTables(
       final JavaArchitectureTables jvm,
-      final Map<Toolchain, ArchitectureTables> byToolchain
+      final Map<Toolchain,
+      ArchitectureTables> byToolchain
   ) {
     this.jvm = jvm;
     this.byToolchain = Map.copyOf(byToolchain);

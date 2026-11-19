@@ -18,11 +18,16 @@ public final class ArchitectureTablesFixtures {
     return new ToolchainArchitectureTables(
         new JavaArchitectureTables(),
         Map.of(
-            Toolchain.NODE, new NodeArchitectureTables(),
-            Toolchain.PYTHON, new PythonArchitectureTables(),
-            Toolchain.RUST, new RustArchitectureTables(),
-            Toolchain.SWIFT, new SwiftArchitectureTables(),
-            Toolchain.DOTNET, new DotnetArchitectureTables()
+            Toolchain.NODE,
+            new NodeArchitectureTables(),
+            Toolchain.PYTHON,
+            new PythonArchitectureTables(),
+            Toolchain.RUST,
+            new RustArchitectureTables(),
+            Toolchain.SWIFT,
+            new SwiftArchitectureTables(),
+            Toolchain.DOTNET,
+            new DotnetArchitectureTables()
         )
     );
   }

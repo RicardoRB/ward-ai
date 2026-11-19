@@ -3,6 +3,8 @@ package dev.ward.infrastructure.analysis;
 import dev.ward.analysis.application.android.AndroidXmlFrontend;
 import dev.ward.analysis.application.openapi.OpenApiLanguageFrontend;
 import dev.ward.analysis.application.rule.FrontendSupport;
+import dev.ward.analysis.domain.csharp.CSharpControlFlow;
+import dev.ward.analysis.domain.csharp.CSharpScopeAnalysis;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.jvm.JavaControlFlow;
 import dev.ward.analysis.domain.jvm.JavaScopeAnalysis;
@@ -95,14 +97,21 @@ public final class GateFrontends {
             frontend,
             swift,
             new SwiftControlFlow(),
-            new CachedScopes(new SwiftScopeAnalysis(ClasspathBuiltinNames.swift()))
+            new CachedScopes(new SwiftScopeAnalysis(ClasspathBuiltinNames.forLanguage("swift")))
         ),
         new FrontendSupport(
             AnalysisLanguage.RUST,
             frontend,
             graphs,
             new RustControlFlow(),
-            new CachedScopes(new RustScopeAnalysis(ClasspathBuiltinNames.rust()))
+            new CachedScopes(new RustScopeAnalysis(ClasspathBuiltinNames.forLanguage("rust")))
+        ),
+        new FrontendSupport(
+            AnalysisLanguage.CSHARP,
+            frontend,
+            csharpCapabilities(),
+            new CSharpControlFlow(),
+            new CachedScopes(new CSharpScopeAnalysis(ClasspathBuiltinNames.forLanguage("csharp")))
         ),
         new FrontendSupport(
             AnalysisLanguage.KOTLIN,
@@ -135,6 +144,10 @@ public final class GateFrontends {
         RuleCapability.DATAFLOW,
         RuleCapability.TAINT
     );
+  }
+
+  private static Set<RuleCapability> csharpCapabilities() {
+    return Set.of(RuleCapability.SYNTAX, RuleCapability.SCOPES, RuleCapability.CFG);
   }
 
   private static Set<RuleCapability> graphCapabilities() {

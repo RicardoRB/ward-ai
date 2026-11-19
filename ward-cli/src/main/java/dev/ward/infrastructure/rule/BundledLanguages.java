@@ -2,6 +2,7 @@ package dev.ward.infrastructure.rule;
 
 import dev.ward.analysis.application.android.AndroidCheckProvider;
 import dev.ward.analysis.application.android.AndroidRuleFiles;
+import dev.ward.analysis.application.csharp.CSharpRuleFiles;
 import dev.ward.analysis.application.jvm.JvmCheckProvider;
 import dev.ward.analysis.application.jvm.JvmRuleFiles;
 import dev.ward.analysis.application.node.NodeCheckProvider;
@@ -38,6 +39,7 @@ public final class BundledLanguages {
         new PythonRuleFiles(),
         new SwiftRuleFiles(),
         new RustRuleFiles(),
+        new CSharpRuleFiles(),
         new SecretRuleFiles(),
         new OpenApiRuleFiles(),
         new AndroidRuleFiles()
