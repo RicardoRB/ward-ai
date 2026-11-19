@@ -1,0 +1,3 @@
+# rule, clippy lint, difference: tool-silent (Clippy reports nothing on the violating fixture), anchor-differs (same number of findings on other lines), count-differs, tool-extra (Clippy reports the passing fixture).
+# Regenerate with -Dward.parity.write=true; reasons are in clippy-approximations.txt.
+needless-else	clippy::needless-else	anchor-differs

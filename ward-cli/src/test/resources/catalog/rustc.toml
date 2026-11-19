@@ -1,0 +1,268 @@
+# Rule catalog rows of the rustc lints for Rust, one [[rule]] per Ward rule concept. Edit by hand; the status of each row is in status/rust/rustc.toml.
+
+[[rule]]
+name = "absolute-paths-not-starting-with-crate"
+category = "style"
+rustc = ["absolute-paths-not-starting-with-crate"]
+
+[[rule]]
+name = "anonymous-parameters"
+category = "style"
+rustc = ["anonymous-parameters"]
+
+[[rule]]
+name = "break-with-label-and-loop"
+category = "style"
+rustc = ["break-with-label-and-loop"]
+
+[[rule]]
+name = "confusable-idents"
+category = "style"
+rustc = ["confusable-idents"]
+
+[[rule]]
+name = "dead-code"
+category = "style"
+rustc = ["dead-code"]
+
+[[rule]]
+name = "double-negations"
+rustc = ["double-negations"]
+
+[[rule]]
+name = "duplicate-macro-attributes"
+category = "style"
+rustc = ["duplicate-macro-attributes"]
+
+[[rule]]
+name = "elided-lifetimes-in-paths"
+category = "style"
+rustc = ["elided-lifetimes-in-paths"]
+
+[[rule]]
+name = "ellipsis-inclusive-range-patterns"
+category = "style"
+rustc = ["ellipsis-inclusive-range-patterns"]
+
+[[rule]]
+name = "explicit-outlives-requirements"
+category = "style"
+rustc = ["explicit-outlives-requirements"]
+
+[[rule]]
+name = "irrefutable-let-patterns"
+category = "style"
+rustc = ["irrefutable-let-patterns"]
+
+[[rule]]
+name = "macro-use-extern-crate"
+category = "style"
+rustc = ["macro-use-extern-crate"]
+
+[[rule]]
+name = "missing-docs"
+category = "style"
+rustc = ["missing-docs"]
+
+[[rule]]
+name = "mixed-script-confusables"
+category = "style"
+rustc = ["mixed-script-confusables"]
+
+[[rule]]
+name = "named-arguments-used-positionally"
+category = "style"
+rustc = ["named-arguments-used-positionally"]
+
+[[rule]]
+name = "no-mangle-const-items"
+category = "style"
+rustc = ["no-mangle-const-items"]
+
+[[rule]]
+name = "no-mangle-generic-items"
+category = "style"
+rustc = ["no-mangle-generic-items"]
+
+[[rule]]
+name = "non-ascii-idents"
+rustc = ["non-ascii-idents"]
+
+[[rule]]
+name = "non-camel-case-types"
+rustc = ["non-camel-case-types"]
+
+[[rule]]
+name = "non-shorthand-field-patterns"
+rustc = ["non-shorthand-field-patterns"]
+
+[[rule]]
+name = "non-snake-case"
+rustc = ["non-snake-case"]
+
+[[rule]]
+name = "non-upper-case-globals"
+rustc = ["non-upper-case-globals"]
+
+[[rule]]
+name = "path-statements"
+rustc = ["path-statements"]
+
+[[rule]]
+name = "redundant-imports"
+category = "style"
+rustc = ["redundant-imports"]
+
+[[rule]]
+name = "redundant-lifetimes"
+category = "style"
+rustc = ["redundant-lifetimes"]
+
+[[rule]]
+name = "redundant-semicolons"
+rustc = ["redundant-semicolons"]
+
+[[rule]]
+name = "rust-unconditional-recursion"
+category = "style"
+ids = { rust = "ward:rust/unconditional-recursion" }
+rustc = ["unconditional-recursion"]
+
+[[rule]]
+name = "rust-unreachable-code"
+ids = { rust = "ward:rust/unreachable-code" }
+rustc = ["unreachable-code"]
+
+[[rule]]
+name = "rust-unused-imports"
+category = "style"
+ids = { rust = "ward:rust/unused-imports" }
+rustc = ["unused-imports"]
+
+[[rule]]
+name = "single-use-lifetimes"
+category = "style"
+rustc = ["single-use-lifetimes"]
+
+[[rule]]
+name = "special-module-name"
+category = "style"
+rustc = ["special-module-name"]
+
+[[rule]]
+name = "static-mut-refs"
+category = "style"
+rustc = ["static-mut-refs"]
+
+[[rule]]
+name = "text-direction-codepoint-in-comment"
+category = "style"
+rustc = ["text-direction-codepoint-in-comment"]
+
+[[rule]]
+name = "text-direction-codepoint-in-literal"
+rustc = ["text-direction-codepoint-in-literal"]
+
+[[rule]]
+name = "type-alias-bounds"
+category = "style"
+rustc = ["type-alias-bounds"]
+
+[[rule]]
+name = "uncommon-codepoints"
+category = "style"
+rustc = ["uncommon-codepoints"]
+
+[[rule]]
+name = "unit-bindings"
+category = "style"
+rustc = ["unit-bindings"]
+
+[[rule]]
+name = "unreachable-pub"
+category = "style"
+rustc = ["unreachable-pub"]
+
+[[rule]]
+name = "unsafe-code"
+rustc = ["unsafe-code"]
+
+[[rule]]
+name = "unused-assignments"
+rustc = ["unused-assignments"]
+
+[[rule]]
+name = "unused-attributes"
+category = "style"
+rustc = ["unused-attributes"]
+
+[[rule]]
+name = "unused-braces"
+category = "style"
+rustc = ["unused-braces"]
+
+[[rule]]
+name = "unused-doc-comments"
+category = "style"
+rustc = ["unused-doc-comments"]
+
+[[rule]]
+name = "unused-extern-crates"
+category = "style"
+rustc = ["unused-extern-crates"]
+
+[[rule]]
+name = "unused-features"
+category = "style"
+rustc = ["unused-features"]
+
+[[rule]]
+name = "unused-import-braces"
+rustc = ["unused-import-braces"]
+
+[[rule]]
+name = "unused-labels"
+category = "style"
+rustc = ["unused-labels"]
+
+[[rule]]
+name = "unused-lifetimes"
+category = "style"
+rustc = ["unused-lifetimes"]
+
+[[rule]]
+name = "unused-macro-rules"
+category = "style"
+rustc = ["unused-macro-rules"]
+
+[[rule]]
+name = "unused-macros"
+category = "style"
+rustc = ["unused-macros"]
+
+[[rule]]
+name = "unused-mut"
+category = "style"
+rustc = ["unused-mut"]
+
+[[rule]]
+name = "unused-parens"
+rustc = ["unused-parens"]
+
+[[rule]]
+name = "unused-qualifications"
+category = "style"
+rustc = ["unused-qualifications"]
+
+[[rule]]
+name = "unused-unsafe"
+category = "style"
+rustc = ["unused-unsafe"]
+
+[[rule]]
+name = "unused-variables"
+rustc = ["unused-variables"]
+
+[[rule]]
+name = "while-true"
+rustc = ["while-true"]

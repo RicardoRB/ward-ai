@@ -1,0 +1,283 @@
+# Rust rules mapped to Clippy lints of the restriction and pedantic groups, which only the strict preset selects.
+
+[[rules]]
+id = "ward:rust/allow-attributes"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["outerAttribute", "innerAttribute"]
+text = '^#!?\[allow\('
+message = "use expect instead of allow, so that a stale attribute is reported"
+'''
+
+[[rules]]
+id = "ward:rust/allow-attributes-without-reason"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["outerAttribute", "innerAttribute"]
+text = '^#!?\[(allow|expect)\((?:(?!reason=).)*\)\]$'
+message = "the attribute gives no reason"
+'''
+
+[[rules]]
+id = "ward:rust/dbg-macro"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["macroInvocation", "macroInvocationSemi"]
+text = '^dbg!'
+message = "remove the debugging macro"
+'''
+
+[[rules]]
+id = "ward:rust/empty-structs-with-brackets"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["structStruct"]
+text = '^struct\w+\{\}$'
+message = "an empty struct needs no brackets"
+'''
+
+[[rules]]
+id = "ward:rust/exit"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(std::)?process::exit\('
+message = "exit ends the process without cleanup; return from main instead"
+'''
+
+[[rules]]
+id = "ward:rust/expect-used"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "error-handling"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.expect\((?:[^()]++|\((?:[^()]++|\([^()]*+\))*+\))*+\)$'
+message = "expect panics on a missing value; handle the case"
+'''
+
+[[rules]]
+id = "ward:rust/inline-always"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "performance"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["outerAttribute"]
+text = '^#\[inline\(always\)\]$'
+message = "inline(always) overrides the compiler; use inline"
+'''
+
+[[rules]]
+id = "ward:rust/manual-string-new"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(\"\"\.(to_string|to_owned|into)\(\)|String::from\(\"\"\))$'
+message = "use String::new for an empty string"
+'''
+
+[[rules]]
+id = "ward:rust/mem-forget"
+language = "rust"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(std::)?mem::forget\('
+message = "forgetting a value leaks it; drop it instead"
+'''
+
+[[rules]]
+id = "ward:rust/panic"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "error-handling"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["macroInvocation", "macroInvocationSemi"]
+text = '^panic!'
+message = "panic! stops the program; return an error"
+'''
+
+[[rules]]
+id = "ward:rust/print-stderr"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["macroInvocation", "macroInvocationSemi"]
+text = '^(eprint|eprintln)!'
+message = "write to a logger or a writer instead of the standard error"
+'''
+
+[[rules]]
+id = "ward:rust/print-stdout"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["macroInvocation", "macroInvocationSemi"]
+text = '^(print|println)!'
+message = "write to a logger or a writer instead of the standard output"
+'''
+
+[[rules]]
+id = "ward:rust/todo"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["macroInvocation", "macroInvocationSemi"]
+text = '^todo!'
+message = "todo! is a placeholder; write the code"
+'''
+
+[[rules]]
+id = "ward:rust/too-many-lines"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "complexity"
+presets = ["strict"]
+options.max = { type = "integer", min = 1 }
+body = '''
+check = "lines"
+kinds = ["function_"]
+max = 100
+count-empty = false
+message = "the function has {value} lines; at most {max} are allowed"
+'''
+
+[[rules]]
+id = "ward:rust/unimplemented"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["macroInvocation", "macroInvocationSemi"]
+text = '^unimplemented!'
+message = "unimplemented! is a placeholder; write the code"
+'''
+
+[[rules]]
+id = "ward:rust/unreachable"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["macroInvocation", "macroInvocationSemi"]
+text = '^unreachable!'
+message = "unreachable! panics at run time; return an error or prove the case away"
+'''
+
+[[rules]]
+id = "ward:rust/unreadable-literal"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["INTEGER_LITERAL", "FLOAT_LITERAL"]
+text = '^[1-9][0-9]{5,}(?:[iu](?:8|16|32|64|128|size)|f32|f64|\.[0-9]*)?$'
+message = "separate the digits of a long literal with underscores"
+'''
+
+[[rules]]
+id = "ward:rust/unseparated-literal-suffix"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["INTEGER_LITERAL", "FLOAT_LITERAL"]
+text = '^[0-9](?:[0-9_]*[0-9])?(?:\.[0-9](?:[0-9_]*[0-9])?)?(?:[iu](?:8|16|32|64|128|size)|f32|f64)$'
+message = "separate the type suffix from the number with an underscore"
+'''
+
+[[rules]]
+id = "ward:rust/unwrap-used"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "error-handling"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.unwrap\(\)$'
+message = "unwrap panics on a missing value; handle the case"
+'''
+
+[[rules]]
+id = "ward:rust/wildcard-imports"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["useDeclaration"]
+text = '^use(?!super::\*;)(?!.*prelude::\*;).*::\*;$'
+message = "import the names that are used instead of a wildcard"
+'''

@@ -1,0 +1,3 @@
+pub fn five() -> i32 {
+    return 5;
+}

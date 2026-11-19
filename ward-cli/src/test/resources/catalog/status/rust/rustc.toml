@@ -1,0 +1,58 @@
+# Status of the rustc rows in rust: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+absolute-paths-not-starting-with-crate = { status = "planned", issue = "#682" }
+anonymous-parameters = { status = "planned", issue = "#682" }
+break-with-label-and-loop = { status = "planned", issue = "#682" }
+confusable-idents = { status = "planned", issue = "#682" }
+dead-code = { status = "planned", issue = "#682" }
+double-negations = "implemented"
+duplicate-macro-attributes = { status = "planned", issue = "#682" }
+elided-lifetimes-in-paths = { status = "planned", issue = "#682" }
+ellipsis-inclusive-range-patterns = { status = "planned", issue = "#682" }
+explicit-outlives-requirements = { status = "planned", issue = "#682" }
+irrefutable-let-patterns = { status = "planned", issue = "#682" }
+macro-use-extern-crate = { status = "planned", issue = "#682" }
+missing-docs = { status = "planned", issue = "#682" }
+mixed-script-confusables = { status = "planned", issue = "#682" }
+named-arguments-used-positionally = { status = "planned", issue = "#682" }
+no-mangle-const-items = { status = "planned", issue = "#682" }
+no-mangle-generic-items = { status = "planned", issue = "#682" }
+non-ascii-idents = "implemented"
+non-camel-case-types = "implemented"
+non-shorthand-field-patterns = "implemented"
+non-snake-case = "implemented"
+non-upper-case-globals = "implemented"
+path-statements = "implemented"
+redundant-imports = { status = "planned", issue = "#682" }
+redundant-lifetimes = { status = "planned", issue = "#682" }
+redundant-semicolons = "implemented"
+rust-unconditional-recursion = { status = "planned", issue = "#682" }
+rust-unreachable-code = "implemented"
+rust-unused-imports = { status = "planned", issue = "#682" }
+single-use-lifetimes = { status = "planned", issue = "#682" }
+special-module-name = { status = "planned", issue = "#682" }
+static-mut-refs = { status = "planned", issue = "#682" }
+text-direction-codepoint-in-comment = { status = "planned", issue = "#682" }
+text-direction-codepoint-in-literal = "implemented"
+type-alias-bounds = { status = "planned", issue = "#682" }
+uncommon-codepoints = { status = "planned", issue = "#682" }
+unit-bindings = { status = "planned", issue = "#682" }
+unreachable-pub = { status = "planned", issue = "#682" }
+unsafe-code = "implemented"
+unused-assignments = "implemented"
+unused-attributes = { status = "planned", issue = "#682" }
+unused-braces = { status = "planned", issue = "#682" }
+unused-doc-comments = { status = "planned", issue = "#682" }
+unused-extern-crates = { status = "planned", issue = "#682" }
+unused-features = { status = "planned", issue = "#682" }
+unused-import-braces = "implemented"
+unused-labels = { status = "planned", issue = "#682" }
+unused-lifetimes = { status = "planned", issue = "#682" }
+unused-macro-rules = { status = "planned", issue = "#682" }
+unused-macros = { status = "planned", issue = "#682" }
+unused-mut = { status = "planned", issue = "#682" }
+unused-parens = "implemented"
+unused-qualifications = { status = "planned", issue = "#682" }
+unused-unsafe = { status = "planned", issue = "#682" }
+unused-variables = "implemented"
+while-true = "implemented"

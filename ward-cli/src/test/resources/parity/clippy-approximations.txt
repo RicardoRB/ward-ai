@@ -1,0 +1,2 @@
+# rule	clippy lint	reason. A reviewed difference between Clippy and the Ward rule; clippy-report.txt lists it.
+needless-else	clippy::needless-else	Clippy reports the empty else block, Ward the if statement that owns it

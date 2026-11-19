@@ -219,6 +219,12 @@ command = ["cargo", "test", "--workspace"]
 profiles = ["pre-push", "ci"]
 ```
 
+The `ward` gate also runs Ward's own Rust rules, `ward:rust/<name>`. Each one maps to a Clippy lint or a
+rustc lint (the rules reference lists the counterpart of every rule), so a project can keep the
+check without the tool. The `standard` preset selects the rules of Clippy's default groups and the
+rustc lints on naming, unused code and unreachable code; `strict` adds the restriction and pedantic
+lints. Lints that need type information are not covered yet; `cargo clippy` still reports them.
+
 ## C# gates
 
 `dotnet-build` and `dotnet-test` run their `command` from the project root, exactly as written, and

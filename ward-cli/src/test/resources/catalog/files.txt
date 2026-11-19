@@ -14,6 +14,7 @@ checkstyle-modifier
 checkstyle-naming
 checkstyle-regexp
 checkstyle-sizes
+clippy
 cpd
 detekt
 errorprone
@@ -27,6 +28,7 @@ periphery
 pmd
 pylint
 ruff
+rustc
 secrets
 spectral-oas
 spectral-owasp

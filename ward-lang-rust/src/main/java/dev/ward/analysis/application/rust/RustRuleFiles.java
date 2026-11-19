@@ -5,10 +5,14 @@ import java.util.List;
 
 /**
  * The Rust rule files packaged in this module. Add a new rule file here, in alphabetical order; no
- * other module lists it. There are none yet: the syntax, scopes and control flow come first.
+ * other module lists it.
  */
 public final class RustRuleFiles implements RuleFileProvider {
-  private static final List<String> FILES = List.of();
+  private static final List<String> FILES = List.of(
+      "rules/rust/clippy-standard.toml",
+      "rules/rust/clippy-strict.toml",
+      "rules/rust/rustc.toml"
+  );
 
   @Override
   public List<String> ruleFiles() {

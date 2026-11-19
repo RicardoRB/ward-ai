@@ -1,0 +1,3776 @@
+# Rule catalog rows of the clippy lints for Rust, one [[rule]] per Ward rule concept. Edit by hand; the status of each row is in status/rust/clippy.toml.
+
+[[rule]]
+name = "absolute-paths"
+category = "style"
+clippy = ["clippy::absolute-paths"]
+
+[[rule]]
+name = "absurd-extreme-comparisons"
+category = "correctness"
+clippy = ["clippy::absurd-extreme-comparisons"]
+
+[[rule]]
+name = "alloc-instead-of-core"
+category = "style"
+clippy = ["clippy::alloc-instead-of-core"]
+
+[[rule]]
+name = "allow-attributes"
+clippy = ["clippy::allow-attributes"]
+
+[[rule]]
+name = "allow-attributes-without-reason"
+clippy = ["clippy::allow-attributes-without-reason"]
+
+[[rule]]
+name = "almost-complete-range"
+category = "correctness"
+clippy = ["clippy::almost-complete-range"]
+
+[[rule]]
+name = "almost-swapped"
+category = "correctness"
+clippy = ["clippy::almost-swapped"]
+
+[[rule]]
+name = "approx-constant"
+clippy = ["clippy::approx-constant"]
+
+[[rule]]
+name = "arc-with-non-send-sync"
+category = "correctness"
+clippy = ["clippy::arc-with-non-send-sync"]
+
+[[rule]]
+name = "arithmetic-side-effects"
+category = "style"
+clippy = ["clippy::arithmetic-side-effects"]
+
+[[rule]]
+name = "as-conversions"
+category = "style"
+clippy = ["clippy::as-conversions"]
+
+[[rule]]
+name = "as-pointer-underscore"
+category = "style"
+clippy = ["clippy::as-pointer-underscore"]
+
+[[rule]]
+name = "as-ptr-cast-mut"
+category = "style"
+clippy = ["clippy::as-ptr-cast-mut"]
+
+[[rule]]
+name = "as-underscore"
+category = "style"
+clippy = ["clippy::as-underscore"]
+
+[[rule]]
+name = "assertions-on-constants"
+category = "style"
+clippy = ["clippy::assertions-on-constants"]
+
+[[rule]]
+name = "assertions-on-result-states"
+category = "style"
+clippy = ["clippy::assertions-on-result-states"]
+
+[[rule]]
+name = "assign-op-pattern"
+category = "style"
+clippy = ["clippy::assign-op-pattern"]
+
+[[rule]]
+name = "assigning-clones"
+category = "style"
+clippy = ["clippy::assigning-clones"]
+
+[[rule]]
+name = "async-yields-async"
+category = "correctness"
+clippy = ["clippy::async-yields-async"]
+
+[[rule]]
+name = "await-holding-invalid-type"
+category = "correctness"
+clippy = ["clippy::await-holding-invalid-type"]
+
+[[rule]]
+name = "await-holding-lock"
+category = "correctness"
+clippy = ["clippy::await-holding-lock"]
+
+[[rule]]
+name = "await-holding-refcell-ref"
+category = "correctness"
+clippy = ["clippy::await-holding-refcell-ref"]
+
+[[rule]]
+name = "bad-bit-mask"
+category = "correctness"
+clippy = ["clippy::bad-bit-mask"]
+
+[[rule]]
+name = "big-endian-bytes"
+category = "style"
+clippy = ["clippy::big-endian-bytes"]
+
+[[rule]]
+name = "bind-instead-of-map"
+category = "complexity"
+clippy = ["clippy::bind-instead-of-map"]
+
+[[rule]]
+name = "blocks-in-conditions"
+category = "style"
+clippy = ["clippy::blocks-in-conditions"]
+
+[[rule]]
+name = "bool-assert-comparison"
+category = "style"
+clippy = ["clippy::bool-assert-comparison"]
+
+[[rule]]
+name = "bool-comparison"
+clippy = ["clippy::bool-comparison"]
+
+[[rule]]
+name = "bool-to-int-with-if"
+category = "style"
+clippy = ["clippy::bool-to-int-with-if"]
+
+[[rule]]
+name = "borrow-as-ptr"
+category = "style"
+clippy = ["clippy::borrow-as-ptr"]
+
+[[rule]]
+name = "borrow-deref-ref"
+category = "complexity"
+clippy = ["clippy::borrow-deref-ref"]
+
+[[rule]]
+name = "borrow-interior-mutable-const"
+category = "style"
+clippy = ["clippy::borrow-interior-mutable-const"]
+
+[[rule]]
+name = "borrowed-box"
+category = "complexity"
+clippy = ["clippy::borrowed-box"]
+
+[[rule]]
+name = "box-collection"
+category = "performance"
+clippy = ["clippy::box-collection"]
+
+[[rule]]
+name = "box-default"
+clippy = ["clippy::box-default"]
+
+[[rule]]
+name = "boxed-local"
+category = "performance"
+clippy = ["clippy::boxed-local"]
+
+[[rule]]
+name = "branches-sharing-code"
+category = "style"
+clippy = ["clippy::branches-sharing-code"]
+
+[[rule]]
+name = "builtin-type-shadow"
+category = "style"
+clippy = ["clippy::builtin-type-shadow"]
+
+[[rule]]
+name = "byte-char-slices"
+category = "style"
+clippy = ["clippy::byte-char-slices"]
+
+[[rule]]
+name = "bytes-count-to-len"
+category = "complexity"
+clippy = ["clippy::bytes-count-to-len"]
+
+[[rule]]
+name = "bytes-nth"
+clippy = ["clippy::bytes-nth"]
+
+[[rule]]
+name = "cargo-common-metadata"
+category = "style"
+clippy = ["clippy::cargo-common-metadata"]
+
+[[rule]]
+name = "case-sensitive-file-extension-comparisons"
+category = "style"
+clippy = ["clippy::case-sensitive-file-extension-comparisons"]
+
+[[rule]]
+name = "cast-abs-to-unsigned"
+category = "correctness"
+clippy = ["clippy::cast-abs-to-unsigned"]
+
+[[rule]]
+name = "cast-enum-constructor"
+category = "correctness"
+clippy = ["clippy::cast-enum-constructor"]
+
+[[rule]]
+name = "cast-enum-truncation"
+category = "correctness"
+clippy = ["clippy::cast-enum-truncation"]
+
+[[rule]]
+name = "cast-lossless"
+category = "style"
+clippy = ["clippy::cast-lossless"]
+
+[[rule]]
+name = "cast-nan-to-int"
+category = "correctness"
+clippy = ["clippy::cast-nan-to-int"]
+
+[[rule]]
+name = "cast-possible-truncation"
+category = "style"
+clippy = ["clippy::cast-possible-truncation"]
+
+[[rule]]
+name = "cast-possible-wrap"
+category = "style"
+clippy = ["clippy::cast-possible-wrap"]
+
+[[rule]]
+name = "cast-precision-loss"
+category = "style"
+clippy = ["clippy::cast-precision-loss"]
+
+[[rule]]
+name = "cast-ptr-alignment"
+category = "style"
+clippy = ["clippy::cast-ptr-alignment"]
+
+[[rule]]
+name = "cast-sign-loss"
+category = "style"
+clippy = ["clippy::cast-sign-loss"]
+
+[[rule]]
+name = "cast-slice-different-sizes"
+category = "correctness"
+clippy = ["clippy::cast-slice-different-sizes"]
+
+[[rule]]
+name = "cast-slice-from-raw-parts"
+category = "correctness"
+clippy = ["clippy::cast-slice-from-raw-parts"]
+
+[[rule]]
+name = "cfg-not-test"
+category = "style"
+clippy = ["clippy::cfg-not-test"]
+
+[[rule]]
+name = "char-indices-as-byte-indices"
+category = "correctness"
+clippy = ["clippy::char-indices-as-byte-indices"]
+
+[[rule]]
+name = "char-lit-as-u8"
+clippy = ["clippy::char-lit-as-u8"]
+
+[[rule]]
+name = "chars-last-cmp"
+category = "style"
+clippy = ["clippy::chars-last-cmp"]
+
+[[rule]]
+name = "chars-next-cmp"
+clippy = ["clippy::chars-next-cmp"]
+
+[[rule]]
+name = "checked-conversions"
+category = "style"
+clippy = ["clippy::checked-conversions"]
+
+[[rule]]
+name = "clear-with-drain"
+category = "style"
+clippy = ["clippy::clear-with-drain"]
+
+[[rule]]
+name = "clone-on-copy"
+category = "complexity"
+clippy = ["clippy::clone-on-copy"]
+
+[[rule]]
+name = "clone-on-ref-ptr"
+category = "style"
+clippy = ["clippy::clone-on-ref-ptr"]
+
+[[rule]]
+name = "cloned-instead-of-copied"
+category = "style"
+clippy = ["clippy::cloned-instead-of-copied"]
+
+[[rule]]
+name = "cmp-null"
+category = "style"
+clippy = ["clippy::cmp-null"]
+
+[[rule]]
+name = "cmp-owned"
+category = "performance"
+clippy = ["clippy::cmp-owned"]
+
+[[rule]]
+name = "collapsible-match"
+category = "style"
+clippy = ["clippy::collapsible-match"]
+
+[[rule]]
+name = "collapsible-str-replace"
+category = "performance"
+clippy = ["clippy::collapsible-str-replace"]
+
+[[rule]]
+name = "collection-is-never-read"
+category = "style"
+clippy = ["clippy::collection-is-never-read"]
+
+[[rule]]
+name = "comparison-chain"
+category = "style"
+clippy = ["clippy::comparison-chain"]
+
+[[rule]]
+name = "comparison-to-empty"
+category = "style"
+clippy = ["clippy::comparison-to-empty"]
+
+[[rule]]
+name = "const-is-empty"
+category = "correctness"
+clippy = ["clippy::const-is-empty"]
+
+[[rule]]
+name = "copy-iterator"
+category = "style"
+clippy = ["clippy::copy-iterator"]
+
+[[rule]]
+name = "crate-in-macro-def"
+category = "correctness"
+clippy = ["clippy::crate-in-macro-def"]
+
+[[rule]]
+name = "create-dir"
+category = "style"
+clippy = ["clippy::create-dir"]
+
+[[rule]]
+name = "crosspointer-transmute"
+category = "complexity"
+clippy = ["clippy::crosspointer-transmute"]
+
+[[rule]]
+name = "dbg-macro"
+clippy = ["clippy::dbg-macro"]
+
+[[rule]]
+name = "debug-assert-with-mut-call"
+category = "style"
+clippy = ["clippy::debug-assert-with-mut-call"]
+
+[[rule]]
+name = "decimal-literal-representation"
+category = "style"
+clippy = ["clippy::decimal-literal-representation"]
+
+[[rule]]
+name = "declare-interior-mutable-const"
+category = "style"
+clippy = ["clippy::declare-interior-mutable-const"]
+
+[[rule]]
+name = "default-constructed-unit-structs"
+category = "complexity"
+clippy = ["clippy::default-constructed-unit-structs"]
+
+[[rule]]
+name = "default-instead-of-iter-empty"
+category = "style"
+clippy = ["clippy::default-instead-of-iter-empty"]
+
+[[rule]]
+name = "default-numeric-fallback"
+category = "style"
+clippy = ["clippy::default-numeric-fallback"]
+
+[[rule]]
+name = "default-trait-access"
+category = "style"
+clippy = ["clippy::default-trait-access"]
+
+[[rule]]
+name = "default-union-representation"
+category = "style"
+clippy = ["clippy::default-union-representation"]
+
+[[rule]]
+name = "deprecated-cfg-attr"
+category = "complexity"
+clippy = ["clippy::deprecated-cfg-attr"]
+
+[[rule]]
+name = "deprecated-semver"
+category = "correctness"
+clippy = ["clippy::deprecated-semver"]
+
+[[rule]]
+name = "deref-addrof"
+clippy = ["clippy::deref-addrof"]
+
+[[rule]]
+name = "deref-by-slicing"
+category = "style"
+clippy = ["clippy::deref-by-slicing"]
+
+[[rule]]
+name = "derivable-impls"
+category = "complexity"
+clippy = ["clippy::derivable-impls"]
+
+[[rule]]
+name = "derive-ord-xor-partial-ord"
+category = "correctness"
+clippy = ["clippy::derive-ord-xor-partial-ord"]
+
+[[rule]]
+name = "derive-partial-eq-without-eq"
+category = "style"
+clippy = ["clippy::derive-partial-eq-without-eq"]
+
+[[rule]]
+name = "derived-hash-with-manual-eq"
+category = "correctness"
+clippy = ["clippy::derived-hash-with-manual-eq"]
+
+[[rule]]
+name = "diverging-sub-expression"
+category = "complexity"
+clippy = ["clippy::diverging-sub-expression"]
+
+[[rule]]
+name = "doc-comment-double-space-linebreaks"
+category = "style"
+clippy = ["clippy::doc-comment-double-space-linebreaks"]
+
+[[rule]]
+name = "doc-include-without-cfg"
+category = "style"
+clippy = ["clippy::doc-include-without-cfg"]
+
+[[rule]]
+name = "doc-lazy-continuation"
+category = "style"
+clippy = ["clippy::doc-lazy-continuation"]
+
+[[rule]]
+name = "doc-link-code"
+category = "style"
+clippy = ["clippy::doc-link-code"]
+
+[[rule]]
+name = "doc-link-with-quotes"
+category = "style"
+clippy = ["clippy::doc-link-with-quotes"]
+
+[[rule]]
+name = "doc-markdown"
+category = "style"
+clippy = ["clippy::doc-markdown"]
+
+[[rule]]
+name = "doc-nested-refdefs"
+category = "correctness"
+clippy = ["clippy::doc-nested-refdefs"]
+
+[[rule]]
+name = "doc-overindented-list-items"
+category = "style"
+clippy = ["clippy::doc-overindented-list-items"]
+
+[[rule]]
+name = "double-comparisons"
+category = "complexity"
+clippy = ["clippy::double-comparisons"]
+
+[[rule]]
+name = "double-ended-iterator-last"
+category = "performance"
+clippy = ["clippy::double-ended-iterator-last"]
+
+[[rule]]
+name = "double-must-use"
+category = "style"
+clippy = ["clippy::double-must-use"]
+
+[[rule]]
+name = "double-parens"
+clippy = ["clippy::double-parens"]
+
+[[rule]]
+name = "drain-collect"
+category = "performance"
+clippy = ["clippy::drain-collect"]
+
+[[rule]]
+name = "drop-non-drop"
+category = "correctness"
+clippy = ["clippy::drop-non-drop"]
+
+[[rule]]
+name = "duplicate-mod"
+category = "correctness"
+clippy = ["clippy::duplicate-mod"]
+
+[[rule]]
+name = "duplicate-underscore-argument"
+category = "style"
+clippy = ["clippy::duplicate-underscore-argument"]
+
+[[rule]]
+name = "duplicated-attributes"
+category = "correctness"
+clippy = ["clippy::duplicated-attributes"]
+
+[[rule]]
+name = "duration-subsec"
+category = "complexity"
+clippy = ["clippy::duration-subsec"]
+
+[[rule]]
+name = "eager-transmute"
+category = "correctness"
+clippy = ["clippy::eager-transmute"]
+
+[[rule]]
+name = "elidable-lifetime-names"
+category = "style"
+clippy = ["clippy::elidable-lifetime-names"]
+
+[[rule]]
+name = "else-if-without-else"
+category = "style"
+clippy = ["clippy::else-if-without-else"]
+
+[[rule]]
+name = "empty-docs"
+category = "correctness"
+clippy = ["clippy::empty-docs"]
+
+[[rule]]
+name = "empty-drop"
+category = "style"
+clippy = ["clippy::empty-drop"]
+
+[[rule]]
+name = "empty-enum"
+category = "style"
+clippy = ["clippy::empty-enum"]
+
+[[rule]]
+name = "empty-enum-variants-with-brackets"
+category = "style"
+clippy = ["clippy::empty-enum-variants-with-brackets"]
+
+[[rule]]
+name = "empty-line-after-doc-comments"
+category = "correctness"
+clippy = ["clippy::empty-line-after-doc-comments"]
+
+[[rule]]
+name = "empty-line-after-outer-attr"
+category = "correctness"
+clippy = ["clippy::empty-line-after-outer-attr"]
+
+[[rule]]
+name = "empty-loop"
+clippy = ["clippy::empty-loop"]
+
+[[rule]]
+name = "empty-structs-with-brackets"
+clippy = ["clippy::empty-structs-with-brackets"]
+
+[[rule]]
+name = "enum-clike-unportable-variant"
+category = "correctness"
+clippy = ["clippy::enum-clike-unportable-variant"]
+
+[[rule]]
+name = "enum-glob-use"
+category = "style"
+clippy = ["clippy::enum-glob-use"]
+
+[[rule]]
+name = "enum-variant-names"
+category = "style"
+clippy = ["clippy::enum-variant-names"]
+
+[[rule]]
+name = "eq-op"
+clippy = ["clippy::eq-op"]
+
+[[rule]]
+name = "equatable-if-let"
+category = "style"
+clippy = ["clippy::equatable-if-let"]
+
+[[rule]]
+name = "erasing-op"
+clippy = ["clippy::erasing-op"]
+
+[[rule]]
+name = "err-expect"
+clippy = ["clippy::err-expect"]
+
+[[rule]]
+name = "error-impl-error"
+category = "style"
+clippy = ["clippy::error-impl-error"]
+
+[[rule]]
+name = "excessive-nesting"
+category = "complexity"
+clippy = ["clippy::excessive-nesting"]
+
+[[rule]]
+name = "excessive-precision"
+category = "style"
+clippy = ["clippy::excessive-precision"]
+
+[[rule]]
+name = "exhaustive-enums"
+category = "style"
+clippy = ["clippy::exhaustive-enums"]
+
+[[rule]]
+name = "exhaustive-structs"
+category = "style"
+clippy = ["clippy::exhaustive-structs"]
+
+[[rule]]
+name = "exit"
+clippy = ["clippy::exit"]
+
+[[rule]]
+name = "expect-fun-call"
+clippy = ["clippy::expect-fun-call"]
+
+[[rule]]
+name = "expect-used"
+clippy = ["clippy::expect-used"]
+
+[[rule]]
+name = "expl-impl-clone-on-copy"
+category = "style"
+clippy = ["clippy::expl-impl-clone-on-copy"]
+
+[[rule]]
+name = "explicit-auto-deref"
+category = "complexity"
+clippy = ["clippy::explicit-auto-deref"]
+
+[[rule]]
+name = "explicit-counter-loop"
+category = "complexity"
+clippy = ["clippy::explicit-counter-loop"]
+
+[[rule]]
+name = "explicit-deref-methods"
+category = "style"
+clippy = ["clippy::explicit-deref-methods"]
+
+[[rule]]
+name = "explicit-into-iter-loop"
+category = "style"
+clippy = ["clippy::explicit-into-iter-loop"]
+
+[[rule]]
+name = "explicit-iter-loop"
+category = "style"
+clippy = ["clippy::explicit-iter-loop"]
+
+[[rule]]
+name = "explicit-write"
+category = "complexity"
+clippy = ["clippy::explicit-write"]
+
+[[rule]]
+name = "extend-with-drain"
+category = "performance"
+clippy = ["clippy::extend-with-drain"]
+
+[[rule]]
+name = "extra-unused-lifetimes"
+category = "complexity"
+clippy = ["clippy::extra-unused-lifetimes"]
+
+[[rule]]
+name = "extra-unused-type-parameters"
+category = "complexity"
+clippy = ["clippy::extra-unused-type-parameters"]
+
+[[rule]]
+name = "fallible-impl-from"
+category = "style"
+clippy = ["clippy::fallible-impl-from"]
+
+[[rule]]
+name = "field-reassign-with-default"
+category = "style"
+clippy = ["clippy::field-reassign-with-default"]
+
+[[rule]]
+name = "field-scoped-visibility-modifiers"
+category = "style"
+clippy = ["clippy::field-scoped-visibility-modifiers"]
+
+[[rule]]
+name = "filetype-is-file"
+category = "style"
+clippy = ["clippy::filetype-is-file"]
+
+[[rule]]
+name = "filter-map-bool-then"
+category = "style"
+clippy = ["clippy::filter-map-bool-then"]
+
+[[rule]]
+name = "filter-map-identity"
+category = "complexity"
+clippy = ["clippy::filter-map-identity"]
+
+[[rule]]
+name = "filter-map-next"
+category = "style"
+clippy = ["clippy::filter-map-next"]
+
+[[rule]]
+name = "filter-next"
+clippy = ["clippy::filter-next"]
+
+[[rule]]
+name = "flat-map-identity"
+category = "complexity"
+clippy = ["clippy::flat-map-identity"]
+
+[[rule]]
+name = "flat-map-option"
+category = "style"
+clippy = ["clippy::flat-map-option"]
+
+[[rule]]
+name = "float-arithmetic"
+category = "style"
+clippy = ["clippy::float-arithmetic"]
+
+[[rule]]
+name = "float-cmp"
+category = "style"
+clippy = ["clippy::float-cmp"]
+
+[[rule]]
+name = "float-cmp-const"
+category = "style"
+clippy = ["clippy::float-cmp-const"]
+
+[[rule]]
+name = "float-equality-without-abs"
+category = "correctness"
+clippy = ["clippy::float-equality-without-abs"]
+
+[[rule]]
+name = "fn-params-excessive-bools"
+category = "style"
+clippy = ["clippy::fn-params-excessive-bools"]
+
+[[rule]]
+name = "fn-to-numeric-cast"
+category = "style"
+clippy = ["clippy::fn-to-numeric-cast"]
+
+[[rule]]
+name = "fn-to-numeric-cast-any"
+category = "style"
+clippy = ["clippy::fn-to-numeric-cast-any"]
+
+[[rule]]
+name = "fn-to-numeric-cast-with-truncation"
+category = "style"
+clippy = ["clippy::fn-to-numeric-cast-with-truncation"]
+
+[[rule]]
+name = "for-kv-map"
+category = "style"
+clippy = ["clippy::for-kv-map"]
+
+[[rule]]
+name = "forget-non-drop"
+category = "correctness"
+clippy = ["clippy::forget-non-drop"]
+
+[[rule]]
+name = "format-collect"
+category = "style"
+clippy = ["clippy::format-collect"]
+
+[[rule]]
+name = "format-in-format-args"
+category = "performance"
+clippy = ["clippy::format-in-format-args"]
+
+[[rule]]
+name = "format-push-string"
+category = "style"
+clippy = ["clippy::format-push-string"]
+
+[[rule]]
+name = "four-forward-slashes"
+category = "correctness"
+clippy = ["clippy::four-forward-slashes"]
+
+[[rule]]
+name = "from-iter-instead-of-collect"
+category = "style"
+clippy = ["clippy::from-iter-instead-of-collect"]
+
+[[rule]]
+name = "from-over-into"
+category = "style"
+clippy = ["clippy::from-over-into"]
+
+[[rule]]
+name = "from-raw-with-void-ptr"
+category = "correctness"
+clippy = ["clippy::from-raw-with-void-ptr"]
+
+[[rule]]
+name = "from-str-radix-10"
+category = "style"
+clippy = ["clippy::from-str-radix-10"]
+
+[[rule]]
+name = "future-not-send"
+category = "style"
+clippy = ["clippy::future-not-send"]
+
+[[rule]]
+name = "get-first"
+clippy = ["clippy::get-first"]
+
+[[rule]]
+name = "get-last-with-len"
+category = "complexity"
+clippy = ["clippy::get-last-with-len"]
+
+[[rule]]
+name = "get-unwrap"
+category = "style"
+clippy = ["clippy::get-unwrap"]
+
+[[rule]]
+name = "host-endian-bytes"
+category = "style"
+clippy = ["clippy::host-endian-bytes"]
+
+[[rule]]
+name = "identity-op"
+clippy = ["clippy::identity-op"]
+
+[[rule]]
+name = "if-let-mutex"
+category = "correctness"
+clippy = ["clippy::if-let-mutex"]
+
+[[rule]]
+name = "if-not-else"
+category = "style"
+clippy = ["clippy::if-not-else"]
+
+[[rule]]
+name = "if-same-then-else"
+category = "style"
+clippy = ["clippy::if-same-then-else"]
+
+[[rule]]
+name = "if-then-some-else-none"
+category = "style"
+clippy = ["clippy::if-then-some-else-none"]
+
+[[rule]]
+name = "ifs-same-cond"
+category = "correctness"
+clippy = ["clippy::ifs-same-cond"]
+
+[[rule]]
+name = "ignore-without-reason"
+category = "style"
+clippy = ["clippy::ignore-without-reason"]
+
+[[rule]]
+name = "ignored-unit-patterns"
+category = "style"
+clippy = ["clippy::ignored-unit-patterns"]
+
+[[rule]]
+name = "impl-hash-borrow-with-str-and-bytes"
+category = "correctness"
+clippy = ["clippy::impl-hash-borrow-with-str-and-bytes"]
+
+[[rule]]
+name = "impl-trait-in-params"
+category = "style"
+clippy = ["clippy::impl-trait-in-params"]
+
+[[rule]]
+name = "implicit-clone"
+category = "style"
+clippy = ["clippy::implicit-clone"]
+
+[[rule]]
+name = "implicit-hasher"
+category = "style"
+clippy = ["clippy::implicit-hasher"]
+
+[[rule]]
+name = "implicit-saturating-add"
+category = "style"
+clippy = ["clippy::implicit-saturating-add"]
+
+[[rule]]
+name = "implicit-saturating-sub"
+category = "style"
+clippy = ["clippy::implicit-saturating-sub"]
+
+[[rule]]
+name = "implied-bounds-in-impls"
+category = "complexity"
+clippy = ["clippy::implied-bounds-in-impls"]
+
+[[rule]]
+name = "impossible-comparisons"
+category = "correctness"
+clippy = ["clippy::impossible-comparisons"]
+
+[[rule]]
+name = "imprecise-flops"
+category = "style"
+clippy = ["clippy::imprecise-flops"]
+
+[[rule]]
+name = "inconsistent-digit-grouping"
+category = "style"
+clippy = ["clippy::inconsistent-digit-grouping"]
+
+[[rule]]
+name = "inconsistent-struct-constructor"
+category = "style"
+clippy = ["clippy::inconsistent-struct-constructor"]
+
+[[rule]]
+name = "index-refutable-slice"
+category = "style"
+clippy = ["clippy::index-refutable-slice"]
+
+[[rule]]
+name = "indexing-slicing"
+category = "style"
+clippy = ["clippy::indexing-slicing"]
+
+[[rule]]
+name = "ineffective-bit-mask"
+category = "correctness"
+clippy = ["clippy::ineffective-bit-mask"]
+
+[[rule]]
+name = "ineffective-open-options"
+category = "correctness"
+clippy = ["clippy::ineffective-open-options"]
+
+[[rule]]
+name = "inefficient-to-string"
+category = "style"
+clippy = ["clippy::inefficient-to-string"]
+
+[[rule]]
+name = "infallible-destructuring-match"
+category = "style"
+clippy = ["clippy::infallible-destructuring-match"]
+
+[[rule]]
+name = "infinite-iter"
+category = "correctness"
+clippy = ["clippy::infinite-iter"]
+
+[[rule]]
+name = "infinite-loop"
+category = "style"
+clippy = ["clippy::infinite-loop"]
+
+[[rule]]
+name = "inherent-to-string"
+category = "style"
+clippy = ["clippy::inherent-to-string"]
+
+[[rule]]
+name = "inherent-to-string-shadow-display"
+category = "correctness"
+clippy = ["clippy::inherent-to-string-shadow-display"]
+
+[[rule]]
+name = "init-numbered-fields"
+category = "style"
+clippy = ["clippy::init-numbered-fields"]
+
+[[rule]]
+name = "inline-always"
+clippy = ["clippy::inline-always"]
+
+[[rule]]
+name = "inline-asm-x86-att-syntax"
+category = "style"
+clippy = ["clippy::inline-asm-x86-att-syntax"]
+
+[[rule]]
+name = "inline-asm-x86-intel-syntax"
+category = "style"
+clippy = ["clippy::inline-asm-x86-intel-syntax"]
+
+[[rule]]
+name = "inline-fn-without-body"
+category = "correctness"
+clippy = ["clippy::inline-fn-without-body"]
+
+[[rule]]
+name = "inspect-for-each"
+category = "complexity"
+clippy = ["clippy::inspect-for-each"]
+
+[[rule]]
+name = "int-plus-one"
+clippy = ["clippy::int-plus-one"]
+
+[[rule]]
+name = "integer-division"
+category = "style"
+clippy = ["clippy::integer-division"]
+
+[[rule]]
+name = "integer-division-remainder-used"
+category = "style"
+clippy = ["clippy::integer-division-remainder-used"]
+
+[[rule]]
+name = "into-iter-on-ref"
+category = "style"
+clippy = ["clippy::into-iter-on-ref"]
+
+[[rule]]
+name = "into-iter-without-iter"
+category = "style"
+clippy = ["clippy::into-iter-without-iter"]
+
+[[rule]]
+name = "invalid-regex"
+category = "correctness"
+clippy = ["clippy::invalid-regex"]
+
+[[rule]]
+name = "invalid-upcast-comparisons"
+category = "style"
+clippy = ["clippy::invalid-upcast-comparisons"]
+
+[[rule]]
+name = "inverted-saturating-sub"
+category = "correctness"
+clippy = ["clippy::inverted-saturating-sub"]
+
+[[rule]]
+name = "invisible-characters"
+category = "correctness"
+clippy = ["clippy::invisible-characters"]
+
+[[rule]]
+name = "io-other-error"
+category = "style"
+clippy = ["clippy::io-other-error"]
+
+[[rule]]
+name = "is-digit-ascii-radix"
+category = "style"
+clippy = ["clippy::is-digit-ascii-radix"]
+
+[[rule]]
+name = "items-after-statements"
+category = "style"
+clippy = ["clippy::items-after-statements"]
+
+[[rule]]
+name = "items-after-test-module"
+category = "style"
+clippy = ["clippy::items-after-test-module"]
+
+[[rule]]
+name = "iter-cloned-collect"
+clippy = ["clippy::iter-cloned-collect"]
+
+[[rule]]
+name = "iter-count"
+category = "complexity"
+clippy = ["clippy::iter-count"]
+
+[[rule]]
+name = "iter-filter-is-ok"
+category = "style"
+clippy = ["clippy::iter-filter-is-ok"]
+
+[[rule]]
+name = "iter-filter-is-some"
+category = "style"
+clippy = ["clippy::iter-filter-is-some"]
+
+[[rule]]
+name = "iter-kv-map"
+category = "complexity"
+clippy = ["clippy::iter-kv-map"]
+
+[[rule]]
+name = "iter-next-loop"
+category = "correctness"
+clippy = ["clippy::iter-next-loop"]
+
+[[rule]]
+name = "iter-next-slice"
+category = "style"
+clippy = ["clippy::iter-next-slice"]
+
+[[rule]]
+name = "iter-not-returning-iterator"
+category = "style"
+clippy = ["clippy::iter-not-returning-iterator"]
+
+[[rule]]
+name = "iter-nth"
+category = "style"
+clippy = ["clippy::iter-nth"]
+
+[[rule]]
+name = "iter-nth-zero"
+clippy = ["clippy::iter-nth-zero"]
+
+[[rule]]
+name = "iter-on-empty-collections"
+category = "style"
+clippy = ["clippy::iter-on-empty-collections"]
+
+[[rule]]
+name = "iter-on-single-items"
+category = "style"
+clippy = ["clippy::iter-on-single-items"]
+
+[[rule]]
+name = "iter-out-of-bounds"
+category = "correctness"
+clippy = ["clippy::iter-out-of-bounds"]
+
+[[rule]]
+name = "iter-over-hash-type"
+category = "style"
+clippy = ["clippy::iter-over-hash-type"]
+
+[[rule]]
+name = "iter-overeager-cloned"
+category = "performance"
+clippy = ["clippy::iter-overeager-cloned"]
+
+[[rule]]
+name = "iter-skip-next"
+category = "style"
+clippy = ["clippy::iter-skip-next"]
+
+[[rule]]
+name = "iter-skip-zero"
+clippy = ["clippy::iter-skip-zero"]
+
+[[rule]]
+name = "iter-with-drain"
+category = "style"
+clippy = ["clippy::iter-with-drain"]
+
+[[rule]]
+name = "iter-without-into-iter"
+category = "style"
+clippy = ["clippy::iter-without-into-iter"]
+
+[[rule]]
+name = "iterator-step-by-zero"
+category = "correctness"
+clippy = ["clippy::iterator-step-by-zero"]
+
+[[rule]]
+name = "join-absolute-paths"
+category = "correctness"
+clippy = ["clippy::join-absolute-paths"]
+
+[[rule]]
+name = "just-underscores-and-digits"
+category = "style"
+clippy = ["clippy::just-underscores-and-digits"]
+
+[[rule]]
+name = "large-const-arrays"
+category = "performance"
+clippy = ["clippy::large-const-arrays"]
+
+[[rule]]
+name = "large-digit-groups"
+category = "style"
+clippy = ["clippy::large-digit-groups"]
+
+[[rule]]
+name = "large-enum-variant"
+category = "performance"
+clippy = ["clippy::large-enum-variant"]
+
+[[rule]]
+name = "large-futures"
+category = "style"
+clippy = ["clippy::large-futures"]
+
+[[rule]]
+name = "large-include-file"
+category = "style"
+clippy = ["clippy::large-include-file"]
+
+[[rule]]
+name = "large-stack-arrays"
+category = "style"
+clippy = ["clippy::large-stack-arrays"]
+
+[[rule]]
+name = "large-stack-frames"
+category = "style"
+clippy = ["clippy::large-stack-frames"]
+
+[[rule]]
+name = "large-types-passed-by-value"
+category = "style"
+clippy = ["clippy::large-types-passed-by-value"]
+
+[[rule]]
+name = "legacy-numeric-constants"
+category = "style"
+clippy = ["clippy::legacy-numeric-constants"]
+
+[[rule]]
+name = "len-without-is-empty"
+category = "style"
+clippy = ["clippy::len-without-is-empty"]
+
+[[rule]]
+name = "len-zero"
+clippy = ["clippy::len-zero"]
+
+[[rule]]
+name = "let-and-return"
+category = "style"
+clippy = ["clippy::let-and-return"]
+
+[[rule]]
+name = "let-underscore-future"
+category = "correctness"
+clippy = ["clippy::let-underscore-future"]
+
+[[rule]]
+name = "let-underscore-lock"
+category = "correctness"
+clippy = ["clippy::let-underscore-lock"]
+
+[[rule]]
+name = "let-underscore-must-use"
+category = "style"
+clippy = ["clippy::let-underscore-must-use"]
+
+[[rule]]
+name = "let-underscore-untyped"
+category = "style"
+clippy = ["clippy::let-underscore-untyped"]
+
+[[rule]]
+name = "let-unit-value"
+category = "style"
+clippy = ["clippy::let-unit-value"]
+
+[[rule]]
+name = "let-with-type-underscore"
+category = "complexity"
+clippy = ["clippy::let-with-type-underscore"]
+
+[[rule]]
+name = "lines-filter-map-ok"
+category = "correctness"
+clippy = ["clippy::lines-filter-map-ok"]
+
+[[rule]]
+name = "linkedlist"
+category = "style"
+clippy = ["clippy::linkedlist"]
+
+[[rule]]
+name = "literal-string-with-formatting-args"
+category = "style"
+clippy = ["clippy::literal-string-with-formatting-args"]
+
+[[rule]]
+name = "little-endian-bytes"
+category = "style"
+clippy = ["clippy::little-endian-bytes"]
+
+[[rule]]
+name = "lossy-float-literal"
+category = "style"
+clippy = ["clippy::lossy-float-literal"]
+
+[[rule]]
+name = "macro-metavars-in-unsafe"
+category = "correctness"
+clippy = ["clippy::macro-metavars-in-unsafe"]
+
+[[rule]]
+name = "macro-use-imports"
+category = "style"
+clippy = ["clippy::macro-use-imports"]
+
+[[rule]]
+name = "main-recursion"
+category = "style"
+clippy = ["clippy::main-recursion"]
+
+[[rule]]
+name = "manual-abs-diff"
+category = "complexity"
+clippy = ["clippy::manual-abs-diff"]
+
+[[rule]]
+name = "manual-assert"
+category = "style"
+clippy = ["clippy::manual-assert"]
+
+[[rule]]
+name = "manual-async-fn"
+category = "style"
+clippy = ["clippy::manual-async-fn"]
+
+[[rule]]
+name = "manual-bits"
+category = "style"
+clippy = ["clippy::manual-bits"]
+
+[[rule]]
+name = "manual-c-str-literals"
+category = "complexity"
+clippy = ["clippy::manual-c-str-literals"]
+
+[[rule]]
+name = "manual-clamp"
+category = "complexity"
+clippy = ["clippy::manual-clamp"]
+
+[[rule]]
+name = "manual-contains"
+category = "performance"
+clippy = ["clippy::manual-contains"]
+
+[[rule]]
+name = "manual-dangling-ptr"
+category = "style"
+clippy = ["clippy::manual-dangling-ptr"]
+
+[[rule]]
+name = "manual-div-ceil"
+category = "complexity"
+clippy = ["clippy::manual-div-ceil"]
+
+[[rule]]
+name = "manual-filter"
+category = "complexity"
+clippy = ["clippy::manual-filter"]
+
+[[rule]]
+name = "manual-filter-map"
+category = "complexity"
+clippy = ["clippy::manual-filter-map"]
+
+[[rule]]
+name = "manual-find"
+category = "complexity"
+clippy = ["clippy::manual-find"]
+
+[[rule]]
+name = "manual-find-map"
+category = "complexity"
+clippy = ["clippy::manual-find-map"]
+
+[[rule]]
+name = "manual-flatten"
+category = "complexity"
+clippy = ["clippy::manual-flatten"]
+
+[[rule]]
+name = "manual-hash-one"
+category = "complexity"
+clippy = ["clippy::manual-hash-one"]
+
+[[rule]]
+name = "manual-ignore-case-cmp"
+category = "performance"
+clippy = ["clippy::manual-ignore-case-cmp"]
+
+[[rule]]
+name = "manual-inspect"
+category = "complexity"
+clippy = ["clippy::manual-inspect"]
+
+[[rule]]
+name = "manual-instant-elapsed"
+category = "style"
+clippy = ["clippy::manual-instant-elapsed"]
+
+[[rule]]
+name = "manual-is-ascii-check"
+category = "style"
+clippy = ["clippy::manual-is-ascii-check"]
+
+[[rule]]
+name = "manual-is-finite"
+category = "style"
+clippy = ["clippy::manual-is-finite"]
+
+[[rule]]
+name = "manual-is-infinite"
+category = "style"
+clippy = ["clippy::manual-is-infinite"]
+
+[[rule]]
+name = "manual-is-power-of-two"
+category = "style"
+clippy = ["clippy::manual-is-power-of-two"]
+
+[[rule]]
+name = "manual-is-variant-and"
+category = "style"
+clippy = ["clippy::manual-is-variant-and"]
+
+[[rule]]
+name = "manual-let-else"
+category = "style"
+clippy = ["clippy::manual-let-else"]
+
+[[rule]]
+name = "manual-main-separator-str"
+category = "complexity"
+clippy = ["clippy::manual-main-separator-str"]
+
+[[rule]]
+name = "manual-map"
+category = "style"
+clippy = ["clippy::manual-map"]
+
+[[rule]]
+name = "manual-memcpy"
+category = "performance"
+clippy = ["clippy::manual-memcpy"]
+
+[[rule]]
+name = "manual-midpoint"
+category = "style"
+clippy = ["clippy::manual-midpoint"]
+
+[[rule]]
+name = "manual-next-back"
+category = "style"
+clippy = ["clippy::manual-next-back"]
+
+[[rule]]
+name = "manual-non-exhaustive"
+category = "style"
+clippy = ["clippy::manual-non-exhaustive"]
+
+[[rule]]
+name = "manual-ok-err"
+category = "complexity"
+clippy = ["clippy::manual-ok-err"]
+
+[[rule]]
+name = "manual-ok-or"
+category = "style"
+clippy = ["clippy::manual-ok-or"]
+
+[[rule]]
+name = "manual-option-as-slice"
+category = "complexity"
+clippy = ["clippy::manual-option-as-slice"]
+
+[[rule]]
+name = "manual-pattern-char-comparison"
+category = "style"
+clippy = ["clippy::manual-pattern-char-comparison"]
+
+[[rule]]
+name = "manual-range-contains"
+clippy = ["clippy::manual-range-contains"]
+
+[[rule]]
+name = "manual-range-patterns"
+category = "complexity"
+clippy = ["clippy::manual-range-patterns"]
+
+[[rule]]
+name = "manual-rem-euclid"
+category = "complexity"
+clippy = ["clippy::manual-rem-euclid"]
+
+[[rule]]
+name = "manual-repeat-n"
+category = "style"
+clippy = ["clippy::manual-repeat-n"]
+
+[[rule]]
+name = "manual-retain"
+category = "performance"
+clippy = ["clippy::manual-retain"]
+
+[[rule]]
+name = "manual-rotate"
+category = "style"
+clippy = ["clippy::manual-rotate"]
+
+[[rule]]
+name = "manual-saturating-arithmetic"
+category = "style"
+clippy = ["clippy::manual-saturating-arithmetic"]
+
+[[rule]]
+name = "manual-slice-fill"
+category = "style"
+clippy = ["clippy::manual-slice-fill"]
+
+[[rule]]
+name = "manual-slice-size-calculation"
+category = "complexity"
+clippy = ["clippy::manual-slice-size-calculation"]
+
+[[rule]]
+name = "manual-split-once"
+category = "complexity"
+clippy = ["clippy::manual-split-once"]
+
+[[rule]]
+name = "manual-str-repeat"
+category = "performance"
+clippy = ["clippy::manual-str-repeat"]
+
+[[rule]]
+name = "manual-string-new"
+clippy = ["clippy::manual-string-new"]
+
+[[rule]]
+name = "manual-strip"
+category = "complexity"
+clippy = ["clippy::manual-strip"]
+
+[[rule]]
+name = "manual-swap"
+category = "complexity"
+clippy = ["clippy::manual-swap"]
+
+[[rule]]
+name = "manual-try-fold"
+category = "performance"
+clippy = ["clippy::manual-try-fold"]
+
+[[rule]]
+name = "manual-unwrap-or"
+category = "complexity"
+clippy = ["clippy::manual-unwrap-or"]
+
+[[rule]]
+name = "manual-unwrap-or-default"
+category = "correctness"
+clippy = ["clippy::manual-unwrap-or-default"]
+
+[[rule]]
+name = "manual-while-let-some"
+category = "style"
+clippy = ["clippy::manual-while-let-some"]
+
+[[rule]]
+name = "many-single-char-names"
+category = "style"
+clippy = ["clippy::many-single-char-names"]
+
+[[rule]]
+name = "map-all-any-identity"
+category = "complexity"
+clippy = ["clippy::map-all-any-identity"]
+
+[[rule]]
+name = "map-clone"
+clippy = ["clippy::map-clone"]
+
+[[rule]]
+name = "map-collect-result-unit"
+category = "style"
+clippy = ["clippy::map-collect-result-unit"]
+
+[[rule]]
+name = "map-entry"
+category = "performance"
+clippy = ["clippy::map-entry"]
+
+[[rule]]
+name = "map-err-ignore"
+category = "style"
+clippy = ["clippy::map-err-ignore"]
+
+[[rule]]
+name = "map-flatten"
+clippy = ["clippy::map-flatten"]
+
+[[rule]]
+name = "map-identity"
+category = "complexity"
+clippy = ["clippy::map-identity"]
+
+[[rule]]
+name = "map-unwrap-or"
+category = "style"
+clippy = ["clippy::map-unwrap-or"]
+
+[[rule]]
+name = "map-with-unused-argument-over-ranges"
+category = "style"
+clippy = ["clippy::map-with-unused-argument-over-ranges"]
+
+[[rule]]
+name = "match-as-ref"
+category = "complexity"
+clippy = ["clippy::match-as-ref"]
+
+[[rule]]
+name = "match-bool"
+category = "style"
+clippy = ["clippy::match-bool"]
+
+[[rule]]
+name = "match-like-matches-macro"
+category = "style"
+clippy = ["clippy::match-like-matches-macro"]
+
+[[rule]]
+name = "match-overlapping-arm"
+category = "style"
+clippy = ["clippy::match-overlapping-arm"]
+
+[[rule]]
+name = "match-ref-pats"
+category = "style"
+clippy = ["clippy::match-ref-pats"]
+
+[[rule]]
+name = "match-result-ok"
+category = "style"
+clippy = ["clippy::match-result-ok"]
+
+[[rule]]
+name = "match-same-arms"
+category = "style"
+clippy = ["clippy::match-same-arms"]
+
+[[rule]]
+name = "match-single-binding"
+category = "complexity"
+clippy = ["clippy::match-single-binding"]
+
+[[rule]]
+name = "match-str-case-mismatch"
+category = "correctness"
+clippy = ["clippy::match-str-case-mismatch"]
+
+[[rule]]
+name = "match-wild-err-arm"
+category = "style"
+clippy = ["clippy::match-wild-err-arm"]
+
+[[rule]]
+name = "match-wildcard-for-single-variants"
+category = "style"
+clippy = ["clippy::match-wildcard-for-single-variants"]
+
+[[rule]]
+name = "maybe-infinite-iter"
+category = "style"
+clippy = ["clippy::maybe-infinite-iter"]
+
+[[rule]]
+name = "mem-forget"
+clippy = ["clippy::mem-forget"]
+
+[[rule]]
+name = "mem-replace-option-with-none"
+clippy = ["clippy::mem-replace-option-with-none"]
+
+[[rule]]
+name = "mem-replace-option-with-some"
+category = "style"
+clippy = ["clippy::mem-replace-option-with-some"]
+
+[[rule]]
+name = "mem-replace-with-default"
+clippy = ["clippy::mem-replace-with-default"]
+
+[[rule]]
+name = "mem-replace-with-uninit"
+category = "correctness"
+clippy = ["clippy::mem-replace-with-uninit"]
+
+[[rule]]
+name = "min-ident-chars"
+category = "style"
+clippy = ["clippy::min-ident-chars"]
+
+[[rule]]
+name = "min-max"
+category = "correctness"
+clippy = ["clippy::min-max"]
+
+[[rule]]
+name = "mismatching-type-param-order"
+category = "style"
+clippy = ["clippy::mismatching-type-param-order"]
+
+[[rule]]
+name = "misnamed-getters"
+category = "correctness"
+clippy = ["clippy::misnamed-getters"]
+
+[[rule]]
+name = "misrefactored-assign-op"
+category = "correctness"
+clippy = ["clippy::misrefactored-assign-op"]
+
+[[rule]]
+name = "missing-assert-message"
+category = "style"
+clippy = ["clippy::missing-assert-message"]
+
+[[rule]]
+name = "missing-asserts-for-indexing"
+category = "style"
+clippy = ["clippy::missing-asserts-for-indexing"]
+
+[[rule]]
+name = "missing-const-for-fn"
+category = "style"
+clippy = ["clippy::missing-const-for-fn"]
+
+[[rule]]
+name = "missing-const-for-thread-local"
+category = "performance"
+clippy = ["clippy::missing-const-for-thread-local"]
+
+[[rule]]
+name = "missing-docs-in-private-items"
+category = "style"
+clippy = ["clippy::missing-docs-in-private-items"]
+
+[[rule]]
+name = "missing-errors-doc"
+category = "style"
+clippy = ["clippy::missing-errors-doc"]
+
+[[rule]]
+name = "missing-fields-in-debug"
+category = "style"
+clippy = ["clippy::missing-fields-in-debug"]
+
+[[rule]]
+name = "missing-inline-in-public-items"
+category = "style"
+clippy = ["clippy::missing-inline-in-public-items"]
+
+[[rule]]
+name = "missing-panics-doc"
+category = "style"
+clippy = ["clippy::missing-panics-doc"]
+
+[[rule]]
+name = "missing-safety-doc"
+category = "style"
+clippy = ["clippy::missing-safety-doc"]
+
+[[rule]]
+name = "missing-spin-loop"
+category = "performance"
+clippy = ["clippy::missing-spin-loop"]
+
+[[rule]]
+name = "missing-trait-methods"
+category = "style"
+clippy = ["clippy::missing-trait-methods"]
+
+[[rule]]
+name = "missing-transmute-annotations"
+category = "correctness"
+clippy = ["clippy::missing-transmute-annotations"]
+
+[[rule]]
+name = "mistyped-literal-suffixes"
+category = "correctness"
+clippy = ["clippy::mistyped-literal-suffixes"]
+
+[[rule]]
+name = "mixed-attributes-style"
+category = "style"
+clippy = ["clippy::mixed-attributes-style"]
+
+[[rule]]
+name = "mixed-case-hex-literals"
+clippy = ["clippy::mixed-case-hex-literals"]
+
+[[rule]]
+name = "mixed-read-write-in-expression"
+category = "style"
+clippy = ["clippy::mixed-read-write-in-expression"]
+
+[[rule]]
+name = "mod-module-files"
+category = "style"
+clippy = ["clippy::mod-module-files"]
+
+[[rule]]
+name = "module-inception"
+category = "style"
+clippy = ["clippy::module-inception"]
+
+[[rule]]
+name = "module-name-repetitions"
+category = "style"
+clippy = ["clippy::module-name-repetitions"]
+
+[[rule]]
+name = "modulo-arithmetic"
+category = "style"
+clippy = ["clippy::modulo-arithmetic"]
+
+[[rule]]
+name = "modulo-one"
+clippy = ["clippy::modulo-one"]
+
+[[rule]]
+name = "multi-assignments"
+category = "correctness"
+clippy = ["clippy::multi-assignments"]
+
+[[rule]]
+name = "multiple-bound-locations"
+category = "correctness"
+clippy = ["clippy::multiple-bound-locations"]
+
+[[rule]]
+name = "multiple-crate-versions"
+category = "style"
+clippy = ["clippy::multiple-crate-versions"]
+
+[[rule]]
+name = "multiple-inherent-impl"
+category = "style"
+clippy = ["clippy::multiple-inherent-impl"]
+
+[[rule]]
+name = "multiple-unsafe-ops-per-block"
+category = "style"
+clippy = ["clippy::multiple-unsafe-ops-per-block"]
+
+[[rule]]
+name = "must-use-candidate"
+category = "style"
+clippy = ["clippy::must-use-candidate"]
+
+[[rule]]
+name = "must-use-unit"
+category = "style"
+clippy = ["clippy::must-use-unit"]
+
+[[rule]]
+name = "mut-from-ref"
+category = "correctness"
+clippy = ["clippy::mut-from-ref"]
+
+[[rule]]
+name = "mut-mut"
+category = "style"
+clippy = ["clippy::mut-mut"]
+
+[[rule]]
+name = "mut-mutex-lock"
+category = "style"
+clippy = ["clippy::mut-mutex-lock"]
+
+[[rule]]
+name = "mut-range-bound"
+category = "correctness"
+clippy = ["clippy::mut-range-bound"]
+
+[[rule]]
+name = "mutable-key-type"
+category = "correctness"
+clippy = ["clippy::mutable-key-type"]
+
+[[rule]]
+name = "mutex-atomic"
+category = "style"
+clippy = ["clippy::mutex-atomic"]
+
+[[rule]]
+name = "mutex-integer"
+category = "style"
+clippy = ["clippy::mutex-integer"]
+
+[[rule]]
+name = "naive-bytecount"
+category = "style"
+clippy = ["clippy::naive-bytecount"]
+
+[[rule]]
+name = "needless-arbitrary-self-type"
+category = "complexity"
+clippy = ["clippy::needless-arbitrary-self-type"]
+
+[[rule]]
+name = "needless-as-bytes"
+category = "complexity"
+clippy = ["clippy::needless-as-bytes"]
+
+[[rule]]
+name = "needless-bitwise-bool"
+category = "style"
+clippy = ["clippy::needless-bitwise-bool"]
+
+[[rule]]
+name = "needless-bool"
+clippy = ["clippy::needless-bool"]
+
+[[rule]]
+name = "needless-bool-assign"
+category = "complexity"
+clippy = ["clippy::needless-bool-assign"]
+
+[[rule]]
+name = "needless-borrow"
+category = "style"
+clippy = ["clippy::needless-borrow"]
+
+[[rule]]
+name = "needless-borrowed-reference"
+category = "complexity"
+clippy = ["clippy::needless-borrowed-reference"]
+
+[[rule]]
+name = "needless-borrows-for-generic-args"
+category = "style"
+clippy = ["clippy::needless-borrows-for-generic-args"]
+
+[[rule]]
+name = "needless-character-iteration"
+category = "correctness"
+clippy = ["clippy::needless-character-iteration"]
+
+[[rule]]
+name = "needless-collect"
+category = "style"
+clippy = ["clippy::needless-collect"]
+
+[[rule]]
+name = "needless-continue"
+category = "style"
+clippy = ["clippy::needless-continue"]
+
+[[rule]]
+name = "needless-doctest-main"
+category = "style"
+clippy = ["clippy::needless-doctest-main"]
+
+[[rule]]
+name = "needless-for-each"
+category = "style"
+clippy = ["clippy::needless-for-each"]
+
+[[rule]]
+name = "needless-if"
+clippy = ["clippy::needless-if"]
+
+[[rule]]
+name = "needless-late-init"
+category = "style"
+clippy = ["clippy::needless-late-init"]
+
+[[rule]]
+name = "needless-lifetimes"
+category = "complexity"
+clippy = ["clippy::needless-lifetimes"]
+
+[[rule]]
+name = "needless-match"
+category = "complexity"
+clippy = ["clippy::needless-match"]
+
+[[rule]]
+name = "needless-maybe-sized"
+category = "correctness"
+clippy = ["clippy::needless-maybe-sized"]
+
+[[rule]]
+name = "needless-option-as-deref"
+category = "complexity"
+clippy = ["clippy::needless-option-as-deref"]
+
+[[rule]]
+name = "needless-option-take"
+category = "complexity"
+clippy = ["clippy::needless-option-take"]
+
+[[rule]]
+name = "needless-parens-on-range-literals"
+category = "style"
+clippy = ["clippy::needless-parens-on-range-literals"]
+
+[[rule]]
+name = "needless-pass-by-ref-mut"
+category = "style"
+clippy = ["clippy::needless-pass-by-ref-mut"]
+
+[[rule]]
+name = "needless-pass-by-value"
+category = "style"
+clippy = ["clippy::needless-pass-by-value"]
+
+[[rule]]
+name = "needless-pub-self"
+clippy = ["clippy::needless-pub-self"]
+
+[[rule]]
+name = "needless-question-mark"
+category = "complexity"
+clippy = ["clippy::needless-question-mark"]
+
+[[rule]]
+name = "needless-range-loop"
+category = "style"
+clippy = ["clippy::needless-range-loop"]
+
+[[rule]]
+name = "needless-raw-string-hashes"
+category = "style"
+clippy = ["clippy::needless-raw-string-hashes"]
+
+[[rule]]
+name = "needless-raw-strings"
+category = "style"
+clippy = ["clippy::needless-raw-strings"]
+
+[[rule]]
+name = "needless-return"
+clippy = ["clippy::needless-return"]
+
+[[rule]]
+name = "needless-return-with-question-mark"
+category = "style"
+clippy = ["clippy::needless-return-with-question-mark"]
+
+[[rule]]
+name = "needless-splitn"
+category = "complexity"
+clippy = ["clippy::needless-splitn"]
+
+[[rule]]
+name = "needless-update"
+category = "complexity"
+clippy = ["clippy::needless-update"]
+
+[[rule]]
+name = "neg-cmp-op-on-partial-ord"
+category = "complexity"
+clippy = ["clippy::neg-cmp-op-on-partial-ord"]
+
+[[rule]]
+name = "neg-multiply"
+clippy = ["clippy::neg-multiply"]
+
+[[rule]]
+name = "negative-feature-names"
+category = "style"
+clippy = ["clippy::negative-feature-names"]
+
+[[rule]]
+name = "never-loop"
+category = "correctness"
+clippy = ["clippy::never-loop"]
+
+[[rule]]
+name = "new-ret-no-self"
+category = "style"
+clippy = ["clippy::new-ret-no-self"]
+
+[[rule]]
+name = "new-without-default"
+category = "style"
+clippy = ["clippy::new-without-default"]
+
+[[rule]]
+name = "no-effect"
+category = "complexity"
+clippy = ["clippy::no-effect"]
+
+[[rule]]
+name = "no-effect-replace"
+category = "correctness"
+clippy = ["clippy::no-effect-replace"]
+
+[[rule]]
+name = "no-effect-underscore-binding"
+category = "style"
+clippy = ["clippy::no-effect-underscore-binding"]
+
+[[rule]]
+name = "no-mangle-with-rust-abi"
+category = "style"
+clippy = ["clippy::no-mangle-with-rust-abi"]
+
+[[rule]]
+name = "non-ascii-literal"
+category = "style"
+clippy = ["clippy::non-ascii-literal"]
+
+[[rule]]
+name = "non-canonical-clone-impl"
+category = "correctness"
+clippy = ["clippy::non-canonical-clone-impl"]
+
+[[rule]]
+name = "non-canonical-partial-ord-impl"
+category = "correctness"
+clippy = ["clippy::non-canonical-partial-ord-impl"]
+
+[[rule]]
+name = "non-minimal-cfg"
+category = "style"
+clippy = ["clippy::non-minimal-cfg"]
+
+[[rule]]
+name = "non-octal-unix-permissions"
+category = "correctness"
+clippy = ["clippy::non-octal-unix-permissions"]
+
+[[rule]]
+name = "non-send-fields-in-send-ty"
+category = "style"
+clippy = ["clippy::non-send-fields-in-send-ty"]
+
+[[rule]]
+name = "non-std-lazy-statics"
+category = "style"
+clippy = ["clippy::non-std-lazy-statics"]
+
+[[rule]]
+name = "non-zero-suggestions"
+category = "style"
+clippy = ["clippy::non-zero-suggestions"]
+
+[[rule]]
+name = "nonminimal-bool"
+category = "complexity"
+clippy = ["clippy::nonminimal-bool"]
+
+[[rule]]
+name = "nonsensical-open-options"
+category = "correctness"
+clippy = ["clippy::nonsensical-open-options"]
+
+[[rule]]
+name = "nonstandard-macro-braces"
+category = "style"
+clippy = ["clippy::nonstandard-macro-braces"]
+
+[[rule]]
+name = "not-unsafe-ptr-arg-deref"
+category = "correctness"
+clippy = ["clippy::not-unsafe-ptr-arg-deref"]
+
+[[rule]]
+name = "obfuscated-if-else"
+category = "style"
+clippy = ["clippy::obfuscated-if-else"]
+
+[[rule]]
+name = "octal-escapes"
+category = "correctness"
+clippy = ["clippy::octal-escapes"]
+
+[[rule]]
+name = "ok-expect"
+clippy = ["clippy::ok-expect"]
+
+[[rule]]
+name = "only-used-in-recursion"
+category = "complexity"
+clippy = ["clippy::only-used-in-recursion"]
+
+[[rule]]
+name = "op-ref"
+category = "style"
+clippy = ["clippy::op-ref"]
+
+[[rule]]
+name = "option-as-ref-cloned"
+category = "style"
+clippy = ["clippy::option-as-ref-cloned"]
+
+[[rule]]
+name = "option-as-ref-deref"
+category = "complexity"
+clippy = ["clippy::option-as-ref-deref"]
+
+[[rule]]
+name = "option-env-unwrap"
+category = "correctness"
+clippy = ["clippy::option-env-unwrap"]
+
+[[rule]]
+name = "option-filter-map"
+category = "complexity"
+clippy = ["clippy::option-filter-map"]
+
+[[rule]]
+name = "option-if-let-else"
+category = "style"
+clippy = ["clippy::option-if-let-else"]
+
+[[rule]]
+name = "option-map-or-none"
+clippy = ["clippy::option-map-or-none"]
+
+[[rule]]
+name = "option-map-unit-fn"
+category = "complexity"
+clippy = ["clippy::option-map-unit-fn"]
+
+[[rule]]
+name = "option-option"
+category = "style"
+clippy = ["clippy::option-option"]
+
+[[rule]]
+name = "or-fun-call"
+category = "style"
+clippy = ["clippy::or-fun-call"]
+
+[[rule]]
+name = "or-then-unwrap"
+category = "complexity"
+clippy = ["clippy::or-then-unwrap"]
+
+[[rule]]
+name = "out-of-bounds-indexing"
+category = "correctness"
+clippy = ["clippy::out-of-bounds-indexing"]
+
+[[rule]]
+name = "overly-complex-bool-expr"
+category = "correctness"
+clippy = ["clippy::overly-complex-bool-expr"]
+
+[[rule]]
+name = "owned-cow"
+category = "style"
+clippy = ["clippy::owned-cow"]
+
+[[rule]]
+name = "panic"
+clippy = ["clippy::panic"]
+
+[[rule]]
+name = "panic-in-result-fn"
+category = "style"
+clippy = ["clippy::panic-in-result-fn"]
+
+[[rule]]
+name = "panicking-overflow-checks"
+category = "correctness"
+clippy = ["clippy::panicking-overflow-checks"]
+
+[[rule]]
+name = "panicking-unwrap"
+category = "correctness"
+clippy = ["clippy::panicking-unwrap"]
+
+[[rule]]
+name = "partial-pub-fields"
+category = "style"
+clippy = ["clippy::partial-pub-fields"]
+
+[[rule]]
+name = "partialeq-ne-impl"
+category = "complexity"
+clippy = ["clippy::partialeq-ne-impl"]
+
+[[rule]]
+name = "partialeq-to-none"
+clippy = ["clippy::partialeq-to-none"]
+
+[[rule]]
+name = "path-buf-push-overwrite"
+category = "style"
+clippy = ["clippy::path-buf-push-overwrite"]
+
+[[rule]]
+name = "path-ends-with-ext"
+category = "correctness"
+clippy = ["clippy::path-ends-with-ext"]
+
+[[rule]]
+name = "pathbuf-init-then-push"
+category = "style"
+clippy = ["clippy::pathbuf-init-then-push"]
+
+[[rule]]
+name = "pattern-type-mismatch"
+category = "style"
+clippy = ["clippy::pattern-type-mismatch"]
+
+[[rule]]
+name = "permissions-set-readonly-false"
+category = "correctness"
+clippy = ["clippy::permissions-set-readonly-false"]
+
+[[rule]]
+name = "pointers-in-nomem-asm-block"
+category = "correctness"
+clippy = ["clippy::pointers-in-nomem-asm-block"]
+
+[[rule]]
+name = "possible-missing-comma"
+category = "correctness"
+clippy = ["clippy::possible-missing-comma"]
+
+[[rule]]
+name = "precedence"
+category = "complexity"
+clippy = ["clippy::precedence"]
+
+[[rule]]
+name = "precedence-bits"
+category = "style"
+clippy = ["clippy::precedence-bits"]
+
+[[rule]]
+name = "print-in-format-impl"
+category = "correctness"
+clippy = ["clippy::print-in-format-impl"]
+
+[[rule]]
+name = "print-literal"
+clippy = ["clippy::print-literal"]
+
+[[rule]]
+name = "print-stderr"
+clippy = ["clippy::print-stderr"]
+
+[[rule]]
+name = "print-stdout"
+clippy = ["clippy::print-stdout"]
+
+[[rule]]
+name = "print-with-newline"
+clippy = ["clippy::print-with-newline"]
+
+[[rule]]
+name = "println-empty-string"
+clippy = ["clippy::println-empty-string"]
+
+[[rule]]
+name = "ptr-arg"
+category = "style"
+clippy = ["clippy::ptr-arg"]
+
+[[rule]]
+name = "ptr-as-ptr"
+category = "style"
+clippy = ["clippy::ptr-as-ptr"]
+
+[[rule]]
+name = "ptr-cast-constness"
+category = "style"
+clippy = ["clippy::ptr-cast-constness"]
+
+[[rule]]
+name = "ptr-eq"
+category = "style"
+clippy = ["clippy::ptr-eq"]
+
+[[rule]]
+name = "ptr-offset-with-cast"
+category = "complexity"
+clippy = ["clippy::ptr-offset-with-cast"]
+
+[[rule]]
+name = "pub-underscore-fields"
+category = "style"
+clippy = ["clippy::pub-underscore-fields"]
+
+[[rule]]
+name = "pub-use"
+category = "style"
+clippy = ["clippy::pub-use"]
+
+[[rule]]
+name = "pub-with-shorthand"
+category = "style"
+clippy = ["clippy::pub-with-shorthand"]
+
+[[rule]]
+name = "pub-without-shorthand"
+category = "style"
+clippy = ["clippy::pub-without-shorthand"]
+
+[[rule]]
+name = "question-mark"
+category = "style"
+clippy = ["clippy::question-mark"]
+
+[[rule]]
+name = "question-mark-used"
+category = "style"
+clippy = ["clippy::question-mark-used"]
+
+[[rule]]
+name = "range-minus-one"
+category = "style"
+clippy = ["clippy::range-minus-one"]
+
+[[rule]]
+name = "range-plus-one"
+category = "style"
+clippy = ["clippy::range-plus-one"]
+
+[[rule]]
+name = "range-zip-with-len"
+category = "complexity"
+clippy = ["clippy::range-zip-with-len"]
+
+[[rule]]
+name = "rc-buffer"
+category = "style"
+clippy = ["clippy::rc-buffer"]
+
+[[rule]]
+name = "rc-clone-in-vec-init"
+category = "correctness"
+clippy = ["clippy::rc-clone-in-vec-init"]
+
+[[rule]]
+name = "rc-mutex"
+category = "style"
+clippy = ["clippy::rc-mutex"]
+
+[[rule]]
+name = "read-line-without-trim"
+category = "correctness"
+clippy = ["clippy::read-line-without-trim"]
+
+[[rule]]
+name = "read-zero-byte-vec"
+category = "style"
+clippy = ["clippy::read-zero-byte-vec"]
+
+[[rule]]
+name = "readonly-write-lock"
+category = "performance"
+clippy = ["clippy::readonly-write-lock"]
+
+[[rule]]
+name = "recursive-format-impl"
+category = "correctness"
+clippy = ["clippy::recursive-format-impl"]
+
+[[rule]]
+name = "redundant-allocation"
+category = "performance"
+clippy = ["clippy::redundant-allocation"]
+
+[[rule]]
+name = "redundant-as-str"
+category = "complexity"
+clippy = ["clippy::redundant-as-str"]
+
+[[rule]]
+name = "redundant-async-block"
+category = "complexity"
+clippy = ["clippy::redundant-async-block"]
+
+[[rule]]
+name = "redundant-at-rest-pattern"
+category = "complexity"
+clippy = ["clippy::redundant-at-rest-pattern"]
+
+[[rule]]
+name = "redundant-clone"
+category = "style"
+clippy = ["clippy::redundant-clone"]
+
+[[rule]]
+name = "redundant-closure"
+clippy = ["clippy::redundant-closure"]
+
+[[rule]]
+name = "redundant-closure-call"
+category = "complexity"
+clippy = ["clippy::redundant-closure-call"]
+
+[[rule]]
+name = "redundant-closure-for-method-calls"
+category = "style"
+clippy = ["clippy::redundant-closure-for-method-calls"]
+
+[[rule]]
+name = "redundant-comparisons"
+category = "correctness"
+clippy = ["clippy::redundant-comparisons"]
+
+[[rule]]
+name = "redundant-else"
+category = "style"
+clippy = ["clippy::redundant-else"]
+
+[[rule]]
+name = "redundant-feature-names"
+category = "style"
+clippy = ["clippy::redundant-feature-names"]
+
+[[rule]]
+name = "redundant-field-names"
+clippy = ["clippy::redundant-field-names"]
+
+[[rule]]
+name = "redundant-guards"
+category = "complexity"
+clippy = ["clippy::redundant-guards"]
+
+[[rule]]
+name = "redundant-locals"
+category = "correctness"
+clippy = ["clippy::redundant-locals"]
+
+[[rule]]
+name = "redundant-pattern"
+category = "style"
+clippy = ["clippy::redundant-pattern"]
+
+[[rule]]
+name = "redundant-pattern-matching"
+clippy = ["clippy::redundant-pattern-matching"]
+
+[[rule]]
+name = "redundant-pub-crate"
+category = "style"
+clippy = ["clippy::redundant-pub-crate"]
+
+[[rule]]
+name = "redundant-slicing"
+category = "complexity"
+clippy = ["clippy::redundant-slicing"]
+
+[[rule]]
+name = "redundant-static-lifetimes"
+clippy = ["clippy::redundant-static-lifetimes"]
+
+[[rule]]
+name = "redundant-test-prefix"
+category = "style"
+clippy = ["clippy::redundant-test-prefix"]
+
+[[rule]]
+name = "redundant-type-annotations"
+category = "style"
+clippy = ["clippy::redundant-type-annotations"]
+
+[[rule]]
+name = "ref-as-ptr"
+category = "style"
+clippy = ["clippy::ref-as-ptr"]
+
+[[rule]]
+name = "ref-binding-to-reference"
+category = "style"
+clippy = ["clippy::ref-binding-to-reference"]
+
+[[rule]]
+name = "ref-option"
+category = "style"
+clippy = ["clippy::ref-option"]
+
+[[rule]]
+name = "ref-option-ref"
+category = "style"
+clippy = ["clippy::ref-option-ref"]
+
+[[rule]]
+name = "ref-patterns"
+category = "style"
+clippy = ["clippy::ref-patterns"]
+
+[[rule]]
+name = "regex-creation-in-loops"
+category = "performance"
+clippy = ["clippy::regex-creation-in-loops"]
+
+[[rule]]
+name = "renamed-function-params"
+category = "style"
+clippy = ["clippy::renamed-function-params"]
+
+[[rule]]
+name = "repeat-once"
+category = "complexity"
+clippy = ["clippy::repeat-once"]
+
+[[rule]]
+name = "repeat-vec-with-capacity"
+category = "correctness"
+clippy = ["clippy::repeat-vec-with-capacity"]
+
+[[rule]]
+name = "repr-packed-without-abi"
+category = "correctness"
+clippy = ["clippy::repr-packed-without-abi"]
+
+[[rule]]
+name = "reserve-after-initialization"
+category = "complexity"
+clippy = ["clippy::reserve-after-initialization"]
+
+[[rule]]
+name = "rest-pat-in-fully-bound-structs"
+category = "style"
+clippy = ["clippy::rest-pat-in-fully-bound-structs"]
+
+[[rule]]
+name = "result-filter-map"
+category = "complexity"
+clippy = ["clippy::result-filter-map"]
+
+[[rule]]
+name = "result-large-err"
+category = "performance"
+clippy = ["clippy::result-large-err"]
+
+[[rule]]
+name = "result-map-or-into-option"
+category = "style"
+clippy = ["clippy::result-map-or-into-option"]
+
+[[rule]]
+name = "result-map-unit-fn"
+category = "complexity"
+clippy = ["clippy::result-map-unit-fn"]
+
+[[rule]]
+name = "result-unit-err"
+category = "style"
+clippy = ["clippy::result-unit-err"]
+
+[[rule]]
+name = "return-and-then"
+category = "style"
+clippy = ["clippy::return-and-then"]
+
+[[rule]]
+name = "return-self-not-must-use"
+category = "style"
+clippy = ["clippy::return-self-not-must-use"]
+
+[[rule]]
+name = "reversed-empty-ranges"
+category = "correctness"
+clippy = ["clippy::reversed-empty-ranges"]
+
+[[rule]]
+name = "rust-cognitive-complexity"
+category = "style"
+ids = { rust = "ward:rust/cognitive-complexity" }
+clippy = ["clippy::cognitive-complexity"]
+
+[[rule]]
+name = "rust-collapsible-else-if"
+category = "style"
+ids = { rust = "ward:rust/collapsible-else-if" }
+clippy = ["clippy::collapsible-else-if"]
+
+[[rule]]
+name = "rust-collapsible-if"
+category = "style"
+ids = { rust = "ward:rust/collapsible-if" }
+clippy = ["clippy::collapsible-if"]
+
+[[rule]]
+name = "rust-implicit-return"
+category = "style"
+ids = { rust = "ward:rust/implicit-return" }
+clippy = ["clippy::implicit-return"]
+
+[[rule]]
+name = "rust-needless-else"
+ids = { rust = "ward:rust/needless-else" }
+clippy = ["clippy::needless-else"]
+
+[[rule]]
+name = "rust-self-assignment"
+ids = { rust = "ward:rust/self-assignment" }
+clippy = ["clippy::self-assignment"]
+
+[[rule]]
+name = "rust-string-to-string"
+category = "style"
+ids = { rust = "ward:rust/string-to-string" }
+clippy = ["clippy::string-to-string"]
+
+[[rule]]
+name = "rust-unnecessary-cast"
+category = "complexity"
+ids = { rust = "ward:rust/unnecessary-cast" }
+clippy = ["clippy::unnecessary-cast"]
+
+[[rule]]
+name = "rust-unnecessary-semicolon"
+category = "style"
+ids = { rust = "ward:rust/unnecessary-semicolon" }
+clippy = ["clippy::unnecessary-semicolon"]
+
+[[rule]]
+name = "rust-unreachable"
+ids = { rust = "ward:rust/unreachable" }
+clippy = ["clippy::unreachable"]
+
+[[rule]]
+name = "rust-unused-async"
+category = "style"
+ids = { rust = "ward:rust/unused-async" }
+clippy = ["clippy::unused-async"]
+
+[[rule]]
+name = "same-functions-in-if-condition"
+category = "style"
+clippy = ["clippy::same-functions-in-if-condition"]
+
+[[rule]]
+name = "same-item-push"
+category = "style"
+clippy = ["clippy::same-item-push"]
+
+[[rule]]
+name = "same-name-method"
+category = "style"
+clippy = ["clippy::same-name-method"]
+
+[[rule]]
+name = "search-is-some"
+clippy = ["clippy::search-is-some"]
+
+[[rule]]
+name = "seek-from-current"
+category = "complexity"
+clippy = ["clippy::seek-from-current"]
+
+[[rule]]
+name = "seek-to-start-instead-of-rewind"
+category = "complexity"
+clippy = ["clippy::seek-to-start-instead-of-rewind"]
+
+[[rule]]
+name = "self-named-constructors"
+category = "style"
+clippy = ["clippy::self-named-constructors"]
+
+[[rule]]
+name = "self-named-module-files"
+category = "style"
+clippy = ["clippy::self-named-module-files"]
+
+[[rule]]
+name = "semicolon-if-nothing-returned"
+category = "style"
+clippy = ["clippy::semicolon-if-nothing-returned"]
+
+[[rule]]
+name = "semicolon-inside-block"
+category = "style"
+clippy = ["clippy::semicolon-inside-block"]
+
+[[rule]]
+name = "semicolon-outside-block"
+category = "style"
+clippy = ["clippy::semicolon-outside-block"]
+
+[[rule]]
+name = "separated-literal-suffix"
+category = "style"
+clippy = ["clippy::separated-literal-suffix"]
+
+[[rule]]
+name = "serde-api-misuse"
+category = "correctness"
+clippy = ["clippy::serde-api-misuse"]
+
+[[rule]]
+name = "set-contains-or-insert"
+category = "style"
+clippy = ["clippy::set-contains-or-insert"]
+
+[[rule]]
+name = "shadow-reuse"
+category = "style"
+clippy = ["clippy::shadow-reuse"]
+
+[[rule]]
+name = "shadow-same"
+category = "style"
+clippy = ["clippy::shadow-same"]
+
+[[rule]]
+name = "shadow-unrelated"
+category = "style"
+clippy = ["clippy::shadow-unrelated"]
+
+[[rule]]
+name = "short-circuit-statement"
+category = "complexity"
+clippy = ["clippy::short-circuit-statement"]
+
+[[rule]]
+name = "should-implement-trait"
+category = "style"
+clippy = ["clippy::should-implement-trait"]
+
+[[rule]]
+name = "should-panic-without-expect"
+category = "style"
+clippy = ["clippy::should-panic-without-expect"]
+
+[[rule]]
+name = "significant-drop-in-scrutinee"
+category = "style"
+clippy = ["clippy::significant-drop-in-scrutinee"]
+
+[[rule]]
+name = "significant-drop-tightening"
+category = "style"
+clippy = ["clippy::significant-drop-tightening"]
+
+[[rule]]
+name = "similar-names"
+category = "style"
+clippy = ["clippy::similar-names"]
+
+[[rule]]
+name = "single-call-fn"
+category = "style"
+clippy = ["clippy::single-call-fn"]
+
+[[rule]]
+name = "single-char-add-str"
+clippy = ["clippy::single-char-add-str"]
+
+[[rule]]
+name = "single-char-lifetime-names"
+category = "style"
+clippy = ["clippy::single-char-lifetime-names"]
+
+[[rule]]
+name = "single-char-pattern"
+category = "style"
+clippy = ["clippy::single-char-pattern"]
+
+[[rule]]
+name = "single-component-path-imports"
+clippy = ["clippy::single-component-path-imports"]
+
+[[rule]]
+name = "single-element-loop"
+category = "complexity"
+clippy = ["clippy::single-element-loop"]
+
+[[rule]]
+name = "single-match"
+category = "style"
+clippy = ["clippy::single-match"]
+
+[[rule]]
+name = "single-match-else"
+category = "style"
+clippy = ["clippy::single-match-else"]
+
+[[rule]]
+name = "single-option-map"
+category = "style"
+clippy = ["clippy::single-option-map"]
+
+[[rule]]
+name = "single-range-in-vec-init"
+category = "correctness"
+clippy = ["clippy::single-range-in-vec-init"]
+
+[[rule]]
+name = "size-of-in-element-count"
+category = "correctness"
+clippy = ["clippy::size-of-in-element-count"]
+
+[[rule]]
+name = "size-of-ref"
+category = "correctness"
+clippy = ["clippy::size-of-ref"]
+
+[[rule]]
+name = "skip-while-next"
+category = "complexity"
+clippy = ["clippy::skip-while-next"]
+
+[[rule]]
+name = "sliced-string-as-bytes"
+category = "performance"
+clippy = ["clippy::sliced-string-as-bytes"]
+
+[[rule]]
+name = "slow-vector-initialization"
+category = "performance"
+clippy = ["clippy::slow-vector-initialization"]
+
+[[rule]]
+name = "stable-sort-primitive"
+category = "style"
+clippy = ["clippy::stable-sort-primitive"]
+
+[[rule]]
+name = "std-instead-of-alloc"
+category = "style"
+clippy = ["clippy::std-instead-of-alloc"]
+
+[[rule]]
+name = "std-instead-of-core"
+category = "style"
+clippy = ["clippy::std-instead-of-core"]
+
+[[rule]]
+name = "str-split-at-newline"
+category = "style"
+clippy = ["clippy::str-split-at-newline"]
+
+[[rule]]
+name = "str-to-string"
+category = "style"
+clippy = ["clippy::str-to-string"]
+
+[[rule]]
+name = "string-add"
+category = "style"
+clippy = ["clippy::string-add"]
+
+[[rule]]
+name = "string-add-assign"
+category = "style"
+clippy = ["clippy::string-add-assign"]
+
+[[rule]]
+name = "string-extend-chars"
+category = "style"
+clippy = ["clippy::string-extend-chars"]
+
+[[rule]]
+name = "string-from-utf8-as-bytes"
+category = "complexity"
+clippy = ["clippy::string-from-utf8-as-bytes"]
+
+[[rule]]
+name = "string-lit-as-bytes"
+category = "style"
+clippy = ["clippy::string-lit-as-bytes"]
+
+[[rule]]
+name = "string-lit-chars-any"
+category = "style"
+clippy = ["clippy::string-lit-chars-any"]
+
+[[rule]]
+name = "string-slice"
+category = "style"
+clippy = ["clippy::string-slice"]
+
+[[rule]]
+name = "strlen-on-c-strings"
+category = "complexity"
+clippy = ["clippy::strlen-on-c-strings"]
+
+[[rule]]
+name = "struct-excessive-bools"
+category = "style"
+clippy = ["clippy::struct-excessive-bools"]
+
+[[rule]]
+name = "struct-field-names"
+category = "style"
+clippy = ["clippy::struct-field-names"]
+
+[[rule]]
+name = "suboptimal-flops"
+category = "style"
+clippy = ["clippy::suboptimal-flops"]
+
+[[rule]]
+name = "suspicious-arithmetic-impl"
+category = "correctness"
+clippy = ["clippy::suspicious-arithmetic-impl"]
+
+[[rule]]
+name = "suspicious-assignment-formatting"
+category = "correctness"
+clippy = ["clippy::suspicious-assignment-formatting"]
+
+[[rule]]
+name = "suspicious-command-arg-space"
+category = "correctness"
+clippy = ["clippy::suspicious-command-arg-space"]
+
+[[rule]]
+name = "suspicious-doc-comments"
+category = "correctness"
+clippy = ["clippy::suspicious-doc-comments"]
+
+[[rule]]
+name = "suspicious-else-formatting"
+category = "correctness"
+clippy = ["clippy::suspicious-else-formatting"]
+
+[[rule]]
+name = "suspicious-map"
+category = "correctness"
+clippy = ["clippy::suspicious-map"]
+
+[[rule]]
+name = "suspicious-op-assign-impl"
+category = "correctness"
+clippy = ["clippy::suspicious-op-assign-impl"]
+
+[[rule]]
+name = "suspicious-open-options"
+category = "correctness"
+clippy = ["clippy::suspicious-open-options"]
+
+[[rule]]
+name = "suspicious-operation-groupings"
+category = "style"
+clippy = ["clippy::suspicious-operation-groupings"]
+
+[[rule]]
+name = "suspicious-splitn"
+category = "correctness"
+clippy = ["clippy::suspicious-splitn"]
+
+[[rule]]
+name = "suspicious-to-owned"
+category = "correctness"
+clippy = ["clippy::suspicious-to-owned"]
+
+[[rule]]
+name = "suspicious-unary-op-formatting"
+category = "correctness"
+clippy = ["clippy::suspicious-unary-op-formatting"]
+
+[[rule]]
+name = "suspicious-xor-used-as-pow"
+category = "style"
+clippy = ["clippy::suspicious-xor-used-as-pow"]
+
+[[rule]]
+name = "swap-ptr-to-ref"
+category = "correctness"
+clippy = ["clippy::swap-ptr-to-ref"]
+
+[[rule]]
+name = "swap-with-temporary"
+category = "complexity"
+clippy = ["clippy::swap-with-temporary"]
+
+[[rule]]
+name = "tabs-in-doc-comments"
+category = "style"
+clippy = ["clippy::tabs-in-doc-comments"]
+
+[[rule]]
+name = "temporary-assignment"
+category = "complexity"
+clippy = ["clippy::temporary-assignment"]
+
+[[rule]]
+name = "test-attr-in-doctest"
+category = "correctness"
+clippy = ["clippy::test-attr-in-doctest"]
+
+[[rule]]
+name = "tests-outside-test-module"
+category = "style"
+clippy = ["clippy::tests-outside-test-module"]
+
+[[rule]]
+name = "to-digit-is-some"
+category = "style"
+clippy = ["clippy::to-digit-is-some"]
+
+[[rule]]
+name = "to-string-in-format-args"
+category = "performance"
+clippy = ["clippy::to-string-in-format-args"]
+
+[[rule]]
+name = "to-string-trait-impl"
+category = "style"
+clippy = ["clippy::to-string-trait-impl"]
+
+[[rule]]
+name = "todo"
+clippy = ["clippy::todo"]
+
+[[rule]]
+name = "too-long-first-doc-paragraph"
+category = "style"
+clippy = ["clippy::too-long-first-doc-paragraph"]
+
+[[rule]]
+name = "too-many-arguments"
+clippy = ["clippy::too-many-arguments"]
+
+[[rule]]
+name = "too-many-lines"
+clippy = ["clippy::too-many-lines"]
+
+[[rule]]
+name = "toplevel-ref-arg"
+category = "style"
+clippy = ["clippy::toplevel-ref-arg"]
+
+[[rule]]
+name = "trailing-empty-array"
+category = "style"
+clippy = ["clippy::trailing-empty-array"]
+
+[[rule]]
+name = "trait-duplication-in-bounds"
+category = "style"
+clippy = ["clippy::trait-duplication-in-bounds"]
+
+[[rule]]
+name = "transmute-bytes-to-str"
+category = "complexity"
+clippy = ["clippy::transmute-bytes-to-str"]
+
+[[rule]]
+name = "transmute-int-to-bool"
+category = "complexity"
+clippy = ["clippy::transmute-int-to-bool"]
+
+[[rule]]
+name = "transmute-int-to-non-zero"
+category = "complexity"
+clippy = ["clippy::transmute-int-to-non-zero"]
+
+[[rule]]
+name = "transmute-null-to-fn"
+category = "correctness"
+clippy = ["clippy::transmute-null-to-fn"]
+
+[[rule]]
+name = "transmute-ptr-to-ptr"
+category = "style"
+clippy = ["clippy::transmute-ptr-to-ptr"]
+
+[[rule]]
+name = "transmute-ptr-to-ref"
+category = "complexity"
+clippy = ["clippy::transmute-ptr-to-ref"]
+
+[[rule]]
+name = "transmute-undefined-repr"
+category = "style"
+clippy = ["clippy::transmute-undefined-repr"]
+
+[[rule]]
+name = "transmutes-expressible-as-ptr-casts"
+category = "complexity"
+clippy = ["clippy::transmutes-expressible-as-ptr-casts"]
+
+[[rule]]
+name = "transmuting-null"
+category = "correctness"
+clippy = ["clippy::transmuting-null"]
+
+[[rule]]
+name = "trim-split-whitespace"
+category = "style"
+clippy = ["clippy::trim-split-whitespace"]
+
+[[rule]]
+name = "trivial-regex"
+category = "style"
+clippy = ["clippy::trivial-regex"]
+
+[[rule]]
+name = "trivially-copy-pass-by-ref"
+category = "style"
+clippy = ["clippy::trivially-copy-pass-by-ref"]
+
+[[rule]]
+name = "try-err"
+category = "style"
+clippy = ["clippy::try-err"]
+
+[[rule]]
+name = "tuple-array-conversions"
+category = "style"
+clippy = ["clippy::tuple-array-conversions"]
+
+[[rule]]
+name = "type-complexity"
+category = "complexity"
+clippy = ["clippy::type-complexity"]
+
+[[rule]]
+name = "type-id-on-box"
+category = "correctness"
+clippy = ["clippy::type-id-on-box"]
+
+[[rule]]
+name = "type-repetition-in-bounds"
+category = "style"
+clippy = ["clippy::type-repetition-in-bounds"]
+
+[[rule]]
+name = "unbuffered-bytes"
+category = "performance"
+clippy = ["clippy::unbuffered-bytes"]
+
+[[rule]]
+name = "unchecked-duration-subtraction"
+category = "style"
+clippy = ["clippy::unchecked-duration-subtraction"]
+
+[[rule]]
+name = "unconditional-recursion"
+category = "correctness"
+clippy = ["clippy::unconditional-recursion"]
+
+[[rule]]
+name = "undocumented-unsafe-blocks"
+category = "style"
+clippy = ["clippy::undocumented-unsafe-blocks"]
+
+[[rule]]
+name = "unicode-not-nfc"
+category = "style"
+clippy = ["clippy::unicode-not-nfc"]
+
+[[rule]]
+name = "unimplemented"
+clippy = ["clippy::unimplemented"]
+
+[[rule]]
+name = "uninhabited-references"
+category = "style"
+clippy = ["clippy::uninhabited-references"]
+
+[[rule]]
+name = "uninit-assumed-init"
+category = "correctness"
+clippy = ["clippy::uninit-assumed-init"]
+
+[[rule]]
+name = "uninit-vec"
+category = "correctness"
+clippy = ["clippy::uninit-vec"]
+
+[[rule]]
+name = "uninlined-format-args"
+category = "style"
+clippy = ["clippy::uninlined-format-args"]
+
+[[rule]]
+name = "unit-arg"
+category = "complexity"
+clippy = ["clippy::unit-arg"]
+
+[[rule]]
+name = "unit-cmp"
+category = "correctness"
+clippy = ["clippy::unit-cmp"]
+
+[[rule]]
+name = "unit-hash"
+category = "correctness"
+clippy = ["clippy::unit-hash"]
+
+[[rule]]
+name = "unit-return-expecting-ord"
+category = "correctness"
+clippy = ["clippy::unit-return-expecting-ord"]
+
+[[rule]]
+name = "unnecessary-box-returns"
+category = "style"
+clippy = ["clippy::unnecessary-box-returns"]
+
+[[rule]]
+name = "unnecessary-debug-formatting"
+category = "style"
+clippy = ["clippy::unnecessary-debug-formatting"]
+
+[[rule]]
+name = "unnecessary-fallible-conversions"
+category = "style"
+clippy = ["clippy::unnecessary-fallible-conversions"]
+
+[[rule]]
+name = "unnecessary-filter-map"
+category = "complexity"
+clippy = ["clippy::unnecessary-filter-map"]
+
+[[rule]]
+name = "unnecessary-find-map"
+category = "complexity"
+clippy = ["clippy::unnecessary-find-map"]
+
+[[rule]]
+name = "unnecessary-first-then-check"
+category = "complexity"
+clippy = ["clippy::unnecessary-first-then-check"]
+
+[[rule]]
+name = "unnecessary-fold"
+category = "style"
+clippy = ["clippy::unnecessary-fold"]
+
+[[rule]]
+name = "unnecessary-get-then-check"
+category = "correctness"
+clippy = ["clippy::unnecessary-get-then-check"]
+
+[[rule]]
+name = "unnecessary-join"
+category = "style"
+clippy = ["clippy::unnecessary-join"]
+
+[[rule]]
+name = "unnecessary-lazy-evaluations"
+category = "style"
+clippy = ["clippy::unnecessary-lazy-evaluations"]
+
+[[rule]]
+name = "unnecessary-literal-bound"
+category = "style"
+clippy = ["clippy::unnecessary-literal-bound"]
+
+[[rule]]
+name = "unnecessary-literal-unwrap"
+category = "complexity"
+clippy = ["clippy::unnecessary-literal-unwrap"]
+
+[[rule]]
+name = "unnecessary-map-on-constructor"
+category = "complexity"
+clippy = ["clippy::unnecessary-map-on-constructor"]
+
+[[rule]]
+name = "unnecessary-map-or"
+category = "style"
+clippy = ["clippy::unnecessary-map-or"]
+
+[[rule]]
+name = "unnecessary-min-or-max"
+category = "complexity"
+clippy = ["clippy::unnecessary-min-or-max"]
+
+[[rule]]
+name = "unnecessary-mut-passed"
+category = "style"
+clippy = ["clippy::unnecessary-mut-passed"]
+
+[[rule]]
+name = "unnecessary-operation"
+category = "complexity"
+clippy = ["clippy::unnecessary-operation"]
+
+[[rule]]
+name = "unnecessary-owned-empty-strings"
+category = "style"
+clippy = ["clippy::unnecessary-owned-empty-strings"]
+
+[[rule]]
+name = "unnecessary-result-map-or-else"
+category = "correctness"
+clippy = ["clippy::unnecessary-result-map-or-else"]
+
+[[rule]]
+name = "unnecessary-safety-comment"
+category = "style"
+clippy = ["clippy::unnecessary-safety-comment"]
+
+[[rule]]
+name = "unnecessary-safety-doc"
+category = "style"
+clippy = ["clippy::unnecessary-safety-doc"]
+
+[[rule]]
+name = "unnecessary-self-imports"
+category = "style"
+clippy = ["clippy::unnecessary-self-imports"]
+
+[[rule]]
+name = "unnecessary-sort-by"
+category = "complexity"
+clippy = ["clippy::unnecessary-sort-by"]
+
+[[rule]]
+name = "unnecessary-struct-initialization"
+category = "style"
+clippy = ["clippy::unnecessary-struct-initialization"]
+
+[[rule]]
+name = "unnecessary-to-owned"
+category = "performance"
+clippy = ["clippy::unnecessary-to-owned"]
+
+[[rule]]
+name = "unnecessary-unwrap"
+category = "complexity"
+clippy = ["clippy::unnecessary-unwrap"]
+
+[[rule]]
+name = "unnecessary-wraps"
+category = "style"
+clippy = ["clippy::unnecessary-wraps"]
+
+[[rule]]
+name = "unneeded-field-pattern"
+category = "style"
+clippy = ["clippy::unneeded-field-pattern"]
+
+[[rule]]
+name = "unneeded-struct-pattern"
+category = "style"
+clippy = ["clippy::unneeded-struct-pattern"]
+
+[[rule]]
+name = "unneeded-wildcard-pattern"
+category = "complexity"
+clippy = ["clippy::unneeded-wildcard-pattern"]
+
+[[rule]]
+name = "unnested-or-patterns"
+category = "style"
+clippy = ["clippy::unnested-or-patterns"]
+
+[[rule]]
+name = "unreadable-literal"
+clippy = ["clippy::unreadable-literal"]
+
+[[rule]]
+name = "unsafe-derive-deserialize"
+category = "style"
+clippy = ["clippy::unsafe-derive-deserialize"]
+
+[[rule]]
+name = "unsafe-removed-from-name"
+category = "style"
+clippy = ["clippy::unsafe-removed-from-name"]
+
+[[rule]]
+name = "unseparated-literal-suffix"
+clippy = ["clippy::unseparated-literal-suffix"]
+
+[[rule]]
+name = "unsound-collection-transmute"
+category = "correctness"
+clippy = ["clippy::unsound-collection-transmute"]
+
+[[rule]]
+name = "unused-enumerate-index"
+category = "style"
+clippy = ["clippy::unused-enumerate-index"]
+
+[[rule]]
+name = "unused-format-specs"
+category = "complexity"
+clippy = ["clippy::unused-format-specs"]
+
+[[rule]]
+name = "unused-io-amount"
+category = "correctness"
+clippy = ["clippy::unused-io-amount"]
+
+[[rule]]
+name = "unused-peekable"
+category = "style"
+clippy = ["clippy::unused-peekable"]
+
+[[rule]]
+name = "unused-result-ok"
+category = "style"
+clippy = ["clippy::unused-result-ok"]
+
+[[rule]]
+name = "unused-rounding"
+category = "style"
+clippy = ["clippy::unused-rounding"]
+
+[[rule]]
+name = "unused-self"
+category = "style"
+clippy = ["clippy::unused-self"]
+
+[[rule]]
+name = "unused-trait-names"
+category = "style"
+clippy = ["clippy::unused-trait-names"]
+
+[[rule]]
+name = "unused-unit"
+clippy = ["clippy::unused-unit"]
+
+[[rule]]
+name = "unusual-byte-groupings"
+category = "style"
+clippy = ["clippy::unusual-byte-groupings"]
+
+[[rule]]
+name = "unwrap-in-result"
+category = "style"
+clippy = ["clippy::unwrap-in-result"]
+
+[[rule]]
+name = "unwrap-or-default"
+clippy = ["clippy::unwrap-or-default"]
+
+[[rule]]
+name = "unwrap-used"
+clippy = ["clippy::unwrap-used"]
+
+[[rule]]
+name = "upper-case-acronyms"
+category = "style"
+clippy = ["clippy::upper-case-acronyms"]
+
+[[rule]]
+name = "use-debug"
+category = "style"
+clippy = ["clippy::use-debug"]
+
+[[rule]]
+name = "use-self"
+category = "style"
+clippy = ["clippy::use-self"]
+
+[[rule]]
+name = "used-underscore-binding"
+category = "style"
+clippy = ["clippy::used-underscore-binding"]
+
+[[rule]]
+name = "used-underscore-items"
+category = "style"
+clippy = ["clippy::used-underscore-items"]
+
+[[rule]]
+name = "useless-asref"
+category = "complexity"
+clippy = ["clippy::useless-asref"]
+
+[[rule]]
+name = "useless-attribute"
+category = "correctness"
+clippy = ["clippy::useless-attribute"]
+
+[[rule]]
+name = "useless-conversion"
+category = "complexity"
+clippy = ["clippy::useless-conversion"]
+
+[[rule]]
+name = "useless-format"
+clippy = ["clippy::useless-format"]
+
+[[rule]]
+name = "useless-let-if-seq"
+category = "style"
+clippy = ["clippy::useless-let-if-seq"]
+
+[[rule]]
+name = "useless-nonzero-new-unchecked"
+category = "complexity"
+clippy = ["clippy::useless-nonzero-new-unchecked"]
+
+[[rule]]
+name = "useless-transmute"
+category = "complexity"
+clippy = ["clippy::useless-transmute"]
+
+[[rule]]
+name = "useless-vec"
+category = "performance"
+clippy = ["clippy::useless-vec"]
+
+[[rule]]
+name = "vec-box"
+category = "complexity"
+clippy = ["clippy::vec-box"]
+
+[[rule]]
+name = "vec-init-then-push"
+category = "performance"
+clippy = ["clippy::vec-init-then-push"]
+
+[[rule]]
+name = "vec-resize-to-zero"
+category = "correctness"
+clippy = ["clippy::vec-resize-to-zero"]
+
+[[rule]]
+name = "verbose-bit-mask"
+category = "style"
+clippy = ["clippy::verbose-bit-mask"]
+
+[[rule]]
+name = "verbose-file-reads"
+category = "style"
+clippy = ["clippy::verbose-file-reads"]
+
+[[rule]]
+name = "waker-clone-wake"
+category = "performance"
+clippy = ["clippy::waker-clone-wake"]
+
+[[rule]]
+name = "while-float"
+category = "style"
+clippy = ["clippy::while-float"]
+
+[[rule]]
+name = "while-immutable-condition"
+category = "correctness"
+clippy = ["clippy::while-immutable-condition"]
+
+[[rule]]
+name = "while-let-loop"
+category = "complexity"
+clippy = ["clippy::while-let-loop"]
+
+[[rule]]
+name = "while-let-on-iterator"
+category = "style"
+clippy = ["clippy::while-let-on-iterator"]
+
+[[rule]]
+name = "wildcard-dependencies"
+category = "style"
+clippy = ["clippy::wildcard-dependencies"]
+
+[[rule]]
+name = "wildcard-enum-match-arm"
+category = "style"
+clippy = ["clippy::wildcard-enum-match-arm"]
+
+[[rule]]
+name = "wildcard-imports"
+clippy = ["clippy::wildcard-imports"]
+
+[[rule]]
+name = "wildcard-in-or-patterns"
+category = "complexity"
+clippy = ["clippy::wildcard-in-or-patterns"]
+
+[[rule]]
+name = "write-literal"
+category = "style"
+clippy = ["clippy::write-literal"]
+
+[[rule]]
+name = "write-with-newline"
+clippy = ["clippy::write-with-newline"]
+
+[[rule]]
+name = "writeln-empty-string"
+clippy = ["clippy::writeln-empty-string"]
+
+[[rule]]
+name = "wrong-self-convention"
+category = "style"
+clippy = ["clippy::wrong-self-convention"]
+
+[[rule]]
+name = "wrong-transmute"
+category = "correctness"
+clippy = ["clippy::wrong-transmute"]
+
+[[rule]]
+name = "zero-divided-by-zero"
+category = "complexity"
+clippy = ["clippy::zero-divided-by-zero"]
+
+[[rule]]
+name = "zero-prefixed-literal"
+clippy = ["clippy::zero-prefixed-literal"]
+
+[[rule]]
+name = "zero-ptr"
+clippy = ["clippy::zero-ptr"]
+
+[[rule]]
+name = "zero-repeat-side-effects"
+category = "correctness"
+clippy = ["clippy::zero-repeat-side-effects"]
+
+[[rule]]
+name = "zero-sized-map-values"
+category = "style"
+clippy = ["clippy::zero-sized-map-values"]
+
+[[rule]]
+name = "zombie-processes"
+category = "correctness"
+clippy = ["clippy::zombie-processes"]
+
+[[rule]]
+name = "zst-offset"
+category = "correctness"
+clippy = ["clippy::zst-offset"]

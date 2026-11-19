@@ -31,7 +31,9 @@ final class RuleReferenceTools {
           Map.entry("jscpd", "jscpd"),
           Map.entry("gitleaks", "Gitleaks"),
           Map.entry("spectral", "Spectral"),
-          Map.entry("oasdiff", "oasdiff")
+          Map.entry("oasdiff", "oasdiff"),
+          Map.entry("clippy", "Clippy"),
+          Map.entry("rustc", "rustc")
       );
 
   private RuleReferenceTools() {}

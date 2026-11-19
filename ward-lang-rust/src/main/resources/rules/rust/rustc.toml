@@ -1,0 +1,224 @@
+# Rust rules mapped to rustc lints that the syntax tree, the scopes or the control flow decide.
+
+[[rules]]
+id = "ward:rust/double-negations"
+language = "rust"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^--[A-Za-z_][\w.]*$'
+message = "two minus signs in a row negate twice; write the value or add a space"
+'''
+
+[[rules]]
+id = "ward:rust/non-ascii-idents"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["NON_KEYWORD_IDENTIFIER"]
+text = '[^\x00-\x7F]'
+message = "the name '{value}' has characters outside ASCII"
+'''
+
+[[rules]]
+id = "ward:rust/non-camel-case-types"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["structStruct", "tupleStruct", "enumeration", "union_", "trait_", "typeAlias", "enumItem"]
+name = "identifier"
+pattern = '_*[A-Z][A-Za-z0-9]*_*'
+message = "type name '{value}' is not in camel case"
+'''
+
+[[rules]]
+id = "ward:rust/non-shorthand-field-patterns"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["structPatternField"]
+text = '^(\w+):\1$'
+message = "the field name is repeated in the pattern; use the shorthand"
+'''
+
+[[rules]]
+id = "ward:rust/non-snake-case"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["function_", "identifierPattern"]
+name = "identifier"
+pattern = '_*[a-z0-9][a-z0-9_]*|_+|[A-Z][A-Za-z0-9]*'
+message = "name '{value}' is not in snake case"
+'''
+
+[[rules]]
+id = "ward:rust/non-upper-case-globals"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["constantItem", "staticItem"]
+name = "identifier"
+pattern = '_*[A-Z0-9][A-Z0-9_]*'
+message = "constant name '{value}' is not in upper case"
+'''
+
+[[rules]]
+id = "ward:rust/path-statements"
+language = "rust"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expressionStatement"]
+text = '^[A-Za-z_]\w*;$'
+message = "the statement is a bare name and does nothing"
+'''
+
+[[rules]]
+id = "ward:rust/redundant-semicolons"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^;$'
+message = "the semicolon is redundant"
+'''
+
+[[rules]]
+id = "ward:rust/text-direction-codepoint-in-literal"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["STRING_LITERAL"]
+text = '[‪-‮⁦-⁩]'
+message = "the literal holds a text direction control character that can hide the real code"
+'''
+
+[[rules]]
+id = "ward:rust/unreachable-code"
+language = "rust"
+capability = "CFG"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "unreachable-code"
+message = "unreachable code"
+'''
+
+[[rules]]
+id = "ward:rust/unsafe-code"
+language = "rust"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["'unsafe'"]
+message = "unsafe code is not allowed"
+'''
+
+[[rules]]
+id = "ward:rust/unused-assignments"
+language = "rust"
+capability = "DATAFLOW"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-assignment"
+message = "the value assigned to '{value}' is never read"
+'''
+
+[[rules]]
+id = "ward:rust/unused-import-braces"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["useDeclaration"]
+text = '^use[\w:]*::\{\w+\};$'
+message = "the braces around a single import are not needed"
+'''
+
+[[rules]]
+id = "ward:rust/unused-parens"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["ifExpression", "predicateLoopExpression", "matchExpression"]
+text = '^(if|while|match)\((?:[^(),]++|\((?:[^()]++|\([^()]*+\))*+\))*+\)\{'
+message = "the parentheses around the condition are not needed"
+'''
+
+[[rules]]
+id = "ward:rust/unused-variables"
+language = "rust"
+capability = "SCOPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-binding"
+message = "local variable '{value}' is never read"
+'''
+
+[[rules]]
+id = "ward:rust/while-true"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["predicateLoopExpression"]
+text = '^whiletrue\{'
+message = "use loop instead of while true"
+'''

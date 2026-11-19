@@ -1,0 +1,790 @@
+# Rust rules mapped to Clippy lints of the groups that Clippy enables by default. Each rule is a generic check over
+# the syntax tree; a regular expression matches the compact text of a node (its tokens without spaces).
+# shortcut: a rule that Clippy decides with types matches the shape of the code only; upgrade it when Rust has type facts.
+
+[[rules]]
+id = "ward:rust/approx-constant"
+language = "rust"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["FLOAT_LITERAL"]
+text = '^(3\.14(1(59?)?)?|3\.142|3\.1416|3\.14159(2|3)?|2\.718(2|3)?|2\.7183|6\.28(3|32)?|6\.2832)(f32|f64)?$'
+message = "the literal approximates a constant of std::f64::consts; use the constant"
+'''
+
+[[rules]]
+id = "ward:rust/bool-comparison"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "complexity"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^([A-Za-z_][\w.]*(==|!=)(true|false)|(true|false)(==|!=)[A-Za-z_][\w.]*)$'
+message = "comparing a boolean with a literal; use the value or its negation"
+'''
+
+[[rules]]
+id = "ward:rust/box-default"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^Box::new\((Default::default\(\)|[A-Za-z_][\w.]*::default\(\))\)$'
+message = "use Box::default instead of boxing a default value"
+'''
+
+[[rules]]
+id = "ward:rust/bytes-nth"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.bytes\(\)\.nth\((?:[^()]++|\((?:[^()]++|\([^()]*+\))*+\))*+\)$'
+message = "index the bytes instead of walking an iterator"
+'''
+
+[[rules]]
+id = "ward:rust/char-lit-as-u8"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "complexity"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^\x27(\\[nrt0\\\x27\x22]|[ -&(-\[\]-~])\x27asu8$'
+message = "use a byte literal instead of casting a character"
+'''
+
+[[rules]]
+id = "ward:rust/chars-next-cmp"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.chars\(\)\.next\(\)==Some\(\x27(?:\\.|[^\x27\\])+\x27\)$'
+message = "use starts_with instead of comparing the first character"
+'''
+
+[[rules]]
+id = "ward:rust/deref-addrof"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "complexity"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^\*&(mut)?[A-Za-z_][\w.]*$'
+message = "dereferencing a fresh reference gives the value back; remove both"
+'''
+
+[[rules]]
+id = "ward:rust/double-parens"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "complexity"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^\(\((?:[^()]++|\((?:[^()]++|\([^()]*+\))*+\))*+\)\)$'
+message = "the expression is wrapped in two pairs of parentheses"
+'''
+
+[[rules]]
+id = "ward:rust/empty-loop"
+language = "rust"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["infiniteLoopExpression"]
+text = '^loop\{\}$'
+message = "an empty loop wastes the processor; wait on something or call a spin hint"
+'''
+
+[[rules]]
+id = "ward:rust/eq-op"
+language = "rust"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^([A-Za-z_][\w.]*)(==|!=|<=|>=|<|>|-|/|%|&&|\|\||\^)\1$'
+message = "both sides of the operator are the same expression"
+'''
+
+[[rules]]
+id = "ward:rust/erasing-op"
+language = "rust"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^([A-Za-z_][\w.]*\*0|0\*[A-Za-z_][\w.]*|[A-Za-z_][\w.]*&0|0&[A-Za-z_][\w.]*|0/[A-Za-z_][\w.]*)$'
+message = "the operation always gives zero"
+'''
+
+[[rules]]
+id = "ward:rust/err-expect"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.err\(\)\.expect\((?:[^()]++|\((?:[^()]++|\([^()]*+\))*+\))*+\)$'
+message = "use expect_err instead of err followed by expect"
+'''
+
+[[rules]]
+id = "ward:rust/expect-fun-call"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.expect\(&format!\((?:[^()]++|\((?:[^()]++|\([^()]*+\))*+\))*+\)\)$'
+message = "the message is built even when there is no error; use unwrap_or_else with panic"
+'''
+
+[[rules]]
+id = "ward:rust/filter-next"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "complexity"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.filter\((?:[^()]++|\((?:[^()]++|\([^()]*+\))*+\))*+\)\.next\(\)$'
+message = "use find instead of filter followed by next"
+'''
+
+[[rules]]
+id = "ward:rust/get-first"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[A-Za-z_][\w.]*\.get\(0\)$'
+message = "use first instead of get(0)"
+'''
+
+[[rules]]
+id = "ward:rust/identity-op"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "complexity"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^([A-Za-z_][\w.]*(\+0|-0|\*1|/1|\|0|\^0|<<0|>>0)|(0\+|1\*)[A-Za-z_][\w.]*)$'
+message = "the operation has no effect"
+'''
+
+[[rules]]
+id = "ward:rust/int-plus-one"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "complexity"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^([A-Za-z_][\w.]*>=[A-Za-z_][\w.]*\+1|[A-Za-z_][\w.]*\+1<=[A-Za-z_][\w.]*|[A-Za-z_][\w.]*-1>=[A-Za-z_][\w.]*|[A-Za-z_][\w.]*<=[A-Za-z_][\w.]*-1)$'
+message = "compare with a strict inequality instead of adding one"
+'''
+
+[[rules]]
+id = "ward:rust/iter-cloned-collect"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.iter\(\)\.cloned\(\)\.collect::<Vec<[^>]*>>\(\)$'
+message = "use to_vec instead of cloning an iterator into a vector"
+'''
+
+[[rules]]
+id = "ward:rust/iter-nth-zero"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.nth\(0\)$'
+message = "use next instead of nth(0)"
+'''
+
+[[rules]]
+id = "ward:rust/iter-skip-zero"
+language = "rust"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.skip\(0\)$'
+message = "skip(0) skips nothing; remove it"
+'''
+
+[[rules]]
+id = "ward:rust/len-zero"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[A-Za-z_][\w.]*\.len\(\)(==0|!=0|>0|>=1|<1)$|^0(==|!=|<)[A-Za-z_][\w.]*\.len\(\)$'
+message = "use is_empty instead of comparing the length with zero"
+'''
+
+[[rules]]
+id = "ward:rust/manual-range-contains"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^([A-Za-z_][\w.]*)>=\w+&&\1<=?\w+$|^([A-Za-z_][\w.]*)<\w+\|\|\2>=?\w+$'
+message = "use the contains method of a range"
+'''
+
+[[rules]]
+id = "ward:rust/map-clone"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.map\((Clone::clone|ToOwned::to_owned|\|(\w+)\|\*\2|\|(\w+)\|\3\.clone\(\))\)$'
+message = "use cloned or copied instead of mapping with a clone"
+'''
+
+[[rules]]
+id = "ward:rust/map-flatten"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "complexity"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.map\((?:[^()]++|\((?:[^()]++|\([^()]*+\))*+\))*+\)\.flatten\(\)$'
+message = "use flat_map instead of map followed by flatten"
+'''
+
+[[rules]]
+id = "ward:rust/mem-replace-option-with-none"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(std::)?mem::replace\((&mut)?[A-Za-z_][\w.]*,None\)$'
+message = "use Option::take instead of replacing with None"
+'''
+
+[[rules]]
+id = "ward:rust/mem-replace-with-default"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(std::)?mem::replace\((&mut)?[A-Za-z_][\w.]*,(Default::default\(\)|(Vec|String|HashMap|HashSet|BTreeMap|BTreeSet|VecDeque)::new\(\)|vec!\[\])\)$'
+message = "use mem::take instead of replacing with a default value"
+'''
+
+[[rules]]
+id = "ward:rust/mixed-case-hex-literals"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["INTEGER_LITERAL"]
+text = '^0x(?=[0-9a-fA-F_]*[a-f])(?=[0-9a-fA-F_]*[A-F])'
+message = "the hexadecimal digits mix lower and upper case"
+'''
+
+[[rules]]
+id = "ward:rust/modulo-one"
+language = "rust"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[A-Za-z_][\w.]*%1$'
+message = "a remainder by one is always zero"
+'''
+
+[[rules]]
+id = "ward:rust/needless-bool"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "complexity"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["ifExpression"]
+text = '^if[^{}]*\{(true\}else\{false|false\}else\{true)\}$'
+message = "the condition can be returned instead of the two literals"
+'''
+
+[[rules]]
+id = "ward:rust/needless-else"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["ifExpression"]
+text = '\}else\{\}$'
+message = "the else branch is empty; remove it"
+'''
+
+[[rules]]
+id = "ward:rust/needless-if"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "complexity"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["ifExpression"]
+text = '^if[^{}]*\{\}$'
+message = "the if has an empty body; remove it"
+'''
+
+[[rules]]
+id = "ward:rust/needless-pub-self"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["visibility"]
+text = '^pub\(self\)$'
+message = "pub(self) is the default visibility; remove it"
+'''
+
+[[rules]]
+id = "ward:rust/needless-return"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^return'
+parent-path = "expressionStatement>statement>statements>blockExpression>function_"
+message = "the return is the last thing the function does; the value alone is enough"
+'''
+
+[[rules]]
+id = "ward:rust/neg-multiply"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^([A-Za-z_][\w.]*\*-1|-1\*[A-Za-z_][\w.]*)$'
+message = "multiplying by minus one; negate the value"
+'''
+
+[[rules]]
+id = "ward:rust/ok-expect"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.ok\(\)\.expect\((?:[^()]++|\((?:[^()]++|\([^()]*+\))*+\))*+\)$'
+message = "call expect on the result itself instead of converting it with ok"
+'''
+
+[[rules]]
+id = "ward:rust/option-map-or-none"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.map_or\(None,(?:[^()]++|\((?:[^()]++|\([^()]*+\))*+\))*+\)$'
+message = "use and_then instead of map_or with None"
+'''
+
+[[rules]]
+id = "ward:rust/partialeq-to-none"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^([A-Za-z_][\w.]*(==|!=)None|None(==|!=)[A-Za-z_][\w.]*)$'
+message = "compare with is_none or is_some instead of None"
+'''
+
+[[rules]]
+id = "ward:rust/print-literal"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["macroInvocation", "macroInvocationSemi"]
+text = '^(print|println|eprint|eprintln)!\(\"(?:[^\"\\{]++|\\.|\{\{)*+\{\}(?:[^\"\\]++|\\.)*+\",\"(?:[^\"\\]++|\\.)*+\"\);?$'
+message = "the literal argument can be written in the format string"
+'''
+
+[[rules]]
+id = "ward:rust/print-with-newline"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["macroInvocation", "macroInvocationSemi"]
+text = '^print!\(\"(?:[^\"\\]++|\\[^n\"])*+\\n\"(?:,.*)?\);?$'
+message = "use println instead of print with a trailing newline"
+'''
+
+[[rules]]
+id = "ward:rust/println-empty-string"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["macroInvocation", "macroInvocationSemi"]
+text = '^println!\(\"\"\);?$'
+message = "println with an empty string; call println without arguments"
+'''
+
+[[rules]]
+id = "ward:rust/redundant-closure"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["closureExpression"]
+text = '^\|(\w+)\|(?!\1\b)[A-Za-z_][\w:]*\(\1\)$'
+message = "the closure only calls a function with its argument; pass the function itself"
+'''
+
+[[rules]]
+id = "ward:rust/redundant-field-names"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["structExprField"]
+text = '^(\w+):\1$'
+message = "the field name is repeated; use the shorthand"
+'''
+
+[[rules]]
+id = "ward:rust/redundant-pattern-matching"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["ifExpression", "predicateLoopExpression"]
+text = '^(if|while)let(Some\(_\)|Ok\(_\)|Err\(_\)|None)='
+message = "use is_some, is_ok, is_err or is_none instead of matching a pattern that binds nothing"
+'''
+
+[[rules]]
+id = "ward:rust/redundant-static-lifetimes"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["constantItem", "staticItem"]
+text = '^(const|static)[^=]*:&\x27static'
+message = "constants and statics are already 'static; drop the lifetime"
+'''
+
+[[rules]]
+id = "ward:rust/search-is-some"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "complexity"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.(find|position|rposition)\((?:[^()]++|\((?:[^()]++|\([^()]*+\))*+\))*+\)\.(is_some|is_none)\(\)$'
+message = "use any or all instead of searching and testing the result"
+'''
+
+[[rules]]
+id = "ward:rust/self-assignment"
+language = "rust"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^([A-Za-z_][\w.]*)=\1$'
+message = "a variable is assigned to itself"
+'''
+
+[[rules]]
+id = "ward:rust/single-char-add-str"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.push_str\(\"(\\.|[^\"\\])\"\)$'
+message = "push a character instead of a one-character string"
+'''
+
+[[rules]]
+id = "ward:rust/single-component-path-imports"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["useDeclaration"]
+text = '^use\w+;$'
+message = "a single-component import is redundant since the 2018 edition"
+'''
+
+[[rules]]
+id = "ward:rust/too-many-arguments"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "complexity"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
+body = '''
+check = "count"
+kinds = ["function_"]
+counted = ["functionParam"]
+max = 7
+message = "the function has {value} parameters; at most {max} are allowed"
+'''
+
+[[rules]]
+id = "ward:rust/unused-unit"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["functionReturnType"]
+text = '^->\(\)$'
+message = "the unit return type is the default; remove it"
+'''
+
+[[rules]]
+id = "ward:rust/unwrap-or-default"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.unwrap_or_else\((Default::default|(Vec|String|HashMap|HashSet|BTreeMap|BTreeSet|VecDeque)::new)\)$'
+message = "use unwrap_or_default instead of building the default by hand"
+'''
+
+[[rules]]
+id = "ward:rust/useless-format"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "complexity"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["macroInvocation", "macroInvocationSemi"]
+text = '^format!\(\"(?:[^\"{}\\]++|\\.)*+\"\);?$'
+message = "formatting a literal without arguments; use to_string or to_owned"
+'''
+
+[[rules]]
+id = "ward:rust/write-with-newline"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["macroInvocation", "macroInvocationSemi"]
+text = '^write!\([A-Za-z_][\w.]*,\"(?:[^\"\\]++|\\[^n\"])*+\\n\"(?:,.*)?\);?$'
+message = "use writeln instead of write with a trailing newline"
+'''
+
+[[rules]]
+id = "ward:rust/writeln-empty-string"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["macroInvocation", "macroInvocationSemi"]
+text = '^writeln!\([A-Za-z_][\w.]*,\"\"\);?$'
+message = "writeln with an empty string; call writeln with the writer alone"
+'''
+
+[[rules]]
+id = "ward:rust/zero-prefixed-literal"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "complexity"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["INTEGER_LITERAL"]
+text = '^0[0-9][0-9_]*'
+message = "a leading zero looks like an octal literal; remove it"
+'''
+
+[[rules]]
+id = "ward:rust/zero-ptr"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^0as\*(const|mut)'
+message = "use a null pointer function instead of casting zero"
+'''

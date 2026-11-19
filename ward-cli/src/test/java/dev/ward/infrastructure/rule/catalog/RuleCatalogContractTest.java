@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.EnumSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
@@ -20,14 +19,6 @@ import org.junit.jupiter.api.Test;
  * roadmaps.
  */
 class RuleCatalogContractTest {
-  /**
-   * Rust is read by the analysis engine since story R2 of epic #642; its rules arrive in the stories
-   * after it, and this test then covers it too.
-   */
-  private static final EnumSet<AnalysisLanguage> WITHOUT_RULES_YET = EnumSet.of(
-      AnalysisLanguage.RUST
-  );
-
   private static final int FIRST_STYLE_ISSUE = 283;
   private static final int LAST_STYLE_ISSUE = 301;
   private static final int FIRST_TOOL_ISSUE = 308;
@@ -38,8 +29,10 @@ class RuleCatalogContractTest {
   private static final int LAST_SPLIT_ISSUE = 453;
   // Issues split out of roadmaps #455 (TypeScript and JavaScript engine and grammar) and #457
   // (Swift module-aware dead code), and the OpenAPI lint rules of roadmap #515 (#522) and the
-  // OpenAPI breaking-change rules (#523).
-  private static final Set<Integer> ENGINE_ISSUES = Set.of(462, 466, 522, 523, 538);
+  // OpenAPI breaking-change rules (#523), and the Rust Clippy and rustc rules that story R4 left
+  // planned (#681 types, #682 syntax, #683 Cargo.toml).
+  private static final Set<Integer> ENGINE_ISSUES =
+      Set.of(462, 466, 522, 523, 538, 681, 682, 683);
 
   private final RuleCatalog catalog = new RuleCatalogReader().load();
   private final List<RuleDefinition> definitions = CatalogRuleDefinitions.all();
@@ -158,7 +151,7 @@ class RuleCatalogContractTest {
 
   @Test
   void theCatalogCoversEveryEngineLanguageSomewhere() {
-    for (final AnalysisLanguage language : EnumSet.complementOf(WITHOUT_RULES_YET)) {
+    for (final AnalysisLanguage language : AnalysisLanguage.values()) {
       final boolean covered =
           catalog.rows().stream()
               .anyMatch(
