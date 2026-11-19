@@ -40,6 +40,15 @@ class OpenjdkAnnotationLocationCheckTest {
     assertThat(run(group("modifier", tok(ANNOTATION, "@A", 1, 0), tok("x", "x", 2, 0)))).isEmpty();
   }
 
+  @Test
+  void ignoresChildrenThatAreNotAnnotationsEvenWhenTheirTextStartsWithAt() {
+    final SyntaxNode first =
+        group("formalParameter", tok(ANNOTATION, "@A", 2, 0), tok("name", "a", 2, NUMBER_4));
+    final SyntaxNode second =
+        group("formalParameter", tok(ANNOTATION, "@A", 3, 0), tok("name", "b", 3, NUMBER_4));
+    assertThat(run(group("formalParameters", first, second))).isEmpty();
+  }
+
   private static List<RuleMatch> run(final SyntaxNode decl) {
     return unitMatches(new OpenjdkAnnotationLocationCheck(MESSAGE), decl);
   }

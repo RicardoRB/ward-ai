@@ -8,6 +8,10 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Fixed
+
+- `ward:java/openjdk-annotation-location` no longer reports a parameter list whose parameters start with annotations and sit on separate lines (#684). The rule now counts only annotation and modifier nodes, so the layout `ward format` writes passes.
+
 ## [0.11.1] - 2026-11-19
 
 ### Fixed
