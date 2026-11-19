@@ -27,7 +27,12 @@ class RustGatesTest {
     assertThat(gates.presetGates(QualityPreset.STRICT)).contains("cargo-mutants");
     assertThat(option(strict, "coverage").command())
         .containsExactly(
-            "cargo", "llvm-cov", "--workspace", "--all-features", "--lcov", "--output-path",
+            "cargo",
+            "llvm-cov",
+            "--workspace",
+            "--all-features",
+            "--lcov",
+            "--output-path",
             ".ward/reports/coverage.lcov"
         );
     assertThat(option(strict, "coverage").settings()).containsEntry("minimum", "85");

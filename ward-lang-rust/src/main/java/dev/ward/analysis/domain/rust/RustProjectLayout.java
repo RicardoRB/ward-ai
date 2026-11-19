@@ -40,12 +40,16 @@ public record RustProjectLayout(List<RustCrate> crates) {
     if (!relative.endsWith(SUFFIX)) {
       return Optional.empty();
     }
-    final String[] parts = relative.substring(0, relative.length() - SUFFIX.length()).split(SEPARATOR);
+    final String[] parts = relative.substring(0, relative.length() - SUFFIX.length()).split(
+        SEPARATOR
+    );
     if (BIN.equals(parts[0]) && parts.length > 1) {
       return Optional.empty();
     }
     final String last = parts[parts.length - 1];
-    final int keep = isRootFile(parts) || MODULE_FILE.equals(last) ? parts.length - 1 : parts.length;
+    final int keep = isRootFile(parts) || MODULE_FILE.equals(
+        last
+    ) ? parts.length - 1 : parts.length;
     return Optional.of(new RustModule(crate.name(), List.of(parts).subList(0, keep)));
   }
 

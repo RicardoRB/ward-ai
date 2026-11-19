@@ -42,12 +42,7 @@ record RustTools(
 
   /** Returns the test run under cargo-llvm-cov, which writes the lcov report Ward checks. */
   List<String> coverageCommand() {
-    return withFeatures(
-        List.of("cargo", "llvm-cov", WORKSPACE),
-        "--lcov",
-        "--output-path",
-        REPORT
-    );
+    return withFeatures(List.of("cargo", "llvm-cov", WORKSPACE), "--lcov", "--output-path", REPORT);
   }
 
   /** Returns cargo-mutants over every member; it writes its results under {@code mutants.out}. */

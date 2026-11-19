@@ -38,12 +38,7 @@ public final class QualityGateDefinitions {
           new Definition("django-check", "Django system checks", Phase.LOCAL, false),
           new Definition("cargo-clippy", "Clippy", Phase.LOCAL, false),
           new Definition("cargo-test", "Cargo tests", Phase.LOCAL, false),
-          new Definition(
-              SupportedQualityGates.CARGO_MUTANTS,
-              "cargo-mutants",
-              Phase.CI,
-              false
-          ),
+          new Definition(SupportedQualityGates.CARGO_MUTANTS, "cargo-mutants", Phase.CI, false),
           new Definition("swift-build", "Swift build", Phase.LOCAL, false),
           new Definition("swift-test", "Swift tests", Phase.LOCAL, false),
           new Definition(SupportedQualityGates.XCODEBUILD_TEST, "Xcode tests", Phase.LOCAL, false),

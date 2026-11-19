@@ -65,6 +65,8 @@ public final class CargoMutantsReport implements MutationReport {
     if (!Files.isRegularFile(file)) {
       return List.of();
     }
-    return Files.readAllLines(file).stream().map(String::strip).filter(line -> !line.isEmpty()).toList();
+    return Files.readAllLines(file).stream().map(String::strip).filter(
+        line -> !line.isEmpty()
+    ).toList();
   }
 }

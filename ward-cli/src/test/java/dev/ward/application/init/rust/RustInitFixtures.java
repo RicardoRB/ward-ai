@@ -25,12 +25,17 @@ public final class RustInitFixtures {
   public static WardConfiguration initialize(final Path root, final QualityPreset preset)
       throws java.io.IOException {
     Files.createDirectories(root.resolve("src"));
-    Files.writeString(root.resolve("Cargo.toml"), "[package]\nname = \"app\"\nversion = \"0.1.0\"\n");
+    Files.writeString(
+        root.resolve("Cargo.toml"),
+        "[package]\nname = \"app\"\nversion = \"0.1.0\"\n"
+    );
     Files.writeString(root.resolve("src/lib.rs"), "pub fn one() -> u8 { 1 }\n");
     new InitService(
         new ProjectDetector(new FileSystemProjectInspection()),
         Set.of(),
-        new InitSetupCatalog(new FakeEnvironmentInspection("cargo", "cargo-llvm-cov", "cargo-mutants")),
+        new InitSetupCatalog(
+            new FakeEnvironmentInspection("cargo", "cargo-llvm-cov", "cargo-mutants")
+        ),
         InitFixtures.projectFiles(
             new CargoBuildToolConfigurator(),
             RuleFileTargetsFixtures.writer()

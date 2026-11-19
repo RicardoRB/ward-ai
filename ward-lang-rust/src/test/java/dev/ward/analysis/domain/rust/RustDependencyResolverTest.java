@@ -32,10 +32,14 @@ class RustDependencyResolverTest {
         edges(
             SINGLE,
             Map.of(
-                "src/lib.rs", "mod domain;\nmod infra;\n",
-                "src/domain/mod.rs", "use crate::infra::db::connect;\n",
-                "src/infra/mod.rs", "pub mod db;\n",
-                "src/infra/db.rs", "pub fn connect() {}\n"
+                "src/lib.rs",
+                "mod domain;\nmod infra;\n",
+                "src/domain/mod.rs",
+                "use crate::infra::db::connect;\n",
+                "src/infra/mod.rs",
+                "pub mod db;\n",
+                "src/infra/db.rs",
+                "pub fn connect() {}\n"
             )
         );
 
@@ -55,10 +59,14 @@ class RustDependencyResolverTest {
         edges(
             SINGLE,
             Map.of(
-                "src/lib.rs", "",
-                "src/a.rs", "use super::b::Thing;\nuse self::c::Other;\n",
-                "src/b.rs", "pub struct Thing;\n",
-                "src/a/c.rs", "pub struct Other;\n"
+                "src/lib.rs",
+                "",
+                "src/a.rs",
+                "use super::b::Thing;\nuse self::c::Other;\n",
+                "src/b.rs",
+                "pub struct Thing;\n",
+                "src/a/c.rs",
+                "pub struct Other;\n"
             )
         );
 
@@ -72,8 +80,10 @@ class RustDependencyResolverTest {
         edges(
             SINGLE,
             Map.of(
-                "src/lib.rs", "mod domain;\n",
-                "src/domain.rs", "#[cfg(test)]\nmod tests {\n  use super::*;\n}\n"
+                "src/lib.rs",
+                "mod domain;\n",
+                "src/domain.rs",
+                "#[cfg(test)]\nmod tests {\n  use super::*;\n}\n"
             )
         );
 
@@ -87,9 +97,12 @@ class RustDependencyResolverTest {
         edges(
             WORKSPACE,
             Map.of(
-                "crates/core/src/lib.rs", "pub mod money;\n",
-                "crates/core/src/money.rs", "pub struct Money;\n",
-                "crates/cli/src/main.rs", "use core_lib::money::Money;\nuse serde::Serialize;\n"
+                "crates/core/src/lib.rs",
+                "pub mod money;\n",
+                "crates/core/src/money.rs",
+                "pub struct Money;\n",
+                "crates/cli/src/main.rs",
+                "use core_lib::money::Money;\nuse serde::Serialize;\n"
             )
         );
 
@@ -104,7 +117,12 @@ class RustDependencyResolverTest {
     final Set<String> edges =
         edges(
             SINGLE,
-            Map.of("src/lib.rs", "mod db;\nuse db::connect;\n", "src/db.rs", "pub fn connect() {}\n")
+            Map.of(
+                "src/lib.rs",
+                "mod db;\nuse db::connect;\n",
+                "src/db.rs",
+                "pub fn connect() {}\n"
+            )
         );
 
     assertThat(edges).containsExactly("src/lib.rs->src/db.rs");
@@ -112,7 +130,8 @@ class RustDependencyResolverTest {
 
   private static Set<String> edges(
       final RustProjectLayout layout,
-      final Map<String, String> sources
+      final Map<String,
+      String> sources
   ) {
     final RustFileSummarizer summarizer = new RustFileSummarizer();
     final List<FileSummary> summaries =

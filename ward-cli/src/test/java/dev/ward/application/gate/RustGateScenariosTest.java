@@ -127,7 +127,10 @@ class RustGateScenariosTest {
     // Given a Rust module in the domain layer that uses an infrastructure module
     write("Cargo.toml", "[package]\nname = \"shop\"\nversion = \"0.1.0\"\n");
     write("src/lib.rs", "pub mod domain;\npub mod infrastructure;\n");
-    write("src/domain/mod.rs", "use crate::infrastructure::db::connect;\n\npub fn run() { connect(); }\n");
+    write(
+        "src/domain/mod.rs",
+        "use crate::infrastructure::db::connect;\n\npub fn run() { connect(); }\n"
+    );
     write("src/infrastructure/mod.rs", "pub mod db;\n");
     write("src/infrastructure/db.rs", "pub fn connect() {}\n");
 

@@ -42,7 +42,9 @@ public final class RustDependencyResolver implements DependencyResolver {
     for (final FileSummary summary : summaries) {
       layout
           .moduleOf(summary.path())
-          .ifPresent(module -> files.merge(module.name(), summary.path(), RustDependencyResolver::smaller));
+          .ifPresent(
+              module -> files.merge(module.name(), summary.path(), RustDependencyResolver::smaller)
+          );
     }
     final List<DependencyEdge> edges = new ArrayList<>();
     for (final FileSummary summary : summaries) {
@@ -64,7 +66,8 @@ public final class RustDependencyResolver implements DependencyResolver {
   private Optional<String> target(
       final String specifier,
       final Optional<RustModule> owner,
-      final Map<String, String> files
+      final Map<String,
+      String> files
   ) {
     final List<String> segments = List.of(specifier.split(SEPARATOR));
     final String first = segments.getFirst();
@@ -106,7 +109,8 @@ public final class RustDependencyResolver implements DependencyResolver {
   private static Optional<String> deepest(
       final RustModule start,
       final List<String> rest,
-      final Map<String, String> files
+      final Map<String,
+      String> files
   ) {
     for (int length = rest.size(); length >= 0; length--) {
       final String file = files.get(start.child(rest.subList(0, length)).name());

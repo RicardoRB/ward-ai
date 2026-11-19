@@ -32,9 +32,7 @@ public final class RustLayouts {
   }
 
   private static Optional<RustCrate> crate(final Path root, final Path directory) {
-    return Optional.ofNullable(
-        CargoWorkspaces.manifest(directory).getString("package.name")
-    )
+    return Optional.ofNullable(CargoWorkspaces.manifest(directory).getString("package.name"))
         .filter(name -> !name.isBlank())
         .map(
             name ->
