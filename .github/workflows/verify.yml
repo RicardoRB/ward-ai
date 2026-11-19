@@ -26,8 +26,10 @@ permissions:
   contents: read
 
 env:
-  # Maven 3.9 reads MAVEN_ARGS; -ntp keeps artifact downloads out of the job logs.
-  MAVEN_ARGS: -ntp
+  # Maven 3.9 reads MAVEN_ARGS; -ntp keeps artifact downloads out of the job logs. The resolver
+  # retries a download that Maven Central rejects with 429 or 503; ten attempts instead of three
+  # outlast a short rate limit.
+  MAVEN_ARGS: -ntp -Daether.connector.http.retryHandler.count=10
   GITLEAKS_VERSION: 8.30.1
   # Only the vulnerability-parity job installs Trivy; no gate runs it.
   TRIVY_VERSION: 0.76.0
@@ -60,6 +62,76 @@ jobs:
             fi
           fi
           echo "code=$code" >> "$GITHUB_OUTPUT"
+
+  # Fills the shared Maven repository once per POM change, before the jobs that read it start.
+  # Each of those jobs used to save it when it found no entry, so the first job to finish decided
+  # its content: a job that never packages saved it without the jar plugin, and dozens of matrix
+  # jobs then downloaded the missing plugins at once, which Maven Central limits (429). Failed
+  # downloads leave *.lastUpdated markers that stop Maven from retrying, so they are never saved.
+  maven-cache:
+    name: Maven cache (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-15]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Look up the Maven repository
+        id: lookup
+        uses: actions/cache/restore@v5
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: maven-shared-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          lookup-only: true
+
+      - name: Set up JDK 25
+        if: steps.lookup.outputs.cache-hit != 'true'
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      # The restore key starts from the last repository, so only what the POMs changed is downloaded.
+      - name: Restore the previous Maven repository
+        if: steps.lookup.outputs.cache-hit != 'true'
+        uses: actions/cache/restore@v5
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: maven-shared-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          # The second prefix reads the repository of the jobs that saved it before this one existed.
+          restore-keys: |
+            maven-shared-${{ runner.os }}-
+            maven-${{ runner.os }}-
+
+      # One test runs, so Surefire's JUnit provider and the JaCoCo agent are resolved with the
+      # build plugins that package needs.
+      - name: Resolve the build and test plugins
+        if: steps.lookup.outputs.cache-hit != 'true'
+        run: |
+          set -eu
+          drop_markers() {
+            if [ -d ~/.m2/repository ]; then
+              find ~/.m2/repository -name '*.lastUpdated' -delete
+            fi
+          }
+          drop_markers
+          ./mvnw -B package -Dtest=NativeGcOptionsTest -Dsurefire.failIfNoSpecifiedTests=false
+          drop_markers
+
+      - name: Save the Maven repository
+        if: steps.lookup.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v5
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: maven-shared-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
 
   quality:
     name: Ward ci profile
@@ -240,7 +312,7 @@ jobs:
   # One job per Node version and fixture. Each runs only the rows with that Node value and fixture.
   node-matrix:
     name: Node ${{ matrix.cell.node }} ${{ matrix.cell.fixture }} compatibility matrix
-    needs: node-matrix-versions
+    needs: [node-matrix-versions, maven-cache]
     if: inputs.compatibility-matrices
     runs-on: ubuntu-24.04
     strategy:
@@ -256,17 +328,16 @@ jobs:
           distribution: temurin
           java-version: '25'
 
-      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
-      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
-      # folder holds the Maven distribution, which every job would download too.
-      - name: Cache the Maven repository
-        uses: actions/cache@v5
+      # Filled by the maven-cache job; read only here, so a job that resolves fewer plugins never
+      # saves an incomplete repository under the shared key.
+      - name: Restore the Maven repository
+        uses: actions/cache/restore@v5
         with:
           path: |
             ~/.m2/repository
             ~/.m2/wrapper
-          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
-          restore-keys: maven-${{ runner.os }}-
+          key: maven-shared-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-shared-${{ runner.os }}-
 
       - name: Set up Node.js
         uses: actions/setup-node@v5
@@ -323,7 +394,7 @@ jobs:
   # One job per Python version and fixture. Each runs only the rows with that version and fixture.
   python-matrix:
     name: Python ${{ matrix.cell.python }} ${{ matrix.cell.fixture }} compatibility matrix
-    needs: python-matrix-versions
+    needs: [python-matrix-versions, maven-cache]
     if: inputs.compatibility-matrices
     runs-on: ubuntu-24.04
     strategy:
@@ -339,17 +410,16 @@ jobs:
           distribution: temurin
           java-version: '25'
 
-      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
-      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
-      # folder holds the Maven distribution, which every job would download too.
-      - name: Cache the Maven repository
-        uses: actions/cache@v5
+      # Filled by the maven-cache job; read only here, so a job that resolves fewer plugins never
+      # saves an incomplete repository under the shared key.
+      - name: Restore the Maven repository
+        uses: actions/cache/restore@v5
         with:
           path: |
             ~/.m2/repository
             ~/.m2/wrapper
-          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
-          restore-keys: maven-${{ runner.os }}-
+          key: maven-shared-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-shared-${{ runner.os }}-
 
       # The runner's interpreter is the cell's version, so uv and Poetry pick it up on the PATH.
       - name: Set up Python
@@ -381,6 +451,7 @@ jobs:
   # (ward-cli/src/test/resources/parity/java-report.txt). Versions are pinned in resolve-tools.sh.
   java-parity:
     name: Java parity with the real tools
+    needs: maven-cache
     if: inputs.compatibility-matrices
     runs-on: ubuntu-24.04
     steps:
@@ -392,17 +463,16 @@ jobs:
           distribution: temurin
           java-version: '25'
 
-      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
-      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
-      # folder holds the Maven distribution, which every job would download too.
-      - name: Cache the Maven repository
-        uses: actions/cache@v5
+      # Filled by the maven-cache job; read only here, so a job that resolves fewer plugins never
+      # saves an incomplete repository under the shared key.
+      - name: Restore the Maven repository
+        uses: actions/cache/restore@v5
         with:
           path: |
             ~/.m2/repository
             ~/.m2/wrapper
-          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
-          restore-keys: maven-${{ runner.os }}-
+          key: maven-shared-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-shared-${{ runner.os }}-
 
       - name: Resolve the tools
         run: ward-cli/src/test/resources/parity/resolve-tools.sh "$RUNNER_TEMP/parity-tools"
@@ -433,7 +503,7 @@ jobs:
   corpus:
     name: Corpus smoke tests
     if: inputs.compatibility-matrices && needs.changes.outputs.code == 'true'
-    needs: changes
+    needs: [changes, maven-cache]
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
@@ -444,14 +514,16 @@ jobs:
           distribution: temurin
           java-version: '25'
 
-      - name: Cache the Maven repository
-        uses: actions/cache@v5
+      # Filled by the maven-cache job; read only here, so a job that resolves fewer plugins never
+      # saves an incomplete repository under the shared key.
+      - name: Restore the Maven repository
+        uses: actions/cache/restore@v5
         with:
           path: |
             ~/.m2/repository
             ~/.m2/wrapper
-          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
-          restore-keys: maven-${{ runner.os }}-
+          key: maven-shared-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-shared-${{ runner.os }}-
 
       - name: Restore the corpus archives
         uses: actions/cache@v5
@@ -491,6 +563,7 @@ jobs:
   # ward-cli/src/test/resources/parity/oasdiff-approximations.txt.
   oasdiff-parity:
     name: OpenAPI breaking-change parity with oasdiff
+    needs: maven-cache
     if: inputs.compatibility-matrices
     runs-on: ubuntu-24.04
     steps:
@@ -502,17 +575,16 @@ jobs:
           distribution: temurin
           java-version: '25'
 
-      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
-      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
-      # folder holds the Maven distribution, which every job would download too.
-      - name: Cache the Maven repository
-        uses: actions/cache@v5
+      # Filled by the maven-cache job; read only here, so a job that resolves fewer plugins never
+      # saves an incomplete repository under the shared key.
+      - name: Restore the Maven repository
+        uses: actions/cache/restore@v5
         with:
           path: |
             ~/.m2/repository
             ~/.m2/wrapper
-          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
-          restore-keys: maven-${{ runner.os }}-
+          key: maven-shared-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-shared-${{ runner.os }}-
 
       - name: Install oasdiff
         run: |
@@ -533,6 +605,7 @@ jobs:
   # must be listed in ward-cli/src/test/resources/parity/japicmp-report.txt.
   japicmp-parity:
     name: API compatibility parity with japicmp
+    needs: maven-cache
     if: inputs.compatibility-matrices
     runs-on: ubuntu-24.04
     steps:
@@ -544,17 +617,16 @@ jobs:
           distribution: temurin
           java-version: '25'
 
-      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
-      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
-      # folder holds the Maven distribution, which every job would download too.
-      - name: Cache the Maven repository
-        uses: actions/cache@v5
+      # Filled by the maven-cache job; read only here, so a job that resolves fewer plugins never
+      # saves an incomplete repository under the shared key.
+      - name: Restore the Maven repository
+        uses: actions/cache/restore@v5
         with:
           path: |
             ~/.m2/repository
             ~/.m2/wrapper
-          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
-          restore-keys: maven-${{ runner.os }}-
+          key: maven-shared-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-shared-${{ runner.os }}-
 
       # The jar is checked against the SHA-1 that Maven Central publishes beside it.
       - name: Install japicmp
@@ -595,6 +667,7 @@ jobs:
   # (ward-cli/src/test/resources/parity/vulnerability-report.txt). The test downloads the OSV archives.
   vulnerability-parity:
     name: Vulnerability parity with Trivy and pip-audit
+    needs: maven-cache
     if: inputs.compatibility-matrices
     runs-on: ubuntu-24.04
     steps:
@@ -606,17 +679,16 @@ jobs:
           distribution: temurin
           java-version: '25'
 
-      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
-      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
-      # folder holds the Maven distribution, which every job would download too.
-      - name: Cache the Maven repository
-        uses: actions/cache@v5
+      # Filled by the maven-cache job; read only here, so a job that resolves fewer plugins never
+      # saves an incomplete repository under the shared key.
+      - name: Restore the Maven repository
+        uses: actions/cache/restore@v5
         with:
           path: |
             ~/.m2/repository
             ~/.m2/wrapper
-          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
-          restore-keys: maven-${{ runner.os }}-
+          key: maven-shared-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-shared-${{ runner.os }}-
 
       - name: Install Trivy
         run: |
@@ -650,6 +722,7 @@ jobs:
   # Gradle license report plugin; Gradle first fills its module cache with the POMs.
   license-gradle-parity:
     name: License parity with the Gradle license report plugin
+    needs: maven-cache
     if: inputs.compatibility-matrices
     runs-on: ubuntu-24.04
     steps:
@@ -661,17 +734,16 @@ jobs:
           distribution: temurin
           java-version: '25'
 
-      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
-      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
-      # folder holds the Maven distribution, which every job would download too.
-      - name: Cache the Maven repository
-        uses: actions/cache@v5
+      # Filled by the maven-cache job; read only here, so a job that resolves fewer plugins never
+      # saves an incomplete repository under the shared key.
+      - name: Restore the Maven repository
+        uses: actions/cache/restore@v5
         with:
           path: |
             ~/.m2/repository
             ~/.m2/wrapper
-          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
-          restore-keys: maven-${{ runner.os }}-
+          key: maven-shared-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-shared-${{ runner.os }}-
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v5
@@ -694,6 +766,7 @@ jobs:
   # (the maven-artifact jar of the Maven wrapper), packaging and the npm semver package.
   version-order-parity:
     name: Version order parity with Maven, packaging and semver
+    needs: maven-cache
     if: inputs.compatibility-matrices
     runs-on: ubuntu-24.04
     steps:
@@ -705,17 +778,16 @@ jobs:
           distribution: temurin
           java-version: '25'
 
-      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
-      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
-      # folder holds the Maven distribution, which every job would download too.
-      - name: Cache the Maven repository
-        uses: actions/cache@v5
+      # Filled by the maven-cache job; read only here, so a job that resolves fewer plugins never
+      # saves an incomplete repository under the shared key.
+      - name: Restore the Maven repository
+        uses: actions/cache/restore@v5
         with:
           path: |
             ~/.m2/repository
             ~/.m2/wrapper
-          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
-          restore-keys: maven-${{ runner.os }}-
+          key: maven-shared-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-shared-${{ runner.os }}-
 
       - name: Install the reference implementations
         run: |
@@ -741,6 +813,7 @@ jobs:
   # Validates the generated SBOMs against the CycloneDX 1.6 JSON schema with cyclonedx-core-java.
   sbom-schema:
     name: SBOM schema validation
+    needs: maven-cache
     if: inputs.compatibility-matrices
     runs-on: ubuntu-24.04
     steps:
@@ -752,17 +825,16 @@ jobs:
           distribution: temurin
           java-version: '25'
 
-      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
-      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
-      # folder holds the Maven distribution, which every job would download too.
-      - name: Cache the Maven repository
-        uses: actions/cache@v5
+      # Filled by the maven-cache job; read only here, so a job that resolves fewer plugins never
+      # saves an incomplete repository under the shared key.
+      - name: Restore the Maven repository
+        uses: actions/cache/restore@v5
         with:
           path: |
             ~/.m2/repository
             ~/.m2/wrapper
-          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
-          restore-keys: maven-${{ runner.os }}-
+          key: maven-shared-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-shared-${{ runner.os }}-
 
       - name: Resolve cyclonedx-core-java
         run: |
@@ -790,6 +862,7 @@ jobs:
   # (ward-cli/src/test/resources/parity/spectral-report.txt).
   spectral-parity:
     name: OpenAPI lint parity with Spectral
+    needs: maven-cache
     if: inputs.compatibility-matrices
     runs-on: ubuntu-24.04
     steps:
@@ -801,17 +874,16 @@ jobs:
           distribution: temurin
           java-version: '25'
 
-      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
-      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
-      # folder holds the Maven distribution, which every job would download too.
-      - name: Cache the Maven repository
-        uses: actions/cache@v5
+      # Filled by the maven-cache job; read only here, so a job that resolves fewer plugins never
+      # saves an incomplete repository under the shared key.
+      - name: Restore the Maven repository
+        uses: actions/cache/restore@v5
         with:
           path: |
             ~/.m2/repository
             ~/.m2/wrapper
-          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
-          restore-keys: maven-${{ runner.os }}-
+          key: maven-shared-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-shared-${{ runner.os }}-
 
       - name: Set up Node
         uses: actions/setup-node@v5
@@ -837,6 +909,7 @@ jobs:
   # committed report (ward-cli/src/test/resources/parity/gitleaks-report.txt).
   gitleaks-parity:
     name: Secret rule parity with Gitleaks
+    needs: maven-cache
     if: inputs.compatibility-matrices
     runs-on: ubuntu-24.04
     steps:
@@ -848,17 +921,16 @@ jobs:
           distribution: temurin
           java-version: '25'
 
-      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
-      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
-      # folder holds the Maven distribution, which every job would download too.
-      - name: Cache the Maven repository
-        uses: actions/cache@v5
+      # Filled by the maven-cache job; read only here, so a job that resolves fewer plugins never
+      # saves an incomplete repository under the shared key.
+      - name: Restore the Maven repository
+        uses: actions/cache/restore@v5
         with:
           path: |
             ~/.m2/repository
             ~/.m2/wrapper
-          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
-          restore-keys: maven-${{ runner.os }}-
+          key: maven-shared-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-shared-${{ runner.os }}-
 
       - name: Install Gitleaks
         run: |
@@ -901,7 +973,7 @@ jobs:
   # One job per Xcode and fixture, on the macOS runner that xcodes.csv names for that Xcode.
   swift-matrix:
     name: Xcode ${{ matrix.cell.xcode }} ${{ matrix.cell.fixture }} compatibility matrix
-    needs: swift-matrix-versions
+    needs: [swift-matrix-versions, maven-cache]
     if: inputs.compatibility-matrices
     runs-on: ${{ matrix.cell.runner }}
     strategy:
@@ -917,17 +989,16 @@ jobs:
           distribution: temurin
           java-version: '25'
 
-      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
-      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
-      # folder holds the Maven distribution, which every job would download too.
-      - name: Cache the Maven repository
-        uses: actions/cache@v5
+      # Filled by the maven-cache job; read only here, so a job that resolves fewer plugins never
+      # saves an incomplete repository under the shared key.
+      - name: Restore the Maven repository
+        uses: actions/cache/restore@v5
         with:
           path: |
             ~/.m2/repository
             ~/.m2/wrapper
-          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
-          restore-keys: maven-${{ runner.os }}-
+          key: maven-shared-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-shared-${{ runner.os }}-
 
       # Keyed on the tool catalog so a pinned version change refetches the packages.
       - name: Restore SwiftPM cache
@@ -973,7 +1044,7 @@ jobs:
   # One job per JDK. Ward runs on JDK 25; Maven, Gradle and every gate run on the cell's JDK.
   java-matrix:
     name: JDK ${{ matrix.cell.jdk }} compatibility matrix
-    needs: java-matrix-versions
+    needs: [java-matrix-versions, maven-cache]
     if: inputs.compatibility-matrices
     runs-on: ubuntu-24.04
     strategy:
@@ -997,17 +1068,16 @@ jobs:
           distribution: temurin
           java-version: '25'
 
-      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
-      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
-      # folder holds the Maven distribution, which every job would download too.
-      - name: Cache the Maven repository
-        uses: actions/cache@v5
+      # Filled by the maven-cache job; read only here, so a job that resolves fewer plugins never
+      # saves an incomplete repository under the shared key.
+      - name: Restore the Maven repository
+        uses: actions/cache/restore@v5
         with:
           path: |
             ~/.m2/repository
             ~/.m2/wrapper
-          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
-          restore-keys: maven-${{ runner.os }}-
+          key: maven-shared-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-shared-${{ runner.os }}-
 
       - name: Set up Gradle ${{ matrix.cell.gradle }}
         uses: gradle/actions/setup-gradle@v5
@@ -1058,7 +1128,8 @@ jobs:
           distribution: graalvm-community
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
+      # Its own key: only these jobs resolve the native profile's plugins, and they run on Windows,
+      # which the maven-cache job does not fill. The key changes with the POMs. The restore key lets a run with new POMs start from the last
       # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
       # folder holds the Maven distribution, which every job would download too.
       - name: Cache the Maven repository
@@ -1067,8 +1138,10 @@ jobs:
           path: |
             ~/.m2/repository
             ~/.m2/wrapper
-          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
-          restore-keys: maven-${{ runner.os }}-
+          key: maven-native-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: |
+            maven-native-${{ runner.os }}-
+            maven-shared-${{ runner.os }}-
 
       # native:test resolves its prefix per module, so ward-cli takes the analysis modules from the
       # local repository instead of the reactor. ward-cli depends on the ANTLR frontend and the Java,
