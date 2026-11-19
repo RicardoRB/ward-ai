@@ -1,0 +1,3 @@
+A.cs:3:3 api-compat:member-removed P.A.Inner#F: public final void F() -> removed
+A.cs:4:3 api-compat:member-removed P.A.Color#Green: public static final Color Green -> removed
+A.cs:6:1 api-compat:return-type-changed P.Handler#Invoke: public final int Invoke(string) -> public final long Invoke(string)

@@ -1,0 +1,2 @@
+A.cs:3:3 api-compat:method-now-final P.A#F: public void F() -> public final void F()
+A.cs:4:3 api-compat:method-now-final P.A#get_V: public int get_V() -> public final int get_V()

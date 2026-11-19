@@ -1,0 +1,1 @@
+A.cs:4:3 api-compat:abstract-method-added P.I#B: none -> public abstract void B()

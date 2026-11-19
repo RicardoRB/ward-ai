@@ -1,0 +1,2 @@
+A.cs:2:1 api-compat:type-kind-changed P.A: public class P.A -> public interface P.A
+A.cs:3:1 api-compat:type-now-final P.B: public class P.B -> public final class P.B

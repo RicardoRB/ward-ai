@@ -1,0 +1,2 @@
+A.cs:2:1 api-compat:member-removed P.A#Gone: public final void Gone() -> removed
+A.cs:2:1 api-compat:member-removed P.A#Kept: public final int Kept(int) -> removed

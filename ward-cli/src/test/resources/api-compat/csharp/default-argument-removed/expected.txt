@@ -1,0 +1,2 @@
+A.cs:3:3 api-compat:default-argument-removed P.A#F: public final void F(int = ...) -> public final void F(int)
+A.cs:4:3 api-compat:default-argument-removed P.A#<init>: public <init>(int = ...) -> public <init>(int)

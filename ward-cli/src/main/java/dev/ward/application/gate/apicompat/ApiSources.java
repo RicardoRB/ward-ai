@@ -22,14 +22,18 @@ final class ApiSources {
   private static final String JAVA = ".java";
   private static final String KOTLIN = ".kt";
   private static final String RUST = ".rs";
+  private static final String CSHARP = ".cs";
   private static final String CARGO_SOURCES = "src";
 
   private final ApiCompatPorts ports;
   private final Path root;
 
-  ApiSources(final ApiCompatPorts ports, final Path root) {
+  private final boolean csharp;
+
+  ApiSources(final ApiCompatPorts ports, final Path root, final boolean csharp) {
     this.ports = ports;
     this.root = root;
+    this.csharp = csharp;
   }
 
   /** The source files of a revision and the module directories they belong to. */
@@ -62,10 +66,16 @@ final class ApiSources {
   }
 
   private Sources read(final Tree tree) {
-    final List<String> modules = modules(tree);
+    final List<String> modules = new ArrayList<>(modules(tree));
+    final List<String> files = new ArrayList<>();
+    modules.forEach(module -> files.addAll(sourceFiles(tree, module)));
+    if (csharp) {
+      final CSharpSources.Found found = CSharpSources.find(tree.files());
+      found.modules().stream().filter(module -> !modules.contains(module)).forEach(modules::add);
+      files.addAll(found.files());
+    }
     final List<SourceUnit> units =
-        modules.stream()
-            .flatMap(module -> sourceFiles(tree, module).stream())
+        files.stream()
             .distinct()
             .sorted()
             .map(path -> unit(path, tree.read().apply(path), "Cannot read " + path + tree.where()))
@@ -160,7 +170,10 @@ final class ApiSources {
     if (path.endsWith(KOTLIN)) {
       return AnalysisLanguage.KOTLIN;
     }
-    return path.endsWith(RUST) ? AnalysisLanguage.RUST : AnalysisLanguage.JAVA;
+    if (path.endsWith(RUST)) {
+      return AnalysisLanguage.RUST;
+    }
+    return path.endsWith(CSHARP) ? AnalysisLanguage.CSHARP : AnalysisLanguage.JAVA;
   }
 
   /** A file tree at one revision: a reader, a lister and how to name the revision. */

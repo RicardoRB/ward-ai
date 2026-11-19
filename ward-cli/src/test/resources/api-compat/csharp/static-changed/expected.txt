@@ -1,0 +1,2 @@
+A.cs:3:3 api-compat:static-changed P.A#F: public static void F() -> public final void F()
+A.cs:4:3 api-compat:static-changed P.A#G: public final void G() -> public static void G()

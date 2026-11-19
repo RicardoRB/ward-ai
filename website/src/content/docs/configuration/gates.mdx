@@ -1098,7 +1098,7 @@ BSD-2-Clause, BSD-3-Clause, ISC, EPL-1.0, EPL-2.0 and CC0-1.0. See also
 
 `api-compat` compares the public API of the project's main sources in the working tree with the
 public API of the same sources at an earlier Git revision, and reports each incompatible change.
-For Java it is a Ward check: it runs no build, no external tool and no network access, reads the
+For Java, Kotlin and C# it is a Ward check: it runs no build, no external tool and no network access, reads the
 baseline from Git objects (nothing is checked out), and works the same for Maven and Gradle.
 
 ```toml
@@ -1159,6 +1159,23 @@ modules = ["core", "api"]   # optional: module directories to compare; default e
   use` of an item of the crate adds it under the imported name. Glob re-exports, `#[path]`
   modules, macro-generated items, `cfg`, `where` clauses, lifetimes, receiver mutability and added
   enum variants are not read. cargo-semver-checks is the reference tool.
+- **C# API.** In a C# project, the modules are the directories that hold a `.csproj`, and the sources
+  are the `.cs` files below them, except `bin` and `obj`. Enable the gate in `ward.toml` with
+  `uses = "api-compat"`; init does not offer it for C# yet. C# accessibility applies: a `public`
+  type or member is API, a `protected` or `protected internal` member of a class that can be
+  extended is API, and `internal`, `private protected` and `private` are not. A top-level type with
+  no modifier is `internal`. A struct, an enum, a delegate, a `sealed` class and a `static` class
+  are closed, and a method is closed unless it is `virtual`, `abstract` or `override`. A property
+  is its accessors `get_X` and `set_X` (`init` is `set_X`), an indexer is `get_Item` and `set_Item`,
+  an event is `add_X` and `remove_X`, and a delegate has an `Invoke` method. A class with no
+  constructor has the default one. A generic type is named like its metadata, `Name`1`.
+- **C# limits.** There is no semantic model: a type is compared by its written name, with the
+  keyword aliases such as `int` read as `System.Int32`, so a name written in full in one revision and
+  with a `using` in the other is reported as changed. Not read: nullable reference annotations, a
+  class that becomes a struct (reported as `type-now-final`), attributes, `partial` members across
+  files, extension blocks, `fixed` buffers, finalizers, explicit interface implementations and
+  `const` values. The differences from Microsoft.DotNet.ApiCompat are listed with their reasons in
+  `ward-cli/src/test/resources/parity/dotnet-apicompat-report.txt`.
 - **Execution errors, never a pass.** Not a Git repository, an unknown `base`, no release tag, a
   baseline that has no sources for the project, a syntax error in a source file at either revision
   (the message names the file and the revision), and an `include` prefix that matches no type at

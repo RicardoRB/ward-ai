@@ -1,0 +1,1 @@
+A.cs:2:1 api-compat:type-now-final P.A: public class P.A -> public final class P.A

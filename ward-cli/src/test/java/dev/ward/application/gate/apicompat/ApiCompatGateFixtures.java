@@ -2,6 +2,7 @@ package dev.ward.application.gate.apicompat;
 
 import dev.ward.analysis.domain.api.ApiSurfaceReader;
 import dev.ward.analysis.domain.api.ApiType;
+import dev.ward.analysis.domain.csharp.CSharpApiSurfaceReader;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.jvm.types.JavaApiSurfaceReader;
 import dev.ward.analysis.domain.jvm.types.KotlinApiSurfaceReader;
@@ -28,6 +29,8 @@ final class ApiCompatGateFixtures {
   static final Path ROOT = Path.of("/project");
   static final Project PROJECT =
       new Project(ROOT, Language.JAVA, BuildTool.MAVEN, Framework.SPRING_BOOT);
+  static final Project CSHARP_PROJECT =
+      new Project(ROOT, Language.CSHARP, BuildTool.DOTNET, Framework.NONE);
   static final String CLIENT_PATH = "src/main/java/p/Client.java";
   static final String BASE_COMMIT = "commit-v1.0.0";
   static final String CLIENT =
@@ -45,6 +48,10 @@ final class ApiCompatGateFixtures {
 
   GateResult run(final ApiCompatOptions options) {
     return new ApiCompatGate("api-compat", options, ports(git)).execute(PROJECT);
+  }
+
+  GateResult run(final Project project) {
+    return new ApiCompatGate("api-compat", ApiCompatOptions.DEFAULTS, ports(git)).execute(project);
   }
 
   GateResult run() {
@@ -80,7 +87,8 @@ final class ApiCompatGateFixtures {
               List.of(
                   new JavaApiSurfaceReader(),
                   new KotlinApiSurfaceReader(),
-                  new RustApiSurfaceReader()
+                  new RustApiSurfaceReader(),
+                  new CSharpApiSurfaceReader()
               )) {
             final List<SourceUnit> own =
                 units.stream().filter(unit -> unit.language() == reader.language()).toList();

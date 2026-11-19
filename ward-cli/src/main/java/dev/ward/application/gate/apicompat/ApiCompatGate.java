@@ -14,6 +14,7 @@ import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.GateStatus;
 import dev.ward.domain.gate.QualityGate;
 import dev.ward.domain.gate.RevisionReadException;
+import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ final class ApiCompatGate implements QualityGate {
   @Override
   public GateResult execute(final Project project) {
     try {
-      return compare(project.root());
+      return compare(project);
     } catch (ApiCompatException | RevisionReadException unusable) {
       if (LOGGER.isLoggable(Level.INFO)) {
         LOGGER.info("event=api-compat-unusable gate=" + name);
@@ -63,9 +64,10 @@ final class ApiCompatGate implements QualityGate {
     }
   }
 
-  private GateResult compare(final Path root) {
+  private GateResult compare(final Project project) {
+    final Path root = project.root();
     final Baseline baseline = new BaselineResolver(ports.revisions()).resolve(root, options.base());
-    final ApiSources sources = new ApiSources(ports, root);
+    final ApiSources sources = new ApiSources(ports, root, usesCSharp(project));
     final ApiSources.Sources before = sources.atBaseline(baseline);
     if (before.units().isEmpty()) {
       throw new ApiCompatException(
@@ -97,6 +99,10 @@ final class ApiCompatGate implements QualityGate {
     modules.addAll(now.modules());
     logCounts(changes);
     return result(baseline, baselineApi, scope, modules, changes);
+  }
+
+  private static boolean usesCSharp(final Project project) {
+    return project.language() == Language.CSHARP || project.languages().contains(Language.CSHARP);
   }
 
   private List<ApiType> surface(final Path root, final List<SourceUnit> units, final String where) {

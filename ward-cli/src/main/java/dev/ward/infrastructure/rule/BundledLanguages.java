@@ -19,6 +19,7 @@ import dev.ward.analysis.application.swift.SwiftCheckProvider;
 import dev.ward.analysis.application.swift.SwiftLintCheckProvider;
 import dev.ward.analysis.application.swift.SwiftRuleFiles;
 import dev.ward.analysis.domain.api.ApiSurfaceReader;
+import dev.ward.analysis.domain.csharp.CSharpApiSurfaceReader;
 import dev.ward.analysis.domain.jvm.types.JavaApiSurfaceReader;
 import dev.ward.analysis.domain.jvm.types.KotlinApiSurfaceReader;
 import dev.ward.analysis.domain.rust.RustApiSurfaceReader;
@@ -66,7 +67,8 @@ public final class BundledLanguages {
     return List.of(
         new JavaApiSurfaceReader(),
         new KotlinApiSurfaceReader(),
-        new RustApiSurfaceReader()
+        new RustApiSurfaceReader(),
+        new CSharpApiSurfaceReader()
     );
   }
 
