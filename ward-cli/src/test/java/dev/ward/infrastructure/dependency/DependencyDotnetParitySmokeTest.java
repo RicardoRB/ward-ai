@@ -34,7 +34,13 @@ class DependencyDotnetParitySmokeTest {
     ParitySupport.run(dir, dotnet, "restore");
     final Set<String> listed = new TreeSet<>();
     for (final String line :
-        ParitySupport.run(dir, dotnet, "list", "package", "--include-transitive").lines().toList()) {
+        ParitySupport.run(
+            dir,
+            dotnet,
+            "list",
+            "package",
+            "--include-transitive"
+        ).lines().toList()) {
       final Matcher pin = PACKAGE.matcher(line);
       if (pin.find()) {
         listed.add(pin.group(1) + "@" + pin.group(2));

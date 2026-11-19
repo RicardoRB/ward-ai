@@ -148,8 +148,10 @@ final class NugetLockfiles {
   }
 
   private static List<PackageId> required(
-      final Map<?, ?> dependencies,
-      final Map<String, PackageId> byName
+      final Map<?,
+      ?> dependencies,
+      final Map<String,
+      PackageId> byName
   ) {
     return dependencies.keySet().stream()
         .map(name -> byName.get(key(text(name))))

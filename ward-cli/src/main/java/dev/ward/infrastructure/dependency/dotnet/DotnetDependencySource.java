@@ -79,7 +79,9 @@ public final class DotnetDependencySource implements DependencySource {
     final Path lock = directory.resolve(lockName.get());
     final String label = LockFiles.relative(root, lock);
     final boolean assets = lockName.get().equals(ASSETS);
-    final DependencyScope scope = testProject(text) ? DependencyScope.TEST : DependencyScope.RUNTIME;
+    final DependencyScope scope = testProject(
+        text
+    ) ? DependencyScope.TEST : DependencyScope.RUNTIME;
     final ModuleBuilder builder = new ModuleBuilder(label, false);
     entries(project, lock, label, assets)
         .forEach(
