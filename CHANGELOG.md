@@ -8,6 +8,13 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+## [0.11.1] - 2026-11-19
+
+### Fixed
+
+- `ward:java/package-case` no longer reports a lowercase package whose declaration carries an annotation, such as `@NullMarked` or `@Deprecated` in `package-info.java` (#674). The rule now reads only the qualified package name, and reports it at the name instead of at the start of the declaration.
+- `ward:java/package-case` leaves the `standard` and `strict` presets (#674). It now reports the same place as `ward:java/package-name`, which stays and also finds every uppercase package name, so a preset reports an uppercase package once instead of twice (as #599 does for other duplicates). It stays in the catalog and can be selected with `include`.
+
 ## [0.11.0] - 2026-11-18
 
 ### Added
@@ -571,6 +578,7 @@ Initial release, published as `sentinel-ai`.
 - A bounded quality loop and a typed gate registry.
 - Starlight documentation site.
 
+[0.11.1]: https://github.com/RicardoRB/ward-ai/compare/v0.11.0...v0.11.1
 [0.11.0]: https://github.com/RicardoRB/ward-ai/compare/v0.10.0...v0.11.0
 [0.10.0]: https://github.com/RicardoRB/ward-ai/compare/v0.9.1...v0.10.0
 [0.9.1]: https://github.com/RicardoRB/ward-ai/compare/v0.9.0...v0.9.1
