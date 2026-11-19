@@ -81,7 +81,12 @@ final class MutationScoreGate implements QualityGate {
       return with(
           result,
           GateStatus.FAILED,
-          "Mutation score " + counts.score() + "% is below the minimum of " + minimum + "%."
+          "Mutation score "
+              + counts.score()
+              + "% is below the minimum of "
+              + minimum
+              + "%."
+              + survivors(counts)
       );
     }
     return with(
@@ -89,6 +94,13 @@ final class MutationScoreGate implements QualityGate {
         GateStatus.PASSED,
         "Mutation score " + counts.score() + "% meets the minimum of " + minimum + "%."
     );
+  }
+
+  /** The surviving mutants the report names, one per line, or nothing when it names none. */
+  private static String survivors(final MutationCounts counts) {
+    return counts.survivors().isEmpty()
+        ? ""
+        : " Surviving mutants:\n" + String.join("\n", counts.survivors());
   }
 
   private static GateResult with(

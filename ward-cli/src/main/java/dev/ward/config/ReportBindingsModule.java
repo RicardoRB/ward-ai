@@ -14,6 +14,7 @@ import dev.ward.infrastructure.finding.jvm.JacocoXmlLineCoverage;
 import dev.ward.infrastructure.finding.jvm.PitXmlMutationReport;
 import dev.ward.infrastructure.finding.node.StrykerJsonMutationReport;
 import dev.ward.infrastructure.finding.python.MutmutMetaMutationReport;
+import dev.ward.infrastructure.finding.rust.CargoMutantsReport;
 import dev.ward.infrastructure.finding.swift.LlvmCovCoverageReport;
 import dev.ward.infrastructure.finding.swift.XccovCoverageReport;
 import dev.ward.infrastructure.gate.swift.SimctlSimulators;
@@ -42,9 +43,10 @@ final class ReportBindingsModule {
       final StrykerJsonMutationReport stryker,
       final PitXmlMutationReport pit,
       final MutmutMetaMutationReport mutmut,
-      final PlatformGatePorts swift
+      final PlatformGatePorts swift,
+      final CargoMutantsReport cargoMutants
   ) {
-    return new GateReportPorts(directories, stryker, pit, mutmut, swift);
+    return new GateReportPorts(directories, stryker, pit, mutmut, swift, cargoMutants);
   }
 
   @Provides

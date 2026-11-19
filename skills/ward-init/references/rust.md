@@ -19,4 +19,10 @@ no Cargo file. The gates run the `cargo` that is already installed.
 
 - `cargo-clippy`: `cargo clippy --workspace --all-targets -- -D warnings`.
 - `cargo-test`: `cargo test --workspace`.
-- `strict` adds `--all-features` to both. There is no coverage or mutation gate yet.
+- `coverage`: `cargo llvm-cov --workspace --lcov --output-path .ward/reports/coverage.lcov`, with a
+  `minimum` of 80 (85 in `strict`) that Ward checks against the lcov report. Needs `cargo-llvm-cov`
+  (`cargo install --locked cargo-llvm-cov`) and `rustup component add llvm-tools-preview`.
+- `cargo-mutants` (`strict` only, in `ci`): `cargo mutants --workspace`, `minimum` 60. Needs
+  `cargo-mutants` (`cargo install --locked cargo-mutants`). Ward names every surviving mutant.
+- `strict` adds `--all-features` to the cargo gates. Ward's layer and cycle rules also run on Rust.
+- Unavailable tools are written anyway; tell the user to install them before the gates run.

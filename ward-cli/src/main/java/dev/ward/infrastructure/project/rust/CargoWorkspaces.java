@@ -64,7 +64,7 @@ public final class CargoWorkspaces {
   }
 
   /** Parses the manifest leniently: a missing, unreadable or malformed file is an empty table. */
-  static TomlTable manifest(final Path dir) {
+  public static TomlTable manifest(final Path dir) {
     final Path file = dir.resolve(MANIFEST);
     if (!Files.isRegularFile(file)) {
       return Toml.parse("");

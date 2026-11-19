@@ -19,6 +19,7 @@ import dev.ward.infrastructure.analysis.ProjectDependencyAdapters;
 import dev.ward.infrastructure.analysis.jvm.JdkLocator;
 import dev.ward.infrastructure.analysis.node.NodeDependencyAdapters;
 import dev.ward.infrastructure.analysis.python.PythonDependencyAdapters;
+import dev.ward.infrastructure.analysis.rust.RustDependencyAdapters;
 import dev.ward.infrastructure.analysis.swift.SwiftDependencyAdapters;
 import dev.ward.infrastructure.rule.BundledRuleMatchers;
 import dev.ward.infrastructure.rule.FileAnalysisCache;
@@ -97,6 +98,7 @@ interface GateExtensionBindingsModule {
             List.of(
                 new NodeDependencyAdapters(),
                 new PythonDependencyAdapters(),
+                new RustDependencyAdapters(),
                 new SwiftDependencyAdapters(),
                 new JvmDependencyAdapters()
             )

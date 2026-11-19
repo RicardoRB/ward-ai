@@ -12,7 +12,13 @@ final class RustAgentRules {
           "- Clippy: `{command}` must report no warnings. Fix the code; do not add `#[allow]`"
               + " attributes.",
           RustTools.CARGO_TEST,
-          "- Tests: `{command}`. New code needs tests that assert behavior."
+          "- Tests: `{command}`. New code needs tests that assert behavior.",
+          RustTools.COVERAGE,
+          "- Coverage: `{command}` writes the lcov report that Ward checks against the minimum in"
+              + " `ward.toml`. Add tests for new code; do not lower the minimum.",
+          RustTools.CARGO_MUTANTS,
+          "- Mutation testing: `{command}` must leave no surviving mutants above the allowed share."
+              + " Make the tests assert results, not only run the code."
       );
 
   private RustAgentRules() {}

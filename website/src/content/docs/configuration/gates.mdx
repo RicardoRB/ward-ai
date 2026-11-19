@@ -38,6 +38,8 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `mutmut` | mutmut 3 | Run mutation testing, optionally with a `minimum` score. |
 | Rust | `cargo-clippy` | Clippy | Run `cargo clippy` over the workspace; any warning fails. |
 | | `cargo-test` | Cargo tests | Run `cargo test` over the workspace. |
+| | `coverage` | cargo-llvm-cov | Run the tests under cargo-llvm-cov and check its lcov report against the `minimum`. |
+| | `cargo-mutants` | cargo-mutants | Run mutation testing, optionally with a `minimum` score. |
 | Swift | `swift-build` | Swift build | Compile the SwiftPM package. |
 | | `swift-test` | Swift tests | Run the SwiftPM package's tests. |
 | | `xcodebuild-test` | Xcode tests | Run an Xcode scheme's tests on an iPhone simulator or the Mac. |
@@ -218,6 +220,41 @@ profiles = ["pre-push", "ci"]
 command = ["cargo", "test", "--workspace"]
 profiles = ["pre-push", "ci"]
 ```
+
+`coverage` for Rust runs the tests under [cargo-llvm-cov](https://github.com/taiki-e/cargo-llvm-cov),
+which writes an lcov report that Ward reads like any other `coverage` check. The minimum is in
+`ward.toml`, not in the build files; a source file that no test reaches lowers the line coverage and
+the finding states it. Install the tool with `cargo install --locked cargo-llvm-cov` and the LLVM
+tools with `rustup component add llvm-tools-preview`. cargo-llvm-cov measures lines; it records no
+branches on stable Rust, so `minimum-branches` is not set.
+
+```toml
+[checks.coverage]
+command = ["cargo", "llvm-cov", "--workspace", "--lcov", "--output-path", ".ward/reports/coverage.lcov"]
+minimum = 80
+report = ".ward/reports/coverage.lcov"
+profiles = ["pre-push", "ci"]
+```
+
+`cargo-mutants` runs [cargo-mutants](https://mutants.rs) and accepts the same `minimum` as the other
+mutation gates. `cargo mutants` itself exits with 2 when some mutants survive and 3 when some time
+out; with a `minimum` Ward counts both as a finished run, reads `caught.txt`, `timeout.txt` and
+`missed.txt` under `mutants.out/`, and fails below the minimum with every surviving mutant named as
+`file:line: replace ... with ...`. Mutants that do not compile (`unviable.txt`) are not counted.
+Without a `minimum` the gate passes or fails on the exit code of cargo-mutants alone. Install it with
+`cargo install --locked cargo-mutants`.
+
+```toml
+[checks.cargo-mutants]
+command = ["cargo", "mutants", "--workspace"]
+minimum = 60
+profiles = ["ci"]
+```
+
+The layer and cycle rules of the `ward` check run on Rust: Ward resolves `use` paths and `mod x;`
+declarations to files, with `crate`, `self` and `super` paths, the module a `use` names in the file
+and the workspace crates by name. Not resolved: `#[path]` attributes, `[lib]` and `[[bin]]` path
+overrides, renamed dependencies, and a `crate::a::b()` path written in code without a `use`.
 
 The `ward` gate also runs Ward's own Rust rules, `ward:rust/<name>`. Each one maps to a Clippy lint or a
 rustc lint (the rules reference lists the counterpart of every rule), so a project can keep the

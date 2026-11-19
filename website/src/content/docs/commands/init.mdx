@@ -594,16 +594,23 @@ Init sets up Cargo crates and workspaces with the `standard` or `strict` preset.
 - **Workspaces.** A workspace root is one project; the members listed in `workspace.members` are its
   modules. The gates run with `--workspace`, so every member is checked, and `strict` writes each
   member's `src` directory as a root of `[checks.ward.cycles]`.
-- **Gates.** `ward-format` runs in every profile, then `cargo-clippy` and `cargo-test` in `pre-push`
-  and `ci`.
+- **Gates.** `ward-format` runs in every profile, then `cargo-clippy`, `cargo-test` and `coverage` in
+  `pre-push` and `ci`; `strict` adds `cargo-mutants` in `ci`.
 
   | Gate | `standard` command | `strict` |
   |---|---|---|
   | `cargo-clippy` | `cargo clippy --workspace --all-targets -- -D warnings` | adds `--all-features` |
   | `cargo-test` | `cargo test --workspace` | adds `--all-features` |
+  | `coverage` | `cargo llvm-cov --workspace --lcov --output-path .ward/reports/coverage.lcov`, minimum 80 | adds `--all-features`, minimum 85 |
+  | `cargo-mutants` | `cargo mutants --workspace` | runs, minimum 60 |
 
+- **Architecture.** The layer and cycle rules run on Rust through its `use` and `mod` paths.
 - **Doctor.** `ward doctor` reports a missing `cargo` and points to [rustup](https://rustup.rs).
-- **CI.** The generated workflow runs on `ubuntu-24.04`, which ships Rust, and adds no setup step.
+  `coverage` and `cargo-mutants` show as unavailable until `cargo-llvm-cov` and `cargo-mutants` are
+  on `PATH`; init writes them anyway and names the `cargo install` command.
+- **CI.** The generated workflow runs on `ubuntu-24.04`, which ships Rust, and adds a step that
+  installs the LLVM tools, `cargo-llvm-cov` and `cargo-mutants`. `.gitignore` lists
+  `.ward/reports/`, `mutants.out/` and `mutants.out.old/`.
 
 ## C# projects
 

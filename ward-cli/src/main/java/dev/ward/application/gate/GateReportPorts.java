@@ -11,14 +11,27 @@ import dev.ward.domain.gate.ReportDirectories;
  * @param pit reads PIT's mutation report, or {@code null} when it is unavailable
  * @param mutmut reads mutmut's per-file results, or {@code null} when it is unavailable
  * @param swift the Swift simulator and coverage ports
+ * @param cargoMutants reads cargo-mutants' result files, or {@code null} when it is unavailable
  */
 public record GateReportPorts(
     ReportDirectories directories,
     MutationReport stryker,
     MutationReport pit,
     MutationReport mutmut,
-    PlatformGatePorts swift
+    PlatformGatePorts swift,
+    MutationReport cargoMutants
 ) {
+  /** Creates the ports without cargo-mutants'. */
+  public GateReportPorts(
+      final ReportDirectories directories,
+      final MutationReport stryker,
+      final MutationReport pit,
+      final MutationReport mutmut,
+      final PlatformGatePorts swift
+  ) {
+    this(directories, stryker, pit, mutmut, swift, null);
+  }
+
   /** Creates the ports without the Swift ones. */
   public GateReportPorts(
       final ReportDirectories directories,

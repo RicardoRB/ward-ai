@@ -51,7 +51,8 @@ public final class CommandTypeInference {
               anyOf(
                   sequence("jacoco:report"),
                   sequence("jacocoTestReport"),
-                  sequence("coverage", "lcov")
+                  sequence("coverage", "lcov"),
+                  sequence("cargo", "llvm-cov")
               )
           ),
           new Rule("mutation", anyOf(sequence("pitest:mutationCoverage"), sequence("pitest"))),
@@ -72,6 +73,7 @@ public final class CommandTypeInference {
           new Rule("django-check", sequence("manage.py", "check")),
           new Rule("cargo-clippy", sequence("cargo", "clippy")),
           new Rule("cargo-test", sequence("cargo", "test")),
+          new Rule("cargo-mutants", sequence("cargo", "mutants")),
           new Rule("swift-build", sequence("swift", "build")),
           new Rule("swift-test", sequence("swift", "test")),
           new Rule("xcodebuild-test", sequence("xcodebuild", "test")),

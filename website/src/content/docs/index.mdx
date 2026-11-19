@@ -45,7 +45,7 @@ Windsurf, Cline, Factory Droid, and Amp).
 | TypeScript | npm, pnpm, Yarn, Bun | Vue, Svelte, Astro, Angular (others are checked with the same gates) | `tsc`, Vitest / Jest / `bun test`, Stryker, Ward's TypeScript and JavaScript rules |
 | JavaScript | npm, pnpm, Yarn, Bun | Same as TypeScript | Same as TypeScript, without `tsc` |
 | Python 3.11–3.14 | uv, Poetry, pip | Django, FastAPI, Flask | mypy, pytest, coverage.py, mutmut, `manage.py check` for Django, Ward's Python rules |
-| Rust | Cargo (crates and workspaces) | Any | `cargo clippy`, `cargo test` |
+| Rust | Cargo (crates and workspaces) | Any | `cargo clippy`, `cargo test`, `cargo llvm-cov`, `cargo mutants` |
 | Swift | SwiftPM, Xcode (26 or newer, on macOS) | Any | `swift build`, `swift test` or `xcodebuild test`, llvm-cov / xccov coverage, Ward's Swift rules |
 | Kotlin / Java for Android | Gradle with the Android Gradle Plugin | Android app and library modules | Android lint, Android unit tests, debug unit-test coverage |
 
