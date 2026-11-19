@@ -8,12 +8,12 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * {@code ward:build/duplicate-dependency-declaration}: a POM or Cargo manifest declares a
- * dependency once. A Cargo finding names both lines.
+ * {@code ward:build/duplicate-dependency-declaration}: a POM, a Cargo manifest or a .NET project
+ * declares a dependency once. A Cargo finding names both lines.
  */
 final class DuplicateDependencyDeclaration implements BuildPolicyRule {
   private static final Set<BuildEcosystem> CHECKED =
-      Set.of(BuildEcosystem.MAVEN, BuildEcosystem.CARGO);
+      Set.of(BuildEcosystem.MAVEN, BuildEcosystem.CARGO, BuildEcosystem.DOTNET);
 
   @Override
   public List<BuildPolicyFinding> check(final BuildPolicyInput input) {

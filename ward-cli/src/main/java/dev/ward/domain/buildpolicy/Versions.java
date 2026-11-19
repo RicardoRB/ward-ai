@@ -40,6 +40,7 @@ public final class Versions {
       case GRADLE -> gradle(kind, text);
       case NODE -> node(text);
       case CARGO -> cargo(text);
+      case DOTNET -> dotnet(text);
       default -> python(text);
     };
   }
@@ -103,6 +104,16 @@ public final class Versions {
       return Dynamism.ALWAYS;
     }
     return text.startsWith("=") && !text.contains(",") ? Dynamism.NONE : Dynamism.RANGE;
+  }
+
+  /** A floating {@code 1.*} always moves; a range moves unless a lock file pins it. */
+  private static Dynamism dotnet(final String text) {
+    if (text.contains("*")) {
+      return Dynamism.ALWAYS;
+    }
+    final boolean exact = text.startsWith("[") && text.endsWith("]") && !text.contains(",");
+    final boolean range = text.contains(",") || text.startsWith("(");
+    return range && !exact ? Dynamism.RANGE : Dynamism.NONE;
   }
 
   private static Dynamism python(final String text) {

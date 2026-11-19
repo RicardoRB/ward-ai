@@ -6,5 +6,6 @@ public enum BuildEcosystem {
   GRADLE,
   NODE,
   PYTHON,
-  CARGO
+  CARGO,
+  DOTNET
 }

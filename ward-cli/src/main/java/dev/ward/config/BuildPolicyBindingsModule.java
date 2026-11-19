@@ -7,6 +7,7 @@ import dev.ward.domain.buildpolicy.BuildModelReader;
 import dev.ward.domain.json.JsonCodec;
 import dev.ward.infrastructure.buildpolicy.FileSystemBuildFiles;
 import dev.ward.infrastructure.buildpolicy.cargo.CargoBuildReader;
+import dev.ward.infrastructure.buildpolicy.dotnet.DotnetBuildReader;
 import dev.ward.infrastructure.buildpolicy.gradle.GradleBuildReader;
 import dev.ward.infrastructure.buildpolicy.maven.MavenBuildReader;
 import dev.ward.infrastructure.buildpolicy.node.NodeBuildReader;
@@ -25,7 +26,8 @@ interface BuildPolicyBindingsModule {
             new GradleBuildReader(),
             new NodeBuildReader(codec),
             new PythonBuildReader(),
-            new CargoBuildReader()
+            new CargoBuildReader(),
+            new DotnetBuildReader()
         );
     return new FileSystemBuildFiles(readers);
   }
