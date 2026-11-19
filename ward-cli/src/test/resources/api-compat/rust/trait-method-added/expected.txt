@@ -1,0 +1,1 @@
+src/lib.rs:3:8 api-compat:abstract-method-added crate.Draw#erase: none -> public abstract () erase()

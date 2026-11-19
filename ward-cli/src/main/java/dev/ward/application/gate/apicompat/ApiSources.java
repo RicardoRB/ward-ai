@@ -21,6 +21,8 @@ final class ApiSources {
       List.of("settings.gradle.kts", "settings.gradle");
   private static final String JAVA = ".java";
   private static final String KOTLIN = ".kt";
+  private static final String RUST = ".rs";
+  private static final String CARGO_SOURCES = "src";
 
   private final ApiCompatPorts ports;
   private final Path root;
@@ -90,19 +92,29 @@ final class ApiSources {
   }
 
   private List<String> listed(final Tree tree, final String dir) {
-    return ports.modules().of(tree.read().apply(join(dir, POM)), first(tree, dir, GRADLE_SETTINGS));
+    final List<String> listed =
+        new ArrayList<>(
+            ports.modules().of(tree.read().apply(join(dir, POM)), first(tree, dir, GRADLE_SETTINGS))
+        );
+    listed.addAll(ApiCargoCrates.members(tree.read(), tree.files(), dir));
+    return listed;
   }
 
   private static boolean hasBuildFile(final Tree tree, final String dir) {
     return tree.read().apply(join(dir, POM)).isPresent()
-        || first(tree, dir, GRADLE_SCRIPTS).isPresent();
+        || first(tree, dir, GRADLE_SCRIPTS).isPresent()
+        || ApiCargoCrates.has(tree.read(), dir);
   }
 
   private List<String> sourceFiles(final Tree tree, final String module) {
-    return ports
-        .layout()
-        .of(tree.read().apply(join(module, POM)), first(tree, module, GRADLE_SCRIPTS))
-        .stream()
+    final List<String> roots =
+        ApiCargoCrates.only(tree.read(), module)
+            ? List.of(CARGO_SOURCES)
+            : ports.layout().of(
+                tree.read().apply(join(module, POM)),
+                first(tree, module, GRADLE_SCRIPTS)
+            );
+    return roots.stream()
         .map(directory -> join(module, directory))
         .flatMap(
             directory ->
@@ -129,7 +141,7 @@ final class ApiSources {
   }
 
   private static boolean isSource(final String file) {
-    return file.endsWith(JAVA) || file.endsWith(KOTLIN);
+    return file.endsWith(JAVA) || file.endsWith(KOTLIN) || file.endsWith(RUST);
   }
 
   private static SourceUnit unit(
@@ -139,9 +151,16 @@ final class ApiSources {
   ) {
     return new SourceUnit(
         path,
-        path.endsWith(KOTLIN) ? AnalysisLanguage.KOTLIN : AnalysisLanguage.JAVA,
+        language(path),
         text.orElseThrow(() -> new ApiCompatException(failure + "."))
     );
+  }
+
+  private static AnalysisLanguage language(final String path) {
+    if (path.endsWith(KOTLIN)) {
+      return AnalysisLanguage.KOTLIN;
+    }
+    return path.endsWith(RUST) ? AnalysisLanguage.RUST : AnalysisLanguage.JAVA;
   }
 
   /** A file tree at one revision: a reader, a lister and how to name the revision. */

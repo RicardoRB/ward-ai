@@ -1,0 +1,2 @@
+src/net.rs:1:8 api-compat:type-removed crate.net.<top-level>: public final object crate.net.<top-level> -> removed
+src/net.rs:2:12 api-compat:type-removed crate.net.Socket: public final class crate.net.Socket -> removed

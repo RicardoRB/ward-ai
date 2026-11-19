@@ -1,0 +1,1 @@
+core/src/lib.rs:1:8 api-compat:member-removed core.<top-level>#stop: public static () stop() -> removed

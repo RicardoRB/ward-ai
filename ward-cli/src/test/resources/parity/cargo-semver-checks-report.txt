@@ -1,0 +1,4 @@
+# cargo-semver-checks parity report: the native api-compat check against cargo-semver-checks on the api-compat/rust fixtures.
+# fixture	kind	reason. A reviewed difference; kind is tool-only (the tool finds a break Ward does not) or ward-only.
+# Compared per fixture: whether any breaking change is found. Differences are added after a run with
+# -Dward.parity.cargo-semver-checks=<cargo-semver-checks>; none is listed yet because the tool has not been run here.

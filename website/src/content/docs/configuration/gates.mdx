@@ -1147,6 +1147,18 @@ modules = ["core", "api"]   # optional: module directories to compare; default e
   properties of a package, from every file, are the members of one type, `<package>.<top-level>`,
   because Kotlin callers do not see the file; moving a function between files of a package is not a
   change.
+- **Rust API.** A crate is a directory with `Cargo.toml`; its sources are `src/**/*.rs`, and the
+  members of a `[workspace]` (a literal path or a trailing `crates/*`) are crates of their own.
+  An item is API when it is `pub` and every module on its path is `pub` down from `src/lib.rs`
+  (binaries, `main.rs` and `src/bin` are not read); `pub(crate)`, `pub(super)` and private items are
+  not. Types are named by module (`crate.shapes.Circle`; a workspace member uses its directory name
+  instead of `crate`). Structs and unions keep their `pub` fields and the `pub` methods of their
+  inherent `impl` blocks; an enum's variants are fields; a trait's methods are abstract unless they
+  have a body, so a new required method reports `abstract-method-added`. The free functions,
+  constants and statics of a module are the members of one type, `<module>.<top-level>`. A `pub
+  use` of an item of the crate adds it under the imported name. Glob re-exports, `#[path]`
+  modules, macro-generated items, `cfg`, `where` clauses, lifetimes, receiver mutability and added
+  enum variants are not read. cargo-semver-checks is the reference tool.
 - **Execution errors, never a pass.** Not a Git repository, an unknown `base`, no release tag, a
   baseline that has no sources for the project, a syntax error in a source file at either revision
   (the message names the file and the revision), and an `include` prefix that matches no type at

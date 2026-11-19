@@ -1,0 +1,2 @@
+src/lib.rs:3:12 api-compat:return-type-changed crate.Door#width: public u32 width() -> public u64 width()
+src/lib.rs:5:8 api-compat:return-type-changed crate.<top-level>#count: public static u32 count() -> public static Option<u32> count()

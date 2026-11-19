@@ -21,6 +21,7 @@ import dev.ward.analysis.application.swift.SwiftRuleFiles;
 import dev.ward.analysis.domain.api.ApiSurfaceReader;
 import dev.ward.analysis.domain.jvm.types.JavaApiSurfaceReader;
 import dev.ward.analysis.domain.jvm.types.KotlinApiSurfaceReader;
+import dev.ward.analysis.domain.rust.RustApiSurfaceReader;
 import java.util.List;
 
 /**
@@ -62,7 +63,11 @@ public final class BundledLanguages {
 
   /** Returns the API readers of the languages that can be compared by {@code api-compat}. */
   public static List<ApiSurfaceReader> apiSurfaceReaders() {
-    return List.of(new JavaApiSurfaceReader(), new KotlinApiSurfaceReader());
+    return List.of(
+        new JavaApiSurfaceReader(),
+        new KotlinApiSurfaceReader(),
+        new RustApiSurfaceReader()
+    );
   }
 
   /** Returns the registry of every bundled check. */

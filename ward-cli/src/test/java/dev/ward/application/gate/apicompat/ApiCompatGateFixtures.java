@@ -5,6 +5,7 @@ import dev.ward.analysis.domain.api.ApiType;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.jvm.types.JavaApiSurfaceReader;
 import dev.ward.analysis.domain.jvm.types.KotlinApiSurfaceReader;
+import dev.ward.analysis.domain.rust.RustApiSurfaceReader;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import dev.ward.domain.config.ApiCompatOptions;
 import dev.ward.domain.gate.GateResult;
@@ -76,7 +77,11 @@ final class ApiCompatGateFixtures {
           final List<ApiType> found = new ArrayList<>();
           final AntlrLanguageFrontend frontend = new AntlrLanguageFrontend();
           for (final ApiSurfaceReader reader :
-              List.of(new JavaApiSurfaceReader(), new KotlinApiSurfaceReader())) {
+              List.of(
+                  new JavaApiSurfaceReader(),
+                  new KotlinApiSurfaceReader(),
+                  new RustApiSurfaceReader()
+              )) {
             final List<SourceUnit> own =
                 units.stream().filter(unit -> unit.language() == reader.language()).toList();
             if (!own.isEmpty()) {

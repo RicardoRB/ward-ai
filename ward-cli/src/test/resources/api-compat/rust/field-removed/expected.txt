@@ -1,0 +1,4 @@
+src/lib.rs:1:39 api-compat:field-type-changed crate.Door#height: public u32 height -> public u64 height
+src/lib.rs:2:12 api-compat:member-removed crate.Pair#1: public u8 1 -> removed
+src/lib.rs:3:10 api-compat:member-removed crate.Shape#Round: public static (u32) Round -> removed
+src/lib.rs:4:11 api-compat:type-removed crate.<top-level>: public final object crate.<top-level> -> removed

@@ -1,0 +1,1 @@
+src/lib.rs:3:12 api-compat:type-removed crate.<top-level>: public final object crate.<top-level> -> removed
