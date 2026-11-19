@@ -2,7 +2,6 @@ package dev.ward.analysis.domain.csharp;
 
 import dev.ward.analysis.domain.ir.DependencyEdge;
 import dev.ward.analysis.domain.ir.FileSummary;
-import dev.ward.analysis.domain.ir.Reference;
 import dev.ward.analysis.domain.ir.Symbol;
 import dev.ward.analysis.domain.port.DependencyResolver;
 import java.util.ArrayList;
