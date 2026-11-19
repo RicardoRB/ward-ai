@@ -40,6 +40,10 @@ final class ArchitectureToolchainTest {
               "routes tool installation to the adapter of each toolchain"
           ),
           Map.entry(
+              "ToolchainArchitectureTables",
+              "answers each toolchain's architecture tables for a Maven aggregator's code root"
+          ),
+          Map.entry(
               "ListedFileProjects",
               "detects the Python, Swift and .NET projects that no fixed marker file names"
           ),
