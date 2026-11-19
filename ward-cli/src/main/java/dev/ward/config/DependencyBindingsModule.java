@@ -9,6 +9,7 @@ import dev.ward.domain.json.JsonCodec;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.infrastructure.dependency.FileGraphCache;
+import dev.ward.infrastructure.dependency.cargo.CargoDependencySource;
 import dev.ward.infrastructure.dependency.gradle.GradleDependencySource;
 import dev.ward.infrastructure.dependency.maven.MavenDependencySource;
 import dev.ward.infrastructure.dependency.node.NodeDependencySource;
@@ -44,6 +45,7 @@ abstract class DependencyBindingsModule {
     sources.put(BuildTool.UV, python);
     sources.put(BuildTool.POETRY, python);
     sources.put(BuildTool.PIP, python);
+    sources.put(BuildTool.CARGO, new CargoDependencySource());
     sources.put(BuildTool.SWIFTPM, swift);
     sources.put(BuildTool.XCODE, swift);
     return sources;

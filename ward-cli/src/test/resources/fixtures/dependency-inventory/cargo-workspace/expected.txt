@@ -1,0 +1,3 @@
+[] (none)
+[crates/app] CRATES_IO itoa 1.0.19 DIRECT RUNTIME from=Cargo.lock in=crates/app/Cargo.toml
+[crates/lib] CRATES_IO fastrand 2.5.0 DIRECT TEST from=Cargo.lock in=crates/lib/Cargo.toml

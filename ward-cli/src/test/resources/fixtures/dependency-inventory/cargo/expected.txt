@@ -1,0 +1,10 @@
+[] CRATES_IO autocfg 1.5.1 DIRECT RUNTIME from=Cargo.lock in=Cargo.toml
+[] CRATES_IO fastrand 2.5.0 DIRECT TEST from=Cargo.lock in=Cargo.toml
+[] CRATES_IO itoa 1.0.19 DIRECT RUNTIME from=Cargo.lock in=Cargo.toml
+[] CRATES_IO proc-macro2 1.0.107 TRANSITIVE RUNTIME from=Cargo.lock by=quote,serde_derive,syn
+[] CRATES_IO quote 1.0.47 TRANSITIVE RUNTIME from=Cargo.lock by=serde_derive,syn
+[] CRATES_IO serde 1.0.229 DIRECT RUNTIME from=Cargo.lock in=Cargo.toml
+[] CRATES_IO serde_core 1.0.229 TRANSITIVE RUNTIME from=Cargo.lock by=serde
+[] CRATES_IO serde_derive 1.0.229 TRANSITIVE RUNTIME from=Cargo.lock by=serde,serde_core
+[] CRATES_IO syn 3.0.10 TRANSITIVE RUNTIME from=Cargo.lock by=serde_derive
+[] CRATES_IO unicode-ident 1.0.27 TRANSITIVE RUNTIME from=Cargo.lock by=proc-macro2,syn

@@ -16,12 +16,14 @@ import dev.ward.infrastructure.cli.licenses.LicensesCommand;
 import dev.ward.infrastructure.cli.sbom.SbomCommand;
 import dev.ward.infrastructure.license.BundledLicenseCatalog;
 import dev.ward.infrastructure.license.BundledLicenseTexts;
+import dev.ward.infrastructure.license.cargo.CargoLicenseMetadata;
 import dev.ward.infrastructure.license.jvm.PomLicenseMetadata;
 import dev.ward.infrastructure.license.node.NodeLicenseMetadata;
 import dev.ward.infrastructure.license.python.PythonLicenseMetadata;
 import dev.ward.infrastructure.license.swift.SwiftLicenseMetadata;
 import dev.ward.infrastructure.project.jvm.JvmProjectName;
 import dev.ward.infrastructure.project.node.NodeProjectName;
+import dev.ward.infrastructure.project.rust.CargoProjectName;
 import dev.ward.infrastructure.project.python.PythonProjectName;
 import dev.ward.infrastructure.project.swift.SwiftProjectName;
 import java.nio.file.Path;
@@ -75,7 +77,15 @@ abstract class LicenseBindingsModule {
     readers.put(Ecosystem.NPM, new NodeLicenseMetadata(codec));
     readers.put(Ecosystem.PYPI, new PythonLicenseMetadata(catalog, System.getenv("VIRTUAL_ENV")));
     readers.put(Ecosystem.SWIFT_URL, new SwiftLicenseMetadata(texts));
+    readers.put(Ecosystem.CRATES_IO, new CargoLicenseMetadata(cargoHome(home)));
     return readers;
+  }
+
+  private static Path cargoHome(final Path home) {
+    final String configured = System.getenv("CARGO_HOME");
+    return configured == null || configured.isBlank()
+        ? home.resolve(".cargo")
+        : Path.of(configured);
   }
 
   @Provides
@@ -83,7 +93,8 @@ abstract class LicenseBindingsModule {
       final JvmProjectName jvm,
       final NodeProjectName node,
       final PythonProjectName python,
-      final SwiftProjectName swift
+      final SwiftProjectName swift,
+      final CargoProjectName rust
   ) {
     return Map.of(
         Toolchain.JVM,
@@ -93,7 +104,9 @@ abstract class LicenseBindingsModule {
         Toolchain.PYTHON,
         python,
         Toolchain.SWIFT,
-        swift
+        swift,
+        Toolchain.RUST,
+        rust
     );
   }
 }

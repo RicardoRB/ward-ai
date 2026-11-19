@@ -5,7 +5,8 @@ public enum Ecosystem {
   MAVEN("Maven", "maven"),
   NPM("npm", "npm"),
   PYPI("PyPI", "pypi"),
-  SWIFT_URL("SwiftURL", "swift");
+  SWIFT_URL("SwiftURL", "swift"),
+  CRATES_IO("crates.io", "cargo");
 
   private final String osvName;
   private final String purlType;
