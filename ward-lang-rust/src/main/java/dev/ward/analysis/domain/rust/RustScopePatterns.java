@@ -30,7 +30,7 @@ final class RustScopePatterns {
   /** A function parameter: binds its pattern as parameters, then walks the type. */
   void parameter(final SyntaxNode node) {
     for (final SyntaxNode child : node.children()) {
-      if (RustKinds.PATTERN.equals(child.kind())) {
+      if (RustKinds.PATTERN.equals(child.kind()) || RustKinds.PATTERN_NO_ALT.equals(child.kind())) {
         bind(child, BindingKind.PARAMETER, false);
       } else {
         walk.visit(child);

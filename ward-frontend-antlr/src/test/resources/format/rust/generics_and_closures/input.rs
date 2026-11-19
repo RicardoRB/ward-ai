@@ -18,6 +18,7 @@ fn main() {
     let f = |a:i32,b:i32|->i32{a+b};
     let g = move||1;
     let h = |&x| x*2;
+    let k = pair(|_|1,|_|2);
     let c = <i32 as Default>::default();
     let b:Box<dyn Fn(i32)->i32+Send> = Box::new(|x| x);
 }
