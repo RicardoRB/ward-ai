@@ -15,6 +15,8 @@ import dev.ward.analysis.domain.python.PythonControlFlow;
 import dev.ward.analysis.domain.python.PythonScopes;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.check.NodeImplicitUse;
+import dev.ward.analysis.domain.rust.RustControlFlow;
+import dev.ward.analysis.domain.rust.RustScopeAnalysis;
 import dev.ward.analysis.domain.scope.CachedScopes;
 import dev.ward.analysis.domain.swift.SwiftControlFlow;
 import dev.ward.analysis.domain.swift.SwiftScopeAnalysis;
@@ -94,6 +96,13 @@ public final class GateFrontends {
             swift,
             new SwiftControlFlow(),
             new CachedScopes(new SwiftScopeAnalysis(ClasspathBuiltinNames.swift()))
+        ),
+        new FrontendSupport(
+            AnalysisLanguage.RUST,
+            frontend,
+            graphs,
+            new RustControlFlow(),
+            new CachedScopes(new RustScopeAnalysis(ClasspathBuiltinNames.rust()))
         ),
         new FrontendSupport(
             AnalysisLanguage.KOTLIN,

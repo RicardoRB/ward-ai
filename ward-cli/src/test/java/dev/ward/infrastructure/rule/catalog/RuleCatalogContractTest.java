@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.EnumSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,14 @@ import org.junit.jupiter.api.Test;
  * roadmaps.
  */
 class RuleCatalogContractTest {
+  /**
+   * Rust is read by the analysis engine since story R2 of epic #642; its rules arrive in the stories
+   * after it, and this test then covers it too.
+   */
+  private static final EnumSet<AnalysisLanguage> WITHOUT_RULES_YET = EnumSet.of(
+      AnalysisLanguage.RUST
+  );
+
   private static final int FIRST_STYLE_ISSUE = 283;
   private static final int LAST_STYLE_ISSUE = 301;
   private static final int FIRST_TOOL_ISSUE = 308;
@@ -149,7 +158,7 @@ class RuleCatalogContractTest {
 
   @Test
   void theCatalogCoversEveryEngineLanguageSomewhere() {
-    for (final AnalysisLanguage language : AnalysisLanguage.values()) {
+    for (final AnalysisLanguage language : EnumSet.complementOf(WITHOUT_RULES_YET)) {
       final boolean covered =
           catalog.rows().stream()
               .anyMatch(

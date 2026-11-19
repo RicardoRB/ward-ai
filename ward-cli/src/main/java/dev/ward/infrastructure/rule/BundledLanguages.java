@@ -13,6 +13,7 @@ import dev.ward.analysis.application.python.PythonRuleFiles;
 import dev.ward.analysis.application.rule.CheckProvider;
 import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.RuleFileProvider;
+import dev.ward.analysis.application.rust.RustRuleFiles;
 import dev.ward.analysis.application.swift.SwiftCheckProvider;
 import dev.ward.analysis.application.swift.SwiftLintCheckProvider;
 import dev.ward.analysis.application.swift.SwiftRuleFiles;
@@ -36,6 +37,7 @@ public final class BundledLanguages {
         new NodeRuleFiles(),
         new PythonRuleFiles(),
         new SwiftRuleFiles(),
+        new RustRuleFiles(),
         new SecretRuleFiles(),
         new OpenApiRuleFiles(),
         new AndroidRuleFiles()

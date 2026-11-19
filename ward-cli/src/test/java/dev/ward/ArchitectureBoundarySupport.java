@@ -256,13 +256,13 @@ final class ArchitectureBoundarySupport {
 
   /**
    * The packages of the frontend module, including its generated parsers, and of the structural
-   * rules and dependency summarizers of the Node, Python and Swift languages, and the OpenAPI
+   * rules and dependency summarizers of the Node, Python, Swift and Rust languages, and the OpenAPI
    * document model and rules, and the Android XML reader and rules, which are the analysis adapters
    * and domain for those rules.
    */
   private static boolean isGeneratedFrontendPackage(final String packageName) {
     return packageName.matches(
-        "dev\\.ward\\.analysis\\.(frontend\\.antlr|domain\\.node|domain\\.jvm|domain\\.python|domain\\.swift|domain\\.openapi|domain\\.android|application\\.(?:jvm|node|python|swift|openapi|android)|infrastructure\\.node)(\\..*)?"
+        "dev\\.ward\\.analysis\\.(frontend\\.antlr|domain\\.node|domain\\.jvm|domain\\.python|domain\\.swift|domain\\.rust|domain\\.openapi|domain\\.android|application\\.(?:jvm|node|python|swift|rust|openapi|android)|infrastructure\\.node)(\\..*)?"
     );
   }
 

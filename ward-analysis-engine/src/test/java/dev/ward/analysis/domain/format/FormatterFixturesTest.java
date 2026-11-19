@@ -96,6 +96,7 @@ class FormatterFixturesTest {
       case JAVASCRIPT -> "js";
       case PYTHON -> "py";
       case SWIFT -> "swift";
+      case RUST -> "rs";
       case OPENAPI -> "yaml";
       case ANDROID -> "xml";
     };

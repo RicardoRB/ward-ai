@@ -12,8 +12,6 @@ import dev.ward.analysis.frontend.antlr.kotlin.KotlinLexer;
 import dev.ward.analysis.frontend.antlr.kotlin.KotlinParser;
 import dev.ward.analysis.frontend.antlr.python.Python3Lexer;
 import dev.ward.analysis.frontend.antlr.python.Python3Parser;
-import dev.ward.analysis.frontend.antlr.swift.SwiftLexer;
-import dev.ward.analysis.frontend.antlr.swift.SwiftParser;
 import dev.ward.analysis.frontend.antlr.typescript.TypeScriptLexer;
 import dev.ward.analysis.frontend.antlr.typescript.TypeScriptParser;
 import java.util.function.Function;
@@ -51,7 +49,8 @@ public final class AntlrLanguageFrontend implements LanguageFrontend {
       case TYPESCRIPT -> typeScriptSession();
       case JAVASCRIPT -> javaScriptSession();
       case PYTHON -> pythonSession();
-      case SWIFT -> swiftSession();
+      case SWIFT -> CompiledLanguageSessions.swift();
+      case RUST -> CompiledLanguageSessions.rust();
       // OpenAPI documents and Android XML are data that their own frontends read, not ANTLR.
       case OPENAPI, ANDROID ->
           unit -> {
@@ -107,12 +106,6 @@ public final class AntlrLanguageFrontend implements LanguageFrontend {
     final Python3Lexer lexer = new Python3Lexer(empty());
     final Python3Parser parser = new Python3Parser(new CommonTokenStream(lexer));
     return new GrammarSession<>(lexer, parser, Python3Parser::file_input);
-  }
-
-  private static LanguageFrontend swiftSession() {
-    final SwiftLexer lexer = new SwiftLexer(empty());
-    final SwiftParser parser = new SwiftParser(new CommonTokenStream(lexer));
-    return new GrammarSession<>(lexer, parser, SwiftParser::top_level);
   }
 
   private static CharStream empty() {

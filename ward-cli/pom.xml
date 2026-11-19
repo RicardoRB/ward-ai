@@ -95,6 +95,11 @@
         </dependency>
         <dependency>
             <groupId>dev.ward</groupId>
+            <artifactId>ward-lang-rust</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.ward</groupId>
             <artifactId>ward-lang-openapi</artifactId>
             <version>${project.version}</version>
         </dependency>

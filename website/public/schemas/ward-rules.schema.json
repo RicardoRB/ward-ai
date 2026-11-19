@@ -59156,6 +59156,7 @@
               "javascript",
               "python",
               "swift",
+              "rust",
               "openapi",
               "android"
             ]

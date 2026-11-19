@@ -8,6 +8,10 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Added
+
+- A Rust frontend (#648): a Rust grammar for editions 2021 and 2024 (`let`-`else`, let chains, async closures, C strings, raw borrows, `unsafe extern`), scope analysis that follows shadowing, imports, `if let` and match arms, and one control-flow graph per function with a body. `.rs` files are read as Rust; no Rust rule ships yet.
+
 ## [0.11.0] - 2026-11-18
 
 ### Added

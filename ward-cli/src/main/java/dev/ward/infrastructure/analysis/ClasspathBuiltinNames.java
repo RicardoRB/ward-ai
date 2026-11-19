@@ -83,6 +83,11 @@ public final class ClasspathBuiltinNames implements BuiltinNames {
     return new ClasspathBuiltinNames("swift/builtins", List.of("swift"), List.of());
   }
 
+  /** The names the Rust prelude and the primitive types provide. */
+  public static ClasspathBuiltinNames rust() {
+    return new ClasspathBuiltinNames("rust/builtins", List.of("rust"), List.of());
+  }
+
   @Override
   public Set<String> of(final Set<String> environments) {
     final Set<String> names = new LinkedHashSet<>();
