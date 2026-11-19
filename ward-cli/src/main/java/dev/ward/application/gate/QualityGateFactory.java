@@ -233,7 +233,7 @@ public class QualityGateFactory {
         switch (check.type()) {
           case SupportedQualityGates.STRYKER -> strykerReport;
           case SupportedQualityGates.MUTMUT -> mutmutReport;
-          case SupportedQualityGates.CARGO_MUTANTS -> reports.cargoMutants();
+          case SupportedQualityGates.CARGO_MUTANTS -> reports.swift().cargoMutants();
           default -> pitReport;
         };
     if (report == null) {

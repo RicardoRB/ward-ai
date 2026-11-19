@@ -43,10 +43,9 @@ final class ReportBindingsModule {
       final StrykerJsonMutationReport stryker,
       final PitXmlMutationReport pit,
       final MutmutMetaMutationReport mutmut,
-      final PlatformGatePorts swift,
-      final CargoMutantsReport cargoMutants
+      final PlatformGatePorts swift
   ) {
-    return new GateReportPorts(directories, stryker, pit, mutmut, swift, cargoMutants);
+    return new GateReportPorts(directories, stryker, pit, mutmut, swift);
   }
 
   @Provides
@@ -54,8 +53,9 @@ final class ReportBindingsModule {
       final SimctlSimulators simulators,
       final LlvmCovCoverageReport llvmCov,
       final XccovCoverageReport xccov,
-      final AndroidJacocoCoverageReport android
+      final AndroidJacocoCoverageReport android,
+      final CargoMutantsReport cargoMutants
   ) {
-    return new PlatformGatePorts(simulators, llvmCov, xccov, android);
+    return new PlatformGatePorts(simulators, llvmCov, xccov, android, cargoMutants);
   }
 }

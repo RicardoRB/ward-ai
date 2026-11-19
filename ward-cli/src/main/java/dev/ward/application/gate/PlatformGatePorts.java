@@ -1,6 +1,7 @@
 package dev.ward.application.gate;
 
 import dev.ward.domain.gate.CoverageReport;
+import dev.ward.domain.gate.MutationReport;
 import dev.ward.domain.gate.swift.Simulators;
 
 /**
@@ -12,15 +13,27 @@ import dev.ward.domain.gate.swift.Simulators;
  * @param xccov reads {@code xccov}'s JSON report, or {@code null} when it is unavailable
  * @param android reads AGP's JaCoCo XML report for the debug unit tests, or {@code null} when it is
  *     unavailable
+ * @param cargoMutants reads cargo-mutants' result files, or {@code null} when it is unavailable
  */
 public record PlatformGatePorts(
     Simulators simulators,
     CoverageReport llvmCov,
     CoverageReport xccov,
-    CoverageReport android
+    CoverageReport android,
+    MutationReport cargoMutants
 ) {
   /** No platform ports, for factories that do not run platform gates. */
-  public static final PlatformGatePorts NONE = new PlatformGatePorts(null, null, null, null);
+  public static final PlatformGatePorts NONE = new PlatformGatePorts(null, null, null, null, null);
+
+  /** Creates the ports without cargo-mutants'. */
+  public PlatformGatePorts(
+      final Simulators simulators,
+      final CoverageReport llvmCov,
+      final CoverageReport xccov,
+      final CoverageReport android
+  ) {
+    this(simulators, llvmCov, xccov, android, null);
+  }
 
   /** Creates the Swift ports, without the Android coverage report. */
   public PlatformGatePorts(

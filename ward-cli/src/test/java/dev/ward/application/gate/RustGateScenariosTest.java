@@ -25,7 +25,6 @@ import dev.ward.infrastructure.finding.rust.CargoMutantsReport;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
@@ -34,6 +33,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** The scenarios of story R7: coverage, mutation and architecture gates of a Rust project. */
 class RustGateScenariosTest {
+  private static final int LINES = 10;
   private static final int COVERAGE_MINIMUM = 80;
   private static final int MUTATION_MINIMUM = 60;
   private static final int MISSED_EXIT = 2;
@@ -62,7 +62,7 @@ class RustGateScenariosTest {
         CoverageGateFixture.REPORT,
         CoverageGateFixture.NEW,
         false,
-        lcov(10, 10, "src/lib.rs")
+        lcov(LINES, LINES, "src/lib.rs")
     );
     assertThat(gate.run(COVERAGE_MINIMUM, null, null).status()).isEqualTo(GateStatus.PASSED);
 
@@ -72,8 +72,8 @@ class RustGateScenariosTest {
         CoverageGateFixture.REPORT,
         CoverageGateFixture.NEW,
         false,
-        lcov(10, 10, "src/lib.rs"),
-        lcov(10, 0, "src/untested.rs")
+        lcov(LINES, LINES, "src/lib.rs"),
+        lcov(LINES, 0, "src/untested.rs")
     );
     final GateResult result = withUntested.run(coverage.minimum(), null, null);
 
@@ -93,7 +93,7 @@ class RustGateScenariosTest {
     final CommandExecutor cargo =
         (command, directory) -> {
           writeOutcomes(directory);
-          return new CommandResult(MISSED_EXIT, "", "", Duration.ZERO);
+          return new CommandResult(MISSED_EXIT, "", "", java.time.Duration.ZERO);
         };
     final QualityGateFactory factory =
         new QualityGateFactory(
@@ -103,8 +103,7 @@ class RustGateScenariosTest {
                 null,
                 null,
                 null,
-                PlatformGatePorts.NONE,
-                new CargoMutantsReport()
+                new PlatformGatePorts(null, null, null, null, new CargoMutantsReport())
             ),
             null
         );
@@ -171,7 +170,7 @@ class RustGateScenariosTest {
   /** The entry the lcov reader makes of a file with {@code lines} lines, {@code hit} of them hit. */
   private LineHits.Entry lcov(final int lines, final int hit, final String name)
       throws IOException {
-    final StringBuilder text = new StringBuilder("TN:\nSF:" + name + "\n");
+    final StringBuilder text = new StringBuilder("TN:\nSF:").append(name).append('\n');
     for (int line = 1; line <= lines; line++) {
       text.append("DA:").append(line).append(',').append(line <= hit ? 1 : 0).append('\n');
     }
