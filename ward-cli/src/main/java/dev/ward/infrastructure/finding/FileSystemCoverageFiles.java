@@ -5,8 +5,10 @@ import dev.ward.infrastructure.project.ProjectDirectories;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.time.Instant;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 
 /** Answers the {@code crap} gate's file questions from the file system. */
@@ -18,6 +20,19 @@ public final class FileSystemCoverageFiles implements CoverageFiles {
   @Override
   public List<Path> moduleDirectories(final Path root) {
     return ProjectDirectories.below(root);
+  }
+
+  @Override
+  public List<Path> matching(final Path root, final String glob) {
+    final PathMatcher matcher = root.getFileSystem().getPathMatcher("glob:" + glob);
+    try (Stream<Path> walk = Files.walk(root)) {
+      return walk.filter(Files::isRegularFile)
+          .filter(file -> matcher.matches(root.relativize(file)))
+          .sorted()
+          .toList();
+    } catch (IOException e) {
+      return List.of();
+    }
   }
 
   @Override

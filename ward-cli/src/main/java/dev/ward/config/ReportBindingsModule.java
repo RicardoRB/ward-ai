@@ -9,6 +9,8 @@ import dev.ward.domain.gate.ReportDirectories;
 import dev.ward.infrastructure.finding.DetectedLineCoverage;
 import dev.ward.infrastructure.finding.FileSystemReportDirectories;
 import dev.ward.infrastructure.finding.LcovLineCoverage;
+import dev.ward.infrastructure.finding.dotnet.CoberturaXmlLineCoverage;
+import dev.ward.infrastructure.finding.dotnet.StrykerNetMutationReport;
 import dev.ward.infrastructure.finding.jvm.AndroidJacocoCoverageReport;
 import dev.ward.infrastructure.finding.jvm.JacocoXmlLineCoverage;
 import dev.ward.infrastructure.finding.jvm.PitXmlMutationReport;
@@ -31,21 +33,45 @@ final class ReportBindingsModule {
 
   @Provides
   static LineCoverageReport lineCoverageReport(
+      final CoberturaXmlLineCoverage cobertura,
       final JacocoXmlLineCoverage jacoco,
       final LcovLineCoverage lcov
   ) {
-    return new DetectedLineCoverage(List.of(jacoco, lcov));
+    return new DetectedLineCoverage(List.of(cobertura, jacoco, lcov));
+  }
+
+  /** The mutation readers, grouped so the report ports take few parameters. */
+  record MutationReports(
+      StrykerJsonMutationReport stryker,
+      PitXmlMutationReport pit,
+      MutmutMetaMutationReport mutmut,
+      StrykerNetMutationReport strykerNet
+  ) {}
+
+  @Provides
+  static MutationReports mutationReports(
+      final StrykerJsonMutationReport stryker,
+      final PitXmlMutationReport pit,
+      final MutmutMetaMutationReport mutmut,
+      final StrykerNetMutationReport strykerNet
+  ) {
+    return new MutationReports(stryker, pit, mutmut, strykerNet);
   }
 
   @Provides
   static GateReportPorts gateReportPorts(
       final ReportDirectories directories,
-      final StrykerJsonMutationReport stryker,
-      final PitXmlMutationReport pit,
-      final MutmutMetaMutationReport mutmut,
+      final MutationReports mutation,
       final PlatformGatePorts swift
   ) {
-    return new GateReportPorts(directories, stryker, pit, mutmut, swift);
+    return new GateReportPorts(
+        directories,
+        mutation.stryker(),
+        mutation.pit(),
+        mutation.mutmut(),
+        swift,
+        mutation.strykerNet()
+    );
   }
 
   @Provides

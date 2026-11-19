@@ -48,6 +48,7 @@ public final class QualityGateDefinitions {
               Phase.LOCAL,
               false
           ),
+          new Definition(SupportedQualityGates.STRYKER_NET, "Stryker.NET", Phase.CI, false),
           new Definition("dotnet-build", ".NET build", Phase.LOCAL, false),
           new Definition("dotnet-test", ".NET tests", Phase.LOCAL, false),
           new Definition(SupportedQualityGates.ANDROID_LINT, "Android Lint", Phase.LOCAL, false),

@@ -55,6 +55,60 @@ class DotnetInitCliTest {
     assertThat(root.resolve("A/ward.toml")).doesNotExist();
   }
 
+  @Test
+  @DisplayName("tests with coverage and mutation testing")
+  void testsWithCoverageAndMutationTesting() throws IOException {
+    Files.writeString(root.resolve("App.csproj"), CSPROJ);
+    Files.writeString(root.resolve("Program.cs"), "System.Console.WriteLine(1);\n");
+    final InitCommandFixture init = init();
+
+    final int exit = init.run("", "--preset", "strict", "--yes");
+
+    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
+    final String toml = Files.readString(root.resolve("ward.toml"));
+    assertThat(toml)
+        .contains(
+            "'--collect:XPlat Code Coverage'",
+            "report = \".ward/reports/dotnet/*/coverage.cobertura.xml\"",
+            "minimum-branches = 75",
+            "dotnet stryker --reporter json --output .ward/stryker"
+        );
+    assertThat(Files.readString(root.resolve(".config/dotnet-tools.json")))
+        .contains("dotnet-stryker");
+  }
+
+  @Test
+  @DisplayName("standard has no mutation gate")
+  void standardHasNoMutationGate() throws IOException {
+    Files.writeString(root.resolve("App.csproj"), CSPROJ);
+    Files.writeString(root.resolve("Program.cs"), "System.Console.WriteLine(1);\n");
+    final InitCommandFixture init = init();
+
+    final int exit = init.run("", "--yes");
+
+    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
+    assertThat(Files.readString(root.resolve("ward.toml")))
+        .contains("minimum = 80")
+        .doesNotContain("stryker");
+    assertThat(root.resolve(".config/dotnet-tools.json")).doesNotExist();
+  }
+
+  @Test
+  @DisplayName("an existing tool manifest stays")
+  void anExistingToolManifestStays() throws IOException {
+    Files.writeString(root.resolve("App.csproj"), CSPROJ);
+    Files.writeString(root.resolve("Program.cs"), "System.Console.WriteLine(1);\n");
+    Files.createDirectories(root.resolve(".config"));
+    final String own = "{\"version\":1,\"isRoot\":true,\"tools\":{}}";
+    Files.writeString(root.resolve(".config/dotnet-tools.json"), own);
+    final InitCommandFixture init = init();
+
+    final int exit = init.run("", "--preset", "strict", "--yes");
+
+    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
+    assertThat(Files.readString(root.resolve(".config/dotnet-tools.json"))).isEqualTo(own);
+  }
+
   private InitCommandFixture init() throws IOException {
     return InitCommandFixture.repository(root, new DotnetBuildToolConfigurator(), "dotnet");
   }

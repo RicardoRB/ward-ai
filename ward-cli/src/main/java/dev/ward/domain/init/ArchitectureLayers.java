@@ -20,6 +20,7 @@ public final class ArchitectureLayers {
           AnalysisLanguage.TYPESCRIPT,
           AnalysisLanguage.JAVASCRIPT,
           AnalysisLanguage.SWIFT,
+          AnalysisLanguage.CSHARP,
           AnalysisLanguage.KOTLIN,
           AnalysisLanguage.RUST
       );

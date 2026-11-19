@@ -620,10 +620,14 @@ Init sets up C# solutions (`.sln`, `.slnx`) and projects (`.csproj`) built with 
 - **Solutions.** A solution owns the projects it lists, so one solution of three projects is one Ward
   project, and `dotnet build` and `dotnet test` from its root cover every member. Central package
   management (`Directory.Packages.props`) needs nothing from init.
-- **Gates.** `dotnet-build` and `dotnet-test`. `strict` adds `-warnaserror` to both commands. A
+- **Gates.** `dotnet-build`, `dotnet-test` (with Coverlet's collector, which the test templates
+  reference) and `coverage` (80% lines; strict 85% and 75% branches). `strict` adds `-warnaserror`
+  to the commands and `stryker-net`, which runs in `ci` with a 60% minimum and needs the tool
+  manifest `.config/dotnet-tools.json`; init writes it when absent. A
   directory with several solutions, or several projects and no solution, needs the command edited to
   name its target.
-- **Files.** Init edits no `.csproj`, solution or props file, and writes no analyzer configuration.
+- **Files.** Init edits no `.csproj`, solution or props file, and writes no analyzer configuration;
+  under strict it adds `.config/dotnet-tools.json` when the project has none.
 - **Doctor.** `ward doctor` reports a missing `dotnet` and links the .NET SDK download.
 - **CI.** The generated workflow sets up the .NET SDK for the C# job.
 

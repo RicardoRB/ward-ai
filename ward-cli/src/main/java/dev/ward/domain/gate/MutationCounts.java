@@ -9,6 +9,7 @@ import java.util.List;
  * @param undetected the survived mutants and those no test covers
  * @param survivors the surviving mutants as the tool names them, when its report lists them
  * @param problem why the report cannot be used, or {@code null} when the counts are usable
+ * @param survivors where the undetected mutants are, when the tool says so
  */
 public record MutationCounts(int detected, int undetected, List<String> survivors, String problem) {
   private static final int PERCENT = 100;

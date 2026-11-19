@@ -12,6 +12,9 @@ until the user approves the plan.
 
 ## Choices
 
-- **Gates.** `dotnet-build` and `dotnet-test`. `strict` adds `-warnaserror`.
-- **Files.** No `.csproj`, solution or props file is edited. A directory with several solutions, or
+- **Gates.** `dotnet-build`, `dotnet-test` (writes a Coverlet Cobertura report; the test project
+  needs `coverlet.collector`, which the xUnit, NUnit and MSTest templates include) and `coverage`
+  (80%; strict 85% and 75% branches). `strict` adds `-warnaserror` and `stryker-net` (60% minimum,
+  `ci` profile), which needs `.config/dotnet-tools.json`; init writes it when absent.
+- **Files.** No `.csproj`, solution or props file is edited; strict may add `.config/dotnet-tools.json`. A directory with several solutions, or
   several projects and no solution, needs the commands edited to name the target.

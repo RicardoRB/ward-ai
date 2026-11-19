@@ -77,6 +77,7 @@ public final class CommandTypeInference {
           new Rule("swift-build", sequence("swift", "build")),
           new Rule("swift-test", sequence("swift", "test")),
           new Rule("xcodebuild-test", sequence("xcodebuild", "test")),
+          new Rule("stryker-net", sequence("dotnet", "stryker")),
           new Rule("dotnet-build", sequence("dotnet", "build")),
           new Rule("dotnet-test", sequence("dotnet", "test")),
           new Rule("android-lint", sequence("lintDebug")),

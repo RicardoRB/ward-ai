@@ -47,6 +47,7 @@ public class QualityGateFactory {
           SupportedQualityGates.MUTATION,
           SupportedQualityGates.MUTMUT,
           SupportedQualityGates.CARGO_MUTANTS,
+          SupportedQualityGates.STRYKER_NET,
           SupportedQualityGates.XCODEBUILD_TEST,
           SupportedQualityGates.SWIFT_COVERAGE,
           SupportedQualityGates.ANDROID_COVERAGE,
@@ -59,6 +60,9 @@ public class QualityGateFactory {
       "Run `mutmut run` from mutmut 3, which writes its results under mutants/.";
   private static final String CARGO_MUTANTS_REPORT_HINT =
       "Run `cargo mutants`, which writes caught.txt and missed.txt under mutants.out/.";
+  private static final String STRYKER_NET_REPORT_HINT =
+      "Run `dotnet stryker --reporter json --output .ward/stryker`, which writes the JSON report"
+          + " that the gate reads.";
   private static final String PIT_REPORT_HINT =
       "Enable PIT's XML output, for example with -DoutputFormats=XML,HTML for Maven or"
           + " outputFormats = ['XML', 'HTML'] in the Gradle pitest block.";
@@ -70,6 +74,8 @@ public class QualityGateFactory {
           MUTMUT_REPORT_HINT,
           SupportedQualityGates.CARGO_MUTANTS,
           CARGO_MUTANTS_REPORT_HINT,
+          SupportedQualityGates.STRYKER_NET,
+          STRYKER_NET_REPORT_HINT,
           SupportedQualityGates.MUTATION,
           PIT_REPORT_HINT
       );
@@ -79,6 +85,7 @@ public class QualityGateFactory {
   private final MutationReport strykerReport;
   private final MutationReport pitReport;
   private final MutationReport mutmutReport;
+  private final MutationReport strykerNetReport;
   private final GateReportPorts reports;
   private final GateExtensions extensions;
 
@@ -113,6 +120,7 @@ public class QualityGateFactory {
     this.strykerReport = reports.stryker();
     this.pitReport = reports.pit();
     this.mutmutReport = reports.mutmut();
+    this.strykerNetReport = reports.strykerNet();
     this.reports = reports;
     this.executor = executor;
     this.extensions = extensions == null ? GateExtensions.NONE : extensions;
@@ -214,13 +222,14 @@ public class QualityGateFactory {
     if (SupportedQualityGates.STRYKER.equals(check.type())
         || SupportedQualityGates.MUTATION.equals(check.type())
         || SupportedQualityGates.MUTMUT.equals(check.type())
-        || SupportedQualityGates.CARGO_MUTANTS.equals(check.type())) {
+        || SupportedQualityGates.CARGO_MUTANTS.equals(check.type())
+        || SupportedQualityGates.STRYKER_NET.equals(check.type())) {
       return mutationGate(check);
     }
     return SwiftGates.create(check, executor, reports);
   }
 
-  /** Builds a Stryker, PIT, mutmut or cargo-mutants gate that checks its {@code minimum} against its report. */
+  /** Builds a Stryker, Stryker.NET, PIT, mutmut or cargo-mutants gate that checks its {@code minimum} against its report. */
   private QualityGate mutationGate(final GateConfiguration check) {
     final QualityGate plain =
         new CommandQualityGate(check.name(), executor, check.command(), reportDirectories);
@@ -234,6 +243,7 @@ public class QualityGateFactory {
           case SupportedQualityGates.STRYKER -> strykerReport;
           case SupportedQualityGates.MUTMUT -> mutmutReport;
           case SupportedQualityGates.CARGO_MUTANTS -> reports.swift().cargoMutants();
+          case SupportedQualityGates.STRYKER_NET -> strykerNetReport;
           default -> pitReport;
         };
     if (report == null) {

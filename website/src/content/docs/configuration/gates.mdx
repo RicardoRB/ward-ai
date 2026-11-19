@@ -45,7 +45,9 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `xcodebuild-test` | Xcode tests | Run an Xcode scheme's tests on an iPhone simulator or the Mac. |
 | | `swift-coverage` | llvm-cov / xccov | Fail below a `minimum` line coverage of production code. |
 | C# | `dotnet-build` | .NET build | Build the solution or project with `dotnet build`. |
-| | `dotnet-test` | .NET tests | Run the tests with `dotnet test`. |
+| | `dotnet-test` | .NET tests | Run the tests with `dotnet test`, writing a Coverlet Cobertura report. |
+| | `coverage` | Coverlet | Fail below the `minimum` line coverage of the Cobertura reports. |
+| | `stryker-net` | Stryker.NET | Run mutation testing, optionally with a `minimum` score. |
 | Android | `android-lint` | Android Lint | Run `lintDebug` through the Gradle wrapper. |
 | | `android-unit-test` | Android unit tests | Run `testDebugUnitTest` through the Gradle wrapper. |
 | | `android-coverage` | AGP JaCoCo | Fail below a `minimum` line coverage of the debug unit tests. |
@@ -274,9 +276,33 @@ command = ["dotnet", "build"]
 profiles = ["default"]
 
 [checks.dotnet-test]
-command = ["dotnet", "test"]
+command = ["dotnet", "test", "--collect:XPlat Code Coverage", "--results-directory", ".ward/reports/dotnet"]
 profiles = ["pre-push"]
+
+[checks.coverage]
+uses = "coverage"
+minimum = 80
+report = ".ward/reports/dotnet/*/coverage.cobertura.xml"
+profiles = ["pre-push"]
+
+[checks.stryker-net]
+command = ["dotnet", "stryker", "--reporter", "json", "--output", ".ward/stryker"]
+minimum = 60
+profiles = ["ci"]
 ```
+
+- **Coverage.** `coverlet.collector`, which the xUnit, NUnit and MSTest project templates reference,
+  writes one Cobertura file per test project and run. A `report` path may hold `*`, so Ward reads
+  every file the run wrote and sums them. Paths in a report that do not name a source file below
+  the project root, such as those from a CI machine, count for nothing.
+- **Mutation.** `dotnet stryker` needs the tool: init writes `.config/dotnet-tools.json` with
+  `dotnet-stryker` when the project has none, and leaves an existing manifest as it is. Ward runs the
+  command from the project root, so a root with several projects needs `--solution` or
+  `--project` and `--test-project` added to the command. With `minimum`, Ward reads the JSON
+  report under `.ward/stryker/reports/`, fails below the score and names the first surviving mutants
+  by file, line and mutator. A missing, stale or unparseable report is an execution error.
+- **Architecture.** The `ward` gate's layer and cycle rules read a `using` of a namespace as a
+  dependency on every file that declares it; aliases and namespaces no file declares add none.
 
 ## Swift gates
 

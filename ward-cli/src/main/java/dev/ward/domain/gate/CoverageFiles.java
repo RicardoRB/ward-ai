@@ -9,6 +9,14 @@ public interface CoverageFiles {
   /** Returns {@code root} and the module directories below it, where a build writes reports. */
   List<Path> moduleDirectories(Path root);
 
+  /**
+   * Returns the regular files below {@code root} whose root-relative path matches {@code glob}, in
+   * path order; a reader that cannot list files finds none.
+   */
+  default List<Path> matching(final Path root, final String glob) {
+    return List.of();
+  }
+
   /** Returns whether {@code file} is a regular file. */
   boolean isFile(Path file);
 
