@@ -3,6 +3,7 @@ package dev.ward.infrastructure.buildpolicy;
 import dev.ward.domain.buildpolicy.BuildModel;
 import dev.ward.domain.buildpolicy.BuildModelReader;
 import dev.ward.domain.buildpolicy.Declaration;
+import dev.ward.infrastructure.buildpolicy.cargo.CargoBuildReader;
 import dev.ward.infrastructure.buildpolicy.gradle.GradleBuildReader;
 import dev.ward.infrastructure.buildpolicy.maven.MavenBuildReader;
 import dev.ward.infrastructure.buildpolicy.node.NodeBuildReader;
@@ -31,7 +32,8 @@ final class ReaderProject {
             new MavenBuildReader(),
             new GradleBuildReader(),
             new NodeBuildReader(new ForyJsonCodec()),
-            new PythonBuildReader()
+            new PythonBuildReader(),
+            new CargoBuildReader()
         )
     )
         .read(root);

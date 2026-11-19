@@ -39,6 +39,7 @@ public final class Versions {
       case MAVEN -> maven(text);
       case GRADLE -> gradle(kind, text);
       case NODE -> node(text);
+      case CARGO -> cargo(text);
       default -> python(text);
     };
   }
@@ -94,6 +95,14 @@ public final class Versions {
   /** A range such as {@code >=1.0.0} has no upper bound, so no lockfile makes it a decision. */
   private static boolean unboundedAbove(final String text) {
     return text.startsWith(">") && !text.contains("<");
+  }
+
+  /** {@code =1.2.3} is exact; a wildcard is always dynamic; any other requirement is a range. */
+  private static Dynamism cargo(final String text) {
+    if (text.contains("*")) {
+      return Dynamism.ALWAYS;
+    }
+    return text.startsWith("=") && !text.contains(",") ? Dynamism.NONE : Dynamism.RANGE;
   }
 
   private static Dynamism python(final String text) {

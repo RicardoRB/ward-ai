@@ -9,6 +9,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.infrastructure.buildpolicy.FileSystemBuildFiles;
+import dev.ward.infrastructure.buildpolicy.cargo.CargoBuildReader;
 import dev.ward.infrastructure.buildpolicy.gradle.GradleBuildReader;
 import dev.ward.infrastructure.buildpolicy.maven.MavenBuildReader;
 import dev.ward.infrastructure.buildpolicy.node.NodeBuildReader;
@@ -35,7 +36,8 @@ final class BuildPolicyFixtures {
             new MavenBuildReader(),
             new GradleBuildReader(),
             new NodeBuildReader(codec),
-            new PythonBuildReader()
+            new PythonBuildReader(),
+            new CargoBuildReader()
         );
     return new BuildPolicyService(
         new FileSystemBuildFiles(readers),

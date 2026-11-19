@@ -1,6 +1,6 @@
 ---
 title: Build policy rules
-description: The ward:build rules that the build-policy check runs over Maven, Gradle, Node and Python build files.
+description: The ward:build rules that the build-policy check runs over Maven, Gradle, Node, Python and Cargo build files.
 ---
 
 The `build-policy` check reads the build files of the project and of its modules and reports
@@ -38,7 +38,7 @@ type is a configuration error that names the file, table and key; no build rule 
 ## Which files are read
 
 In the project root and in each module that a build file lists (Maven `<modules>`, Gradle
-`include`, Node `workspaces`, uv workspace `members`), the check reads:
+`include`, Node `workspaces`, uv workspace `members`, Cargo `[workspace] members`), the check reads:
 
 | Build tool | Files |
 |---|---|
@@ -46,6 +46,7 @@ In the project root and in each module that a build file lists (Maven `<modules>
 | Gradle | `build.gradle`, `build.gradle.kts`, `settings.gradle`, `settings.gradle.kts`, `gradle/libs.versions.toml`, `gradle/wrapper/gradle-wrapper.properties` |
 | Node | `package.json` |
 | Python | `pyproject.toml` (`requirements*.txt` is not read) |
+| Cargo | `Cargo.toml`: `[dependencies]`, `[dev-dependencies]`, `[build-dependencies]`, `[target.*.…]` and `[workspace.dependencies]` |
 
 The tree is never walked, so a fixture project under `src/test/resources` is not read. A file that
 cannot be read or does not parse (malformed XML, TOML or JSON, a DTD in a POM, a wrapper
@@ -63,17 +64,17 @@ says the version cannot be determined from the file. A plugin applied without a 
 | Rule | Selected by | What it reports |
 |---|---|---|
 | `ward:build/plugin-version-pinned` | `strict` | A Maven or Gradle plugin without an exact version, including the default Maven lifecycle plugins of the packaging. A version may come from the POM, its `pluginManagement` or a parent POM inside the project. A version that only an external parent could give is reported, and the message says so. |
-| `ward:build/no-dynamic-version` | `strict` | A version that can resolve differently later: a Maven range, `LATEST`, `RELEASE` or `SNAPSHOT`; a Gradle `+`, `latest.*` or range; a Node dist-tag, wildcard or range; a Python requirement with no pin. |
+| `ward:build/no-dynamic-version` | `strict` | A version that can resolve differently later: a Maven range, `LATEST`, `RELEASE` or `SNAPSHOT`; a Gradle `+`, `latest.*` or range; a Node dist-tag, wildcard or range; a Python requirement with no pin; a Cargo `*` or `1.*` version, or a caret, tilde or comparison range with no `Cargo.lock`. `=1.2.3` is exact. |
 | `ward:build/minimum-build-tool-version` | `strict` | A declared build tool version below the minimum: the Maven or Gradle wrapper, `packageManager` in `package.json`, `required-version` of uv. |
-| `ward:build/duplicate-dependency-declaration` | `strict` | A Maven dependency declared twice with the same group, artifact, type and classifier in one section. |
+| `ward:build/duplicate-dependency-declaration` | `strict` | A Maven dependency declared twice with the same group, artifact, type and classifier in one section, or a Cargo crate declared twice in one dependency table (a `package = "…"` rename counts as the crate it names); both Cargo lines are reported. |
 | `ward:build/dependency-convergence` | `init` on Maven | A package that a module resolves, or that a dependency requests, with more than one version. |
 | `ward:build/require-upper-bound` | `init` on Maven | A Maven package that resolves to a lower version than one a dependency requests. |
 
 ### Lockfiles
 
-Maven has no lockfile, so every Maven range is dynamic. For Gradle, Node and Python dependencies, a
+Maven has no lockfile, so every Maven range is dynamic. For Gradle, Node, Python and Cargo dependencies, a
 range is not dynamic when a lockfile of the ecosystem sits next to the build file (`gradle.lockfile`,
-`package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `bun.lock`, `uv.lock`, `poetry.lock`). A
+`package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `bun.lock`, `uv.lock`, `poetry.lock`, `Cargo.lock`). A
 dist-tag, a wildcard, a Gradle plugin version and every Maven version stay dynamic with or without a
 lockfile.
 
