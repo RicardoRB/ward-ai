@@ -830,7 +830,7 @@ pa-public-array-attribute	spotbugs	PA_PUBLIC_ARRAY_ATTRIBUTE	tool-silent	the too
 pa-public-mutable-object-attribute	spotbugs	PA_PUBLIC_MUTABLE_OBJECT_ATTRIBUTE	not-comparable	the fixture does not compile
 pa-public-primitive-attribute	spotbugs	PA_PUBLIC_PRIMITIVE_ATTRIBUTE	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 package-annotation	checkstyle	PackageAnnotation	anchor-differs	tool lines [2], on passing [], fixture [1]
-package-case	pmd	PackageCase	agree-lines	
+package-case	pmd	PackageCase	agree	
 package-declaration	checkstyle	PackageDeclaration	approximation	Checkstyle reports the package line of the passing fixture, which Ward accepts
 package-info	errorprone	PackageInfo	not-comparable	the fixture does not compile
 package-name	checkstyle	PackageName	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape

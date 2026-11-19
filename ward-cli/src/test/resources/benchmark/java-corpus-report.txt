@@ -6,7 +6,7 @@
 # Regenerate: ./mvnw -pl ward-cli -am -Dtest=JavaCorpusSmokeTest -Dward.corpus.java=<dir> -Djacoco.skip=true -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
 commons-lang | files 638 | not analysed 0
 spring-petclinic | files 50 | not analysed 0
-rules 998 | not run (need type facts) 249 | findings 24596
+rules 997 | not run (need type facts) 249 | findings 24596
 ward:java/aa-assertion-of-arguments | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:java/abbreviation-as-word-in-name | findings 272 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/abstract-class-name | findings 16 | labelled 3 | tp 3 | fp 0 | un 0
@@ -662,7 +662,6 @@ ward:java/overriding-thread-run | findings 5 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/pa-public-array-attribute | findings 4 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/pa-public-mutable-object-attribute | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/pa-public-primitive-attribute | findings 5 | labelled 3 | tp 3 | fp 0 | un 0
-ward:java/package-case | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/package-info | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/package-name | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/parameter-count | findings 32 | labelled 3 | tp 3 | fp 0 | un 0
