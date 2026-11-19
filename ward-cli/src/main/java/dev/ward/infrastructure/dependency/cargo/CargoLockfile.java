@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.tomlj.Toml;
 import org.tomlj.TomlArray;
 import org.tomlj.TomlParseResult;
@@ -30,6 +31,9 @@ record CargoLockfile(
     List<PackageId>> byName,
     Set<String> local
 ) {
+  /** The parts of a {@code name version} dependency entry. */
+  private static final int NAME_AND_VERSION = 2;
+
   /** A locked package: whether a registry published it, and what it requires. */
   record Locked(boolean released, Set<PackageId> requires) {}
 
@@ -65,18 +69,25 @@ record CargoLockfile(
     for (int index = 0; index < array.size(); index++) {
       tables.add(array.getTable(index));
     }
-    final Map<String, List<PackageId>> byName = new LinkedHashMap<>();
     final Map<PackageId, TomlTable> sourced = new LinkedHashMap<>();
     final Set<String> local = new HashSet<>();
     for (final TomlTable table : tables) {
       final PackageId id = id(table);
       if (table.getString("source") != null) {
         sourced.put(id, table);
-        byName.computeIfAbsent(normalize(id.name()), key -> new ArrayList<>()).add(id);
       } else {
         local.add(normalize(id.name()));
       }
     }
+    final Map<String, List<PackageId>> byName =
+        sourced.keySet().stream()
+            .collect(
+                Collectors.groupingBy(
+                    id -> normalize(id.name()),
+                    LinkedHashMap::new,
+                    Collectors.toList()
+                )
+            );
     final Map<PackageId, Locked> packages = new LinkedHashMap<>();
     sourced.forEach((id, table) -> packages.put(id, locked(table, byName)));
     return new CargoLockfile(packages, byName, local);
@@ -108,7 +119,7 @@ record CargoLockfile(
   ) {
     final String[] parts = entry.split(" ");
     final List<PackageId> candidates = byName.getOrDefault(normalize(parts[0]), List.of());
-    if (parts.length < 2) {
+    if (parts.length < NAME_AND_VERSION) {
       return candidates;
     }
     return candidates.stream().filter(id -> id.version().equals(parts[1])).toList();

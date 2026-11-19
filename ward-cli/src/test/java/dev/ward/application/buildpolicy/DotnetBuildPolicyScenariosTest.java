@@ -14,6 +14,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class DotnetBuildPolicyScenariosTest {
+  /** The line of the first {@code PackageReference} in the project files below. */
+  private static final int FIRST_PACKAGE_LINE = 3;
+  private static final int SECOND_PACKAGE_LINE = 4;
+
   @TempDir Path root;
 
   private List<Finding> run(final BuildRule rule) {
@@ -43,7 +47,7 @@ class DotnetBuildPolicyScenariosTest {
     assertThat(findings).hasSize(1);
     assertThat(findings.getFirst().message()).contains("Serilog").contains("1.*");
     assertThat(findings.getFirst().file()).isEqualTo("App.csproj");
-    assertThat(findings.getFirst().line()).isEqualTo(3);
+    assertThat(findings.getFirst().line()).isEqualTo(FIRST_PACKAGE_LINE);
   }
 
   @Test
@@ -56,7 +60,7 @@ class DotnetBuildPolicyScenariosTest {
     );
     final List<Finding> findings = run(BuildRule.DUPLICATE_DEPENDENCY_DECLARATION);
     assertThat(findings).hasSize(1);
-    assertThat(findings.getFirst().line()).isEqualTo(4);
+    assertThat(findings.getFirst().line()).isEqualTo(SECOND_PACKAGE_LINE);
     assertThat(findings.getFirst().message()).contains("line 3");
   }
 
@@ -69,7 +73,9 @@ class DotnetBuildPolicyScenariosTest {
     );
     assertThat(run(BuildRule.NO_DYNAMIC_VERSION))
         .extracting(Finding::file, Finding::line)
-        .containsExactly(org.assertj.core.groups.Tuple.tuple("Directory.Packages.props", 3));
+        .containsExactly(
+            org.assertj.core.groups.Tuple.tuple("Directory.Packages.props", FIRST_PACKAGE_LINE)
+        );
   }
 
   @Test

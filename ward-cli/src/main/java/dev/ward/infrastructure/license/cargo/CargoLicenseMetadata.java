@@ -48,11 +48,10 @@ public final class CargoLicenseMetadata implements LicenseMetadata {
       if (toml == null) {
         continue;
       }
-      if (!version.equals(toml.getString("package.version"))) {
-        other = true;
-        continue;
+      if (version.equals(toml.getString("package.version"))) {
+        return declared(toml.getString("package.license"));
       }
-      return declared(toml.getString("package.license"));
+      other = true;
     }
     return other
         ? LicenseLookup.missing(

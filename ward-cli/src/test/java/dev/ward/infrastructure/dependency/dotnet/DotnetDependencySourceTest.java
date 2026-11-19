@@ -58,7 +58,7 @@ class DotnetDependencySourceTest {
   void aLockfileMarksTopLevelPackagesDirect() {
     final Dependency serilog =
         read(InventoryFixtures.fixture("dotnet-lock")).modules().getFirst().dependencies().stream()
-            .filter(entry -> entry.id().name().equals("Serilog"))
+            .filter(entry -> "Serilog".equals(entry.id().name()))
             .findFirst()
             .orElseThrow();
 

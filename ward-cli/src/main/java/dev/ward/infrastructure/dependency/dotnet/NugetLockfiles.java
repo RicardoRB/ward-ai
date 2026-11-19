@@ -4,7 +4,6 @@ import dev.ward.domain.dependency.Ecosystem;
 import dev.ward.domain.dependency.LockfileFormatException;
 import dev.ward.domain.dependency.PackageId;
 import dev.ward.domain.json.JsonCodec;
-import dev.ward.domain.json.JsonCodecException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,14 +37,14 @@ final class NugetLockfiles {
    * @throws LockfileFormatException if it is not JSON or has another format version
    */
   static List<Entry> lock(final String text, final JsonCodec codec) {
-    final Map<?, ?> root = root(text, codec);
+    final Map<?, ?> root = NugetJson.root(text, codec);
     if (!(root.get("version") instanceof Number version)
         || !LOCK_VERSIONS.contains(version.intValue())) {
       throw new LockfileFormatException("unsupported version " + root.get("version"));
     }
     final List<Entry> entries = new ArrayList<>();
-    for (final Object target : map(root.get(DEPENDENCIES)).values()) {
-      entries.addAll(lockTarget(map(target)));
+    for (final Object target : NugetJson.map(root.get(DEPENDENCIES)).values()) {
+      entries.addAll(lockTarget(NugetJson.map(target)));
     }
     return entries;
   }
@@ -54,23 +53,23 @@ final class NugetLockfiles {
     final Map<String, PackageId> byName = new HashMap<>();
     target.forEach(
         (name, value) -> {
-          final String resolved = text(map(value).get("resolved"));
+          final String resolved = NugetJson.text(NugetJson.map(value).get("resolved"));
           if (!resolved.isEmpty()) {
-            byName.put(key(text(name)), id(text(name), resolved));
+            byName.put(key(NugetJson.text(name)), id(NugetJson.text(name), resolved));
           }
         }
     );
     final List<Entry> entries = new ArrayList<>();
     target.forEach(
         (name, value) -> {
-          final Map<?, ?> body = map(value);
-          final PackageId id = byName.get(key(text(name)));
+          final Map<?, ?> body = NugetJson.map(value);
+          final PackageId id = byName.get(key(NugetJson.text(name)));
           if (id != null) {
             entries.add(
                 new Entry(
                     id,
-                    DIRECT.equals(text(body.get("type"))),
-                    required(map(body.get(DEPENDENCIES)), byName)
+                    DIRECT.equals(NugetJson.text(body.get("type"))),
+                    required(NugetJson.map(body.get(DEPENDENCIES)), byName)
                 )
             );
           }
@@ -85,17 +84,17 @@ final class NugetLockfiles {
    * @throws LockfileFormatException if it is not JSON or has another format version
    */
   static List<Entry> assets(final String text, final JsonCodec codec) {
-    final Map<?, ?> root = root(text, codec);
+    final Map<?, ?> root = NugetJson.root(text, codec);
     if (!(root.get("version") instanceof Number version)
         || version.intValue() != ASSETS_VERSION) {
       throw new LockfileFormatException("unsupported version " + root.get("version"));
     }
-    final Map<?, ?> groups = map(root.get("projectFileDependencyGroups"));
+    final Map<?, ?> groups = NugetJson.map(root.get("projectFileDependencyGroups"));
     final List<Entry> entries = new ArrayList<>();
-    map(root.get("targets"))
+    NugetJson.map(root.get("targets"))
         .forEach(
             (framework, target) ->
-                entries.addAll(assetsTarget(map(target), declared(groups.get(framework))))
+                entries.addAll(assetsTarget(NugetJson.map(target), declared(groups.get(framework))))
         );
     return entries;
   }
@@ -104,9 +103,9 @@ final class NugetLockfiles {
     final Map<String, PackageId> byName = new HashMap<>();
     target.forEach(
         (library, value) -> {
-          final String text = text(library);
+          final String text = NugetJson.text(library);
           final int slash = text.lastIndexOf('/');
-          if (slash > 0 && "package".equals(text(map(value).get("type")))) {
+          if (slash > 0 && "package".equals(NugetJson.text(NugetJson.map(value).get("type")))) {
             byName.put(
                 key(text.substring(0, slash)),
                 id(text.substring(0, slash), text.substring(slash + 1))
@@ -119,12 +118,12 @@ final class NugetLockfiles {
         .values()
         .forEach(
             id -> {
-              final Map<?, ?> body = map(target.get(id.name() + "/" + id.version()));
+              final Map<?, ?> body = NugetJson.map(target.get(id.name() + "/" + id.version()));
               entries.add(
                   new Entry(
                       id,
                       declared.contains(key(id.name())),
-                      required(map(body.get(DEPENDENCIES)), byName)
+                      required(NugetJson.map(body.get(DEPENDENCIES)), byName)
                   )
               );
             }
@@ -138,7 +137,7 @@ final class NugetLockfiles {
     if (group instanceof List<?> items) {
       items.forEach(
           item -> {
-            final String line = text(item).strip();
+            final String line = NugetJson.text(item).strip();
             final int space = line.indexOf(' ');
             names.add(key(space < 0 ? line : line.substring(0, space)));
           }
@@ -154,22 +153,9 @@ final class NugetLockfiles {
       PackageId> byName
   ) {
     return dependencies.keySet().stream()
-        .map(name -> byName.get(key(text(name))))
+        .map(name -> byName.get(key(NugetJson.text(name))))
         .filter(java.util.Objects::nonNull)
         .toList();
-  }
-
-  private static Map<?, ?> root(final String text, final JsonCodec codec) {
-    final Object parsed;
-    try {
-      parsed = codec.fromJson(text, Object.class);
-    } catch (JsonCodecException | IllegalArgumentException e) {
-      throw new LockfileFormatException("it is not valid JSON", e);
-    }
-    if (parsed instanceof Map<?, ?> root) {
-      return root;
-    }
-    throw new LockfileFormatException("it is not a JSON object");
   }
 
   private static PackageId id(final String name, final String version) {
@@ -178,13 +164,5 @@ final class NugetLockfiles {
 
   private static String key(final String name) {
     return name.toLowerCase(Locale.ROOT);
-  }
-
-  private static Map<?, ?> map(final Object value) {
-    return value instanceof Map<?, ?> map ? map : Map.of();
-  }
-
-  private static String text(final Object value) {
-    return value instanceof String text ? text : "";
   }
 }

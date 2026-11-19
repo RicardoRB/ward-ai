@@ -26,6 +26,7 @@ final class ArchitectureBoundarySupport {
           "dev.ward.config.BuildToolBindingsModule",
           "dev.ward.config.BuildToolAdaptersModule",
           "dev.ward.config.ArchitectureTablesBindingsModule",
+          "dev.ward.config.ProjectNamesBindingsModule",
           "dev.ward.config.ToolchainKey",
           "dev.ward.config.DoctorBindingsModule",
           "dev.ward.config.DependencyBindingsModule",

@@ -59,10 +59,11 @@ public final class CargoBuildReader implements BuildModelReader {
     if (targets != null) {
       targets.keySet().forEach(target -> prefixes.add("target.\"" + target + "\"."));
     }
+    final Source source = new Source(shown, flag);
     for (final String prefix : prefixes) {
       for (final String table : TABLES) {
         final String path = prefix + table;
-        read(toml.getTable(path), path, new Source(shown, flag), declarations);
+        read(toml.getTable(path), path, source, declarations);
       }
     }
     return new BuildModel(declarations, List.of());

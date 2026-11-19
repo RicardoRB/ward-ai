@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.domain.dependency.DependencyInventory;
 import dev.ward.domain.dependency.DependencyInventoryException;
+import dev.ward.domain.dependency.Dependency;
 import dev.ward.domain.dependency.Ecosystem;
 import dev.ward.domain.dependency.PackageId;
 import dev.ward.infrastructure.dependency.InventoryFixtures;
@@ -75,7 +76,7 @@ class CargoDependencySourceTest {
     assertThat(read(dir).modules().getFirst().dependencies())
         .singleElement()
         .satisfies(entry -> assertThat(entry.released()).isFalse())
-        .extracting(entry -> entry.id())
+        .extracting(Dependency::id)
         .isEqualTo(new PackageId(Ecosystem.CRATES_IO, "foo", "0.2.0"));
   }
 
