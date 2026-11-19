@@ -17,10 +17,12 @@ import dev.ward.infrastructure.cli.sbom.SbomCommand;
 import dev.ward.infrastructure.license.BundledLicenseCatalog;
 import dev.ward.infrastructure.license.BundledLicenseTexts;
 import dev.ward.infrastructure.license.cargo.CargoLicenseMetadata;
+import dev.ward.infrastructure.license.dotnet.NugetLicenseMetadata;
 import dev.ward.infrastructure.license.jvm.PomLicenseMetadata;
 import dev.ward.infrastructure.license.node.NodeLicenseMetadata;
 import dev.ward.infrastructure.license.python.PythonLicenseMetadata;
 import dev.ward.infrastructure.license.swift.SwiftLicenseMetadata;
+import dev.ward.infrastructure.project.dotnet.DotnetProjectName;
 import dev.ward.infrastructure.project.jvm.JvmProjectName;
 import dev.ward.infrastructure.project.node.NodeProjectName;
 import dev.ward.infrastructure.project.rust.CargoProjectName;
@@ -37,6 +39,7 @@ import java.util.Map;
 @Module
 abstract class LicenseBindingsModule {
   private static final String GRADLE_CACHE = ".gradle/caches/modules-2/files-2.1";
+  private static final String NUGET_PACKAGES = ".nuget/packages";
   private static final String MAVEN_REPOSITORY = ".m2/repository";
 
   @Binds
@@ -78,6 +81,7 @@ abstract class LicenseBindingsModule {
     readers.put(Ecosystem.PYPI, new PythonLicenseMetadata(catalog, System.getenv("VIRTUAL_ENV")));
     readers.put(Ecosystem.SWIFT_URL, new SwiftLicenseMetadata(texts));
     readers.put(Ecosystem.CRATES_IO, new CargoLicenseMetadata(cargoHome(home)));
+    readers.put(Ecosystem.NUGET, new NugetLicenseMetadata(nugetPackages(home)));
     return readers;
   }
 
@@ -94,7 +98,8 @@ abstract class LicenseBindingsModule {
       final NodeProjectName node,
       final PythonProjectName python,
       final SwiftProjectName swift,
-      final CargoProjectName rust
+      final CargoProjectName rust,
+      final DotnetProjectName dotnet
   ) {
     return Map.of(
         Toolchain.JVM,
@@ -106,7 +111,16 @@ abstract class LicenseBindingsModule {
         Toolchain.SWIFT,
         swift,
         Toolchain.RUST,
-        rust
+        rust,
+        Toolchain.DOTNET,
+        dotnet
     );
+  }
+
+  private static Path nugetPackages(final Path home) {
+    final String folder = System.getenv("NUGET_PACKAGES");
+    return folder == null || folder.isBlank()
+        ? home.resolve(NUGET_PACKAGES)
+        : Path.of(folder);
   }
 }

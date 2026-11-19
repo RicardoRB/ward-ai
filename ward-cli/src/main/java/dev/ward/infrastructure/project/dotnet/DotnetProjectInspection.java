@@ -44,7 +44,7 @@ public final class DotnetProjectInspection {
   }
 
   /** Returns the directories of the projects that the solutions in {@code dir} list. */
-  static Set<Path> members(final Path dir) {
+  public static Set<Path> members(final Path dir) {
     final Set<Path> members = new HashSet<>();
     try (Stream<Path> files = Files.list(dir)) {
       for (final Path solution : files.filter(

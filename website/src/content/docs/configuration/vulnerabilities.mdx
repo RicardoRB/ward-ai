@@ -28,7 +28,7 @@ no dependencies passes, and the report says that zero packages were scanned.
 ## Advisory data
 
 Advisories come from the public [OSV](https://osv.dev) archives, one per ecosystem (`Maven`, `npm`,
-`PyPI`, `SwiftURL`, `crates.io`), downloaded only for the ecosystems the project uses. Ward stores a reduced copy
+`PyPI`, `SwiftURL`, `crates.io`, `NuGet`), downloaded only for the ecosystems the project uses. Ward stores a reduced copy
 under `.ward/cache/vulnerabilities/<Ecosystem>/`, which Git ignores. A request carries the archive
 name and the client name `ward/<version>`, and no package name, path or environment value. Ward
 bundles no advisory data. Each advisory keeps the license of the database it comes from, which OSV

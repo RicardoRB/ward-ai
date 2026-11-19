@@ -1,0 +1,2 @@
+[] NUGET Serilog 4.0.0 TRANSITIVE RUNTIME from=obj/project.assets.json by=Serilog.Sinks.File
+[] NUGET Serilog.Sinks.File 6.0.0 DIRECT RUNTIME from=obj/project.assets.json in=App.csproj

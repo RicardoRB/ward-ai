@@ -5,7 +5,7 @@ description: Write the CycloneDX software bill of materials and the third-party 
 
 `ward sbom` and `ward licenses` write release compliance files from the same dependency inventory and
 license lookup as the [`license` gate](/configuration/gates/#license-gate). They work for Maven,
-Gradle, Node, Python, Swift and Cargo projects, read only local files, and never use the network.
+Gradle, Node, Python, Swift, Cargo and C# projects, read only local files, and never use the network.
 
 ```sh
 ward sbom     [-C <dir>] [-o <file>] [--scopes runtime,provided,test,development]

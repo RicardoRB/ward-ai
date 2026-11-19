@@ -6,7 +6,8 @@ public enum Ecosystem {
   NPM("npm", "npm"),
   PYPI("PyPI", "pypi"),
   SWIFT_URL("SwiftURL", "swift"),
-  CRATES_IO("crates.io", "cargo");
+  CRATES_IO("crates.io", "cargo"),
+  NUGET("NuGet", "nuget");
 
   private final String osvName;
   private final String purlType;
