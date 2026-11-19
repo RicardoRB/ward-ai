@@ -8,6 +8,8 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+## [0.11.2] - 2026-11-20
+
 ### Fixed
 
 - `ward:java/openjdk-annotation-location` no longer reports a parameter list whose parameters start with annotations and sit on separate lines (#684). The rule now counts only annotation and modifier nodes, so the layout `ward format` writes passes.
@@ -582,6 +584,7 @@ Initial release, published as `sentinel-ai`.
 - A bounded quality loop and a typed gate registry.
 - Starlight documentation site.
 
+[0.11.2]: https://github.com/RicardoRB/ward-ai/compare/v0.11.1...v0.11.2
 [0.11.1]: https://github.com/RicardoRB/ward-ai/compare/v0.11.0...v0.11.1
 [0.11.0]: https://github.com/RicardoRB/ward-ai/compare/v0.10.0...v0.11.0
 [0.10.0]: https://github.com/RicardoRB/ward-ai/compare/v0.9.1...v0.10.0
