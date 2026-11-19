@@ -16,12 +16,7 @@ class FormatterRegistryContractTest {
     assertThat(FormatterBindingsModule.formatterRegistry().languages())
         .as("every AnalysisLanguage needs a formatter in FormatterBindingsModule")
         .isEqualTo(
-            EnumSet.complementOf(
-                EnumSet.of(
-                    AnalysisLanguage.OPENAPI,
-                    AnalysisLanguage.ANDROID
-                )
-            )
+            EnumSet.complementOf(EnumSet.of(AnalysisLanguage.OPENAPI, AnalysisLanguage.ANDROID))
         );
   }
 }
