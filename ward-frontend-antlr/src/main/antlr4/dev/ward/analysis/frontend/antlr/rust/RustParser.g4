@@ -654,8 +654,10 @@ closureParameters
     : closureParam (COMMA closureParam)* COMMA?
     ;
 
+// Modified by Ward: the Rust reference takes PatternNoTopAlt here, so the closing | of the
+// parameters is not read as the alternation of a pattern (|_| a, |_| b).
 closureParam
-    : outerAttribute* pattern (COLON type_)?
+    : outerAttribute* patternNoTopAlt (COLON type_)?
     ;
 
 // 8.2.13

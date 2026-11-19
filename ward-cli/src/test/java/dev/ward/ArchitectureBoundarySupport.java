@@ -17,6 +17,7 @@ final class ArchitectureBoundarySupport {
       Set.of(
           "dev.ward.config.WardComponent",
           "dev.ward.config.NativeTypeFactsBindings",
+          "dev.ward.config.NativeFormatters",
           "dev.ward.config.AnalysisServices",
           "dev.ward.config.PortBindingsModule",
           "dev.ward.config.ProcessBindingsModule",

@@ -42,7 +42,9 @@ class NativeFormatSmokeTest {
           "py/main.py",
           "def f(x):\n      return x\n",
           "ios/App.swift",
-          "struct App{let x:Int}\n"
+          "struct App{let x:Int}\n",
+          "rust/main.rs",
+          "fn main(){let a=1+2;}\n"
       );
 
   @TempDir Path project;

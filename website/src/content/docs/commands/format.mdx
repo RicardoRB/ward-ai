@@ -4,7 +4,7 @@ description: Format the project's source files in Ward style, with no external f
 ---
 
 `ward format` rewrites the source files of the project's engine languages (Java, Kotlin, TypeScript,
-JavaScript, Python and Swift) in Ward style. It needs only the `ward` binary.
+JavaScript, Python, Swift and Rust) in Ward style. It needs only the `ward` binary.
 
 ```sh
 ward format [--check] [--format text|json] [-C <dir>] [<path>...]
@@ -66,7 +66,7 @@ a configuration error, `files` is empty and `error` names the `.editorconfig` fi
 Ward reads the formatting options from the project's `.editorconfig` files, the same files your
 editor reads. See [EditorConfig](/configuration/editorconfig/) for the keys. A project without an
 `.editorconfig` gets Ward's defaults: a line width of 100, four-space indents for Java, Kotlin,
-Python and Swift, and two-space indents for TypeScript and JavaScript.
+Python, Swift and Rust, and two-space indents for TypeScript and JavaScript.
 
 ## Java style
 
@@ -89,3 +89,21 @@ written, so imports keep their order and comments are not rewrapped.
 
 The [`ward-format` gate](/configuration/gates/#format-gate) runs the same formatter in `ward check`,
 and reports each unformatted file as an error. It never writes a file; run `ward format` to fix them.
+
+## Rust style
+
+The Rust formatter follows rustfmt's defaults for what it can reach by changing only whitespace:
+four-space indents, braces on the line of their item, `a + b`, `x: T`, `&mut x`, `Vec<T>`, `|x| x`,
+`foo(a, b)`, `1..10` and `a.b()?`. A method chain, a binary expression or a `where` clause that you
+break across lines gets one more indent level for its continuation lines. Blank lines collapse to
+one and disappear after an opening and before a closing brace. Inside a macro call the formatter
+keeps your spacing, except around commas and brackets.
+
+Every token and comment stays as written, so unlike rustfmt, Ward does not:
+
+- add a trailing comma to a list it breaks,
+- join a short list or call that you broke across lines, or break a line that is too long,
+- sort `use` declarations or reorder items.
+
+On a file that rustfmt has already formatted, `ward format --check` passes. A Rust file with a syntax
+error is refused and left as it is; the parser reads Rust 2021 and the 2024 raw-borrow syntax.
