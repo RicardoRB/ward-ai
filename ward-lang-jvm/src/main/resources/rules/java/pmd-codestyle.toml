@@ -230,10 +230,10 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "style"
-presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
-kinds = ["packageDeclaration"]
+kinds = ["qualifiedName"]
+parent = ["packageDeclaration"]
 text = '[A-Z]'
 message = "the package name has an uppercase letter; use lowercase"
 '''

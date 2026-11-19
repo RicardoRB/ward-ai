@@ -13,6 +13,13 @@ still change behavior. Breaking changes are called out under **Changed**.
 - A Rust frontend (#648): a Rust grammar for editions 2021 and 2024 (`let`-`else`, let chains, async closures, C strings, raw borrows, `unsafe extern`), scope analysis that follows shadowing, imports, `if let` and match arms, and one control-flow graph per function with a body. `.rs` files are read as Rust; no Rust rule ships yet.
 - Rust rules mapped to Clippy and the rustc lints (#650): 92 `ward:rust/*` rules in the `standard` and `strict` presets, found by the `ward` gate from the syntax tree, the scopes and the control flow. Every lint of Clippy 0.1.88 and rustc 1.88 is classified in the catalog as implemented, planned (#681 type information, #682 syntax rules, #683 Cargo.toml rules) or out of scope with a reason. `ClippyParitySmokeTest` compares the fixtures with the real Clippy.
 
+## [0.11.1] - 2026-11-19
+
+### Fixed
+
+- `ward:java/package-case` no longer reports a lowercase package whose declaration carries an annotation, such as `@NullMarked` or `@Deprecated` in `package-info.java` (#674). The rule now reads only the qualified package name, and reports it at the name instead of at the start of the declaration.
+- `ward:java/package-case` leaves the `standard` and `strict` presets (#674). It now reports the same place as `ward:java/package-name`, which stays and also finds every uppercase package name, so a preset reports an uppercase package once instead of twice (as #599 does for other duplicates). It stays in the catalog and can be selected with `include`.
+
 ## [0.11.0] - 2026-11-18
 
 ### Added
@@ -576,6 +583,7 @@ Initial release, published as `sentinel-ai`.
 - A bounded quality loop and a typed gate registry.
 - Starlight documentation site.
 
+[0.11.1]: https://github.com/RicardoRB/ward-ai/compare/v0.11.0...v0.11.1
 [0.11.0]: https://github.com/RicardoRB/ward-ai/compare/v0.10.0...v0.11.0
 [0.10.0]: https://github.com/RicardoRB/ward-ai/compare/v0.9.1...v0.10.0
 [0.9.1]: https://github.com/RicardoRB/ward-ai/compare/v0.9.0...v0.9.1

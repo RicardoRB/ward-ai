@@ -49,6 +49,7 @@ ward:java/nm-method-naming-convention | ward:java/google-method-name
 ward:java/no-standard-streams | ward:java/system-println
 ward:java/np-immediate-dereference-of-readline | ward:java/np-dereference-of-readline-value
 ward:java/override-both-equals-and-hashcode | ward:java/he-equals-use-hashcode
+ward:java/package-case | ward:java/package-name
 ward:java/package-declaration | ward:java/no-package
 ward:java/rcn-redundant-nullcheck-of-nonnull-value | ward:java/comparing-this-with-null
 ward:java/ri-redundant-interfaces | ward:java/unnecessary-interface-declaration
