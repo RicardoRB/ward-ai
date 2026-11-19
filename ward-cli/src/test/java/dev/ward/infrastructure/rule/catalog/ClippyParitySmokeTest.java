@@ -117,7 +117,11 @@ final class ClippyParitySmokeTest {
   private static List<String> kinds(final String clippy, final String id, final Path directory)
       throws IOException, InterruptedException {
     final List<Integer> expected = expectedLines(directory.resolve("expected.txt"));
-    final List<Integer> violating = ClippyRun.reportedLines(clippy, id, directory.resolve("violating.rs"));
+    final List<Integer> violating = ClippyRun.reportedLines(
+        clippy,
+        id,
+        directory.resolve("violating.rs")
+    );
     final List<String> kinds = new ArrayList<>();
     if (violating.isEmpty()) {
       kinds.add("tool-silent");
