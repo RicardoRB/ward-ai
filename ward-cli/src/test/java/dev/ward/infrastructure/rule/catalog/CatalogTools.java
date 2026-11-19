@@ -31,7 +31,10 @@ public final class CatalogTools {
           "spectral",
           "oasdiff",
           "clippy",
-          "rustc"
+          "rustc",
+          "dotnet-analyzers",
+          "dotnet-code-style",
+          "stylecop"
       );
 
   private CatalogTools() {}

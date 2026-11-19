@@ -1,0 +1,155 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "anonymous-method-delegate"
+presets = ["strict"]
+category = "style"
+stylecop = ["SA1130"]
+
+[[rule]]
+name = "attribute-list-split"
+presets = ["strict"]
+category = "style"
+stylecop = ["SA1133"]
+
+[[rule]]
+name = "braces-required"
+presets = ["standard", "strict"]
+category = "style"
+dotnet-code-style = ["IDE0011"]
+stylecop = ["SA1503"]
+
+[[rule]]
+name = "const-field-name-pascal-case"
+presets = ["strict"]
+category = "naming"
+stylecop = ["SA1303"]
+
+[[rule]]
+name = "constant-on-left-of-comparison"
+presets = ["strict"]
+category = "style"
+stylecop = ["SA1131"]
+
+[[rule]]
+name = "empty-single-line-comment"
+presets = ["strict"]
+category = "style"
+stylecop = ["SA1120"]
+
+[[rule]]
+name = "field-name-camel-case"
+presets = ["strict"]
+category = "naming"
+stylecop = ["SA1306"]
+
+[[rule]]
+name = "field-not-private"
+presets = ["strict"]
+category = "correctness"
+stylecop = ["SA1401"]
+
+[[rule]]
+name = "field-underscore-prefix"
+presets = ["strict"]
+category = "naming"
+stylecop = ["SA1309"]
+
+[[rule]]
+name = "interface-name-prefix"
+presets = ["standard", "strict"]
+category = "naming"
+dotnet-analyzers = ["CA1715"]
+stylecop = ["SA1302"]
+
+[[rule]]
+name = "local-name-camel-case"
+presets = ["strict"]
+category = "naming"
+stylecop = ["SA1312"]
+
+[[rule]]
+name = "nullable-shorthand"
+presets = ["strict"]
+category = "style"
+stylecop = ["SA1125"]
+
+[[rule]]
+name = "one-class-per-file"
+presets = ["strict"]
+category = "style"
+stylecop = ["SA1402"]
+
+[[rule]]
+name = "one-namespace-per-file"
+presets = ["strict"]
+category = "style"
+stylecop = ["SA1403"]
+
+[[rule]]
+name = "parameter-name-camel-case"
+presets = ["strict"]
+category = "naming"
+stylecop = ["SA1313"]
+
+[[rule]]
+name = "prefer-predefined-type"
+presets = ["strict"]
+category = "style"
+stylecop = ["SA1121"]
+
+[[rule]]
+name = "region-directive"
+presets = ["strict"]
+category = "style"
+stylecop = ["SA1124"]
+
+[[rule]]
+name = "single-line-comment-spacing"
+presets = ["standard", "strict"]
+category = "style"
+stylecop = ["SA1005"]
+
+[[rule]]
+name = "string-empty-literal"
+presets = ["strict"]
+category = "style"
+stylecop = ["SA1122"]
+
+[[rule]]
+name = "stylecop-documentation"
+category = "docs"
+stylecop = ["SA1600", "SA1601", "SA1602", "SA1603", "SA1604", "SA1605", "SA1606", "SA1607", "SA1608", "SA1609", "SA1610", "SA1611", "SA1612", "SA1613", "SA1614", "SA1615", "SA1616", "SA1617", "SA1618", "SA1619", "SA1620", "SA1621", "SA1622", "SA1623", "SA1624", "SA1625", "SA1626", "SA1627", "SA1628", "SA1629", "SA1630", "SA1631", "SA1632", "SA1633", "SA1634", "SA1635", "SA1636", "SA1637", "SA1638", "SA1639", "SA1640", "SA1641", "SA1642", "SA1643", "SA1644", "SA1645", "SA1646", "SA1647", "SA1648", "SA1649", "SA1650", "SA1651"]
+
+[[rule]]
+name = "stylecop-maintainability"
+category = "style"
+stylecop = ["SA1119", "SA1400", "SA1404", "SA1405", "SA1406", "SA1407", "SA1408", "SA1409", "SA1410", "SA1411", "SA1412", "SA1413"]
+
+[[rule]]
+name = "stylecop-naming"
+category = "naming"
+stylecop = ["SA1301", "SA1304", "SA1305", "SA1307", "SA1308", "SA1310", "SA1311", "SA1314", "SA1316"]
+
+[[rule]]
+name = "stylecop-ordering"
+category = "style"
+stylecop = ["SA1201", "SA1202", "SA1203", "SA1204", "SA1205", "SA1206", "SA1207", "SA1208", "SA1209", "SA1210", "SA1211", "SA1212", "SA1213", "SA1214", "SA1216", "SA1217"]
+
+[[rule]]
+name = "stylecop-readability"
+category = "style"
+stylecop = ["SA1100", "SA1101", "SA1102", "SA1103", "SA1104", "SA1105", "SA1106", "SA1107", "SA1108", "SA1109", "SA1110", "SA1111", "SA1112", "SA1113", "SA1114", "SA1115", "SA1116", "SA1117", "SA1118", "SA1123", "SA1126", "SA1127", "SA1128", "SA1129", "SA1132", "SA1134", "SA1135", "SA1136", "SA1137", "SA1139", "SA1141", "SA1142", "SA1414"]
+
+[[rule]]
+name = "type-name-pascal-case"
+presets = ["standard", "strict"]
+category = "naming"
+stylecop = ["SA1300"]
+
+[[rule]]
+name = "using-outside-namespace"
+presets = ["strict"]
+category = "style"
+dotnet-code-style = ["IDE0065"]
+stylecop = ["SA1200"]

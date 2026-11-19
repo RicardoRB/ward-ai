@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 /** The validation of the catalog model, independent of the file format. */
 class CatalogModelTest {
-  private static final int TOOL_COUNT = 25;
+  private static final int TOOL_COUNT = 28;
 
   @Test
   void statusesCarryTheirIssueOrReason() {

@@ -1,0 +1,3 @@
+braces-required IDE0011 the Roslyn rule reports the statement that owns the body (the if, while or for line); Ward reports the unbraced body, as StyleCop SA1503 does
+one-class-per-file SA1402 StyleCop reports the second class; Ward reports the file at line 1 because the count check has no node for the extra class
+one-namespace-per-file SA1403 StyleCop reports the second namespace; Ward reports the file at line 1 because the count check has no node for the extra namespace

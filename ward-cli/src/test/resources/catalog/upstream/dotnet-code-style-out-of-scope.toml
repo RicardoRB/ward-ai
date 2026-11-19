@@ -1,0 +1,21 @@
+# Rules of dotnet-code-style-4.14.0 that Ward does not implement, with the reason for each group.
+
+[[group]]
+reason = "opposite style preference of a rule Ward implements or plans; a project picks one"
+rules = ["IDE0008", "IDE0160"]
+
+[[group]]
+reason = "formatting: covered by ward format"
+rules = ["IDE0055", "IDE2000", "IDE2001", "IDE2002", "IDE2003", "IDE2004", "IDE2005", "IDE2006"]
+
+[[group]]
+reason = "suppression bookkeeping depends on compiler diagnostic state, which Ward does not run"
+rules = ["IDE0079", "IDE0080", "IDE0082"]
+
+[[group]]
+reason = "compiler or generator output filtering, not source style"
+rules = ["IDE1005"]
+
+[[group]]
+reason = "naming rules are user-configured in .editorconfig; Ward ships fixed naming rules instead (stylecop-naming rows)"
+rules = ["IDE1006"]

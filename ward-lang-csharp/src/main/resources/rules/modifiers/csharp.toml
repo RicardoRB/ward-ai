@@ -1,0 +1,7 @@
+# How C# spells the modifiers that rule filters name.
+kinds = ["modifier", "attributes"]
+
+[texts]
+static = ["static"]
+final = ["sealed"]
+abstract = ["abstract"]

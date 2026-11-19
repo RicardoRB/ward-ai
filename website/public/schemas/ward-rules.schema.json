@@ -176,6 +176,117 @@
         }
       }
     },
+    "ward:csharp/anonymous-method-delegate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:csharp/attribute-list-split": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "max": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "ward:csharp/braces-required": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "text": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/const-field-name-pascal-case": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/constant-on-left-of-comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "text": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
     "ward:csharp/duplicate-code": {
       "type": "object",
       "additionalProperties": false,
@@ -210,6 +321,523 @@
           "type": "integer",
           "minimum": 0,
           "maximum": 100
+        }
+      }
+    },
+    "ward:csharp/empty-single-line-comment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/field-name-camel-case": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/field-not-private": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "text": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/field-underscore-prefix": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/file-scoped-namespace": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:csharp/general-exception-catch": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "text": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/identifier-underscore": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/interface-name-prefix": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/local-name-camel-case": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/method-complexity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "max": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "ward:csharp/mutable-static-field-visible": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "text": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/nullable-shorthand": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/one-class-per-file": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "max": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "ward:csharp/one-namespace-per-file": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "max": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "ward:csharp/parameter-name-camel-case": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/prefer-predefined-type": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "text": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/region-directive": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/reserved-exception-type": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "text": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/single-line-comment-spacing": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/string-empty-literal": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:csharp/type-name-pascal-case": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/using-outside-namespace": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:csharp/visible-instance-field": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "text": {
+          "type": "string",
+          "description": "A regular expression."
         }
       }
     },
@@ -61007,7 +61635,35 @@
               "android.hardcoded-text",
               "android.missing-content-description",
               "android.unused-resources",
+              "csharp.anonymous-method-delegate",
+              "csharp.attribute-list-split",
+              "csharp.braces-required",
+              "csharp.const-field-name-pascal-case",
+              "csharp.constant-on-left-of-comparison",
               "csharp.duplicate-code",
+              "csharp.empty-single-line-comment",
+              "csharp.field-name-camel-case",
+              "csharp.field-not-private",
+              "csharp.field-underscore-prefix",
+              "csharp.file-scoped-namespace",
+              "csharp.general-exception-catch",
+              "csharp.identifier-underscore",
+              "csharp.interface-name-prefix",
+              "csharp.local-name-camel-case",
+              "csharp.method-complexity",
+              "csharp.mutable-static-field-visible",
+              "csharp.nullable-shorthand",
+              "csharp.one-class-per-file",
+              "csharp.one-namespace-per-file",
+              "csharp.parameter-name-camel-case",
+              "csharp.prefer-predefined-type",
+              "csharp.region-directive",
+              "csharp.reserved-exception-type",
+              "csharp.single-line-comment-spacing",
+              "csharp.string-empty-literal",
+              "csharp.type-name-pascal-case",
+              "csharp.using-outside-namespace",
+              "csharp.visible-instance-field",
               "java.aa-assertion-of-arguments",
               "java.abbreviation-as-word-in-name",
               "java.abstract-class-name",
@@ -64092,7 +64748,35 @@
               "android.hardcoded-text",
               "android.missing-content-description",
               "android.unused-resources",
+              "csharp.anonymous-method-delegate",
+              "csharp.attribute-list-split",
+              "csharp.braces-required",
+              "csharp.const-field-name-pascal-case",
+              "csharp.constant-on-left-of-comparison",
               "csharp.duplicate-code",
+              "csharp.empty-single-line-comment",
+              "csharp.field-name-camel-case",
+              "csharp.field-not-private",
+              "csharp.field-underscore-prefix",
+              "csharp.file-scoped-namespace",
+              "csharp.general-exception-catch",
+              "csharp.identifier-underscore",
+              "csharp.interface-name-prefix",
+              "csharp.local-name-camel-case",
+              "csharp.method-complexity",
+              "csharp.mutable-static-field-visible",
+              "csharp.nullable-shorthand",
+              "csharp.one-class-per-file",
+              "csharp.one-namespace-per-file",
+              "csharp.parameter-name-camel-case",
+              "csharp.prefer-predefined-type",
+              "csharp.region-directive",
+              "csharp.reserved-exception-type",
+              "csharp.single-line-comment-spacing",
+              "csharp.string-empty-literal",
+              "csharp.type-name-pascal-case",
+              "csharp.using-outside-namespace",
+              "csharp.visible-instance-field",
               "java.aa-assertion-of-arguments",
               "java.abbreviation-as-word-in-name",
               "java.abstract-class-name",
@@ -67206,8 +67890,92 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
+            "anonymous-method-delegate": {
+              "$ref": "#/$defs/ward:csharp~1anonymous-method-delegate"
+            },
+            "attribute-list-split": {
+              "$ref": "#/$defs/ward:csharp~1attribute-list-split"
+            },
+            "braces-required": {
+              "$ref": "#/$defs/ward:csharp~1braces-required"
+            },
+            "const-field-name-pascal-case": {
+              "$ref": "#/$defs/ward:csharp~1const-field-name-pascal-case"
+            },
+            "constant-on-left-of-comparison": {
+              "$ref": "#/$defs/ward:csharp~1constant-on-left-of-comparison"
+            },
             "duplicate-code": {
               "$ref": "#/$defs/ward:csharp~1duplicate-code"
+            },
+            "empty-single-line-comment": {
+              "$ref": "#/$defs/ward:csharp~1empty-single-line-comment"
+            },
+            "field-name-camel-case": {
+              "$ref": "#/$defs/ward:csharp~1field-name-camel-case"
+            },
+            "field-not-private": {
+              "$ref": "#/$defs/ward:csharp~1field-not-private"
+            },
+            "field-underscore-prefix": {
+              "$ref": "#/$defs/ward:csharp~1field-underscore-prefix"
+            },
+            "file-scoped-namespace": {
+              "$ref": "#/$defs/ward:csharp~1file-scoped-namespace"
+            },
+            "general-exception-catch": {
+              "$ref": "#/$defs/ward:csharp~1general-exception-catch"
+            },
+            "identifier-underscore": {
+              "$ref": "#/$defs/ward:csharp~1identifier-underscore"
+            },
+            "interface-name-prefix": {
+              "$ref": "#/$defs/ward:csharp~1interface-name-prefix"
+            },
+            "local-name-camel-case": {
+              "$ref": "#/$defs/ward:csharp~1local-name-camel-case"
+            },
+            "method-complexity": {
+              "$ref": "#/$defs/ward:csharp~1method-complexity"
+            },
+            "mutable-static-field-visible": {
+              "$ref": "#/$defs/ward:csharp~1mutable-static-field-visible"
+            },
+            "nullable-shorthand": {
+              "$ref": "#/$defs/ward:csharp~1nullable-shorthand"
+            },
+            "one-class-per-file": {
+              "$ref": "#/$defs/ward:csharp~1one-class-per-file"
+            },
+            "one-namespace-per-file": {
+              "$ref": "#/$defs/ward:csharp~1one-namespace-per-file"
+            },
+            "parameter-name-camel-case": {
+              "$ref": "#/$defs/ward:csharp~1parameter-name-camel-case"
+            },
+            "prefer-predefined-type": {
+              "$ref": "#/$defs/ward:csharp~1prefer-predefined-type"
+            },
+            "region-directive": {
+              "$ref": "#/$defs/ward:csharp~1region-directive"
+            },
+            "reserved-exception-type": {
+              "$ref": "#/$defs/ward:csharp~1reserved-exception-type"
+            },
+            "single-line-comment-spacing": {
+              "$ref": "#/$defs/ward:csharp~1single-line-comment-spacing"
+            },
+            "string-empty-literal": {
+              "$ref": "#/$defs/ward:csharp~1string-empty-literal"
+            },
+            "type-name-pascal-case": {
+              "$ref": "#/$defs/ward:csharp~1type-name-pascal-case"
+            },
+            "using-outside-namespace": {
+              "$ref": "#/$defs/ward:csharp~1using-outside-namespace"
+            },
+            "visible-instance-field": {
+              "$ref": "#/$defs/ward:csharp~1visible-instance-field"
             }
           }
         },

@@ -1,0 +1,28 @@
+# Status of the stylecop rows in csharp: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+anonymous-method-delegate = "implemented"
+attribute-list-split = "implemented"
+braces-required = "implemented"
+const-field-name-pascal-case = "implemented"
+constant-on-left-of-comparison = "implemented"
+empty-single-line-comment = "implemented"
+field-name-camel-case = "implemented"
+field-not-private = "implemented"
+field-underscore-prefix = "implemented"
+interface-name-prefix = "implemented"
+local-name-camel-case = "implemented"
+nullable-shorthand = "implemented"
+one-class-per-file = "implemented"
+one-namespace-per-file = "implemented"
+parameter-name-camel-case = "implemented"
+prefer-predefined-type = "implemented"
+region-directive = "implemented"
+single-line-comment-spacing = "implemented"
+string-empty-literal = "implemented"
+stylecop-documentation = { status = "planned", issue = "#680" }
+stylecop-maintainability = { status = "planned", issue = "#680" }
+stylecop-naming = { status = "planned", issue = "#680" }
+stylecop-ordering = { status = "planned", issue = "#680" }
+stylecop-readability = { status = "planned", issue = "#680" }
+type-name-pascal-case = "implemented"
+using-outside-namespace = "implemented"

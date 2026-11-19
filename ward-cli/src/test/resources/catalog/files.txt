@@ -38,3 +38,7 @@ typescript-eslint
 vulture
 ward-own
 security
+dotnet-analyzers
+dotnet-code-style
+dotnet-security
+stylecop

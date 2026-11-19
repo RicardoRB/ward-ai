@@ -8,7 +8,10 @@ import java.util.List;
  * other module lists it.
  */
 public final class CSharpRuleFiles implements RuleFileProvider {
-  private static final List<String> FILES = List.of("rules/duplication-csharp.toml");
+  private static final List<String> FILES = List.of(
+      "rules/dotnet-style.toml",
+      "rules/duplication-csharp.toml"
+  );
 
   @Override
   public List<String> ruleFiles() {

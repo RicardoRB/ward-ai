@@ -1,0 +1,439 @@
+# C# rules mapped to the .NET analyzers (CA), the Roslyn code-style rules (IDE) and StyleCop.Analyzers (SA).
+# Written from scratch; each rule is a generic check of the engine over the Ward-owned C# grammar.
+# A compact node text has no spaces, so a modifier list reads as one run of words.
+
+[[rules]]
+id = "ward:csharp/identifier-underscore"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["class_declaration", "struct_declaration", "interface_declaration", "enum_declaration", "record_declaration", "method_declaration", "property_declaration"]
+name = "identifier"
+skip = ["attributes", "type_", "return_type", "type_parameter_list", "primary_parameters", "class_base", "type_parameter_constraints_clause", "class_body", "enum_body", "parameter_list", "method_body", "property_body"]
+pattern = '[^_]*'
+message = "name '{value}' contains an underscore"
+'''
+
+[[rules]]
+id = "ward:csharp/interface-name-prefix"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["interface_declaration"]
+name = "identifier"
+skip = ["attributes", "type_parameter_list", "class_base", "type_parameter_constraints_clause", "class_body"]
+pattern = 'I[A-Z]\w*'
+message = "interface name '{value}' should start with I followed by an uppercase letter"
+'''
+
+[[rules]]
+id = "ward:csharp/reserved-exception-type"
+language = "csharp"
+capability = "SYNTAX"
+severity = "error"
+category = "error-handling"
+presets = ["standard", "strict"]
+options.text = { type = "regex" }
+body = '''
+check = "forbidden-node"
+kinds = ["object_creation_expression"]
+text = '^new(?:System\.)?(?:Exception|SystemException|ApplicationException|IndexOutOfRangeException|NullReferenceException|OutOfMemoryException|ExecutionEngineException)\('
+message = "do not throw a reserved or too general exception type: {value}"
+'''
+
+[[rules]]
+id = "ward:csharp/general-exception-catch"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "error-handling"
+presets = ["standard", "strict"]
+options.text = { type = "regex" }
+body = '''
+check = "forbidden-node"
+kinds = ["specific_catch_clause", "general_catch_clause"]
+text = '^catch(?:\((?:System\.)?Exception(?:[a-z_]\w*)?\))?\{(?!.*throw)'
+message = "do not catch general exception types without rethrowing"
+'''
+
+[[rules]]
+id = "ward:csharp/mutable-static-field-visible"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+options.text = { type = "regex" }
+body = '''
+check = "forbidden-node"
+kinds = ["member_declaration>member_body>field_declaration"]
+text = '^(?:\[[^\]]*\])*(?:new|volatile|unsafe|required)*(?:public(?:new|volatile|unsafe|required)*static|static(?:new|volatile|unsafe|required)*public)(?!(?:new|volatile|unsafe|required)*readonly)'
+message = "public static field is mutable; make it readonly, a constant or a property"
+'''
+
+[[rules]]
+id = "ward:csharp/visible-instance-field"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+options.text = { type = "regex" }
+body = '''
+check = "forbidden-node"
+kinds = ["member_declaration>member_body>field_declaration"]
+text = '^(?:\[[^\]]*\])*(?:new|volatile|unsafe|required|readonly)*+public(?:new|volatile|unsafe|required|readonly)*+(?!static)'
+message = "public instance field should be a property"
+'''
+
+[[rules]]
+id = "ward:csharp/field-not-private"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["strict"]
+options.text = { type = "regex" }
+body = '''
+check = "forbidden-node"
+kinds = ["member_declaration>member_body>field_declaration"]
+text = '^(?:\[[^\]]*\])*(?:static|readonly|new|volatile|unsafe|required)*+(?:public|protected|internal)'
+message = "field should be private"
+'''
+
+[[rules]]
+id = "ward:csharp/method-complexity"
+language = "csharp"
+capability = "SYNTAX"
+severity = "error"
+category = "complexity"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
+body = "measure=decision-points; node=method_declaration,constructor_declaration,local_function_declaration; max=10; name=member_name|identifier; nested=local_function_declaration,lambda_expression,anonymous_method_expression; decisions=if_statement,while_statement,do_statement,for_statement,foreach_statement,specific_catch_clause,switch_label; message=method {name} has complexity {value}, the limit is {max}"
+
+[[rules]]
+id = "ward:csharp/braces-required"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+options.text = { type = "regex" }
+body = '''
+check = "forbidden-node"
+kinds = ["embedded_statement"]
+parent = ["if_statement", "while_statement", "do_statement", "for_statement", "foreach_statement", "lock_statement", "using_statement"]
+text = '^(?!\{|if\()'
+message = "the body of this statement needs braces"
+'''
+
+[[rules]]
+id = "ward:csharp/file-scoped-namespace"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["namespace_declaration"]
+message = "use a file-scoped namespace"
+'''
+
+[[rules]]
+id = "ward:csharp/using-outside-namespace"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["using_directive"]
+inside = ["namespace_declaration"]
+message = "place using directives outside the namespace"
+'''
+
+[[rules]]
+id = "ward:csharp/prefer-predefined-type"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+options.text = { type = "regex" }
+body = '''
+check = "forbidden-node"
+kinds = ["namespace_or_type_name"]
+text = '^(?:System\.)?(?:Boolean|Byte|SByte|Char|Decimal|Double|Single|Int16|UInt16|Int32|UInt32|Int64|UInt64|Object|String)$'
+message = "use the language keyword instead of the type name {value}"
+'''
+
+[[rules]]
+id = "ward:csharp/string-empty-literal"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["literal"]
+text = '^""$'
+not-inside = ["constant_declaration", "attribute", "default_argument"]
+message = "use string.Empty instead of an empty string literal"
+'''
+
+[[rules]]
+id = "ward:csharp/region-directive"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = '^\s*#\s*region\b'
+message = "do not use regions; split the code instead"
+'''
+
+[[rules]]
+id = "ward:csharp/anonymous-method-delegate"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["anonymous_method_expression"]
+message = "use lambda syntax instead of an anonymous method"
+'''
+
+[[rules]]
+id = "ward:csharp/nullable-shorthand"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "text-pattern"
+target = "code"
+pattern = '\bNullable\s*<'
+message = "use the T? shorthand instead of Nullable<T>"
+'''
+
+[[rules]]
+id = "ward:csharp/single-line-comment-spacing"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = '^//(?![/\s])'
+message = "start a single-line comment with a space after the slashes"
+'''
+
+[[rules]]
+id = "ward:csharp/empty-single-line-comment"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = '^//\s*$'
+message = "a comment should contain text"
+'''
+
+[[rules]]
+id = "ward:csharp/one-class-per-file"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+options.max = { type = "integer", min = 1 }
+body = '''
+check = "count"
+kinds = ["compilation_unit"]
+counted = ["class_declaration"]
+skip = ["class_body"]
+max = 1
+message = "file declares {value} classes; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:csharp/one-namespace-per-file"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+options.max = { type = "integer", min = 1 }
+body = '''
+check = "count"
+kinds = ["compilation_unit"]
+counted = ["namespace_declaration", "file_scoped_namespace_declaration"]
+skip = ["namespace_body"]
+max = 1
+message = "file declares {value} namespaces; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:csharp/attribute-list-split"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+options.max = { type = "integer", min = 1 }
+body = '''
+check = "count"
+kinds = ["attribute_list"]
+counted = ["attribute"]
+max = 1
+message = "brackets hold {value} attributes; put each attribute in its own brackets"
+'''
+
+[[rules]]
+id = "ward:csharp/constant-on-left-of-comparison"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["strict"]
+options.text = { type = "regex" }
+body = '''
+check = "forbidden-node"
+kinds = ["operator_expression"]
+text = '^(?:\d[\w.]*|"[^"]*"|null|true|false)(?:==|!=|<=|>=|<|>)(?!.*(?:&&|\|\|))'
+message = "put the constant on the right-hand side of the comparison"
+'''
+
+[[rules]]
+id = "ward:csharp/type-name-pascal-case"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["class_declaration", "struct_declaration", "interface_declaration", "enum_declaration", "record_declaration", "method_declaration", "property_declaration"]
+name = "identifier"
+skip = ["attributes", "type_", "return_type", "type_parameter_list", "primary_parameters", "class_base", "type_parameter_constraints_clause", "class_body", "enum_body", "parameter_list", "method_body", "property_body"]
+pattern = '[A-Z][\w.<>,]*'
+message = "name '{value}' should start with an uppercase letter"
+'''
+
+[[rules]]
+id = "ward:csharp/const-field-name-pascal-case"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "naming"
+presets = ["strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["constant_declarator"]
+name = "identifier"
+pattern = '[A-Z]\w*'
+message = "constant name '{value}' should start with an uppercase letter"
+'''
+
+[[rules]]
+id = "ward:csharp/field-name-camel-case"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "naming"
+presets = ["strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["member_declaration>member_body>field_declaration"]
+modifiers = ["private"]
+not-modifiers = ["static"]
+name = "identifier"
+skip = ["attributes", "type_", "variable_initializer"]
+pattern = '_*[a-z]\w*'
+message = "field name '{value}' should start with a lowercase letter"
+'''
+
+[[rules]]
+id = "ward:csharp/field-underscore-prefix"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "naming"
+presets = ["strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["member_declaration>member_body>field_declaration"]
+modifiers = ["private"]
+not-modifiers = ["static"]
+name = "identifier"
+skip = ["attributes", "type_", "variable_initializer"]
+pattern = '[^_]\w*'
+message = "field name '{value}' should not start with an underscore"
+'''
+
+[[rules]]
+id = "ward:csharp/local-name-camel-case"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "naming"
+presets = ["strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["local_variable_declarator"]
+name = "identifier"
+skip = ["local_variable_initializer"]
+pattern = '_*[a-z]\w*'
+message = "variable name '{value}' should start with a lowercase letter"
+'''
+
+[[rules]]
+id = "ward:csharp/parameter-name-camel-case"
+language = "csharp"
+capability = "SYNTAX"
+severity = "warning"
+category = "naming"
+presets = ["strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["parameter"]
+name = "identifier"
+skip = ["attributes", "type_", "default_argument"]
+not-inside = ["primary_parameters"]
+pattern = '_*[a-z]\w*'
+message = "parameter name '{value}' should start with a lowercase letter"
+'''
