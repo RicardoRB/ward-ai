@@ -1,0 +1,6 @@
+# fixture	reason. A reviewed difference from `dotnet format whitespace`; the parity test requires that the outputs differ.
+diff-block-comment	dotnet format moves the inner lines of a block comment by the shift of its first line; Ward keeps every comment as written
+diff-continuation	dotnet format keeps the source offset of a continuation line inside a parameter list or a constraint list; Ward puts it at the depth of its statement
+diff-inline-comment	dotnet format puts the code after a block comment on a new line; Ward keeps the line breaks that C# reads
+diff-label	dotnet format outdents a label by one level; Ward indents it like a statement
+diff-query-alignment	dotnet format aligns the clauses of a query with its first from; Ward indents them like the statement

@@ -6,6 +6,9 @@ description: Format the project's source files in Ward style, with no external f
 `ward format` rewrites the source files of the project's engine languages (Java, Kotlin, TypeScript,
 JavaScript, Python, Swift and Rust) in Ward style. It needs only the `ward` binary.
 
+C# files (`.cs`) are formatted the way `dotnet format whitespace` formats them at its defaults; see
+[C# style](#c-style).
+
 ```sh
 ward format [--check] [--format text|json] [-C <dir>] [<path>...]
 ```
@@ -84,6 +87,35 @@ written, so imports keep their order and comments are not rewrapped.
   continuation deeper than the line it continues. In order from loosest to tightest, those are
   `?`/`:`, then binary operators, then dots. A looser line goes back to the depth of its own kind.
   A comment inside a continued statement keeps the statement's indentation.
+
+## C# style
+
+The C# formatter changes only whitespace, as `dotnet format whitespace` does, and never wraps a long
+line. Every token and comment stays as written.
+
+- Lines are indented by brace depth, four spaces by default (`indent_style` and `indent_size` of the
+  `.editorconfig` apply). The body of an `if`, `else`, `for`, `foreach`, `while`, `do`, `using` or
+  `lock` that is not a block, and the statements of a `switch` section, go one level deeper.
+- An opening brace goes on its own line when its block spans lines, for types, methods, accessors,
+  statements, lambdas, object initializers and switch expressions. A block that ends on the line it
+  starts on, such as `{ return 1; }`, and an array initializer such as `new[] { 1, 2 }`, stay as
+  written. An `else`, `catch` or `finally` goes below the closing brace of a multi-line block.
+- Spaces follow `dotnet format`: around binary operators, after commas and semicolons, after
+  `if`, `for`, `while`, `switch` and the other statement keywords, and none inside parentheses,
+  before a call's arguments or around `.`, `?.` and `::`.
+- A line break stays where it is, as a continuation line at the depth of its statement. Blank lines
+  stay. `#region` and `#endregion` follow the code around them; every other directive goes to the
+  first column.
+- Verbatim, raw and interpolated strings and comments are copied as written.
+
+Ward differs from `dotnet format` in a few places, and the parity test lists each one with its
+reason: it keeps the inner lines of a block comment and the line breaks after a block comment, it
+indents a continuation line inside a parameter list or a constraint list at the depth of its
+statement (`dotnet format` keeps the source offset), it does not align the clauses of a query with
+its first `from`, and it indents a label like a statement.
+
+Ward refuses a C# file that has a conditional-compilation branch the parser skips (an `#if` whose
+symbol is not defined in the file), because the formatter cannot read the code in that branch.
 
 ## Formatting in `ward check`
 

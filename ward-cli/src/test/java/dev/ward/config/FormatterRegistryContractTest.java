@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Fails the build when an analysis language has no native formatter. OpenAPI documents are data,
- * and Ward does not format YAML or JSON. C# is read by the analysis engine since story C2
- * of epic #642 and gets its formatter in story C3, which removes it from the list below.
+ * and Ward does not format YAML or JSON.
  */
 class FormatterRegistryContractTest {
   @Test
@@ -20,8 +19,7 @@ class FormatterRegistryContractTest {
             EnumSet.complementOf(
                 EnumSet.of(
                     AnalysisLanguage.OPENAPI,
-                    AnalysisLanguage.ANDROID,
-                    AnalysisLanguage.CSHARP
+                    AnalysisLanguage.ANDROID
                 )
             )
         );

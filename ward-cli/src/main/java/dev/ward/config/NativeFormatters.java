@@ -3,6 +3,8 @@ package dev.ward.config;
 import dev.ward.analysis.domain.format.FormatterEntry;
 import dev.ward.analysis.domain.format.FormatterRegistry;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.analysis.frontend.antlr.format.csharp.CSharpFormatSyntax;
+import dev.ward.analysis.frontend.antlr.format.csharp.CSharpFormatter;
 import dev.ward.analysis.frontend.antlr.format.ecma.JavaScriptFormatSyntax;
 import dev.ward.analysis.frontend.antlr.format.ecma.JavaScriptFormatter;
 import dev.ward.analysis.frontend.antlr.format.ecma.TypeScriptFormatSyntax;
@@ -44,7 +46,9 @@ final class NativeFormatters {
             AnalysisLanguage.SWIFT,
             new FormatterEntry(new SwiftFormatter(), new SwiftFormatSyntax()),
             AnalysisLanguage.RUST,
-            new FormatterEntry(new RustFormatter(), new RustFormatSyntax())
+            new FormatterEntry(new RustFormatter(), new RustFormatSyntax()),
+            AnalysisLanguage.CSHARP,
+            new FormatterEntry(new CSharpFormatter(), new CSharpFormatSyntax())
         )
     );
   }

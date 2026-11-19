@@ -44,7 +44,9 @@ class NativeFormatSmokeTest {
           "ios/App.swift",
           "struct App{let x:Int}\n",
           "rust/main.rs",
-          "fn main(){let a=1+2;}\n"
+          "fn main(){let a=1+2;}\n",
+          "lib/App.cs",
+          "class App{int x;}\n"
       );
 
   @TempDir Path project;
