@@ -1,8 +1,5 @@
 package dev.ward.analysis.domain.jvm;
 
-import dev.ward.analysis.domain.ir.FlowSite;
-import dev.ward.analysis.domain.ir.FlowSiteKind;
-import dev.ward.analysis.domain.ir.Span;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
@@ -17,8 +14,8 @@ import java.util.regex.PatternSyntaxException;
  * Finds a chain of {@code String.replace} and {@code replaceAll} calls with literal arguments that
  * removes both carriage returns and line feeds from its receiver, as in {@code
  * value.replace("\r", "_").replace("\n", "_")} or {@code value.replaceAll("[\r\n]", "")}. Such a
- * chain gives a site named {@link #NAME} whose argument is the receiver, so a taint specification
- * can list it as a sanitizer of the receiver.
+ * chain gives a site named {@link #NAME} whose argument is the receiver (built by {@code
+ * JavaFlowSites}), so a taint specification can list it as a sanitizer of the receiver.
  */
 final class JavaLineBreakStrips {
   /** The name of the site of a chain that removes every line break of its receiver. */
@@ -28,6 +25,10 @@ final class JavaLineBreakStrips {
   private static final String REPLACE = "replace";
   private static final String REPLACE_ALL = "replaceAll";
   private static final int ARGUMENTS = 2;
+  private static final int NAME_GROUP = 1;
+  private static final int TARGET_GROUP = 2;
+  private static final int REPLACEMENT_GROUP = 3;
+  private static final char ESCAPE = '\\';
   private static final String LITERAL = "(\"(?:[^\"\\\\]|\\\\.)*+\"|'(?:[^'\\\\]|\\\\.)++')";
   private static final Pattern TRAILING_CALL =
       Pattern.compile(
@@ -71,52 +72,41 @@ final class JavaLineBreakStrips {
   private JavaLineBreakStrips() {}
 
   /**
-   * Returns the site of the chain that ends with {@code name(arguments)} called on {@code
-   * qualifier}, when the whole chain removes both line breaks from a {@code String}.
+   * Returns whether the chain that ends with {@code name(arguments)} called on {@code qualifier}
+   * removes both line breaks from a {@code String}.
    *
    * @param name the called name
    * @param arguments the texts of the arguments
    * @param qualifier the text of the receiver
-   * @param receiver the span of the receiver
-   * @param call the span of the call
    * @param types the type of a chain's first receiver, by its text
    */
-  static Optional<FlowSite> of(
+  static boolean removesAll(
       final String name,
       final List<String> arguments,
       final String qualifier,
-      final Span receiver,
-      final Span call,
       final Function<String,
       Optional<String>> types
   ) {
     if (arguments.size() != ARGUMENTS || !isReplace(name)) {
-      return Optional.empty();
+      return false;
     }
     final Set<LineBreak> removed = EnumSet.noneOf(LineBreak.class);
     removed.addAll(removedBy(name, arguments.get(0), arguments.get(1)));
     String base = qualifier;
     Matcher trailing = TRAILING_CALL.matcher(base);
     while (trailing.find()) {
-      removed.addAll(removedBy(trailing.group(1), trailing.group(2), trailing.group(3)));
+      removed.addAll(
+          removedBy(
+              trailing.group(NAME_GROUP),
+              trailing.group(TARGET_GROUP),
+              trailing.group(REPLACEMENT_GROUP)
+          )
+      );
       base = base.substring(0, trailing.start());
       trailing = TRAILING_CALL.matcher(base);
     }
     final boolean string = types.apply(base).filter(STRING_TYPE::equals).isPresent();
-    if (!string || removed.size() != LineBreak.values().length) {
-      return Optional.empty();
-    }
-    return Optional.of(
-        new FlowSite(
-            FlowSiteKind.CALL,
-            NAME,
-            qualifier,
-            Optional.empty(),
-            List.of(),
-            List.of(receiver),
-            call
-        )
-    );
+    return string && removed.size() == LineBreak.values().length;
   }
 
   private static boolean isReplace(final String name) {
@@ -187,7 +177,7 @@ final class JavaLineBreakStrips {
     int at = 0;
     while (at < body.length()) {
       final char next = body.charAt(at);
-      if (next != '\\') {
+      if (next != ESCAPE) {
         text.append(next);
         at++;
         continue;
