@@ -13,6 +13,12 @@ still change behavior. Breaking changes are called out under **Changed**.
 - A Rust frontend (#648): a Rust grammar for editions 2021 and 2024 (`let`-`else`, let chains, async closures, C strings, raw borrows, `unsafe extern`), scope analysis that follows shadowing, imports, `if let` and match arms, and one control-flow graph per function with a body. `.rs` files are read as Rust; no Rust rule ships yet.
 - Rust rules mapped to Clippy and the rustc lints (#650): 92 `ward:rust/*` rules in the `standard` and `strict` presets, found by the `ward` gate from the syntax tree, the scopes and the control flow. Every lint of Clippy 0.1.88 and rustc 1.88 is classified in the catalog as implemented, planned (#681 type information, #682 syntax rules, #683 Cargo.toml rules) or out of scope with a reason. `ClippyParitySmokeTest` compares the fixtures with the real Clippy.
 
+## [0.11.2] - 2026-11-20
+
+### Fixed
+
+- `ward:java/openjdk-annotation-location` no longer reports a parameter list whose parameters start with annotations and sit on separate lines (#684). The rule now counts only annotation and modifier nodes, so the layout `ward format` writes passes.
+
 ## [0.11.1] - 2026-11-19
 
 ### Fixed
@@ -583,6 +589,7 @@ Initial release, published as `sentinel-ai`.
 - A bounded quality loop and a typed gate registry.
 - Starlight documentation site.
 
+[0.11.2]: https://github.com/RicardoRB/ward-ai/compare/v0.11.1...v0.11.2
 [0.11.1]: https://github.com/RicardoRB/ward-ai/compare/v0.11.0...v0.11.1
 [0.11.0]: https://github.com/RicardoRB/ward-ai/compare/v0.10.0...v0.11.0
 [0.10.0]: https://github.com/RicardoRB/ward-ai/compare/v0.9.1...v0.10.0
