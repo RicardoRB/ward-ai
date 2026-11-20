@@ -58,7 +58,7 @@ class SwiftCompatibilityMatrixTest {
 
   private static final int FIXTURE_COLUMN = 3;
   private static final Pattern CHECK =
-      Pattern.compile("\"name\":\"([^\"]+)\"(?:,\"type\":\"[^\"]*\")?,\"status\":\"([A-Z]+)\"");
+      Pattern.compile("\"name\":\"([^\"]+)\"(?:,\"type\":\"[^\"]*\")?,\"status\":\"([A-Z_]+)\"");
 
   @ParameterizedTest(name = "xcode {0} {1} {2} {3}")
   @CsvFileSource(resources = "/swift-matrix/cells.csv", numLinesToSkip = 1)
