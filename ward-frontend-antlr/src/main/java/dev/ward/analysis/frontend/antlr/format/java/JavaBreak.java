@@ -10,6 +10,8 @@ enum JavaBreak {
   SPACE,
   /** A line that prints a space flat and breaks inside a broken group. */
   LINE,
+  /** A line that breaks, one continuation deeper, only when the rest of the list does not fit. */
+  LIST,
   /** A line break that always happens. */
   HARD,
   /** A continuation line, indented by the continuation levels. */

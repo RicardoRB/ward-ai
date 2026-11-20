@@ -19,6 +19,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -83,6 +84,23 @@ class JavaStructuralRulesTest {
     final RuleRunResult result = run(units(FIXTURES + "java25"));
 
     assertThat(result.executionErrors()).isEmpty();
+  }
+
+  @Test
+  @DisplayName("Switch pattern variables are not declarators of the declaration holding the switch")
+  void switchPatternVariablesAreNotCountedAsDeclarations() {
+    final SourceUnit source =
+        new SourceUnit(
+            "Shapes.java",
+            AnalysisLanguage.JAVA,
+            "class Shapes {\n  int size(Object o) {\n    final int size =\n"
+                + "        switch (o) {\n          case String s -> s.length();\n"
+                + "          case Point(int x, int y) -> x + y;\n          default -> 0;\n"
+                + "        };\n    return size;\n  }\n}\n"
+        );
+
+    assertThat(run(List.of(source)).findings())
+        .noneMatch(finding -> "ward:java/multiple-variable-declarations".equals(finding.ruleId()));
   }
 
   @Test

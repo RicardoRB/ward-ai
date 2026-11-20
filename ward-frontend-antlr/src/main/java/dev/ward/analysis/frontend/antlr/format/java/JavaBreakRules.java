@@ -156,6 +156,9 @@ final class JavaBreakRules {
     if (SEMICOLON.equals(text)) {
       return blockTop ? JavaBreak.HARD : JavaBreak.SPACE;
     }
+    if (COMMA.equals(text) && facts.listCommas().contains(atom.index())) {
+      return JavaBreak.LIST;
+    }
     if (COMMA.equals(text)) {
       return groupTop ? JavaBreak.LINE : JavaBreak.SPACE;
     }

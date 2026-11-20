@@ -27,7 +27,7 @@ check = "count"
 kinds = ["localVariableDeclaration", "fieldDeclaration"]
 counted = ["variableDeclarator"]
 not-inside = ["forInit"]
-skip = ["block", "classBody"]
+skip = ["block", "classBody", "pattern"]
 max = 1
 message = "declaration of {value} variables; declare each variable in its own statement"
 '''

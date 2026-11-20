@@ -8,6 +8,11 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Fixed
+
+- `ward:java/multiple-variable-declarations` no longer counts the pattern variables of a `switch` or record pattern as declarations (#690).
+- `ward format` breaks an `extends`, `implements` or `permits` list after a comma, one continuation deeper, when the joined list does not fit the line width (#694).
+
 ## [0.11.2] - 2026-11-20
 
 ### Fixed

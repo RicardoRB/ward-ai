@@ -93,7 +93,9 @@ final class JavaSeparator {
     if (afterAnnotation) {
       return atom.newlines() > 0 && blockTop ? JavaBreak.HARD : JavaBreak.SPACE;
     }
-    if (pending == JavaBreak.HARD || pending == JavaBreak.LINE || pending == JavaBreak.NONE) {
+    if (pending == JavaBreak.HARD || pending == JavaBreak.LINE
+        || pending == JavaBreak.LIST
+        || pending == JavaBreak.NONE) {
       return pending;
     }
     return JavaBreak.UNSET;
