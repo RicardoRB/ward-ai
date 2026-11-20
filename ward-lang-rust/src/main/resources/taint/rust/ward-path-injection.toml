@@ -1,0 +1,96 @@
+# File paths of Rust programs, written for Ward from the std::fs, std::fs::File and std::path::Path documentation: a
+# path holding .. steps out of the directory it was joined to. Path::file_name keeps the last name only, which is the
+# clean part of a path.
+
+[[sinks]]
+kind = "call"
+name = "read"
+qualifier = "*fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "read_to_string"
+qualifier = "*fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "write"
+qualifier = "*fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "remove_file"
+qualifier = "*fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "remove_dir"
+qualifier = "*fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "remove_dir_all"
+qualifier = "*fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "create_dir"
+qualifier = "*fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "create_dir_all"
+qualifier = "*fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "read_dir"
+qualifier = "*fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "metadata"
+qualifier = "*fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "copy"
+qualifier = "*fs"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "rename"
+qualifier = "*fs"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "open"
+receiver = "File"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "create"
+receiver = "File"
+arguments = [0]
+
+[[sanitizers]]
+kind = "member"
+name = "file_name"
+
+[[sanitizers]]
+kind = "member"
+name = "parse"
+

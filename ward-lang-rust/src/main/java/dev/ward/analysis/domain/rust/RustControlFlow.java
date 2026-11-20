@@ -74,7 +74,7 @@ public final class RustControlFlow implements ControlFlowLowering {
       final RustAccesses accesses =
           new RustAccesses(scopes, node.span(), nested(body), writeEnds);
       graphs.add(
-          new RustBodyLowering(accesses)
+          new RustBodyLowering(accesses, new RustFlowSites(RustReceivers.locals(parameters, body)))
               .lower(
                   graph,
                   parameters == null

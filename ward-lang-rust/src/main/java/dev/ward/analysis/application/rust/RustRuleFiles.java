@@ -11,7 +11,8 @@ public final class RustRuleFiles implements RuleFileProvider {
   private static final List<String> FILES = List.of(
       "rules/rust/clippy-standard.toml",
       "rules/rust/clippy-strict.toml",
-      "rules/rust/rustc.toml"
+      "rules/rust/rustc.toml",
+      "rules/rust/security.toml"
   );
 
   @Override

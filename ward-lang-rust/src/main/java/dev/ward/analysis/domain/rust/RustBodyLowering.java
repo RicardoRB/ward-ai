@@ -32,9 +32,10 @@ final class RustBodyLowering {
    * Starts the lowering of one body.
    *
    * @param accesses the finder of the variable accesses of the body
+   * @param sites the finder of the calls of the body
    */
-  RustBodyLowering(final RustAccesses accesses) {
-    this.flow = new ControlFlowBuilder(accesses, FlowSites.NONE);
+  RustBodyLowering(final RustAccesses accesses, final FlowSites sites) {
+    this.flow = new ControlFlowBuilder(accesses, sites);
     this.jumps = new RustJumpLowering(flow);
     this.loops = new RustLoopLowering(flow, this::block);
     this.branches = new RustBranchLowering(flow, this::block, this::expression);

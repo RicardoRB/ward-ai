@@ -1,0 +1,72 @@
+# Security rules for Rust, written for Ward from the std::process, std::fs, std::env and std::path documentation, the
+# documentation of the rusqlite, postgres, sqlx, reqwest, native-tls and rustls crates, and the MITRE CWE entries named
+# in the catalog rows. The injection rules follow the taint specifications taint/rust/ward-<weakness>.toml and
+# taint/rust/sources.toml within one body and through the functions of one file.
+
+[[rules]]
+id = "ward:rust/command-injection"
+language = "rust"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/rust/sources.toml", "taint/rust/ward-command-injection.toml"]
+message = "untrusted data from {source} reaches {sink}, which decides the program or the arguments of a process; run a fixed program and check the value against a list"
+'''
+
+[[rules]]
+id = "ward:rust/sql-injection"
+language = "rust"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/rust/sources.toml", "taint/rust/ward-sql-injection.toml"]
+message = "untrusted data from {source} is part of the SQL text that {sink} runs, for instance built with format!; bind it as a parameter instead"
+'''
+
+[[rules]]
+id = "ward:rust/path-injection"
+language = "rust"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/rust/sources.toml", "taint/rust/ward-path-injection.toml"]
+message = "untrusted data from {source} is part of the file path that {sink} opens; keep the last path component only and join it to a fixed directory"
+'''
+
+[[rules]]
+id = "ward:rust/tls-verification-disabled"
+language = "rust"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+position = "match"
+pattern = '\bdanger_accept_invalid_(certs|hostnames)\(\s*true\s*\)|\.dangerous\(\)'
+message = "the client no longer checks the certificate of the server, so anyone on the network can pose as it; keep the verification on"
+'''
+
+[[rules]]
+id = "ward:rust/unsafe-public-function"
+language = "rust"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["visItem"]
+text = '^pub(\([a-z:]+\))?(const|async)*fn[A-Za-z_0-9]*.*unsafe\{'
+message = "a public function holds an unsafe block, so its callers rely on checks the compiler does not make; keep the block in a private function or mark the function unsafe"
+'''

@@ -1,0 +1,63 @@
+# SQL text of Rust programs, written for Ward from the documentation of the rusqlite, postgres and sqlx crates named
+# in the catalog rows: the first argument is SQL text, and values belong in bound parameters. These calls have no
+# declared receiver type, so the method name decides. A number parsed from text is clean.
+
+[[sinks]]
+kind = "call"
+name = "execute"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execute_batch"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "batch_execute"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "prepare"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "query"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "query_row"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "query_one"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "query_opt"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "query_as"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "query_scalar"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "sql_query"
+arguments = [0]
+
+[[sanitizers]]
+kind = "member"
+name = "parse"
+
