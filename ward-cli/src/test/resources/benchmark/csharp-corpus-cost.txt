@@ -1,0 +1,16 @@
+# Cost of Ward on the C# corpus of CSharpCorpusSmokeTest (#666). Hand-written from one measured run; no test compares it.
+# Measured 2026-11-20 on an Apple M-series Mac (Java 25, Maven surefire, default heap), other sessions running on the machine.
+# Rule set: preset strict, language csharp, plus every C# security rule (36 rules, none needs type facts), default options.
+# Not measured: the cold and cached gate through the built CLI, ward format --check, and peak memory (no jar was built).
+#
+# run | files | findings | wall time
+# newtonsoft-json + eshop, rule engine in the test | 1,491 | 7,711 places | 24 s (test JVM, parse and all 36 rules; the two runs of the final check took 24.3 s and 24.7 s)
+#
+# Known limits the corpus meets:
+# - The text rules read the inactive branches of #if as raw text (#708).
+# - No symbol is defined at the start of a file, so Newtonsoft.Json's NET20 and NET35 branches are never active.
+# - The .NET analyzers and StyleCop were not run over the corpus: the machine has no .NET SDK (#698 differential parity stays open).
+# - The first run left every file without analysis: the lexer rejected the byte-order mark that Visual Studio writes. The same
+#   corpus run showed four grammar gaps (a class with primary constructor and ';', an alias-qualified explicit interface
+#   member, a lambda with an explicit return type, a nullable array element type in 'new T?[n]') and line numbers that were
+#   too small after a false #if branch; all are fixed in this change with fixtures.

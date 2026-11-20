@@ -67,6 +67,31 @@ record PinnedCorpus(
           AnalysisLanguage.KOTLIN
       );
 
+  /** Newtonsoft.Json, a library in C# 12 syntax with a large legacy surface (MIT). */
+  static final PinnedCorpus NEWTONSOFT_JSON =
+      new PinnedCorpus(
+          "newtonsoft-json",
+          "13.0.4",
+          "71fb8eda5ee37ab3405ea5df6c2a9490716e411db82e6c0878132bdf29aedb17",
+          "Newtonsoft.Json-13.0.4",
+          AnalysisLanguage.CSHARP
+      );
+
+  /** eShop, a modern .NET application with records, primary constructors and minimal APIs (MIT). */
+  static final PinnedCorpus ESHOP =
+      new PinnedCorpus(
+          "eshop",
+          "ab10e4c68fd26369578ebfb3fd1ccf3b867d0444",
+          "e9eb4454c1fcb46dc39f425d0d510ab242af5cddf53570d7de47da9bcb68438c",
+          "eShop-ab10e4c68fd26369578ebfb3fd1ccf3b867d0444",
+          AnalysisLanguage.CSHARP
+      );
+
+  /** Returns the C# corpora, in report order. */
+  static List<PinnedCorpus> csharp() {
+    return List.of(NEWTONSOFT_JSON, ESHOP);
+  }
+
   /** Returns the Java corpora, in report order. */
   static List<PinnedCorpus> java() {
     return List.of(COMMONS_LANG, PETCLINIC);
@@ -79,7 +104,11 @@ record PinnedCorpus(
 
   /** Returns the extension of the sources of this corpus's language. */
   String extension() {
-    return language == AnalysisLanguage.KOTLIN ? ".kt" : ".java";
+    return switch (language) {
+      case KOTLIN -> ".kt";
+      case CSHARP -> ".cs";
+      default -> ".java";
+    };
   }
 
   /**

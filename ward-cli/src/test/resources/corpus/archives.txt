@@ -8,3 +8,5 @@ python healthchecks ee1b93bf0719f948a8693ac06c7d571394fb65723d0faf21cd0374721afa
 flask ctfd 239fd7ccc433eac9787208225b449983aee2fd90922d7a8baa26579b739f72ba https://github.com/CTFd/CTFd/archive/refs/tags/3.8.9.tar.gz
 got got e562d6c1a290c35861e0052a0aadfbf93ce8c397dfb1155508bd127328f14111 https://github.com/sindresorhus/got/archive/refs/tags/v16.2.0.tar.gz
 juice juice-shop 90551e4bcf83e7019de5bfcba8ab28b35df35b9243d91fbdc7c7e6db30c23e4e https://github.com/juice-shop/juice-shop/archive/refs/tags/v20.4.0.tar.gz
+csharp newtonsoft-json 71fb8eda5ee37ab3405ea5df6c2a9490716e411db82e6c0878132bdf29aedb17 https://github.com/JamesNK/Newtonsoft.Json/archive/refs/tags/13.0.4.tar.gz
+csharp eshop e9eb4454c1fcb46dc39f425d0d510ab242af5cddf53570d7de47da9bcb68438c https://github.com/dotnet/eShop/archive/ab10e4c68fd26369578ebfb3fd1ccf3b867d0444.tar.gz

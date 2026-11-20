@@ -495,7 +495,7 @@ jobs:
           -Dward.parity.enforcer=true
           test
 
-  # Runs every corpus smoke test (Java, Kotlin, Swift, Python, Flask, got, Juice Shop) over its
+  # Runs every corpus smoke test (Java, Kotlin, C#, Swift, Python, Flask, got, Juice Shop) over its
   # pinned archive and compares the per-rule counts with the committed reports, so a rule change that
   # brings back a skipped file or a false positive fails here. corpus/fetch-corpora.sh checks every
   # archive against its sha-256 before unpacking it; the archives are cached by that manifest and
@@ -544,9 +544,10 @@ jobs:
           ./mvnw -B -pl ward-cli -am \
             -Djacoco.skip=true \
             -Dsurefire.failIfNoSpecifiedTests=false \
-            -Dtest='JavaCorpusSmokeTest,KotlinCorpusSmokeTest,SwiftCorpusSmokeTest,PythonCorpusSmokeTest,FlaskCorpusSmokeTest,GotBenchmarkSmokeTest,JuiceShopBenchmarkSmokeTest' \
+            -Dtest='JavaCorpusSmokeTest,KotlinCorpusSmokeTest,CSharpCorpusSmokeTest,SwiftCorpusSmokeTest,PythonCorpusSmokeTest,FlaskCorpusSmokeTest,GotBenchmarkSmokeTest,JuiceShopBenchmarkSmokeTest' \
             -Dward.corpus.java="$corpus/java" -Dward.corpus.java.archives="$corpus/archives/java" \
             -Dward.corpus.kotlin="$corpus/kotlin" -Dward.corpus.kotlin.archives="$corpus/archives/kotlin" \
+            -Dward.corpus.csharp="$corpus/csharp" -Dward.corpus.csharp.archives="$corpus/archives/csharp" \
             -Dward.corpus.swift="$corpus/swift" -Dward.corpus.swift.archives="$corpus/archives/swift" \
             -Dward.benchmark.python-corpus="$corpus/python/healthchecks-5.0.3" \
             -Dward.benchmark.python-corpus.archive="$corpus/archives/python/healthchecks.tar.gz" \

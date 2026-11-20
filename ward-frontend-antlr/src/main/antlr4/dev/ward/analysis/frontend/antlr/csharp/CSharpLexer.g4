@@ -308,6 +308,7 @@ Whitespace
       | '\u0009'  // horizontal tab
       | '\u000B'  // vertical tab
       | '\u000C'  // form feed
+      | '\uFEFF'  // byte order mark of a file that starts with one; Ward adds it, the spec strips it
       ) -> skip
     ;
 

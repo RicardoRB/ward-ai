@@ -1,6 +1,6 @@
 public class Person
 {
-    public void Run(int value, string name)
+    public void Run(int value, string name, int @operator)
     {
     }
 }

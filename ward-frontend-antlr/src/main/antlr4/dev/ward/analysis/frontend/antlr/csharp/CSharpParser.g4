@@ -623,7 +623,7 @@ member_declarator
 
 // Source: §12.8.17.4 Array creation expressions
 array_creation_expression
-    : 'new' non_array_type '[' expression_list ']' rank_specifier*
+    : 'new' non_array_type nullable_type_annotation? '[' expression_list ']' rank_specifier*
       array_initializer?
     | 'new' type_ array_initializer
     | 'new' rank_specifier array_initializer
@@ -1405,6 +1405,15 @@ extern_alias_directive
 // Source: §14.7 Type declarations
 
 // Source: §14.8.1 General
+alias_qualifier
+    : alias_name '::'
+    ;
+
+alias_name
+    : Simple_Identifier
+    | contextual_keyword
+    ;
+
 qualified_alias_member
     : identifier '::' identifier type_argument_list?
     ;
@@ -1850,6 +1859,8 @@ non_sign_unary_expression
 
 lambda_expression
     : attributes? lambda_modifier* anonymous_function_signature '=>' anonymous_function_body
+    | attributes? lambda_modifier* return_type explicit_anonymous_function_signature '=>'
+      anonymous_function_body
     ;
 
 lambda_modifier
@@ -1960,12 +1971,12 @@ modifier
 
 class_declaration
     : 'class' identifier type_parameter_list? primary_parameters? class_base?
-      type_parameter_constraints_clause* class_body ';'?
+      type_parameter_constraints_clause* (class_body ';'? | ';')
     ;
 
 struct_declaration
     : 'struct' identifier type_parameter_list? primary_parameters? class_base?
-      type_parameter_constraints_clause* class_body ';'?
+      type_parameter_constraints_clause* (class_body ';'? | ';')
     ;
 
 record_declaration
@@ -2076,7 +2087,7 @@ return_type
     ;
 
 member_name
-    : identifier type_argument_list? ('.' identifier type_argument_list?)*
+    : alias_qualifier? identifier type_argument_list? ('.' identifier type_argument_list?)*
     ;
 
 method_body

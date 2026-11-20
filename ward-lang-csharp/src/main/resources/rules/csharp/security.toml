@@ -13,7 +13,7 @@ body = '''
 check = "text-pattern"
 target = "lines"
 position = "match"
-pattern = '\b(?:BinaryFormatter|SoapFormatter|NetDataContractSerializer|LosFormatter|ObjectStateFormatter)\b|\bTypeNameHandling\.(?:All|Auto|Objects|Arrays)\b'
+pattern = '(?<=\bnew[ \t]{1,8})(?:BinaryFormatter|SoapFormatter|NetDataContractSerializer|LosFormatter|ObjectStateFormatter)\b|(?<=\bTypeNameHandling[ \t]{0,8}(?<!=)=[ \t]{0,8})TypeNameHandling\.(?:All|Auto|Objects|Arrays)\b'
 message = "this deserializer builds the types that the data names, so crafted data can run code; use a serializer with a fixed contract such as System.Text.Json"
 '''
 

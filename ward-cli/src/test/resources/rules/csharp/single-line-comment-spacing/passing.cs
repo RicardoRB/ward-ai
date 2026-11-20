@@ -5,4 +5,5 @@ public class Names
     //// banner
     /// <summary>docs</summary>
     private int other;
+    //
 }

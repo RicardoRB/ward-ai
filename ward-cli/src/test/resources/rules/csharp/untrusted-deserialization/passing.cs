@@ -8,6 +8,11 @@ public class Loader
         return JsonSerializer.Deserialize<Order>(text);
     }
 
+    public bool Reads(JsonSerializerSettings settings)
+    {
+        return settings.TypeNameHandling == TypeNameHandling.Auto || Check(TypeNameHandling.All);
+    }
+
     public Order FromNewtonsoft(string text)
     {
         var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.None };

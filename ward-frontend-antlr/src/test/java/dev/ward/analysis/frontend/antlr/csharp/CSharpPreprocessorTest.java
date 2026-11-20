@@ -80,4 +80,35 @@ class CSharpPreprocessorTest {
     );
     assertThat(names("class C {\n#if A\n int x;\n#endif\n}\n")).containsExactly("C");
   }
+
+  @Test
+  void aByteOrderMarkAtTheStartOfTheFileIsWhitespace() {
+    assertThat(names("\uFEFFclass C {}\n")).containsExactly("C");
+  }
+
+  @Test
+  void theLinesAfterAFalseBranchKeepTheirNumber() {
+    final ParseResult result =
+        new AntlrLanguageFrontend()
+            .parse(
+                new SourceUnit(
+                    "p.cs",
+                    AnalysisLanguage.CSHARP,
+                    "#if X\nint a;\nint b;\n#endif\nclass C {}\n"
+                )
+            );
+
+    assertThat(lineOf(result.tree(), "C")).isEqualTo(5);
+  }
+
+  private static int lineOf(final SyntaxNode node, final String name) {
+    if (IDENTIFIER.equals(node.kind()) && name.equals(node.fields().get("text"))) {
+      return node.span().startLine();
+    }
+    return node.children().stream()
+        .mapToInt(child -> lineOf(child, name))
+        .filter(line -> line > 0)
+        .findFirst()
+        .orElse(0);
+  }
 }

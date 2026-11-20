@@ -1,0 +1,4 @@
+# Findings of the C# corpus run labelled fp that stay for now (#698).
+# Format: rule | file:line | reason | #issue. The run fails for an fp label that is not listed here with an issue number.
+ward:csharp/nullable-shorthand | newtonsoft-json/Src/Newtonsoft.Json/Serialization/JsonArrayContract.cs:254 | the match is inside a // comment in an inactive #if branch | #708
+ward:csharp/nullable-shorthand | newtonsoft-json/Src/Newtonsoft.Json/Serialization/JsonDictionaryContract.cs:203 | the match is inside a // comment in an inactive #if branch | #708

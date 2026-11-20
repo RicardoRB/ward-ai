@@ -9,6 +9,7 @@ import java.util.Queue;
 import java.util.Set;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.atn.LexerATNSimulator;
 
 /**
  * Evaluates the conditional-compilation directives of C# while the lexer runs: {@code #define},
@@ -89,7 +90,21 @@ final class CSharpPreprocessor {
     ).evaluate());
     condition.push(wanted);
     taken.push(alreadyTaken || wanted || !conditional);
-    return wanted ? null : FalseBranchScanner.scan(lexer.getInputStream(), lexer.getLine());
+    return wanted ? null : skipBranch();
+  }
+
+  /** Reads the false branch and moves the lexer's line and column past the text it consumed. */
+  private Token skipBranch() {
+    final Token skipped = FalseBranchScanner.scan(lexer.getInputStream(), lexer.getLine());
+    final String text = skipped.getText();
+    final LexerATNSimulator position = lexer.getInterpreter();
+    final int lastBreak = text.lastIndexOf('\n');
+    position.setLine(position.getLine() + (int)text.chars().filter(c -> c == '\n').count());
+    position.setCharPositionInLine(
+        lastBreak < 0 ? position.getCharPositionInLine() + text.length()
+            : text.length() - lastBreak - 1
+    );
+    return skipped;
   }
 
   private boolean popTaken() {

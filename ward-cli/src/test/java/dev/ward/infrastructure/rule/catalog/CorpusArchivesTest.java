@@ -77,6 +77,7 @@ class CorpusArchivesTest {
     final Map<String, String> pins = new TreeMap<>();
     final List<PinnedCorpus> jvm = new ArrayList<>(PinnedCorpus.java());
     jvm.addAll(PinnedCorpus.kotlin());
+    jvm.addAll(PinnedCorpus.csharp());
     jvm.forEach(corpus -> pins.put(corpus.name(), corpus.archiveSha256()));
     SwiftCorpus.all().forEach(corpus -> pins.put(corpus.name(), corpus.archiveSha256()));
     pins.put("healthchecks", PythonCorpus.HEALTHCHECKS.sha256());

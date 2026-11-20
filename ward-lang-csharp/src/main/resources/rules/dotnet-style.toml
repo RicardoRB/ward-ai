@@ -14,7 +14,7 @@ body = '''
 check = "identifier-pattern"
 kinds = ["class_declaration", "struct_declaration", "interface_declaration", "enum_declaration", "record_declaration", "method_declaration", "property_declaration"]
 name = "identifier"
-skip = ["attributes", "type_", "return_type", "type_parameter_list", "primary_parameters", "class_base", "type_parameter_constraints_clause", "class_body", "enum_body", "parameter_list", "method_body", "property_body"]
+skip = ["attributes", "type_", "return_type", "alias_qualifier", "type_parameter_list", "primary_parameters", "class_base", "type_parameter_constraints_clause", "class_body", "enum_body", "parameter_list", "method_body", "property_body"]
 pattern = '[^_]*'
 message = "name '{value}' contains an underscore"
 '''
@@ -233,7 +233,7 @@ options.pattern = { type = "regex" }
 body = '''
 check = "text-pattern"
 target = "code"
-pattern = '\bNullable\s*<'
+pattern = '\bNullable\s*<\s*[^>\s]'
 message = "use the T? shorthand instead of Nullable<T>"
 '''
 
@@ -248,7 +248,7 @@ options.pattern = { type = "regex" }
 body = '''
 check = "text-pattern"
 target = "comments"
-pattern = '^//(?![/\s])'
+pattern = '^//(?![/\s]|$)'
 message = "start a single-line comment with a space after the slashes"
 '''
 
@@ -328,7 +328,7 @@ options.text = { type = "regex" }
 body = '''
 check = "forbidden-node"
 kinds = ["operator_expression"]
-text = '^(?:\d[\w.]*|"[^"]*"|null|true|false)(?:==|!=|<=|>=|<|>)(?!.*(?:&&|\|\|))'
+text = '^(?:\d[\w.]*|"(?:[^"\\]++|\\.)*+"|null|true|false)(?:==|!=|<=|>=|<|>)(?!.*(?:&&|\|\|))'
 message = "put the constant on the right-hand side of the comparison"
 '''
 
@@ -361,6 +361,7 @@ body = '''
 check = "identifier-pattern"
 kinds = ["constant_declarator"]
 name = "identifier"
+not-inside = ["local_constant_declaration"]
 pattern = '[A-Z]\w*'
 message = "constant name '{value}' should start with an uppercase letter"
 '''
@@ -416,7 +417,7 @@ check = "identifier-pattern"
 kinds = ["local_variable_declarator"]
 name = "identifier"
 skip = ["local_variable_initializer"]
-pattern = '_*[a-z]\w*'
+pattern = '@?_*[a-z]\w*'
 message = "variable name '{value}' should start with a lowercase letter"
 '''
 
@@ -434,6 +435,6 @@ kinds = ["parameter"]
 name = "identifier"
 skip = ["attributes", "type_", "default_argument"]
 not-inside = ["primary_parameters"]
-pattern = '_*[a-z]\w*'
+pattern = '@?_*[a-z]\w*'
 message = "parameter name '{value}' should start with a lowercase letter"
 '''
