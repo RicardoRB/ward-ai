@@ -178,6 +178,10 @@ final class JavaDocBuilder {
         stack.current().continuations().end();
         stack.current().add(Document.line());
       }
+      case LIST ->
+          stack
+              .current()
+              .add(JavaFrame.indented(Document.group(Document.line()), continuationLevels));
       case SPACE -> stack.current().add(Document.text(SPACE));
       default -> {
         // NONE and UNSET write nothing.

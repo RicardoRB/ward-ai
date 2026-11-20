@@ -16,6 +16,7 @@ import java.util.Set;
  *     constant separator
  * @param annotationEnds token indexes that end an annotation
  * @param angleTokens token indexes of the angle brackets of type arguments and type parameters
+ * @param listCommas token indexes of the commas of an extends, implements or permits list
  * @param expressionBlocks token indexes of the opening brace of a block inside an expression: an
  *     anonymous class body, a lambda body or a switch expression, whose body follows the
  *     indentation of a continuation line
@@ -27,6 +28,7 @@ record JavaTreeFacts(
     Set<Integer> hardAfter,
     Set<Integer> annotationEnds,
     Set<Integer> angleTokens,
+    Set<Integer> listCommas,
     Set<Integer> expressionBlocks
 ) {
   /** Copies the rules and the token sets. */
@@ -37,6 +39,7 @@ record JavaTreeFacts(
     hardAfter = Set.copyOf(hardAfter);
     annotationEnds = Set.copyOf(annotationEnds);
     angleTokens = Set.copyOf(angleTokens);
+    listCommas = Set.copyOf(listCommas);
     expressionBlocks = Set.copyOf(expressionBlocks);
   }
 }
