@@ -133,31 +133,11 @@ final class CorpusRun {
     assertThat(found).as("labels without a finding").containsAll(labels.keySet());
     assertThat(underLabelled(rules, found, labels)).as("rules with too few labels").isEmpty();
     if (preset == RulePreset.STRICT) {
-      assertThat(unlistedFalsePositives(found, labels))
+      assertThat(CorpusApproximations.unlisted(RESOURCES, key, found, labels))
           .as("false positives without an approximation with a reason and an open issue")
           .isEmpty();
     }
     return report;
-  }
-
-  private List<Place> unlistedFalsePositives(
-      final List<Place> found,
-      final Map<Place, String> labels
-  ) throws IOException {
-    final Path file = RESOURCES.resolve(key + "-corpus-approximations.txt");
-    final Set<Place> listed = new java.util.HashSet<>();
-    if (Files.exists(file)) {
-      for (final String line : Files.readAllLines(file, java.nio.charset.StandardCharsets.UTF_8)) {
-        final String[] parts = line.split(" \\| ", 4);
-        if (!line.startsWith("#") && parts.length == 4 && parts[3].matches(".*#\\d+.*")) {
-          listed.add(new Place(parts[0].trim(), parts[1].trim()));
-        }
-      }
-    }
-    return found.stream()
-        .filter(place -> "fp".equals(labels.get(place)))
-        .filter(place -> !listed.contains(place))
-        .toList();
   }
 
   private void checkArchives() throws IOException {
@@ -175,9 +155,7 @@ final class CorpusRun {
   private List<RuleDefinition> rules() {
     return CatalogRuleDefinitions.shipped().stream()
         .filter(rule -> rule.covers(language))
-        .filter(
-            rule -> preset.selects(rule.presets()) || SECURITY.equals(rule.category())
-        )
+        .filter(rule -> preset.selects(rule.presets()) || SECURITY.equals(rule.category()))
         .sorted(Comparator.comparing(RuleDefinition::id))
         .toList();
   }

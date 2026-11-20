@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 class CSharpPreprocessorTest {
   private static final String IDENTIFIER = "Simple_Identifier";
+  private static final int CLASS_LINE = 5;
 
   private static List<String> names(final String source) {
     final ParseResult result =
@@ -98,7 +99,7 @@ class CSharpPreprocessorTest {
                 )
             );
 
-    assertThat(lineOf(result.tree(), "C")).isEqualTo(5);
+    assertThat(lineOf(result.tree(), "C")).isEqualTo(CLASS_LINE);
   }
 
   private static int lineOf(final SyntaxNode node, final String name) {
