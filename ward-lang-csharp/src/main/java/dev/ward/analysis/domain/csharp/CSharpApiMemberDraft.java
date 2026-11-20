@@ -19,7 +19,7 @@ final class CSharpApiMemberDraft {
   private final ApiLocation location;
   private List<ApiTypeParameter> typeParameters = List.of();
   private List<ApiParameter> parameters = List.of();
-  private ApiTypeRef type = CSharpApiRefs.voidType();
+  private ApiTypeRef type = CSharpApiRefs.VOID;
   private boolean varargs;
   private boolean bodyless;
   private boolean constant;

@@ -33,6 +33,9 @@ final class DotnetApiCompatRun {
         </PropertyGroup>
       </Project>
       """;
+  private static final String TYPE = "Type";
+  private static final int KIND_GROUP = 2;
+  private static final int SIGNATURE_GROUP = 3;
   private static final Pattern ERROR = Pattern.compile("error (CP\\d+): (Type|Member) '([^']+)'");
   private static final int MINUTES = 5;
   private static final Map<String, String> ACCESSORS =
@@ -67,7 +70,7 @@ final class DotnetApiCompatRun {
     final Set<String> found = new TreeSet<>();
     final Matcher matcher = ERROR.matcher(output);
     while (matcher.find()) {
-      found.add(key(matcher.group(2), matcher.group(3)));
+      found.add(key(matcher.group(KIND_GROUP), matcher.group(SIGNATURE_GROUP)));
     }
     return found;
   }
@@ -107,7 +110,7 @@ final class DotnetApiCompatRun {
 
   /** Maps {@code Member 'int P.A.F(int)'} to {@code P.A#F} and a type to its name. */
   static String key(final String kind, final String signature) {
-    if ("Type".equals(kind)) {
+    if (TYPE.equals(kind)) {
       return generic(signature);
     }
     final String name = signature.contains("(") ? signature.substring(
@@ -136,6 +139,6 @@ final class DotnetApiCompatRun {
       return name;
     }
     final String arguments = name.substring(open + 1, name.lastIndexOf('>'));
-    return name.substring(0, open) + "`" + (arguments.split(",").length);
+    return name.substring(0, open) + "`" + arguments.split(",").length;
   }
 }

@@ -42,11 +42,15 @@ public final class CSharpApiSurfaceReader implements ApiSurfaceReader {
             "syntax error" + (first.line() == null ? "" : " at line " + first.line())
         );
       }
-      CSharpSyntax.child(result.tree(), "compilation_unit")
-          .ifPresent(root -> members(root, "", new CSharpApiTypeReader(unit.path(), found)));
+      declare(unit.path(), result.tree(), found);
     }
     found.sort(Comparator.comparing(ApiType::name));
     return List.copyOf(found);
+  }
+
+  private static void declare(final String path, final SyntaxNode tree, final List<ApiType> found) {
+    CSharpSyntax.child(tree, "compilation_unit")
+        .ifPresent(root -> members(root, "", new CSharpApiTypeReader(path, found)));
   }
 
   /** Reads the declarations of a compilation unit or a namespace body. */

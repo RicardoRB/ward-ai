@@ -2,9 +2,7 @@ package dev.ward.analysis.domain.csharp;
 
 import dev.ward.analysis.domain.api.ApiLocation;
 import dev.ward.analysis.domain.api.ApiMember;
-import dev.ward.analysis.domain.api.ApiParameter;
 import dev.ward.analysis.domain.api.ApiType;
-import dev.ward.analysis.domain.api.ApiTypeParameter;
 import dev.ward.analysis.domain.api.ApiTypeRef;
 import dev.ward.analysis.domain.api.ApiVisibility;
 import dev.ward.analysis.domain.ir.SyntaxNode;
@@ -19,6 +17,8 @@ import java.util.Optional;
  * type is named like its metadata, {@code Name`n}; a nested type {@code Outer.Inner}.
  */
 final class CSharpApiTypeReader {
+  private static final String DELEGATE = "delegate_declaration";
+  private static final String ENUM = "enum_declaration";
   private static final String BODY = "type_declaration_body";
   private static final String CLASS_BODY = "class_body";
 
@@ -102,7 +102,7 @@ final class CSharpApiTypeReader {
   }
 
   private static boolean isFinalKind(final SyntaxNode shape) {
-    return "enum_declaration".equals(shape.kind()) || "delegate_declaration".equals(shape.kind());
+    return ENUM.equals(shape.kind()) || DELEGATE.equals(shape.kind());
   }
 
   private static ApiType.Kind kind(final SyntaxNode shape) {
@@ -130,11 +130,11 @@ final class CSharpApiTypeReader {
   ) {
     final CSharpApiGenerated generated = new CSharpApiGenerated(owner);
     final List<ApiMember> members = new ArrayList<>();
-    if ("delegate_declaration".equals(shape.kind())) {
+    if (DELEGATE.equals(shape.kind())) {
       members.add(generated.invoke(declaration, shape));
       return members;
     }
-    if ("enum_declaration".equals(shape.kind())) {
+    if (ENUM.equals(shape.kind())) {
       members.addAll(generated.constants(shape));
       return members;
     }

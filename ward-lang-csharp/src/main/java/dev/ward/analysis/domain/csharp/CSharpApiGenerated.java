@@ -17,6 +17,7 @@ final class CSharpApiGenerated {
   private static final String PRIMARY = "primary_parameters";
   private static final String PARAMETERS = "parameter_list";
   private static final String PUBLIC = "public";
+  private static final String RECORD = "record_declaration";
 
   private final CSharpApiOwner owner;
 
@@ -77,7 +78,7 @@ final class CSharpApiGenerated {
     if (primary) {
       added.add(constructor(declaration, parameters, CSharpApiModifiers.of(PUBLIC)));
     }
-    if ("record_declaration".equals(shape.kind())) {
+    if (RECORD.equals(shape.kind())) {
       added.addAll(recordProperties(declaration, parameters));
     }
     final boolean hasConstructor =
@@ -109,7 +110,7 @@ final class CSharpApiGenerated {
         owner,
         declaration
     )
-        .signature(List.of(), owner.refs().parameters(parameters), CSharpApiRefs.voidType())
+        .signature(List.of(), owner.refs().parameters(parameters), CSharpApiRefs.VOID)
         .varargs(CSharpApiRefs.isVarargs(parameters))
         .build();
   }

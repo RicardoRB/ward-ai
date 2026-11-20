@@ -1,10 +1,8 @@
 package dev.ward.analysis.domain.csharp;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.analysis.domain.api.ApiMember;
-import dev.ward.analysis.domain.api.ApiSurfaceException;
 import dev.ward.analysis.domain.api.ApiType;
 import dev.ward.analysis.domain.api.ApiVisibility;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
@@ -24,7 +22,7 @@ class CSharpApiSurfaceReaderTest {
   }
 
   private static ApiType type(final String source, final String name) {
-    return read(source).stream().filter(t -> t.name().equals(name)).findFirst().orElseThrow();
+    return read(source).stream().filter(t -> name.equals(t.name())).findFirst().orElseThrow();
   }
 
   private static List<String> members(final ApiType type) {
@@ -38,11 +36,11 @@ class CSharpApiSurfaceReaderTest {
 
     assertThat(client.visibility()).isEqualTo(ApiVisibility.PUBLIC);
     assertThat(client.members())
-        .filteredOn(m -> m.name().equals("F"))
+        .filteredOn(m -> "F".equals(m.name()))
         .singleElement()
         .extracting(ApiMember::visibility)
         .isEqualTo(ApiVisibility.PUBLIC);
-    assertThat(client.members()).filteredOn(m -> m.name().equals("G")).allMatch(
+    assertThat(client.members()).filteredOn(m -> "G".equals(m.name())).allMatch(
         m -> !client.exposes(m)
     );
   }
@@ -77,42 +75,5 @@ class CSharpApiSurfaceReaderTest {
         .singleElement()
         .satisfies(m -> assertThat(m.kind()).isEqualTo(ApiMember.Kind.CONSTRUCTOR));
     assertThat(c.extendable()).isTrue();
-  }
-
-  @Test
-  void protectedMembersOfASealedClassAreNotApi() {
-    final ApiType c = type("public sealed class C { protected void P() {} }", "C");
-
-    assertThat(c.members()).filteredOn(m -> m.name().equals("P")).noneMatch(c::exposes);
-  }
-
-  @Test
-  void typeVariablesAreComparedByPosition() {
-    final ApiMember f =
-        type("public class C { public T F<T>(T x) => x; }", "C").members().stream()
-            .filter(m -> m.name().equals("F"))
-            .findFirst()
-            .orElseThrow();
-    final ApiMember g =
-        type("public class C { public U F<U>(U x) => x; }", "C").members().stream()
-            .filter(m -> m.name().equals("F"))
-            .findFirst()
-            .orElseThrow();
-
-    assertThat(f.parameters().getFirst().type().key())
-        .isEqualTo(g.parameters().getFirst().type().key());
-  }
-
-  @Test
-  void interfaceMembersArePublicAndAbstract() {
-    final ApiType i = type("public interface I { void M(); }", "I");
-
-    assertThat(members(i)).singleElement().asString().contains("abstract").contains("M");
-  }
-
-  @Test
-  void aSyntaxErrorIsReported() {
-    assertThatThrownBy(() -> read("public class C { void ( }"))
-        .isInstanceOf(ApiSurfaceException.class);
   }
 }

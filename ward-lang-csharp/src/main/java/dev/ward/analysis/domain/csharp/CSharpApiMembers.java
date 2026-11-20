@@ -37,7 +37,7 @@ final class CSharpApiMembers {
       final CSharpApiModifiers mods
   ) {
     final SyntaxNode name = CSharpSyntax.child(body, "member_name").orElseThrow();
-    if (CSharpSyntax.children(name, CSharpSyntax.IDENTIFIER).size() > 1) {
+    if (CSharpSyntax.isQualified(name)) {
       return List.of(); // an explicit interface implementation is reached through the interface
     }
     final List<String> typeNames = typeNames(body, name);
@@ -102,7 +102,7 @@ final class CSharpApiMembers {
             owner,
             declaration
         )
-            .signature(List.of(), owner.refs().parameters(parameters), CSharpApiRefs.voidType())
+            .signature(List.of(), owner.refs().parameters(parameters), CSharpApiRefs.VOID)
             .varargs(CSharpApiRefs.isVarargs(parameters))
             .build()
     );

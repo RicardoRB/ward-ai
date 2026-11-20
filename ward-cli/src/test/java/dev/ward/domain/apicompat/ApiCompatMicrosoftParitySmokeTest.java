@@ -52,14 +52,7 @@ class ApiCompatMicrosoftParitySmokeTest {
               fixture.resolve("revision"),
               work.resolve(name)
           );
-      final Set<String> ours = new TreeSet<>();
-      for (final ApiChange change : ApiCompatFixturesTest.compare(fixture)) {
-        ours.add(
-            change.member().isEmpty()
-                ? change.typeName()
-                : change.typeName() + "#" + change.member()
-        );
-      }
+      final Set<String> ours = ours(fixture);
       theirs.stream()
           .filter(key -> !ours.contains(key))
           .forEach(key -> differences.add(String.join(TAB, name, "apicompat-only", key)));
@@ -73,6 +66,16 @@ class ApiCompatMicrosoftParitySmokeTest {
         listed
     );
     assertThat(listed).as("listed differences that no longer occur").isSubsetOf(differences);
+  }
+
+  private static Set<String> ours(final Path fixture) throws IOException {
+    final Set<String> ours = new TreeSet<>();
+    for (final ApiChange change : ApiCompatFixturesTest.compare(fixture)) {
+      ours.add(
+          change.member().isEmpty() ? change.typeName() : change.typeName() + "#" + change.member()
+      );
+    }
+    return ours;
   }
 
   /** The listed differences without their reason. */

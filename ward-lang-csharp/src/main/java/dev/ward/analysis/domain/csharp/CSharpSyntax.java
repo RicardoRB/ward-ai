@@ -27,6 +27,11 @@ final class CSharpSyntax {
     node.children().forEach(child -> append(child, out));
   }
 
+  /** Tells whether a member name is qualified, as in {@code IFoo.Bar}: an explicit implementation. */
+  static boolean isQualified(final SyntaxNode memberName) {
+    return children(memberName, IDENTIFIER).size() > SOLE_CHILD;
+  }
+
   /** Returns the first child of {@code kind}, or empty. */
   static Optional<SyntaxNode> child(final SyntaxNode node, final String kind) {
     return node.children().stream().filter(child -> kind.equals(child.kind())).findFirst();

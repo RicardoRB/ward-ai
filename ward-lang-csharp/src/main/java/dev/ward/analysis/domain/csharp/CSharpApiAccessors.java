@@ -57,7 +57,7 @@ final class CSharpApiAccessors {
       final CSharpApiModifiers mods
   ) {
     final SyntaxNode name = CSharpSyntax.child(body, MEMBER_NAME).orElseThrow();
-    if (CSharpSyntax.children(name, CSharpSyntax.IDENTIFIER).size() > 1) {
+    if (CSharpSyntax.isQualified(name)) {
       return List.of(); // an explicit interface implementation
     }
     return accessors(
@@ -136,7 +136,7 @@ final class CSharpApiAccessors {
         owner,
         declaration
     )
-        .signature(List.of(), parameters, getter ? shape.type() : CSharpApiRefs.voidType())
+        .signature(List.of(), parameters, getter ? shape.type() : CSharpApiRefs.VOID)
         .bodyless(bodyless)
         .build();
   }
@@ -161,11 +161,7 @@ final class CSharpApiAccessors {
                 owner,
                 declaration
             )
-                .signature(
-                    List.of(),
-                    List.of(new ApiParameter(type, false)),
-                    CSharpApiRefs.voidType()
-                )
+                .signature(List.of(), List.of(new ApiParameter(type, false)), CSharpApiRefs.VOID)
                 .bodyless(name.isEmpty())
                 .build()
         );

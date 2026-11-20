@@ -26,13 +26,13 @@ final class CSharpApiModifiers {
     );
   }
 
+  private CSharpApiModifiers(final Set<String> words) {
+    this.words = new HashSet<>(words);
+  }
+
   /** Returns the modifiers of a declaration the compiler writes, such as {@code public}. */
   static CSharpApiModifiers of(final String word) {
     return new CSharpApiModifiers(Set.of(word));
-  }
-
-  private CSharpApiModifiers(final Set<String> words) {
-    this.words = new HashSet<>(words);
   }
 
   /**
