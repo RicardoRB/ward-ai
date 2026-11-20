@@ -38,7 +38,7 @@ class TurborepoMultiLanguageSmokeTest {
   private static final List<String> NOT_VIOLATED =
       List.of("compile", "coverage", "mutation", "stryker", "mutmut");
   private static final Pattern CHECK =
-      Pattern.compile("\"name\":\"([^\"]+)\"(?:,\"type\":\"[^\"]*\")?,\"status\":\"([A-Z]+)\"");
+      Pattern.compile("\"name\":\"([^\"]+)\"(?:,\"type\":\"[^\"]*\")?,\"status\":\"([A-Z_]+)\"");
 
   @TempDir Path project;
 

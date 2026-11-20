@@ -8,6 +8,15 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+## [0.11.4] - 2026-11-20
+
+### Fixed
+
+- `ward:java/rv-return-value-ignored` and `ward:java/return-value-ignored` no longer report a call that is the value of a `case ... ->` rule in a `switch` used as an expression; an arrow rule of a `switch` statement is still reported (#702).
+- `ward:java/log-forging` treats a chain of `String.replace` or `replaceAll` calls with literal arguments that removes both carriage returns and line feeds as a sanitizer of its receiver (#703).
+- `ward:java/unsafe-deserialization-settings` reports `enableDefaultTyping` only with no argument, a `DefaultTyping` constant or `LaissezFaireSubTypeValidator`, not with a validator that lists the allowed types (#704).
+- The message of `ward:java/csrf-protection-disabled` names `exclude-paths` in `ward-rules.toml` as the way to leave out an API that no browser calls with cookies, since Ward has no suppression comment (#704).
+
 ## [0.11.3] - 2026-11-20
 
 ### Fixed

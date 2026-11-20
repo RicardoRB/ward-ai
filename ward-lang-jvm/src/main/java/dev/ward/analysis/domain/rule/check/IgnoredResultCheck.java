@@ -58,6 +58,7 @@ public final class IgnoredResultCheck implements RuleCheck {
       final SourceUnit unit
   ) {
     return SyntaxWalk.visits(root, Set.of(STATEMENT)).stream()
+        .filter(visit -> !SwitchRuleValue.yields(visit.ancestors()))
         .map(SyntaxWalk.Visit::node)
         .filter(statement -> dropsResult(statement, facts))
         .map(statement -> CheckSupport.at(statement.span(), message))

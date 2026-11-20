@@ -23,7 +23,7 @@ class PythonStubbedCliTest {
   private static final int GATES_IN_STANDARD = 5;
   private static final Path FIXTURES = Path.of("src/test/resources/fixtures");
   private static final Pattern STATUS =
-      Pattern.compile("\"name\":\"([^\"]+)\"(?:,\"type\":\"[^\"]*\")?,\"status\":\"([A-Z]+)\"");
+      Pattern.compile("\"name\":\"([^\"]+)\"(?:,\"type\":\"[^\"]*\")?,\"status\":\"([A-Z_]+)\"");
 
   @TempDir Path project;
 

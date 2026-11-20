@@ -179,6 +179,17 @@ final class JavaFlowSites implements FlowSites {
             call.span()
         )
     );
+    if (receiver != null) {
+      JavaLineBreakStrips.of(
+          calledName(call),
+          arguments.stream().map(JavaFlowSyntax::text).toList(),
+          qualifier,
+          receiver.span(),
+          call.span(),
+          this::receiverType
+      )
+          .ifPresent(found::add);
+    }
   }
 
   /**
