@@ -910,7 +910,7 @@ reflc-reflection-may-increase-accessibility-of-class	spotbugs	REFLC_REFLECTION_M
 reflf-reflection-may-increase-accessibility-of-field	spotbugs	REFLF_REFLECTION_MAY_INCREASE_ACCESSIBILITY_OF_FIELD	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 regex-injection	-	-	no-counterpart	
 regexp-singleline	checkstyle	RegexpSingleline	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
-reliance-on-default-charset	pmd	RelianceOnDefaultCharset	agree-lines	
+reliance-on-default-charset	pmd	RelianceOnDefaultCharset	agree	
 remote-interface-naming-convention	pmd	RemoteInterfaceNamingConvention	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 remote-session-interface-naming-convention	pmd	RemoteSessionInterfaceNamingConvention	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 replace-enumeration-with-iterator	pmd	ReplaceEnumerationWithIterator	agree	
