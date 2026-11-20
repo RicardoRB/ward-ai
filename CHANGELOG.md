@@ -8,6 +8,8 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+## [0.11.3] - 2026-11-20
+
 ### Fixed
 
 - `ward:java/multiple-variable-declarations` no longer counts the pattern variables of a `switch` or record pattern as declarations (#690).
@@ -597,6 +599,7 @@ Initial release, published as `sentinel-ai`.
 - A bounded quality loop and a typed gate registry.
 - Starlight documentation site.
 
+[0.11.3]: https://github.com/RicardoRB/ward-ai/compare/v0.11.2...v0.11.3
 [0.11.2]: https://github.com/RicardoRB/ward-ai/compare/v0.11.1...v0.11.2
 [0.11.1]: https://github.com/RicardoRB/ward-ai/compare/v0.11.0...v0.11.1
 [0.11.0]: https://github.com/RicardoRB/ward-ai/compare/v0.10.0...v0.11.0
