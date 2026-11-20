@@ -147,7 +147,13 @@ public final class GateFrontends {
   }
 
   private static Set<RuleCapability> csharpCapabilities() {
-    return Set.of(RuleCapability.SYNTAX, RuleCapability.SCOPES, RuleCapability.CFG);
+    return Set.of(
+        RuleCapability.SYNTAX,
+        RuleCapability.SCOPES,
+        RuleCapability.CFG,
+        RuleCapability.DATAFLOW,
+        RuleCapability.TAINT
+    );
   }
 
   private static Set<RuleCapability> graphCapabilities() {

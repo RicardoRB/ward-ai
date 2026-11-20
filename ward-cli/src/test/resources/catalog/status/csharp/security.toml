@@ -1,0 +1,7 @@
+# Status of the security rows in csharp: "implemented" or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+path-injection = "implemented"
+tls-verification-disabled = "implemented"
+untrusted-deserialization = "implemented"
+weak-cipher = "implemented"
+weak-hash = "implemented"

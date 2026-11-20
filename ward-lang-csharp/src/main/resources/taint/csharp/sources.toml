@@ -1,0 +1,124 @@
+# Untrusted input of C# code, written for Ward from the ASP.NET Core documentation of HttpRequest: the query string, the
+# form, the headers, the cookies and the route values of a request are data of whoever sent it. A member is matched by the
+# type of its receiver where the source states it (see CSharpFlowSites), and by the name Request or request otherwise.
+# shortcut: values bound to a parameter by [FromQuery] and its siblings are not sources yet.
+
+[[sources]]
+kind = "member"
+name = "Query"
+qualifier = "Request"
+
+[[sources]]
+kind = "member"
+name = "Query"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "Query"
+receiver = "HttpRequest"
+
+[[sources]]
+kind = "member"
+name = "Form"
+qualifier = "Request"
+
+[[sources]]
+kind = "member"
+name = "Form"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "Form"
+receiver = "HttpRequest"
+
+[[sources]]
+kind = "member"
+name = "Headers"
+qualifier = "Request"
+
+[[sources]]
+kind = "member"
+name = "Headers"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "Headers"
+receiver = "HttpRequest"
+
+[[sources]]
+kind = "member"
+name = "Cookies"
+qualifier = "Request"
+
+[[sources]]
+kind = "member"
+name = "Cookies"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "Cookies"
+receiver = "HttpRequest"
+
+[[sources]]
+kind = "member"
+name = "QueryString"
+qualifier = "Request"
+
+[[sources]]
+kind = "member"
+name = "QueryString"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "QueryString"
+receiver = "HttpRequest"
+
+[[sources]]
+kind = "member"
+name = "RouteValues"
+qualifier = "Request"
+
+[[sources]]
+kind = "member"
+name = "RouteValues"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "RouteValues"
+receiver = "HttpRequest"
+
+[[sources]]
+kind = "member"
+name = "Path"
+qualifier = "Request"
+
+[[sources]]
+kind = "member"
+name = "Path"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "Path"
+receiver = "HttpRequest"
+
+[[sources]]
+kind = "member"
+name = "PathBase"
+qualifier = "Request"
+
+[[sources]]
+kind = "member"
+name = "PathBase"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "PathBase"
+receiver = "HttpRequest"

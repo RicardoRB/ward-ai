@@ -9,6 +9,8 @@ import java.util.List;
  */
 public final class CSharpRuleFiles implements RuleFileProvider {
   private static final List<String> FILES = List.of(
+      "rules/csharp/security-taint.toml",
+      "rules/csharp/security.toml",
       "rules/dotnet-style.toml",
       "rules/duplication-csharp.toml"
   );

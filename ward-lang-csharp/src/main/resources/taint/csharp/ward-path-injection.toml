@@ -1,0 +1,306 @@
+# File paths of C# code, written for Ward from the System.IO File, Directory, FileStream and Path documentation: a path
+# names a file, so a value that holds ../ steps out of the directory it was joined to. Path.GetFileName keeps the last
+# name only, which is the clean part of a path.
+
+[[sinks]]
+kind = "call"
+name = "ReadAllText"
+receiver = "File"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "ReadAllTextAsync"
+receiver = "File"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "ReadAllBytes"
+receiver = "File"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "ReadAllBytesAsync"
+receiver = "File"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "ReadAllLines"
+receiver = "File"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "ReadLines"
+receiver = "File"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "WriteAllText"
+receiver = "File"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "WriteAllTextAsync"
+receiver = "File"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "WriteAllBytes"
+receiver = "File"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "WriteAllLines"
+receiver = "File"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "AppendAllText"
+receiver = "File"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "Open"
+receiver = "File"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "OpenRead"
+receiver = "File"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "OpenWrite"
+receiver = "File"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "OpenText"
+receiver = "File"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "Create"
+receiver = "File"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "CreateText"
+receiver = "File"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "Delete"
+receiver = "File"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "Exists"
+receiver = "File"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "Delete"
+receiver = "Directory"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "CreateDirectory"
+receiver = "Directory"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "GetFiles"
+receiver = "Directory"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "GetDirectories"
+receiver = "Directory"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "EnumerateFiles"
+receiver = "Directory"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "Exists"
+receiver = "Directory"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "Copy"
+receiver = "File"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "Move"
+receiver = "File"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "Move"
+receiver = "Directory"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "FileStream"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "StreamReader"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "StreamWriter"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "FileInfo"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "DirectoryInfo"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "PhysicalFile"
+arguments = [0]
+
+[[sanitizers]]
+kind = "call"
+name = "GetFileName"
+qualifier = "Path"
+
+[[sanitizers]]
+kind = "call"
+name = "GetFileNameWithoutExtension"
+qualifier = "Path"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "int"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "long"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "short"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "double"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "decimal"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "float"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "byte"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "bool"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "Guid"
+
+[[sanitizers]]
+kind = "call"
+name = "ToInt32"
+qualifier = "Convert"
+
+[[sanitizers]]
+kind = "call"
+name = "ToInt64"
+qualifier = "Convert"
+
+[[sanitizers]]
+kind = "call"
+name = "ToInt16"
+qualifier = "Convert"
+
+[[sanitizers]]
+kind = "call"
+name = "ToDouble"
+qualifier = "Convert"
+
+[[sanitizers]]
+kind = "call"
+name = "ToDecimal"
+qualifier = "Convert"
+
+[[sanitizers]]
+kind = "call"
+name = "ToBoolean"
+qualifier = "Convert"
+
+[[sanitizers]]
+kind = "call"
+name = "ToByte"
+qualifier = "Convert"
+
+[[sanitizers]]
+kind = "call"
+name = "TryParse"
+qualifier = "int"
+
+[[sanitizers]]
+kind = "call"
+name = "TryParse"
+qualifier = "long"
+
+[[sanitizers]]
+kind = "call"
+name = "TryParse"
+qualifier = "Guid"

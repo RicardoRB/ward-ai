@@ -3,8 +3,12 @@ package dev.ward.analysis.domain.csharp;
 import dev.ward.analysis.domain.ir.ControlFlowBuilder;
 import dev.ward.analysis.domain.ir.ControlFlowGraph;
 import dev.ward.analysis.domain.ir.FlowEdgeKind;
+import dev.ward.analysis.domain.ir.FlowSite;
+import dev.ward.analysis.domain.ir.FlowSites;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.ir.VariableAccess;
+import dev.ward.analysis.domain.ir.VariableAccesses;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,10 +48,17 @@ final class CSharpBodyLowering {
   private static final int THEN = 0;
   private static final int ELSE = 1;
 
-  private final ControlFlowBuilder flow = new ControlFlowBuilder();
+  private final ControlFlowBuilder flow;
   private final Map<String, Consumer<SyntaxNode>> handlers = new HashMap<>();
 
-  CSharpBodyLowering() {
+  /**
+   * Starts the lowering of one body.
+   *
+   * @param accesses the finder of the variable accesses of the body
+   * @param sites the finder of the flow sites of the body
+   */
+  CSharpBodyLowering(final VariableAccesses accesses, final FlowSites sites) {
+    flow = new ControlFlowBuilder(accesses, sites);
     final Consumer<SyntaxNode> statements = this::statement;
     final CSharpLoopLowering loops = new CSharpLoopLowering(flow, statements);
     final CSharpHandlerLowering handling = new CSharpHandlerLowering(flow, statements);
@@ -64,8 +75,18 @@ final class CSharpBodyLowering {
     jumps.register(handlers);
   }
 
-  /** Lowers {@code body}, a block or an expression, into the graph named {@code name}. */
-  ControlFlowGraph lower(final String name, final SyntaxNode body, final Span span) {
+  /**
+   * Lowers {@code body}, a block or an expression, into the graph named {@code name}.
+   *
+   * @param entry the parameter accesses, bound at the entry
+   */
+  ControlFlowGraph lower(
+      final String name,
+      final List<VariableAccess> entry,
+      final SyntaxNode body,
+      final Span span
+  ) {
+    flow.record(entry, List.<FlowSite> of());
     statement(body);
     return flow.build(name, span);
   }
