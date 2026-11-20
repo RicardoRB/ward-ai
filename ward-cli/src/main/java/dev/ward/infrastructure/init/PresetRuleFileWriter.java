@@ -121,7 +121,8 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
 
   /**
    * The language ids whose Ward rules the {@code ward} gate applies: a Node project's TypeScript
-   * and JavaScript; other projects get Java or Kotlin, then Python when present, then Swift.
+   * and JavaScript, a .NET project's C#, a Cargo project's Rust; other projects get Java or Kotlin,
+   * then Python when present, then Swift.
    */
   private static List<String> wardLanguages(final Project project) {
     final List<String> ids = new ArrayList<>();
@@ -132,6 +133,10 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
       if (project.languages().contains(Language.JAVASCRIPT)) {
         ids.add("javascript");
       }
+    } else if (project.toolchain() == Toolchain.DOTNET) {
+      ids.add("csharp");
+    } else if (project.toolchain() == Toolchain.RUST) {
+      ids.add("rust");
     } else {
       ids.addAll(jvmLanguageIds(project.languages()));
     }

@@ -78,6 +78,24 @@ class DotnetInitCliTest {
   }
 
   @Test
+  @DisplayName("the ward gate selects the C# rules")
+  void theWardGateSelectsTheCSharpRules() throws IOException {
+    Files.writeString(root.resolve("App.csproj"), CSPROJ);
+    Files.writeString(root.resolve("Program.cs"), "System.Console.WriteLine(1);\n");
+    final InitCommandFixture init = init();
+
+    final int exit = init.run("", "--preset", "strict", "--yes");
+
+    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
+    assertThat(Files.readString(root.resolve("ward-rules.toml")))
+        .contains("preset = \"strict\"", "languages = [\"csharp\", \"swift\"]")
+        .doesNotContain("\"java\"");
+    assertThat(init.output())
+        .contains("Updated .config/dotnet-tools.json with .NET tools:")
+        .doesNotContain("pom.xml");
+  }
+
+  @Test
   @DisplayName("standard has no mutation gate")
   void standardHasNoMutationGate() throws IOException {
     Files.writeString(root.resolve("App.csproj"), CSPROJ);
