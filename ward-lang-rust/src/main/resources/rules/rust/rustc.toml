@@ -100,7 +100,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["expressionStatement"]
-text = '^[A-Za-z_]\w*;$'
+text = '^(?!return|break|continue)[A-Za-z_]\w*;$'
 message = "the statement is a bare name and does nothing"
 '''
 

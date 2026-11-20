@@ -1,0 +1,23 @@
+# Cost of RustCorpusSmokeTest (#656). Hand-written from one measured run; no test compares it.
+# Measured 2026-11-20 on an Apple M4 (10 cores) with other sessions building at the same time, so the time is an upper bound.
+# Not measured: the CLI (ward check, ward format --check) over the corpus, which the Java corpus cost file covers for Java.
+#
+# Rule engine alone, as the test runs it (no project-wide checks, no cache, one JVM, JaCoCo off): 87 to 98 s for 911 files
+# (ripgrep 100, tokio 811) with 97 rules (preset strict plus the security rules, default options), about 0.1 s per file.
+# Rules that need type facts and do not run: 0. Files without analysis: 0.
+#
+# Files without analysis. The first run left 42 of 911 files (4.6 %) with a syntax diagnostic, all of them valid Rust. Causes,
+# each now a case of syntax/rust/real-code.rs of the ANTLR frontend, written from scratch:
+#   - a first line "#![" was read as a shebang line, so the first inner attribute of a file was a comment;
+#   - "\\" followed by a quote ended the string in the wrong place (also in byte strings);
+#   - block comments could not hold a star, and nested ones were not handled;
+#   - a tab was not white space;
+#   - an empty "//" or "///" comment line swallowed the next line of code;
+#   - a type "&&T" (closure parameter), "_ = value;", and a keyword as the name of a macro fragment ($type:ty).
+#
+# False positives that this change fixes: path-statements flagged every "return x;", "break;" and "continue;" (450 findings
+# in the first run). The ones it does not fix are in rust-corpus-approximations.txt with issue #709.
+#
+# Clippy parity (RustCorpusClippyParityTest, local only: it needs clippy-driver): the corpus is never built, so Clippy reads
+# each file as a library crate of its own and only the files it compiles without an error are compared; see
+# rust-corpus-parity-report.txt for their number.

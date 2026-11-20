@@ -112,38 +112,37 @@ fragment UNICODE_OIDC: '\u00b7' | '\u0387' | '\u1369' ..'\u1371' | '\u19da';
 
 RAW_IDENTIFIER: 'r#' NON_KEYWORD_IDENTIFIER;
 // comments https://doc.rust-lang.org/reference/comments.html
-LINE_COMMENT: ('//' (~[/!] | '//') ~[\r\n]* | '//') -> channel (HIDDEN);
+// A line comment never reaches the next line, so the first character after "//" may not be a line break.
+LINE_COMMENT: '//' (~[/!\r\n] ~[\r\n]* | '//' ~[\r\n]*)? -> channel (HIDDEN);
 
-BLOCK_COMMENT:
-    (
-        '/*' (~[*!] | '**' | BLOCK_COMMENT_OR_DOC) (BLOCK_COMMENT_OR_DOC | ~[*])*? '*/'
-        | '/**/'
-        | '/***/'
-    ) -> channel (HIDDEN)
+// Block comments nest and may hold any character; a '*' or '/' only counts when it starts "*/" or "/*".
+INNER_BLOCK_DOC: '/*!' BLOCK_BODY '*/' -> channel (HIDDEN);
+
+OUTER_BLOCK_DOC: '/**' (~[*/] | NESTED_BLOCK | '/' {this._input.LA(1) != '*'}?) BLOCK_BODY '*/' -> channel (HIDDEN);
+
+BLOCK_COMMENT: '/*' BLOCK_BODY '*/' -> channel (HIDDEN);
+
+fragment NESTED_BLOCK: '/*' BLOCK_BODY '*/';
+
+fragment BLOCK_BODY:
+    (NESTED_BLOCK | ~[*/] | '*' {this._input.LA(1) != '/'}? | '/' {this._input.LA(1) != '*'}?)*
 ;
 
 INNER_LINE_DOC: '//!' ~[\n\r]* -> channel (HIDDEN); // isolated cr
 
-INNER_BLOCK_DOC: '/*!' ( BLOCK_COMMENT_OR_DOC | ~[*])*? '*/' -> channel (HIDDEN);
+OUTER_LINE_DOC: '///' (~[/\n\r] ~[\n\r]*)? -> channel (HIDDEN); // isolated cr
 
-OUTER_LINE_DOC: '///' (~[/] ~[\n\r]*)? -> channel (HIDDEN); // isolated cr
-
-OUTER_BLOCK_DOC:
-    '/**' (~[*] | BLOCK_COMMENT_OR_DOC) (BLOCK_COMMENT_OR_DOC | ~[*])*? '*/' -> channel (HIDDEN)
-;
-
-BLOCK_COMMENT_OR_DOC: ( BLOCK_COMMENT | INNER_BLOCK_DOC | OUTER_BLOCK_DOC) -> channel (HIDDEN);
-
-SHEBANG: {this.sof()}? '\ufeff'? '#!' ~[\r\n]* -> channel(HIDDEN);
+// A leading "#![" is an inner attribute, not a shebang line.
+SHEBANG: {this.sof()}? '\ufeff'? '#!' {this._input.LA(1) != '['}? ~[\r\n]* -> channel(HIDDEN);
 
 // whitespace https://doc.rust-lang.org/reference/whitespace.html
-WHITESPACE : [\p{Zs}]          -> channel(HIDDEN);
+WHITESPACE : [\t\u000B\u000C\u0085\u200E\u200F\u2028\u2029\p{Zs}] -> channel(HIDDEN);
 NEWLINE    : ('\r\n' | [\r\n]) -> channel(HIDDEN);
 
 // tokens char and string
 CHAR_LITERAL: '\'' ( ~['\\\n\r\t] | QUOTE_ESCAPE | ASCII_ESCAPE | UNICODE_ESCAPE) '\'';
 
-STRING_LITERAL: '"' ( ~["] | QUOTE_ESCAPE | ASCII_ESCAPE | UNICODE_ESCAPE | ESC_NEWLINE)* '"';
+STRING_LITERAL: '"' ( ~["\\] | QUOTE_ESCAPE | ASCII_ESCAPE | UNICODE_ESCAPE | ESC_NEWLINE)* '"';
 
 RAW_STRING_LITERAL: 'r' RAW_STRING_CONTENT;
 
@@ -155,7 +154,7 @@ RAW_C_STRING_LITERAL: 'cr' RAW_STRING_CONTENT;
 
 BYTE_LITERAL: 'b\'' (. | QUOTE_ESCAPE | BYTE_ESCAPE) '\'';
 
-BYTE_STRING_LITERAL: 'b"' (~["] | QUOTE_ESCAPE | BYTE_ESCAPE)* '"';
+BYTE_STRING_LITERAL: 'b"' (~["\\] | QUOTE_ESCAPE | BYTE_ESCAPE | ESC_NEWLINE)* '"';
 
 RAW_BYTE_STRING_LITERAL: 'br' RAW_STRING_CONTENT;
 
@@ -171,7 +170,7 @@ fragment UNICODE_ESCAPE:
 
 fragment QUOTE_ESCAPE: '\\' ['"];
 
-fragment ESC_NEWLINE: '\\' '\n';
+fragment ESC_NEWLINE: '\\' '\r'? '\n';
 
 // number
 

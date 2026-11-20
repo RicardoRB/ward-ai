@@ -53,6 +53,65 @@ final class ClippyRun {
     }
   }
 
+  /** Runs Clippy with every lint of {@code ids} (written with {@code _}) on; returns its JSON. */
+  static String allLints(final String clippy, final java.util.Collection<String> ids, final Path file)
+      throws IOException, InterruptedException {
+    final Path out = Files.createTempDirectory("ward-clippy-");
+    try {
+      final List<String> command = new ArrayList<>(
+          List.of(
+              clippy,
+              "--test",
+              "--edition=2021",
+              "--emit=metadata",
+              "--error-format=json",
+              "--out-dir=" + out,
+              "--cap-lints=warn",
+              "-Aclippy::all"
+          )
+      );
+      ids.forEach(id -> command.add("-W" + id));
+      command.add(file.toString());
+      final Process process = new ProcessBuilder(command).redirectErrorStream(true).start();
+      final String output =
+          new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+      process.waitFor();
+      return output;
+    } finally {
+      try (Stream<Path> files = Files.walk(out)) {
+        files.sorted(Comparator.reverseOrder()).forEach(ClippyRun::delete);
+      }
+    }
+  }
+
+  /** Whether the JSON output holds no error message. */
+  static boolean compiled(final String output) {
+    return !output.contains("\"level\":\"error\"");
+  }
+
+  /** The lines of the primary spans of each lint code in the JSON output of Clippy. */
+  static java.util.Map<String, List<Integer>> lines(final String output) {
+    final java.util.Map<String, List<Integer>> lines = new java.util.TreeMap<>();
+    final Pattern code = Pattern.compile("\"code\":\\{\"code\":\"(clippy::[a-z_0-9]+)\"");
+    for (final String message : output.split("\n")) {
+      final Matcher lint = code.matcher(message);
+      final Matcher span = PRIMARY_SPAN.matcher(message);
+      if (lint.find() && span.find()) {
+        add(lines, lint.group(1), Integer.parseInt(span.group(LINE_GROUP)));
+      }
+    }
+    return lines;
+  }
+
+  private static void add(
+      final java.util.Map<String,
+      List<Integer>> lines,
+      final String lint,
+      final int line
+  ) {
+    lines.computeIfAbsent(lint, key -> new ArrayList<>()).add(line);
+  }
+
   private static List<Integer> lines(final String output, final String id) {
     final String code = "\"code\":{\"code\":\"" + id.replace('-', '_') + "\"";
     final List<Integer> lines = new ArrayList<>();

@@ -94,7 +94,7 @@ macroMatcher
 macroMatch
     : macroMatchToken+
     | macroMatcher
-    | DOLLAR (identifier | KW_SELFVALUE) COLON macroFragSpec
+    | DOLLAR (identifier | keyword | KW_SELFVALUE) COLON macroFragSpec
     | DOLLAR LPAREN macroMatch+ RPAREN macroRepSep? macroRepOp
     ;
 
@@ -447,6 +447,7 @@ expression
     : outerAttribute+ expression                                     # AttributedExpression // technical, remove left recursive
     | literalExpression                                              # LiteralExpression_
     | pathExpression                                                 # PathExpression_
+    | UNDERSCORE                                                     # UnderscoreExpression          // `_ = value`
     | expression DOT pathExprSegment LPAREN callParams? RPAREN       # MethodCallExpression          // 8.2.10
     | expression DOT identifier                                      # FieldExpression               // 8.2.11
     | expression DOT tupleIndex                                      # TupleIndexingExpression       // 8.2.7
@@ -888,7 +889,7 @@ sliceType
 
 // 10.1.13
 referenceType
-    : AND lifetime? KW_MUT? typeNoBounds
+    : (AND | ANDAND) lifetime? KW_MUT? typeNoBounds
     ;
 
 rawPointerType

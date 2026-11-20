@@ -9,8 +9,8 @@ category = "style"
 presets = ["strict"]
 body = '''
 check = "forbidden-node"
-kinds = ["outerAttribute", "innerAttribute"]
-text = '^#!?\[allow\('
+kinds = ["outerAttribute"]
+text = '^#\[allow\('
 message = "use expect instead of allow, so that a stale attribute is reported"
 '''
 

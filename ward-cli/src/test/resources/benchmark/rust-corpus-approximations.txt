@@ -1,0 +1,44 @@
+# rule | file:line | reason | open issue. A finding labelled fp fails RustCorpusSmokeTest unless it is listed here.
+ward:rust/get-first | ripgrep/crates/matcher/src/lib.rs:398 | the receiver is not a slice, Vec or VecDeque | #709
+ward:rust/get-first | ripgrep/crates/matcher/tests/test_matcher.rs:118 | the receiver is a Captures value, not a slice | #709
+ward:rust/len-zero | ripgrep/crates/matcher/src/lib.rs:154 | a call of len inside is_empty is the definition of emptiness; Clippy does not lint it | #709
+ward:rust/len-zero | tokio/tokio/src/io/blocking.rs:265 | a call of len inside is_empty is the definition of emptiness; Clippy does not lint it | #709
+ward:rust/len-zero | tokio/tokio/src/runtime/scheduler/multi_thread/queue.rs:413 | a call of len inside is_empty is the definition of emptiness; Clippy does not lint it | #709
+ward:rust/len-zero | tokio/tokio/src/util/sharded_list.rs:116 | a call of len inside is_empty is the definition of emptiness; Clippy does not lint it | #709
+ward:rust/needless-return | tokio/tokio/tests/macros_test.rs:54 | more statements follow the return | #709
+ward:rust/non-camel-case-types | ripgrep/crates/core/flags/lowargs.rs:239 | the name read is the attribute on the variant, not the variant | #709
+ward:rust/non-camel-case-types | tokio/tokio/src/fs/open_options.rs:95 | the name read is the attribute on the variant, not the variant | #709
+ward:rust/non-camel-case-types | tokio/tokio/src/runtime/mod.rs:442 | the name read is the attribute on the variant, not the variant | #709
+ward:rust/non-camel-case-types | tokio/tokio/src/util/as_ref.rs:6 | the name read is the attribute on the variant, not the variant | #709
+ward:rust/non-snake-case | ripgrep/crates/cli/src/process.rs:280 | a constant used as a match pattern or a raw identifier is not a binding name | #709
+ward:rust/non-snake-case | tokio/tokio/src/runtime/scheduler/multi_thread/park.rs:270 | a constant used as a match pattern or a raw identifier is not a binding name | #709
+ward:rust/non-snake-case | tokio/tokio/src/sync/notify.rs:292 | a constant used as a match pattern or a raw identifier is not a binding name | #709
+ward:rust/non-snake-case | tokio/tokio/src/sync/notify.rs:295 | a constant used as a match pattern or a raw identifier is not a binding name | #709
+ward:rust/non-upper-case-globals | tokio/benches/remote_spawn.rs:22 | the unnamed constant const _ has no name to check | #709
+ward:rust/non-upper-case-globals | tokio/tokio/src/util/linked_list.rs:541 | the unnamed constant const _ has no name to check | #709
+ward:rust/non-upper-case-globals | tokio/tokio/tests/async_send_sync.rs:149 | the unnamed constant const _ has no name to check | #709
+ward:rust/redundant-semicolons | tokio/benches/sync_rwlock.rs:139 | the semicolon ends a statement that is a macro call with braces | #709
+ward:rust/redundant-semicolons | tokio/benches/sync_semaphore.rs:123 | the semicolon ends a statement that is a macro call with braces | #709
+ward:rust/redundant-semicolons | tokio/tokio/tests/macros_select.rs:615 | the semicolon ends a statement that is a macro call with braces | #709
+ward:rust/redundant-semicolons | tokio/tokio/tests/macros_select.rs:629 | the semicolon ends a statement that is a macro call with braces | #709
+ward:rust/single-component-path-imports | ripgrep/tests/json.rs:4 | an aliased or multi-segment import is not a single-component import | #709
+ward:rust/single-component-path-imports | tokio/tokio-macros/src/entry.rs:193 | an aliased or multi-segment import is not a single-component import | #709
+ward:rust/single-component-path-imports | tokio/tokio/src/runtime/handle.rs:739 | an aliased or multi-segment import is not a single-component import | #709
+ward:rust/single-component-path-imports | tokio/tokio/tests/macros_rename_test.rs:4 | an aliased or multi-segment import is not a single-component import | #709
+ward:rust/unreachable-code | tokio/examples/chat.rs:244 | the loop above ends through a break | #709
+ward:rust/unreachable-code | tokio/tokio/tests/macros_select.rs:593 | the loop above ends through a break inside select! | #709
+ward:rust/unsafe-public-function | tokio/tokio/src/net/unix/ucred.rs:352 | the function is pub(crate), not public | #709
+ward:rust/unsafe-public-function | tokio/tokio/src/runtime/scheduler/util/time_alt.rs:55 | the function is pub(crate), not public | #709
+ward:rust/unused-assignments | ripgrep/crates/core/flags/config.rs:91 | the value is read later through a closure, a format string or a later branch | #709
+ward:rust/unused-assignments | tokio/tokio/src/runtime/task/state.rs:128 | the value is read later through a closure, a format string or a later branch | #709
+ward:rust/unused-assignments | tokio/tokio/tests/io_async_fd.rs:360 | the value is read later through a closure, a format string or a later branch | #709
+ward:rust/unused-assignments | tokio/tokio/tests/tcp_accept.rs:138 | the value is read later through a closure, a format string or a later branch | #709
+ward:rust/unused-import-braces | tokio/tokio/src/signal/ctrl_c.rs:2 | a braced self import with a rename is not a redundant brace | #709
+ward:rust/unused-import-braces | tokio/tokio/src/signal/ctrl_c.rs:4 | a braced self import with a rename is not a redundant brace | #709
+ward:rust/unused-variables | ripgrep/crates/core/flags/defs.rs:2459 | the name is read in a format string, or a cfg alternative of the item is the one used | #709
+ward:rust/unused-variables | tokio/tokio-util/tests/codecs.rs:25 | the name is read in a format string, or a cfg alternative of the item is the one used | #709
+ward:rust/unused-variables | tokio/tokio/src/sync/mutex.rs:358 | the name is read in a format string, or a cfg alternative of the item is the one used | #709
+ward:rust/unused-variables | tokio/tokio/tests/tcp_echo.rs:20 | the name is read in a format string, or a cfg alternative of the item is the one used | #709
+ward:rust/wildcard-imports | ripgrep/crates/cli/src/human.rs:45 | a glob of the variants of an enum | #709
+ward:rust/wildcard-imports | ripgrep/crates/ignore/src/walk.rs:200 | a glob of the variants of an enum | #709
+ward:rust/wildcard-imports | ripgrep/crates/cli/src/human.rs | a glob of the variants of an enum | #709

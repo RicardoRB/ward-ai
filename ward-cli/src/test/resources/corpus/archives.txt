@@ -10,3 +10,5 @@ got got e562d6c1a290c35861e0052a0aadfbf93ce8c397dfb1155508bd127328f14111 https:/
 juice juice-shop 90551e4bcf83e7019de5bfcba8ab28b35df35b9243d91fbdc7c7e6db30c23e4e https://github.com/juice-shop/juice-shop/archive/refs/tags/v20.4.0.tar.gz
 csharp newtonsoft-json 71fb8eda5ee37ab3405ea5df6c2a9490716e411db82e6c0878132bdf29aedb17 https://github.com/JamesNK/Newtonsoft.Json/archive/refs/tags/13.0.4.tar.gz
 csharp eshop e9eb4454c1fcb46dc39f425d0d510ab242af5cddf53570d7de47da9bcb68438c https://github.com/dotnet/eShop/archive/ab10e4c68fd26369578ebfb3fd1ccf3b867d0444.tar.gz
+rust ripgrep 7605249d3eb0d5f170e3414498e3344e26b1e7a147aec518b57090b80036a562 https://github.com/BurntSushi/ripgrep/archive/refs/tags/15.2.0.tar.gz
+rust tokio 3d84bf16b8fdbb19b6455dfa5971cead60e0ddbd9ee1aa368a4b4206998f9bdd https://github.com/tokio-rs/tokio/archive/refs/tags/tokio-1.54.1.tar.gz

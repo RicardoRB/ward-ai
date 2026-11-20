@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 /**
- * One pinned open-source project (Apache-2.0), read from its extracted source archive. The
+ * One pinned open-source project (Apache-2.0, MIT or Unlicense), read from its extracted source archive. The
  * source is never part of the repository and is only read: nothing in it is installed or run.
  *
  * @param name the short name that starts every path of the report
@@ -92,6 +92,26 @@ record PinnedCorpus(
     return List.of(NEWTONSOFT_JSON, ESHOP);
   }
 
+  /** ripgrep, a command-line search tool and its library crates (MIT or Unlicense). */
+  static final PinnedCorpus RIPGREP =
+      new PinnedCorpus(
+          "ripgrep",
+          "15.2.0",
+          "7605249d3eb0d5f170e3414498e3344e26b1e7a147aec518b57090b80036a562",
+          "ripgrep-15.2.0",
+          AnalysisLanguage.RUST
+      );
+
+  /** Tokio, an asynchronous runtime with unsafe code, macros and platform modules (MIT). */
+  static final PinnedCorpus TOKIO =
+      new PinnedCorpus(
+          "tokio",
+          "tokio-1.54.1",
+          "3d84bf16b8fdbb19b6455dfa5971cead60e0ddbd9ee1aa368a4b4206998f9bdd",
+          "tokio-tokio-1.54.1",
+          AnalysisLanguage.RUST
+      );
+
   /** Returns the Java corpora, in report order. */
   static List<PinnedCorpus> java() {
     return List.of(COMMONS_LANG, PETCLINIC);
@@ -102,11 +122,17 @@ record PinnedCorpus(
     return List.of(OKIO, PETCLINIC_KOTLIN);
   }
 
+  /** Returns the Rust corpora, in report order. */
+  static List<PinnedCorpus> rust() {
+    return List.of(RIPGREP, TOKIO);
+  }
+
   /** Returns the extension of the sources of this corpus's language. */
   String extension() {
     return switch (language) {
       case KOTLIN -> ".kt";
       case CSHARP -> ".cs";
+      case RUST -> ".rs";
       default -> ".java";
     };
   }
