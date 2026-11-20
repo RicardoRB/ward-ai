@@ -13,7 +13,8 @@ import java.util.logging.Logger;
 /** Generic process-backed gate used by built-in and repository-defined gate registrations. */
 public final class CommandQualityGate implements QualityGate {
   private static final Logger LOGGER = Logger.getLogger(CommandQualityGate.class.getName());
-  private static final String REPORT_PATH_OPTION = "--report-path";
+  /** The options that name a report file: trivy writes {@code --report-path}, cargo llvm-cov {@code --output-path}. */
+  private static final List<String> REPORT_PATH_OPTIONS = List.of("--report-path", "--output-path");
 
   private final String name;
   private final CommandExecutor executor;
@@ -58,7 +59,10 @@ public final class CommandQualityGate implements QualityGate {
 
   /** Lets tools such as trivy write reports into build directories that do not exist yet. */
   private void prepareReportDirectory(final Project project) {
-    final int option = command.indexOf(REPORT_PATH_OPTION);
+    final int option =
+        REPORT_PATH_OPTIONS.stream().mapToInt(command::indexOf).filter(
+            at -> at >= 0
+        ).findFirst().orElse(-1);
     if (option < 0 || option + 1 >= command.size()) {
       return;
     }

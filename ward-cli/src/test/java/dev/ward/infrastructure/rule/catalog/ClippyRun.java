@@ -54,7 +54,11 @@ final class ClippyRun {
   }
 
   /** Runs Clippy with every lint of {@code ids} (written with {@code _}) on; returns its JSON. */
-  static String allLints(final String clippy, final java.util.Collection<String> ids, final Path file)
+  static String allLints(
+      final String clippy,
+      final java.util.Collection<String> ids,
+      final Path file
+  )
       throws IOException, InterruptedException {
     final Path out = Files.createTempDirectory("ward-clippy-");
     try {

@@ -1,0 +1,7 @@
+[package]
+name = "shop"
+version = "0.1.0"
+edition = "@EDITION@"
+rust-version = "1.85"
+
+[dependencies]

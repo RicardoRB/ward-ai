@@ -527,6 +527,93 @@ jobs:
           -Dward.csharp.matrix.jar=target/ward.jar
           test
 
+  # Reads the Rust toolchains of the matrix data (the stable toolchain and the minimum supported
+  # version) and skips the matrix for pull requests that change only website, openspec or Markdown files.
+  rust-matrix-versions:
+    name: Rust matrix toolchains
+    needs: changes
+    if: inputs.compatibility-matrices && needs.changes.outputs.code == 'true'
+    runs-on: ubuntu-24.04
+    outputs:
+      cells: ${{ steps.toolchains.outputs.cells }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Read Rust toolchains
+        id: toolchains
+        run: |
+          set -eu
+          cells=$(tail -n +2 ward-cli/src/test/resources/rust-matrix/cells.csv | cut -d, -f1 | sort -u \
+            | jq -R -sc 'split("\n") | map(select(length > 0) | {toolchain: .})')
+          echo "cells=$cells" >> "$GITHUB_OUTPUT"
+          echo "Rust cells: $cells"
+
+  # One job per Rust toolchain. Each runs only the rows with that toolchain, through the real CLI.
+  # The cargo registry and the installed cargo tools have a cache of their own per toolchain, and a
+  # stuck download or build stops the job after 45 minutes.
+  rust-matrix:
+    name: Rust ${{ matrix.cell.toolchain }} compatibility matrix
+    needs: [rust-matrix-versions, maven-cache]
+    if: inputs.compatibility-matrices
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        cell: ${{ fromJSON(needs.rust-matrix-versions.outputs.cells) }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      # Filled by the maven-cache job; read only here, so a job that resolves fewer plugins never
+      # saves an incomplete repository under the shared key.
+      - name: Restore the Maven repository
+        uses: actions/cache/restore@v5
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: maven-shared-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-shared-${{ runner.os }}-
+
+      - name: Restore the cargo registry and tools
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            ~/.cargo/bin
+          key: rust-matrix-${{ matrix.cell.toolchain }}-${{ hashFiles('ward-cli/src/test/resources/rust-matrix/cells.csv') }}
+
+      # The cell's toolchain, with the components its gates use. The cargo tools build with the
+      # stable toolchain, since the minimum version cannot build them.
+      - name: Install the Rust toolchains and cargo tools
+        run: |
+          set -eu
+          rustup toolchain install stable --profile minimal
+          rustup toolchain install "${{ matrix.cell.toolchain }}" --profile minimal \
+            --component clippy --component rustfmt --component llvm-tools-preview
+          for tool in cargo-llvm-cov cargo-mutants; do
+            command -v "$tool" >/dev/null || cargo +stable install --locked "$tool"
+          done
+
+      - name: Build Ward
+        run: ./mvnw -B -q package -DskipTests
+
+      - name: Run the cells for Rust ${{ matrix.cell.toolchain }}
+        run: >-
+          ./mvnw -B
+          -Dsurefire.failIfNoSpecifiedTests=false
+          -Dtest=RustCompatibilityMatrixTest
+          -Dward.rust.matrix=${{ matrix.cell.toolchain }}
+          -Dward.rust.matrix.jar=target/ward.jar
+          test
+
   # Runs the real Checkstyle, PMD, SpotBugs, Error Prone and NullAway on the fixtures of
   # every implemented Java rule and compares them with the committed parity report
   # (ward-cli/src/test/resources/parity/java-report.txt). Versions are pinned in resolve-tools.sh.

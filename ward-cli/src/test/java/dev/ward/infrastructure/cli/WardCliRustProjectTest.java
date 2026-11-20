@@ -29,5 +29,8 @@ class WardCliRustProjectTest extends WardCliIntegrationSupport {
         .isZero();
     assertThat(Files.readString(crate.resolve(WARD_TOML)))
         .contains("[checks.cargo-clippy]", "[checks.cargo-test]");
+    assertThat(Files.readString(crate.resolve("ward-rules.toml")))
+        .as("the ward gate selects the Rust rules")
+        .contains("languages = [\"rust\"");
   }
 }

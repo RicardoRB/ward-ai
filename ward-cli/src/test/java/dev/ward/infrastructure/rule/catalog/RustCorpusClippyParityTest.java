@@ -9,7 +9,7 @@ import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.infrastructure.rule.BundledRuleMatchers;
 import dev.ward.infrastructure.rule.catalog.CorpusLabels.Place;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -20,6 +20,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIf;
@@ -68,9 +70,10 @@ final class RustCorpusClippyParityTest {
     }
     final Map<String, String> lints = lints();
     final String clippy = System.getProperty("ward.parity.clippy");
-    final Set<String> clean = new TreeSet<>();
-    final Map<String, Set<String>> clippyLines = new TreeMap<>();
-    units.parallelStream().forEach(unit -> compare(clippy, directory, unit, lints, clean, clippyLines));
+    final Set<String> clean = new ConcurrentSkipListSet<>();
+    final Map<String, Set<String>> clippyLines = new ConcurrentHashMap<>();
+    final Probe probe = new Probe(clippy, directory, lints.keySet());
+    units.parallelStream().forEach(unit -> compare(probe, unit, clean, clippyLines));
     final Map<String, Set<String>> wardLines = ward(units, lints.values(), clean);
     final Map<Place, String> labels =
         CorpusLabels.read(RESOURCES.resolve("rust-corpus-parity-labels.txt"));
@@ -95,12 +98,12 @@ final class RustCorpusClippyParityTest {
         .as("labels without a ward-extra line")
         .isEmpty();
     assertThat(
-            labels.entrySet().stream()
-                .filter(entry -> "fp".equals(entry.getValue()))
-                .map(Map.Entry::getKey)
-                .filter(place -> !approved.containsKey(place))
-                .toList()
-        )
+        labels.entrySet().stream()
+            .filter(entry -> "fp".equals(entry.getValue()))
+            .map(Map.Entry::getKey)
+            .filter(place -> !approved.containsKey(place))
+            .toList()
+    )
         .as("false positives without a reason and an open issue")
         .isEmpty();
   }
@@ -114,45 +117,48 @@ final class RustCorpusClippyParityTest {
         .forEach(
             row ->
                 row.counterparts().getOrDefault("clippy", List.of())
-                    .forEach(id -> lints.put(id.replace('-', '_'), row.idFor(AnalysisLanguage.RUST)))
+                    .forEach(
+                        id -> lints.put(id.replace('-', '_'), row.idFor(AnalysisLanguage.RUST))
+                    )
         );
     return lints;
   }
 
+  /** What every Clippy run shares: the binary, the corpus folder and the lints to turn on. */
+  private record Probe(String clippy, Path directory, Set<String> lints) {}
+
   private static void compare(
-      final String clippy,
-      final Path directory,
+      final Probe probe,
       final SourceUnit unit,
-      final Map<String, String> lints,
       final Set<String> clean,
-      final Map<String, Set<String>> clippyLines
+      final Map<String,
+      Set<String>> clippyLines
   ) {
     try {
-      final String slash = unit.path().substring(unit.path().indexOf('/') + 1);
       final String folder = unit.path().substring(0, unit.path().indexOf('/'));
       final Path file =
-          directory.resolve(PinnedCorpus.rust().stream()
-              .filter(corpus -> corpus.name().equals(folder))
-              .findFirst()
-              .orElseThrow()
-              .folder()).resolve(slash);
-      final String output = ClippyRun.allLints(clippy, lints.keySet(), file);
+          probe.directory().resolve(
+              PinnedCorpus.rust().stream()
+                  .filter(corpus -> corpus.name().equals(folder))
+                  .findFirst()
+                  .orElseThrow()
+                  .folder()
+          ).resolve(unit.path().substring(unit.path().indexOf('/') + 1));
+      final String output = ClippyRun.allLints(probe.clippy(), probe.lints(), file);
       if (ClippyRun.compiled(output) && !unit.text().contains("#![cfg(")) {
-        synchronized (clean) {
-          clean.add(unit.path());
-          ClippyRun.lines(output).forEach(
-              (lint, found) ->
-                  found.forEach(
-                      line ->
-                          clippyLines
-                              .computeIfAbsent(lint, key -> new TreeSet<>())
-                              .add(unit.path() + ":" + line)
-                  )
-          );
-        }
+        clean.add(unit.path());
+        ClippyRun.lines(output).forEach(
+            (lint, found) ->
+                found.forEach(
+                    line ->
+                        clippyLines
+                            .computeIfAbsent(lint, key -> new ConcurrentSkipListSet<>())
+                            .add(unit.path() + ":" + line)
+                )
+        );
       }
     } catch (final IOException e) {
-      throw new java.io.UncheckedIOException(e);
+      throw new UncheckedIOException(e);
     } catch (final InterruptedException e) {
       Thread.currentThread().interrupt();
       throw new IllegalStateException(e);
@@ -169,7 +175,9 @@ final class RustCorpusClippyParityTest {
             .filter(rule -> ids.contains(rule.id()))
             .sorted(Comparator.comparing(RuleDefinition::id))
             .toList();
-    final List<SourceUnit> compared = units.stream().filter(unit -> clean.contains(unit.path())).toList();
+    final List<SourceUnit> compared = units.stream().filter(
+        unit -> clean.contains(unit.path())
+    ).toList();
     final Map<String, Set<String>> lines = new TreeMap<>();
     new RuleEngine(BundledRuleMatchers.create())
         .run(compared, new RuleFixtureRunner().frontends(), rules).findings()
@@ -189,17 +197,25 @@ final class RustCorpusClippyParityTest {
     return counts;
   }
 
-  private static Set<String> union(final Map<String, Integer> first, final Map<String, Integer> second) {
+  private static Set<String> union(
+      final Map<String,
+      Integer> first,
+      final Map<String,
+      Integer> second
+  ) {
     final Set<String> files = new TreeSet<>(first.keySet());
     files.addAll(second.keySet());
     return files;
   }
 
   private static String report(
-      final Map<String, String> lints,
+      final Map<String,
+      String> lints,
       final Set<String> clean,
-      final Map<String, Set<String>> clippyLines,
-      final Map<String, Set<String>> wardLines,
+      final Map<String,
+      Set<String>> clippyLines,
+      final Map<String,
+      Set<String>> wardLines,
       final List<Place> extra
   ) {
     final StringBuilder report = new StringBuilder(HEADER);
