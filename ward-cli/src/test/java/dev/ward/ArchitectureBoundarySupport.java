@@ -44,6 +44,7 @@ final class ArchitectureBoundarySupport {
           "dev.ward.config.GateExtensionsModule",
           "dev.ward.config.FormatterBindingsModule",
           "dev.ward.config.ReportBindingsModule",
+          "dev.ward.config.ReportBindingsModule$MutationReports",
           "dev.ward.config.RulesBindingsModule",
           "dev.ward.config.RulesCommandBindingsModule",
           "dev.ward.config.WardProvidesModule"

@@ -1,6 +1,5 @@
 package dev.ward.application.gate.apicompat;
 
-import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.domain.gate.RevisionFiles;
 import dev.ward.domain.gate.RevisionSnapshot;
@@ -19,10 +18,6 @@ final class ApiSources {
   private static final List<String> GRADLE_SCRIPTS = List.of("build.gradle.kts", "build.gradle");
   private static final List<String> GRADLE_SETTINGS =
       List.of("settings.gradle.kts", "settings.gradle");
-  private static final String JAVA = ".java";
-  private static final String KOTLIN = ".kt";
-  private static final String RUST = ".rs";
-  private static final String CSHARP = ".cs";
   private static final String CARGO_SOURCES = "src";
 
   private final ApiCompatPorts ports;
@@ -129,7 +124,7 @@ final class ApiSources {
         .flatMap(
             directory ->
                 tree.files().apply(directory).stream()
-                    .filter(ApiSources::isSource)
+                    .filter(ApiSourceLanguages::isSource)
                     .map(file -> directory + "/" + file)
         )
         .toList();
@@ -150,10 +145,6 @@ final class ApiSources {
     return dir.isEmpty() ? name : dir + "/" + name;
   }
 
-  private static boolean isSource(final String file) {
-    return file.endsWith(JAVA) || file.endsWith(KOTLIN) || file.endsWith(RUST);
-  }
-
   private static SourceUnit unit(
       final String path,
       final Optional<String> text,
@@ -161,19 +152,9 @@ final class ApiSources {
   ) {
     return new SourceUnit(
         path,
-        language(path),
+        ApiSourceLanguages.of(path),
         text.orElseThrow(() -> new ApiCompatException(failure + "."))
     );
-  }
-
-  private static AnalysisLanguage language(final String path) {
-    if (path.endsWith(KOTLIN)) {
-      return AnalysisLanguage.KOTLIN;
-    }
-    if (path.endsWith(RUST)) {
-      return AnalysisLanguage.RUST;
-    }
-    return path.endsWith(CSHARP) ? AnalysisLanguage.CSHARP : AnalysisLanguage.JAVA;
   }
 
   /** A file tree at one revision: a reader, a lister and how to name the revision. */

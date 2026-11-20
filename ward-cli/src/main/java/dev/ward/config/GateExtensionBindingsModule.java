@@ -14,14 +14,8 @@ import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.secrets.GitHistory;
 import dev.ward.infrastructure.analysis.GateFrontends;
 import dev.ward.infrastructure.analysis.JsonAnalysisResultCodec;
-import dev.ward.infrastructure.analysis.JvmDependencyAdapters;
 import dev.ward.infrastructure.analysis.ProjectDependencyAdapters;
 import dev.ward.infrastructure.analysis.jvm.JdkLocator;
-import dev.ward.infrastructure.analysis.node.NodeDependencyAdapters;
-import dev.ward.infrastructure.analysis.python.PythonDependencyAdapters;
-import dev.ward.infrastructure.analysis.rust.RustDependencyAdapters;
-import dev.ward.infrastructure.analysis.dotnet.DotnetDependencyAdapters;
-import dev.ward.infrastructure.analysis.swift.SwiftDependencyAdapters;
 import dev.ward.infrastructure.rule.BundledRuleMatchers;
 import dev.ward.infrastructure.rule.FileAnalysisCache;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
@@ -95,16 +89,7 @@ interface GateExtensionBindingsModule {
         projectRoot -> new FileAnalysisCache(projectRoot.resolve(CACHE_DIRECTORY)),
         services.codec(),
         wardVersion,
-        new ProjectDependencyAdapters(
-            List.of(
-                new NodeDependencyAdapters(),
-                new PythonDependencyAdapters(),
-                new RustDependencyAdapters(),
-                new SwiftDependencyAdapters(),
-                new DotnetDependencyAdapters(),
-                new JvmDependencyAdapters()
-            )
-        ),
+        ProjectDependencyAdapters.bundled(),
         (projectRoot, classpathFile) ->
             NativeTypeFactsBindings.forProject(
                 projectRoot,

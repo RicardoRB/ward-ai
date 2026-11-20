@@ -220,6 +220,7 @@ class InitSetupCatalogTest {
                 .filter(id -> !RUST_GATES.contains(id))
                 // .NET gates are offered only for .NET projects.
                 .filter(id -> !id.startsWith("dotnet-"))
+                .filter(id -> !SupportedQualityGates.STRYKER_NET.equals(id))
                 // The ward-format gate is in every selection, not offered as a choice.
                 .filter(id -> !SupportedQualityGates.FORMAT.equals(id))
                 // Android gates are offered only for Android projects.

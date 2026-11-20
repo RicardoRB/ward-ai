@@ -63,7 +63,7 @@ final class ApiCompatGateFixtures {
         new WorkingFiles() {
           @Override
           public List<String> files(final Path root, final String directory) {
-            final String prefix = directory + "/";
+            final String prefix = directory.isEmpty() ? "" : directory + "/";
             return working.keySet().stream()
                 .filter(path -> path.startsWith(prefix))
                 .map(path -> path.substring(prefix.length()))
