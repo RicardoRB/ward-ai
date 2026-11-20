@@ -241,6 +241,25 @@
         }
       }
     },
+    "ward:csharp/command-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:csharp/const-field-name-pascal-case": {
       "type": "object",
       "additionalProperties": false,
@@ -665,6 +684,25 @@
         }
       }
     },
+    "ward:csharp/path-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:csharp/prefer-predefined-type": {
       "type": "object",
       "additionalProperties": false,
@@ -757,7 +795,45 @@
         }
       }
     },
+    "ward:csharp/sql-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:csharp/string-empty-literal": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:csharp/tls-verification-disabled": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -796,6 +872,25 @@
         "pattern": {
           "type": "string",
           "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/untrusted-deserialization": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -838,6 +933,44 @@
         "text": {
           "type": "string",
           "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/weak-cipher": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:csharp/weak-hash": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -43720,6 +43853,25 @@
         }
       }
     },
+    "ward:rust/command-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:rust/dbg-macro": {
       "type": "object",
       "additionalProperties": false,
@@ -44587,6 +44739,25 @@
         }
       }
     },
+    "ward:rust/path-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:rust/path-statements": {
       "type": "object",
       "additionalProperties": false,
@@ -44872,7 +45043,45 @@
         }
       }
     },
+    "ward:rust/sql-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:rust/text-direction-codepoint-in-literal": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/tls-verification-disabled": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -45033,6 +45242,25 @@
       }
     },
     "ward:rust/unsafe-code": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/unsafe-public-function": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -61638,6 +61866,7 @@
               "csharp.anonymous-method-delegate",
               "csharp.attribute-list-split",
               "csharp.braces-required",
+              "csharp.command-injection",
               "csharp.const-field-name-pascal-case",
               "csharp.constant-on-left-of-comparison",
               "csharp.duplicate-code",
@@ -61656,14 +61885,20 @@
               "csharp.one-class-per-file",
               "csharp.one-namespace-per-file",
               "csharp.parameter-name-camel-case",
+              "csharp.path-injection",
               "csharp.prefer-predefined-type",
               "csharp.region-directive",
               "csharp.reserved-exception-type",
               "csharp.single-line-comment-spacing",
+              "csharp.sql-injection",
               "csharp.string-empty-literal",
+              "csharp.tls-verification-disabled",
               "csharp.type-name-pascal-case",
+              "csharp.untrusted-deserialization",
               "csharp.using-outside-namespace",
               "csharp.visible-instance-field",
+              "csharp.weak-cipher",
+              "csharp.weak-hash",
               "java.aa-assertion-of-arguments",
               "java.abbreviation-as-word-in-name",
               "java.abstract-class-name",
@@ -63855,6 +64090,7 @@
               "rust.bytes-nth",
               "rust.char-lit-as-u8",
               "rust.chars-next-cmp",
+              "rust.command-injection",
               "rust.dbg-macro",
               "rust.deref-addrof",
               "rust.double-negations",
@@ -63900,6 +64136,7 @@
               "rust.option-map-or-none",
               "rust.panic",
               "rust.partialeq-to-none",
+              "rust.path-injection",
               "rust.path-statements",
               "rust.print-literal",
               "rust.print-stderr",
@@ -63915,7 +64152,9 @@
               "rust.self-assignment",
               "rust.single-char-add-str",
               "rust.single-component-path-imports",
+              "rust.sql-injection",
               "rust.text-direction-codepoint-in-literal",
+              "rust.tls-verification-disabled",
               "rust.todo",
               "rust.too-many-arguments",
               "rust.too-many-lines",
@@ -63924,6 +64163,7 @@
               "rust.unreachable-code",
               "rust.unreadable-literal",
               "rust.unsafe-code",
+              "rust.unsafe-public-function",
               "rust.unseparated-literal-suffix",
               "rust.unused-assignments",
               "rust.unused-import-braces",
@@ -64751,6 +64991,7 @@
               "csharp.anonymous-method-delegate",
               "csharp.attribute-list-split",
               "csharp.braces-required",
+              "csharp.command-injection",
               "csharp.const-field-name-pascal-case",
               "csharp.constant-on-left-of-comparison",
               "csharp.duplicate-code",
@@ -64769,14 +65010,20 @@
               "csharp.one-class-per-file",
               "csharp.one-namespace-per-file",
               "csharp.parameter-name-camel-case",
+              "csharp.path-injection",
               "csharp.prefer-predefined-type",
               "csharp.region-directive",
               "csharp.reserved-exception-type",
               "csharp.single-line-comment-spacing",
+              "csharp.sql-injection",
               "csharp.string-empty-literal",
+              "csharp.tls-verification-disabled",
               "csharp.type-name-pascal-case",
+              "csharp.untrusted-deserialization",
               "csharp.using-outside-namespace",
               "csharp.visible-instance-field",
+              "csharp.weak-cipher",
+              "csharp.weak-hash",
               "java.aa-assertion-of-arguments",
               "java.abbreviation-as-word-in-name",
               "java.abstract-class-name",
@@ -66968,6 +67215,7 @@
               "rust.bytes-nth",
               "rust.char-lit-as-u8",
               "rust.chars-next-cmp",
+              "rust.command-injection",
               "rust.dbg-macro",
               "rust.deref-addrof",
               "rust.double-negations",
@@ -67013,6 +67261,7 @@
               "rust.option-map-or-none",
               "rust.panic",
               "rust.partialeq-to-none",
+              "rust.path-injection",
               "rust.path-statements",
               "rust.print-literal",
               "rust.print-stderr",
@@ -67028,7 +67277,9 @@
               "rust.self-assignment",
               "rust.single-char-add-str",
               "rust.single-component-path-imports",
+              "rust.sql-injection",
               "rust.text-direction-codepoint-in-literal",
+              "rust.tls-verification-disabled",
               "rust.todo",
               "rust.too-many-arguments",
               "rust.too-many-lines",
@@ -67037,6 +67288,7 @@
               "rust.unreachable-code",
               "rust.unreadable-literal",
               "rust.unsafe-code",
+              "rust.unsafe-public-function",
               "rust.unseparated-literal-suffix",
               "rust.unused-assignments",
               "rust.unused-import-braces",
@@ -67899,6 +68151,9 @@
             "braces-required": {
               "$ref": "#/$defs/ward:csharp~1braces-required"
             },
+            "command-injection": {
+              "$ref": "#/$defs/ward:csharp~1command-injection"
+            },
             "const-field-name-pascal-case": {
               "$ref": "#/$defs/ward:csharp~1const-field-name-pascal-case"
             },
@@ -67953,6 +68208,9 @@
             "parameter-name-camel-case": {
               "$ref": "#/$defs/ward:csharp~1parameter-name-camel-case"
             },
+            "path-injection": {
+              "$ref": "#/$defs/ward:csharp~1path-injection"
+            },
             "prefer-predefined-type": {
               "$ref": "#/$defs/ward:csharp~1prefer-predefined-type"
             },
@@ -67965,17 +68223,32 @@
             "single-line-comment-spacing": {
               "$ref": "#/$defs/ward:csharp~1single-line-comment-spacing"
             },
+            "sql-injection": {
+              "$ref": "#/$defs/ward:csharp~1sql-injection"
+            },
             "string-empty-literal": {
               "$ref": "#/$defs/ward:csharp~1string-empty-literal"
             },
+            "tls-verification-disabled": {
+              "$ref": "#/$defs/ward:csharp~1tls-verification-disabled"
+            },
             "type-name-pascal-case": {
               "$ref": "#/$defs/ward:csharp~1type-name-pascal-case"
+            },
+            "untrusted-deserialization": {
+              "$ref": "#/$defs/ward:csharp~1untrusted-deserialization"
             },
             "using-outside-namespace": {
               "$ref": "#/$defs/ward:csharp~1using-outside-namespace"
             },
             "visible-instance-field": {
               "$ref": "#/$defs/ward:csharp~1visible-instance-field"
+            },
+            "weak-cipher": {
+              "$ref": "#/$defs/ward:csharp~1weak-cipher"
+            },
+            "weak-hash": {
+              "$ref": "#/$defs/ward:csharp~1weak-hash"
             }
           }
         },
@@ -74586,6 +74859,9 @@
             "chars-next-cmp": {
               "$ref": "#/$defs/ward:rust~1chars-next-cmp"
             },
+            "command-injection": {
+              "$ref": "#/$defs/ward:rust~1command-injection"
+            },
             "dbg-macro": {
               "$ref": "#/$defs/ward:rust~1dbg-macro"
             },
@@ -74721,6 +74997,9 @@
             "partialeq-to-none": {
               "$ref": "#/$defs/ward:rust~1partialeq-to-none"
             },
+            "path-injection": {
+              "$ref": "#/$defs/ward:rust~1path-injection"
+            },
             "path-statements": {
               "$ref": "#/$defs/ward:rust~1path-statements"
             },
@@ -74766,8 +75045,14 @@
             "single-component-path-imports": {
               "$ref": "#/$defs/ward:rust~1single-component-path-imports"
             },
+            "sql-injection": {
+              "$ref": "#/$defs/ward:rust~1sql-injection"
+            },
             "text-direction-codepoint-in-literal": {
               "$ref": "#/$defs/ward:rust~1text-direction-codepoint-in-literal"
+            },
+            "tls-verification-disabled": {
+              "$ref": "#/$defs/ward:rust~1tls-verification-disabled"
             },
             "todo": {
               "$ref": "#/$defs/ward:rust~1todo"
@@ -74792,6 +75077,9 @@
             },
             "unsafe-code": {
               "$ref": "#/$defs/ward:rust~1unsafe-code"
+            },
+            "unsafe-public-function": {
+              "$ref": "#/$defs/ward:rust~1unsafe-public-function"
             },
             "unseparated-literal-suffix": {
               "$ref": "#/$defs/ward:rust~1unseparated-literal-suffix"
