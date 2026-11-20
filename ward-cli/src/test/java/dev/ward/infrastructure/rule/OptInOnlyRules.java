@@ -27,6 +27,13 @@ public final class OptInOnlyRules {
     ids.add("ward:java/annotation-on-same-line");
     // declaring a variable near its use is the usual style, and PMD's quickstart omits it
     ids.add("ward:java/local-variable-declaration-should-be-at-start-of-block");
+    // redundant-modifier reports the modifiers these two rules demand
+    ids.add("ward:java/class-member-implied-modifier");
+    ids.add("ward:java/interface-member-implied-modifier");
+    // the formatter closes an array initializer on its own line, which array-trailing-comma wants
+    ids.add("ward:java/no-array-trailing-comma");
+    // an Android-only compatibility rule must not run on every JVM project (#686)
+    ids.add("ward:java/static-or-default-interface-method");
     try (InputStream stream = OptInOnlyRules.class.getResourceAsStream(DROPPED)) {
       new String(stream.readAllBytes(), StandardCharsets.UTF_8)
           .lines()

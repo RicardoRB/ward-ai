@@ -135,6 +135,29 @@ class PresetDuplicatesTest {
   }
 
   @Test
+  @DisplayName(
+      "strict holds no contradictory pair: implied vs redundant modifier, comma vs no comma (#685, #695, #686)"
+  )
+  void strictHoldsNoContradictoryPair() {
+    final Set<String> ids = new java.util.HashSet<>();
+    preset(AnalysisLanguage.JAVA, RulePreset.STRICT).forEach(rule -> ids.add(rule.id()));
+
+    assertThat(ids).contains("ward:java/redundant-modifier", "ward:java/array-trailing-comma");
+    assertThat(ids)
+        .doesNotContain(
+            "ward:java/interface-member-implied-modifier",
+            "ward:java/class-member-implied-modifier",
+            "ward:java/no-array-trailing-comma",
+            "ward:java/static-or-default-interface-method"
+        );
+    SHIPPED.stream()
+        .map(RuleDefinition::id)
+        .filter(id -> id.contains("/no-"))
+        .filter(id -> ids.contains(id) && ids.contains(id.replace("/no-", "/")))
+        .forEach(id -> assertThat(id).as("contradicts its positive twin").isNull());
+  }
+
+  @Test
   void everyDroppedRuleIsInNoPresetAndItsReplacementStays() throws IOException {
     final Map<String, RuleDefinition> byId = new java.util.HashMap<>();
     SHIPPED.forEach(rule -> byId.put(rule.id(), rule));

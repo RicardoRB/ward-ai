@@ -17,3 +17,15 @@ final class Parsed {
     return new Parsed(points.clone());
   }
 }
+
+interface Provider<T> {
+  T get();
+}
+
+final class Lazy {
+  private final Provider<byte[]> provider;
+
+  Lazy(Provider<byte[]> provider) {
+    this.provider = provider;
+  }
+}

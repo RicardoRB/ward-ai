@@ -408,9 +408,6 @@ ward:java/reflc-reflection-may-increase-accessibility-of-class | commons-lang/sr
 ward:java/reflf-reflection-may-increase-accessibility-of-field | commons-lang/src/main/java/org/apache/commons/lang3/reflect/FieldUtils.java:127 | tp | getDeclaredField with a name given by the caller
 ward:java/reflf-reflection-may-increase-accessibility-of-field | commons-lang/src/main/java/org/apache/commons/lang3/reflect/FieldUtils.java:198 | tp | getDeclaredField with a name given by the caller
 ward:java/reflf-reflection-may-increase-accessibility-of-field | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:1315 | tp | getDeclaredField with a name given by the caller
-ward:java/reliance-on-default-charset | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsTest.java:3095 | tp | getBytes without a charset
-ward:java/reliance-on-default-charset | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsTest.java:3158 | tp | getBytes without a charset
-ward:java/reliance-on-default-charset | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsTest.java:703 | tp | getBytes without a charset
 ward:java/replace-hashtable-with-map | commons-lang/src/test/java/org/apache/commons/lang3/stream/StreamsTest.java:235 | tp | a Hashtable; the test needs its Enumeration
 ward:java/replace-hashtable-with-map | commons-lang/src/test/java/org/apache/commons/lang3/stream/StreamsTest.java:247 | tp | a Hashtable; the test needs its Enumeration
 ward:java/replace-java-util-calendar | commons-lang/src/main/java/org/apache/commons/lang3/time/DateUtils.java:1652 | tp | java.util.Calendar; the library's purpose is to support it

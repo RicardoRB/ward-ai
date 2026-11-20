@@ -69,10 +69,6 @@ final class KeptPairs {
           ),
           Map.entry("ward:java/insecure-crypto-iv + ward:java/static-iv", KeptPairs.OTHER),
           Map.entry(
-              "ward:java/interface-member-implied-modifier + ward:java/static-or-default-interface-method",
-              KeptPairs.OTHER
-          ),
-          Map.entry(
               "ward:javascript/constructor-super + ward:javascript/no-unreachable-super",
               KeptPairs.OTHER
           ),

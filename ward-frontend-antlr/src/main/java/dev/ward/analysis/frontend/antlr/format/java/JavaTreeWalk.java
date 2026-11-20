@@ -13,10 +13,12 @@ import dev.ward.analysis.frontend.antlr.java.JavaParser.ElementValueArrayInitial
 import dev.ward.analysis.frontend.antlr.java.JavaParser.EnumConstantsContext;
 import dev.ward.analysis.frontend.antlr.java.JavaParser.FormalParametersContext;
 import dev.ward.analysis.frontend.antlr.java.JavaParser.LambdaBodyContext;
+import dev.ward.analysis.frontend.antlr.java.JavaParser.NonWildcardTypeArgumentsContext;
 import dev.ward.analysis.frontend.antlr.java.JavaParser.RecordHeaderContext;
 import dev.ward.analysis.frontend.antlr.java.JavaParser.SwitchBlockStatementGroupContext;
 import dev.ward.analysis.frontend.antlr.java.JavaParser.SwitchExpressionContext;
 import dev.ward.analysis.frontend.antlr.java.JavaParser.SwitchLabeledRuleContext;
+import dev.ward.analysis.frontend.antlr.java.JavaParser.TypeListContext;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -45,6 +47,7 @@ final class JavaTreeWalk {
   private final Set<Integer> hardAfter = new HashSet<>();
   private final Set<Integer> annotationEnds = new HashSet<>();
   private final Set<Integer> angleTokens = new HashSet<>();
+  private final Set<Integer> listCommas = new HashSet<>();
   private final Set<Integer> expressionBlocks = new HashSet<>();
 
   private JavaTreeWalk(final String... ruleNames) {
@@ -68,6 +71,7 @@ final class JavaTreeWalk {
         walk.hardAfter,
         walk.annotationEnds,
         walk.angleTokens,
+        walk.listCommas,
         walk.expressionBlocks
     );
   }
@@ -99,7 +103,10 @@ final class JavaTreeWalk {
   }
 
   private void classifySeparators(final ParserRuleContext context) {
-    if (context instanceof EnumConstantsContext) {
+    if (context instanceof TypeListContext
+        && !(context.getParent() instanceof NonWildcardTypeArgumentsContext)) {
+      addListCommas(context);
+    } else if (context instanceof EnumConstantsContext) {
       addTerminals(context, ",");
     } else if (context instanceof SwitchBlockStatementGroupContext
         || context instanceof SwitchLabeledRuleContext) {
@@ -143,6 +150,14 @@ final class JavaTreeWalk {
       return expressionBlocks;
     }
     return "<".equals(text) || ">".equals(text) ? angleTokens : hardAfter;
+  }
+
+  private void addListCommas(final ParserRuleContext context) {
+    for (final ParseTree child : context.children) {
+      if (child instanceof TerminalNode terminal && ",".equals(terminal.getText())) {
+        listCommas.add(terminal.getSymbol().getTokenIndex());
+      }
+    }
   }
 
   private void addTerminals(final ParserRuleContext context, final String text) {

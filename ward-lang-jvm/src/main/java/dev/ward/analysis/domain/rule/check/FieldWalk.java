@@ -62,6 +62,7 @@ final class FieldWalk {
     if (name.isEmpty()) {
       walk(target, node, fieldNames, locals, out);
       walk(value, node, fieldNames, locals, out);
+      otherInstance(target, value, fieldNames, out);
       return;
     }
     if (!"'='".equals(node.children().get(1).kind())) {
@@ -77,6 +78,28 @@ final class FieldWalk {
             false
         )
     );
+  }
+
+  /** Records {@code other.x = v} as a write of the field {@code x}, as a static factory does. */
+  private static void otherInstance(
+      final SyntaxNode target,
+      final SyntaxNode value,
+      final Set<String> fieldNames,
+      final List<FieldAccesses.Access> out
+  ) {
+    final String text = SyntaxWalk.text(target);
+    final int dot = text.lastIndexOf('.');
+    if (dot > 0 && text.indexOf('.') == dot && fieldNames.contains(text.substring(dot + 1))) {
+      final boolean isNull = NULL.equals(SyntaxWalk.text(value));
+      out.add(
+          new FieldAccesses.Access(
+              text.substring(dot + 1),
+              target,
+              isNull ? FieldAccesses.Use.WRITE_NULL : FieldAccesses.Use.WRITE,
+              false
+          )
+      );
+    }
   }
 
   private static boolean isStep(final SyntaxNode node) {

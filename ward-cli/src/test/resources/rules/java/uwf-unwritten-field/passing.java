@@ -9,3 +9,19 @@ final class Box {
     return label;
   }
 }
+
+final class Entry {
+  private String title;
+
+  private Entry() {}
+
+  static Entry of(String title) {
+    Entry entry = new Entry();
+    entry.title = title;
+    return entry;
+  }
+
+  String title() {
+    return title;
+  }
+}

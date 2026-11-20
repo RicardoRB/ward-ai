@@ -70,13 +70,24 @@ public final class ArrayIsStoredDirectlyCheck implements UnitCheck {
 
   private static Set<String> arrayParameters(final SyntaxNode callable) {
     return SyntaxWalk.descendants(callable).stream()
-        .filter(
-            node -> "formalParameter".equals(node.kind()) && SyntaxWalk.text(node).contains("[]")
-        )
+        .filter(node -> "formalParameter".equals(node.kind()) && isArray(node))
         .flatMap(node -> node.children().stream())
         .filter(child -> "variableDeclaratorId".equals(child.kind()))
         .map(id -> SyntaxWalk.text(id.children().get(0)))
         .collect(Collectors.toUnmodifiableSet());
+  }
+
+  /** Tells whether the parameter itself is an array: {@code T[] x}, {@code T x[]} or varargs. */
+  private static boolean isArray(final SyntaxNode parameter) {
+    return parameter.children().stream().anyMatch(ArrayIsStoredDirectlyCheck::marksArray);
+  }
+
+  private static boolean marksArray(final SyntaxNode child) {
+    final String text = SyntaxWalk.text(child);
+    final boolean bracketed = text.endsWith("]");
+    final String kind = child.kind();
+    return "...".equals(text)
+        || bracketed && ("typeType".equals(kind) || "variableDeclaratorId".equals(kind));
   }
 
   private static boolean isField(final String target, final Set<String> fields) {

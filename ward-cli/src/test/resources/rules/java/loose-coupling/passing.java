@@ -17,3 +17,7 @@ final class Holder {
     return java.util.ArrayList.class;
   }
 }
+
+final class Names extends ArrayList<String> {
+  private static final long serialVersionUID = 1L;
+}

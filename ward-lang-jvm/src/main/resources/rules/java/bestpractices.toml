@@ -125,6 +125,7 @@ body = '''
 check = "forbidden-node"
 kinds = ["typeType"]
 not-inside = ["expression>'::'", "primary>'class'"]
+not-parent-path = "classDeclaration"
 text = '^(java\.util\.)?(ArrayList|LinkedList|HashMap|HashSet|TreeMap|TreeSet|LinkedHashMap|LinkedHashSet|Vector|Hashtable|ConcurrentHashMap|CopyOnWriteArrayList)(<|$)'
 message = "declared as the implementation type; declare it as its interface"
 '''
@@ -146,14 +147,15 @@ message = "wrapper created with a constructor; use valueOf or the literal instea
 [[rules]]
 id = "ward:java/reliance-on-default-charset"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "style"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["creator", "methodCall"]
-text = '^(new\s+)?((InputStreamReader|OutputStreamWriter|FileReader|FileWriter)\((?:[^(),]|\((?:[^()]|\((?:[^()]|\([^()]*\))*\))*\))*\)$|getBytes\(\)$)'
+check = "call-facts"
+declaring-types = ["java.lang.String", "java.io.InputStreamReader", "java.io.OutputStreamWriter", "java.io.FileReader", "java.io.FileWriter"]
+names = ["getBytes", "<init>"]
+text = '^new(java\.io\.)?(InputStreamReader|OutputStreamWriter|FileReader|FileWriter)\((?:[^(),]|\((?:[^()]|\((?:[^()]|\([^()]*\))*\))*\))*\)$|(^|\.)getBytes\(\)$'
 message = "relies on the default charset; pass an explicit charset"
 '''
 

@@ -6,7 +6,7 @@
     <parent>
         <groupId>dev.ward</groupId>
         <artifactId>ward-parent</artifactId>
-        <version>0.11.2</version>
+        <version>0.11.3</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
