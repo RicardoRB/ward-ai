@@ -20,4 +20,19 @@ class Audit {
   String read(HttpServletRequest request) {
     return request.getParameter("user");
   }
+
+  void onlyLineFeeds(HttpServletRequest request, org.slf4j.Logger log) {
+    String user = request.getParameter("user");
+    log.info(user.replace("\n", "_"));
+  }
+
+  void pairOnly(HttpServletRequest request, org.slf4j.Logger log) {
+    String user = request.getParameter("user");
+    log.info(user.replace("\r\n", "_"));
+  }
+
+  void groupBack(HttpServletRequest request, org.slf4j.Logger log) {
+    String user = request.getParameter("user");
+    log.info(user.replaceAll("([\\r\\n])", "$1"));
+  }
 }

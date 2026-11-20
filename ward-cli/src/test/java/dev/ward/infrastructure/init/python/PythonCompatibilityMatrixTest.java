@@ -73,7 +73,7 @@ class PythonCompatibilityMatrixTest {
   private static final int PACKAGES_COLUMN = 4;
   private static final String POETRY = "poetry";
   private static final Pattern CHECK =
-      Pattern.compile("\"name\":\"([^\"]+)\"(?:,\"type\":\"[^\"]*\")?,\"status\":\"([A-Z]+)\"");
+      Pattern.compile("\"name\":\"([^\"]+)\"(?:,\"type\":\"[^\"]*\")?,\"status\":\"([A-Z_]+)\"");
 
   @ParameterizedTest(name = "python {0} {1} {2} {3}")
   @CsvFileSource(resources = "/python-matrix/cells.csv", numLinesToSkip = 1)
