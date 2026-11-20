@@ -151,6 +151,25 @@ class NativeJvmTypeFactsTest {
   }
 
   @Test
+  @org.junit.jupiter.api.DisplayName(
+      "a package-private field of a JDK superclass in another package is not inherited"
+  )
+  void doesNotInheritPackagePrivateMembersOfAnotherPackage() {
+    final String text =
+        "package app;\npublic class App extends RuntimeException {\n  private static final long serialVersionUID = 1L;\n}\n";
+    final Probe probe = Probe.of(text);
+
+    final String klass = text.substring(
+        text.indexOf("public class App"),
+        text.lastIndexOf('}') + 1
+    );
+    final TypeMembers members =
+        probe.at(probe.span(klass)).membersOf(probe.span(klass)).orElseThrow();
+
+    assertThat(members.inheritedFields()).extracting("name").doesNotContain("serialVersionUID");
+  }
+
+  @Test
   void answersShapesOverridesThrowsAndConstants() {
     final String text =
         "package app;\nimport java.io.IOException;\n@Deprecated\npublic class App implements Comparable<App> {\n  @Override public int compareTo(App other) { return 0; }\n  @Override public String toString() { return \"a\"; }\n  public void read() throws IOException {}\n  public static final String KIND = \"user\";\n}\n";

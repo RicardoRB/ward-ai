@@ -7,8 +7,7 @@ import java.util.List;
  * {@link #print()} writes the type the way the compiler prints it.
  */
 public sealed interface TsType
-    permits TsType.Named, TsType.Union, TsType.Inter, TsType.Arr, TsType.Tuple, TsType.Fn,
-        TsType.Obj, TsType.Typeof, TsType.Unknown {
+    permits TsType.Named, TsType.Union, TsType.Inter, TsType.Arr, TsType.Tuple, TsType.Fn, TsType.Obj, TsType.Typeof, TsType.Unknown {
   /** The type nothing is known about. */
   TsType UNKNOWN = new Unknown();
 

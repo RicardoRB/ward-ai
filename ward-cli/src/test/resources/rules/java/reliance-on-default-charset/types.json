@@ -1,0 +1,46 @@
+{
+  "7:12": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "getBytes",
+      "params": [],
+      "returns": {
+        "name": "byte",
+        "primitive": true,
+        "array": 1
+      }
+    }
+  },
+  "11:12": {
+    "call": {
+      "declaring": {
+        "name": "java.io.InputStreamReader"
+      },
+      "name": "<init>",
+      "params": [
+        {
+          "name": "java.io.InputStream"
+        }
+      ],
+      "returns": {
+        "name": "void"
+      }
+    }
+  },
+  "23:12": {
+    "call": {
+      "declaring": {
+        "name": "Upload"
+      },
+      "name": "getBytes",
+      "params": [],
+      "returns": {
+        "name": "byte",
+        "primitive": true,
+        "array": 1
+      }
+    }
+  }
+}

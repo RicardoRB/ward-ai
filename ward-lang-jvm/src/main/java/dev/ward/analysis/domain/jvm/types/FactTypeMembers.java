@@ -68,8 +68,8 @@ final class FactTypeMembers {
     final List<CallTarget> inheritedMethods = new ArrayList<>();
     final List<FieldRef> inheritedFields = new ArrayList<>();
     for (final JvmClass owner : above) {
-      InheritedMemberReader.methods(owner).forEach(inheritedMethods::add);
-      InheritedMemberReader.fields(owner).forEach(inheritedFields::add);
+      InheritedMemberReader.methods(owner, type).forEach(inheritedMethods::add);
+      InheritedMemberReader.fields(owner, type).forEach(inheritedFields::add);
     }
     return new TypeMembers(
         methods,

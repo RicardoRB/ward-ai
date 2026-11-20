@@ -21,7 +21,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "correctness"
-presets = ["strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["interfaceBodyDeclaration"]

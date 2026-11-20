@@ -12,6 +12,14 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 - `ward:java/multiple-variable-declarations` no longer counts the pattern variables of a `switch` or record pattern as declarations (#690).
 - `ward format` breaks an `extends`, `implements` or `permits` list after a comma, one continuation deeper, when the joined list does not fit the line width (#694).
+- The `strict` preset no longer enables `ward:java/interface-member-implied-modifier` and `ward:java/class-member-implied-modifier`, which contradicted `ward:java/redundant-modifier` (#685). They stay in the catalog.
+- The `strict` preset no longer enables `ward:java/no-array-trailing-comma`, which contradicted `ward:java/array-trailing-comma` and the layout of `ward format` (#695).
+- `ward:java/static-or-default-interface-method`, an Android-only rule, no longer runs in `strict` on plain JVM projects (#686).
+- `ward:java/array-is-stored-directly` no longer reports a parameter whose type only has an array as a type argument, such as `Provider<byte[]>` (#687).
+- `ward:java/mf-class-masks-field` no longer reports `serialVersionUID` in a subclass of a JDK class such as `RuntimeException`: a package-private member is inherited only inside its own package (#688).
+- `ward:java/loose-coupling` no longer reports the `extends` clause of a class that extends `ArrayList` or another implementation type (#689).
+- `ward:java/reliance-on-default-charset` reports `getBytes()` only on `String`, not on any type with a method of that name (#691).
+- `ward:java/uwf-unwritten-field` counts a write through another instance, as in a static factory, as a write of the field (#692).
 
 ## [0.11.2] - 2026-11-20
 

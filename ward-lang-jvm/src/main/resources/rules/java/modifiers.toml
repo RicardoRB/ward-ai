@@ -155,7 +155,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "style"
-presets = ["strict"]
 options.violate-implied-static-on-nested-enum = { type = "boolean" }
 options.violate-implied-static-on-nested-interface = { type = "boolean" }
 options.violate-implied-static-on-nested-record = { type = "boolean" }
@@ -173,7 +172,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "style"
-presets = ["strict"]
 options.violate-implied-abstract-method = { type = "boolean" }
 options.violate-implied-final-field = { type = "boolean" }
 options.violate-implied-public-field = { type = "boolean" }

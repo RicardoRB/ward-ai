@@ -13,3 +13,13 @@ final class Encodings {
     return new InputStreamReader(new GZIPInputStream(input), StandardCharsets.UTF_8);
   }
 }
+
+interface Upload {
+  byte[] getBytes();
+}
+
+final class Sizes {
+  int size(Upload upload) {
+    return upload.getBytes().length;
+  }
+}

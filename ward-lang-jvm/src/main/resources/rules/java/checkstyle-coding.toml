@@ -165,7 +165,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "style"
-presets = ["strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["arrayInitializer"]
