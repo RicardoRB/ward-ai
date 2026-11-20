@@ -9,7 +9,8 @@ import java.util.Objects;
  * DocPrinter} lays it out for a line width and indentation style.
  */
 public sealed interface Document
-    permits Document.Text, Document.Line, Document.Indent, Document.Group, Document.Concat, Document.IfBreak {
+    permits Document.Text, Document.Line, Document.Indent, Document.Group, Document.Concat,
+        Document.IfBreak {
   /**
    * Verbatim text. It must not carry a line break except inside a token that the source already had
    * on several lines.
