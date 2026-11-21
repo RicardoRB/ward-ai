@@ -42,6 +42,7 @@ final class JavaBodyLowering implements JavaStatements {
   private final JavaBranches branches;
   private final JavaLoops loops;
   private final JavaSwitches switches;
+  private final JavaAllowListGuards guards;
   private final JavaTries tries;
   private final JavaJumps jumps;
 
@@ -52,6 +53,7 @@ final class JavaBodyLowering implements JavaStatements {
    * @param fields the fields of the classes around the body
    */
   JavaBodyLowering(final JavaTypeNames types, final List<JavaClassFields.Field> fields) {
+    this.guards = new JavaAllowListGuards(fields);
     this.fieldSites = new JavaFieldSites(fields);
     this.sites = new JavaFlowSites(types, accesses::isSkipped, fields, fieldSites);
     this.flow = new ControlFlowBuilder(accesses, sites);
@@ -79,6 +81,7 @@ final class JavaBodyLowering implements JavaStatements {
       final Span span
   ) {
     fieldSites.shadowedBy(parameters, node);
+    sites.jsonResponse(JavaJsonResponses.isJson(node));
     flow.record(
         accesses.parameters(parameters),
         parameters == null ? List.of() : sites.of(parameters)
@@ -124,15 +127,20 @@ final class JavaBodyLowering implements JavaStatements {
       labelled(text(first), parts.get(CONDITION_INDEX));
     } else if (EXPRESSION.equals(first.kind()) || SWITCH_EXPRESSION.equals(first.kind())) {
       expressionStatement(node, first);
-    } else if (!compound(text(first), parts, label) && !jump(node, text(first), parts)) {
+    } else if (!compound(node, text(first), parts, label) && !jump(node, text(first), parts)) {
       throw unsupported(node);
     }
   }
 
   /** Lowers the statements that split the graph into several blocks. */
-  private boolean compound(final String keyword, final List<SyntaxNode> parts, final String label) {
+  private boolean compound(
+      final SyntaxNode node,
+      final String keyword,
+      final List<SyntaxNode> parts,
+      final String label
+  ) {
     return switch (keyword) {
-      case KEYWORD_IF -> ifStatement(parts);
+      case KEYWORD_IF -> ifStatement(node, parts);
       case "for" -> {
         accesses.enterScope();
         final boolean lowered = loops.forStatement(parts, label);
@@ -190,7 +198,7 @@ final class JavaBodyLowering implements JavaStatements {
     }
   }
 
-  private boolean ifStatement(final List<SyntaxNode> parts) {
+  private boolean ifStatement(final SyntaxNode node, final List<SyntaxNode> parts) {
     final int thenBlock = flow.newBlock();
     final int after = flow.newBlock();
     final boolean hasElse = parts.size() > PARTS_WITHOUT_ELSE;
@@ -205,6 +213,11 @@ final class JavaBodyLowering implements JavaStatements {
       flow.edge(flow.current(), after, FlowEdgeKind.NORMAL);
     }
     flow.moveTo(after);
+    if (!hasElse) {
+      guards
+          .guarded(parts.get(CONDITION_INDEX), parts.get(BODY_INDEX), accesses::isLocal)
+          .ifPresent(name -> flow.record(accesses.clean(name, node.span()), List.of()));
+    }
     return true;
   }
 

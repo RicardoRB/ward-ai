@@ -68,3 +68,25 @@ receiver = "java.lang.Double"
 kind = "call"
 name = "encode"
 receiver = "java.net.URLEncoder"
+
+
+# A call on a String that returns a number or a boolean (the Java frontend names its site
+# <primitive-value>), and the numeric java.lang.Math calls: a number cannot carry a line break or markup.
+[[sanitizers]]
+kind = "call"
+name = "<primitive-value>"
+
+[[sanitizers]]
+kind = "call"
+name = "max"
+receiver = "java.lang.Math"
+
+[[sanitizers]]
+kind = "call"
+name = "min"
+receiver = "java.lang.Math"
+
+[[sanitizers]]
+kind = "call"
+name = "abs"
+receiver = "java.lang.Math"

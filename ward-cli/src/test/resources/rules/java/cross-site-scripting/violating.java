@@ -28,4 +28,17 @@ class Greeting {
   void chained(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.getWriter().println("<p>" + request.getParameter("name") + "</p>");
   }
+
+  // An HTML content type is rendered.
+  void html(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    response.setContentType("text/html");
+    response.getWriter().write(request.getParameter("name"));
+  }
+
+  // One content type that is not JSON is enough.
+  void mixed(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    response.setContentType("application/json");
+    response.setContentType("text/html");
+    response.getOutputStream().write(request.getParameter("name").getBytes());
+  }
 }

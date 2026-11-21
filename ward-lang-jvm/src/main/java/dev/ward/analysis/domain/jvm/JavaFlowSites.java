@@ -3,6 +3,7 @@ package dev.ward.analysis.domain.jvm;
 import dev.ward.analysis.domain.ir.FlowSite;
 import dev.ward.analysis.domain.ir.FlowSiteKind;
 import dev.ward.analysis.domain.ir.FlowSites;
+import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,6 +46,7 @@ final class JavaFlowSites implements FlowSites {
   private final JavaParameterSites parameters;
   private final JavaCreationTypes creations;
   private final JavaFieldSites fieldSites;
+  private boolean jsonResponse;
 
   /**
    * Creates the finder of one body.
@@ -66,6 +68,16 @@ final class JavaFlowSites implements FlowSites {
     this.creations = new JavaCreationTypes(types);
     fields.forEach(field -> field.declareIn(declared, creations));
     this.fieldSites = fieldSites;
+  }
+
+  /**
+   * Tells the finder whether the body answers with JSON, so that its writes of the response body
+   * give a {@link JavaJsonResponses#NAME} site.
+   *
+   * @param json true when every content type the body sets is JSON
+   */
+  void jsonResponse(final boolean json) {
+    this.jsonResponse = json;
   }
 
   @Override
@@ -179,25 +191,54 @@ final class JavaFlowSites implements FlowSites {
             call.span()
         )
     );
+    syntheticSites(call, receiver, qualifier, arguments, found);
+  }
+
+  /** The sites that a call gives besides its own: what the call proves about its value. */
+  private void syntheticSites(
+      final SyntaxNode call,
+      final SyntaxNode receiver,
+      final String qualifier,
+      final List<SyntaxNode> arguments,
+      final List<FlowSite> found
+  ) {
+    final String name = calledName(call);
     if (receiver != null
         && JavaLineBreakStrips.removesAll(
-            calledName(call),
+            name,
             arguments.stream().map(JavaFlowSyntax::text).toList(),
             qualifier,
             this::receiverType
         )) {
+      found.add(synthetic(JavaLineBreakStrips.NAME, qualifier, List.of(receiver.span()), call));
+    }
+    if (receiver != null && JavaPrimitiveCalls.returnsPrimitive(name, receiverType(qualifier))) {
+      final List<Span> covered = new ArrayList<>(JavaCallArguments.spans(arguments));
+      covered.add(0, receiver.span());
+      found.add(synthetic(JavaPrimitiveCalls.NAME, qualifier, covered, call));
+    }
+    if (jsonResponse && JavaJsonResponses.writesBody(name, qualifier, receiverType(qualifier))) {
       found.add(
-          new FlowSite(
-              FlowSiteKind.CALL,
-              JavaLineBreakStrips.NAME,
-              qualifier,
-              Optional.empty(),
-              List.of(),
-              List.of(receiver.span()),
-              call.span()
-          )
+          synthetic(JavaJsonResponses.NAME, qualifier, JavaCallArguments.spans(arguments), call)
       );
     }
+  }
+
+  private static FlowSite synthetic(
+      final String name,
+      final String qualifier,
+      final List<Span> arguments,
+      final SyntaxNode call
+  ) {
+    return new FlowSite(
+        FlowSiteKind.CALL,
+        name,
+        qualifier,
+        Optional.empty(),
+        List.of(),
+        arguments,
+        call.span()
+    );
   }
 
   /**

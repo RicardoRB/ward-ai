@@ -13,6 +13,12 @@ still change behavior. Breaking changes are called out under **Changed**.
 - A Rust frontend (#648): a Rust grammar for editions 2021 and 2024 (`let`-`else`, let chains, async closures, C strings, raw borrows, `unsafe extern`), scope analysis that follows shadowing, imports, `if let` and match arms, and one control-flow graph per function with a body. `.rs` files are read as Rust; no Rust rule ships yet.
 - Rust rules mapped to Clippy and the rustc lints (#650): 92 `ward:rust/*` rules in the `standard` and `strict` presets, found by the `ward` gate from the syntax tree, the scopes and the control flow. Every lint of Clippy 0.1.88 and rustc 1.88 is classified in the catalog as implemented, planned (#681 type information, #682 syntax rules, #683 Cargo.toml rules) or out of scope with a reason. `ClippyParitySmokeTest` compares the fixtures with the real Clippy.
 
+### Fixed
+
+- `ward:java/header-splitting`, `ward:java/log-forging` and `ward:java/cross-site-scripting` treat a call on a `String` that returns a number or a boolean (`length`, `isEmpty`, `indexOf`, `equals`, ...) and `Math.max`, `Math.min` and `Math.abs` as sanitizers, since a number cannot carry a line break or markup (#704).
+- `ward:java/cross-site-scripting` no longer reports a response body written with `getWriter()` or `getOutputStream()` in a method whose content types are all JSON; an HTML or non-literal content type is still reported (#704).
+- The Java taint rules, such as `ward:java/server-side-request-forgery`, treat a variable as clean past `if (!ALLOWED.contains(value)) { ...; throw or return }` when `ALLOWED` is a `final` collection field with an initializer (#704).
+
 ## [0.11.4] - 2026-11-20
 
 ### Fixed
