@@ -76,12 +76,22 @@ class PresetContractTest {
         CatalogRuleDefinitions.shipped().stream()
             .filter(rule -> PLATFORM_FREE.stream().anyMatch(rule::covers))
             .filter(rule -> !rule.presets().isEmpty())
-            .filter(rule -> rule.body().toLowerCase(Locale.ROOT).contains("android"))
+            .filter(PresetContractTest::namesAndroidWithoutAndroidTypes)
             .map(RuleDefinition::id)
             .sorted()
             .toList();
 
     assertThat(platform).isEmpty();
+  }
+
+  /**
+   * A rule gated by an {@code android.} type or a Dagger Android injector never reports on code
+   * that has none.
+   */
+  private static boolean namesAndroidWithoutAndroidTypes(final RuleDefinition rule) {
+    final String body =
+        rule.body().toLowerCase(Locale.ROOT).replaceAll("android(?:support)?injection", "");
+    return body.contains("android") && !body.contains("android.") && !body.contains("androidx.");
   }
 
   private static boolean selects(final RulePreset preset, final RuleDefinition rule) {
