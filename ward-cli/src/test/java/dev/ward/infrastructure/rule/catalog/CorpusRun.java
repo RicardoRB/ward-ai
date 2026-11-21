@@ -48,7 +48,7 @@ final class CorpusRun {
   private static final int SAMPLE = 3;
   private static final String HEADER =
       "# Ward's %1$s rules of the %5$s preset and every %1$s security rule, with default"
-          + " options, over every %2$s file of two pinned projects (%6$s).\n"
+          + " options, over every %2$s file of %7$s pinned projects (%6$s).\n"
           + "%3$s"
           + "# A labelled finding is true (tp), false (fp) or undetermined (un), as read from the"
           + " code at its line; the labels are in %4$s-corpus-labels.txt. A rule with more than "
@@ -272,7 +272,8 @@ final class CorpusRun {
             pins,
             key,
             preset.name().toLowerCase(Locale.ROOT),
-            licenses
+            licenses,
+            pinned.size() == 2 ? "two" : "three"
         )
     )
         .append(files);

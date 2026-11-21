@@ -47,6 +47,16 @@ record PinnedCorpus(
           AnalysisLanguage.JAVA
       );
 
+  /** Spring Data Examples, Spring Boot applications with records, REST and security samples. */
+  static final PinnedCorpus SPRING_DATA_EXAMPLES =
+      new PinnedCorpus(
+          "spring-data-examples",
+          "7747029e6157cb780862826b6ae87c88d7a4df3c",
+          "3d25281914e28550d1a1d2518564b84ae3e071c5aee7a5a920e0daa7ba7edc81",
+          "spring-data-examples-7747029e6157cb780862826b6ae87c88d7a4df3c",
+          AnalysisLanguage.JAVA
+      );
+
   /** Okio, a multiplatform library with expect and actual declarations. */
   static final PinnedCorpus OKIO =
       new PinnedCorpus(
@@ -114,7 +124,7 @@ record PinnedCorpus(
 
   /** Returns the Java corpora, in report order. */
   static List<PinnedCorpus> java() {
-    return List.of(COMMONS_LANG, PETCLINIC);
+    return List.of(COMMONS_LANG, PETCLINIC, SPRING_DATA_EXAMPLES);
   }
 
   /** Returns the Kotlin corpora, in report order. */

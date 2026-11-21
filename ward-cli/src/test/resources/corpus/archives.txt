@@ -1,5 +1,6 @@
 java commons-lang 21bf0c5913227cef8f1c271bfb3b556440797126448e000073ba88ac4a1fb587 https://github.com/apache/commons-lang/archive/refs/tags/rel/commons-lang-3.22.0.tar.gz
 java spring-petclinic 4932ae0209375b3cca3dd7c8f6f9345498d75dedc5970dcfa91814f1b830768d https://github.com/spring-projects/spring-petclinic/archive/500158f732419217507c7656904b8e6aa1bcc0d6.tar.gz
+java spring-data-examples 3d25281914e28550d1a1d2518564b84ae3e071c5aee7a5a920e0daa7ba7edc81 https://github.com/spring-projects/spring-data-examples/archive/7747029e6157cb780862826b6ae87c88d7a4df3c.tar.gz
 kotlin okio d327ed5e1074a7f9ddd2bc5e4230040164aa4a4c916e033d2a2ba66bd19023b9 https://github.com/square/okio/archive/refs/tags/parent-3.18.2.tar.gz
 kotlin spring-petclinic-kotlin bb9843e7767534ee29c0979aac482b7e4dc268aee28f52d555ae8d2f5aa81e0b https://github.com/spring-petclinic/spring-petclinic-kotlin/archive/refs/tags/v3.2.0.tar.gz
 swift alamofire 866871d47bd878ed393090d2fd643d0cdcc3517f83931852da6bc17ec317115b https://github.com/Alamofire/Alamofire/archive/refs/tags/5.12.2.tar.gz
