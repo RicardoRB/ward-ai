@@ -79,7 +79,7 @@ Express application with no frame protection.
 | `ward:java/hard-coded-password` | CWE-798, CWE-259 | error | standard, strict | This password is a string literal in the source; read it from the environment or a secret store |
 | `ward:java/xml-external-entities` | CWE-611 | error | standard, strict | This setting lets the XML parser load external entities or DTDs, which can read files and call servers; disable it |
 | `ward:java/unsafe-deserialization-settings` | CWE-502 | error | standard, strict | Default typing with no type restrictions lets the input choose the class to build; use a PolymorphicTypeValidator that lists the allowed types |
-| `ward:java/csrf-protection-disabled` | CWE-352 | warning | strict | CSRF protection is switched off; keep it on for browser clients, or document why this API has none |
+| `ward:java/csrf-protection-disabled` | CWE-352 | warning | strict | CSRF protection is switched off; keep it on for browser clients, or, for an API that no browser calls with cookies, leave this file out with exclude-paths for this rule in ward-rules.toml |
 | `ward:java/permissive-cors` | CWE-942 | warning | strict | This setting lets every origin call the API from a browser; list the origins that need access |
 | `ward:java/insecure-cookie` | CWE-614, CWE-1004 | warning | strict | This cookie is allowed over plain http or from scripts; set Secure and HttpOnly |
 | `ward:java/identity-cipher` | CWE-327 | error | standard, strict | `NullCipher` returns its input unchanged, so nothing is encrypted |

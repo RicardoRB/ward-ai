@@ -182,7 +182,8 @@ public final class CallMatchCheck implements RuleCheck {
     return STATEMENT.equals(parent.kind())
         && parts.size() == STATEMENT_PARTS
         && parts.get(0).span().equals(call.span())
-        && SEMICOLON.equals(parts.get(1).kind());
+        && SEMICOLON.equals(parts.get(1).kind())
+        && !SwitchRuleValue.yields(up.subList(0, up.size() - 1));
   }
 
   /**

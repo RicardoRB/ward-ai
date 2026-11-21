@@ -10,5 +10,17 @@
         "name": "java.lang.String"
       }
     }
+  },
+  "8:17-8:27": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "trim",
+      "params": [],
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
   }
 }

@@ -165,3 +165,9 @@ kind = "call"
 name = "parseDouble"
 receiver = "java.lang.Double"
 
+
+# A chain of String.replace or replaceAll calls with literal arguments that removes both carriage
+# returns and line feeds (the Java frontend names its site <line-breaks-removed>); its receiver is clean.
+[[sanitizers]]
+kind = "call"
+name = "<line-breaks-removed>"

@@ -13,6 +13,15 @@ still change behavior. Breaking changes are called out under **Changed**.
 - A Rust frontend (#648): a Rust grammar for editions 2021 and 2024 (`let`-`else`, let chains, async closures, C strings, raw borrows, `unsafe extern`), scope analysis that follows shadowing, imports, `if let` and match arms, and one control-flow graph per function with a body. `.rs` files are read as Rust; no Rust rule ships yet.
 - Rust rules mapped to Clippy and the rustc lints (#650): 92 `ward:rust/*` rules in the `standard` and `strict` presets, found by the `ward` gate from the syntax tree, the scopes and the control flow. Every lint of Clippy 0.1.88 and rustc 1.88 is classified in the catalog as implemented, planned (#681 type information, #682 syntax rules, #683 Cargo.toml rules) or out of scope with a reason. `ClippyParitySmokeTest` compares the fixtures with the real Clippy.
 
+## [0.11.4] - 2026-11-20
+
+### Fixed
+
+- `ward:java/rv-return-value-ignored` and `ward:java/return-value-ignored` no longer report a call that is the value of a `case ... ->` rule in a `switch` used as an expression; an arrow rule of a `switch` statement is still reported (#702).
+- `ward:java/log-forging` treats a chain of `String.replace` or `replaceAll` calls with literal arguments that removes both carriage returns and line feeds as a sanitizer of its receiver (#703).
+- `ward:java/unsafe-deserialization-settings` reports `enableDefaultTyping` only with no argument, a `DefaultTyping` constant or `LaissezFaireSubTypeValidator`, not with a validator that lists the allowed types (#704).
+- The message of `ward:java/csrf-protection-disabled` names `exclude-paths` in `ward-rules.toml` as the way to leave out an API that no browser calls with cookies, since Ward has no suppression comment (#704).
+
 ## [0.11.3] - 2026-11-20
 
 ### Fixed

@@ -24,7 +24,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["expression"]
-text = '^.*\.enableDefaultTyping\((?:[^()]|\([^()]*\))*\)$|^.*\.activateDefaultTyping\((?:(?:\w+\.)*LaissezFaireSubTypeValidator\.instance|new(?:\w+\.)*LaissezFaireSubTypeValidator\(\))(?:,[^()]*)?\)$'
+text = '^.*\.enableDefaultTyping\((?:(?:\w+\.)*DefaultTyping\.\w+(?:,[^()]*)?)?\)$|^.*\.(?:enable|activate)DefaultTyping\((?:(?:\w+\.)*LaissezFaireSubTypeValidator\.instance|new(?:\w+\.)*LaissezFaireSubTypeValidator\(\))(?:,[^()]*)?\)$'
 message = "default typing with no type restrictions lets the input choose the class to build; use a PolymorphicTypeValidator that lists the allowed types"
 '''
 
@@ -39,7 +39,7 @@ body = '''
 check = "forbidden-node"
 kinds = ["expression"]
 text = '^.*\.csrf\(\)\.disable\(\)$|^.*\.csrf\((?:AbstractHttpConfigurer::disable|\w+->\w+\.disable\(\))\)$'
-message = "CSRF protection is switched off; keep it on for browser clients, or document why this API has none"
+message = "CSRF protection is switched off; keep it on for browser clients, or, for an API that no browser calls with cookies, leave this file out with exclude-paths for this rule in ward-rules.toml"
 '''
 
 [[rules]]

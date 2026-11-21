@@ -9,4 +9,8 @@ class Mappers {
   void open(ObjectMapper mapper) {
     mapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance);
   }
+
+  void legacyTyping(ObjectMapper mapper) {
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+  }
 }

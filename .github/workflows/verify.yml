@@ -1129,6 +1129,9 @@ jobs:
     needs: [java-matrix-versions, maven-cache]
     if: inputs.compatibility-matrices
     runs-on: ubuntu-24.04
+    # A cell normally takes a few minutes; a resolution stuck on Maven Central fails here instead of
+    # holding the runner for hours.
+    timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
@@ -1166,13 +1169,20 @@ jobs:
         with:
           gradle-version: ${{ matrix.cell.gradle }}
 
-      # setup-gradle caches ~/.gradle; this keeps the Maven distribution the fixture wrapper fetches,
-      # keyed on the catalogs so a pinned version change starts fresh.
-      - name: Restore Maven Wrapper cache
+      # setup-gradle caches ~/.gradle. This cache keeps what the fixture builds resolve on top of the
+      # shared repository: the plugins the gates run (JaCoCo, PIT, the dependency plugin of
+      # build-policy) and the Maven distribution the fixture wrapper fetches, which the shared cache
+      # does not hold. Without it every cell downloads them from Maven Central, which limits a busy
+      # run (429) until a cell times out. Keyed on the catalogs so a pinned version change starts
+      # from the last cache of the same JDK.
+      - name: Cache the fixture plugins and the Maven Wrapper
         uses: actions/cache@v5
         with:
-          path: ~/.m2/wrapper
-          key: java-matrix-${{ matrix.cell.jdk }}-${{ hashFiles('ward-cli/src/main/java/dev/ward/domain/init/maven/ManagedPluginCatalog.java', 'ward-cli/src/main/java/dev/ward/domain/init/gradle/GradleToolCatalog.java') }}
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: java-matrix-repo-${{ matrix.cell.jdk }}-${{ hashFiles('ward-cli/src/main/java/dev/ward/domain/init/maven/ManagedPluginCatalog.java', 'ward-cli/src/main/java/dev/ward/domain/init/gradle/GradleToolCatalog.java') }}
+          restore-keys: java-matrix-repo-${{ matrix.cell.jdk }}-
 
       - name: Build Ward
         run: ./mvnw -B -q package -DskipTests
