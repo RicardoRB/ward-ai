@@ -319,7 +319,6 @@ ward:java/missing-switch-default | commons-lang/src/test/java/org/apache/commons
 ward:java/misused-week-year | commons-lang/src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java:578 | tp | a week-year pattern with no week field; the test checks that pattern on purpose
 ward:java/misused-week-year | commons-lang/src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java:579 | tp | a week-year pattern with no week field; the test checks that pattern on purpose
 ward:java/misused-week-year | commons-lang/src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java:580 | tp | a week-year pattern with no week field; the test checks that pattern on purpose
-ward:java/mockito-usage | commons-lang/src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java:376 | fp | verify is a static helper of the test class, not Mockito's
 ward:java/modifier-order | spring-petclinic/src/main/java/org/springframework/samples/petclinic/vet/VetController.java:73 | tp | an annotation follows the public modifier
 ward:java/ms-cannot-be-final | commons-lang/src/test/java/org/apache/commons/lang3/reflect/testbed/StaticContainer.java:35 | tp | a public or protected static field that is not final
 ward:java/ms-cannot-be-final | commons-lang/src/test/java/org/apache/commons/lang3/reflect/testbed/StaticContainer.java:36 | tp | a public or protected static field that is not final
@@ -580,3 +579,201 @@ ward:java/vo-volatile-increment | commons-lang/src/test/java/org/apache/commons/
 ward:java/vo-volatile-increment | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/MultiBackgroundInitializerTest.java:80 | tp | a volatile field is incremented
 ward:java/wa-not-in-loop | commons-lang/src/test/java/org/apache/commons/lang3/ThreadUtilsTest.java:68 | tp | wait is called on this outside a loop
 ward:java/while-loop-with-literal-boolean | commons-lang/src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java:1850 | tp | a do-while loop with a literal condition
+ward:java/abstract-class-without-abstract-method | spring-data-examples/jpa/showcase/src/test-snippets/java/example/springdata/jpa/showcase/snippets/test/AccountRepositoryIntegrationTest.java:28 | tp | the line is a real instance of what the rule names
+ward:java/abstract-class-without-abstract-method | spring-data-examples/mongodb/geo-json/src/main/java/example/springdata/mongodb/geojson/ApplicationConfiguration.java:59 | tp | the line is a real instance of what the rule names
+ward:java/abstract-class-without-abstract-method | spring-data-examples/mongodb/query-by-example/src/main/java/example/springdata/mongodb/querybyexample/Contact.java:31 | tp | the line is a real instance of what the rule names
+ward:java/abstract-class-without-any-method | spring-data-examples/mongodb/query-by-example/src/main/java/example/springdata/mongodb/querybyexample/Contact.java:31 | tp | the line is a real instance of what the rule names
+ward:java/abstract-class-without-any-method | spring-data-examples/web/example/src/test/java/example/users/AbstractIntegrationTests.java:27 | tp | the line is a real instance of what the rule names
+ward:java/annotation-location | spring-data-examples/cassandra/aot-optimization/src/main/java/example/springdata/cassandra/User.java:42 | tp | the line is a real instance of what the rule names
+ward:java/annotation-location | spring-data-examples/cassandra/example/src/main/java/example/springdata/cassandra/basic/User.java:37 | tp | the line is a real instance of what the rule names
+ward:java/annotation-location | spring-data-examples/cassandra/example/src/main/java/example/springdata/cassandra/udt/Person.java:41 | tp | the line is a real instance of what the rule names
+ward:java/annotation-use-style | commons-lang/src/test/java/org/apache/commons/lang3/AnnotationUtilsTest.java:152 | un | needs more of the class or the project conventions than was read
+ward:java/annotation-use-style | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsTest.java:2667 | un | needs more of the class or the project conventions than was read
+ward:java/annotation-use-style | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/CallableBackgroundInitializerTest.java:105 | un | needs more of the class or the project conventions than was read
+ward:java/anon-inner-length | commons-lang/src/main/java/org/apache/commons/lang3/AnnotationUtils.java:58 | tp | the line is a real instance of what the rule names
+ward:java/anon-inner-length | commons-lang/src/main/java/org/apache/commons/lang3/ClassUtils.java:1356 | tp | the line is a real instance of what the rule names
+ward:java/anon-inner-length | commons-lang/src/test/java/org/apache/commons/lang3/ArrayUtilsTest.java:6727 | tp | the line is a real instance of what the rule names
+ward:java/array-trailing-comma | commons-lang/src/main/java/org/apache/commons/lang3/StringEscapeUtils.java:141 | tp | the line is a real instance of what the rule names
+ward:java/array-trailing-comma | commons-lang/src/main/java/org/apache/commons/lang3/reflect/MemberUtils.java:85 | tp | the line is a real instance of what the rule names
+ward:java/array-trailing-comma | commons-lang/src/main/java/org/apache/commons/lang3/text/translate/EntityArrays.java:129 | tp | the line is a real instance of what the rule names
+ward:java/avoid-decimal-literals-in-big-decimal-constructor | spring-data-examples/rest/projections/src/main/java/example/springdata/rest/projections/Application.java:49 | tp | the line is a real instance of what the rule names
+ward:java/avoid-field-name-matching-type-name | spring-data-examples/jpa/multiple-datasources/src/main/java/example/springdata/jpa/multipleds/customer/Customer.java:61 | tp | the line is a real instance of what the rule names
+ward:java/avoid-field-name-matching-type-name | spring-data-examples/mongodb/example/src/main/java/example/springdata/mongodb/unwrapping/UserName.java:27 | tp | the line is a real instance of what the rule names
+ward:java/avoid-field-name-matching-type-name | spring-data-examples/neo4j/example/src/main/java/example/springdata/neo4j/Roles.java:41 | tp | the line is a real instance of what the rule names
+ward:java/avoid-inline-conditionals | commons-lang/src/main/java/org/apache/commons/lang3/AnnotationUtils.java:131 | tp | the line is a real instance of what the rule names
+ward:java/avoid-inline-conditionals | commons-lang/src/main/java/org/apache/commons/lang3/AppendableJoiner.java:240 | tp | the line is a real instance of what the rule names
+ward:java/avoid-inline-conditionals | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:1216 | tp | the line is a real instance of what the rule names
+ward:java/avoid-instanceof-checks-in-catch-clause | spring-data-examples/couchbase/transactions/src/main/java/com/example/demo/CmdRunner.java:78 | tp | the line is a real instance of what the rule names
+ward:java/avoid-no-argument-super-constructor-call | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:157 | fp | qualified super() is required
+ward:java/avoid-print-stack-trace | spring-data-examples/redis/util/src/main/java/example/springdata/redis/test/condition/ShutdownQueue.java:42 | tp | the line is a real instance of what the rule names
+ward:java/avoid-using-hard-coded-ip | spring-data-examples/couchbase/transactions/src/main/java/com/example/demo/Config.java:36 | tp | the line is a real instance of what the rule names
+ward:java/boolean-expression-complexity | commons-lang/src/main/java/org/apache/commons/lang3/AnnotationUtils.java:332 | tp | the line is a real instance of what the rule names
+ward:java/boolean-expression-complexity | commons-lang/src/main/java/org/apache/commons/lang3/BooleanUtils.java:778 | tp | the line is a real instance of what the rule names
+ward:java/boolean-expression-complexity | commons-lang/src/main/java/org/apache/commons/lang3/CharUtils.java:277 | tp | the line is a real instance of what the rule names
+ward:java/catch-parameter-name | spring-data-examples/redis/util/src/main/java/example/springdata/redis/test/condition/ShutdownQueue.java:40 | tp | the line is a real instance of what the rule names
+ward:java/catch-parameter-name | spring-data-examples/web/example/src/main/java/example/users/web/UserController.java:149 | tp | the line is a real instance of what the rule names
+ward:java/class-data-abstraction-coupling | commons-lang/src/main/java/org/apache/commons/lang3/StringEscapeUtils.java:47 | tp | the line is a real instance of what the rule names
+ward:java/class-data-abstraction-coupling | commons-lang/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java:76 | tp | the line is a real instance of what the rule names
+ward:java/class-data-abstraction-coupling | commons-lang/src/main/java/org/apache/commons/lang3/time/FastDateParser.java:94 | tp | the line is a real instance of what the rule names
+ward:java/class-fan-out-complexity | commons-lang/src/main/java/org/apache/commons/lang3/Functions.java:76 | tp | the line is a real instance of what the rule names
+ward:java/class-fan-out-complexity | commons-lang/src/main/java/org/apache/commons/lang3/function/Failable.java:73 | tp | the line is a real instance of what the rule names
+ward:java/class-fan-out-complexity | commons-lang/src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java:103 | tp | the line is a real instance of what the rule names
+ward:java/control-statement-braces | spring-data-examples/jdbc/howto/selectiveupdate/src/main/java/example.springdata/jdbc/howto/selectiveupdate/Toy.java:35 | tp | the line is a real instance of what the rule names
+ward:java/control-statement-braces | spring-data-examples/jdbc/singlequeryloading/src/main/java/example/springdata/jdbc/singlequeryloading/PetOwner.java:50 | tp | the line is a real instance of what the rule names
+ward:java/control-statement-braces | spring-data-examples/mongodb/example/src/main/java/example/springdata/mongodb/unwrapping/User.java:84 | tp | the line is a real instance of what the rule names
+ward:java/csrf-protection-disabled | spring-data-examples/rest/security/src/main/java/example/springdata/rest/security/Application.java:115 | tp | the line is a real instance of what the rule names
+ward:java/ct-constructor-throw | spring-data-examples/jdbc/mybatis/src/main/java/example/springdata/jdbc/mybatis/ModelMapEntry.java:33 | un | needs more of the class or the project conventions than was read
+ward:java/ct-constructor-throw | spring-data-examples/web/example/src/main/java/example/users/Username.java:44 | un | needs more of the class or the project conventions than was read
+ward:java/de-might-drop | spring-data-examples/couchbase/transactions/src/main/java/com/example/demo/CmdRunner.java:42 | tp | the line is a real instance of what the rule names
+ward:java/declaration-order | commons-lang/src/main/java/org/apache/commons/lang3/AnnotationUtils.java:420 | un | needs more of the class or the project conventions than was read
+ward:java/declaration-order | commons-lang/src/main/java/org/apache/commons/lang3/AppendableJoiner.java:244 | un | needs more of the class or the project conventions than was read
+ward:java/declaration-order | commons-lang/src/main/java/org/apache/commons/lang3/ArchUtils.java:144 | un | needs more of the class or the project conventions than was read
+ward:java/dls-dead-local-store-of-null | spring-data-examples/rest/starbucks/src/main/java/example/springdata/rest/stores/StoreInitializer.java:104 | un | needs more of the class or the project conventions than was read
+ward:java/dls-dead-local-store-of-null | spring-data-examples/web/querydsl/src/main/java/example/users/UserInitializer.java:111 | un | needs more of the class or the project conventions than was read
+ward:java/dmi-random-used-only-once | spring-data-examples/jpa/aot-optimization/src/main/java/example/springdata/aot/Post.java:43 | tp | the line is a real instance of what the rule names
+ward:java/dmi-random-used-only-once | spring-data-examples/mongodb/aot-optimization/src/main/java/example/springdata/aot/Post.java:33 | tp | the line is a real instance of what the rule names
+ward:java/empty-catch-block | spring-data-examples/couchbase/transactions/src/main/java/com/example/demo/CmdRunner.java:42 | tp | the line is a real instance of what the rule names
+ward:java/equals-avoid-null | commons-lang/src/main/java/org/apache/commons/lang3/LocaleUtils.java:368 | tp | the line is a real instance of what the rule names
+ward:java/equals-avoid-null | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:674 | tp | the line is a real instance of what the rule names
+ward:java/equals-avoid-null | commons-lang/src/test/java/org/apache/commons/lang3/text/WordUtilsTest.java:498 | tp | the line is a real instance of what the rule names
+ward:java/executable-statement-count | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:5576 | tp | the line is a real instance of what the rule names
+ward:java/executable-statement-count | commons-lang/src/main/java/org/apache/commons/lang3/BooleanUtils.java:762 | tp | the line is a real instance of what the rule names
+ward:java/executable-statement-count | commons-lang/src/main/java/org/apache/commons/lang3/CharSequenceUtils.java:184 | tp | the line is a real instance of what the rule names
+ward:java/explicit-initialization | spring-data-examples/jdbc/mybatis/src/main/java/example/springdata/jdbc/mybatis/Manual.java:30 | tp | the line is a real instance of what the rule names
+ward:java/field-no-init | spring-data-examples/jpa/example/src/main/java/example/springdata/jpa/compositions/ContactRepositoryImpl.java:33 | fp | Lombok constructor writes the field
+ward:java/field-no-init | spring-data-examples/jpa/example/src/main/java/example/springdata/jpa/compositions/EmployeeRepositoryImpl.java:33 | fp | Lombok constructor writes the field
+ward:java/field-no-init | spring-data-examples/jpa/example/src/main/java/example/springdata/jpa/compositions/FlushOnSaveRepositoryImpl.java:39 | fp | Lombok constructor writes the field
+ward:java/final-class | commons-lang/src/main/java/org/apache/commons/lang3/AutoCloseables.java:35 | tp | the line is a real instance of what the rule names
+ward:java/final-class | commons-lang/src/main/java/org/apache/commons/lang3/Strings.java:37 | tp | the line is a real instance of what the rule names
+ward:java/final-class | commons-lang/src/main/java/org/apache/commons/lang3/builder/CompareToBuilder.java:123 | tp | the line is a real instance of what the rule names
+ward:java/final-local-variable | spring-data-examples/cassandra/aot-optimization/src/main/java/example/springdata/cassandra/AotApplication.java:55 | tp | the line is a real instance of what the rule names
+ward:java/final-local-variable | spring-data-examples/cassandra/example/src/main/java/example/springdata/cassandra/convert/ConverterConfiguration.java:46 | tp | the line is a real instance of what the rule names
+ward:java/final-local-variable | spring-data-examples/cassandra/example/src/test/java/example/springdata/cassandra/basic/CassandraOperationsIntegrationTests.java:147 | tp | the line is a real instance of what the rule names
+ward:java/final-parameters | spring-data-examples/cassandra/aot-optimization/src/main/java/example/springdata/cassandra/AotApplication.java:35 | tp | the line is a real instance of what the rule names
+ward:java/final-parameters | spring-data-examples/cassandra/aot-optimization/src/main/java/example/springdata/cassandra/User.java:53 | tp | the line is a real instance of what the rule names
+ward:java/final-parameters | spring-data-examples/cassandra/example/src/main/java/example/springdata/cassandra/auditing/BasicConfiguration.java:57 | tp | the line is a real instance of what the rule names
+ward:java/hidden-field | commons-lang/src/main/java/org/apache/commons/lang3/AppendableJoiner.java:126 | tp | the line is a real instance of what the rule names
+ward:java/hidden-field | commons-lang/src/main/java/org/apache/commons/lang3/BitField.java:100 | tp | the line is a real instance of what the rule names
+ward:java/hidden-field | commons-lang/src/main/java/org/apache/commons/lang3/CachedRandomBits.java:77 | tp | the line is a real instance of what the rule names
+ward:java/illegal-type | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:6345 | tp | the line is a real instance of what the rule names
+ward:java/illegal-type | commons-lang/src/main/java/org/apache/commons/lang3/ClassUtils.java:389 | tp | the line is a real instance of what the rule names
+ward:java/illegal-type | commons-lang/src/main/java/org/apache/commons/lang3/ObjectUtils.java:1124 | tp | the line is a real instance of what the rule names
+ward:java/immutable-field | spring-data-examples/jdbc/composite-ids/src/main/java/example/springdata/jdbc/compositeid/InsertRepositoryImpl.java:28 | un | needs more of the class or the project conventions than was read
+ward:java/immutable-field | spring-data-examples/jdbc/jmolecules/src/main/java/example/springdata/jdbc/jmolecules/order/Order.java:44 | un | needs more of the class or the project conventions than was read
+ward:java/inner-type-last | commons-lang/src/main/java/org/apache/commons/lang3/AppendableJoiner.java:172 | tp | the line is a real instance of what the rule names
+ward:java/inner-type-last | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:100 | tp | the line is a real instance of what the rule names
+ward:java/inner-type-last | commons-lang/src/main/java/org/apache/commons/lang3/CharRange.java:147 | tp | the line is a real instance of what the rule names
+ward:java/interface-is-type | commons-lang/src/test/java/org/apache/commons/lang3/reflect/FieldUtilsTest.java:64 | tp | the line is a real instance of what the rule names
+ward:java/java-ncss | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:17 | tp | the line is a real instance of what the rule names
+ward:java/java-ncss | commons-lang/src/main/java/org/apache/commons/lang3/RandomStringUtils.java:255 | tp | the line is a real instance of what the rule names
+ward:java/java-ncss | commons-lang/src/main/java/org/apache/commons/lang3/StringUtils.java:142 | tp | the line is a real instance of what the rule names
+ward:java/javadoc-missing-whitespace-after-asterisk | commons-lang/src/main/java/org/apache/commons/lang3/BooleanUtils.java:683 | tp | the line is a real instance of what the rule names
+ward:java/lambda-body-length | commons-lang/src/main/java/org/apache/commons/lang3/ClassUtils.java:1328 | tp | the line is a real instance of what the rule names
+ward:java/lambda-body-length | commons-lang/src/main/java/org/apache/commons/lang3/time/AbstractFormatCache.java:113 | tp | the line is a real instance of what the rule names
+ward:java/lambda-body-length | commons-lang/src/test/java/org/apache/commons/lang3/AnnotationUtilsTest.java:498 | tp | the line is a real instance of what the rule names
+ward:java/lambda-parameter-name | spring-data-examples/jpa/envers/src/test/java/example/springdata/jpa/envers/EnversIntegrationTests.java:72 | tp | the line is a real instance of what the rule names
+ward:java/lambda-parameter-name | spring-data-examples/jpa/example/src/test/java/example/springdata/jpa/simple/SimpleUserRepositoryTests.java:100 | tp | the line is a real instance of what the rule names
+ward:java/method-count | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:61 | tp | the line is a real instance of what the rule names
+ward:java/method-count | commons-lang/src/main/java/org/apache/commons/lang3/StringUtils.java:142 | tp | the line is a real instance of what the rule names
+ward:java/method-count | commons-lang/src/main/java/org/apache/commons/lang3/SystemProperties.java:35 | tp | the line is a real instance of what the rule names
+ward:java/missing-serial-version-uid | spring-data-examples/jpa/multiple-datasources/src/main/java/example/springdata/jpa/multipleds/customer/Customer.java:59 | tp | the line is a real instance of what the rule names
+ward:java/missing-static-method-in-non-instantiatable-class | spring-data-examples/jpa/security/src/main/java/example/springdata/jpa/security/User.java:32 | fp | @RequiredArgsConstructor generates a public constructor
+ward:java/modifier-order | spring-data-examples/cassandra/example/src/test/java/example/springdata/cassandra/basic/BasicUserRepositoryTests.java:48 | tp | the line is a real instance of what the rule names
+ward:java/modifier-order | spring-data-examples/cassandra/vector-search/src/main/java/example/springdata/vector/Comment.java:32 | tp | the line is a real instance of what the rule names
+ward:java/modifier-order | spring-data-examples/couchbase/example/src/main/java/example/springdata/couchbase/model/Airline.java:36 | tp | the line is a real instance of what the rule names
+ward:java/multiple-string-literals | commons-lang/src/main/java/org/apache/commons/lang3/AnnotationUtils.java:234 | tp | the line is a real instance of what the rule names
+ward:java/multiple-string-literals | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:1189 | tp | the line is a real instance of what the rule names
+ward:java/multiple-string-literals | commons-lang/src/main/java/org/apache/commons/lang3/BooleanUtils.java:1208 | tp | the line is a real instance of what the rule names
+ward:java/multiple-variable-declarations | spring-data-examples/cassandra/example/src/main/java/example/springdata/cassandra/streamoptional/Person.java:36 | tp | the line is a real instance of what the rule names
+ward:java/multiple-variable-declarations | spring-data-examples/cassandra/example/src/main/java/example/springdata/cassandra/udt/Person.java:37 | tp | the line is a real instance of what the rule names
+ward:java/multiple-variable-declarations | spring-data-examples/cassandra/example/src/test/java/example/springdata/cassandra/projection/CustomerRepositoryIntegrationTest.java:42 | tp | the line is a real instance of what the rule names
+ward:java/mutable-exception | commons-lang/src/test/java/org/apache/commons/lang3/FunctionsTest.java:121 | un | needs more of the class or the project conventions than was read
+ward:java/mutable-exception | commons-lang/src/test/java/org/apache/commons/lang3/exception/ExceptionUtilsTest.java:58 | un | needs more of the class or the project conventions than was read
+ward:java/mutable-exception | commons-lang/src/test/java/org/apache/commons/lang3/function/FailableTest.java:174 | un | needs more of the class or the project conventions than was read
+ward:java/n-path-complexity | commons-lang/src/main/java/org/apache/commons/lang3/AnnotationUtils.java:144 | tp | the line is a real instance of what the rule names
+ward:java/n-path-complexity | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:9684 | tp | the line is a real instance of what the rule names
+ward:java/n-path-complexity | commons-lang/src/main/java/org/apache/commons/lang3/BooleanUtils.java:762 | tp | the line is a real instance of what the rule names
+ward:java/nested-for-depth | commons-lang/src/main/java/org/apache/commons/lang3/reflect/MethodUtils.java:319 | tp | the line is a real instance of what the rule names
+ward:java/nested-for-depth | commons-lang/src/test/java/org/apache/commons/lang3/ConversionTest.java:263 | tp | the line is a real instance of what the rule names
+ward:java/nested-for-depth | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsSubstringTest.java:160 | tp | the line is a real instance of what the rule names
+ward:java/no-clone | commons-lang/src/main/java/org/apache/commons/lang3/text/StrTokenizer.java:457 | tp | the line is a real instance of what the rule names
+ward:java/no-clone | commons-lang/src/main/java/org/apache/commons/lang3/time/ImmutableTimeZone.java:39 | tp | the line is a real instance of what the rule names
+ward:java/no-clone | commons-lang/src/main/java/org/apache/commons/lang3/util/FluentBitSet.java:199 | tp | the line is a real instance of what the rule names
+ward:java/no-field-di | spring-data-examples/cassandra/example/src/test/java/example/springdata/cassandra/auditing/AuditedPersonRepositoryTests.java:40 | tp | the line is a real instance of what the rule names
+ward:java/no-field-di | spring-data-examples/cassandra/example/src/test/java/example/springdata/cassandra/basic/BasicUserRepositoryTests.java:50 | tp | the line is a real instance of what the rule names
+ward:java/no-field-di | spring-data-examples/cassandra/example/src/test/java/example/springdata/cassandra/basic/CassandraOperationsIntegrationTests.java:47 | tp | the line is a real instance of what the rule names
+ward:java/np-unwritten-field | spring-data-examples/jpa/showcase/src/test-snippets/java/example/springdata/jpa/showcase/snippets/test/AccountRepositoryIntegrationTest.java:34 | un | field is injected by the test framework
+ward:java/np-unwritten-field | spring-data-examples/jpa/showcase/src/test-snippets/java/example/springdata/jpa/showcase/snippets/test/CustomerRepositoryIntegrationTest.java:38 | un | field is injected by the test framework
+ward:java/np-unwritten-field | spring-data-examples/mongodb/aggregation/src/main/java/example/springdata/mongodb/aggregation/Order.java:64 | fp | @AllArgsConstructor writes the field
+ward:java/openjdk-annotation-location | commons-lang/src/test/java/org/apache/commons/lang3/AnnotationUtilsTest.java:188 | un | needs more of the class or the project conventions than was read
+ward:java/openjdk-annotation-location | spring-data-examples/cassandra/vector-search/src/main/java/example/springdata/vector/Comment.java:38 | un | needs more of the class or the project conventions than was read
+ward:java/openjdk-annotation-location | spring-data-examples/jdbc/basics/src/main/java/example/springdata/jdbc/basics/aggregate/LegoSet.java:59 | un | needs more of the class or the project conventions than was read
+ward:java/outer-type-number | commons-lang/src/test/java/org/apache/commons/lang3/ClassUtilsShortClassNameTest.java:18 | tp | the line is a real instance of what the rule names
+ward:java/outer-type-number | commons-lang/src/test/java/org/apache/commons/lang3/EnumUtilsTest.java:19 | tp | the line is a real instance of what the rule names
+ward:java/outer-type-number | commons-lang/src/test/java/org/apache/commons/lang3/SerializationUtilsTest.java:17 | tp | the line is a real instance of what the rule names
+ward:java/parameter-assignment | commons-lang/src/main/java/org/apache/commons/lang3/AnnotationUtils.java:354 | tp | the line is a real instance of what the rule names
+ward:java/parameter-assignment | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:2247 | tp | the line is a real instance of what the rule names
+ward:java/parameter-assignment | commons-lang/src/main/java/org/apache/commons/lang3/CharRange.java:251 | tp | the line is a real instance of what the rule names
+ward:java/parameter-name | spring-data-examples/elasticsearch/reactive/src/main/java/example/springdata/elasticsearch/conference/ConferenceRepository.java:26 | un | needs more of the class or the project conventions than was read
+ward:java/redundant-import | spring-data-examples/jdbc/basics/src/main/java/example/springdata/jdbc/basics/aggregate/LegoSet.java:22 | tp | the line is a real instance of what the rule names
+ward:java/redundant-modifier | spring-data-examples/mongodb/jmolecules/src/main/java/example/springdata/mongodb/order/Order.java:60 | tp | the line is a real instance of what the rule names
+ward:java/redundant-modifier | spring-data-examples/web/querydsl/src/main/java/example/users/UserRepository.java:41 | tp | the line is a real instance of what the rule names
+ward:java/regexp-singleline | spring-data-examples/jpa/jpa21/src/main/java/example/springdata/jpa/resultsetmappings/SubscriptionRepository.java:44 | tp | the line is a real instance of what the rule names
+ward:java/regexp-singleline | spring-data-examples/mongodb/reactive/src/main/java/example/springdata/mongodb/people/Person.java:30 | tp | the line is a real instance of what the rule names
+ward:java/replace-java-util-vector | spring-data-examples/cassandra/vector-search/src/main/java/example/springdata/vector/Comment.java:38 | fp | spring-data Vector is not java.util.Vector
+ward:java/replace-java-util-vector | spring-data-examples/cassandra/vector-search/src/main/java/example/springdata/vector/CommentRepository.java:28 | fp | spring-data Vector is not java.util.Vector
+ward:java/replace-java-util-vector | spring-data-examples/cassandra/vector-search/src/test/java/example/springdata/vector/CassandraVectorSearchTest.java:47 | fp | spring-data Vector is not java.util.Vector
+ward:java/return-count | commons-lang/src/main/java/org/apache/commons/lang3/AnnotationUtils.java:108 | tp | the line is a real instance of what the rule names
+ward:java/return-count | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:1007 | tp | the line is a real instance of what the rule names
+ward:java/return-count | commons-lang/src/main/java/org/apache/commons/lang3/BooleanUtils.java:474 | tp | the line is a real instance of what the rule names
+ward:java/singular-field | spring-data-examples/cassandra/example/src/test/java/example/springdata/cassandra/projection/CustomerRepositoryIntegrationTest.java:42 | un | needs more of the class or the project conventions than was read
+ward:java/singular-field | spring-data-examples/jpa/example/src/test/java/example/springdata/jpa/projections/CustomerRepositoryIntegrationTest.java:60 | un | needs more of the class or the project conventions than was read
+ward:java/st-write-to-static-from-instance-method | spring-data-examples/cassandra/util/src/main/java/example/springdata/cassandra/util/CassandraExtension.java:103 | tp | the line is a real instance of what the rule names
+ward:java/star-import | spring-data-examples/cassandra/example/src/test/java/example/springdata/cassandra/auditing/AuditedPersonRepositoryTests.java:18 | tp | the line is a real instance of what the rule names
+ward:java/star-import | spring-data-examples/cassandra/example/src/test/java/example/springdata/cassandra/basic/BasicUserRepositoryTests.java:18 | tp | the line is a real instance of what the rule names
+ward:java/star-import | spring-data-examples/cassandra/example/src/test/java/example/springdata/cassandra/basic/CassandraOperationsIntegrationTests.java:18 | tp | the line is a real instance of what the rule names
+ward:java/static-import | commons-lang/src/main/java/org/apache/commons/lang3/Strings.java:20 | tp | the line is a real instance of what the rule names
+ward:java/static-import | commons-lang/src/test/java/org/apache/commons/lang3/AbstractLangTest.java:20 | tp | the line is a real instance of what the rule names
+ward:java/static-import | commons-lang/src/test/java/org/apache/commons/lang3/AnnotationUtilsTest.java:19 | tp | the line is a real instance of what the rule names
+ward:java/stcal-static-simple-date-format-instance | spring-data-examples/elasticsearch/example/src/test/java/example/springdata/elasticsearch/conference/ElasticsearchOperationsTest.java:53 | tp | the line is a real instance of what the rule names
+ward:java/stcal-static-simple-date-format-instance | spring-data-examples/elasticsearch/reactive/src/test/java/example/springdata/elasticsearch/conference/ReactiveElasticsearchOperationsTest.java:53 | tp | the line is a real instance of what the rule names
+ward:java/stcal-static-simple-date-format-instance | spring-data-examples/elasticsearch/reactive/src/test/java/example/springdata/elasticsearch/conference/ReactiveElasticsearchRepositoryTest.java:49 | tp | the line is a real instance of what the rule names
+ward:java/text-block-google-style-formatting | spring-data-examples/jdbc/basics/src/main/java/example/springdata/jdbc/basics/aggregate/LegoSetRepository.java:32 | un | needs more of the class or the project conventions than was read
+ward:java/text-block-google-style-formatting | spring-data-examples/jpa/vector-search/src/main/java/example/springdata/vector/CommentRepository.java:28 | un | needs more of the class or the project conventions than was read
+ward:java/unit-test-assertions-should-include-message | commons-lang/src/test/java/org/apache/commons/lang3/AnnotationUtilsTest.java:492 | tp | the line is a real instance of what the rule names
+ward:java/unit-test-assertions-should-include-message | commons-lang/src/test/java/org/apache/commons/lang3/AppendableJoinerTest.java:76 | tp | the line is a real instance of what the rule names
+ward:java/unit-test-assertions-should-include-message | commons-lang/src/test/java/org/apache/commons/lang3/ArchUtilsTest.java:102 | tp | the line is a real instance of what the rule names
+ward:java/unit-test-contains-too-many-asserts | commons-lang/src/test/java/org/apache/commons/lang3/AnnotationUtilsTest.java:466 | tp | the line is a real instance of what the rule names
+ward:java/unit-test-contains-too-many-asserts | commons-lang/src/test/java/org/apache/commons/lang3/AppendableJoinerTest.java:104 | tp | the line is a real instance of what the rule names
+ward:java/unit-test-contains-too-many-asserts | commons-lang/src/test/java/org/apache/commons/lang3/ArchUtilsTest.java:130 | tp | the line is a real instance of what the rule names
+ward:java/unnecessary-annotation-value-element | spring-data-examples/cassandra/aot-optimization/src/main/java/example/springdata/cassandra/User.java:39 | tp | the line is a real instance of what the rule names
+ward:java/unnecessary-annotation-value-element | spring-data-examples/cassandra/example/src/main/java/example/springdata/cassandra/basic/User.java:34 | tp | the line is a real instance of what the rule names
+ward:java/unnecessary-annotation-value-element | spring-data-examples/cassandra/example/src/main/java/example/springdata/cassandra/events/User.java:26 | tp | the line is a real instance of what the rule names
+ward:java/unnecessary-constructor | commons-lang/src/main/java/org/apache/commons/lang3/Functions.java:681 | un | needs more of the class or the project conventions than was read
+ward:java/unnecessary-constructor | commons-lang/src/main/java/org/apache/commons/lang3/Streams.java:573 | un | needs more of the class or the project conventions than was read
+ward:java/unnecessary-constructor | commons-lang/src/main/java/org/apache/commons/lang3/SystemUtils.java:2497 | un | needs more of the class or the project conventions than was read
+ward:java/unnecessary-parentheses | spring-data-examples/rest/security/src/test/java/example/springdata/rest/security/UrlLevelSecurityTests.java:109 | tp | the line is a real instance of what the rule names
+ward:java/unsynchronized-static-formatter | spring-data-examples/elasticsearch/example/src/test/java/example/springdata/elasticsearch/conference/ElasticsearchOperationsTest.java:53 | tp | the line is a real instance of what the rule names
+ward:java/unsynchronized-static-formatter | spring-data-examples/elasticsearch/reactive/src/test/java/example/springdata/elasticsearch/conference/ReactiveElasticsearchOperationsTest.java:53 | tp | the line is a real instance of what the rule names
+ward:java/unsynchronized-static-formatter | spring-data-examples/elasticsearch/reactive/src/test/java/example/springdata/elasticsearch/conference/ReactiveElasticsearchRepositoryTest.java:49 | tp | the line is a real instance of what the rule names
+ward:java/unused-assignment | spring-data-examples/jdbc/howto/caching/src/test/java/example/springdata/jdbc/howto/caching/CachingApplicationTests.java:34 | tp | the line is a real instance of what the rule names
+ward:java/unused-import | spring-data-examples/cassandra/example/src/main/java/example/springdata/cassandra/projection/Customer.java:18 | tp | the line is a real instance of what the rule names
+ward:java/unused-import | spring-data-examples/cassandra/example/src/test/java/example/springdata/cassandra/convert/ConversionIntegrationTests.java:35 | tp | the line is a real instance of what the rule names
+ward:java/unused-import | spring-data-examples/cassandra/example/src/test/java/example/springdata/cassandra/projection/CustomerRepositoryIntegrationTest.java:22 | tp | the line is a real instance of what the rule names
+ward:java/use-diamond-operator | spring-data-examples/web/querydsl/src/main/java/example/users/UserInitializer.java:103 | tp | the line is a real instance of what the rule names
+ward:java/use-explicit-types | spring-data-examples/cassandra/example/src/main/java/example/springdata/cassandra/auditing/BasicConfiguration.java:60 | tp | the line is a real instance of what the rule names
+ward:java/use-explicit-types | spring-data-examples/cassandra/example/src/test/java/example/springdata/cassandra/auditing/AuditedPersonRepositoryTests.java:53 | tp | the line is a real instance of what the rule names
+ward:java/use-explicit-types | spring-data-examples/cassandra/example/src/test/java/example/springdata/cassandra/basic/CassandraOperationsIntegrationTests.java:107 | tp | the line is a real instance of what the rule names
+ward:java/uuf-unused-field | spring-data-examples/cassandra/reactive/src/main/java/example/springdata/cassandra/people/Person.java:43 | fp | @Data accessors use the field
+ward:java/uuf-unused-field | spring-data-examples/couchbase/example/src/main/java/example/springdata/couchbase/model/Airline.java:38 | un | needs more of the class than was read
+ward:java/uwf-field-not-initialized-in-constructor | spring-data-examples/jpa/showcase/src/snippets/java/example/springdata/jpa/showcase/snippets/AccountRepositoryJdbcImpl.java:30 | un | needs more of the class or the project conventions than was read
+ward:java/uwf-unwritten-field | spring-data-examples/cassandra/reactive/src/main/java/example/springdata/cassandra/spel/ApplicationConfiguration.java:64 | fp | @RequiredArgsConstructor writes the field
+ward:java/va-format-string-uses-newline | spring-data-examples/cassandra/util/src/main/java/example/springdata/cassandra/util/CassandraExtension.java:84 | tp | the line is a real instance of what the rule names
+ward:java/va-format-string-uses-newline | spring-data-examples/cassandra/vector-search/src/test/java/example/springdata/vector/CassandraVectorSearchTest.java:63 | tp | the line is a real instance of what the rule names
+ward:java/va-format-string-uses-newline | spring-data-examples/jdbc/basics/src/test/java/example/springdata/jdbc/basics/Output.java:35 | tp | the line is a real instance of what the rule names
+ward:java/de-might-drop | spring-data-examples/couchbase/transactions/src/main/java/com/example/demo/CmdRunner.java:45 | tp | Exception is caught and dropped
+ward:java/empty-catch-block | spring-data-examples/couchbase/transactions/src/main/java/com/example/demo/CmdRunner.java:45 | tp | the catch block is empty
+ward:java/text-block-google-style-formatting | spring-data-examples/jdbc/basics/src/main/java/example/springdata/jdbc/basics/aggregate/LegoSetRepository.java:46 | un | needs the whole text block than was read
+ward:java/text-block-google-style-formatting | spring-data-examples/jpa/vector-search/src/main/java/example/springdata/vector/CommentRepository.java:32 | un | needs the whole text block than was read
+ward:java/unnecessary-parentheses | spring-data-examples/rest/security/src/test/java/example/springdata/rest/security/UrlLevelSecurityTests.java:91 | tp | parentheses around a string literal
+ward:java/use-diamond-operator | spring-data-examples/web/querydsl/src/main/java/example/users/UserInitializer.java:70 | tp | the type arguments can be inferred

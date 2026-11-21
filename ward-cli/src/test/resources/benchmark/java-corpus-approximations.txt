@@ -1,0 +1,19 @@
+# False positives of the Java corpus run that are known and open: rule | file:line | reason | #issue (#698).
+ward:java/avoid-no-argument-super-constructor-call | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:157 | qualified super() is required | #715
+ward:java/field-no-init | spring-data-examples/jpa/example/src/main/java/example/springdata/jpa/compositions/ContactRepositoryImpl.java:33 | Lombok constructor writes the field | #713
+ward:java/field-no-init | spring-data-examples/jpa/example/src/main/java/example/springdata/jpa/compositions/EmployeeRepositoryImpl.java:33 | Lombok constructor writes the field | #713
+ward:java/field-no-init | spring-data-examples/jpa/example/src/main/java/example/springdata/jpa/compositions/FlushOnSaveRepositoryImpl.java:39 | Lombok constructor writes the field | #713
+ward:java/missing-static-method-in-non-instantiatable-class | spring-data-examples/jpa/security/src/main/java/example/springdata/jpa/security/User.java:32 | @RequiredArgsConstructor generates a public constructor | #713
+ward:java/np-unwritten-field | spring-data-examples/mongodb/aggregation/src/main/java/example/springdata/mongodb/aggregation/Order.java:64 | @AllArgsConstructor writes the field | #713
+ward:java/replace-java-util-vector | spring-data-examples/cassandra/vector-search/src/main/java/example/springdata/vector/Comment.java:38 | spring-data Vector is not java.util.Vector | #714
+ward:java/replace-java-util-vector | spring-data-examples/cassandra/vector-search/src/main/java/example/springdata/vector/CommentRepository.java:28 | spring-data Vector is not java.util.Vector | #714
+ward:java/replace-java-util-vector | spring-data-examples/cassandra/vector-search/src/test/java/example/springdata/vector/CassandraVectorSearchTest.java:47 | spring-data Vector is not java.util.Vector | #714
+ward:java/uuf-unused-field | spring-data-examples/cassandra/reactive/src/main/java/example/springdata/cassandra/people/Person.java:43 | @Data accessors use the field | #713
+ward:java/uwf-unwritten-field | spring-data-examples/cassandra/reactive/src/main/java/example/springdata/cassandra/spel/ApplicationConfiguration.java:64 | @RequiredArgsConstructor writes the field | #713
+ward:java/dmi-collections-should-not-contain-themselves | commons-lang/src/test/java/org/apache/commons/lang3/math/FractionTest.java:157 | arithmetic on a Fraction, not a collection | #717
+ward:java/dmi-collections-should-not-contain-themselves | commons-lang/src/test/java/org/apache/commons/lang3/math/FractionTest.java:160 | arithmetic on a Fraction, not a collection | #717
+ward:java/eq-other-no-object | commons-lang/src/main/java/org/apache/commons/lang3/text/StrBuilder.java:1876 | typed overload beside equals(Object) | #718
+ward:java/eq-overriding-equals-not-symmetric | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/TimedSemaphoreTest.java:49 | nested superclass not resolved | #719
+ward:java/sing-singleton-has-nonprivate-constructor | commons-lang/src/main/java/org/apache/commons/lang3/text/StrTokenizer.java:97 | static factories return new objects | #720
+ward:java/unused-local-variable | commons-lang/src/main/java/org/apache/commons/lang3/ClassUtils.java:1329 | read inside an anonymous class of a lambda | #721
+ward:java/uw-uncond-wait | commons-lang/src/test/java/org/apache/commons/lang3/ObjectUtilsTest.java:905 | static helper named wait | #722
