@@ -191,14 +191,7 @@ final class JavaFlowSites implements FlowSites {
         )
     );
     found.addAll(
-        JavaSyntheticSites.of(
-            call,
-            receiver,
-            qualifier,
-            arguments,
-            jsonResponse,
-            this::receiverType
-        )
+        JavaSyntheticSites.of(call, receiver, qualifier, jsonResponse, this::receiverType)
     );
   }
 

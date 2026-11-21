@@ -30,19 +30,19 @@ final class JavaSyntheticSites {
       final SyntaxNode call,
       final SyntaxNode receiver,
       final String qualifier,
-      final List<SyntaxNode> arguments,
       final boolean jsonResponse,
       final Function<String,
       Optional<String>> receiverType
   ) {
     final List<FlowSite> found = new ArrayList<>();
     final String name = calledName(call);
+    final List<SyntaxNode> arguments = JavaCallArguments.of(call);
     if (receiver != null
         && JavaLineBreakStrips.removesAll(
             name,
             arguments.stream().map(JavaFlowSyntax::text).toList(),
             qualifier,
-            types -> receiverType.apply(types)
+            receiverType::apply
         )) {
       found.add(synthetic(JavaLineBreakStrips.NAME, qualifier, List.of(receiver.span()), call));
     }
