@@ -96,6 +96,20 @@ class DotnetInitCliTest {
   }
 
   @Test
+  @DisplayName("build output is ignored")
+  void buildOutputIsIgnored() throws IOException {
+    Files.writeString(root.resolve("App.csproj"), CSPROJ);
+    Files.writeString(root.resolve("Program.cs"), "System.Console.WriteLine(1);\n");
+    final InitCommandFixture init = init();
+
+    final int exit = init.run("", "--yes");
+
+    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
+    assertThat(Files.readString(root.resolve(".gitignore")))
+        .contains("bin/", "obj/", ".ward/reports/", ".ward/stryker/");
+  }
+
+  @Test
   @DisplayName("standard has no mutation gate")
   void standardHasNoMutationGate() throws IOException {
     Files.writeString(root.resolve("App.csproj"), CSPROJ);

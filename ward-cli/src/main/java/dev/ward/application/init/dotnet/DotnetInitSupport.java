@@ -46,7 +46,7 @@ public final class DotnetInitSupport implements ToolchainInitSupport {
       final Project project,
       final List<InitGateOption> gates
   ) {
-    return Optional.of(".ward/reports/\n");
+    return Optional.of(".ward/reports/\n.ward/stryker/\nbin/\nobj/\n");
   }
 
   @Override

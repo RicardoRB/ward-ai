@@ -64,6 +64,8 @@ class CSharpCompatibilityMatrixTest {
         .startsWith(sdk + ".");
     MatrixFileTrees.copy(FIXTURES.resolve(fixture), project);
     targetFramework(project, "net" + sdk + ".0");
+    // The formatter and the gates read .gitignore through Git, as they do in a real project.
+    assertThat(exec(project, List.of("git", "init", "-q")).exit()).isZero();
 
     final Run init = ward(project, "init", "--preset", preset, "--integration", "none", "--yes");
     assertThat(init.exit()).as("init output:\n%s", init.output()).isZero();
