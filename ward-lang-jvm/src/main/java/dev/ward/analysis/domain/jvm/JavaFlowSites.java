@@ -3,7 +3,6 @@ package dev.ward.analysis.domain.jvm;
 import dev.ward.analysis.domain.ir.FlowSite;
 import dev.ward.analysis.domain.ir.FlowSiteKind;
 import dev.ward.analysis.domain.ir.FlowSites;
-import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -183,7 +182,7 @@ final class JavaFlowSites implements FlowSites {
     found.add(
         new FlowSite(
             FlowSiteKind.CALL,
-            calledName(call),
+            JavaSyntheticSites.calledName(call),
             qualifier,
             receiverType(qualifier),
             receiver == null ? List.of() : creations.annotations(receiver, qualifier),
@@ -191,53 +190,15 @@ final class JavaFlowSites implements FlowSites {
             call.span()
         )
     );
-    syntheticSites(call, receiver, qualifier, arguments, found);
-  }
-
-  /** The sites that a call gives besides its own: what the call proves about its value. */
-  private void syntheticSites(
-      final SyntaxNode call,
-      final SyntaxNode receiver,
-      final String qualifier,
-      final List<SyntaxNode> arguments,
-      final List<FlowSite> found
-  ) {
-    final String name = calledName(call);
-    if (receiver != null
-        && JavaLineBreakStrips.removesAll(
-            name,
-            arguments.stream().map(JavaFlowSyntax::text).toList(),
+    found.addAll(
+        JavaSyntheticSites.of(
+            call,
+            receiver,
             qualifier,
+            arguments,
+            jsonResponse,
             this::receiverType
-        )) {
-      found.add(synthetic(JavaLineBreakStrips.NAME, qualifier, List.of(receiver.span()), call));
-    }
-    if (receiver != null && JavaPrimitiveCalls.returnsPrimitive(name, receiverType(qualifier))) {
-      final List<Span> covered = new ArrayList<>(JavaCallArguments.spans(arguments));
-      covered.add(0, receiver.span());
-      found.add(synthetic(JavaPrimitiveCalls.NAME, qualifier, covered, call));
-    }
-    if (jsonResponse && JavaJsonResponses.writesBody(name, qualifier, receiverType(qualifier))) {
-      found.add(
-          synthetic(JavaJsonResponses.NAME, qualifier, JavaCallArguments.spans(arguments), call)
-      );
-    }
-  }
-
-  private static FlowSite synthetic(
-      final String name,
-      final String qualifier,
-      final List<Span> arguments,
-      final SyntaxNode call
-  ) {
-    return new FlowSite(
-        FlowSiteKind.CALL,
-        name,
-        qualifier,
-        Optional.empty(),
-        List.of(),
-        arguments,
-        call.span()
+        )
     );
   }
 
@@ -254,15 +215,6 @@ final class JavaFlowSites implements FlowSites {
     JavaCreationSites.arguments(creator)
         .forEach(argument -> JavaLiteralSites.addArgument(argument, found));
     JavaCreationSites.of(types, node, creator).ifPresent(found::add);
-  }
-
-  /**
-   * The name of a call. {@code this(...)} and {@code super(...)} have no identifier, so their name
-   * is the keyword that starts them.
-   */
-  private static String calledName(final SyntaxNode call) {
-    final SyntaxNode identifier = JavaSyntaxNames.identifierOf(call);
-    return JavaFlowSyntax.text(identifier != null ? identifier : JavaFlowSyntax.parts(call).get(0));
   }
 
   /** Records the declared types of the variables of a declaration, after its initializers. */

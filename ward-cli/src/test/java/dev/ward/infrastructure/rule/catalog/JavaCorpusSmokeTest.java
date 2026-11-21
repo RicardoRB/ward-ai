@@ -20,7 +20,12 @@ class JavaCorpusSmokeTest {
   @Test
   @EnabledIfSystemProperty(named = "ward.corpus.java", matches = ".+")
   void javaCorpusReportMatchesTheCommittedOne() throws IOException {
-    final CorpusRun run = new CorpusRun("Java", PinnedCorpus.java(), RulePreset.STRICT, "all Apache-2.0");
+    final CorpusRun run = new CorpusRun(
+        "Java",
+        PinnedCorpus.java(),
+        RulePreset.STRICT,
+        "all Apache-2.0"
+    );
 
     assertThat(run.report()).isEqualTo(run.committed());
   }

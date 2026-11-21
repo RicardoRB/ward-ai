@@ -59,7 +59,7 @@ class UnknownTypeRulesTest {
             .collect(Collectors.toMap(RuleDefinition::id, rule -> rule));
     final RuleFixtureRunner runner = new RuleFixtureRunner();
     final List<String> reported = new ArrayList<>();
-    for (final Pair pair : (Iterable<Pair>) RuleCatalogFixturesTest.pairs()::iterator) {
+    for (final Pair pair : (Iterable<Pair>)RuleCatalogFixturesTest.pairs()::iterator) {
       final RuleDefinition rule = rules.get(pair.toString());
       final RuleFixtureSet fixtures =
           RuleFixtureSet.of(RuleFixtureSet.root(), pair.row(), pair.language());

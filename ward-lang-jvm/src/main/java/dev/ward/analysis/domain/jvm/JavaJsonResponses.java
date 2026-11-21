@@ -33,7 +33,9 @@ final class JavaJsonResponses {
   private static final Pattern JSON_LITERAL =
       Pattern.compile("^\"application/(?:[\\w.-]+\\+)?json(?:;[^\"]*)?\"$");
   private static final Pattern JSON_CONSTANT =
-      Pattern.compile("^(?:[\\w.]*\\.)?MediaType\\.APPLICATION_(?:PROBLEM_)?JSON(?:_UTF8)?(?:_VALUE)?$");
+      Pattern.compile(
+          "^(?:[\\w.]*\\.)?MediaType\\.APPLICATION_(?:PROBLEM_)?JSON(?:_UTF8)?(?:_VALUE)?$"
+      );
 
   private JavaJsonResponses() {}
 

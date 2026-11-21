@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 /** Checks the sites and accesses that the Java lowering adds to say what a call or guard proves. */
 class JavaSyntheticSitesTest {
+  private static final int PRIMITIVE_CALLS = 3;
   private static final String PRIMITIVE =
       """
       class C {
@@ -99,7 +100,7 @@ class JavaSyntheticSitesTest {
   @Test
   void stringCallsThatReturnPrimitivesAreMarked() {
     final List<String> names = names(PRIMITIVE, "run(2)", JavaPrimitiveCalls.NAME);
-    assertThat(names).hasSize(3);
+    assertThat(names).hasSize(PRIMITIVE_CALLS);
   }
 
   /** Scenario: a body that sets only JSON content types marks its writes. */
