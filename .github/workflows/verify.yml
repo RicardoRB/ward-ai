@@ -668,11 +668,26 @@ jobs:
   # brings back a skipped file or a false positive fails here. corpus/fetch-corpora.sh checks every
   # archive against its sha-256 before unpacking it; the archives are cached by that manifest and
   # never committed, installed or run. The tests check the hash again through their own properties.
+  # One job per group of corpora: a single JVM over every corpus ran out of memory and lost the
+  # runner once the Java corpus measured the strict preset.
   corpus:
-    name: Corpus smoke tests
+    name: Corpus smoke tests (${{ matrix.group.name }})
     if: inputs.compatibility-matrices && needs.changes.outputs.code == 'true'
     needs: [changes, maven-cache]
     runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        group:
+          - name: java
+            tests: JavaCorpusSmokeTest
+          - name: kotlin, csharp, rust
+            tests: KotlinCorpusSmokeTest,CSharpCorpusSmokeTest,RustCorpusSmokeTest
+          - name: swift
+            tests: SwiftCorpusSmokeTest
+          - name: python, typescript
+            tests: PythonCorpusSmokeTest,FlaskCorpusSmokeTest,GotBenchmarkSmokeTest,JuiceShopBenchmarkSmokeTest
     steps:
       - uses: actions/checkout@v5
 
@@ -712,7 +727,7 @@ jobs:
           ./mvnw -B -pl ward-cli -am \
             -Djacoco.skip=true \
             -Dsurefire.failIfNoSpecifiedTests=false \
-            -Dtest='JavaCorpusSmokeTest,KotlinCorpusSmokeTest,CSharpCorpusSmokeTest,RustCorpusSmokeTest,SwiftCorpusSmokeTest,PythonCorpusSmokeTest,FlaskCorpusSmokeTest,GotBenchmarkSmokeTest,JuiceShopBenchmarkSmokeTest' \
+            -Dtest='${{ matrix.group.tests }}' \
             -Dward.corpus.java="$corpus/java" -Dward.corpus.java.archives="$corpus/archives/java" \
             -Dward.corpus.kotlin="$corpus/kotlin" -Dward.corpus.kotlin.archives="$corpus/archives/kotlin" \
             -Dward.corpus.csharp="$corpus/csharp" -Dward.corpus.csharp.archives="$corpus/archives/csharp" \
