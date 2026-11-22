@@ -13,7 +13,3 @@ export function socket() {
 export function withCredentials(port: number) {
   return fetch(`http://user:secret@localhost:${port}/health`);
 }
-
-export function builtAddress(host: string, port: number) {
-  return fetch(`http://${host}:${port}/health`);
-}

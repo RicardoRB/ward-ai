@@ -9,7 +9,3 @@ export function local() {
 export function socket() {
   return new WebSocket('wss://feed.example.com/live');
 }
-
-export function builtAddress(host, port) {
-  return fetch(`http://${host}:${port}/health`);
-}

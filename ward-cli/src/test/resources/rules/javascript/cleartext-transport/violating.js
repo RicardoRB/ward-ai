@@ -5,3 +5,7 @@ export function load() {
 export function socket() {
   return new WebSocket('ws://feed.example.com/live');
 }
+
+export function built(host) {
+  return fetch(`http://${host}/x`);
+}
