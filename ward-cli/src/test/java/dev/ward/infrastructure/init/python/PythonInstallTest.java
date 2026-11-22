@@ -6,7 +6,9 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.process.CommandResult;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -44,6 +46,25 @@ class PythonInstallTest {
         .containsExactly(List.of("uv", "sync", "--group", GROUP));
     assertThat(PythonInstall.commands(project(BuildTool.POETRY), true, true, GROUP))
         .containsExactly(List.of("poetry", "lock"), List.of("poetry", "install", "--with", GROUP));
+  }
+
+  @Test
+  void failedInstallNamesTheLastStderrLines() {
+    final String stderr = "one\ntwo\nthree\nfour\nfive\nsix\nseven\neight\nnine\nten\neleven\n";
+    assertThat(
+        PythonInstall.failed(
+            List.of("uv", "sync"),
+            new CommandResult(2, "", stderr, Duration.ZERO)
+        ).getMessage()
+    )
+        .startsWith("`uv sync` failed with exit code 2")
+        .endsWith("\nsix\nseven\neight\nnine\nten\neleven")
+        .doesNotContain("five");
+    assertThat(
+        PythonInstall.failed(List.of("uv"), new CommandResult(1, "", "", Duration.ZERO))
+            .getMessage()
+    )
+        .endsWith("restored.");
   }
 
   private static Project pip() {
