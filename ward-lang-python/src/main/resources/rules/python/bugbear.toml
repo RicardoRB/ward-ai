@@ -415,7 +415,7 @@ kinds = ["decorated"]
 allowed = ["classdef"]
 stop = ["funcdef", "async_funcdef", "lambdef"]
 mode = "inside"
-text = '^@(functools\.)?(lru_cache|cache)(?!\w)'
+text = '^@(functools\.)?(lru_cache|cache)(?![\w.])'
 message = "use of functools.lru_cache or functools.cache on a method can leak memory"
 '''
 

@@ -25,6 +25,14 @@ final class ImportSelfCheckTest {
   }
 
   @Test
+  void aPackageInitImportingItsOwnSubmoduleIsNotReported() {
+    assertThat(
+        CHECK.check(ParsedPython.tree("from pkg import sub"), new SourceFile("pkg/__init__.py", ""))
+    )
+        .isEmpty();
+  }
+
+  @Test
   void otherImportsAndFilesWithoutAPathAreNotReported() {
     assertThat(CHECK.check(ParsedPython.tree("import os"), new SourceFile("pkg/mod.py", "")))
         .isEmpty();

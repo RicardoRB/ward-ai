@@ -2,6 +2,7 @@ package dev.ward.infrastructure.rule.catalog;
 
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.rule.RuleDefinition;
+import dev.ward.infrastructure.rule.catalog.CorpusLabels.Place;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -25,7 +26,7 @@ final class PythonCorpusReport {
   private static final String HEADER =
       "# %s %s (%s) against Ward's Python rules.\n"
           + "# Archive sha-256 %s.\n"
-          + "# Every ward:python/* rule of the standard preset and every Python rule of category"
+          + "# Every ward:python/* rule of the strict preset and every Python rule of category"
           + " security ran over every .py file of the archive.\n"
           + "# A labelled finding is true (tp), false (fp) or undetermined (un), as read from the"
           + " code at its line; the labels are in %s. Every finding of a"
@@ -34,9 +35,6 @@ final class PythonCorpusReport {
           + "# Regenerate: ./mvnw -pl ward-cli -am -Djacoco.skip=true -Dtest=%s"
           + " -D%s=<dir> -Dward.benchmark.write=true"
           + " -Dsurefire.failIfNoSpecifiedTests=false test\n";
-
-  /** A finding in a place of the source. */
-  record Place(String rule, String location) {}
 
   private PythonCorpusReport() {}
 

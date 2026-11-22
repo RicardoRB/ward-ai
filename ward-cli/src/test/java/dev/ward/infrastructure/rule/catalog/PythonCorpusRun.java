@@ -12,6 +12,7 @@ import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RulePreset;
 import dev.ward.analysis.domain.rule.RuleRunResult;
 import dev.ward.infrastructure.rule.BundledRuleMatchers;
+import dev.ward.infrastructure.rule.catalog.CorpusLabels.Place;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Runs Ward's Python rules (the {@code standard} preset and every security rule) over a pinned
+ * Runs Ward's Python rules (the {@code strict} preset and every security rule) over a pinned
  * corpus and compares the per-rule counts with its committed report; the shared body of the Python
  * corpus smoke tests. {@code -Dward.benchmark.write=true} rewrites the report and lists the
  * findings that still need a label in {@code target/<corpus>-unlabelled.txt} and every finding in
@@ -49,8 +50,8 @@ final class PythonCorpusRun {
     findings.addAll(
         UnusedDefinitionFindings.findings(rules, PythonCorpus.summaries(units, frontends))
     );
-    final Map<String, List<PythonCorpusReport.Place>> found = PythonCorpusReport.places(findings);
-    final Map<PythonCorpusReport.Place, String> labels = PythonCorpusReport.labels(spec);
+    final Map<String, List<Place>> found = PythonCorpusReport.places(findings);
+    final Map<Place, String> labels = PythonCorpusReport.labels(spec);
     final String report = PythonCorpusReport.report(spec, rules, units.size(), found, labels);
     final Path file = Path.of("src/test/resources/benchmark").resolve(spec.report());
     if (Boolean.getBoolean("ward.benchmark.write")) {
@@ -59,9 +60,19 @@ final class PythonCorpusRun {
     }
     assertThat(notAnalysed(result)).as("files left without analysis").isEmpty();
     assertThat(result.notRun()).as("rules not run").isEmpty();
-    final List<PythonCorpusReport.Place> needed = PythonCorpusReport.needed(rules, found);
+    final List<Place> needed = PythonCorpusReport.needed(rules, found);
     assertThat(labels.keySet()).as("findings without a label").containsAll(needed);
     assertThat(needed).as("labels without a finding").containsAll(labels.keySet());
+    assertThat(
+        CorpusApproximations.unlisted(
+            Path.of("src/test/resources/benchmark"),
+            spec.report().replace("-corpus-report.txt", ""),
+            found.values().stream().flatMap(List::stream).toList(),
+            labels
+        )
+    )
+        .as("false positives without an approximation with a reason and an open issue")
+        .isEmpty();
     assertThat(report).isEqualTo(Files.readString(file));
   }
 
@@ -70,17 +81,17 @@ final class PythonCorpusRun {
       final List<RuleDefinition> rules,
       final List<AnalysisFinding> findings,
       final Map<String,
-      List<PythonCorpusReport.Place>> found,
-      final Map<PythonCorpusReport.Place,
+      List<Place>> found,
+      final Map<Place,
       String> labels
   ) throws IOException {
     final String name = spec.report().replace("-report.txt", "");
-    final Map<PythonCorpusReport.Place, String> messages = PythonCorpusReport.messages(findings);
+    final Map<Place, String> messages = PythonCorpusReport.messages(findings);
     Files.writeString(
         Path.of("target/" + name + "-unlabelled.txt"),
         PythonCorpusReport.listed(PythonCorpusReport.needed(rules, found), labels, messages)
     );
-    final List<PythonCorpusReport.Place> all =
+    final List<Place> all =
         found.values().stream().flatMap(List::stream).toList();
     Files.writeString(
         Path.of("target/" + name + "-findings.txt"),
@@ -92,7 +103,7 @@ final class PythonCorpusRun {
     return CatalogRuleDefinitions.shipped().stream()
         .filter(rule -> rule.id().startsWith(PREFIX))
         .filter(
-            rule -> PythonCorpusReport.isSecurity(rule) || RulePreset.STANDARD.selects(
+            rule -> PythonCorpusReport.isSecurity(rule) || RulePreset.STRICT.selects(
                 rule.presets()
             )
         )

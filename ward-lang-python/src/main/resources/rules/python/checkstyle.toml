@@ -268,7 +268,7 @@ presets = ["strict"]
 body = '''
 check = "text-pattern"
 target = "lines"
-pattern = "(==|!=)\\s*(True|False)\\b|\\b(True|False)\\s*(==|!=)"
+pattern = "(?<![A-Z]\\w{0,60}\\.\\w{1,60}\\s{0,3})(==|!=)\\s*(True|False)\\b|\\b(True|False)\\s*(==|!=)"
 message = "comparison with a boolean literal; simplify the expression"
 '''
 

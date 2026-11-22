@@ -10,6 +10,6 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["atom_expr"]
-text = "^(?!self\\.|cls\\.)\\w+\\._(?!_)\\w+"
+text = "^(?!self\\.|cls\\.)\\w+\\._(?!_)(?!(?:replace|asdict|fields|make|field_defaults)\\b)\\w+"
 message = "access to a private member of another object"
 '''

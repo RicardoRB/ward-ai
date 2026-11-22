@@ -222,3 +222,84 @@ ward:python/unused-method | hc/accounts/models.py:507 | fp | a Django template c
 ward:python/unused-method | hc/accounts/models.py:528 | tp | no file of the project calls the method
 ward:python/unused-method | hc/accounts/models.py:538 | fp | a Django template calls the property (project.auth_metrics_url); Ward reads no template
 ward:python/unused-method | hc/api/models.py:436 | fp | a Django template calls the method (check.filter_any); Ward reads no template
+ward:python/avoid-inline-conditionals | docker/gunicorn.conf.py:14 | tp | a conditional expression
+ward:python/avoid-inline-conditionals | hc/accounts/forms.py:73 | tp | a conditional expression
+ward:python/avoid-inline-conditionals | hc/accounts/models.py:148 | tp | a conditional expression
+ward:python/avoid-inline-conditionals | hc/accounts/views.py:140 | tp | a conditional expression
+ward:python/avoid-inline-conditionals | hc/api/admin.py:255 | tp | a conditional expression
+ward:python/bad-builtin | hc/api/management/commands/pruneobjects.py:21 | tp | map over an iterable that a comprehension or generator writes directly
+ward:python/blanket-noqa | hc/integrations/apprise/apps.py:26 | tp | a noqa comment without rule codes
+ward:python/blanket-type-ignore | hc/lib/statsd.py:8 | tp | a type: ignore comment without an error code
+ward:python/collapsible-if | hc/accounts/views.py:422 | tp | an if whose only statement is another if without else
+ward:python/collapsible-if | hc/accounts/views.py:688 | tp | an if whose only statement is another if without else
+ward:python/collapsible-if | hc/front/views.py:1063 | tp | an if whose only statement is another if without else
+ward:python/collapsible-if | hc/integrations/webhook/forms.py:75 | tp | an if whose only statement is another if without else
+ward:python/confusing-consecutive-elif | hc/accounts/views.py:439 | tp | the elif follows a block that ends with an if
+ward:python/confusing-consecutive-elif | hc/accounts/views.py:460 | tp | the elif follows a block that ends with an if
+ward:python/confusing-consecutive-elif | hc/accounts/views.py:472 | tp | the elif follows a block that ends with an if
+ward:python/confusing-consecutive-elif | hc/accounts/views.py:499 | tp | the elif follows a block that ends with an if
+ward:python/confusing-consecutive-elif | hc/api/views.py:764 | tp | the elif follows a block that ends with an if
+ward:python/consider-ternary-expression | hc/accounts/models.py:588 | tp | both branches assign the same variable one value
+ward:python/consider-ternary-expression | hc/api/decorators.py:74 | tp | both branches assign the same variable one value
+ward:python/consider-ternary-expression | hc/api/models.py:707 | tp | both branches assign the same variable one value
+ward:python/consider-ternary-expression | hc/api/views.py:920 | tp | both branches assign the same variable one value
+ward:python/consider-ternary-expression | hc/front/views.py:450 | tp | both branches assign the same variable one value
+ward:python/consider-using-assignment-expr | hc/accounts/admin.py:65 | tp | a variable assigned on the line before the if that tests it
+ward:python/consider-using-assignment-expr | hc/accounts/management/commands/senddeletionscheduled.py:61 | tp | a variable assigned on the line before the if that tests it
+ward:python/consider-using-assignment-expr | hc/accounts/middleware.py:50 | tp | a variable assigned on the line before the if that tests it
+ward:python/consider-using-assignment-expr | hc/accounts/models.py:290 | tp | a variable assigned on the line before the if that tests it
+ward:python/consider-using-assignment-expr | hc/accounts/views.py:450 | tp | a variable assigned on the line before the if that tests it
+ward:python/consider-using-tuple | hc/api/tests/test_create_check.py:88 | tp | a list literal iterated in place
+ward:python/consider-using-tuple | hc/api/tests/test_create_check.py:199 | tp | a list literal iterated in place
+ward:python/consider-using-tuple | hc/api/tests/test_create_check.py:319 | tp | a list literal iterated in place
+ward:python/consider-using-tuple | hc/api/tests/test_create_check.py:342 | tp | a list literal iterated in place
+ward:python/consider-using-tuple | hc/api/tests/test_create_check.py:474 | tp | a list literal iterated in place
+ward:python/f-string-in-exception | hc/accounts/forms.py:122 | tp | the exception message is an f-string argument
+ward:python/f-string-in-exception | hc/accounts/forms.py:139 | tp | the exception message is an f-string argument
+ward:python/f-string-in-exception | hc/accounts/migrations/0049_convert_email_lowercase.py:30 | tp | the exception message is an f-string argument
+ward:python/f-string-in-exception | hc/api/models.py:1141 | tp | the exception message is an f-string argument
+ward:python/f-string-in-exception | hc/api/models.py:1405 | tp | the exception message is an f-string argument
+ward:python/magic-number | docker/fetchstatus.py:18 | tp | a number literal compared inline
+ward:python/magic-number | hc/accounts/decorators.py:32 | tp | a number literal compared inline
+ward:python/magic-number | hc/accounts/forms.py:42 | tp | a number literal compared inline
+ward:python/magic-number | hc/accounts/forms.py:121 | tp | a number literal compared inline
+ward:python/magic-number | hc/accounts/management/commands/senddeletionscheduled.py:36 | tp | a number literal compared inline
+ward:python/missing-trailing-period | hc/accounts/backends.py:66 | un | a multi-line summary whose first line ends with a comma; depends on the docstring convention
+ward:python/missing-trailing-period | hc/accounts/models.py:311 | tp | a one-line docstring without a final period
+ward:python/missing-trailing-period | hc/accounts/models.py:334 | tp | a one-line docstring without a final period
+ward:python/missing-trailing-period | hc/api/models.py:171 | un | a multi-line summary whose first line ends without a period; depends on the docstring convention
+ward:python/nested-if-depth | hc/accounts/views.py:168 | tp | an if nested deeper than the limit
+ward:python/nested-if-depth | hc/accounts/views.py:174 | tp | an if nested deeper than the limit
+ward:python/nested-if-depth | hc/accounts/views.py:176 | tp | an if nested deeper than the limit
+ward:python/nested-if-depth | hc/accounts/views.py:179 | tp | an if nested deeper than the limit
+ward:python/nested-if-depth | hc/accounts/views.py:272 | tp | an if nested deeper than the limit
+ward:python/raw-string-in-exception | hc/accounts/forms.py:38 | tp | the exception message is a string literal argument
+ward:python/raw-string-in-exception | hc/accounts/forms.py:43 | tp | the exception message is a string literal argument
+ward:python/raw-string-in-exception | hc/accounts/forms.py:49 | tp | the exception message is a string literal argument
+ward:python/raw-string-in-exception | hc/accounts/forms.py:80 | tp | the exception message is a string literal argument
+ward:python/raw-string-in-exception | hc/accounts/forms.py:84 | tp | the exception message is a string literal argument
+ward:python/suppressible-exception | hc/accounts/models.py:433 | tp | try with a single statement and an except that only passes
+ward:python/suppressible-exception | hc/accounts/models.py:438 | tp | try with a single statement and an except that only passes
+ward:python/suppressible-exception | hc/accounts/models.py:443 | tp | try with a single statement and an except that only passes
+ward:python/suppressible-exception | hc/integrations/telegram/views.py:83 | tp | try with a single statement and an except that only passes
+ward:python/too-many-try-statements | hc/accounts/backends.py:13 | tp | the try body holds more statements than the limit
+ward:python/too-many-try-statements | hc/accounts/backends.py:32 | tp | the try body holds more statements than the limit
+ward:python/too-many-try-statements | hc/accounts/views.py:664 | tp | the try body holds more statements than the limit
+ward:python/too-many-try-statements | hc/api/management/commands/sendalerts.py:84 | tp | the try body holds more statements than the limit
+ward:python/too-many-try-statements | hc/api/migrations/0067_last_error_values.py:16 | tp | the try body holds more statements than the limit
+ward:python/trailing-comment | hc/api/apps.py:17 | tp | a comment after code on the same line
+ward:python/trailing-comment | hc/api/apps.py:85 | tp | a comment after code on the same line
+ward:python/trailing-comment | hc/api/management/commands/sendalerts.py:103 | tp | a comment after code on the same line
+ward:python/trailing-comment | hc/api/management/commands/sendalerts.py:108 | tp | a comment after code on the same line
+ward:python/trailing-comment | hc/api/models.py:155 | tp | a comment after code on the same line
+ward:python/unused-class | hc/accounts/backends.py:22 | fp | named by a dotted path in a Django setting (AUTHENTICATION_BACKENDS); Ward reads no string as a reference
+ward:python/unused-class | hc/accounts/backends.py:44 | fp | named by a dotted path in a Django setting (AUTHENTICATION_BACKENDS); Ward reads no string as a reference
+ward:python/unused-class | hc/accounts/backends.py:65 | fp | named by a dotted path in a Django setting (AUTHENTICATION_BACKENDS); Ward reads no string as a reference
+ward:python/unused-class | hc/accounts/middleware.py:15 | fp | named by a dotted path in the MIDDLEWARE setting; Ward reads no string as a reference
+ward:python/unused-class | hc/accounts/middleware.py:28 | fp | named by a dotted path in the MIDDLEWARE setting; Ward reads no string as a reference
+ward:python/unused-function | hc/front/context_processors.py:7 | fp | named by a dotted path in the TEMPLATES context_processors setting; Ward reads no string as a reference
+ward:python/while-used | hc/accounts/management/commands/createsuperuser.py:63 | tp | a while loop
+ward:python/while-used | hc/accounts/management/commands/createsuperuser.py:71 | tp | a while loop
+ward:python/while-used | hc/accounts/models.py:382 | tp | a while loop
+ward:python/while-used | hc/accounts/models.py:555 | tp | a while loop
+ward:python/while-used | hc/accounts/models.py:581 | tp | a while loop

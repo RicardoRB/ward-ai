@@ -25,6 +25,6 @@ presets = ["strict"]
 body = '''
 check = "text-pattern"
 target = "lines"
-pattern = "[\"'][ \\t]*\\+[ \\t]*[\"']"
+pattern = "^(?:[^'\"#]|'(?:[^'\\\\]|\\\\.)*'|\"(?:[^\"\\\\]|\\\\.)*\")*?(?:'(?:[^'\\\\]|\\\\.)*'|\"(?:[^\"\\\\]|\\\\.)*\")[ \\t]*\\+[ \\t]*[rRbBuUfF]{0,2}(?:'(?:[^'\\\\]|\\\\.)*'|\"(?:[^\"\\\\]|\\\\.)*\")(?![ \\t]*[.\\[(%*])"
 message = "two string literals joined with +; write one literal"
 '''

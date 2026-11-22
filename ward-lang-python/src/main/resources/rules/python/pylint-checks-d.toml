@@ -81,7 +81,7 @@ presets = ["strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["atom_expr"]
-text = '^(?:collections\.)?namedtuple\('
+text = "^(?:collections\\.)?namedtuple\\(\\s*[\"'][^\"']*[\"']\\s*,\\s*[\\[(\"']"
 message = "use typing.NamedTuple instead of collections.namedtuple"
 '''
 
