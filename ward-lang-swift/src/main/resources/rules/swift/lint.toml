@@ -252,7 +252,7 @@ presets = ["strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["variable_declaration"]
-text = '^@State(Object)?(?!private|fileprivate)'
+text = '^@State(?:Object)?\s+(?!(?:private|fileprivate)\b)'
 message = "SwiftUI state property should be private"
 '''
 

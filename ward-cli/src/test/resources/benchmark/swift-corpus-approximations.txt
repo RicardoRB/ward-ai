@@ -1,0 +1,7 @@
+# rule | file:line | reason | open issue. A finding labelled fp fails SwiftCorpusSmokeTest unless it is listed here.
+ward:swift/async-without-await | alamofire/Tests/URLProtocolTests.swift:104 | the async signature is the one the delegate method requires | #756
+ward:swift/final-test-case | alamofire/Tests/BaseTestCase.swift:29 | a base class that other test cases inherit from cannot be final | #755
+ward:swift/unused-local-variable | alamofire/Tests/ResponseSerializationTests.swift:1406 | the name is declared once in each branch of a conditional compilation block and read after it | #752
+ward:swift/unused-local-variable | alamofire/Tests/SessionTests.swift:565 | the name is declared once in each branch of a conditional compilation block and read after it | #752
+ward:swift/unused-parameter | sample-food-truck/FoodTruckKit/Sources/Store/StoreActor.swift:117 | guard case reads the parameter and binds a new constant of the same name | #753
+ward:swift/weak-random | sample-food-truck/FoodTruckKit/Sources/Order/OrderGenerator.swift:143 | drand48 fills a generator seeded for repeatable sample data | #754

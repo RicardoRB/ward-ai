@@ -94,7 +94,6 @@ ward:kotlin/property-name | spring-petclinic-kotlin/src/main/kotlin/org/springfr
 ward:kotlin/property-name | okio/okio-wasifilesystem/src/wasmWasiMain/kotlin/okio/internal/preview1/Filetype.kt:17 | tp | snake_case property
 ward:kotlin/property-name | okio/okio/src/commonTest/kotlin/okio/HashingSinkTest.kt:95 | tp | snake_case property
 ward:kotlin/require-empty-line-before-block-tag-group | spring-petclinic-kotlin/src/main/kotlin/org/springframework/samples/petclinic/owner/PetRepository.kt:37 | tp | the first block tag follows a text line
-ward:kotlin/require-empty-line-before-block-tag-group | okio/okio/src/commonMain/kotlin/okio/ForwardingFileSystem.kt:67 | fp | an annotation inside a fenced code sample of the comment, not a block tag
 ward:kotlin/require-empty-line-before-block-tag-group | spring-petclinic-kotlin/src/main/kotlin/org/springframework/samples/petclinic/owner/OwnerRepository.kt:38 | tp | the first block tag follows a text line
 ward:kotlin/single-line-javadoc | okio/okio/src/commonMain/kotlin/okio/Base64.kt:24 | tp | a one-line KDoc that only holds a block tag
 ward:kotlin/spread-operator | spring-petclinic-kotlin/src/main/kotlin/org/springframework/samples/petclinic/PetClinicApplication.kt:31 | tp | an array is spread into a vararg call
@@ -134,3 +133,7 @@ ward:kotlin/var-could-be-val | okio/okio/src/zlibTest/kotlin/okio/ZipFileSystemG
 ward:kotlin/var-could-be-val | okio/okio-nodefilesystem/src/commonMain/kotlin/okio/NodeJsFileSystem.kt:31 | tp | a private var of an object that nothing assigns again
 ward:kotlin/variable-declaration-usage-distance | okio/okio/src/zlibMain/kotlin/okio/internal/ZipFiles.kt:209 | tp | the variable is first read many statements after its declaration
 ward:kotlin/variable-declaration-usage-distance | okio/okio/src/zlibMain/kotlin/okio/internal/ZipFiles.kt:210 | tp | the variable is first read many statements after its declaration
+ward:kotlin/lateinit-usage | okio/okio-testing-support/src/jvmMain/kotlin/okio/TestExecutor.kt:34 | tp | a lateinit property in a class, assigned after construction
+ward:kotlin/lateinit-usage | okio/samples/src/jvmMain/kotlin/okio/samples/SocksProxyServer.kt:50 | tp | a private lateinit property in main code, assigned in a start method
+ward:kotlin/lateinit-usage | spring-petclinic-kotlin/src/test/kotlin/org/springframework/samples/petclinic/owner/OwnerControllerTest.kt:44 | tp | a private lateinit property of a test class, assigned in a setup method
+ward:kotlin/require-empty-line-before-block-tag-group | spring-petclinic-kotlin/src/main/kotlin/org/springframework/samples/petclinic/owner/OwnerRepository.kt:48 | tp | the first block tag follows a text line
