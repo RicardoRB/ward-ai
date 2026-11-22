@@ -6,4 +6,3 @@ ward:java/missing-static-method-in-non-instantiatable-class | spring-data-exampl
 ward:java/np-unwritten-field | spring-data-examples/mongodb/aggregation/src/main/java/example/springdata/mongodb/aggregation/Order.java:64 | @AllArgsConstructor writes the field | #713
 ward:java/uuf-unused-field | spring-data-examples/cassandra/reactive/src/main/java/example/springdata/cassandra/people/Person.java:43 | @Data accessors use the field | #713
 ward:java/uwf-unwritten-field | spring-data-examples/cassandra/reactive/src/main/java/example/springdata/cassandra/spel/ApplicationConfiguration.java:64 | @RequiredArgsConstructor writes the field | #713
-ward:java/sing-singleton-has-nonprivate-constructor | commons-lang/src/main/java/org/apache/commons/lang3/text/StrTokenizer.java:97 | static factories return new objects | #720

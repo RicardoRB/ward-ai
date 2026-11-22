@@ -73,7 +73,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["classDeclaration"]
-text = '^class(\w+)(?=[\s\S]*static\1\w*[Ii]nstance\(\))(?=[\s\S]*static(?:final|volatile)*\1\w+[=;])(?=[\s\S]*(?:(?:public|protected)\1\(|(?<=[{};])\1\())'
+text = '^class(\w+)(?=[\s\S]*static\1\w*[Ii]nstance\(\))(?=[\s\S]*(?:public(?:static|final|volatile)+\1\w+[=;]|static(?:final|volatile)*\1(\w+)[=;][\s\S]*static\1\w*[Ii]nstance\(\)\{(?:[^{}]|\{[^{}]*\})*return\2;|static\1\w*[Ii]nstance\(\)\{(?:[^{}]|\{[^{}]*\})*return(\w+);[\s\S]*static(?:final|volatile)*\1\3[=;]))(?=[\s\S]*(?:(?:public|protected)\1\(|(?<=[{};])\1\())'
 message = "singleton has a constructor that is not private, so other code can create more instances"
 '''
 
