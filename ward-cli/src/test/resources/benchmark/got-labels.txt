@@ -29,6 +29,8 @@ ward:typescript/cleartext-transport | test/abort.ts:707 | un | a plain HTTP URL 
 ward:typescript/cleartext-transport | test/abort.ts:796 | un | a plain HTTP URL of a host that the test never reaches or that does not exist
 ward:typescript/cleartext-transport | test/dns-cache-integration.ts:306 | un | a plain HTTP URL of a host that the test never reaches or that does not exist
 ward:typescript/cleartext-transport | test/error.ts:51 | un | a plain HTTP URL of a host that the test never reaches or that does not exist
+ward:typescript/cleartext-transport | test/timeout.ts:527 | un | a plain HTTP URL of a host that the test never reaches or that does not exist
+ward:typescript/cleartext-transport | test/timings.ts:158 | fp | plain HTTP to a test server on the loopback interface
 ward:typescript/complexity | source/core/index.ts:1155 | tp | the function has more branches than the limit of the rule
 ward:typescript/complexity | source/core/index.ts:2548 | tp | the function has more branches than the limit of the rule
 ward:typescript/complexity | source/core/index.ts:550 | tp | the function has more branches than the limit of the rule
@@ -327,11 +329,13 @@ ward:typescript/xss | test/arguments.ts:833 | un | a test server writes a reques
 ward:typescript/xss | test/arguments.ts:918 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/cache.ts:1121 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/cache.ts:1283 | un | a test server writes a request header or the request URL to the response; no browser renders it
+ward:typescript/xss | test/cache.ts:296 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
 ward:typescript/xss | test/cookies.ts:1014 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/cookies.ts:541 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/cookies.ts:581 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/cookies.ts:63 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/cookies.ts:660 | un | a test server writes a request header or the request URL to the response; no browser renders it
+ward:typescript/xss | test/cookies.ts:711 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
 ward:typescript/xss | test/cookies.ts:727 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/cookies.ts:739 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/cookies.ts:759 | un | a test server writes a request header or the request URL to the response; no browser renders it
@@ -339,10 +343,34 @@ ward:typescript/xss | test/cookies.ts:778 | un | a test server writes a request 
 ward:typescript/xss | test/cookies.ts:793 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/cookies.ts:864 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/cookies.ts:868 | un | a test server writes a request header or the request URL to the response; no browser renders it
+ward:typescript/xss | test/create.ts:34 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/diagnostics-channel.ts:42 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/headers.ts:20 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
 ward:typescript/xss | test/headers.ts:705 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/hooks.ts:1384 | fp | the response is one of two constants; the request header or URL only picks which one, so no request data reaches the body
 ward:typescript/xss | test/hooks.ts:1412 | fp | the response is one of two constants; the request header or URL only picks which one, so no request data reaches the body
+ward:typescript/xss | test/hooks.ts:2247 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/hooks.ts:2277 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/hooks.ts:2308 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/hooks.ts:2330 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/hooks.ts:2353 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/hooks.ts:2401 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/hooks.ts:2422 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/hooks.ts:2446 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/hooks.ts:2469 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/hooks.ts:2558 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/hooks.ts:2578 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/hooks.ts:2601 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/hooks.ts:2622 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/hooks.ts:2654 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/hooks.ts:2688 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/hooks.ts:2715 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/hooks.ts:2737 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/hooks.ts:2758 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/hooks.ts:2782 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/hooks.ts:2804 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
 ward:typescript/xss | test/hooks.ts:310 | un | a test server writes a request header or the request URL to the response; no browser renders it
+ward:typescript/xss | test/hooks.ts:32 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
 ward:typescript/xss | test/hooks.ts:40 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/hooks.ts:405 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/hooks.ts:424 | un | a test server writes a request header or the request URL to the response; no browser renders it
@@ -359,18 +387,84 @@ ward:typescript/xss | test/hooks.ts:86 | un | a test server writes a request hea
 ward:typescript/xss | test/https.ts:2270 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/https.ts:2357 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/https.ts:5190 | un | a test server writes a request header or the request URL to the response; no browser renders it
+ward:typescript/xss | test/merge-instances.ts:8 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
 ward:typescript/xss | test/pagination.ts:1454 | fp | the response is one of two constants; the request header or URL only picks which one, so no request data reaches the body
 ward:typescript/xss | test/pagination.ts:1478 | fp | the response is one of two constants; the request header or URL only picks which one, so no request data reaches the body
+ward:typescript/xss | test/pagination.ts:1743 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/pagination.ts:1774 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/pagination.ts:1808 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/pagination.ts:3442 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/pagination.ts:3659 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/pagination.ts:3684 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/pagination.ts:588 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/pagination.ts:634 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/pagination.ts:684 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/pagination.ts:736 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/post.ts:33 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:1020 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:1158 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:1199 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:1247 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:1346 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:2015 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:2165 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
 ward:typescript/xss | test/redirects.ts:2333 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/redirects.ts:2371 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/redirects.ts:2411 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/redirects.ts:2456 | un | a test server writes a request header or the request URL to the response; no browser renders it
+ward:typescript/xss | test/redirects.ts:2501 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:2545 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:2630 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:2669 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:2935 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:2956 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:2978 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:3000 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:3022 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:3054 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:3107 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:3125 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:3143 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
 ward:typescript/xss | test/redirects.ts:3161 | un | a test server writes a request header or the request URL to the response; no browser renders it
+ward:typescript/xss | test/redirects.ts:3243 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:3279 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:3310 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:3342 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:3378 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:3407 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:3440 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:3477 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:3525 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:3570 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:3616 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:3664 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:3712 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:3754 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:3786 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:3822 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:3857 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
 ward:typescript/xss | test/redirects.ts:4124 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/redirects.ts:4193 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/redirects.ts:4631 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/redirects.ts:4722 | un | a test server writes a request header or the request URL to the response; no browser renders it
+ward:typescript/xss | test/redirects.ts:501 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:896 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:937 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/redirects.ts:979 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/response-parse.ts:272 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/retry.ts:1230 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/retry.ts:1287 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/retry.ts:1348 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
 ward:typescript/xss | test/retry.ts:140 | un | a test server writes a request header or the request URL to the response; no browser renders it
+ward:typescript/xss | test/retry.ts:1404 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/retry.ts:1460 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/retry.ts:1517 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/retry.ts:1594 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
 ward:typescript/xss | test/retry.ts:2078 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/stream.ts:161 | un | a test server writes a request header or the request URL to the response; no browser renders it
+ward:typescript/xss | test/stream.ts:480 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/stream.ts:507 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
 ward:typescript/xss | test/stream.ts:535 | un | a test server writes a request header or the request URL to the response; no browser renders it
+ward:typescript/xss | test/stream.ts:583 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/stream.ts:64 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
+ward:typescript/xss | test/unix-socket.ts:273 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML

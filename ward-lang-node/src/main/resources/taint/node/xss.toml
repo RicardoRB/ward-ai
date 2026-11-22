@@ -96,12 +96,6 @@ kind = "call"
 name = "escapeHtml"
 receiver = "escape-html"
 
-# A JSON document is data, not markup.
-[[sanitizers]]
-kind = "call"
-name = "stringify"
-qualifier = "JSON"
-
 # Numeric conversions cannot carry markup or a path separator.
 
 [[sanitizers]]
