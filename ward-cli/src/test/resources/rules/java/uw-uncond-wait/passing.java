@@ -22,3 +22,15 @@ final class Check {
     lock.wait();
   }
 }
+
+final class Helpers {
+  private final Object lock = new Object();
+
+  static void wait(Object target, long millis) {}
+
+  void sleep() {
+    synchronized (lock) {
+      Helpers.wait(lock, 10L);
+    }
+  }
+}
