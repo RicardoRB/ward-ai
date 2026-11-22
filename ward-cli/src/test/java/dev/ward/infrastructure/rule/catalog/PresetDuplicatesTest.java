@@ -148,6 +148,7 @@ class PresetDuplicatesTest {
             "ward:java/interface-member-implied-modifier",
             "ward:java/class-member-implied-modifier",
             "ward:java/no-array-trailing-comma",
+            "ward:java/avoid-no-argument-super-constructor-call",
             "ward:java/static-or-default-interface-method"
         );
     SHIPPED.stream()

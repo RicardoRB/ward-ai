@@ -1,4 +1,0 @@
-# Pairs of rules that contradict each other: no code can pass both, so no preset enables both
-# for one language (#685, #695). Format: <rule> | <rule> | <why>.
-ward:java/interface-member-implied-modifier | ward:java/redundant-modifier | one asks for the modifier the other calls redundant
-ward:java/array-trailing-comma | ward:java/no-array-trailing-comma | one requires the trailing comma, the other forbids it

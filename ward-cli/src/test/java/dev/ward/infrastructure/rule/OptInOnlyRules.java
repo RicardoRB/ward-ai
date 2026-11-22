@@ -32,6 +32,8 @@ public final class OptInOnlyRules {
     ids.add("ward:java/interface-member-implied-modifier");
     // the formatter closes an array initializer on its own line, which array-trailing-comma wants
     ids.add("ward:java/no-array-trailing-comma");
+    // call-super-in-constructor demands the super() call this rule forbids (#701)
+    ids.add("ward:java/avoid-no-argument-super-constructor-call");
     // an Android-only compatibility rule must not run on every JVM project (#686)
     ids.add("ward:java/static-or-default-interface-method");
     try (InputStream stream = OptInOnlyRules.class.getResourceAsStream(DROPPED)) {
