@@ -6,3 +6,7 @@ export function show(element: any, text: any) {
 export function write() {
   document.write('<hr>');
 }
+
+export function same(element: any, html: any) {
+  return element.innerHTML === html;
+}

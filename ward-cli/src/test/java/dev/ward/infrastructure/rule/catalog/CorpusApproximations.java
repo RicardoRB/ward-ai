@@ -29,7 +29,16 @@ final class CorpusApproximations {
       final Map<Place,
       String> labels
   ) throws IOException {
-    final Path file = resources.resolve(key + "-corpus-approximations.txt");
+    return unlistedIn(resources.resolve(key + "-corpus-approximations.txt"), found, labels);
+  }
+
+  /** Same as {@link #unlisted}, for an approximations file with its own name (got, Juice Shop). */
+  static List<Place> unlistedIn(
+      final Path file,
+      final List<Place> found,
+      final Map<Place,
+      String> labels
+  ) throws IOException {
     final Set<Place> listed = new HashSet<>();
     if (Files.exists(file)) {
       for (final String line : Files.readAllLines(file, StandardCharsets.UTF_8)) {

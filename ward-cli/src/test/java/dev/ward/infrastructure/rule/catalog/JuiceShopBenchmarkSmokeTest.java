@@ -76,6 +76,13 @@ class JuiceShopBenchmarkSmokeTest {
       Files.writeString(file, report);
     }
     assertThat(report).isEqualTo(Files.readString(file));
+    assertThat(
+        CorpusApproximations.unlistedIn(
+            Path.of("src/test/resources/benchmark/juice-shop-approximations.txt"),
+            found,
+            labels
+        )
+    ).as("false positives without an approximation with a reason and an open issue").isEmpty();
   }
 
   private static List<RuleDefinition> securityRules() {

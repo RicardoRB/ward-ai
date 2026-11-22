@@ -1,0 +1,12 @@
+# rule | file:line | reason | open issue. A finding labelled fp fails the corpus test unless it is listed here.
+ward:javascript/dom-xss | frontend/src/assets/private/three.js:11375 | innerHTML is set to a message built from numeric progress values and constants; vendored three.js | #750
+ward:typescript/dom-xss | frontend/src/hacking-instructor/index.ts:126 | the hint text is Juice Shop's own static content, not attacker input | #749
+ward:typescript/path-traversal | routes/profileImageFileUpload.ts:42 | the path holds a user id read from the session and an extension detected from the file bytes | #748
+ward:typescript/path-traversal | routes/profileImageUrlUpload.ts:29 | the extension comes from an allowlist with a jpg default and the id from the session | #748
+ward:typescript/path-traversal | routes/vulnCodeFixes.ts:83 | readFixes(key) answers 404 unless a fix file starts with the key, so a traversal key never reaches this read | #748
+ward:typescript/path-traversal | routes/vulnCodeSnippet.ts:89 | the key was looked up among the known challenge keys, and the handler returned a 404 before this line otherwise | #748
+ward:typescript/path-traversal | routes/vulnCodeSnippet.ts:90 | the key was looked up among the known challenge keys, and the handler returned a 404 before this line otherwise | #748
+ward:typescript/path-traversal | server.ts:281 | the resolved path is checked with startsWith against the infrastructure folder before the read | #748
+ward:typescript/unsafe-framework-trust | frontend/src/app/data-export/data-export.component.ts:58 | server-generated captcha image | #749
+ward:typescript/unsafe-framework-trust | frontend/src/app/score-board/score-board.component.ts:103 | the challenge description is Juice Shop's own static data | #749
+ward:typescript/weak-hash | lib/utils.ts:83 | HMAC-SHA1 over a CTF flag, which does not rely on collision resistance | #751
