@@ -25,6 +25,7 @@ final class PythonInstall {
   private static final String VENV_PYTHON = ".venv/bin/python";
   private static final String VENV = ".venv";
   private static final String POETRY_MINIMUM = "2.2";
+  private static final int TAIL_LINES = 6;
   private static final String PIP_MINIMUM = "25.1";
   private static final Pattern VERSION = Pattern.compile("(\\d+)\\.(\\d+)");
   private static final String PYPROJECT = "pyproject.toml";
@@ -218,13 +219,24 @@ final class PythonInstall {
   }
 
   /** Returns the error for an install command that exited with {@code exitCode}. */
-  static WardException failed(final List<String> command, final int exitCode) {
+  static WardException failed(final List<String> command, final CommandResult result) {
     return new WardException(
         "`"
             + String.join(" ", command)
             + "` failed with exit code "
-            + exitCode
+            + result.exitCode()
             + "; the files init changed were restored."
+            + stderrTail(result.stderr())
     );
+  }
+
+  /** Returns the last lines of the tool's stderr, so a failed install says why. */
+  private static String stderrTail(final String stderr) {
+    final List<String> lines = stderr == null ? List.of() : stderr.strip().lines().toList();
+    if (lines.isEmpty()) {
+      return "";
+    }
+    final List<String> tail = lines.subList(Math.max(0, lines.size() - TAIL_LINES), lines.size());
+    return "\n" + String.join("\n", tail);
   }
 }

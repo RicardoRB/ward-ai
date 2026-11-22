@@ -187,7 +187,7 @@ public final class PythonBuildToolConfigurator implements BuildToolConfiguration
       LOGGER.log(Level.INFO, () -> "event=python-install-complete exit=" + result.exitCode());
       if (result.exitCode() != 0) {
         rollback(change);
-        throw PythonInstall.failed(command, result.exitCode());
+        throw PythonInstall.failed(command, result);
       }
     }
   }
