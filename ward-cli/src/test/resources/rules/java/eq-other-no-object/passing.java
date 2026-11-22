@@ -16,3 +16,14 @@ final class Point {
     }
   }
 }
+
+final class Builder {
+  @Override
+  public boolean equals(final Object obj) {
+    return obj instanceof Builder && equals((Builder) obj);
+  }
+
+  public boolean equals(final Builder other) {
+    return other != null;
+  }
+}

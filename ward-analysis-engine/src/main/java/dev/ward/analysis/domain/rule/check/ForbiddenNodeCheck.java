@@ -96,6 +96,7 @@ public final class ForbiddenNodeCheck implements UnitCheck {
    * @param notPath an ancestor path, in the syntax of {@code path}, that the node must not follow;
    *     empty does not limit
    * @param notRootText a pattern that the text of the whole file must not match, if any
+   * @param notParentText a pattern that the text of the parent must not match, if any
    */
   public record Condition(
       Optional<Pattern> text,
@@ -104,7 +105,8 @@ public final class ForbiddenNodeCheck implements UnitCheck {
       String path,
       Optional<Pattern> parentText,
       String notPath,
-      Optional<Pattern> notRootText
+      Optional<Pattern> notRootText,
+      Optional<Pattern> notParentText
   ) {
     /** The condition that every node meets. */
     public static final Condition ANY = new Condition(Optional.empty(), Set.of(), Set.of());
@@ -148,7 +150,20 @@ public final class ForbiddenNodeCheck implements UnitCheck {
         final Optional<Pattern> parentText,
         final String notPath
     ) {
-      this(text, withChild, parent, path, parentText, notPath, Optional.empty());
+      this(text, withChild, parent, path, parentText, notPath, Optional.empty(), Optional.empty());
+    }
+
+    /** Creates a condition without a pattern on the text of the parent that must not match. */
+    public Condition(
+        final Optional<Pattern> text,
+        final Set<String> withChild,
+        final Set<String> parent,
+        final String path,
+        final Optional<Pattern> parentText,
+        final String notPath,
+        final Optional<Pattern> notRootText
+    ) {
+      this(text, withChild, parent, path, parentText, notPath, notRootText, Optional.empty());
     }
 
     /**
@@ -162,6 +177,7 @@ public final class ForbiddenNodeCheck implements UnitCheck {
       Objects.requireNonNull(parentText, "parentText");
       Objects.requireNonNull(notPath, "notPath");
       Objects.requireNonNull(notRootText, "notRootText");
+      Objects.requireNonNull(notParentText, "notParentText");
       withChild = Set.copyOf(withChild);
       parent = Set.copyOf(parent);
     }
@@ -174,6 +190,7 @@ public final class ForbiddenNodeCheck implements UnitCheck {
           && (notPath.isEmpty() || !follows(notPath, visit))
           && parentTextOk(visit)
           && rootTextOk(visit)
+          && notParentTextOk(visit)
           && textOk(visit.node());
     }
 
@@ -238,6 +255,13 @@ public final class ForbiddenNodeCheck implements UnitCheck {
       return parentText.isEmpty()
           || !up.isEmpty()
           && parentText.get().matcher(SyntaxWalk.text(up.get(up.size() - 1))).find();
+    }
+
+    private boolean notParentTextOk(final SyntaxWalk.Visit visit) {
+      final List<SyntaxNode> up = visit.ancestors();
+      return notParentText.isEmpty()
+          || up.isEmpty()
+          || !notParentText.get().matcher(SyntaxWalk.text(up.get(up.size() - 1))).find();
     }
 
     private boolean rootTextOk(final SyntaxWalk.Visit visit) {

@@ -260,6 +260,7 @@ body = '''
 check = "forbidden-node"
 kinds = ["classBodyDeclaration"]
 text = 'booleanequals\(\s*(?:final)?+(?!(?:java\.lang\.)?Object)[\w.<>\[\]]+\w+\s*\)'
+not-parent-text = 'booleanequals\((?:final)?(?:java\.lang\.)?Object\w+\)'
 message = "equals() does not override equals(Object), so collections never call it"
 '''
 
