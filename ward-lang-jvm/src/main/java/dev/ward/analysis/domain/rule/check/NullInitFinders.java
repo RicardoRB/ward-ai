@@ -17,7 +17,8 @@ final class NullInitFinders {
   static List<NullHit> fieldNoInit(final NullFinder.Unit unit) {
     final List<NullHit> hits = new ArrayList<>();
     for (final NullModel.Type type : unit.types()) {
-      if (type.methods().stream().anyMatch(NullModel.Method::constructor)) {
+      if (type.methods().stream().anyMatch(NullModel.Method::constructor)
+          || LombokClasses.generatesConstructor(type.annotations())) {
         continue;
       }
       for (final NullModel.Field field : unset(type)) {

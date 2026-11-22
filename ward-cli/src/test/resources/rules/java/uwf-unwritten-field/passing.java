@@ -25,3 +25,12 @@ final class Entry {
     return title;
   }
 }
+
+@RequiredArgsConstructor
+final class Service {
+  private final String label;
+
+  String show() {
+    return label;
+  }
+}

@@ -21,3 +21,9 @@ class WithConstructor {
     this.name = "";
   }
 }
+
+@NullMarked
+@RequiredArgsConstructor
+class Generated {
+  private final @NonNull String name;
+}

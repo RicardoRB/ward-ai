@@ -22,7 +22,8 @@ final class NullModel {
       List<String> supertypes,
       List<Field> fields,
       List<Method> methods,
-      List<SyntaxNode> initializers
+      List<SyntaxNode> initializers,
+      Set<String> annotations
   ) {}
 
   /** A field declarator. */
@@ -112,7 +113,8 @@ final class NullModel {
         supertypes(node),
         fields,
         methods,
-        initializers
+        initializers,
+        LombokClasses.annotations(visit)
     );
   }
 
@@ -130,7 +132,7 @@ final class NullModel {
   }
 
   /** The annotations before the type at {@code index}, kept in its wrapper or class body entry. */
-  private static List<SyntaxNode> holder(final List<SyntaxNode> chain, final int index) {
+  static List<SyntaxNode> holder(final List<SyntaxNode> chain, final int index) {
     final SyntaxNode wrapper = chain.get(index - 1);
     if ("memberDeclaration".equals(wrapper.kind()) && index > 1) {
       return NullSyntax.annotations(chain.get(index - 2));

@@ -49,6 +49,9 @@ public final class FieldAccessCheck implements UnitCheck {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(CLASS_DECLARATION))) {
       final FieldAccesses accesses = FieldAccesses.of(visit.node());
+      if (writtenByLombok(visit)) {
+        continue;
+      }
       switch (mode) {
         case UNWRITTEN -> unwritten(accesses, matches);
         case NULL_ONLY -> nullOnly(accesses, matches);
@@ -60,6 +63,12 @@ public final class FieldAccessCheck implements UnitCheck {
       }
     }
     return List.copyOf(matches);
+  }
+
+  /** Lombok may write the fields, so a field that no code writes is not judged. */
+  private boolean writtenByLombok(final SyntaxWalk.Visit visit) {
+    return mode != Mode.LOCAL_MASKS
+        && LombokClasses.writesFields(LombokClasses.annotations(visit));
   }
 
   private void unwritten(final FieldAccesses accesses, final List<RuleMatch> matches) {

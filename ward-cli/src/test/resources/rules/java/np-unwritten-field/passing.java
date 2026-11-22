@@ -9,3 +9,12 @@ final class Box {
     return label.length();
   }
 }
+
+@AllArgsConstructor
+final class Order {
+  private String label;
+
+  int length() {
+    return label.length();
+  }
+}
