@@ -104,9 +104,15 @@ public final class JavadocTags {
       if (text.startsWith(AT)) {
         finish();
         startTag(text, line, column, offset);
-      } else if (open) {
+      } else {
+        continueTag(line, column, offset, content - star);
+      }
+    }
+
+    private void continueTag(final int line, final int column, final int offset, final int indent) {
+      if (open) {
         final Span at = new Span(line, column, line, column + 1, offset, offset + 1);
-        continuation.add(new Line(at, content - star));
+        continuation.add(new Line(at, indent));
       }
     }
 
