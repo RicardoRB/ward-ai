@@ -70,13 +70,11 @@ final class JavaScopeTypes {
     walk.finalMember = false;
   }
 
+  /**
+   * A method is not declared as a name: Java keeps methods apart from variables, so a method named
+   * like a local must not take over the reads of that local.
+   */
   void method(final SyntaxNode node) {
-    final SyntaxNode name = JavaScopeWalk.identifierOf(node);
-    if (name != null
-        && !"constructorDeclaration".equals(node.kind())
-        && !"compactConstructorDeclaration".equals(node.kind())) {
-      walk.builder.declare(JavaScopeWalk.text(name), BindingKind.FUNCTION, name.span(), Set.of());
-    }
     walk.scoped(node, ScopeKind.FUNCTION);
   }
 

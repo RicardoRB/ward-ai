@@ -11,4 +11,3 @@ ward:java/dmi-collections-should-not-contain-themselves | commons-lang/src/test/
 ward:java/eq-other-no-object | commons-lang/src/main/java/org/apache/commons/lang3/text/StrBuilder.java:1876 | typed overload beside equals(Object) | #718
 ward:java/eq-overriding-equals-not-symmetric | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/TimedSemaphoreTest.java:49 | nested superclass not resolved | #719
 ward:java/sing-singleton-has-nonprivate-constructor | commons-lang/src/main/java/org/apache/commons/lang3/text/StrTokenizer.java:97 | static factories return new objects | #720
-ward:java/unused-local-variable | commons-lang/src/main/java/org/apache/commons/lang3/ClassUtils.java:1329 | read inside an anonymous class of a lambda | #721
