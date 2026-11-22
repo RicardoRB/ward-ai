@@ -4,31 +4,24 @@ import dev.ward.domain.init.ArchitectureTables;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
 import dev.ward.infrastructure.init.maven.MavenCodeRoot;
-import dev.ward.infrastructure.init.node.NodeArchitectureTables;
-import dev.ward.infrastructure.init.python.PythonArchitectureTables;
-import dev.ward.infrastructure.init.swift.SwiftArchitectureTables;
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 
 /** Answers the architecture tables of a project with the tables of its toolchain. */
 public final class ToolchainArchitectureTables implements ArchitectureTables {
   private final JavaArchitectureTables jvm;
-  private final NodeArchitectureTables node;
-  private final PythonArchitectureTables python;
-  private final SwiftArchitectureTables swift;
+  private final Map<Toolchain, ArchitectureTables> byToolchain;
 
-  /** Creates the router that Dagger injects. */
+  /** Creates the router that Dagger injects: Java's tables, and those of every other toolchain. */
   @Inject
   public ToolchainArchitectureTables(
       final JavaArchitectureTables jvm,
-      final NodeArchitectureTables node,
-      final PythonArchitectureTables python,
-      final SwiftArchitectureTables swift
+      final Map<Toolchain,
+      ArchitectureTables> byToolchain
   ) {
     this.jvm = jvm;
-    this.node = node;
-    this.python = python;
-    this.swift = swift;
+    this.byToolchain = Map.copyOf(byToolchain);
   }
 
   @Override
@@ -48,12 +41,6 @@ public final class ToolchainArchitectureTables implements ArchitectureTables {
 
   /** Returns the tables of {@code toolchain}. */
   private ArchitectureTables tables(final Toolchain toolchain) {
-    return switch (toolchain) {
-      case NODE -> node;
-      case PYTHON -> python;
-      case SWIFT -> swift;
-      case JVM -> jvm;
-      default -> jvm;
-    };
+    return byToolchain.getOrDefault(toolchain, jvm);
   }
 }

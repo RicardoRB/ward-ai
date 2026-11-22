@@ -1,0 +1,46 @@
+{
+  "3:5-3:18": {
+    "call": {
+      "declaring": {
+        "name": "java.util.List"
+      },
+      "name": "add",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "boolean"
+      },
+      "static": false
+    }
+  },
+  "3:5-3:8": {
+    "type": {
+      "name": "java.util.List"
+    }
+  },
+  "9:12-9:27": {
+    "call": {
+      "declaring": {
+        "name": "Fraction"
+      },
+      "name": "add",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "boolean"
+      },
+      "static": false
+    }
+  },
+  "9:12-9:16": {
+    "type": {
+      "name": "Fraction"
+    }
+  }
+}

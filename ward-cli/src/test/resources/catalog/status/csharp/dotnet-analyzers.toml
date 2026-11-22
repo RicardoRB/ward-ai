@@ -1,0 +1,17 @@
+# Status of the dotnet-analyzers rows in csharp: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+general-exception-catch = "implemented"
+identifier-underscore = "implemented"
+method-complexity = "implemented"
+mutable-static-field-visible = "implemented"
+reserved-exception-type = "implemented"
+type-aware-design = { status = "planned", issue = "#677" }
+type-aware-documentation = { status = "planned", issue = "#677" }
+type-aware-globalization = { status = "planned", issue = "#677" }
+type-aware-interoperability = { status = "planned", issue = "#677" }
+type-aware-maintainability = { status = "planned", issue = "#677" }
+type-aware-naming = { status = "planned", issue = "#677" }
+type-aware-performance = { status = "planned", issue = "#677" }
+type-aware-reliability = { status = "planned", issue = "#677" }
+type-aware-usage = { status = "planned", issue = "#677" }
+visible-instance-field = "implemented"

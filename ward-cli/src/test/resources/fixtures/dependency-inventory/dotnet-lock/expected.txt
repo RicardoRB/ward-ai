@@ -1,0 +1,3 @@
+[] NUGET Newtonsoft.Json 13.0.3 DIRECT RUNTIME from=packages.lock.json in=App.csproj
+[] NUGET Serilog 4.0.0 TRANSITIVE RUNTIME from=packages.lock.json by=Serilog.Sinks.File
+[] NUGET Serilog.Sinks.File 6.0.0 DIRECT RUNTIME from=packages.lock.json in=App.csproj

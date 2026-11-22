@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * Reports a call of {@code wait} by the locks held around it. In {@code two-locks} mode two
@@ -24,6 +25,7 @@ public final class JavaWaitContextCheck implements RuleCheck {
   }
 
   private static final int MAX_ARGUMENTS = 2;
+  private static final Pattern TYPE_NAME = Pattern.compile("(?:\\w+\\.)*[A-Z]\\w*[a-z]\\w*");
   private static final String STATEMENT = "statement";
   private static final Set<String> BRANCHES =
       Set.of("'if'", "'while'", "'for'", "'do'", "'switch'");
@@ -48,11 +50,20 @@ public final class JavaWaitContextCheck implements RuleCheck {
   public List<RuleMatch> matches(final SyntaxNode root) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("methodCall"))) {
-      if (isWait(visit.node()) && reported(visit)) {
+      if (isWait(visit.node()) && !staticReceiver(visit) && reported(visit)) {
         matches.add(CheckSupport.at(visit.node().span(), message));
       }
     }
     return List.copyOf(matches);
+  }
+
+  /** A receiver named like a class, as in {@code ObjectUtils.wait(..)}, is a static helper. */
+  private static boolean staticReceiver(final SyntaxWalk.Visit visit) {
+    final List<SyntaxNode> up = visit.ancestors();
+    final List<SyntaxNode> parts = up.isEmpty() ? List.of() : up.get(up.size() - 1).children();
+    return parts.size() > 2
+        && parts.get(2) == visit.node()
+        && TYPE_NAME.matcher(SyntaxWalk.text(parts.get(0))).matches();
   }
 
   private boolean reported(final SyntaxWalk.Visit visit) {

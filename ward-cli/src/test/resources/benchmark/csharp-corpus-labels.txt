@@ -1,0 +1,83 @@
+# Labels of the findings of the C# corpus run, decided by reading the code at the line.
+# Format: rule | file:line | tp, fp or un | reason.
+# tp: the line is a real instance of what the rule describes. fp: it is not. un: it cannot be decided from the code, or depends on a count that was not recomputed.
+# Every finding of a rule with at most 3 findings is labelled; a rule with more has a sample of 3: the first, the middle and the last finding in path order.
+# A finding labelled fp must be listed in csharp-corpus-approximations.txt with its reason and an open issue (#698).
+ward:csharp/anonymous-method-delegate | newtonsoft-json/Src/Newtonsoft.Json.Tests/Documentation/Samples/Serializer/ErrorHandlingEvent.cs:63 | tp | a delegate expression with a typed parameter list that a lambda replaces
+ward:csharp/anonymous-method-delegate | newtonsoft-json/Src/Newtonsoft.Json.Tests/Serialization/SerializationErrorHandlingTests.cs:357 | tp | a delegate expression with a typed parameter list that a lambda replaces
+ward:csharp/anonymous-method-delegate | newtonsoft-json/Src/Newtonsoft.Json.Tests/Serialization/SerializationErrorHandlingTests.cs:543 | tp | a delegate expression with a typed parameter list that a lambda replaces
+ward:csharp/attribute-list-split | eshop/src/Catalog.API/Apis/CatalogApi.cs:289 | tp | one pair of brackets holds several attributes
+ward:csharp/attribute-list-split | newtonsoft-json/Src/Newtonsoft.Json.Tests/TestObjects/GeometricForms/Shape.cs:87 | tp | one pair of brackets holds several attributes
+ward:csharp/attribute-list-split | newtonsoft-json/Src/Newtonsoft.Json.Tests/TestObjects/Money/Currency.cs:98 | tp | one pair of brackets holds several attributes
+ward:csharp/braces-required | eshop/src/ClientApp/Services/Basket/Protos/Basket.cs:288 | tp | an embedded statement without braces
+ward:csharp/braces-required | newtonsoft-json/Src/Newtonsoft.Json.Tests/Serialization/JsonSerializerTest.cs:5475 | un | a using statement whose body is another using statement; whether the rule should exempt stacked usings was not decided
+ward:csharp/braces-required | newtonsoft-json/Src/Newtonsoft.Json/Utilities/LinqBridge.cs:91 | tp | an embedded statement without braces
+ward:csharp/constant-on-left-of-comparison | eshop/tests/ClientApp.UnitTests/Mocks/MockSettingsService.cs:183 | tp | a constant on the left of a comparison
+ward:csharp/constant-on-left-of-comparison | newtonsoft-json/Src/Newtonsoft.Json/Utilities/DateTimeParser.cs:243 | tp | a constant on the left of a comparison
+ward:csharp/constant-on-left-of-comparison | newtonsoft-json/Src/Newtonsoft.Json/Utilities/DateTimeParser.cs:262 | tp | a constant on the left of a comparison
+ward:csharp/empty-single-line-comment | eshop/src/HybridApp/GlobalSuppressions.cs:10 | tp | a comment line that holds only the slashes
+ward:csharp/empty-single-line-comment | newtonsoft-json/Src/Newtonsoft.Json.Tests/TestObjects/FooBar1.cs:12 | tp | a comment line that holds only the slashes
+ward:csharp/empty-single-line-comment | newtonsoft-json/Src/Newtonsoft.Json/WriteState.cs:3 | tp | a comment line that holds only the slashes
+ward:csharp/field-name-camel-case | eshop/src/ClientApp/Services/FixUri/FixUriService.cs:16 | tp | an instance field whose name does not start with a lowercase letter
+ward:csharp/field-name-camel-case | newtonsoft-json/Src/Newtonsoft.Json.Tests/LinqToSql/LinqToSqlClasses.designer.cs:314 | tp | an instance field whose name does not start with a lowercase letter
+ward:csharp/field-name-camel-case | newtonsoft-json/Src/Newtonsoft.Json.Tests/TestObjects/VersionOld.cs:37 | tp | an instance field whose name does not start with a lowercase letter
+ward:csharp/field-not-private | eshop/src/ClientApp/Animations/Base/AnimationBase.cs:11 | un | a public static readonly BindableProperty, the framework idiom; whether the rule covers static readonly fields was not decided
+ward:csharp/field-not-private | newtonsoft-json/Src/Newtonsoft.Json.Tests/TestObjects/MethodExecutorObject.cs:31 | tp | a field that is not private
+ward:csharp/field-not-private | newtonsoft-json/Src/Newtonsoft.Json/Utilities/StructMultiKey.cs:33 | tp | a field that is not private
+ward:csharp/field-underscore-prefix | eshop/src/Basket.API/Repositories/RedisBasketRepository.cs:8 | tp | a private field whose name starts with an underscore
+ward:csharp/field-underscore-prefix | newtonsoft-json/Src/Newtonsoft.Json.Tests/Serialization/DefaultValueHandlingTests.cs:428 | tp | a private field whose name starts with an underscore
+ward:csharp/field-underscore-prefix | newtonsoft-json/Src/Newtonsoft.Json/Utilities/ThreadSafeStore.cs:47 | tp | a private field whose name starts with an underscore
+ward:csharp/file-scoped-namespace | eshop/src/Catalog.API/Infrastructure/Migrations/20231009153249_Initial.Designer.cs:12 | tp | a block-scoped namespace in a file with one namespace
+ward:csharp/file-scoped-namespace | newtonsoft-json/Src/Newtonsoft.Json.Tests/TestObjects/DictionaryKey.cs:26 | tp | a block-scoped namespace in a file with one namespace
+ward:csharp/file-scoped-namespace | newtonsoft-json/Src/Newtonsoft.Json/WriteState.cs:28 | tp | a block-scoped namespace in a file with one namespace
+ward:csharp/general-exception-catch | eshop/src/Catalog.API/IntegrationEvents/CatalogIntegrationEventService.cs:21 | tp | a catch of the general exception type that does not rethrow
+ward:csharp/general-exception-catch | eshop/src/WebhookClient/Services/HooksRepository.cs:20 | tp | a catch of the general exception type that does not rethrow
+ward:csharp/general-exception-catch | newtonsoft-json/Src/Newtonsoft.Json/Utilities/ExpressionReflectionDelegateFactory.cs:219 | tp | a catch of the general exception type that does not rethrow
+ward:csharp/identifier-underscore | eshop/src/ClientApp/App.xaml.cs:86 | tp | a method name with an underscore
+ward:csharp/identifier-underscore | newtonsoft-json/Src/Newtonsoft.Json.Tests/JsonValidatingReaderTests.cs:706 | tp | a method name with an underscore
+ward:csharp/identifier-underscore | newtonsoft-json/Src/Newtonsoft.Json.Tests/Utilities/ExpressionReflectionDelegateFactoryTests.cs:269 | tp | a method name with an underscore
+ward:csharp/local-name-camel-case | eshop/tests/ClientApp.UnitTests/ViewModels/CatalogItemViewModelTests.cs:36 | tp | a local variable whose name starts with an uppercase letter
+ward:csharp/local-name-camel-case | eshop/tests/Ordering.FunctionalTests/OrderingApiTests.cs:150 | tp | a local variable whose name starts with an uppercase letter
+ward:csharp/local-name-camel-case | eshop/tests/Ordering.UnitTests/Application/NewOrderCommandHandlerTest.cs:39 | tp | a local variable whose name starts with an uppercase letter
+ward:csharp/method-complexity | eshop/src/Identity.API/Services/ProfileService.cs:55 | tp | eleven sequential ifs plus a branch on user-manager support and more, over the limit
+ward:csharp/method-complexity | newtonsoft-json/Src/Newtonsoft.Json/Linq/JValue.cs:611 | un | a branchy method; the count was not recomputed by hand
+ward:csharp/method-complexity | newtonsoft-json/Src/Newtonsoft.Json/Utilities/StringUtils.cs:218 | un | a branchy method; the count was not recomputed by hand
+ward:csharp/mutable-static-field-visible | eshop/src/ClientApp/Services/Common/Common.cs:11 | tp | a public static field that is not readonly
+ward:csharp/mutable-static-field-visible | eshop/src/Identity.API/Quickstart/Account/AccountOptions.cs:13 | tp | a public static field that is not readonly
+ward:csharp/mutable-static-field-visible | newtonsoft-json/Src/Newtonsoft.Json.Tests/Utilities/ExpressionReflectionDelegateFactoryTests.cs:205 | tp | a public static field that is not readonly
+ward:csharp/nullable-shorthand | newtonsoft-json/Src/Newtonsoft.Json/Serialization/JsonArrayContract.cs:254 | fp | the match is inside a // comment in an inactive #if branch; #708
+ward:csharp/nullable-shorthand | newtonsoft-json/Src/Newtonsoft.Json/Serialization/JsonDictionaryContract.cs:203 | fp | the match is inside a // comment in an inactive #if branch; #708
+ward:csharp/one-class-per-file | eshop/src/Basket.API/Extensions/Extensions.cs:1 | tp | a file that declares more than one class
+ward:csharp/one-class-per-file | newtonsoft-json/Src/Newtonsoft.Json.Tests/LinqToSql/LinqToSqlClasses.designer.cs:14 | tp | a file that declares more than one class
+ward:csharp/one-class-per-file | newtonsoft-json/Src/Newtonsoft.Json/Utilities/ReflectionObject.cs:26 | tp | a file that declares more than one class
+ward:csharp/one-namespace-per-file | newtonsoft-json/Src/Newtonsoft.Json/Utilities/LinqBridge.cs:31 | tp | a file that declares three namespaces
+ward:csharp/parameter-name-camel-case | eshop/src/Ordering.Domain/AggregatesModel/BuyerAggregate/IBuyerRepository.cs:10 | tp | a parameter whose name starts with an uppercase letter
+ward:csharp/parameter-name-camel-case | newtonsoft-json/Src/Newtonsoft.Json.Tests/TestObjects/CustomerDataSet.cs:409 | tp | a parameter whose name starts with an uppercase letter
+ward:csharp/parameter-name-camel-case | newtonsoft-json/Src/Newtonsoft.Json.Tests/TestObjects/SqlTypesDataSet.Designer.cs:364 | tp | a parameter whose name starts with an uppercase letter
+ward:csharp/prefer-predefined-type | eshop/src/ClientApp/Views/MapView.xaml.cs:15 | tp | a framework type name where the language keyword exists
+ward:csharp/prefer-predefined-type | newtonsoft-json/Src/Newtonsoft.Json.Tests/Schema/JsonSchemaGeneratorTests.cs:685 | tp | a framework type name where the language keyword exists
+ward:csharp/prefer-predefined-type | newtonsoft-json/Src/Newtonsoft.Json.Tests/TestObjects/NullableTestClass.cs:37 | tp | a framework type name where the language keyword exists
+ward:csharp/region-directive | eshop/src/ClientApp/Services/Basket/Protos/Basket.cs:17 | tp | a #region directive
+ward:csharp/region-directive | newtonsoft-json/Src/Newtonsoft.Json.Tests/TestObjects/BaseClass.cs:1 | tp | a #region directive
+ward:csharp/region-directive | newtonsoft-json/Src/Newtonsoft.Json/WriteState.cs:1 | tp | a #region directive
+ward:csharp/reserved-exception-type | eshop/src/ClientApp/Animations/FadeToAnimation.cs:121 | tp | a throw of a reserved or too general exception type
+ward:csharp/reserved-exception-type | newtonsoft-json/Src/Newtonsoft.Json.Tests/Serialization/JsonSerializerTest.cs:5356 | tp | a throw of a reserved or too general exception type
+ward:csharp/reserved-exception-type | newtonsoft-json/Src/Newtonsoft.Json/Utilities/ReflectionUtils.cs:463 | tp | a throw of a reserved or too general exception type
+ward:csharp/single-line-comment-spacing | eshop/src/Catalog.API/Apis/CatalogApi.cs:398 | tp | a // comment with text and no space after the slashes
+ward:csharp/single-line-comment-spacing | newtonsoft-json/Src/Newtonsoft.Json.Tests/Issues/Issue1682.cs:92 | tp | a // comment with text and no space after the slashes
+ward:csharp/single-line-comment-spacing | newtonsoft-json/Src/Newtonsoft.Json/Linq/Extensions.cs:302 | tp | a // comment with text and no space after the slashes
+ward:csharp/string-empty-literal | eshop/src/Identity.API/Quickstart/Extensions.cs:18 | tp | an empty string literal where string.Empty is preferred
+ward:csharp/string-empty-literal | newtonsoft-json/Src/Newtonsoft.Json.Tests/JsonValidatingReaderTests.cs:327 | tp | an empty string literal where string.Empty is preferred
+ward:csharp/string-empty-literal | newtonsoft-json/Src/Newtonsoft.Json/Utilities/ReflectionUtils.cs:177 | tp | an empty string literal where string.Empty is preferred
+ward:csharp/type-name-pascal-case | eshop/src/ClientApp/Services/Basket/Protos/BasketGrpc.cs:16 | tp | a member or type name that starts with a lowercase letter or underscores
+ward:csharp/type-name-pascal-case | newtonsoft-json/Src/Newtonsoft.Json.Tests/TestObjects/Events/Event.cs:143 | tp | a member or type name that starts with a lowercase letter or underscores
+ward:csharp/type-name-pascal-case | newtonsoft-json/Src/Newtonsoft.Json.Tests/TestObjects/StaticTestClass.cs:38 | tp | a member or type name that starts with a lowercase letter or underscores
+ward:csharp/untrusted-deserialization | newtonsoft-json/Src/Newtonsoft.Json.Tests/Benchmarks/DeserializeComparisonBenchmarks.cs:83 | tp | a formatter created or a TypeNameHandling that builds the types the data names
+ward:csharp/untrusted-deserialization | newtonsoft-json/Src/Newtonsoft.Json.Tests/Serialization/TraceWriterTests.cs:759 | tp | a formatter created or a TypeNameHandling that builds the types the data names
+ward:csharp/untrusted-deserialization | newtonsoft-json/Src/Newtonsoft.Json.Tests/TestObjects/Item.cs:38 | tp | a formatter created or a TypeNameHandling that builds the types the data names
+ward:csharp/using-outside-namespace | eshop/src/OrderProcessor/Events/GracePeriodConfirmedIntegrationEvent.cs:3 | tp | a using directive inside a namespace block
+ward:csharp/using-outside-namespace | newtonsoft-json/Src/Newtonsoft.Json.Tests/LinqToSql/LinqToSqlClasses.designer.cs:20 | tp | a using directive inside a namespace block
+ward:csharp/using-outside-namespace | newtonsoft-json/Src/Newtonsoft.Json.Tests/LinqToSql/LinqToSqlClasses.designer.cs:24 | tp | a using directive inside a namespace block
+ward:csharp/visible-instance-field | newtonsoft-json/Src/Newtonsoft.Json.Tests/Converters/DiscriminatedUnionConverterTests.cs:183 | tp | a public instance field
+ward:csharp/visible-instance-field | newtonsoft-json/Src/Newtonsoft.Json.Tests/TestObjects/GeoCoding/AddressDetails.cs:30 | tp | a public instance field
+ward:csharp/visible-instance-field | newtonsoft-json/Src/Newtonsoft.Json/Utilities/StructMultiKey.cs:33 | tp | a public instance field

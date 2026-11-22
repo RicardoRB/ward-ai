@@ -1,0 +1,22 @@
+# Microsoft.DotNet.ApiCompat parity report: the native api-compat check against the ApiCompat of the .NET SDK 9 on the C# api-compat fixtures.
+# fixture	kind	type or type#member	reason. A reviewed difference; kind is apicompat-only or ward-only.
+# Types and members are compared by name; a property accessor is get_X or set_X, an event add_X or remove_X, a constructor <init>.
+abstract-method-added	ward-only	P.I#B	ApiCompat reports an abstract member added to an interface only in strict mode; Ward reports it because every implementer outside the library stops compiling
+compatible	apicompat-only	P.A`1	ApiCompat names a generic type with its type-parameter names, so renaming T to U is a removed type; Ward compares type variables by position, as no caller can tell (apart from named type arguments, which C# does not have)
+default-argument-removed	ward-only	P.A#<init>	default values are only metadata in the assembly, which ApiCompat does not compare; callers that omit the argument stop compiling
+default-argument-removed	ward-only	P.A#F	default values are only metadata in the assembly, which ApiCompat does not compare; callers that omit the argument stop compiling
+field-now-final	ward-only	P.A#X	a field that becomes readonly is not a binary break, so ApiCompat is silent; callers that assign it stop compiling
+method-now-abstract	ward-only	P.A#F	ApiCompat does not report a virtual method that becomes abstract; subclasses that call base.F() or instantiate the class stop compiling
+method-now-final	ward-only	P.A#F	ApiCompat does not report a virtual method that stops being virtual; subclasses that override it stop compiling
+method-now-final	ward-only	P.A#get_V	ApiCompat does not report a virtual property that is sealed; subclasses that override it stop compiling
+nested-and-enum	apicompat-only	P.Handler#EndInvoke	the compiler adds BeginInvoke and EndInvoke to a delegate; Ward reads the declaration, which has the one Invoke method, and reports the changed Invoke
+return-type-changed	ward-only	P.A#set_Name	ApiCompat reports the property once, through its getter; Ward also reports the setter, whose parameter type changed
+signature-changed	ward-only	P.A#G	ref and out are the same parameter in the assembly; Ward tells them apart because callers write them
+static-changed	ward-only	P.A#F	ApiCompat matches members by signature and ignores static against instance; callers of the old form stop compiling
+static-changed	ward-only	P.A#G	ApiCompat matches members by signature and ignores static against instance; callers of the old form stop compiling
+type-kind-changed	apicompat-only	P.A#<init>	a class that became an interface shows to ApiCompat as a removed constructor; Ward reports the kind change on the type
+type-kind-changed	ward-only	P.A	a class that became an interface shows to ApiCompat as a removed constructor; Ward reports the kind change on the type
+type-now-abstract	ward-only	P.A	ApiCompat does not report a class that becomes abstract; callers that instantiate it stop compiling
+type-now-abstract	ward-only	P.A#<init>	an abstract class has a protected default constructor, so the public one is less visible; ApiCompat does not report it
+type-now-final	apicompat-only	P.A#M	ApiCompat reports the protected method of a class that became sealed; no subclass can exist, so Ward does not treat it as API
+type-parameters-changed	ward-only	P.A`1	ApiCompat does not compare type-parameter constraints by default; a constraint added to a type parameter breaks callers whose arguments do not satisfy it

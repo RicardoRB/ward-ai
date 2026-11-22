@@ -1,0 +1,31 @@
+anonymous-method-delegate SA1130 agree
+attribute-list-split SA1133 agree
+braces-required IDE0011 approximation the Roslyn rule reports the statement that owns the body (the if, while or for line); Ward reports the unbraced body, as StyleCop SA1503 does
+braces-required SA1503 agree
+const-field-name-pascal-case SA1303 agree
+constant-on-left-of-comparison SA1131 agree
+empty-single-line-comment SA1120 agree
+field-name-camel-case SA1306 agree
+field-not-private SA1401 agree
+field-underscore-prefix SA1309 agree
+file-scoped-namespace IDE0161 agree
+general-exception-catch CA1031 agree
+identifier-underscore CA1707 agree
+interface-name-prefix CA1715 agree
+interface-name-prefix SA1302 agree
+local-name-camel-case SA1312 agree
+method-complexity CA1502 agree
+mutable-static-field-visible CA2211 agree
+nullable-shorthand SA1125 agree
+one-class-per-file SA1402 approximation StyleCop reports the second class; Ward reports the file at line 1 because the count check has no node for the extra class
+one-namespace-per-file SA1403 approximation StyleCop reports the second namespace; Ward reports the file at line 1 because the count check has no node for the extra namespace
+parameter-name-camel-case SA1313 agree
+prefer-predefined-type SA1121 agree
+region-directive SA1124 agree
+reserved-exception-type CA2201 agree
+single-line-comment-spacing SA1005 agree
+string-empty-literal SA1122 agree
+type-name-pascal-case SA1300 agree
+using-outside-namespace IDE0065 agree
+using-outside-namespace SA1200 agree
+visible-instance-field CA1051 agree

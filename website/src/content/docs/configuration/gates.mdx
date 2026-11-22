@@ -36,10 +36,18 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `pytest` | pytest | Run the project's automated tests. |
 | | `django-check` | Django system checks | Run `manage.py check` on a Django project. |
 | | `mutmut` | mutmut 3 | Run mutation testing, optionally with a `minimum` score. |
+| Rust | `cargo-clippy` | Clippy | Run `cargo clippy` over the workspace; any warning fails. |
+| | `cargo-test` | Cargo tests | Run `cargo test` over the workspace. |
+| | `coverage` | cargo-llvm-cov | Run the tests under cargo-llvm-cov and check its lcov report against the `minimum`. |
+| | `cargo-mutants` | cargo-mutants | Run mutation testing, optionally with a `minimum` score. |
 | Swift | `swift-build` | Swift build | Compile the SwiftPM package. |
 | | `swift-test` | Swift tests | Run the SwiftPM package's tests. |
 | | `xcodebuild-test` | Xcode tests | Run an Xcode scheme's tests on an iPhone simulator or the Mac. |
 | | `swift-coverage` | llvm-cov / xccov | Fail below a `minimum` line coverage of production code. |
+| C# | `dotnet-build` | .NET build | Build the solution or project with `dotnet build`. |
+| | `dotnet-test` | .NET tests | Run the tests with `dotnet test`, writing a Coverlet Cobertura report. |
+| | `coverage` | Coverlet | Fail below the `minimum` line coverage of the Cobertura reports. |
+| | `stryker-net` | Stryker.NET | Run mutation testing, optionally with a `minimum` score. |
 | Android | `android-lint` | Android Lint | Run `lintDebug` through the Gradle wrapper. |
 | | `android-unit-test` | Android unit tests | Run `testDebugUnitTest` through the Gradle wrapper. |
 | | `android-coverage` | AGP JaCoCo | Fail below a `minimum` line coverage of the debug unit tests. |
@@ -198,6 +206,103 @@ their `command` from the project root, exactly as written, and pass when it exit
 command = ["uv", "run", "mypy", "-O", "json", "src"]
 profiles = ["pre-push"]
 ```
+
+## Rust gates
+
+`cargo-clippy` and `cargo-test` run their `command` from the project root, exactly as written, and
+pass when it exits with code 0. When `uses` is omitted, Ward infers the type from the command:
+`cargo clippy` is `cargo-clippy` and `cargo test` is `cargo-test`.
+
+```toml
+[checks.cargo-clippy]
+command = ["cargo", "clippy", "--workspace", "--all-targets", "--", "-D", "warnings"]
+profiles = ["pre-push", "ci"]
+
+[checks.cargo-test]
+command = ["cargo", "test", "--workspace"]
+profiles = ["pre-push", "ci"]
+```
+
+`coverage` for Rust runs the tests under [cargo-llvm-cov](https://github.com/taiki-e/cargo-llvm-cov),
+which writes an lcov report that Ward reads like any other `coverage` check. The minimum is in
+`ward.toml`, not in the build files; a source file that no test reaches lowers the line coverage and
+the finding states it. Install the tool with `cargo install --locked cargo-llvm-cov` and the LLVM
+tools with `rustup component add llvm-tools-preview`. cargo-llvm-cov measures lines; it records no
+branches on stable Rust, so `minimum-branches` is not set.
+
+```toml
+[checks.coverage]
+command = ["cargo", "llvm-cov", "--workspace", "--lcov", "--output-path", ".ward/reports/coverage.lcov"]
+minimum = 80
+report = ".ward/reports/coverage.lcov"
+profiles = ["pre-push", "ci"]
+```
+
+`cargo-mutants` runs [cargo-mutants](https://mutants.rs) and accepts the same `minimum` as the other
+mutation gates. `cargo mutants` itself exits with 2 when some mutants survive and 3 when some time
+out; with a `minimum` Ward counts both as a finished run, reads `caught.txt`, `timeout.txt` and
+`missed.txt` under `mutants.out/`, and fails below the minimum with every surviving mutant named as
+`file:line: replace ... with ...`. Mutants that do not compile (`unviable.txt`) are not counted.
+Without a `minimum` the gate passes or fails on the exit code of cargo-mutants alone. Install it with
+`cargo install --locked cargo-mutants`.
+
+```toml
+[checks.cargo-mutants]
+command = ["cargo", "mutants", "--workspace"]
+minimum = 60
+profiles = ["ci"]
+```
+
+The layer and cycle rules of the `ward` check run on Rust: Ward resolves `use` paths and `mod x;`
+declarations to files, with `crate`, `self` and `super` paths, the module a `use` names in the file
+and the workspace crates by name. Not resolved: `#[path]` attributes, `[lib]` and `[[bin]]` path
+overrides, renamed dependencies, and a `crate::a::b()` path written in code without a `use`.
+
+The `ward` gate also runs Ward's own Rust rules, `ward:rust/<name>`. Each one maps to a Clippy lint or a
+rustc lint (the rules reference lists the counterpart of every rule), so a project can keep the
+check without the tool. The `standard` preset selects the rules of Clippy's default groups and the
+rustc lints on naming, unused code and unreachable code; `strict` adds the restriction and pedantic
+lints. Lints that need type information are not covered yet; `cargo clippy` still reports them.
+
+## C# gates
+
+`dotnet-build` and `dotnet-test` run their `command` from the project root, exactly as written, and
+pass when it exits with code 0. Ward infers the type from the command: `dotnet build` is
+`dotnet-build` and `dotnet test` is `dotnet-test`.
+
+```toml
+[checks.dotnet-build]
+command = ["dotnet", "build"]
+profiles = ["default"]
+
+[checks.dotnet-test]
+command = ["dotnet", "test", "--collect:XPlat Code Coverage", "--results-directory", ".ward/reports/dotnet"]
+profiles = ["pre-push"]
+
+[checks.coverage]
+uses = "coverage"
+minimum = 80
+report = ".ward/reports/dotnet/*/coverage.cobertura.xml"
+profiles = ["pre-push"]
+
+[checks.stryker-net]
+command = ["dotnet", "stryker", "--reporter", "json", "--output", ".ward/stryker"]
+minimum = 60
+profiles = ["ci"]
+```
+
+- **Coverage.** `coverlet.collector`, which the xUnit, NUnit and MSTest project templates reference,
+  writes one Cobertura file per test project and run. A `report` path may hold `*`, so Ward reads
+  every file the run wrote and sums them. Paths in a report that do not name a source file below
+  the project root, such as those from a CI machine, count for nothing.
+- **Mutation.** `dotnet stryker` needs the tool: init writes `.config/dotnet-tools.json` with
+  `dotnet-stryker` when the project has none, and leaves an existing manifest as it is. Ward runs the
+  command from the project root, so a root with several projects needs `--solution` or
+  `--project` and `--test-project` added to the command. With `minimum`, Ward reads the JSON
+  report under `.ward/stryker/reports/`, fails below the score and names the first surviving mutants
+  by file, line and mutator. A missing, stale or unparseable report is an execution error.
+- **Architecture.** The `ward` gate's layer and cycle rules read a `using` of a namespace as a
+  dependency on every file that declares it; aliases and namespaces no file declares add none.
 
 ## Swift gates
 
@@ -1019,7 +1124,7 @@ BSD-2-Clause, BSD-3-Clause, ISC, EPL-1.0, EPL-2.0 and CC0-1.0. See also
 
 `api-compat` compares the public API of the project's main sources in the working tree with the
 public API of the same sources at an earlier Git revision, and reports each incompatible change.
-For Java it is a Ward check: it runs no build, no external tool and no network access, reads the
+For Java, Kotlin and C# it is a Ward check: it runs no build, no external tool and no network access, reads the
 baseline from Git objects (nothing is checked out), and works the same for Maven and Gradle.
 
 ```toml
@@ -1068,6 +1173,35 @@ modules = ["core", "api"]   # optional: module directories to compare; default e
   properties of a package, from every file, are the members of one type, `<package>.<top-level>`,
   because Kotlin callers do not see the file; moving a function between files of a package is not a
   change.
+- **Rust API.** A crate is a directory with `Cargo.toml`; its sources are `src/**/*.rs`, and the
+  members of a `[workspace]` (a literal path or a trailing `crates/*`) are crates of their own.
+  An item is API when it is `pub` and every module on its path is `pub` down from `src/lib.rs`
+  (binaries, `main.rs` and `src/bin` are not read); `pub(crate)`, `pub(super)` and private items are
+  not. Types are named by module (`crate.shapes.Circle`; a workspace member uses its directory name
+  instead of `crate`). Structs and unions keep their `pub` fields and the `pub` methods of their
+  inherent `impl` blocks; an enum's variants are fields; a trait's methods are abstract unless they
+  have a body, so a new required method reports `abstract-method-added`. The free functions,
+  constants and statics of a module are the members of one type, `<module>.<top-level>`. A `pub
+  use` of an item of the crate adds it under the imported name. Glob re-exports, `#[path]`
+  modules, macro-generated items, `cfg`, `where` clauses, lifetimes, receiver mutability and added
+  enum variants are not read. cargo-semver-checks is the reference tool.
+- **C# API.** In a C# project, the modules are the directories that hold a `.csproj`, and the sources
+  are the `.cs` files below them, except `bin` and `obj`. Enable the gate in `ward.toml` with
+  `uses = "api-compat"`; init does not offer it for C# yet. C# accessibility applies: a `public`
+  type or member is API, a `protected` or `protected internal` member of a class that can be
+  extended is API, and `internal`, `private protected` and `private` are not. A top-level type with
+  no modifier is `internal`. A struct, an enum, a delegate, a `sealed` class and a `static` class
+  are closed, and a method is closed unless it is `virtual`, `abstract` or `override`. A property
+  is its accessors `get_X` and `set_X` (`init` is `set_X`), an indexer is `get_Item` and `set_Item`,
+  an event is `add_X` and `remove_X`, and a delegate has an `Invoke` method. A class with no
+  constructor has the default one. A generic type is named like its metadata, `Name`1`.
+- **C# limits.** There is no semantic model: a type is compared by its written name, with the
+  keyword aliases such as `int` read as `System.Int32`, so a name written in full in one revision and
+  with a `using` in the other is reported as changed. Not read: nullable reference annotations, a
+  class that becomes a struct (reported as `type-now-final`), attributes, `partial` members across
+  files, extension blocks, `fixed` buffers, finalizers, explicit interface implementations and
+  `const` values. The differences from Microsoft.DotNet.ApiCompat are listed with their reasons in
+  `ward-cli/src/test/resources/parity/dotnet-apicompat-report.txt`.
 - **Execution errors, never a pass.** Not a Git repository, an unknown `base`, no release tag, a
   baseline that has no sources for the project, a syntax error in a source file at either revision
   (the message names the file and the revision), and an `include` prefix that matches no type at

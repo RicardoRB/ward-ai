@@ -5,7 +5,7 @@ description: Match the resolved dependencies against OSV advisories, with no ext
 
 The `vulnerabilities` check reports known vulnerabilities in the packages your project resolves. It
 replaces Trivy, OWASP Dependency-Check and pip-audit with one check for Maven, Gradle, npm, pnpm, Yarn,
-Bun, Python and SwiftPM projects.
+Bun, Python, SwiftPM and Cargo projects.
 
 ```toml
 [checks.vulnerabilities]
@@ -28,7 +28,7 @@ no dependencies passes, and the report says that zero packages were scanned.
 ## Advisory data
 
 Advisories come from the public [OSV](https://osv.dev) archives, one per ecosystem (`Maven`, `npm`,
-`PyPI`, `SwiftURL`), downloaded only for the ecosystems the project uses. Ward stores a reduced copy
+`PyPI`, `SwiftURL`, `crates.io`, `NuGet`), downloaded only for the ecosystems the project uses. Ward stores a reduced copy
 under `.ward/cache/vulnerabilities/<Ecosystem>/`, which Git ignores. A request carries the archive
 name and the client name `ward/<version>`, and no package name, path or environment value. Ward
 bundles no advisory data. Each advisory keeps the license of the database it comes from, which OSV
@@ -69,7 +69,7 @@ gate. A critical or high finding is an `error`, a moderate or unknown one a `war
 ## Versions that cannot be compared
 
 Ward orders versions with the rules of each ecosystem: Maven's `ComparableVersion`, semantic
-versioning 2.0 for npm and SwiftPM, and PEP 440 for PyPI. A package whose version cannot be ordered, such
+versioning 2.0 for npm, SwiftPM and crates.io, and PEP 440 for PyPI. A package whose version cannot be ordered, such
 as a Swift branch pin, a Git revision, a path, or a string that is not a version, is not matched. The
 check reports a `note` that names it. These notes never fail the gate.
 

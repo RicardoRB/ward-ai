@@ -45,6 +45,7 @@ final class JavaFlowSites implements FlowSites {
   private final JavaParameterSites parameters;
   private final JavaCreationTypes creations;
   private final JavaFieldSites fieldSites;
+  private boolean jsonResponse;
 
   /**
    * Creates the finder of one body.
@@ -66,6 +67,16 @@ final class JavaFlowSites implements FlowSites {
     this.creations = new JavaCreationTypes(types);
     fields.forEach(field -> field.declareIn(declared, creations));
     this.fieldSites = fieldSites;
+  }
+
+  /**
+   * Tells the finder whether the body answers with JSON, so that its writes of the response body
+   * give a {@link JavaJsonResponses#NAME} site.
+   *
+   * @param json true when every content type the body sets is JSON
+   */
+  void jsonResponse(final boolean json) {
+    this.jsonResponse = json;
   }
 
   @Override
@@ -171,7 +182,7 @@ final class JavaFlowSites implements FlowSites {
     found.add(
         new FlowSite(
             FlowSiteKind.CALL,
-            calledName(call),
+            JavaSyntheticSites.calledName(call),
             qualifier,
             receiverType(qualifier),
             receiver == null ? List.of() : creations.annotations(receiver, qualifier),
@@ -179,25 +190,9 @@ final class JavaFlowSites implements FlowSites {
             call.span()
         )
     );
-    if (receiver != null
-        && JavaLineBreakStrips.removesAll(
-            calledName(call),
-            arguments.stream().map(JavaFlowSyntax::text).toList(),
-            qualifier,
-            this::receiverType
-        )) {
-      found.add(
-          new FlowSite(
-              FlowSiteKind.CALL,
-              JavaLineBreakStrips.NAME,
-              qualifier,
-              Optional.empty(),
-              List.of(),
-              List.of(receiver.span()),
-              call.span()
-          )
-      );
-    }
+    found.addAll(
+        JavaSyntheticSites.of(call, receiver, qualifier, jsonResponse, this::receiverType)
+    );
   }
 
   /**
@@ -213,15 +208,6 @@ final class JavaFlowSites implements FlowSites {
     JavaCreationSites.arguments(creator)
         .forEach(argument -> JavaLiteralSites.addArgument(argument, found));
     JavaCreationSites.of(types, node, creator).ifPresent(found::add);
-  }
-
-  /**
-   * The name of a call. {@code this(...)} and {@code super(...)} have no identifier, so their name
-   * is the keyword that starts them.
-   */
-  private static String calledName(final SyntaxNode call) {
-    final SyntaxNode identifier = JavaSyntaxNames.identifierOf(call);
-    return JavaFlowSyntax.text(identifier != null ? identifier : JavaFlowSyntax.parts(call).get(0));
   }
 
   /** Records the declared types of the variables of a declaration, after its initializers. */

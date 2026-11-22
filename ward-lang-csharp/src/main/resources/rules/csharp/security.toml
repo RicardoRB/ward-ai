@@ -1,0 +1,63 @@
+# Security rules for C#: unsafe deserialization, broken cryptography and disabled certificate checks, read from the
+# source lines. Written from the .NET documentation of the types named in each pattern and from the .NET security
+# analyzers' topics (CA2300 family, CA5350, CA5351, CA5359, CA5400 family) as ideas for what to look for.
+
+[[rules]]
+id = "ward:csharp/untrusted-deserialization"
+language = "csharp"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+position = "match"
+pattern = '(?<=\bnew[ \t]{1,8})(?:BinaryFormatter|SoapFormatter|NetDataContractSerializer|LosFormatter|ObjectStateFormatter)\b|(?<=\bTypeNameHandling[ \t]{0,8}(?<!=)=[ \t]{0,8})TypeNameHandling\.(?:All|Auto|Objects|Arrays)\b'
+message = "this deserializer builds the types that the data names, so crafted data can run code; use a serializer with a fixed contract such as System.Text.Json"
+'''
+
+[[rules]]
+id = "ward:csharp/weak-hash"
+language = "csharp"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+position = "match"
+pattern = '\b(?:MD5|SHA1)\.Create\(|\b(?:MD5|SHA1)(?:CryptoServiceProvider|Managed|Cng)\b|\bHashData\b.*\bHashAlgorithmName\.(?:MD5|SHA1)\b'
+message = "MD5 and SHA-1 are broken hashes; use SHA-256 or stronger, and a password hash for passwords"
+'''
+
+[[rules]]
+id = "ward:csharp/weak-cipher"
+language = "csharp"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+position = "match"
+pattern = '\b(?:DES|TripleDES|RC2)\.Create\(|\b(?:DES|TripleDES|RC2)CryptoServiceProvider\b|\bCipherMode\.ECB\b'
+message = "this algorithm or mode is broken or leaks patterns; use AES-GCM"
+'''
+
+[[rules]]
+id = "ward:csharp/tls-verification-disabled"
+language = "csharp"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+position = "match"
+pattern = 'ServerCertificate(?:Custom)?ValidationCallback\s*\+?=\s*[^;]*=>\s*true\b|\bDangerousAcceptAnyServerCertificateValidator\b'
+message = "the certificate of the server is accepted without a check, so anyone on the network can pose as it; remove the callback"
+'''

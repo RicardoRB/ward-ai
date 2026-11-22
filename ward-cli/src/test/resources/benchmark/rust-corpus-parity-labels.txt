@@ -1,0 +1,7 @@
+# rule | file | label | reason. Every file where Ward reports more findings than Clippy (RustCorpusClippyParityTest), read at the code.
+ward:rust/dbg-macro | tokio/tests-build/tests/macros_clippy.rs | un | the file is a compile test of the macro crate; Clippy reports nothing and the cause was not determined
+ward:rust/print-stdout | tokio/examples/dump.rs | tp | one print sits in code that is compiled out here (cfg), so Clippy does not see it
+ward:rust/redundant-pattern-matching | tokio/examples/dump.rs | tp | the loop is in code that is compiled out here (cfg), so Clippy does not see it
+ward:rust/single-component-path-imports | tokio/tests-build/src/lib.rs | un | the import is behind a feature that is off here, so Clippy does not see it
+ward:rust/unwrap-used | ripgrep/crates/core/flags/doc/version.rs | un | Clippy reports none of the unwrap calls in this file; the cause was not determined
+ward:rust/wildcard-imports | ripgrep/crates/cli/src/human.rs | fp | a glob of the variants of an enum, which Clippy leaves to enum-glob-use

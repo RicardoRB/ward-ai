@@ -5,5 +5,7 @@ public enum BuildEcosystem {
   MAVEN,
   GRADLE,
   NODE,
-  PYTHON
+  PYTHON,
+  CARGO,
+  DOTNET
 }

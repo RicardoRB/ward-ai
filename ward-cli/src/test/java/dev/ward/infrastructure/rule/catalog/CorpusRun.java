@@ -47,8 +47,8 @@ final class CorpusRun {
   private static final String SECURITY = "security";
   private static final int SAMPLE = 3;
   private static final String HEADER =
-      "# Ward's %1$s rules of the standard preset and every %1$s security rule, with default"
-          + " options, over every %2$s file of two pinned projects (both Apache-2.0).\n"
+      "# Ward's %1$s rules of the %5$s preset and every %1$s security rule, with default"
+          + " options, over every %2$s file of %7$s pinned projects (%6$s).\n"
           + "%3$s"
           + "# A labelled finding is true (tp), false (fp) or undetermined (un), as read from the"
           + " code at its line; the labels are in %4$s-corpus-labels.txt. A rule with more than "
@@ -65,12 +65,30 @@ final class CorpusRun {
   private final String key;
   private final AnalysisLanguage language;
   private final List<PinnedCorpus> pinned;
+  private final RulePreset preset;
+  private final String licenses;
 
   /**
    * A run over {@code pinned}, the corpora of one language; {@code title} is the language's name
    * in the report and starts the name of the test class.
    */
   CorpusRun(final String title, final List<PinnedCorpus> pinned) {
+    this(title, pinned, RulePreset.STANDARD, "both Apache-2.0");
+  }
+
+  /**
+   * A run of the rules of {@code preset}. A run of the {@code strict} preset also fails on a
+   * finding labelled {@code fp} that {@code benchmark/<language>-corpus-approximations.txt} does
+   * not list with its reason and an open issue (#698).
+   */
+  CorpusRun(
+      final String title,
+      final List<PinnedCorpus> pinned,
+      final RulePreset preset,
+      final String licenses
+  ) {
+    this.preset = preset;
+    this.licenses = licenses;
     this.title = title;
     this.key = title.toLowerCase(Locale.ROOT);
     this.language = pinned.get(0).language();
@@ -114,6 +132,11 @@ final class CorpusRun {
         .isEmpty();
     assertThat(found).as("labels without a finding").containsAll(labels.keySet());
     assertThat(underLabelled(rules, found, labels)).as("rules with too few labels").isEmpty();
+    if (preset == RulePreset.STRICT) {
+      assertThat(CorpusApproximations.unlisted(RESOURCES, key, found, labels))
+          .as("false positives without an approximation with a reason and an open issue")
+          .isEmpty();
+    }
     return report;
   }
 
@@ -132,10 +155,7 @@ final class CorpusRun {
   private List<RuleDefinition> rules() {
     return CatalogRuleDefinitions.shipped().stream()
         .filter(rule -> rule.covers(language))
-        .filter(
-            rule ->
-                RulePreset.STANDARD.selects(rule.presets()) || SECURITY.equals(rule.category())
-        )
+        .filter(rule -> preset.selects(rule.presets()) || SECURITY.equals(rule.category()))
         .sorted(Comparator.comparing(RuleDefinition::id))
         .toList();
   }
@@ -246,7 +266,15 @@ final class CorpusRun {
         }
     );
     final StringBuilder report = new StringBuilder(
-        HEADER.formatted(title, pinned.get(0).extension(), pins, key)
+        HEADER.formatted(
+            title,
+            pinned.get(0).extension(),
+            pins,
+            key,
+            preset.name().toLowerCase(Locale.ROOT),
+            licenses,
+            pinned.size() == 2 ? "two" : "three"
+        )
     )
         .append(files);
     final Set<String> notRun =

@@ -1,0 +1,10 @@
+autocfg@1.5.1
+fastrand@2.5.0
+itoa@1.0.19
+proc-macro2@1.0.107
+quote@1.0.47
+serde@1.0.229
+serde_core@1.0.229
+serde_derive@1.0.229
+syn@3.0.10
+unicode-ident@1.0.27

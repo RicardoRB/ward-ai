@@ -124,11 +124,12 @@ a configuration error that names the key.
 
 ## Mutation score minimum
 
-The `stryker`, PIT `mutation` and `mutmut` checks accept an optional `minimum`, an integer from 0 to
+The `stryker`, `stryker-net`, PIT `mutation`, `mutmut` and `cargo-mutants` checks accept an optional `minimum`, an integer from 0 to
 100. When it is set and the tool succeeds, Ward reads the tool's report and fails the check when the
 mutation score is below the minimum. See [Stryker mutation score](/configuration/gates/#stryker-mutation-score),
 [PIT mutation score](/configuration/gates/#pit-mutation-score) and
-[mutmut mutation score](/configuration/gates/#mutmut-mutation-score).
+[mutmut mutation score](/configuration/gates/#mutmut-mutation-score) and
+[Rust gates](/configuration/gates/#rust-gates).
 
 ```toml
 [checks.stryker]

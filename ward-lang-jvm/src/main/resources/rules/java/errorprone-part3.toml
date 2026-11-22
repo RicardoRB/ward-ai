@@ -144,14 +144,15 @@ message = "^ is bitwise XOR, not a power; use 1 << n or a floating-point constan
 [[rules]]
 id = "ward:java/mockito-usage"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "correctness"
 presets = ["standard"]
 body = '''
-check = "forbidden-node"
-kinds = ["statement"]
-text = '^(?:Mockito\.)?(?:verify|when)\([^()]*+(?:\([^()]*\)[^()]*+)*+\);$'
+check = "call-match"
+declaring-types = ["org.mockito.Mockito"]
+names = ["verify", "when"]
+ignored = true
 message = "verify or when called without the follow-up call that completes it; the statement checks nothing"
 '''
 

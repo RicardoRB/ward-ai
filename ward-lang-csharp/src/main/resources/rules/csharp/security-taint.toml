@@ -1,0 +1,42 @@
+# Injection rules for C#: untrusted input from an ASP.NET Core request reaches a sensitive call within one body, or
+# through the functions of one file. Each follows the taint specifications taint/csharp/ward-<weakness>.toml and
+# taint/csharp/sources.toml, written from the ASP.NET Core, ADO.NET and System.IO documentation named in the catalog rows.
+
+[[rules]]
+id = "ward:csharp/command-injection"
+language = "csharp"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/csharp/sources.toml", "taint/csharp/ward-command-injection.toml"]
+message = "untrusted data from {source} reaches {sink}, which decides the program or the arguments of a process; start a fixed program and check the value against a list"
+'''
+
+[[rules]]
+id = "ward:csharp/path-injection"
+language = "csharp"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/csharp/sources.toml", "taint/csharp/ward-path-injection.toml"]
+message = "untrusted data from {source} is part of the file path that {sink} opens; keep the last path component only and join it to a fixed directory"
+'''
+
+[[rules]]
+id = "ward:csharp/sql-injection"
+language = "csharp"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/csharp/sources.toml", "taint/csharp/ward-sql-injection.toml"]
+message = "untrusted data from {source} is part of the SQL text that {sink} runs; pass it as a SqlParameter instead"
+'''

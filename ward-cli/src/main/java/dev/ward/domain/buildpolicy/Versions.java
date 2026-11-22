@@ -11,7 +11,6 @@ public final class Versions {
   private static final Pattern NUMBERS = Pattern.compile("\\d+");
   private static final Pattern NODE_EXACT =
       Pattern.compile("v?\\d+(\\.\\d+){0,2}([-+][0-9A-Za-z.+-]+)?");
-  private static final Pattern PYTHON_EXACT = Pattern.compile("(===?)\\s*[^*,\\s]+");
   private static final List<String> NODE_TAGS = List.of("latest", "next", "*", "x", "");
   private static final List<String> NON_REGISTRY =
       List.of(
@@ -39,7 +38,9 @@ public final class Versions {
       case MAVEN -> maven(text);
       case GRADLE -> gradle(kind, text);
       case NODE -> node(text);
-      default -> python(text);
+      case CARGO -> RequirementDynamism.cargo(text);
+      case DOTNET -> RequirementDynamism.dotnet(text);
+      default -> RequirementDynamism.python(text);
     };
   }
 
@@ -94,13 +95,6 @@ public final class Versions {
   /** A range such as {@code >=1.0.0} has no upper bound, so no lockfile makes it a decision. */
   private static boolean unboundedAbove(final String text) {
     return text.startsWith(">") && !text.contains("<");
-  }
-
-  private static Dynamism python(final String text) {
-    if (PYTHON_EXACT.matcher(text).matches() && !text.contains("*")) {
-      return Dynamism.NONE;
-    }
-    return Dynamism.RANGE;
   }
 
   /** Returns the numbers of {@code version}, such as {@code [3, 9, 9]} for {@code 3.9.9}. */

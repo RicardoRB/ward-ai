@@ -29,8 +29,13 @@ class RuleCatalogContractTest {
   private static final int LAST_SPLIT_ISSUE = 453;
   // Issues split out of roadmaps #455 (TypeScript and JavaScript engine and grammar) and #457
   // (Swift module-aware dead code), and the OpenAPI lint rules of roadmap #515 (#522) and the
-  // OpenAPI breaking-change rules (#523).
-  private static final Set<Integer> ENGINE_ISSUES = Set.of(462, 466, 522, 523, 538);
+  // OpenAPI breaking-change rules (#523), and the Rust Clippy and rustc rules that story R4 left
+  // planned (#681 types, #682 syntax, #683 Cargo.toml).
+  private static final Set<Integer> ENGINE_ISSUES =
+      Set.of(462, 466, 522, 523, 538, 681, 682, 683);
+  // The C# rules that story C4 left planned (#677 to #680).
+  private static final int FIRST_CSHARP_ISSUE = 677;
+  private static final int LAST_CSHARP_ISSUE = 680;
 
   private final RuleCatalog catalog = new RuleCatalogReader().load();
   private final List<RuleDefinition> definitions = CatalogRuleDefinitions.all();
@@ -166,6 +171,7 @@ class RuleCatalogContractTest {
     return number >= FIRST_STYLE_ISSUE && number <= LAST_STYLE_ISSUE
         || number >= FIRST_TOOL_ISSUE && number <= LAST_TOOL_ISSUE
         || number >= FIRST_SPLIT_ISSUE && number <= LAST_SPLIT_ISSUE
+        || number >= FIRST_CSHARP_ISSUE && number <= LAST_CSHARP_ISSUE
         || ENGINE_ISSUES.contains(number);
   }
 }

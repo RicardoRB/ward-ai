@@ -1,6 +1,5 @@
 package dev.ward.application.gate.apicompat;
 
-import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.domain.gate.RevisionFiles;
 import dev.ward.domain.gate.RevisionSnapshot;
@@ -19,15 +18,17 @@ final class ApiSources {
   private static final List<String> GRADLE_SCRIPTS = List.of("build.gradle.kts", "build.gradle");
   private static final List<String> GRADLE_SETTINGS =
       List.of("settings.gradle.kts", "settings.gradle");
-  private static final String JAVA = ".java";
-  private static final String KOTLIN = ".kt";
+  private static final String CARGO_SOURCES = "src";
 
   private final ApiCompatPorts ports;
   private final Path root;
 
-  ApiSources(final ApiCompatPorts ports, final Path root) {
+  private final boolean csharp;
+
+  ApiSources(final ApiCompatPorts ports, final Path root, final boolean csharp) {
     this.ports = ports;
     this.root = root;
+    this.csharp = csharp;
   }
 
   /** The source files of a revision and the module directories they belong to. */
@@ -60,10 +61,16 @@ final class ApiSources {
   }
 
   private Sources read(final Tree tree) {
-    final List<String> modules = modules(tree);
+    final List<String> modules = new ArrayList<>(modules(tree));
+    final List<String> files = new ArrayList<>();
+    modules.forEach(module -> files.addAll(sourceFiles(tree, module)));
+    if (csharp) {
+      final CSharpSources.Found found = CSharpSources.find(tree.files());
+      found.modules().stream().filter(module -> !modules.contains(module)).forEach(modules::add);
+      files.addAll(found.files());
+    }
     final List<SourceUnit> units =
-        modules.stream()
-            .flatMap(module -> sourceFiles(tree, module).stream())
+        files.stream()
             .distinct()
             .sorted()
             .map(path -> unit(path, tree.read().apply(path), "Cannot read " + path + tree.where()))
@@ -90,24 +97,34 @@ final class ApiSources {
   }
 
   private List<String> listed(final Tree tree, final String dir) {
-    return ports.modules().of(tree.read().apply(join(dir, POM)), first(tree, dir, GRADLE_SETTINGS));
+    final List<String> listed =
+        new ArrayList<>(
+            ports.modules().of(tree.read().apply(join(dir, POM)), first(tree, dir, GRADLE_SETTINGS))
+        );
+    listed.addAll(ApiCargoCrates.members(tree.read(), tree.files(), dir));
+    return listed;
   }
 
   private static boolean hasBuildFile(final Tree tree, final String dir) {
     return tree.read().apply(join(dir, POM)).isPresent()
-        || first(tree, dir, GRADLE_SCRIPTS).isPresent();
+        || first(tree, dir, GRADLE_SCRIPTS).isPresent()
+        || ApiCargoCrates.has(tree.read(), dir);
   }
 
   private List<String> sourceFiles(final Tree tree, final String module) {
-    return ports
-        .layout()
-        .of(tree.read().apply(join(module, POM)), first(tree, module, GRADLE_SCRIPTS))
-        .stream()
+    final List<String> roots =
+        ApiCargoCrates.only(tree.read(), module)
+            ? List.of(CARGO_SOURCES)
+            : ports.layout().of(
+                tree.read().apply(join(module, POM)),
+                first(tree, module, GRADLE_SCRIPTS)
+            );
+    return roots.stream()
         .map(directory -> join(module, directory))
         .flatMap(
             directory ->
                 tree.files().apply(directory).stream()
-                    .filter(ApiSources::isSource)
+                    .filter(ApiSourceLanguages::isSource)
                     .map(file -> directory + "/" + file)
         )
         .toList();
@@ -128,10 +145,6 @@ final class ApiSources {
     return dir.isEmpty() ? name : dir + "/" + name;
   }
 
-  private static boolean isSource(final String file) {
-    return file.endsWith(JAVA) || file.endsWith(KOTLIN);
-  }
-
   private static SourceUnit unit(
       final String path,
       final Optional<String> text,
@@ -139,7 +152,7 @@ final class ApiSources {
   ) {
     return new SourceUnit(
         path,
-        path.endsWith(KOTLIN) ? AnalysisLanguage.KOTLIN : AnalysisLanguage.JAVA,
+        ApiSourceLanguages.of(path),
         text.orElseThrow(() -> new ApiCompatException(failure + "."))
     );
   }

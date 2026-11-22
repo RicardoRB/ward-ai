@@ -9,7 +9,7 @@ public final class DependencySources {
 
   /**
    * Returns the source of {@code tool} from {@code readers}, the injected sources by build tool. A
-   * build tool with no reader (PDM, Hatch, Go, Cargo, .NET, Tuist and XcodeGen) gets a source that
+   * build tool with no reader (PDM, Hatch, Go, Tuist and XcodeGen) gets a source that
    * fails naming it, never an empty inventory.
    */
   public static DependencySource forBuildTool(
@@ -19,7 +19,7 @@ public final class DependencySources {
   ) {
     final DependencySource reader = readers.get(tool);
     return switch (tool) {
-      case PDM, HATCH, GO, CARGO, DOTNET, TUIST, XCODEGEN -> new UnsupportedDependencySource(tool);
+      case PDM, HATCH, GO, TUIST, XCODEGEN -> new UnsupportedDependencySource(tool);
       default -> reader == null ? new UnsupportedDependencySource(tool) : reader;
     };
   }

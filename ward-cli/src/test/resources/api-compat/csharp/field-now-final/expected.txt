@@ -1,0 +1,1 @@
+A.cs:3:3 api-compat:field-now-final P.A#X: public int X -> public final int X

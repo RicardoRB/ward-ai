@@ -210,7 +210,7 @@ sources = ["https://www.mongodb.com/docs/manual/reference/operator/query/", "htt
 [[rule]]
 name = "path-injection"
 cwe = ["CWE-22"]
-sources = ["https://docs.python.org/3/library/functions.html#open", "https://docs.python.org/3/library/os.path.html#os.path.basename", "https://werkzeug.palletsprojects.com/en/stable/utils/#werkzeug.utils.secure_filename", "https://cwe.mitre.org/data/definitions/22.html", "https://developer.apple.com/documentation/foundation/filemanager", "https://developer.apple.com/documentation/foundation/filehandle", "https://developer.apple.com/documentation/foundation/url/lastpathcomponent", "https://developer.apple.com/documentation/foundation/urlcomponents/queryitems"]
+sources = ["https://docs.python.org/3/library/functions.html#open", "https://docs.python.org/3/library/os.path.html#os.path.basename", "https://werkzeug.palletsprojects.com/en/stable/utils/#werkzeug.utils.secure_filename", "https://cwe.mitre.org/data/definitions/22.html", "https://doc.rust-lang.org/std/fs/index.html", "https://doc.rust-lang.org/std/fs/struct.File.html#method.open", "https://doc.rust-lang.org/std/path/struct.Path.html#method.file_name", "https://doc.rust-lang.org/std/env/fn.args.html", "https://developer.apple.com/documentation/foundation/filemanager", "https://developer.apple.com/documentation/foundation/filehandle", "https://developer.apple.com/documentation/foundation/url/lastpathcomponent", "https://developer.apple.com/documentation/foundation/urlcomponents/queryitems", "https://learn.microsoft.com/en-us/dotnet/api/system.io.file", "https://learn.microsoft.com/en-us/dotnet/api/system.io.path.getfilename", "https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.httprequest.query"]
 
 [[rule]]
 name = "permissive-cors"
@@ -275,7 +275,7 @@ sources = ["https://ejs.co/#docs", "https://pugjs.org/api/reference.html", "http
 [[rule]]
 name = "tls-verification-disabled"
 cwe = ["CWE-295"]
-sources = ["https://nodejs.org/docs/latest-v22.x/api/tls.html#tlsconnectoptions-callback", "https://nodejs.org/docs/latest-v22.x/api/cli.html#node_tls_reject_unauthorizedvalue", "https://cwe.mitre.org/data/definitions/295.html"]
+sources = ["https://nodejs.org/docs/latest-v22.x/api/tls.html#tlsconnectoptions-callback", "https://nodejs.org/docs/latest-v22.x/api/cli.html#node_tls_reject_unauthorizedvalue", "https://cwe.mitre.org/data/definitions/295.html", "https://docs.rs/reqwest/latest/reqwest/struct.ClientBuilder.html#method.danger_accept_invalid_certs", "https://docs.rs/reqwest/latest/reqwest/struct.ClientBuilder.html#method.danger_accept_invalid_hostnames", "https://docs.rs/rustls/latest/rustls/client/struct.DangerousClientConfigBuilder.html", "https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5359", "https://learn.microsoft.com/en-us/dotnet/api/system.net.servicepointmanager.servercertificatevalidationcallback", "https://learn.microsoft.com/en-us/dotnet/api/system.net.http.httpclienthandler.dangerousacceptanyservercertificatevalidator"]
 
 [[rule]]
 name = "trust-all-certificates"
@@ -303,6 +303,11 @@ cwe = ["CWE-79"]
 sources = ["https://angular.dev/api/platform-browser/DomSanitizer", "https://angular.dev/best-practices/security#trusting-safe-values", "https://cwe.mitre.org/data/definitions/79.html"]
 
 [[rule]]
+name = "unsafe-public-function"
+cwe = ["CWE-676"]
+sources = ["https://doc.rust-lang.org/reference/unsafe-keyword.html", "https://doc.rust-lang.org/reference/unsafety.html", "https://doc.rust-lang.org/nomicon/safe-unsafe-meaning.html", "https://cwe.mitre.org/data/definitions/676.html"]
+
+[[rule]]
 name = "unsafe-reflection"
 cwe = ["CWE-470"]
 sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html#forName(java.lang.String)", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/ClassLoader.html", "https://cwe.mitre.org/data/definitions/470.html"]
@@ -310,7 +315,7 @@ sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/la
 [[rule]]
 name = "untrusted-deserialization"
 cwe = ["CWE-502"]
-sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/ObjectInputStream.html", "https://docs.oracle.com/en/java/javase/21/core/serialization-filtering1.html", "https://cwe.mitre.org/data/definitions/502.html", "https://www.npmjs.com/package/node-serialize", "https://github.com/nodeca/js-yaml/blob/master/migrate_v3_to_v4.md", "https://docs.python.org/3/library/pickle.html", "https://docs.python.org/3/library/marshal.html", "https://pyyaml.org/wiki/PyYAMLDocumentation", "https://bandit.readthedocs.io/en/latest/blacklists/blacklist_calls.html#b301-pickle"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/ObjectInputStream.html", "https://docs.oracle.com/en/java/javase/21/core/serialization-filtering1.html", "https://cwe.mitre.org/data/definitions/502.html", "https://www.npmjs.com/package/node-serialize", "https://github.com/nodeca/js-yaml/blob/master/migrate_v3_to_v4.md", "https://docs.python.org/3/library/pickle.html", "https://docs.python.org/3/library/marshal.html", "https://pyyaml.org/wiki/PyYAMLDocumentation", "https://bandit.readthedocs.io/en/latest/blacklists/blacklist_calls.html#b301-pickle", "https://learn.microsoft.com/en-us/dotnet/standard/serialization/binaryformatter-security-guide", "https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2300", "https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2326"]
 
 [[rule]]
 name = "untrusted-redirect"
@@ -335,7 +340,7 @@ sources = ["https://www.rfc-editor.org/rfc/rfc9106.html#name-parameter-choice", 
 [[rule]]
 name = "weak-cipher"
 cwe = ["CWE-327"]
-sources = ["https://docs.oracle.com/en/java/javase/21/docs/specs/security/standard-names.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/crypto/Cipher.html", "https://cwe.mitre.org/data/definitions/327.html", "https://nodejs.org/docs/latest-v22.x/api/crypto.html#cryptocreatecipherivalgorithm-key-iv-options", "https://developer.apple.com/documentation/security/1399291-cccrypt", "https://developer.apple.com/documentation/cryptokit/aes/gcm"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/specs/security/standard-names.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/crypto/Cipher.html", "https://cwe.mitre.org/data/definitions/327.html", "https://nodejs.org/docs/latest-v22.x/api/crypto.html#cryptocreatecipherivalgorithm-key-iv-options", "https://developer.apple.com/documentation/security/1399291-cccrypt", "https://developer.apple.com/documentation/cryptokit/aes/gcm", "https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5351", "https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5358", "https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.aesgcm"]
 
 [[rule]]
 name = "weak-gcm-tag-length"
@@ -345,7 +350,7 @@ sources = ["https://nodejs.org/docs/latest-v22.x/api/crypto.html#ccm-mode", "htt
 [[rule]]
 name = "weak-hash"
 cwe = ["CWE-328", "CWE-327"]
-sources = ["https://docs.oracle.com/en/java/javase/21/docs/specs/security/standard-names.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/security/MessageDigest.html", "https://commons.apache.org/proper/commons-codec/apidocs/org/apache/commons/codec/digest/DigestUtils.html", "https://cwe.mitre.org/data/definitions/328.html", "https://cwe.mitre.org/data/definitions/327.html", "https://nodejs.org/docs/latest-v22.x/api/crypto.html#cryptocreatehashalgorithm-options", "https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest", "https://developer.apple.com/documentation/cryptokit/insecure", "https://developer.apple.com/documentation/cryptokit/sha256"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/specs/security/standard-names.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/security/MessageDigest.html", "https://commons.apache.org/proper/commons-codec/apidocs/org/apache/commons/codec/digest/DigestUtils.html", "https://cwe.mitre.org/data/definitions/328.html", "https://cwe.mitre.org/data/definitions/327.html", "https://nodejs.org/docs/latest-v22.x/api/crypto.html#cryptocreatehashalgorithm-options", "https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest", "https://developer.apple.com/documentation/cryptokit/insecure", "https://developer.apple.com/documentation/cryptokit/sha256", "https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5350", "https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca5351", "https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.sha256"]
 
 [[rule]]
 name = "weak-key-size"

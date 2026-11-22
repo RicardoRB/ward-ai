@@ -1,0 +1,1 @@
+A.cs:2:1 api-compat:type-less-visible P.A: public class P.A -> package class P.A

@@ -1,0 +1,2 @@
+src/lib.rs:2:10 api-compat:type-removed crate.Mode: public enum crate.Mode -> removed
+src/lib.rs:3:11 api-compat:type-removed crate.Draw: public interface crate.Draw -> removed

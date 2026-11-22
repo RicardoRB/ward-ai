@@ -100,7 +100,7 @@ final class InitResultPrinter {
 
   /**
    * Names the build file the tools went into, from the gates' executables: Node runners mean {@code
-   * package.json}, the Gradle wrapper or {@code gradle} the Gradle build, else {@code pom.xml}. The
+   * package.json}, the Gradle wrapper or {@code gradle} the Gradle build, {@code dotnet} the tool manifest, else {@code pom.xml}. The
    * result carries no build-file path.
    */
   private static String buildFileHeading(final InitResult result) {
@@ -115,6 +115,9 @@ final class InitResultPrinter {
     }
     if (executables.stream().anyMatch(InitResultPrinter::isPythonRunner)) {
       return "Updated the Python ward dependency group with tools:";
+    }
+    if (executables.contains("dotnet")) {
+      return "Updated .config/dotnet-tools.json with .NET tools:";
     }
     return executables.stream()
         .anyMatch(executable -> executable.endsWith("gradlew") || "gradle".equals(executable))

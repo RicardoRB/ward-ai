@@ -11,16 +11,14 @@ import dev.ward.infrastructure.project.gradle.GradleAndroidModules;
 import dev.ward.infrastructure.project.jvm.JvmSourceLanguages;
 import dev.ward.infrastructure.project.node.NodeProjectInspection;
 import dev.ward.infrastructure.project.python.PythonProjectInspection;
-import dev.ward.infrastructure.project.swift.SwiftProjectInspection;
+import dev.ward.infrastructure.project.rust.CargoWorkspaces;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -63,10 +61,7 @@ public final class FileSystemProjectInspection implements ProjectInspection {
           new Marker(PythonProjectInspection.SETUP_PY, PythonProjectInspection::project),
           new Marker(PythonProjectInspection.SETUP_CFG, PythonProjectInspection::project),
           new Marker("go.mod", dir -> new Project(dir, Language.GO, BuildTool.GO, Framework.NONE)),
-          new Marker(
-              "Cargo.toml",
-              dir -> new Project(dir, Language.RUST, BuildTool.CARGO, Framework.NONE)
-          )
+          new Marker(CargoWorkspaces.MANIFEST, CargoWorkspaces::project)
       );
 
   /** Creates the stateless adapter that Dagger injects. */
@@ -118,19 +113,8 @@ public final class FileSystemProjectInspection implements ProjectInspection {
         return Optional.of(OwnLanguageMembers.ownLanguage(dir, marker.project().apply(dir)));
       }
     }
-    try (Stream<Path> files = Files.list(dir)) {
-      final List<String> names =
-          files.map(Path::getFileName).filter(Objects::nonNull).map(Path::toString).toList();
-      if (names.stream().anyMatch(PythonProjectInspection::isRequirementsFile)) {
-        return Optional.of(PythonProjectInspection.project(dir));
-      }
-      final Optional<Project> swift = SwiftProjectInspection.project(dir, names);
-      if (swift.isPresent()) {
-        return swift;
-      }
-      return names.stream().anyMatch(name -> name.endsWith(".csproj"))
-          ? Optional.of(new Project(dir, Language.CSHARP, BuildTool.DOTNET, Framework.NONE))
-          : Optional.empty();
+    try {
+      return ListedFileProjects.project(dir);
     } catch (IOException e) {
       throw new IllegalStateException("Could not inspect project directory " + dir, e);
     }

@@ -40,6 +40,7 @@ public final class UnusedFieldCheck implements UnitCheck {
   @Override
   public List<RuleMatch> check(final SyntaxNode root, final SourceFile file) {
     return SyntaxWalk.visits(root, Set.of("classDeclaration")).stream()
+        .filter(visit -> !LombokClasses.usesFields(LombokClasses.annotations(visit)))
         .map(visit -> FieldAccesses.of(visit.node()))
         .flatMap(accesses -> report(root, accesses).stream())
         .toList();

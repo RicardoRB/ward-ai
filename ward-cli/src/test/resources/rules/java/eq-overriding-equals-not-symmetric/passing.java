@@ -17,3 +17,14 @@ class Worker extends Thread {
     return other instanceof Worker;
   }
 }
+
+class Semaphores {
+  private static class Acquirer extends Thread {}
+
+  private static final class EqualAcquirer extends Acquirer {
+    @Override
+    public boolean equals(final Object other) {
+      return other instanceof EqualAcquirer;
+    }
+  }
+}

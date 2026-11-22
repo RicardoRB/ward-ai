@@ -17,12 +17,17 @@ final class ArchitectureBoundarySupport {
       Set.of(
           "dev.ward.config.WardComponent",
           "dev.ward.config.NativeTypeFactsBindings",
+          "dev.ward.config.NativeFormatters",
           "dev.ward.config.AnalysisServices",
           "dev.ward.config.PortBindingsModule",
           "dev.ward.config.ProcessBindingsModule",
           "dev.ward.config.ProjectBindingsModule",
           "dev.ward.config.InitBindingsModule",
           "dev.ward.config.BuildToolBindingsModule",
+          "dev.ward.config.BuildToolAdaptersModule",
+          "dev.ward.config.ArchitectureTablesBindingsModule",
+          "dev.ward.config.ProjectNamesBindingsModule",
+          "dev.ward.config.ToolchainKey",
           "dev.ward.config.DoctorBindingsModule",
           "dev.ward.config.DependencyBindingsModule",
           "dev.ward.config.BuildPolicyBindingsModule",
@@ -39,6 +44,7 @@ final class ArchitectureBoundarySupport {
           "dev.ward.config.GateExtensionsModule",
           "dev.ward.config.FormatterBindingsModule",
           "dev.ward.config.ReportBindingsModule",
+          "dev.ward.config.ReportBindingsModule$MutationReports",
           "dev.ward.config.RulesBindingsModule",
           "dev.ward.config.RulesCommandBindingsModule",
           "dev.ward.config.WardProvidesModule"
@@ -253,13 +259,13 @@ final class ArchitectureBoundarySupport {
 
   /**
    * The packages of the frontend module, including its generated parsers, and of the structural
-   * rules and dependency summarizers of the Node, Python and Swift languages, and the OpenAPI
+   * rules and dependency summarizers of the Node, Python, Swift and Rust languages, and the OpenAPI
    * document model and rules, and the Android XML reader and rules, which are the analysis adapters
    * and domain for those rules.
    */
   private static boolean isGeneratedFrontendPackage(final String packageName) {
     return packageName.matches(
-        "dev\\.ward\\.analysis\\.(frontend\\.antlr|domain\\.node|domain\\.jvm|domain\\.python|domain\\.swift|domain\\.openapi|domain\\.android|application\\.(?:jvm|node|python|swift|openapi|android)|infrastructure\\.node)(\\..*)?"
+        "dev\\.ward\\.analysis\\.(frontend\\.antlr|domain\\.node|domain\\.jvm|domain\\.python|domain\\.swift|domain\\.rust|domain\\.csharp|domain\\.openapi|domain\\.android|application\\.(?:jvm|node|python|swift|rust|csharp|openapi|android)|infrastructure\\.node)(\\..*)?"
     );
   }
 

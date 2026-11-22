@@ -53,7 +53,8 @@ per check:
 | `platform` | `WARNING` | For Swift projects on systems other than macOS: Ward verifies Swift projects on macOS only. No `xcode` line is printed. |
 | `tuist` / `xcodegen` | `WARNING` | For Tuist and XcodeGen projects: Ward does not support that generator yet. The warning does not change the exit status. |
 | `cocoapods` | `WARNING` | For Xcode projects whose root holds a `Podfile`: CocoaPods trunk is read-only, and Ward does not install pods. The warning does not change the exit status. |
-| Other build tools, such as `cargo` | `WARNING` | Ward does not check that toolchain yet. The finding is named after the build tool, and nothing about Maven is reported. |
+| `cargo` | `OK` / `ERROR` | For Rust projects: `cargo` is on `PATH`. The error says to install Rust with [rustup](https://rustup.rs). |
+| Other build tools, such as `go` | `WARNING` | Ward does not check that toolchain yet. The finding is named after the build tool, and nothing about Maven is reported. |
 | `configuration` | `OK` / `ERROR` | `ward.toml` exists in the project root; otherwise run `ward init`. |
 | `integration` | `OK` / `WARNING` | Lists configured project-local agent integrations as `id=status [capabilities]`. `installed` means the integration's files are present and Ward-owned; it does not show that the harness has loaded them. `WARNING` means none is configured (`No supported agent integration configured.`) or one is incomplete or outdated; re-run `ward integrate <agent>` to repair it. For a project in a monorepo, agent integrations are looked up at the repository root, where `ward init` installs them. |
 | `rule configuration` | `OK` / `ERROR` | For each enabled `ward` check that has a `ward-rules.toml` (or the `rules-file` it names): `OK` with the number of selected rules, or one `ERROR` per problem, each naming the file, the table and the key. The `ward` gate fails with the same problems. |

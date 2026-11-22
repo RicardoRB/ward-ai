@@ -33,7 +33,7 @@ entry. Hand-written native metadata is reserved for non-Picocli requirements suc
 Ward reads the packages a project resolves through one inventory, `DependencyInventoryService`,
 instead of each check resolving the project on its own. Node, Python and Swift projects are read
 from their lockfiles (`package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `bun.lock`, `uv.lock`,
-`poetry.lock`, pinned `requirements*.txt`, `Package.resolved`) without running a package manager.
+`poetry.lock`, pinned `requirements*.txt`, `Package.resolved`, `packages.lock.json`, `obj/project.assets.json`) without running a package manager.
 Maven and Gradle projects are resolved by the build tool, except a Gradle build that locks every
 configuration, which is read from its lockfiles. The graph a build tool resolves is stored under
 `.ward/cache/dependencies/`, keyed by the content of the build files, and reused for 24 hours. A

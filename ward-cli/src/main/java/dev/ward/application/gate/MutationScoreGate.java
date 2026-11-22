@@ -7,12 +7,14 @@ import dev.ward.domain.gate.MutationReport;
 import dev.ward.domain.gate.QualityGate;
 import dev.ward.domain.project.Project;
 import java.time.Instant;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /** Runs a mutation tool, then fails when the score in its report is below the minimum. */
 final class MutationScoreGate implements QualityGate {
   private static final Logger LOGGER = Logger.getLogger(MutationScoreGate.class.getName());
+  private static final int SHOWN_SURVIVORS = 5;
   private final QualityGate command;
   private final MutationReport report;
   private final int minimum;
@@ -81,7 +83,12 @@ final class MutationScoreGate implements QualityGate {
       return with(
           result,
           GateStatus.FAILED,
-          "Mutation score " + counts.score() + "% is below the minimum of " + minimum + "%."
+          "Mutation score "
+              + counts.score()
+              + "% is below the minimum of "
+              + minimum
+              + "%."
+              + survivors(counts)
       );
     }
     return with(
@@ -89,6 +96,19 @@ final class MutationScoreGate implements QualityGate {
         GateStatus.PASSED,
         "Mutation score " + counts.score() + "% meets the minimum of " + minimum + "%."
     );
+  }
+
+  /** Names the first undetected mutants, so the user knows where to add an assertion. */
+  private static String survivors(final MutationCounts counts) {
+    if (counts.survivors().isEmpty()) {
+      return "";
+    }
+    final List<String> shown = counts.survivors().stream().limit(SHOWN_SURVIVORS).toList();
+    final int more = counts.survivors().size() - shown.size();
+    return " Surviving mutants: " + String.join(
+        ", ",
+        shown
+    ) + (more > 0 ? " and " + more + " more." : ".");
   }
 
   private static GateResult with(

@@ -1,0 +1,26 @@
+# Operating-system commands of Rust programs, written for Ward from the std::process::Command documentation: the
+# program and every argument are chosen by the code or by whoever supplies them. Command is found by the type that
+# its receiver states (see RustReceivers). A number parsed from text is clean.
+
+[[sinks]]
+kind = "call"
+name = "new"
+receiver = "Command"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "arg"
+receiver = "Command"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "args"
+receiver = "Command"
+arguments = [0]
+
+[[sanitizers]]
+kind = "member"
+name = "parse"
+

@@ -1,0 +1,45 @@
+# Ward's CSharp rules of the strict preset and every CSharp security rule, with default options, over every .cs file of two pinned projects (both MIT).
+# newtonsoft-json 13.0.4, archive sha-256 71fb8eda5ee37ab3405ea5df6c2a9490716e411db82e6c0878132bdf29aedb17.
+# eshop ab10e4c68fd26369578ebfb3fd1ccf3b867d0444, archive sha-256 e9eb4454c1fcb46dc39f425d0d510ab242af5cddf53570d7de47da9bcb68438c.
+# A labelled finding is true (tp), false (fp) or undetermined (un), as read from the code at its line; the labels are in csharp-corpus-labels.txt. A rule with more than 3 findings has a sample of at least 3 labelled, so its tp, fp and un describe the sample.
+# The cost of the run is in csharp-corpus-cost.txt.
+# Regenerate: ./mvnw -pl ward-cli -am -Dtest=CSharpCorpusSmokeTest -Dward.corpus.csharp=<dir> -Djacoco.skip=true -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
+newtonsoft-json | files 944 | not analysed 0
+eshop | files 547 | not analysed 0
+rules 36 | not run (need type facts) 0 | findings 7711
+ward:csharp/anonymous-method-delegate | findings 9 | labelled 3 | tp 3 | fp 0 | un 0
+ward:csharp/attribute-list-split | findings 64 | labelled 3 | tp 3 | fp 0 | un 0
+ward:csharp/braces-required | findings 170 | labelled 3 | tp 2 | fp 0 | un 1
+ward:csharp/command-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:csharp/const-field-name-pascal-case | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:csharp/constant-on-left-of-comparison | findings 10 | labelled 3 | tp 3 | fp 0 | un 0
+ward:csharp/duplicate-code | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:csharp/empty-single-line-comment | findings 2743 | labelled 3 | tp 3 | fp 0 | un 0
+ward:csharp/field-name-camel-case | findings 48 | labelled 3 | tp 3 | fp 0 | un 0
+ward:csharp/field-not-private | findings 505 | labelled 3 | tp 2 | fp 0 | un 1
+ward:csharp/field-underscore-prefix | findings 639 | labelled 3 | tp 3 | fp 0 | un 0
+ward:csharp/file-scoped-namespace | findings 945 | labelled 3 | tp 3 | fp 0 | un 0
+ward:csharp/general-exception-catch | findings 39 | labelled 3 | tp 3 | fp 0 | un 0
+ward:csharp/identifier-underscore | findings 676 | labelled 3 | tp 3 | fp 0 | un 0
+ward:csharp/interface-name-prefix | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:csharp/local-name-camel-case | findings 3 | labelled 3 | tp 3 | fp 0 | un 0
+ward:csharp/method-complexity | findings 93 | labelled 3 | tp 1 | fp 0 | un 2
+ward:csharp/mutable-static-field-visible | findings 37 | labelled 3 | tp 3 | fp 0 | un 0
+ward:csharp/nullable-shorthand | findings 2 | labelled 2 | tp 0 | fp 2 | un 0
+ward:csharp/one-class-per-file | findings 70 | labelled 3 | tp 3 | fp 0 | un 0
+ward:csharp/one-namespace-per-file | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
+ward:csharp/parameter-name-camel-case | findings 6 | labelled 3 | tp 3 | fp 0 | un 0
+ward:csharp/path-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:csharp/prefer-predefined-type | findings 28 | labelled 3 | tp 3 | fp 0 | un 0
+ward:csharp/region-directive | findings 696 | labelled 3 | tp 3 | fp 0 | un 0
+ward:csharp/reserved-exception-type | findings 57 | labelled 3 | tp 3 | fp 0 | un 0
+ward:csharp/single-line-comment-spacing | findings 318 | labelled 3 | tp 3 | fp 0 | un 0
+ward:csharp/sql-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:csharp/string-empty-literal | findings 117 | labelled 3 | tp 3 | fp 0 | un 0
+ward:csharp/tls-verification-disabled | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:csharp/type-name-pascal-case | findings 90 | labelled 3 | tp 3 | fp 0 | un 0
+ward:csharp/untrusted-deserialization | findings 104 | labelled 3 | tp 3 | fp 0 | un 0
+ward:csharp/using-outside-namespace | findings 10 | labelled 3 | tp 3 | fp 0 | un 0
+ward:csharp/visible-instance-field | findings 231 | labelled 3 | tp 3 | fp 0 | un 0
+ward:csharp/weak-cipher | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:csharp/weak-hash | findings 0 | labelled 0 | tp 0 | fp 0 | un 0

@@ -1,0 +1,27 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "expression-bodied-members"
+category = "style"
+dotnet-code-style = ["IDE0021", "IDE0022", "IDE0023", "IDE0024", "IDE0025", "IDE0026", "IDE0027", "IDE0053", "IDE0061"]
+
+[[rule]]
+name = "file-scoped-namespace"
+presets = ["strict"]
+category = "style"
+dotnet-code-style = ["IDE0161"]
+
+[[rule]]
+name = "modern-pattern-and-collection-syntax"
+category = "style"
+dotnet-code-style = ["IDE0019", "IDE0020", "IDE0066", "IDE0078", "IDE0083", "IDE0170", "IDE0260", "IDE0300", "IDE0301", "IDE0302", "IDE0303", "IDE0304", "IDE0305", "IDE0306", "IDE0320", "IDE0330", "IDE0340", "IDE0350"]
+
+[[rule]]
+name = "modern-syntax-preferences"
+category = "style"
+dotnet-code-style = ["IDE0007", "IDE0009", "IDE0010", "IDE0016", "IDE0017", "IDE0018", "IDE0028", "IDE0029", "IDE0030", "IDE0031", "IDE0032", "IDE0033", "IDE0034", "IDE0036", "IDE0037", "IDE0039", "IDE0040", "IDE0041", "IDE0042", "IDE0043", "IDE0044", "IDE0045", "IDE0046", "IDE0047", "IDE0048", "IDE0054", "IDE0056", "IDE0057", "IDE0062", "IDE0063", "IDE0070", "IDE0072", "IDE0073", "IDE0074", "IDE0075", "IDE0076", "IDE0077", "IDE0090", "IDE0100", "IDE0110", "IDE0120", "IDE0121", "IDE0130", "IDE0150", "IDE0180", "IDE0200", "IDE0210", "IDE0211", "IDE0220", "IDE0230", "IDE0240", "IDE0241", "IDE0250", "IDE0251", "IDE0270", "IDE0280", "IDE0290"]
+
+[[rule]]
+name = "unnecessary-code"
+category = "dead-code"
+dotnet-code-style = ["IDE0004", "IDE0005", "IDE0035", "IDE0051", "IDE0052", "IDE0058", "IDE0059", "IDE0060", "IDE0064", "IDE0071"]

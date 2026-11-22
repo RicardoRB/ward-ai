@@ -26,3 +26,24 @@ class Patterns {
     };
   }
 }
+
+class Hierarchy {
+  Iterable<Class<?>> of(Class<?> type) {
+    final Iterable<Class<?>> classes = () -> {
+      final java.util.concurrent.atomic.AtomicReference<Class<?>> next =
+          new java.util.concurrent.atomic.AtomicReference<>(type);
+      return new java.util.Iterator<Class<?>>() {
+        @Override
+        public boolean hasNext() {
+          return next.get() != null;
+        }
+
+        @Override
+        public Class<?> next() {
+          return next.get();
+        }
+      };
+    };
+    return classes;
+  }
+}

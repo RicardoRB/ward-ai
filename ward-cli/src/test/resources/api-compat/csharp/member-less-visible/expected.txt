@@ -1,0 +1,2 @@
+A.cs:3:3 api-compat:member-less-visible P.A#F: public final void F() -> package final void F()
+A.cs:4:3 api-compat:member-less-visible P.A#G: protected final void G() -> package final void G()

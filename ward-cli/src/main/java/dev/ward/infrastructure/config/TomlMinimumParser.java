@@ -17,6 +17,8 @@ final class TomlMinimumParser {
           SupportedQualityGates.STRYKER,
           SupportedQualityGates.MUTATION,
           SupportedQualityGates.MUTMUT,
+          SupportedQualityGates.CARGO_MUTANTS,
+          SupportedQualityGates.STRYKER_NET,
           SupportedQualityGates.COVERAGE,
           SupportedQualityGates.SWIFT_COVERAGE,
           SupportedQualityGates.ANDROID_COVERAGE
@@ -39,8 +41,8 @@ final class TomlMinimumParser {
       throw new WardException(
           "'"
               + key
-              + "' is only supported for the stryker, mutation, mutmut, coverage, swift-coverage and"
-              + " android-coverage checks"
+              + "' is only supported for the stryker, stryker-net, mutation, mutmut, cargo-mutants,"
+              + " coverage, swift-coverage and android-coverage checks"
       );
     }
     final Long value = gate.isLong(MINIMUM) ? gate.getLong(MINIMUM) : null;

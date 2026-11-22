@@ -21,6 +21,12 @@ final class GateCommandTemplate {
         || !CommandTypeInference.infer(gate.command()).equals(gate.id());
   }
 
+  /** Single-quotes an argument that holds whitespace, which the tokenizer reads back as one. */
+  private static String quoted(final String argument) {
+    final String escaped = ConfigurationTemplate.escape(argument);
+    return argument.chars().anyMatch(Character::isWhitespace) ? "'" + escaped + "'" : escaped;
+  }
+
   /** Writes the command, which a gate that runs inside Ward has none of. */
   static void append(final StringBuilder content, final InitGateOption gate) {
     final List<String> command = gate.command();
@@ -30,7 +36,7 @@ final class GateCommandTemplate {
     final String goal =
         command.stream()
             .skip(1)
-            .map(ConfigurationTemplate::escape)
+            .map(GateCommandTemplate::quoted)
             .reduce((left, right) -> left + " " + right)
             .orElse("");
     content

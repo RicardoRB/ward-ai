@@ -20,7 +20,9 @@ public final class ArchitectureLayers {
           AnalysisLanguage.TYPESCRIPT,
           AnalysisLanguage.JAVASCRIPT,
           AnalysisLanguage.SWIFT,
-          AnalysisLanguage.KOTLIN
+          AnalysisLanguage.CSHARP,
+          AnalysisLanguage.KOTLIN,
+          AnalysisLanguage.RUST
       );
 
   private static final List<String> FASTAPI_CONTROLLERS = List.of("routers", "api", "endpoints");

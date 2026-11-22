@@ -36,6 +36,9 @@ public final class QualityGateDefinitions {
           new Definition("pytest", "pytest", Phase.LOCAL, false),
           new Definition(SupportedQualityGates.MUTMUT, "mutmut", Phase.CI, false),
           new Definition("django-check", "Django system checks", Phase.LOCAL, false),
+          new Definition("cargo-clippy", "Clippy", Phase.LOCAL, false),
+          new Definition("cargo-test", "Cargo tests", Phase.LOCAL, false),
+          new Definition(SupportedQualityGates.CARGO_MUTANTS, "cargo-mutants", Phase.CI, false),
           new Definition("swift-build", "Swift build", Phase.LOCAL, false),
           new Definition("swift-test", "Swift tests", Phase.LOCAL, false),
           new Definition(SupportedQualityGates.XCODEBUILD_TEST, "Xcode tests", Phase.LOCAL, false),
@@ -45,6 +48,9 @@ public final class QualityGateDefinitions {
               Phase.LOCAL,
               false
           ),
+          new Definition(SupportedQualityGates.STRYKER_NET, "Stryker.NET", Phase.CI, false),
+          new Definition("dotnet-build", ".NET build", Phase.LOCAL, false),
+          new Definition("dotnet-test", ".NET tests", Phase.LOCAL, false),
           new Definition(SupportedQualityGates.ANDROID_LINT, "Android Lint", Phase.LOCAL, false),
           new Definition(
               SupportedQualityGates.ANDROID_UNIT_TEST,

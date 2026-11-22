@@ -1,0 +1,7 @@
+# Status of the dotnet-code-style rows in csharp: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+expression-bodied-members = { status = "planned", issue = "#679" }
+file-scoped-namespace = "implemented"
+modern-pattern-and-collection-syntax = { status = "planned", issue = "#679" }
+modern-syntax-preferences = { status = "planned", issue = "#679" }
+unnecessary-code = { status = "planned", issue = "#679" }

@@ -1,5 +1,7 @@
 package dev.ward.analysis.domain.jvm;
 
+import dev.ward.analysis.domain.ir.AccessKind;
+import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.ir.VariableAccess;
 import dev.ward.analysis.domain.ir.VariableAccesses;
@@ -56,6 +58,36 @@ final class JavaAccesses implements VariableAccesses {
    */
   boolean isSkipped(final SyntaxNode node) {
     return skipped.contains(node);
+  }
+
+  /**
+   * Reports whether a name is a local variable or a parameter in scope.
+   *
+   * @param name the name to look up
+   * @return true when a declaration of this body is in scope
+   */
+  boolean isLocal(final String name) {
+    return scopes.resolve(name) != null;
+  }
+
+  /**
+   * Returns a write of a variable that no statement makes, and a read of it, so that the value the
+   * variable held before is no longer the one that reaches the next statements. The read keeps the
+   * write from being reported as unused.
+   *
+   * @param name the name of the variable
+   * @param span where the guard that proves the value is
+   * @return the write and the read, or none when the name is not a local variable
+   */
+  List<VariableAccess> clean(final String name, final Span span) {
+    final Span declaration = scopes.resolve(name);
+    if (declaration == null) {
+      return List.of();
+    }
+    return List.of(
+        new VariableAccess(name, AccessKind.WRITE, span, declaration),
+        new VariableAccess(name, AccessKind.READ, span, declaration)
+    );
   }
 
   /**

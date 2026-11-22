@@ -176,6 +176,804 @@
         }
       }
     },
+    "ward:csharp/anonymous-method-delegate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:csharp/attribute-list-split": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "max": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "ward:csharp/braces-required": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "text": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/command-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:csharp/const-field-name-pascal-case": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/constant-on-left-of-comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "text": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/duplicate-code": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "min-tokens": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "ignore-literals": {
+          "type": "boolean"
+        },
+        "ignore-identifiers": {
+          "type": "boolean"
+        },
+        "ignore-annotations": {
+          "type": "boolean"
+        },
+        "max-duplicated-percent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "ward:csharp/empty-single-line-comment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/field-name-camel-case": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/field-not-private": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "text": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/field-underscore-prefix": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/file-scoped-namespace": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:csharp/general-exception-catch": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "text": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/identifier-underscore": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/interface-name-prefix": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/local-name-camel-case": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/method-complexity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "max": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "ward:csharp/mutable-static-field-visible": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "text": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/nullable-shorthand": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/one-class-per-file": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "max": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "ward:csharp/one-namespace-per-file": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "max": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "ward:csharp/parameter-name-camel-case": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/path-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:csharp/prefer-predefined-type": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "text": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/region-directive": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/reserved-exception-type": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "text": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/single-line-comment-spacing": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/sql-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:csharp/string-empty-literal": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:csharp/tls-verification-disabled": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:csharp/type-name-pascal-case": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/untrusted-deserialization": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:csharp/using-outside-namespace": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:csharp/visible-instance-field": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "text": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:csharp/weak-cipher": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:csharp/weak-hash": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/aa-assertion-of-arguments": {
       "type": "object",
       "additionalProperties": false,
@@ -42903,6 +43701,1869 @@
         }
       }
     },
+    "ward:rust/allow-attributes": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/allow-attributes-without-reason": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/approx-constant": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/bool-comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/box-default": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/bytes-nth": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/char-lit-as-u8": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/chars-next-cmp": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/command-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/dbg-macro": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/deref-addrof": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/double-negations": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/double-parens": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/empty-loop": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/empty-structs-with-brackets": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/eq-op": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/erasing-op": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/err-expect": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/exit": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/expect-fun-call": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/expect-used": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/filter-next": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/get-first": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/identity-op": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/inline-always": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/int-plus-one": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/iter-cloned-collect": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/iter-nth-zero": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/iter-skip-zero": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/len-zero": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/manual-range-contains": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/manual-string-new": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/map-clone": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/map-flatten": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/mem-forget": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/mem-replace-option-with-none": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/mem-replace-with-default": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/mixed-case-hex-literals": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/modulo-one": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/needless-bool": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/needless-else": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/needless-if": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/needless-pub-self": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/needless-return": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/neg-multiply": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/non-ascii-idents": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/non-camel-case-types": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:rust/non-shorthand-field-patterns": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/non-snake-case": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:rust/non-upper-case-globals": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pattern": {
+          "type": "string",
+          "description": "A regular expression."
+        }
+      }
+    },
+    "ward:rust/ok-expect": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/option-map-or-none": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/panic": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/partialeq-to-none": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/path-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/path-statements": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/print-literal": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/print-stderr": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/print-stdout": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/print-with-newline": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/println-empty-string": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/redundant-closure": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/redundant-field-names": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/redundant-pattern-matching": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/redundant-semicolons": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/redundant-static-lifetimes": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/search-is-some": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/self-assignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/single-char-add-str": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/single-component-path-imports": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/sql-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/text-direction-codepoint-in-literal": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/tls-verification-disabled": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/todo": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/too-many-arguments": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "max": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "ward:rust/too-many-lines": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "max": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "ward:rust/unimplemented": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/unreachable": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/unreachable-code": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/unreadable-literal": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/unsafe-code": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/unsafe-public-function": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/unseparated-literal-suffix": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/unused-assignments": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/unused-import-braces": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/unused-parens": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/unused-unit": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/unused-variables": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/unwrap-or-default": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/unwrap-used": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/useless-format": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/while-true": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/wildcard-imports": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/write-with-newline": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/writeln-empty-string": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/zero-prefixed-literal": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:rust/zero-ptr": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:secrets/1password-secret-key": {
       "type": "object",
       "additionalProperties": false,
@@ -59156,6 +61817,8 @@
               "javascript",
               "python",
               "swift",
+              "rust",
+              "csharp",
               "openapi",
               "android"
             ]
@@ -59200,6 +61863,42 @@
               "android.hardcoded-text",
               "android.missing-content-description",
               "android.unused-resources",
+              "csharp.anonymous-method-delegate",
+              "csharp.attribute-list-split",
+              "csharp.braces-required",
+              "csharp.command-injection",
+              "csharp.const-field-name-pascal-case",
+              "csharp.constant-on-left-of-comparison",
+              "csharp.duplicate-code",
+              "csharp.empty-single-line-comment",
+              "csharp.field-name-camel-case",
+              "csharp.field-not-private",
+              "csharp.field-underscore-prefix",
+              "csharp.file-scoped-namespace",
+              "csharp.general-exception-catch",
+              "csharp.identifier-underscore",
+              "csharp.interface-name-prefix",
+              "csharp.local-name-camel-case",
+              "csharp.method-complexity",
+              "csharp.mutable-static-field-visible",
+              "csharp.nullable-shorthand",
+              "csharp.one-class-per-file",
+              "csharp.one-namespace-per-file",
+              "csharp.parameter-name-camel-case",
+              "csharp.path-injection",
+              "csharp.prefer-predefined-type",
+              "csharp.region-directive",
+              "csharp.reserved-exception-type",
+              "csharp.single-line-comment-spacing",
+              "csharp.sql-injection",
+              "csharp.string-empty-literal",
+              "csharp.tls-verification-disabled",
+              "csharp.type-name-pascal-case",
+              "csharp.untrusted-deserialization",
+              "csharp.using-outside-namespace",
+              "csharp.visible-instance-field",
+              "csharp.weak-cipher",
+              "csharp.weak-hash",
               "java.aa-assertion-of-arguments",
               "java.abbreviation-as-word-in-name",
               "java.abstract-class-name",
@@ -61383,6 +64082,103 @@
               "python.yoda-conditions",
               "python.zip-dict-keys-and-values",
               "python.zip-without-explicit-strict",
+              "rust.allow-attributes",
+              "rust.allow-attributes-without-reason",
+              "rust.approx-constant",
+              "rust.bool-comparison",
+              "rust.box-default",
+              "rust.bytes-nth",
+              "rust.char-lit-as-u8",
+              "rust.chars-next-cmp",
+              "rust.command-injection",
+              "rust.dbg-macro",
+              "rust.deref-addrof",
+              "rust.double-negations",
+              "rust.double-parens",
+              "rust.empty-loop",
+              "rust.empty-structs-with-brackets",
+              "rust.eq-op",
+              "rust.erasing-op",
+              "rust.err-expect",
+              "rust.exit",
+              "rust.expect-fun-call",
+              "rust.expect-used",
+              "rust.filter-next",
+              "rust.get-first",
+              "rust.identity-op",
+              "rust.inline-always",
+              "rust.int-plus-one",
+              "rust.iter-cloned-collect",
+              "rust.iter-nth-zero",
+              "rust.iter-skip-zero",
+              "rust.len-zero",
+              "rust.manual-range-contains",
+              "rust.manual-string-new",
+              "rust.map-clone",
+              "rust.map-flatten",
+              "rust.mem-forget",
+              "rust.mem-replace-option-with-none",
+              "rust.mem-replace-with-default",
+              "rust.mixed-case-hex-literals",
+              "rust.modulo-one",
+              "rust.needless-bool",
+              "rust.needless-else",
+              "rust.needless-if",
+              "rust.needless-pub-self",
+              "rust.needless-return",
+              "rust.neg-multiply",
+              "rust.non-ascii-idents",
+              "rust.non-camel-case-types",
+              "rust.non-shorthand-field-patterns",
+              "rust.non-snake-case",
+              "rust.non-upper-case-globals",
+              "rust.ok-expect",
+              "rust.option-map-or-none",
+              "rust.panic",
+              "rust.partialeq-to-none",
+              "rust.path-injection",
+              "rust.path-statements",
+              "rust.print-literal",
+              "rust.print-stderr",
+              "rust.print-stdout",
+              "rust.print-with-newline",
+              "rust.println-empty-string",
+              "rust.redundant-closure",
+              "rust.redundant-field-names",
+              "rust.redundant-pattern-matching",
+              "rust.redundant-semicolons",
+              "rust.redundant-static-lifetimes",
+              "rust.search-is-some",
+              "rust.self-assignment",
+              "rust.single-char-add-str",
+              "rust.single-component-path-imports",
+              "rust.sql-injection",
+              "rust.text-direction-codepoint-in-literal",
+              "rust.tls-verification-disabled",
+              "rust.todo",
+              "rust.too-many-arguments",
+              "rust.too-many-lines",
+              "rust.unimplemented",
+              "rust.unreachable",
+              "rust.unreachable-code",
+              "rust.unreadable-literal",
+              "rust.unsafe-code",
+              "rust.unsafe-public-function",
+              "rust.unseparated-literal-suffix",
+              "rust.unused-assignments",
+              "rust.unused-import-braces",
+              "rust.unused-parens",
+              "rust.unused-unit",
+              "rust.unused-variables",
+              "rust.unwrap-or-default",
+              "rust.unwrap-used",
+              "rust.useless-format",
+              "rust.while-true",
+              "rust.wildcard-imports",
+              "rust.write-with-newline",
+              "rust.writeln-empty-string",
+              "rust.zero-prefixed-literal",
+              "rust.zero-ptr",
               "secrets.1password-secret-key",
               "secrets.1password-service-account-token",
               "secrets.adafruit-api-key",
@@ -62192,6 +64988,42 @@
               "android.hardcoded-text",
               "android.missing-content-description",
               "android.unused-resources",
+              "csharp.anonymous-method-delegate",
+              "csharp.attribute-list-split",
+              "csharp.braces-required",
+              "csharp.command-injection",
+              "csharp.const-field-name-pascal-case",
+              "csharp.constant-on-left-of-comparison",
+              "csharp.duplicate-code",
+              "csharp.empty-single-line-comment",
+              "csharp.field-name-camel-case",
+              "csharp.field-not-private",
+              "csharp.field-underscore-prefix",
+              "csharp.file-scoped-namespace",
+              "csharp.general-exception-catch",
+              "csharp.identifier-underscore",
+              "csharp.interface-name-prefix",
+              "csharp.local-name-camel-case",
+              "csharp.method-complexity",
+              "csharp.mutable-static-field-visible",
+              "csharp.nullable-shorthand",
+              "csharp.one-class-per-file",
+              "csharp.one-namespace-per-file",
+              "csharp.parameter-name-camel-case",
+              "csharp.path-injection",
+              "csharp.prefer-predefined-type",
+              "csharp.region-directive",
+              "csharp.reserved-exception-type",
+              "csharp.single-line-comment-spacing",
+              "csharp.sql-injection",
+              "csharp.string-empty-literal",
+              "csharp.tls-verification-disabled",
+              "csharp.type-name-pascal-case",
+              "csharp.untrusted-deserialization",
+              "csharp.using-outside-namespace",
+              "csharp.visible-instance-field",
+              "csharp.weak-cipher",
+              "csharp.weak-hash",
               "java.aa-assertion-of-arguments",
               "java.abbreviation-as-word-in-name",
               "java.abstract-class-name",
@@ -64375,6 +67207,103 @@
               "python.yoda-conditions",
               "python.zip-dict-keys-and-values",
               "python.zip-without-explicit-strict",
+              "rust.allow-attributes",
+              "rust.allow-attributes-without-reason",
+              "rust.approx-constant",
+              "rust.bool-comparison",
+              "rust.box-default",
+              "rust.bytes-nth",
+              "rust.char-lit-as-u8",
+              "rust.chars-next-cmp",
+              "rust.command-injection",
+              "rust.dbg-macro",
+              "rust.deref-addrof",
+              "rust.double-negations",
+              "rust.double-parens",
+              "rust.empty-loop",
+              "rust.empty-structs-with-brackets",
+              "rust.eq-op",
+              "rust.erasing-op",
+              "rust.err-expect",
+              "rust.exit",
+              "rust.expect-fun-call",
+              "rust.expect-used",
+              "rust.filter-next",
+              "rust.get-first",
+              "rust.identity-op",
+              "rust.inline-always",
+              "rust.int-plus-one",
+              "rust.iter-cloned-collect",
+              "rust.iter-nth-zero",
+              "rust.iter-skip-zero",
+              "rust.len-zero",
+              "rust.manual-range-contains",
+              "rust.manual-string-new",
+              "rust.map-clone",
+              "rust.map-flatten",
+              "rust.mem-forget",
+              "rust.mem-replace-option-with-none",
+              "rust.mem-replace-with-default",
+              "rust.mixed-case-hex-literals",
+              "rust.modulo-one",
+              "rust.needless-bool",
+              "rust.needless-else",
+              "rust.needless-if",
+              "rust.needless-pub-self",
+              "rust.needless-return",
+              "rust.neg-multiply",
+              "rust.non-ascii-idents",
+              "rust.non-camel-case-types",
+              "rust.non-shorthand-field-patterns",
+              "rust.non-snake-case",
+              "rust.non-upper-case-globals",
+              "rust.ok-expect",
+              "rust.option-map-or-none",
+              "rust.panic",
+              "rust.partialeq-to-none",
+              "rust.path-injection",
+              "rust.path-statements",
+              "rust.print-literal",
+              "rust.print-stderr",
+              "rust.print-stdout",
+              "rust.print-with-newline",
+              "rust.println-empty-string",
+              "rust.redundant-closure",
+              "rust.redundant-field-names",
+              "rust.redundant-pattern-matching",
+              "rust.redundant-semicolons",
+              "rust.redundant-static-lifetimes",
+              "rust.search-is-some",
+              "rust.self-assignment",
+              "rust.single-char-add-str",
+              "rust.single-component-path-imports",
+              "rust.sql-injection",
+              "rust.text-direction-codepoint-in-literal",
+              "rust.tls-verification-disabled",
+              "rust.todo",
+              "rust.too-many-arguments",
+              "rust.too-many-lines",
+              "rust.unimplemented",
+              "rust.unreachable",
+              "rust.unreachable-code",
+              "rust.unreadable-literal",
+              "rust.unsafe-code",
+              "rust.unsafe-public-function",
+              "rust.unseparated-literal-suffix",
+              "rust.unused-assignments",
+              "rust.unused-import-braces",
+              "rust.unused-parens",
+              "rust.unused-unit",
+              "rust.unused-variables",
+              "rust.unwrap-or-default",
+              "rust.unwrap-used",
+              "rust.useless-format",
+              "rust.while-true",
+              "rust.wildcard-imports",
+              "rust.write-with-newline",
+              "rust.writeln-empty-string",
+              "rust.zero-prefixed-literal",
+              "rust.zero-ptr",
               "secrets.1password-secret-key",
               "secrets.1password-service-account-token",
               "secrets.adafruit-api-key",
@@ -65206,6 +68135,120 @@
             },
             "unused-resources": {
               "$ref": "#/$defs/ward:android~1unused-resources"
+            }
+          }
+        },
+        "csharp": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "anonymous-method-delegate": {
+              "$ref": "#/$defs/ward:csharp~1anonymous-method-delegate"
+            },
+            "attribute-list-split": {
+              "$ref": "#/$defs/ward:csharp~1attribute-list-split"
+            },
+            "braces-required": {
+              "$ref": "#/$defs/ward:csharp~1braces-required"
+            },
+            "command-injection": {
+              "$ref": "#/$defs/ward:csharp~1command-injection"
+            },
+            "const-field-name-pascal-case": {
+              "$ref": "#/$defs/ward:csharp~1const-field-name-pascal-case"
+            },
+            "constant-on-left-of-comparison": {
+              "$ref": "#/$defs/ward:csharp~1constant-on-left-of-comparison"
+            },
+            "duplicate-code": {
+              "$ref": "#/$defs/ward:csharp~1duplicate-code"
+            },
+            "empty-single-line-comment": {
+              "$ref": "#/$defs/ward:csharp~1empty-single-line-comment"
+            },
+            "field-name-camel-case": {
+              "$ref": "#/$defs/ward:csharp~1field-name-camel-case"
+            },
+            "field-not-private": {
+              "$ref": "#/$defs/ward:csharp~1field-not-private"
+            },
+            "field-underscore-prefix": {
+              "$ref": "#/$defs/ward:csharp~1field-underscore-prefix"
+            },
+            "file-scoped-namespace": {
+              "$ref": "#/$defs/ward:csharp~1file-scoped-namespace"
+            },
+            "general-exception-catch": {
+              "$ref": "#/$defs/ward:csharp~1general-exception-catch"
+            },
+            "identifier-underscore": {
+              "$ref": "#/$defs/ward:csharp~1identifier-underscore"
+            },
+            "interface-name-prefix": {
+              "$ref": "#/$defs/ward:csharp~1interface-name-prefix"
+            },
+            "local-name-camel-case": {
+              "$ref": "#/$defs/ward:csharp~1local-name-camel-case"
+            },
+            "method-complexity": {
+              "$ref": "#/$defs/ward:csharp~1method-complexity"
+            },
+            "mutable-static-field-visible": {
+              "$ref": "#/$defs/ward:csharp~1mutable-static-field-visible"
+            },
+            "nullable-shorthand": {
+              "$ref": "#/$defs/ward:csharp~1nullable-shorthand"
+            },
+            "one-class-per-file": {
+              "$ref": "#/$defs/ward:csharp~1one-class-per-file"
+            },
+            "one-namespace-per-file": {
+              "$ref": "#/$defs/ward:csharp~1one-namespace-per-file"
+            },
+            "parameter-name-camel-case": {
+              "$ref": "#/$defs/ward:csharp~1parameter-name-camel-case"
+            },
+            "path-injection": {
+              "$ref": "#/$defs/ward:csharp~1path-injection"
+            },
+            "prefer-predefined-type": {
+              "$ref": "#/$defs/ward:csharp~1prefer-predefined-type"
+            },
+            "region-directive": {
+              "$ref": "#/$defs/ward:csharp~1region-directive"
+            },
+            "reserved-exception-type": {
+              "$ref": "#/$defs/ward:csharp~1reserved-exception-type"
+            },
+            "single-line-comment-spacing": {
+              "$ref": "#/$defs/ward:csharp~1single-line-comment-spacing"
+            },
+            "sql-injection": {
+              "$ref": "#/$defs/ward:csharp~1sql-injection"
+            },
+            "string-empty-literal": {
+              "$ref": "#/$defs/ward:csharp~1string-empty-literal"
+            },
+            "tls-verification-disabled": {
+              "$ref": "#/$defs/ward:csharp~1tls-verification-disabled"
+            },
+            "type-name-pascal-case": {
+              "$ref": "#/$defs/ward:csharp~1type-name-pascal-case"
+            },
+            "untrusted-deserialization": {
+              "$ref": "#/$defs/ward:csharp~1untrusted-deserialization"
+            },
+            "using-outside-namespace": {
+              "$ref": "#/$defs/ward:csharp~1using-outside-namespace"
+            },
+            "visible-instance-field": {
+              "$ref": "#/$defs/ward:csharp~1visible-instance-field"
+            },
+            "weak-cipher": {
+              "$ref": "#/$defs/ward:csharp~1weak-cipher"
+            },
+            "weak-hash": {
+              "$ref": "#/$defs/ward:csharp~1weak-hash"
             }
           }
         },
@@ -71785,6 +74828,303 @@
             },
             "zip-without-explicit-strict": {
               "$ref": "#/$defs/ward:python~1zip-without-explicit-strict"
+            }
+          }
+        },
+        "rust": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "allow-attributes": {
+              "$ref": "#/$defs/ward:rust~1allow-attributes"
+            },
+            "allow-attributes-without-reason": {
+              "$ref": "#/$defs/ward:rust~1allow-attributes-without-reason"
+            },
+            "approx-constant": {
+              "$ref": "#/$defs/ward:rust~1approx-constant"
+            },
+            "bool-comparison": {
+              "$ref": "#/$defs/ward:rust~1bool-comparison"
+            },
+            "box-default": {
+              "$ref": "#/$defs/ward:rust~1box-default"
+            },
+            "bytes-nth": {
+              "$ref": "#/$defs/ward:rust~1bytes-nth"
+            },
+            "char-lit-as-u8": {
+              "$ref": "#/$defs/ward:rust~1char-lit-as-u8"
+            },
+            "chars-next-cmp": {
+              "$ref": "#/$defs/ward:rust~1chars-next-cmp"
+            },
+            "command-injection": {
+              "$ref": "#/$defs/ward:rust~1command-injection"
+            },
+            "dbg-macro": {
+              "$ref": "#/$defs/ward:rust~1dbg-macro"
+            },
+            "deref-addrof": {
+              "$ref": "#/$defs/ward:rust~1deref-addrof"
+            },
+            "double-negations": {
+              "$ref": "#/$defs/ward:rust~1double-negations"
+            },
+            "double-parens": {
+              "$ref": "#/$defs/ward:rust~1double-parens"
+            },
+            "empty-loop": {
+              "$ref": "#/$defs/ward:rust~1empty-loop"
+            },
+            "empty-structs-with-brackets": {
+              "$ref": "#/$defs/ward:rust~1empty-structs-with-brackets"
+            },
+            "eq-op": {
+              "$ref": "#/$defs/ward:rust~1eq-op"
+            },
+            "erasing-op": {
+              "$ref": "#/$defs/ward:rust~1erasing-op"
+            },
+            "err-expect": {
+              "$ref": "#/$defs/ward:rust~1err-expect"
+            },
+            "exit": {
+              "$ref": "#/$defs/ward:rust~1exit"
+            },
+            "expect-fun-call": {
+              "$ref": "#/$defs/ward:rust~1expect-fun-call"
+            },
+            "expect-used": {
+              "$ref": "#/$defs/ward:rust~1expect-used"
+            },
+            "filter-next": {
+              "$ref": "#/$defs/ward:rust~1filter-next"
+            },
+            "get-first": {
+              "$ref": "#/$defs/ward:rust~1get-first"
+            },
+            "identity-op": {
+              "$ref": "#/$defs/ward:rust~1identity-op"
+            },
+            "inline-always": {
+              "$ref": "#/$defs/ward:rust~1inline-always"
+            },
+            "int-plus-one": {
+              "$ref": "#/$defs/ward:rust~1int-plus-one"
+            },
+            "iter-cloned-collect": {
+              "$ref": "#/$defs/ward:rust~1iter-cloned-collect"
+            },
+            "iter-nth-zero": {
+              "$ref": "#/$defs/ward:rust~1iter-nth-zero"
+            },
+            "iter-skip-zero": {
+              "$ref": "#/$defs/ward:rust~1iter-skip-zero"
+            },
+            "len-zero": {
+              "$ref": "#/$defs/ward:rust~1len-zero"
+            },
+            "manual-range-contains": {
+              "$ref": "#/$defs/ward:rust~1manual-range-contains"
+            },
+            "manual-string-new": {
+              "$ref": "#/$defs/ward:rust~1manual-string-new"
+            },
+            "map-clone": {
+              "$ref": "#/$defs/ward:rust~1map-clone"
+            },
+            "map-flatten": {
+              "$ref": "#/$defs/ward:rust~1map-flatten"
+            },
+            "mem-forget": {
+              "$ref": "#/$defs/ward:rust~1mem-forget"
+            },
+            "mem-replace-option-with-none": {
+              "$ref": "#/$defs/ward:rust~1mem-replace-option-with-none"
+            },
+            "mem-replace-with-default": {
+              "$ref": "#/$defs/ward:rust~1mem-replace-with-default"
+            },
+            "mixed-case-hex-literals": {
+              "$ref": "#/$defs/ward:rust~1mixed-case-hex-literals"
+            },
+            "modulo-one": {
+              "$ref": "#/$defs/ward:rust~1modulo-one"
+            },
+            "needless-bool": {
+              "$ref": "#/$defs/ward:rust~1needless-bool"
+            },
+            "needless-else": {
+              "$ref": "#/$defs/ward:rust~1needless-else"
+            },
+            "needless-if": {
+              "$ref": "#/$defs/ward:rust~1needless-if"
+            },
+            "needless-pub-self": {
+              "$ref": "#/$defs/ward:rust~1needless-pub-self"
+            },
+            "needless-return": {
+              "$ref": "#/$defs/ward:rust~1needless-return"
+            },
+            "neg-multiply": {
+              "$ref": "#/$defs/ward:rust~1neg-multiply"
+            },
+            "non-ascii-idents": {
+              "$ref": "#/$defs/ward:rust~1non-ascii-idents"
+            },
+            "non-camel-case-types": {
+              "$ref": "#/$defs/ward:rust~1non-camel-case-types"
+            },
+            "non-shorthand-field-patterns": {
+              "$ref": "#/$defs/ward:rust~1non-shorthand-field-patterns"
+            },
+            "non-snake-case": {
+              "$ref": "#/$defs/ward:rust~1non-snake-case"
+            },
+            "non-upper-case-globals": {
+              "$ref": "#/$defs/ward:rust~1non-upper-case-globals"
+            },
+            "ok-expect": {
+              "$ref": "#/$defs/ward:rust~1ok-expect"
+            },
+            "option-map-or-none": {
+              "$ref": "#/$defs/ward:rust~1option-map-or-none"
+            },
+            "panic": {
+              "$ref": "#/$defs/ward:rust~1panic"
+            },
+            "partialeq-to-none": {
+              "$ref": "#/$defs/ward:rust~1partialeq-to-none"
+            },
+            "path-injection": {
+              "$ref": "#/$defs/ward:rust~1path-injection"
+            },
+            "path-statements": {
+              "$ref": "#/$defs/ward:rust~1path-statements"
+            },
+            "print-literal": {
+              "$ref": "#/$defs/ward:rust~1print-literal"
+            },
+            "print-stderr": {
+              "$ref": "#/$defs/ward:rust~1print-stderr"
+            },
+            "print-stdout": {
+              "$ref": "#/$defs/ward:rust~1print-stdout"
+            },
+            "print-with-newline": {
+              "$ref": "#/$defs/ward:rust~1print-with-newline"
+            },
+            "println-empty-string": {
+              "$ref": "#/$defs/ward:rust~1println-empty-string"
+            },
+            "redundant-closure": {
+              "$ref": "#/$defs/ward:rust~1redundant-closure"
+            },
+            "redundant-field-names": {
+              "$ref": "#/$defs/ward:rust~1redundant-field-names"
+            },
+            "redundant-pattern-matching": {
+              "$ref": "#/$defs/ward:rust~1redundant-pattern-matching"
+            },
+            "redundant-semicolons": {
+              "$ref": "#/$defs/ward:rust~1redundant-semicolons"
+            },
+            "redundant-static-lifetimes": {
+              "$ref": "#/$defs/ward:rust~1redundant-static-lifetimes"
+            },
+            "search-is-some": {
+              "$ref": "#/$defs/ward:rust~1search-is-some"
+            },
+            "self-assignment": {
+              "$ref": "#/$defs/ward:rust~1self-assignment"
+            },
+            "single-char-add-str": {
+              "$ref": "#/$defs/ward:rust~1single-char-add-str"
+            },
+            "single-component-path-imports": {
+              "$ref": "#/$defs/ward:rust~1single-component-path-imports"
+            },
+            "sql-injection": {
+              "$ref": "#/$defs/ward:rust~1sql-injection"
+            },
+            "text-direction-codepoint-in-literal": {
+              "$ref": "#/$defs/ward:rust~1text-direction-codepoint-in-literal"
+            },
+            "tls-verification-disabled": {
+              "$ref": "#/$defs/ward:rust~1tls-verification-disabled"
+            },
+            "todo": {
+              "$ref": "#/$defs/ward:rust~1todo"
+            },
+            "too-many-arguments": {
+              "$ref": "#/$defs/ward:rust~1too-many-arguments"
+            },
+            "too-many-lines": {
+              "$ref": "#/$defs/ward:rust~1too-many-lines"
+            },
+            "unimplemented": {
+              "$ref": "#/$defs/ward:rust~1unimplemented"
+            },
+            "unreachable": {
+              "$ref": "#/$defs/ward:rust~1unreachable"
+            },
+            "unreachable-code": {
+              "$ref": "#/$defs/ward:rust~1unreachable-code"
+            },
+            "unreadable-literal": {
+              "$ref": "#/$defs/ward:rust~1unreadable-literal"
+            },
+            "unsafe-code": {
+              "$ref": "#/$defs/ward:rust~1unsafe-code"
+            },
+            "unsafe-public-function": {
+              "$ref": "#/$defs/ward:rust~1unsafe-public-function"
+            },
+            "unseparated-literal-suffix": {
+              "$ref": "#/$defs/ward:rust~1unseparated-literal-suffix"
+            },
+            "unused-assignments": {
+              "$ref": "#/$defs/ward:rust~1unused-assignments"
+            },
+            "unused-import-braces": {
+              "$ref": "#/$defs/ward:rust~1unused-import-braces"
+            },
+            "unused-parens": {
+              "$ref": "#/$defs/ward:rust~1unused-parens"
+            },
+            "unused-unit": {
+              "$ref": "#/$defs/ward:rust~1unused-unit"
+            },
+            "unused-variables": {
+              "$ref": "#/$defs/ward:rust~1unused-variables"
+            },
+            "unwrap-or-default": {
+              "$ref": "#/$defs/ward:rust~1unwrap-or-default"
+            },
+            "unwrap-used": {
+              "$ref": "#/$defs/ward:rust~1unwrap-used"
+            },
+            "useless-format": {
+              "$ref": "#/$defs/ward:rust~1useless-format"
+            },
+            "while-true": {
+              "$ref": "#/$defs/ward:rust~1while-true"
+            },
+            "wildcard-imports": {
+              "$ref": "#/$defs/ward:rust~1wildcard-imports"
+            },
+            "write-with-newline": {
+              "$ref": "#/$defs/ward:rust~1write-with-newline"
+            },
+            "writeln-empty-string": {
+              "$ref": "#/$defs/ward:rust~1writeln-empty-string"
+            },
+            "zero-prefixed-literal": {
+              "$ref": "#/$defs/ward:rust~1zero-prefixed-literal"
+            },
+            "zero-ptr": {
+              "$ref": "#/$defs/ward:rust~1zero-ptr"
             }
           }
         },

@@ -25,7 +25,10 @@ final class CrapReports {
 
   private static final Logger LOGGER = Logger.getLogger(CrapReports.class.getName());
 
+  private static final String GLOB = "*";
+
   private final CrapPorts ports;
+
   private final String first;
 
   CrapReports(final CrapPorts ports, final String first) {
@@ -97,7 +100,7 @@ final class CrapReports {
   List<Path> locate(final Project project, final List<String> paths) {
     final Path root = project.root();
     if (!paths.isEmpty()) {
-      return paths.stream().map(path -> configured(root, path)).toList();
+      return paths.stream().flatMap(path -> configured(root, path).stream()).toList();
     }
     final String conventional =
         ConventionalCoverageReports.of(project.buildTool())
@@ -119,12 +122,20 @@ final class CrapReports {
     return found;
   }
 
-  private Path configured(final Path root, final String path) {
+  /** A path with {@code *} names the reports a tool writes below a generated directory. */
+  private List<Path> configured(final Path root, final String path) {
+    if (path.contains(GLOB)) {
+      final List<Path> matched = ports.files().matching(root, path);
+      if (matched.isEmpty()) {
+        throw new CrapReportException("No coverage report matches " + path + "." + first);
+      }
+      return matched;
+    }
     final Path report = root.resolve(path);
     if (!ports.files().isFile(report)) {
       throw new CrapReportException("The coverage report " + path + " does not exist." + first);
     }
-    return report;
+    return List.of(report);
   }
 
   private static String display(final Path root, final Path report) {

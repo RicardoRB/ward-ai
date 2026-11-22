@@ -1,0 +1,2 @@
+A.cs:2:1 api-compat:member-less-visible P.A#<init>: public <init>() -> protected <init>()
+A.cs:2:1 api-compat:type-now-abstract P.A: public class P.A -> public abstract class P.A

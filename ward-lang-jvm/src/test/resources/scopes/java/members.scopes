@@ -5,7 +5,6 @@ module
   class @6:8
     variable field @7:15
     constant LIMIT @8:20 [const]
-    function measure @14:7
     class Inner @30:9
     function @10:3
       parameter seed @10:14
@@ -27,7 +26,6 @@ module
           variable shadow2 @25:11
     class @30:3
       variable own @31:9
-      function touch @33:10
       function @33:5
         block @33:18
 references

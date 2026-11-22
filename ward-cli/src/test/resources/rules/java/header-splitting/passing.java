@@ -10,4 +10,11 @@ class Headers {
     int version = Integer.parseInt(request.getParameter("version"));
     response.setHeader("X-Version", "v" + version);
   }
+
+  // A number cannot carry a line break, whatever the String it is computed from.
+  void count(HttpServletRequest request, HttpServletResponse response) {
+    String key = request.getHeader("X-Key");
+    long seconds = Math.max(1, key.length());
+    response.setHeader("Retry-After", String.valueOf(seconds));
+  }
 }

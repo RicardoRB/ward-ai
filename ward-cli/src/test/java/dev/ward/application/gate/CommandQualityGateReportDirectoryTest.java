@@ -38,6 +38,39 @@ class CommandQualityGateReportDirectoryTest {
   }
 
   @Test
+  void preparesTheOutputPathParentOfCargoLlvmCov() {
+    final FakeCommandExecutor executor = new FakeCommandExecutor(0, "", "");
+    final List<String> command =
+        List.of("cargo", "llvm-cov", "--lcov", "--output-path", ".ward/reports/coverage.lcov");
+
+    new CommandQualityGate("coverage", executor, command, recording).execute(project);
+
+    assertThat(prepared).containsExactly("/p|.ward/reports/coverage.lcov");
+  }
+
+  @Test
+  void commandsOfTheOtherToolchainsPrepareNothing() {
+    final List<List<String>> commands =
+        List.of(
+            List.of("./mvnw", "-B", "verify"),
+            List.of("./gradlew", "check"),
+            List.of("npm", "run", "test", "--", "--coverage"),
+            List.of("uv", "run", "pytest", "--cov-report=lcov:.ward/reports/coverage.lcov"),
+            List.of("swift", "test", "--enable-code-coverage"),
+            List.of("dotnet", "test", "--results-directory", ".ward/reports/dotnet"),
+            List.of("cargo", "clippy", "--workspace", "--", "-D", "warnings")
+        );
+
+    commands.forEach(
+        command ->
+            new CommandQualityGate("gate", new FakeCommandExecutor(0, "", ""), command, recording)
+                .execute(project)
+    );
+
+    assertThat(prepared).isEmpty();
+  }
+
+  @Test
   void commandsWithoutReportPathPrepareNothing() {
     new CommandQualityGate(
         TRIVY,

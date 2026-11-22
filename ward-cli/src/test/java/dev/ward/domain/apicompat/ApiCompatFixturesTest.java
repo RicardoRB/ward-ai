@@ -4,10 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.api.ApiSurfaceReader;
 import dev.ward.analysis.domain.api.ApiType;
+import dev.ward.analysis.domain.csharp.CSharpApiSurfaceReader;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.jvm.types.JavaApiSurfaceReader;
 import dev.ward.analysis.domain.jvm.types.KotlinApiSurfaceReader;
+import dev.ward.analysis.domain.rust.RustApiSurfaceReader;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -22,7 +24,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Compares every {@code baseline} and {@code revision} pair under {@code
- * src/test/resources/api-compat/{java,kotlin}} and checks the changes against {@code expected.txt}:
+ * src/test/resources/api-compat/{java,kotlin,rust,csharp}} and checks the changes against {@code expected.txt}:
  * one {@code path:line:column rule message} line per change, in order. Regenerate the files with
  * {@code -Dward.apicompat.write=true}.
  */
@@ -35,7 +37,7 @@ class ApiCompatFixturesTest {
   void everyFixtureMatchesItsExpectedChanges() throws IOException {
     final Map<String, List<String>> actual = new TreeMap<>();
     final Map<String, List<String>> expected = new TreeMap<>();
-    for (final String language : List.of("java", "kotlin")) {
+    for (final String language : List.of("java", "kotlin", "rust", "csharp")) {
       try (Stream<Path> directories = Files.list(ROOT.resolve(language))) {
         for (final Path fixture : directories.filter(Files::isDirectory).sorted().toList()) {
           final String name = language + "/" + fixture.getFileName();
@@ -83,6 +85,8 @@ class ApiCompatFixturesTest {
       final List<ApiType> found = new ArrayList<>();
       found.addAll(read(side, paths, ".java", AnalysisLanguage.JAVA, new JavaApiSurfaceReader()));
       found.addAll(read(side, paths, ".kt", AnalysisLanguage.KOTLIN, new KotlinApiSurfaceReader()));
+      found.addAll(read(side, paths, ".rs", AnalysisLanguage.RUST, new RustApiSurfaceReader()));
+      found.addAll(read(side, paths, ".cs", AnalysisLanguage.CSHARP, new CSharpApiSurfaceReader()));
       return found;
     }
   }

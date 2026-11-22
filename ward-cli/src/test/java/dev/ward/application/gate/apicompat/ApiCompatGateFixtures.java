@@ -2,9 +2,11 @@ package dev.ward.application.gate.apicompat;
 
 import dev.ward.analysis.domain.api.ApiSurfaceReader;
 import dev.ward.analysis.domain.api.ApiType;
+import dev.ward.analysis.domain.csharp.CSharpApiSurfaceReader;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.jvm.types.JavaApiSurfaceReader;
 import dev.ward.analysis.domain.jvm.types.KotlinApiSurfaceReader;
+import dev.ward.analysis.domain.rust.RustApiSurfaceReader;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import dev.ward.domain.config.ApiCompatOptions;
 import dev.ward.domain.gate.GateResult;
@@ -27,6 +29,8 @@ final class ApiCompatGateFixtures {
   static final Path ROOT = Path.of("/project");
   static final Project PROJECT =
       new Project(ROOT, Language.JAVA, BuildTool.MAVEN, Framework.SPRING_BOOT);
+  static final Project CSHARP_PROJECT =
+      new Project(ROOT, Language.CSHARP, BuildTool.DOTNET, Framework.NONE);
   static final String CLIENT_PATH = "src/main/java/p/Client.java";
   static final String BASE_COMMIT = "commit-v1.0.0";
   static final String CLIENT =
@@ -46,6 +50,10 @@ final class ApiCompatGateFixtures {
     return new ApiCompatGate("api-compat", options, ports(git)).execute(PROJECT);
   }
 
+  GateResult run(final Project project) {
+    return new ApiCompatGate("api-compat", ApiCompatOptions.DEFAULTS, ports(git)).execute(project);
+  }
+
   GateResult run() {
     return run(ApiCompatOptions.DEFAULTS);
   }
@@ -55,7 +63,7 @@ final class ApiCompatGateFixtures {
         new WorkingFiles() {
           @Override
           public List<String> files(final Path root, final String directory) {
-            final String prefix = directory + "/";
+            final String prefix = directory.isEmpty() ? "" : directory + "/";
             return working.keySet().stream()
                 .filter(path -> path.startsWith(prefix))
                 .map(path -> path.substring(prefix.length()))
@@ -76,7 +84,12 @@ final class ApiCompatGateFixtures {
           final List<ApiType> found = new ArrayList<>();
           final AntlrLanguageFrontend frontend = new AntlrLanguageFrontend();
           for (final ApiSurfaceReader reader :
-              List.of(new JavaApiSurfaceReader(), new KotlinApiSurfaceReader())) {
+              List.of(
+                  new JavaApiSurfaceReader(),
+                  new KotlinApiSurfaceReader(),
+                  new RustApiSurfaceReader(),
+                  new CSharpApiSurfaceReader()
+              )) {
             final List<SourceUnit> own =
                 units.stream().filter(unit -> unit.language() == reader.language()).toList();
             if (!own.isEmpty()) {

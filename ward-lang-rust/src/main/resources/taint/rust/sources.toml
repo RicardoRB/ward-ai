@@ -1,0 +1,24 @@
+# Untrusted input of Rust programs, written for Ward from the std::env and std::io documentation named in the
+# catalog rows: the command line and the environment belong to whoever starts the program. A function is matched by
+# its last name and the path written before it (see RustFlowSites), so a name imported with use is not found.
+
+[[sources]]
+kind = "call"
+name = "args"
+qualifier = "*env"
+
+[[sources]]
+kind = "call"
+name = "args_os"
+qualifier = "*env"
+
+[[sources]]
+kind = "call"
+name = "var"
+qualifier = "*env"
+
+[[sources]]
+kind = "call"
+name = "var_os"
+qualifier = "*env"
+

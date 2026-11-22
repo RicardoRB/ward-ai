@@ -586,6 +586,51 @@ It keeps the Gradle setup and adds the Android gates.
 - **Doctor.** `ward doctor` warns when neither `ANDROID_HOME` nor `ANDROID_SDK_ROOT` names an existing
   directory, and when the Android Gradle Plugin needs a newer JDK or Gradle than the build runs on.
 
+## Rust projects
+
+Init sets up Cargo crates and workspaces with the `standard` or `strict` preset. It reads
+`Cargo.toml` and never runs `cargo`; `Cargo.toml` is never edited.
+
+- **Workspaces.** A workspace root is one project; the members listed in `workspace.members` are its
+  modules. The gates run with `--workspace`, so every member is checked, and `strict` writes each
+  member's `src` directory as a root of `[checks.ward.cycles]`.
+- **Gates.** `ward-format` runs in every profile, then `cargo-clippy`, `cargo-test` and `coverage` in
+  `pre-push` and `ci`; `strict` adds `cargo-mutants` in `ci`.
+
+  | Gate | `standard` command | `strict` |
+  |---|---|---|
+  | `cargo-clippy` | `cargo clippy --workspace --all-targets -- -D warnings` | adds `--all-features` |
+  | `cargo-test` | `cargo test --workspace` | adds `--all-features` |
+  | `coverage` | `cargo llvm-cov --workspace --lcov --output-path .ward/reports/coverage.lcov`, minimum 80 | adds `--all-features`, minimum 85 |
+  | `cargo-mutants` | `cargo mutants --workspace` | runs, minimum 60 |
+
+- **Architecture.** The layer and cycle rules run on Rust through its `use` and `mod` paths.
+- **Doctor.** `ward doctor` reports a missing `cargo` and points to [rustup](https://rustup.rs).
+  `coverage` and `cargo-mutants` show as unavailable until `cargo-llvm-cov` and `cargo-mutants` are
+  on `PATH`; init writes them anyway and names the `cargo install` command.
+- **CI.** The generated workflow runs on `ubuntu-24.04`, which ships Rust, and adds a step that
+  installs the LLVM tools, `cargo-llvm-cov` and `cargo-mutants`. `.gitignore` lists
+  `.ward/reports/`, `mutants.out/` and `mutants.out.old/`.
+
+## C# projects
+
+Init sets up C# solutions (`.sln`, `.slnx`) and projects (`.csproj`) built with the .NET SDK, with the
+`standard` or `strict` preset. Detection reads build files only and never runs `dotnet`.
+
+- **Solutions.** A solution owns the projects it lists, so one solution of three projects is one Ward
+  project, and `dotnet build` and `dotnet test` from its root cover every member. Central package
+  management (`Directory.Packages.props`) needs nothing from init.
+- **Gates.** `dotnet-build`, `dotnet-test` (with Coverlet's collector, which the test templates
+  reference) and `coverage` (80% lines; strict 85% and 75% branches). `strict` adds `-warnaserror`
+  to the commands and `stryker-net`, which runs in `ci` with a 60% minimum and needs the tool
+  manifest `.config/dotnet-tools.json`; init writes it when absent. A
+  directory with several solutions, or several projects and no solution, needs the command edited to
+  name its target.
+- **Files.** Init edits no `.csproj`, solution or props file, and writes no analyzer configuration;
+  under strict it adds `.config/dotnet-tools.json` when the project has none.
+- **Doctor.** `ward doctor` reports a missing `dotnet` and links the .NET SDK download.
+- **CI.** The generated workflow sets up the .NET SDK for the C# job.
+
 ## Swift projects
 
 Init sets up SwiftPM packages and Xcode projects that contain Swift sources, with the `standard` or

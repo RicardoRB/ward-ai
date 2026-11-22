@@ -6,7 +6,7 @@
     <parent>
         <groupId>dev.ward</groupId>
         <artifactId>ward-parent</artifactId>
-        <version>0.11.4</version>
+        <version>0.12.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -91,6 +91,16 @@
         <dependency>
             <groupId>dev.ward</groupId>
             <artifactId>ward-lang-swift</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.ward</groupId>
+            <artifactId>ward-lang-rust</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.ward</groupId>
+            <artifactId>ward-lang-csharp</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

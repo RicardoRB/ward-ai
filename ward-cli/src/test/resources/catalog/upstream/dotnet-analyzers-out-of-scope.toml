@@ -1,0 +1,5 @@
+# Rules of dotnet-analyzers-9.0.0 that Ward does not implement, with the reason for each group.
+
+[[group]]
+reason = "platform compatibility needs the platform attributes of referenced assemblies, which Ward has no source for"
+rules = ["CA1416", "CA1417", "CA1418", "CA1419", "CA1420", "CA1421", "CA1422"]

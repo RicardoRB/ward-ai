@@ -1,0 +1,31 @@
+{
+  "version": 3,
+  "targets": {
+    "net9.0": {
+      "Serilog/4.0.0": {
+        "type": "package"
+      },
+      "Serilog.Sinks.File/6.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Serilog": "4.0.0"
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Serilog/4.0.0": {
+      "type": "package",
+      "path": "serilog/4.0.0"
+    },
+    "Serilog.Sinks.File/6.0.0": {
+      "type": "package",
+      "path": "serilog.sinks.file/6.0.0"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net9.0": [
+      "Serilog.Sinks.File >= 6.0.0"
+    ]
+  }
+}

@@ -1,0 +1,168 @@
+# rule | file:line | label | reason. Read from the code at each line (tp, fp, un).
+ward:rust/allow-attributes | ripgrep/crates/ignore/src/dir.rs:37 | tp | the code at the line is what the rule describes
+ward:rust/allow-attributes | tokio/tokio/src/loom/std/rwlock.rs:8 | tp | the code at the line is what the rule describes
+ward:rust/allow-attributes | tokio/tokio/src/util/blocking_check.rs:5 | tp | the code at the line is what the rule describes
+ward:rust/allow-attributes | tokio/tokio/tests/uds_socket.rs:34 | tp | the code at the line is what the rule describes
+ward:rust/allow-attributes-without-reason | ripgrep/crates/ignore/src/dir.rs:37 | tp | the code at the line is what the rule describes
+ward:rust/allow-attributes-without-reason | tokio/tokio/src/loom/std/rwlock.rs:8 | tp | the code at the line is what the rule describes
+ward:rust/allow-attributes-without-reason | tokio/tokio/src/util/blocking_check.rs:5 | tp | the code at the line is what the rule describes
+ward:rust/allow-attributes-without-reason | tokio/tokio/tests/uds_socket.rs:34 | tp | the code at the line is what the rule describes
+ward:rust/bool-comparison | ripgrep/crates/globset/src/glob.rs:996 | tp | the code at the line is what the rule describes
+ward:rust/dbg-macro | tokio/tests-build/tests/macros_clippy.rs:6 | tp | the code at the line is what the rule describes
+ward:rust/dbg-macro | tokio/tokio/tests/io_write_all_buf.rs:36 | tp | the code at the line is what the rule describes
+ward:rust/dbg-macro | tokio/tokio/tests/sync_broadcast.rs:246 | tp | the code at the line is what the rule describes
+ward:rust/empty-loop | tokio/tests-build/tests/pass/impl_trait.rs:5 | tp | the code at the line is what the rule describes
+ward:rust/empty-structs-with-brackets | tokio/tokio-util/tests/reusable_box.rs:61 | tp | the code at the line is what the rule describes
+ward:rust/empty-structs-with-brackets | tokio/tokio/src/runtime/metrics/mock.rs:3 | tp | the code at the line is what the rule describes
+ward:rust/empty-structs-with-brackets | tokio/tokio/src/signal/reusable_box.rs:205 | tp | the code at the line is what the rule describes
+ward:rust/empty-structs-with-brackets | tokio/tokio/tests/io_write_int.rs:20 | tp | the code at the line is what the rule describes
+ward:rust/exit | ripgrep/crates/grep/examples/simplegrep.rs:17 | tp | the code at the line is what the rule describes
+ward:rust/exit | ripgrep/crates/searcher/examples/search-stdin.rs:13 | tp | the code at the line is what the rule describes
+ward:rust/expect-used | ripgrep/crates/cli/src/decompress.rs:168 | tp | the code at the line is what the rule describes
+ward:rust/expect-used | tokio/tokio/src/net/unix/split_owned.rs:79 | tp | the code at the line is what the rule describes
+ward:rust/expect-used | tokio/tokio/tests/process_issue_8042.rs:121 | tp | the code at the line is what the rule describes
+ward:rust/expect-used | tokio/tokio/tests/udp.rs:69 | tp | the code at the line is what the rule describes
+ward:rust/get-first | ripgrep/crates/globset/src/glob.rs:357 | tp | the code at the line is what the rule describes
+ward:rust/get-first | ripgrep/crates/matcher/src/lib.rs:398 | fp | the receiver is not a slice, Vec or VecDeque
+ward:rust/get-first | ripgrep/crates/matcher/tests/test_matcher.rs:118 | fp | the receiver is a Captures value, not a slice
+ward:rust/get-first | ripgrep/crates/searcher/src/line_buffer.rs:546 | tp | the code at the line is what the rule describes
+ward:rust/identity-op | ripgrep/crates/printer/src/jsont.rs:244 | tp | the code at the line is what the rule describes
+ward:rust/inline-always | ripgrep/crates/ignore/src/walk.rs:1135 | tp | the code at the line is what the rule describes
+ward:rust/inline-always | ripgrep/crates/printer/src/standard.rs:1705 | tp | the code at the line is what the rule describes
+ward:rust/inline-always | tokio/tokio/src/loom/std/unsafe_cell.rs:14 | tp | the code at the line is what the rule describes
+ward:rust/inline-always | tokio/tokio/src/util/typeid.rs:32 | tp | the code at the line is what the rule describes
+ward:rust/iter-nth-zero | ripgrep/crates/ignore/src/gitignore.rs:484 | tp | the code at the line is what the rule describes
+ward:rust/len-zero | ripgrep/crates/matcher/src/lib.rs:154 | fp | a call of len inside is_empty is the definition of emptiness; Clippy does not lint it
+ward:rust/len-zero | tokio/tokio/src/io/blocking.rs:265 | fp | a call of len inside is_empty is the definition of emptiness; Clippy does not lint it
+ward:rust/len-zero | tokio/tokio/src/runtime/scheduler/multi_thread/queue.rs:413 | fp | a call of len inside is_empty is the definition of emptiness; Clippy does not lint it
+ward:rust/len-zero | tokio/tokio/src/util/sharded_list.rs:116 | fp | a call of len inside is_empty is the definition of emptiness; Clippy does not lint it
+ward:rust/manual-string-new | ripgrep/crates/core/flags/complete/fish.rs:19 | tp | the code at the line is what the rule describes
+ward:rust/manual-string-new | ripgrep/crates/core/flags/complete/fish.rs:62 | tp | the code at the line is what the rule describes
+ward:rust/manual-string-new | ripgrep/crates/core/flags/doc/help.rs:241 | tp | the code at the line is what the rule describes
+ward:rust/manual-string-new | ripgrep/tests/util.rs:411 | tp | the code at the line is what the rule describes
+ward:rust/mem-forget | tokio/tokio-test/src/task.rs:305 | tp | the code at the line is what the rule describes
+ward:rust/mem-forget | tokio/tokio/src/runtime/task/harness.rs:538 | tp | the code at the line is what the rule describes
+ward:rust/mem-forget | tokio/tokio/src/runtime/task/mod.rs:541 | tp | the code at the line is what the rule describes
+ward:rust/mem-forget | tokio/tokio/src/sync/tests/loom_oneshot.rs:178 | tp | the code at the line is what the rule describes
+ward:rust/needless-if | tokio/tests-build/tests/pass/use_builder_outer.rs:8 | tp | the code at the line is what the rule describes
+ward:rust/needless-pub-self | tokio/tokio/src/runtime/time/mod.rs:290 | tp | the code at the line is what the rule describes
+ward:rust/needless-pub-self | tokio/tokio/src/runtime/time/mod.rs:296 | tp | the code at the line is what the rule describes
+ward:rust/needless-pub-self | tokio/tokio/src/runtime/time/mod.rs:380 | tp | the code at the line is what the rule describes
+ward:rust/needless-pub-self | tokio/tokio/src/runtime/time/mod.rs:400 | tp | the code at the line is what the rule describes
+ward:rust/needless-return | ripgrep/crates/cli/src/decompress.rs:487 | tp | the code at the line is what the rule describes
+ward:rust/needless-return | tokio/tests-build/tests/fail/macros_type_mismatch.rs:10 | tp | the code at the line is what the rule describes
+ward:rust/needless-return | tokio/tests-build/tests/pass/macros_main_return.rs:5 | tp | the code at the line is what the rule describes
+ward:rust/needless-return | tokio/tokio/tests/macros_test.rs:54 | fp | more statements follow the return
+ward:rust/non-camel-case-types | ripgrep/crates/core/flags/lowargs.rs:239 | fp | the name read is the attribute on the variant, not the variant
+ward:rust/non-camel-case-types | tokio/tokio/src/fs/open_options.rs:95 | fp | the name read is the attribute on the variant, not the variant
+ward:rust/non-camel-case-types | tokio/tokio/src/runtime/mod.rs:442 | fp | the name read is the attribute on the variant, not the variant
+ward:rust/non-camel-case-types | tokio/tokio/src/util/as_ref.rs:6 | fp | the name read is the attribute on the variant, not the variant
+ward:rust/non-snake-case | ripgrep/crates/cli/src/process.rs:280 | fp | a constant used as a match pattern or a raw identifier is not a binding name
+ward:rust/non-snake-case | tokio/tokio/src/runtime/scheduler/multi_thread/park.rs:270 | fp | a constant used as a match pattern or a raw identifier is not a binding name
+ward:rust/non-snake-case | tokio/tokio/src/sync/notify.rs:292 | fp | a constant used as a match pattern or a raw identifier is not a binding name
+ward:rust/non-snake-case | tokio/tokio/src/sync/notify.rs:295 | fp | a constant used as a match pattern or a raw identifier is not a binding name
+ward:rust/non-upper-case-globals | tokio/benches/remote_spawn.rs:22 | fp | the unnamed constant const _ has no name to check
+ward:rust/non-upper-case-globals | tokio/tokio/src/util/linked_list.rs:541 | fp | the unnamed constant const _ has no name to check
+ward:rust/non-upper-case-globals | tokio/tokio/tests/async_send_sync.rs:149 | fp | the unnamed constant const _ has no name to check
+ward:rust/ok-expect | tokio/tokio-stream/src/stream_ext/collect.rs:316 | tp | the code at the line is what the rule describes
+ward:rust/ok-expect | tokio/tokio/src/io/split.rs:91 | tp | the code at the line is what the rule describes
+ward:rust/panic | ripgrep/crates/ignore/src/dir.rs:1131 | tp | the code at the line is what the rule describes
+ward:rust/panic | tokio/tokio/src/runtime/driver/op.rs:260 | tp | the code at the line is what the rule describes
+ward:rust/panic | tokio/tokio/tests/net_named_pipe.rs:25 | tp | the code at the line is what the rule describes
+ward:rust/panic | tokio/tokio/tests/uds_stream.rs:411 | tp | the code at the line is what the rule describes
+ward:rust/path-injection | ripgrep/crates/ignore/src/gitignore.rs:609 | tp | the code at the line is what the rule describes
+ward:rust/path-injection | ripgrep/crates/ignore/src/gitignore.rs:622 | tp | the code at the line is what the rule describes
+ward:rust/path-injection | ripgrep/crates/ignore/src/gitignore.rs:644 | tp | the code at the line is what the rule describes
+ward:rust/print-stderr | ripgrep/crates/core/flags/defs.rs:7639 | tp | the code at the line is what the rule describes
+ward:rust/print-stderr | tokio/examples/connect-tcp.rs:61 | tp | the code at the line is what the rule describes
+ward:rust/print-stderr | tokio/tokio/src/process/unix/pidfd_reaper.rs:295 | tp | the code at the line is what the rule describes
+ward:rust/print-stderr | tokio/tokio/tests/task_hooks.rs:400 | tp | the code at the line is what the rule describes
+ward:rust/print-stdout | ripgrep/build.rs:25 | tp | the code at the line is what the rule describes
+ward:rust/print-stdout | tokio/examples/graceful-shutdown.rs:37 | tp | the code at the line is what the rule describes
+ward:rust/print-stdout | tokio/examples/udp-codec.rs:74 | tp | the code at the line is what the rule describes
+ward:rust/print-stdout | tokio/tokio/tests/task_id.rs:36 | tp | the code at the line is what the rule describes
+ward:rust/redundant-closure | tokio/tokio-macros/src/entry.rs:643 | tp | the code at the line is what the rule describes
+ward:rust/redundant-closure | tokio/tokio-util/tests/io_inspect.rs:163 | tp | the code at the line is what the rule describes
+ward:rust/redundant-closure | tokio/tokio/src/runtime/task/raw.rs:320 | tp | the code at the line is what the rule describes
+ward:rust/redundant-closure | tokio/tokio/tests/sync_rwlock.rs:338 | tp | the code at the line is what the rule describes
+ward:rust/redundant-pattern-matching | tokio/examples/dump.rs:42 | tp | the code at the line is what the rule describes
+ward:rust/redundant-pattern-matching | tokio/tokio/src/sync/tests/loom_broadcast.rs:201 | tp | the code at the line is what the rule describes
+ward:rust/redundant-semicolons | tokio/benches/sync_rwlock.rs:139 | fp | the semicolon ends a statement that is a macro call with braces
+ward:rust/redundant-semicolons | tokio/benches/sync_semaphore.rs:123 | fp | the semicolon ends a statement that is a macro call with braces
+ward:rust/redundant-semicolons | tokio/tokio/tests/macros_select.rs:615 | fp | the semicolon ends a statement that is a macro call with braces
+ward:rust/redundant-semicolons | tokio/tokio/tests/macros_select.rs:629 | fp | the semicolon ends a statement that is a macro call with braces
+ward:rust/redundant-static-lifetimes | ripgrep/crates/core/flags/complete/bash.rs:45 | tp | the code at the line is what the rule describes
+ward:rust/redundant-static-lifetimes | ripgrep/crates/globset/benches/bench.rs:12 | tp | the code at the line is what the rule describes
+ward:rust/redundant-static-lifetimes | ripgrep/crates/printer/src/json.rs:925 | tp | the code at the line is what the rule describes
+ward:rust/redundant-static-lifetimes | ripgrep/tests/util.rs:14 | tp | the code at the line is what the rule describes
+ward:rust/search-is-some | ripgrep/crates/regex/src/ban.rs:15 | tp | the code at the line is what the rule describes
+ward:rust/search-is-some | ripgrep/crates/regex/src/ban.rs:23 | tp | the code at the line is what the rule describes
+ward:rust/search-is-some | ripgrep/crates/regex/src/ban.rs:33 | tp | the code at the line is what the rule describes
+ward:rust/search-is-some | ripgrep/crates/regex/src/strip.rs:64 | tp | the code at the line is what the rule describes
+ward:rust/single-char-add-str | ripgrep/crates/core/flags/complete/fish.rs:44 | tp | the code at the line is what the rule describes
+ward:rust/single-char-add-str | ripgrep/crates/core/flags/complete/fish.rs:49 | tp | the code at the line is what the rule describes
+ward:rust/single-char-add-str | ripgrep/crates/globset/src/glob.rs:707 | tp | the code at the line is what the rule describes
+ward:rust/single-component-path-imports | ripgrep/tests/json.rs:4 | fp | an aliased or multi-segment import is not a single-component import
+ward:rust/single-component-path-imports | tokio/tokio-macros/src/entry.rs:193 | fp | an aliased or multi-segment import is not a single-component import
+ward:rust/single-component-path-imports | tokio/tokio/src/runtime/handle.rs:739 | fp | an aliased or multi-segment import is not a single-component import
+ward:rust/single-component-path-imports | tokio/tokio/tests/macros_rename_test.rs:4 | fp | an aliased or multi-segment import is not a single-component import
+ward:rust/too-many-arguments | tokio/tokio/src/runtime/scheduler/multi_thread/mod.rs:56 | tp | the code at the line is what the rule describes
+ward:rust/too-many-arguments | tokio/tokio/src/runtime/scheduler/multi_thread/worker.rs:273 | tp | the code at the line is what the rule describes
+ward:rust/too-many-arguments | tokio/tokio/src/runtime/task/core.rs:234 | tp | the code at the line is what the rule describes
+ward:rust/too-many-arguments | tokio/tokio/src/runtime/tests/task_combinations.rs:157 | tp | the code at the line is what the rule describes
+ward:rust/too-many-lines | ripgrep/crates/core/flags/hiargs.rs:113 | tp | the code at the line is what the rule describes
+ward:rust/too-many-lines | ripgrep/crates/searcher/src/testutil.rs:516 | tp | the code at the line is what the rule describes
+ward:rust/too-many-lines | tokio/tokio/src/runtime/tests/task_combinations.rs:157 | tp | the code at the line is what the rule describes
+ward:rust/too-many-lines | tokio/tokio/tests/net_named_pipe.rs:148 | tp | the code at the line is what the rule describes
+ward:rust/unimplemented | tokio/tokio-util/tests/framed_write.rs:210 | tp | the code at the line is what the rule describes
+ward:rust/unimplemented | tokio/tokio/src/sync/tests/atomic_waker.rs:84 | tp | the code at the line is what the rule describes
+ward:rust/unimplemented | tokio/tokio/src/sync/tests/atomic_waker.rs:91 | tp | the code at the line is what the rule describes
+ward:rust/unimplemented | tokio/tokio/src/sync/tests/loom_oneshot.rs:38 | tp | the code at the line is what the rule describes
+ward:rust/unreachable | ripgrep/crates/core/flags/defs.rs:1177 | tp | the code at the line is what the rule describes
+ward:rust/unreachable | tokio/tokio/src/fs/read_uring.rs:151 | tp | the code at the line is what the rule describes
+ward:rust/unreachable | tokio/tokio/src/sync/mutex.rs:661 | tp | the code at the line is what the rule describes
+ward:rust/unreachable | tokio/tokio/tests/uds_datagram.rs:355 | tp | the code at the line is what the rule describes
+ward:rust/unreachable-code | tokio/examples/chat.rs:244 | fp | the loop above ends through a break
+ward:rust/unreachable-code | tokio/examples/tinyhttp.rs:126 | tp | the code at the line is what the rule describes
+ward:rust/unreachable-code | tokio/tokio/tests/macros_select.rs:593 | fp | the loop above ends through a break inside select!
+ward:rust/unreachable-code | tokio/tokio/tests/macros_test.rs:55 | tp | the code at the line is what the rule describes
+ward:rust/unreadable-literal | ripgrep/tests/feature.rs:411 | tp | the code at the line is what the rule describes
+ward:rust/unreadable-literal | ripgrep/tests/misc.rs:553 | tp | the code at the line is what the rule describes
+ward:rust/unreadable-literal | ripgrep/tests/misc.rs:554 | tp | the code at the line is what the rule describes
+ward:rust/unreadable-literal | ripgrep/tests/misc.rs:561 | tp | the code at the line is what the rule describes
+ward:rust/unsafe-code | ripgrep/crates/cli/src/hostname.rs:41 | tp | the code at the line is what the rule describes
+ward:rust/unsafe-code | tokio/tokio/src/runtime/scheduler/inject.rs:59 | tp | the code at the line is what the rule describes
+ward:rust/unsafe-code | tokio/tokio/src/sync/mpsc/chan.rs:299 | tp | the code at the line is what the rule describes
+ward:rust/unsafe-code | tokio/tokio/tests/uds_cred.rs:71 | tp | the code at the line is what the rule describes
+ward:rust/unsafe-public-function | tokio/benches/signal.rs:36 | tp | the code at the line is what the rule describes
+ward:rust/unsafe-public-function | tokio/tokio/src/net/unix/ucred.rs:352 | fp | the function is pub(crate), not public
+ward:rust/unsafe-public-function | tokio/tokio/src/runtime/scheduler/util/time_alt.rs:55 | fp | the function is pub(crate), not public
+ward:rust/unsafe-public-function | tokio/tokio/tests/support/signal.rs:1 | tp | the code at the line is what the rule describes
+ward:rust/unseparated-literal-suffix | tokio/benches/fs.rs:53 | tp | the code at the line is what the rule describes
+ward:rust/unseparated-literal-suffix | tokio/tokio/tests/io_mem_stream.rs:164 | tp | the code at the line is what the rule describes
+ward:rust/unseparated-literal-suffix | tokio/tokio/tests/support/leaked_buffers.rs:21 | tp | the code at the line is what the rule describes
+ward:rust/unseparated-literal-suffix | tokio/tokio/tests/unix_shutdown.rs:18 | tp | the code at the line is what the rule describes
+ward:rust/unused-assignments | ripgrep/crates/core/flags/config.rs:91 | fp | the value is read later through a closure, a format string or a later branch
+ward:rust/unused-assignments | tokio/tokio/src/runtime/task/state.rs:128 | fp | the value is read later through a closure, a format string or a later branch
+ward:rust/unused-assignments | tokio/tokio/tests/io_async_fd.rs:360 | fp | the value is read later through a closure, a format string or a later branch
+ward:rust/unused-assignments | tokio/tokio/tests/tcp_accept.rs:138 | fp | the value is read later through a closure, a format string or a later branch
+ward:rust/unused-import-braces | tokio/tokio/src/signal/ctrl_c.rs:2 | fp | a braced self import with a rename is not a redundant brace
+ward:rust/unused-import-braces | tokio/tokio/src/signal/ctrl_c.rs:4 | fp | a braced self import with a rename is not a redundant brace
+ward:rust/unused-variables | ripgrep/crates/core/flags/defs.rs:2459 | fp | the name is read in a format string, or a cfg alternative of the item is the one used
+ward:rust/unused-variables | tokio/tokio-util/tests/codecs.rs:25 | fp | the name is read in a format string, or a cfg alternative of the item is the one used
+ward:rust/unused-variables | tokio/tokio/src/sync/mutex.rs:358 | fp | the name is read in a format string, or a cfg alternative of the item is the one used
+ward:rust/unused-variables | tokio/tokio/tests/tcp_echo.rs:20 | fp | the name is read in a format string, or a cfg alternative of the item is the one used
+ward:rust/unwrap-used | ripgrep/crates/cli/src/human.rs:108 | tp | the code at the line is what the rule describes
+ward:rust/unwrap-used | tokio/benches/time_timeout.rs:16 | tp | the code at the line is what the rule describes
+ward:rust/unwrap-used | tokio/tokio/tests/io_driver.rs:83 | tp | the code at the line is what the rule describes
+ward:rust/unwrap-used | tokio/tokio/tests/unix_shutdown.rs:22 | tp | the code at the line is what the rule describes
+ward:rust/useless-format | ripgrep/crates/searcher/examples/search-stdin.rs:21 | tp | the code at the line is what the rule describes
+ward:rust/wildcard-imports | ripgrep/crates/cli/src/human.rs:45 | fp | a glob of the variants of an enum
+ward:rust/wildcard-imports | ripgrep/crates/ignore/src/walk.rs:200 | fp | a glob of the variants of an enum
+ward:rust/wildcard-imports | tokio/tokio/src/net/windows/named_pipe.rs:43 | tp | the code at the line is what the rule describes
+ward:rust/wildcard-imports | tokio/tokio/tests/time_timeout.rs:15 | tp | the code at the line is what the rule describes
+ward:rust/write-with-newline | ripgrep/crates/core/flags/doc/help.rs:148 | tp | the code at the line is what the rule describes
+ward:rust/write-with-newline | ripgrep/crates/core/flags/doc/help.rs:98 | tp | the code at the line is what the rule describes
+ward:rust/write-with-newline | ripgrep/crates/core/flags/doc/man.rs:61 | tp | the code at the line is what the rule describes
+ward:rust/write-with-newline | ripgrep/crates/core/main.rs:459 | tp | the code at the line is what the rule describes
+ward:rust/writeln-empty-string | ripgrep/crates/searcher/src/testutil.rs:183 | tp | the code at the line is what the rule describes

@@ -199,6 +199,7 @@ body = '''
 check = "forbidden-node"
 kinds = ["typeType", "creator"]
 text = '^(new\s+)?(java\.util\.)?Vector\b'
+not-root-text = 'import(?!java\.util\.)[\w.]*\.Vector;'
 message = "Vector is synchronized and legacy; use List"
 '''
 

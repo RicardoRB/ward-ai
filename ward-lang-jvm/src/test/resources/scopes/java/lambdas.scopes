@@ -2,7 +2,6 @@ module
   import Function @1:27 from java.util.function.Function
   class Lambdas @3:7
   class @3:1 open
-    function run @4:8
     function @4:3
       parameter o @4:19
       parameter k @4:26
@@ -27,7 +26,6 @@ module
           variable scoped @19:13
         class @24:32 open
           variable hidden @25:11
-          function show @26:11
           function @26:7
             block @26:18
 references

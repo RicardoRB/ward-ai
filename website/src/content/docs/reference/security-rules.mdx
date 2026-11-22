@@ -202,6 +202,11 @@ value, and for paths so does `lastPathComponent`.
 | `ward:swift/command-injection` | CWE-78, CWE-88 | error | standard, strict | A URL or request value is the program or an argument of a `Process` (`arguments`, `launchPath`, `executableURL`, `Process.run`) or of `system`, `popen` and `exec*` |
 | `ward:swift/sql-injection` | CWE-89 | error | standard, strict | A URL or request value is part of the statement text of `sqlite3_prepare*` or `sqlite3_exec`, or of the FMDB, SQLite.swift and GRDB calls listed in the specification; bind it as a parameter |
 | `ward:swift/path-injection` | CWE-22 | error | standard, strict | A URL or request value is part of the path that `FileManager`, `FileHandle`, `fopen` or the file initializers of `String` and `NSData` open; keep `lastPathComponent` |
+| `ward:rust/command-injection` | CWE-78, CWE-88 | error | standard, strict | A command-line or environment value (`std::env::args`, `var`) is the program or an argument of `std::process::Command` (`new`, `arg`, `args`); a value parsed to a number is clean |
+| `ward:rust/sql-injection` | CWE-89 | error | standard, strict | A command-line or environment value is part of the SQL text, for instance built with `format!`, that `execute`, `query`, `prepare` and the related calls of rusqlite, postgres and sqlx run; bind it as a parameter |
+| `ward:rust/path-injection` | CWE-22 | error | standard, strict | A command-line or environment value is part of the path that `std::fs` or `File::open` and `File::create` open; keep `Path::file_name` |
+| `ward:rust/tls-verification-disabled` | CWE-295 | error | standard, strict | `danger_accept_invalid_certs(true)` or `danger_accept_invalid_hostnames(true)` of reqwest, or `dangerous()` of a rustls client configuration |
+| `ward:rust/unsafe-public-function` | CWE-676 | warning | standard, strict | A `pub` function that holds an `unsafe` block |
 
 ## Kotlin
 

@@ -143,7 +143,8 @@ For each approved rule:
      that Ward cannot identify. Propose replacing or removing the dependency. Changing `deny`,
      `allow`, `exceptions` or `unknown` is a policy decision for the user, not a fix.
    - **Build policy** (`build-policy`, rules `ward:build/*`): pin the plugin or dependency version
-     the finding names, or remove the duplicate declaration, in the build file.
+     the finding names, or remove the duplicate declaration, in the build file (for Cargo, write
+     `=1.2.3` or commit `Cargo.lock`, and drop the repeated crate in `Cargo.toml`).
    - **API compatibility and OpenAPI breaking changes** (`api-compat`, `openapi-diff`,
      `openapi-compat`): each finding is a change that breaks callers. Restore the removed or changed
      element, or add the new form beside the old one. If the user wants the break, stop: it needs a

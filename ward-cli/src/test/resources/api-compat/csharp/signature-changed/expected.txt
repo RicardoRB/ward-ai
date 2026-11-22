@@ -1,0 +1,2 @@
+A.cs:3:1 api-compat:member-removed P.A#G: public final void G(int, ref int) -> removed
+A.cs:4:3 api-compat:signature-changed P.A#F: public final void F(List<string>) -> public final void F(List<int>)

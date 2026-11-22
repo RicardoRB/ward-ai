@@ -1,0 +1,3 @@
+A.cs:2:1 api-compat:member-removed P.A#set_Name: public final void set_Name(string) -> removed
+A.cs:3:3 api-compat:return-type-changed P.A#F: public final int F() -> public final long F()
+A.cs:4:3 api-compat:return-type-changed P.A#get_Name: public final string get_Name() -> public final int get_Name()

@@ -29,7 +29,12 @@ public final class CatalogTools {
           "jscpd",
           "gitleaks",
           "spectral",
-          "oasdiff"
+          "oasdiff",
+          "clippy",
+          "rustc",
+          "dotnet-analyzers",
+          "dotnet-code-style",
+          "stylecop"
       );
 
   private CatalogTools() {}

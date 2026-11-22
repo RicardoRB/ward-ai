@@ -478,6 +478,8 @@ check = "forbidden-node"
 kinds = ["classDeclaration"]
 text = '(?s)^class(\w+)[^{]*\{(?=.*private\1\()(?!.*static)(?!.*(?<!private)\1\()'
 parent = ["typeDeclaration"]
+# Lombok generates a public constructor, or makes the members static (@UtilityClass).
+not-parent-text = '^(?:@(?:\w+\.)*\w+(?:\([^()]*\))?)*?@(?:\w+\.)*(?:AllArgsConstructor|RequiredArgsConstructor|Data|Value|Builder|SuperBuilder|UtilityClass)(?=\(|@|public|private|protected|final|abstract|static|class|sealed|strictfp)'
 message = "class has only private constructors and no static member, so it can never be used"
 '''
 

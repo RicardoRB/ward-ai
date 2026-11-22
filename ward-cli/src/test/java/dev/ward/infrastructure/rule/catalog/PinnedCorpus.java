@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 /**
- * One pinned open-source project (Apache-2.0), read from its extracted source archive. The
+ * One pinned open-source project (Apache-2.0, MIT or Unlicense), read from its extracted source archive. The
  * source is never part of the repository and is only read: nothing in it is installed or run.
  *
  * @param name the short name that starts every path of the report
@@ -47,6 +47,16 @@ record PinnedCorpus(
           AnalysisLanguage.JAVA
       );
 
+  /** Spring Data Examples, Spring Boot applications with records, REST and security samples. */
+  static final PinnedCorpus SPRING_DATA_EXAMPLES =
+      new PinnedCorpus(
+          "spring-data-examples",
+          "7747029e6157cb780862826b6ae87c88d7a4df3c",
+          "3d25281914e28550d1a1d2518564b84ae3e071c5aee7a5a920e0daa7ba7edc81",
+          "spring-data-examples-7747029e6157cb780862826b6ae87c88d7a4df3c",
+          AnalysisLanguage.JAVA
+      );
+
   /** Okio, a multiplatform library with expect and actual declarations. */
   static final PinnedCorpus OKIO =
       new PinnedCorpus(
@@ -67,9 +77,54 @@ record PinnedCorpus(
           AnalysisLanguage.KOTLIN
       );
 
+  /** Newtonsoft.Json, a library in C# 12 syntax with a large legacy surface (MIT). */
+  static final PinnedCorpus NEWTONSOFT_JSON =
+      new PinnedCorpus(
+          "newtonsoft-json",
+          "13.0.4",
+          "71fb8eda5ee37ab3405ea5df6c2a9490716e411db82e6c0878132bdf29aedb17",
+          "Newtonsoft.Json-13.0.4",
+          AnalysisLanguage.CSHARP
+      );
+
+  /** eShop, a modern .NET application with records, primary constructors and minimal APIs (MIT). */
+  static final PinnedCorpus ESHOP =
+      new PinnedCorpus(
+          "eshop",
+          "ab10e4c68fd26369578ebfb3fd1ccf3b867d0444",
+          "e9eb4454c1fcb46dc39f425d0d510ab242af5cddf53570d7de47da9bcb68438c",
+          "eShop-ab10e4c68fd26369578ebfb3fd1ccf3b867d0444",
+          AnalysisLanguage.CSHARP
+      );
+
+  /** Returns the C# corpora, in report order. */
+  static List<PinnedCorpus> csharp() {
+    return List.of(NEWTONSOFT_JSON, ESHOP);
+  }
+
+  /** ripgrep, a command-line search tool and its library crates (MIT or Unlicense). */
+  static final PinnedCorpus RIPGREP =
+      new PinnedCorpus(
+          "ripgrep",
+          "15.2.0",
+          "7605249d3eb0d5f170e3414498e3344e26b1e7a147aec518b57090b80036a562",
+          "ripgrep-15.2.0",
+          AnalysisLanguage.RUST
+      );
+
+  /** Tokio, an asynchronous runtime with unsafe code, macros and platform modules (MIT). */
+  static final PinnedCorpus TOKIO =
+      new PinnedCorpus(
+          "tokio",
+          "tokio-1.54.1",
+          "3d84bf16b8fdbb19b6455dfa5971cead60e0ddbd9ee1aa368a4b4206998f9bdd",
+          "tokio-tokio-1.54.1",
+          AnalysisLanguage.RUST
+      );
+
   /** Returns the Java corpora, in report order. */
   static List<PinnedCorpus> java() {
-    return List.of(COMMONS_LANG, PETCLINIC);
+    return List.of(COMMONS_LANG, PETCLINIC, SPRING_DATA_EXAMPLES);
   }
 
   /** Returns the Kotlin corpora, in report order. */
@@ -77,9 +132,19 @@ record PinnedCorpus(
     return List.of(OKIO, PETCLINIC_KOTLIN);
   }
 
+  /** Returns the Rust corpora, in report order. */
+  static List<PinnedCorpus> rust() {
+    return List.of(RIPGREP, TOKIO);
+  }
+
   /** Returns the extension of the sources of this corpus's language. */
   String extension() {
-    return language == AnalysisLanguage.KOTLIN ? ".kt" : ".java";
+    return switch (language) {
+      case KOTLIN -> ".kt";
+      case CSHARP -> ".cs";
+      case RUST -> ".rs";
+      default -> ".java";
+    };
   }
 
   /**

@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
  */
 class InitToolchainsCoverageTest {
   private static final Set<Toolchain> UNSUPPORTED =
-      Set.of(Toolchain.GO, Toolchain.RUST, Toolchain.DOTNET);
+      Set.of(Toolchain.GO);
 
   @Test
   void everyToolchainHasASupportOrIsListedAsUnsupported() {

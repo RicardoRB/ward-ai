@@ -1,8 +1,8 @@
 ---
 name: ward-init
-description: Set up or reconfigure Ward quality gates in a Java (Maven or Gradle), Node (TypeScript or JavaScript with npm, pnpm, Yarn, Bun) or Python (uv, Poetry or pip) project, or a Swift project (SwiftPM or Xcode), together with the user. Inspects the project, explains each choice (preset, gates, architecture style, tools, agent integration, Git hooks) with a recommendation grounded in what it found, previews the exact changes with `ward init --dry-run`, and applies them only after approval. Use when the user wants to add Ward, initialize or change ward.toml, choose quality gates, or asks how to set up Ward for this repository.
+description: Set up or reconfigure Ward quality gates in a Java (Maven or Gradle), Node (TypeScript or JavaScript with npm, pnpm, Yarn, Bun) or Python (uv, Poetry or pip) project, a Rust project (Cargo), a Swift project (SwiftPM or Xcode), or a C# project (.NET SDK), together with the user. Inspects the project, explains each choice (preset, gates, architecture style, tools, agent integration, Git hooks) with a recommendation grounded in what it found, previews the exact changes with `ward init --dry-run`, and applies them only after approval. Use when the user wants to add Ward, initialize or change ward.toml, choose quality gates, or asks how to set up Ward for this repository.
 license: Apache-2.0
-compatibility: Requires the ward CLI >= 0.6.0, a Maven or Gradle Java project, a TypeScript or JavaScript project, a Python project, or a Swift project on macOS, and a shell.
+compatibility: Requires the ward CLI >= 0.6.0, a Maven or Gradle Java project, a TypeScript or JavaScript project, a Python project, a Rust project, a Swift project on macOS, or a C# project, and a shell.
 metadata:
   min-ward-version: "0.6.0"
 ---
@@ -88,9 +88,15 @@ For an Android project (the Android Gradle Plugin in a build script), also follo
 [references/android.md](references/android.md): it lists the Android gates, the module blocks and
 the SDK and plugin checks doctor makes.
 
+For a Rust project (Cargo crate or workspace), also follow [references/rust.md](references/rust.md):
+it lists the Rust gates and the doctor check for `cargo`.
+
 For a Swift project (SwiftPM or Xcode), also follow [references/swift.md](references/swift.md): it
 replaces the Java-only inspection steps, lists the Swift blocking findings and choices, and covers
 the Xcode scheme, which `--scheme` names when the project has several.
+
+For a C# project (a solution or `.csproj`), also follow [references/dotnet.md](references/dotnet.md):
+it lists the .NET gates and the doctor check for a missing `dotnet`.
 
 Show the user the short inspection summary described at the end of that file before asking anything.
 

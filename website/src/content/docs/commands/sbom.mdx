@@ -5,7 +5,7 @@ description: Write the CycloneDX software bill of materials and the third-party 
 
 `ward sbom` and `ward licenses` write release compliance files from the same dependency inventory and
 license lookup as the [`license` gate](/configuration/gates/#license-gate). They work for Maven,
-Gradle, Node, Python and Swift projects, read only local files, and never use the network.
+Gradle, Node, Python, Swift, Cargo and C# projects, read only local files, and never use the network.
 
 ```sh
 ward sbom     [-C <dir>] [-o <file>] [--scopes runtime,provided,test,development]
@@ -26,7 +26,7 @@ to standard error; standard output holds only the document.
 ## `ward sbom`
 
 Writes a CycloneDX 1.6 JSON document: a root component for the project, one `library` component per
-package with its Package URL (`pkg:maven`, `pkg:npm`, `pkg:pypi` or `pkg:swift`) and normalized
+package with its Package URL (`pkg:maven`, `pkg:npm`, `pkg:pypi`, `pkg:swift` or `pkg:cargo`) and normalized
 license, and a dependency edge from the root to each direct package. A package with an unknown
 license has no `licenses`: the SBOM states facts and the gate applies policy. The inventory records
 no edges between packages, so transitive packages are components without outgoing edges.
@@ -50,3 +50,12 @@ Writes a plain-text notice that lists each package under its normalized license,
 of each distinct license used, taken from texts bundled with Ward. A license whose text Ward does not
 bundle is listed by identifier with a note, and an unknown license is listed as unknown. The output is
 sorted and reproducible.
+
+## Rust
+
+For a Cargo project Ward reads `Cargo.lock` and the `Cargo.toml` of the root and of each workspace
+member; it never runs `cargo`. Path and workspace crates are modules, not packages. A crate's license is
+the `license` field of its own `Cargo.toml`, read from `$CARGO_HOME/registry/src` (or `~/.cargo`) or from
+a `vendor/` directory; `MIT/Apache-2.0` reads as `MIT OR Apache-2.0`. A crate that is not cached, or
+declares no `license`, is reported as unknown and never guessed. Run `cargo fetch` first so the
+registry sources are present.

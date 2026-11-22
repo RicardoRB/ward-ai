@@ -1,0 +1,19 @@
+{
+  "3:5-3:13": {
+    "call": {
+      "declaring": {
+        "name": "org.mockito.Mockito"
+      },
+      "name": "verify",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "java.util.List"
+      },
+      "static": true
+    }
+  }
+}

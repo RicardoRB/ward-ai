@@ -153,7 +153,7 @@ full = ["ward.toml"]
 enabled = true
 # Not in pre-push: the tests gate already runs these classes.
 profiles = ["ci"]
-command = "./mvnw -Dsurefire.failIfNoSpecifiedTests=false -Dtest=ArchitectureAnalysisApiTest,ArchitectureBoundaryTest,ArchitectureFeatureGraphTest,ArchitectureLangAndroidTest,ArchitectureLangJvmTest,ArchitectureLangNodeTest,ArchitectureLangPythonTest,ArchitectureLangSwiftTest,ArchitecturePlacementTest,ArchitectureRuleFixturesTest,ArchitectureToolchainTest,NativeCommandMetadataTest,NativeImageCompatibilityTest,NativeResourceGlobsTest,WardCliContract4Test test"
+command = "./mvnw -Dsurefire.failIfNoSpecifiedTests=false -Dtest=ArchitectureAnalysisApiTest,ArchitectureBoundaryTest,ArchitectureFeatureGraphTest,ArchitectureLangAndroidTest,ArchitectureLangCSharpTest,ArchitectureLangJvmTest,ArchitectureLangNodeTest,ArchitectureLangPythonTest,ArchitectureLangRustTest,ArchitectureLangSwiftTest,ArchitecturePlacementTest,ArchitectureRuleFixturesTest,ArchitectureToolchainTest,NativeCommandMetadataTest,NativeImageCompatibilityTest,NativeResourceGlobsTest,WardCliContract4Test test"
 
 [checks.mutation]
 enabled = true

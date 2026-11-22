@@ -31,7 +31,12 @@ final class RuleReferenceTools {
           Map.entry("jscpd", "jscpd"),
           Map.entry("gitleaks", "Gitleaks"),
           Map.entry("spectral", "Spectral"),
-          Map.entry("oasdiff", "oasdiff")
+          Map.entry("oasdiff", "oasdiff"),
+          Map.entry("clippy", "Clippy"),
+          Map.entry("rustc", "rustc"),
+          Map.entry("dotnet-analyzers", ".NET analyzers (CA)"),
+          Map.entry("dotnet-code-style", ".NET code style (IDE)"),
+          Map.entry("stylecop", "StyleCop.Analyzers")
       );
 
   private RuleReferenceTools() {}

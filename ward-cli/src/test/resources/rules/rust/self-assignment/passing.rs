@@ -1,0 +1,4 @@
+pub fn bump(mut x: i32, y: i32) -> i32 {
+    x = y;
+    x
+}

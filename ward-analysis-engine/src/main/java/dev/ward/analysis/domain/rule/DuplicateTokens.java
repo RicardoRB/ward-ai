@@ -106,6 +106,8 @@ public final class DuplicateTokens {
         case TYPESCRIPT, JAVASCRIPT -> ecma();
         case PYTHON -> python();
         case SWIFT -> swift();
+        case RUST -> rust();
+        case CSHARP -> csharp();
         case OPENAPI, ANDROID -> new Vocabulary(Set.of(), Set.of(), Set.of());
       };
     }
@@ -127,6 +129,24 @@ public final class DuplicateTokens {
           ),
           Set.of("IDENTIFIER"),
           Set.of("annotation")
+      );
+    }
+
+    private static Vocabulary csharp() {
+      return new Vocabulary(
+          Set.of(
+              "Integer_Literal",
+              "Real_Literal",
+              "Character_Literal",
+              "String_Literal",
+              "Raw_String_Literal",
+              "Interpolated_Raw_String",
+              "'true'",
+              "'false'",
+              "'null'"
+          ),
+          Set.of("Simple_Identifier"),
+          Set.of("attributes")
       );
     }
 
@@ -174,6 +194,27 @@ public final class DuplicateTokens {
 
     private static Vocabulary python() {
       return new Vocabulary(Set.of("STRING", "NUMBER"), Set.of("NAME"), Set.of("decorator"));
+    }
+
+    private static Vocabulary rust() {
+      return new Vocabulary(
+          Set.of(
+              "CHAR_LITERAL",
+              "STRING_LITERAL",
+              "RAW_STRING_LITERAL",
+              "BYTE_LITERAL",
+              "BYTE_STRING_LITERAL",
+              "RAW_BYTE_STRING_LITERAL",
+              "INTEGER_LITERAL",
+              "DEC_LITERAL",
+              "HEX_LITERAL",
+              "OCT_LITERAL",
+              "BIN_LITERAL",
+              "FLOAT_LITERAL"
+          ),
+          Set.of("NON_KEYWORD_IDENTIFIER", "RAW_IDENTIFIER"),
+          Set.of("outerAttribute", "innerAttribute")
+      );
     }
 
     private static Vocabulary swift() {

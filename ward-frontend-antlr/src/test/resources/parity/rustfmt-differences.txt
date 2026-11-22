@@ -1,0 +1,5 @@
+# Rust formatter fixtures whose Ward output differs from rustfmt 1.8.0 with default settings:
+# case|reason. Ward changes only whitespace, so these three differences are by design.
+limits_trailing_comma|rustfmt adds a trailing comma to a list it breaks and joins a list that fits on one line; Ward adds no token and keeps the source's line breaks
+limits_join_short_lines|rustfmt joins a short list that the source breaks across lines; Ward keeps the source's line breaks
+limits_import_order|rustfmt sorts the use declarations; Ward does not move tokens

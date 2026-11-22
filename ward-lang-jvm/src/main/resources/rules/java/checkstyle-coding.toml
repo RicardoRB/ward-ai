@@ -234,6 +234,7 @@ body = '''
 check = "forbidden-node"
 kinds = ["methodCall"]
 text = '^super\(\)$'
+parent-text = '^super\(\)$'
 message = "explicit call of the no-argument super constructor; remove it"
 '''
 

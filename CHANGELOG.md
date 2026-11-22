@@ -8,6 +8,43 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-11-22
+
+Ward now checks Rust and C# projects (#642).
+
+### Added
+
+- `ward init` detects Cargo projects (#647) and .NET projects (#657), and sets up their gates, and finds `cargo`, `cargo-llvm-cov`, `cargo-mutants` and `dotnet` on the `PATH`.
+- A Rust frontend (#648): a Rust grammar for editions 2021 and 2024 (`let`-`else`, let chains, async closures, C strings, raw borrows, `unsafe extern`), scope analysis that follows shadowing, imports, `if let` and match arms, and one control-flow graph per function with a body.
+- A C# frontend (#658) written from the C# language specification, with preprocessor handling, scopes and control flow.
+- `ward format` formats Rust (#649) and C#, matching the whitespace of `dotnet format` (#659).
+- Rust rules mapped to Clippy and the rustc lints (#650): 92 `ward:rust/*` rules in the `standard` and `strict` presets. Every lint of Clippy 0.1.88 and rustc 1.88 is classified in the catalog as implemented, planned (#681–#683) or out of scope with a reason. `ClippyParitySmokeTest` compares the fixtures with the real Clippy.
+- C# rules mapped to the .NET analyzers (CA), the Roslyn code-style rules (IDE) and StyleCop (#660), with planned rows in #677–#680, and a duplicate-code rule for C#.
+- Dependency inventory, OSV vulnerabilities, licenses and SBOM for Cargo (#651) and NuGet (#661) projects, and the `build-policy` gate for `Cargo.toml` (#652) and NuGet package declarations (#662).
+- Tests, coverage, mutation and architecture gates for Rust (`cargo llvm-cov`, `cargo-mutants`; #653) and C# (Cobertura, Stryker.NET; #663).
+- The `api-compat` gate compares the public API of Rust crates (#654) and C# projects (#664).
+- Taint analysis and security rules for Rust (command, SQL and path injection, disabled TLS verification, `unsafe` in public functions; #655) and seven `ward:csharp/*` security rules (#665).
+- Rust and C# corpus smoke tests and compatibility matrices, with CI jobs `rust-matrix` and `csharp-matrix` (#656, #666).
+- The Java corpus now measures the `strict` preset as well as the security rules, and adds Spring Data Examples as a modern corpus. A finding labelled as a false positive fails the test unless `java-corpus-approximations.txt` lists it with an open issue. `PresetContractTest` rejects contradictory or Android-only rules in a preset, and `UnknownTypeRulesTest` checks that a type rule reports nothing when the type is unknown (#698).
+
+### Fixed
+
+- `ward:java/header-splitting`, `ward:java/log-forging` and `ward:java/cross-site-scripting` treat a call on a `String` that returns a number or a boolean (`length`, `isEmpty`, `indexOf`, `equals`, ...) and `Math.max`, `Math.min` and `Math.abs` as sanitizers, since a number cannot carry a line break or markup (#704).
+- `ward:java/cross-site-scripting` no longer reports a response body written with `getWriter()` or `getOutputStream()` in a method whose content types are all JSON; an HTML or non-literal content type is still reported (#704).
+- The Java taint rules, such as `ward:java/server-side-request-forgery`, treat a variable as clean past `if (!ALLOWED.contains(value)) { ...; throw or return }` when `ALLOWED` is a `final` collection field with an initializer (#704).
+- Fields that Lombok writes or reads, and classes it gives a constructor, are no longer reported by `field-no-init`, `np-unwritten-field`, `uwf-unwritten-field`, `uuf-unused-field` and `missing-static-method-in-non-instantiatable-class` (#713).
+- `ward:java/replace-java-util-vector` reports `Vector` only when it is not imported from another package (#714).
+- `ward:java/avoid-no-argument-super-constructor-call` skips a qualified `outer.super()` call (#715).
+- `ward:java/unused-assignment` counts a read in a `finally` block as a read of the value assigned before the `try` (#716).
+- `ward:java/dmi-collections-should-not-contain-themselves` reports only a receiver known to be a collection (#717).
+- `ward:java/eq-other-no-object` skips a typed `equals` overload in a class that also declares `equals(Object)` (#718).
+- `ward:java/eq-overriding-equals-not-symmetric` no longer judges a class whose nested superclass in the same file may define `equals` (#719).
+- `ward:java/sing-singleton-has-nonprivate-constructor` reports only when the getter returns the shared instance (#720).
+- `ward:java/unused-local-variable` no longer gives the reads of a local to a method with the same name (#721).
+- `ward:java/uw-uncond-wait` no longer reports a static helper named `wait` (#722).
+- `ward:java/mockito-usage` reports only calls on `org.mockito.Mockito`.
+- The message of `ward:java/inner-type-last` names the inner type.
+
 ## [0.11.4] - 2026-11-20
 
 ### Fixed

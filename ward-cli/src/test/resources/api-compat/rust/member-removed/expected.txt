@@ -1,0 +1,2 @@
+src/lib.rs:1:8 api-compat:member-removed crate.<top-level>#close: public static () close() -> removed
+src/lib.rs:2:12 api-compat:member-removed crate.Door#unlock: public () unlock() -> removed

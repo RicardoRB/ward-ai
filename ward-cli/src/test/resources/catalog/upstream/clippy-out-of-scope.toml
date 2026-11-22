@@ -1,0 +1,18 @@
+# Rules of clippy-0.1.88 that Ward does not implement, with the reason for each group.
+
+[[group]]
+reason = "reads Clippy's own configuration (clippy.toml, clippy attributes or lint-table priorities), which Ward does not have"
+rules = [
+  "clippy::arbitrary-source-item-ordering",
+  "clippy::blanket-clippy-restriction-lints",
+  "clippy::deprecated-clippy-cfg-attr",
+  "clippy::disallowed-macros",
+  "clippy::disallowed-methods",
+  "clippy::disallowed-names",
+  "clippy::disallowed-script-idents",
+  "clippy::disallowed-types",
+  "clippy::incompatible-msrv",
+  "clippy::lint-groups-priority",
+  "clippy::missing-enforced-import-renames",
+  "clippy::unnecessary-clippy-cfg",
+]

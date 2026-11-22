@@ -73,7 +73,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["classDeclaration"]
-text = '^class(\w+)(?=[\s\S]*static\1\w*[Ii]nstance\(\))(?=[\s\S]*static(?:final|volatile)*\1\w+[=;])(?=[\s\S]*(?:(?:public|protected)\1\(|(?<=[{};])\1\())'
+text = '^class(\w+)(?=[\s\S]*static\1\w*[Ii]nstance\(\))(?=[\s\S]*(?:public(?:static|final|volatile)+\1\w+[=;]|static(?:final|volatile)*\1(\w+)[=;][\s\S]*static\1\w*[Ii]nstance\(\)\{(?:[^{}]|\{[^{}]*\})*return\2;|static\1\w*[Ii]nstance\(\)\{(?:[^{}]|\{[^{}]*\})*return(\w+);[\s\S]*static(?:final|volatile)*\1\3[=;]))(?=[\s\S]*(?:(?:public|protected)\1\(|(?<=[{};])\1\())'
 message = "singleton has a constructor that is not private, so other code can create more instances"
 '''
 
@@ -172,5 +172,8 @@ body = '''
 check = "forbidden-node"
 kinds = ["classDeclaration"]
 text = '^class(\w+)extends(?!(?:java\.lang\.)?(?:Number|Thread|Object|Format|Throwable|\w*Exception|\w*Error)(?:implements|\{))[\w.<>,]+(?:implements[\w.<>,]+)?\{[\s\S]*booleanequals\((?:final)?Object(\w+)\)\{[^}]*\2instanceof\1'
+# shortcut: a nested superclass is not followed; a file that declares a class extending one of
+# those types is not judged, since that class may be the superclass.
+not-root-text = 'class\w+extends(?:java\.lang\.)?(?:Number|Thread|Format|Throwable|\w*Exception|\w*Error)(?:implements[\w.<>,]+)?\{'
 message = "equals of a subclass tests instanceof its own class, so x.equals(y) and y.equals(x) can differ"
 '''

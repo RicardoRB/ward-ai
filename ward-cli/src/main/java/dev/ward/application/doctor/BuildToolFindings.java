@@ -3,6 +3,8 @@ package dev.ward.application.doctor;
 import dev.ward.application.doctor.jvm.JvmToolchainFinding;
 import dev.ward.application.doctor.node.NodeToolchainFinding;
 import dev.ward.application.doctor.python.PythonToolchainFinding;
+import dev.ward.application.doctor.rust.RustToolchainFinding;
+import dev.ward.application.doctor.dotnet.DotnetToolchainFinding;
 import dev.ward.application.doctor.swift.SwiftToolchainFinding;
 import dev.ward.domain.project.Toolchain;
 
@@ -16,7 +18,9 @@ final class BuildToolFindings {
       case JVM -> new JvmToolchainFinding();
       case NODE -> new NodeToolchainFinding();
       case PYTHON -> new PythonToolchainFinding();
+      case RUST -> new RustToolchainFinding();
       case SWIFT -> new SwiftToolchainFinding();
+      case DOTNET -> new DotnetToolchainFinding();
       default -> new UncheckedToolchainFinding();
     };
   }

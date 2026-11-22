@@ -1,0 +1,1 @@
+A.cs:3:1 api-compat:supertype-removed P.A: public class P.A : Marker -> public class P.A

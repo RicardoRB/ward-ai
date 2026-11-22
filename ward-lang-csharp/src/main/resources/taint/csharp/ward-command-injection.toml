@@ -1,0 +1,121 @@
+# Operating-system commands of C# code, written for Ward from the System.Diagnostics Process and ProcessStartInfo
+# documentation: the program and its argument string are fixed by the code or by whoever supplies them. Process and
+# ProcessStartInfo are found by the type of their receiver (see CSharpFlowSites).
+
+[[sinks]]
+kind = "call"
+name = "Start"
+receiver = "Process"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "ProcessStartInfo"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "member-write"
+name = "FileName"
+receiver = "ProcessStartInfo"
+arguments = [0]
+
+[[sinks]]
+kind = "member-write"
+name = "Arguments"
+receiver = "ProcessStartInfo"
+arguments = [0]
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "int"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "long"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "short"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "double"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "decimal"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "float"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "byte"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "bool"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "Guid"
+
+[[sanitizers]]
+kind = "call"
+name = "ToInt32"
+qualifier = "Convert"
+
+[[sanitizers]]
+kind = "call"
+name = "ToInt64"
+qualifier = "Convert"
+
+[[sanitizers]]
+kind = "call"
+name = "ToInt16"
+qualifier = "Convert"
+
+[[sanitizers]]
+kind = "call"
+name = "ToDouble"
+qualifier = "Convert"
+
+[[sanitizers]]
+kind = "call"
+name = "ToDecimal"
+qualifier = "Convert"
+
+[[sanitizers]]
+kind = "call"
+name = "ToBoolean"
+qualifier = "Convert"
+
+[[sanitizers]]
+kind = "call"
+name = "ToByte"
+qualifier = "Convert"
+
+[[sanitizers]]
+kind = "call"
+name = "TryParse"
+qualifier = "int"
+
+[[sanitizers]]
+kind = "call"
+name = "TryParse"
+qualifier = "long"
+
+[[sanitizers]]
+kind = "call"
+name = "TryParse"
+qualifier = "Guid"

@@ -1,0 +1,2 @@
+A.cs:2:1 api-compat:member-removed P.A#set_N: public final void set_N(int) -> removed
+A.cs:4:3 api-compat:member-less-visible P.A#set_M: public final void set_M(int) -> private final void set_M(int)

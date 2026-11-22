@@ -28,9 +28,8 @@ import javax.inject.Inject;
 
 /** Reads executable availability and prerequisite markers from the current machine. */
 public final class SystemEnvironmentInspection implements EnvironmentInspection {
-  private static final Logger LOGGER =
-      Logger.getLogger(SystemEnvironmentInspection.class.getName());
-  private static final Set<String> PROBED_EXECUTABLES =
+  /** The executables whose presence on the path init and doctor ask about. */
+  static final Set<String> PROBED_EXECUTABLES =
       Set.of(
           "mvn",
           "gradle",
@@ -52,8 +51,14 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
           "poetry",
           "swift",
           "xcodebuild",
-          "xcrun"
+          "xcrun",
+          "dotnet",
+          "cargo",
+          "cargo-llvm-cov",
+          "cargo-mutants"
       );
+  private static final Logger LOGGER =
+      Logger.getLogger(SystemEnvironmentInspection.class.getName());
   private static final List<String> OPENAPI_SPECS =
       List.of(
           "src/main/resources/openapi.yml",

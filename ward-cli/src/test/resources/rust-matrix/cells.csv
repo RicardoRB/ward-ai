@@ -1,0 +1,7 @@
+toolchain,edition,preset,fixture
+stable,2021,strict,basic
+stable,2024,strict,basic
+stable,2024,standard,basic
+1.85,2021,strict,basic
+1.85,2024,strict,basic
+1.85,2024,standard,basic

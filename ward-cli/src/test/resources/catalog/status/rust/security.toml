@@ -1,0 +1,5 @@
+# Status of the security rows in rust: "implemented" or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+path-injection = "implemented"
+tls-verification-disabled = "implemented"
+unsafe-public-function = "implemented"

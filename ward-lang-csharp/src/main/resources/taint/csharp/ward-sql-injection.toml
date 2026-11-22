@@ -1,0 +1,210 @@
+# SQL statements of C# code, written for Ward from the ADO.NET and Entity Framework Core documentation: the text of a
+# command is parsed as SQL, and a value reaches it safely only as a parameter (SqlParameter, FromSqlInterpolated).
+# Statement text is argument 0. The interpolated variants of the Entity Framework methods are not sinks.
+
+[[sinks]]
+kind = "call"
+name = "SqlCommand"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "OleDbCommand"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "OdbcCommand"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "NpgsqlCommand"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "SqliteCommand"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "MySqlCommand"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "OracleCommand"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "SqlDataAdapter"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "NpgsqlDataAdapter"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "MySqlDataAdapter"
+arguments = [0]
+
+[[sinks]]
+kind = "member-write"
+name = "CommandText"
+receiver = "SqlCommand"
+arguments = [0]
+
+[[sinks]]
+kind = "member-write"
+name = "CommandText"
+receiver = "OleDbCommand"
+arguments = [0]
+
+[[sinks]]
+kind = "member-write"
+name = "CommandText"
+receiver = "OdbcCommand"
+arguments = [0]
+
+[[sinks]]
+kind = "member-write"
+name = "CommandText"
+receiver = "NpgsqlCommand"
+arguments = [0]
+
+[[sinks]]
+kind = "member-write"
+name = "CommandText"
+receiver = "SqliteCommand"
+arguments = [0]
+
+[[sinks]]
+kind = "member-write"
+name = "CommandText"
+receiver = "MySqlCommand"
+arguments = [0]
+
+[[sinks]]
+kind = "member-write"
+name = "CommandText"
+receiver = "OracleCommand"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "ExecuteSqlRaw"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "ExecuteSqlRawAsync"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "FromSqlRaw"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "SqlQueryRaw"
+arguments = [0]
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "int"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "long"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "short"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "double"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "decimal"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "float"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "byte"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "bool"
+
+[[sanitizers]]
+kind = "call"
+name = "Parse"
+qualifier = "Guid"
+
+[[sanitizers]]
+kind = "call"
+name = "ToInt32"
+qualifier = "Convert"
+
+[[sanitizers]]
+kind = "call"
+name = "ToInt64"
+qualifier = "Convert"
+
+[[sanitizers]]
+kind = "call"
+name = "ToInt16"
+qualifier = "Convert"
+
+[[sanitizers]]
+kind = "call"
+name = "ToDouble"
+qualifier = "Convert"
+
+[[sanitizers]]
+kind = "call"
+name = "ToDecimal"
+qualifier = "Convert"
+
+[[sanitizers]]
+kind = "call"
+name = "ToBoolean"
+qualifier = "Convert"
+
+[[sanitizers]]
+kind = "call"
+name = "ToByte"
+qualifier = "Convert"
+
+[[sanitizers]]
+kind = "call"
+name = "TryParse"
+qualifier = "int"
+
+[[sanitizers]]
+kind = "call"
+name = "TryParse"
+qualifier = "long"
+
+[[sanitizers]]
+kind = "call"
+name = "TryParse"
+qualifier = "Guid"

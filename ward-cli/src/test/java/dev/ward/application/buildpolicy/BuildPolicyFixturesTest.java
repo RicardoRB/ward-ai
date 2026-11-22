@@ -11,7 +11,8 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class BuildPolicyFixturesTest {
-  private static final List<String> TOOLS = List.of("maven", "gradle", "node", "python");
+  private static final List<String> TOOLS =
+      List.of("maven", "gradle", "node", "python", "cargo", "dotnet");
 
   @Test
   void everyViolatingFolderReportsItsExpectedLinesAndEveryPassingFolderIsClean()
@@ -55,9 +56,9 @@ class BuildPolicyFixturesTest {
             BuildRule.NO_DYNAMIC_VERSION,
             TOOLS,
             BuildRule.MINIMUM_BUILD_TOOL_VERSION,
-            TOOLS,
+            List.of("maven", "gradle", "node", "python"),
             BuildRule.DUPLICATE_DEPENDENCY_DECLARATION,
-            List.of("maven")
+            List.of("maven", "cargo", "dotnet")
         );
     supported.forEach(
         (rule, tools) ->

@@ -21,4 +21,10 @@ class Headers {
   String read(HttpServletRequest request) {
     return request.getParameter("origin");
   }
+
+  // A String keeps its line breaks.
+  void text(HttpServletRequest request, HttpServletResponse response) {
+    String key = request.getHeader("X-Key");
+    response.setHeader("Retry-After", key.trim());
+  }
 }

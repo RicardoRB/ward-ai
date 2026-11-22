@@ -1,0 +1,770 @@
+# Status of the clippy rows in rust: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+absolute-paths = { status = "planned", issue = "#682" }
+absurd-extreme-comparisons = { status = "planned", issue = "#681" }
+alloc-instead-of-core = { status = "planned", issue = "#682" }
+allow-attributes = "implemented"
+allow-attributes-without-reason = "implemented"
+almost-complete-range = { status = "planned", issue = "#681" }
+almost-swapped = { status = "planned", issue = "#681" }
+approx-constant = "implemented"
+arc-with-non-send-sync = { status = "planned", issue = "#681" }
+arithmetic-side-effects = { status = "planned", issue = "#681" }
+as-conversions = { status = "planned", issue = "#681" }
+as-pointer-underscore = { status = "planned", issue = "#681" }
+as-ptr-cast-mut = { status = "planned", issue = "#681" }
+as-underscore = { status = "planned", issue = "#681" }
+assertions-on-constants = { status = "planned", issue = "#681" }
+assertions-on-result-states = { status = "planned", issue = "#681" }
+assign-op-pattern = { status = "planned", issue = "#681" }
+assigning-clones = { status = "planned", issue = "#681" }
+async-yields-async = { status = "planned", issue = "#681" }
+await-holding-invalid-type = { status = "planned", issue = "#681" }
+await-holding-lock = { status = "planned", issue = "#681" }
+await-holding-refcell-ref = { status = "planned", issue = "#681" }
+bad-bit-mask = { status = "planned", issue = "#681" }
+big-endian-bytes = { status = "planned", issue = "#681" }
+bind-instead-of-map = { status = "planned", issue = "#681" }
+blocks-in-conditions = { status = "planned", issue = "#681" }
+bool-assert-comparison = { status = "planned", issue = "#681" }
+bool-comparison = "implemented"
+bool-to-int-with-if = { status = "planned", issue = "#681" }
+borrow-as-ptr = { status = "planned", issue = "#681" }
+borrow-deref-ref = { status = "planned", issue = "#681" }
+borrow-interior-mutable-const = { status = "planned", issue = "#681" }
+borrowed-box = { status = "planned", issue = "#681" }
+box-collection = { status = "planned", issue = "#681" }
+box-default = "implemented"
+boxed-local = { status = "planned", issue = "#681" }
+branches-sharing-code = { status = "planned", issue = "#681" }
+builtin-type-shadow = { status = "planned", issue = "#682" }
+byte-char-slices = { status = "planned", issue = "#681" }
+bytes-count-to-len = { status = "planned", issue = "#681" }
+bytes-nth = "implemented"
+cargo-common-metadata = { status = "planned", issue = "#683" }
+case-sensitive-file-extension-comparisons = { status = "planned", issue = "#681" }
+cast-abs-to-unsigned = { status = "planned", issue = "#681" }
+cast-enum-constructor = { status = "planned", issue = "#681" }
+cast-enum-truncation = { status = "planned", issue = "#681" }
+cast-lossless = { status = "planned", issue = "#681" }
+cast-nan-to-int = { status = "planned", issue = "#681" }
+cast-possible-truncation = { status = "planned", issue = "#681" }
+cast-possible-wrap = { status = "planned", issue = "#681" }
+cast-precision-loss = { status = "planned", issue = "#681" }
+cast-ptr-alignment = { status = "planned", issue = "#681" }
+cast-sign-loss = { status = "planned", issue = "#681" }
+cast-slice-different-sizes = { status = "planned", issue = "#681" }
+cast-slice-from-raw-parts = { status = "planned", issue = "#681" }
+cfg-not-test = { status = "planned", issue = "#681" }
+char-indices-as-byte-indices = { status = "planned", issue = "#681" }
+char-lit-as-u8 = "implemented"
+chars-last-cmp = { status = "planned", issue = "#681" }
+chars-next-cmp = "implemented"
+checked-conversions = { status = "planned", issue = "#681" }
+clear-with-drain = { status = "planned", issue = "#681" }
+clone-on-copy = { status = "planned", issue = "#681" }
+clone-on-ref-ptr = { status = "planned", issue = "#681" }
+cloned-instead-of-copied = { status = "planned", issue = "#681" }
+cmp-null = { status = "planned", issue = "#681" }
+cmp-owned = { status = "planned", issue = "#681" }
+collapsible-match = { status = "planned", issue = "#682" }
+collapsible-str-replace = { status = "planned", issue = "#681" }
+collection-is-never-read = { status = "planned", issue = "#681" }
+comparison-chain = { status = "planned", issue = "#681" }
+comparison-to-empty = { status = "planned", issue = "#681" }
+const-is-empty = { status = "planned", issue = "#681" }
+copy-iterator = { status = "planned", issue = "#681" }
+crate-in-macro-def = { status = "planned", issue = "#681" }
+create-dir = { status = "planned", issue = "#681" }
+crosspointer-transmute = { status = "planned", issue = "#681" }
+dbg-macro = "implemented"
+debug-assert-with-mut-call = { status = "planned", issue = "#681" }
+decimal-literal-representation = { status = "planned", issue = "#682" }
+declare-interior-mutable-const = { status = "planned", issue = "#681" }
+default-constructed-unit-structs = { status = "planned", issue = "#681" }
+default-instead-of-iter-empty = { status = "planned", issue = "#681" }
+default-numeric-fallback = { status = "planned", issue = "#682" }
+default-trait-access = { status = "planned", issue = "#681" }
+default-union-representation = { status = "planned", issue = "#682" }
+deprecated-cfg-attr = { status = "planned", issue = "#681" }
+deprecated-semver = { status = "planned", issue = "#682" }
+deref-addrof = "implemented"
+deref-by-slicing = { status = "planned", issue = "#681" }
+derivable-impls = { status = "planned", issue = "#681" }
+derive-ord-xor-partial-ord = { status = "planned", issue = "#681" }
+derive-partial-eq-without-eq = { status = "planned", issue = "#681" }
+derived-hash-with-manual-eq = { status = "planned", issue = "#681" }
+diverging-sub-expression = { status = "planned", issue = "#681" }
+doc-comment-double-space-linebreaks = { status = "planned", issue = "#681" }
+doc-include-without-cfg = { status = "planned", issue = "#682" }
+doc-lazy-continuation = { status = "planned", issue = "#682" }
+doc-link-code = { status = "planned", issue = "#681" }
+doc-link-with-quotes = { status = "planned", issue = "#682" }
+doc-markdown = { status = "planned", issue = "#682" }
+doc-nested-refdefs = { status = "planned", issue = "#682" }
+doc-overindented-list-items = { status = "planned", issue = "#682" }
+double-comparisons = { status = "planned", issue = "#681" }
+double-ended-iterator-last = { status = "planned", issue = "#681" }
+double-must-use = { status = "planned", issue = "#681" }
+double-parens = "implemented"
+drain-collect = { status = "planned", issue = "#681" }
+drop-non-drop = { status = "planned", issue = "#681" }
+duplicate-mod = { status = "planned", issue = "#681" }
+duplicate-underscore-argument = { status = "planned", issue = "#682" }
+duplicated-attributes = { status = "planned", issue = "#682" }
+duration-subsec = { status = "planned", issue = "#681" }
+eager-transmute = { status = "planned", issue = "#681" }
+elidable-lifetime-names = { status = "planned", issue = "#681" }
+else-if-without-else = { status = "planned", issue = "#681" }
+empty-docs = { status = "planned", issue = "#682" }
+empty-drop = { status = "planned", issue = "#681" }
+empty-enum = { status = "planned", issue = "#681" }
+empty-enum-variants-with-brackets = { status = "planned", issue = "#682" }
+empty-line-after-doc-comments = { status = "planned", issue = "#682" }
+empty-line-after-outer-attr = { status = "planned", issue = "#682" }
+empty-loop = "implemented"
+empty-structs-with-brackets = "implemented"
+enum-clike-unportable-variant = { status = "planned", issue = "#681" }
+enum-glob-use = { status = "planned", issue = "#682" }
+enum-variant-names = { status = "planned", issue = "#682" }
+eq-op = "implemented"
+equatable-if-let = { status = "planned", issue = "#681" }
+erasing-op = "implemented"
+err-expect = "implemented"
+error-impl-error = { status = "planned", issue = "#681" }
+excessive-nesting = { status = "planned", issue = "#682" }
+excessive-precision = { status = "planned", issue = "#681" }
+exhaustive-enums = { status = "planned", issue = "#681" }
+exhaustive-structs = { status = "planned", issue = "#681" }
+exit = "implemented"
+expect-fun-call = "implemented"
+expect-used = "implemented"
+expl-impl-clone-on-copy = { status = "planned", issue = "#681" }
+explicit-auto-deref = { status = "planned", issue = "#681" }
+explicit-counter-loop = { status = "planned", issue = "#682" }
+explicit-deref-methods = { status = "planned", issue = "#681" }
+explicit-into-iter-loop = { status = "planned", issue = "#681" }
+explicit-iter-loop = { status = "planned", issue = "#681" }
+explicit-write = { status = "planned", issue = "#681" }
+extend-with-drain = { status = "planned", issue = "#681" }
+extra-unused-lifetimes = { status = "planned", issue = "#682" }
+extra-unused-type-parameters = { status = "planned", issue = "#682" }
+fallible-impl-from = { status = "planned", issue = "#682" }
+field-reassign-with-default = { status = "planned", issue = "#681" }
+field-scoped-visibility-modifiers = { status = "planned", issue = "#681" }
+filetype-is-file = { status = "planned", issue = "#681" }
+filter-map-bool-then = { status = "planned", issue = "#681" }
+filter-map-identity = { status = "planned", issue = "#681" }
+filter-map-next = { status = "planned", issue = "#681" }
+filter-next = "implemented"
+flat-map-identity = { status = "planned", issue = "#681" }
+flat-map-option = { status = "planned", issue = "#681" }
+float-arithmetic = { status = "planned", issue = "#681" }
+float-cmp = { status = "planned", issue = "#681" }
+float-cmp-const = { status = "planned", issue = "#681" }
+float-equality-without-abs = { status = "planned", issue = "#681" }
+fn-params-excessive-bools = { status = "planned", issue = "#682" }
+fn-to-numeric-cast = { status = "planned", issue = "#681" }
+fn-to-numeric-cast-any = { status = "planned", issue = "#681" }
+fn-to-numeric-cast-with-truncation = { status = "planned", issue = "#681" }
+for-kv-map = { status = "planned", issue = "#682" }
+forget-non-drop = { status = "planned", issue = "#681" }
+format-collect = { status = "planned", issue = "#681" }
+format-in-format-args = { status = "planned", issue = "#681" }
+format-push-string = { status = "planned", issue = "#681" }
+four-forward-slashes = { status = "planned", issue = "#682" }
+from-iter-instead-of-collect = { status = "planned", issue = "#681" }
+from-over-into = { status = "planned", issue = "#681" }
+from-raw-with-void-ptr = { status = "planned", issue = "#681" }
+from-str-radix-10 = { status = "planned", issue = "#681" }
+future-not-send = { status = "planned", issue = "#681" }
+get-first = "implemented"
+get-last-with-len = { status = "planned", issue = "#681" }
+get-unwrap = { status = "planned", issue = "#682" }
+host-endian-bytes = { status = "planned", issue = "#681" }
+identity-op = "implemented"
+if-let-mutex = { status = "planned", issue = "#681" }
+if-not-else = { status = "planned", issue = "#681" }
+if-same-then-else = { status = "planned", issue = "#681" }
+if-then-some-else-none = { status = "planned", issue = "#681" }
+ifs-same-cond = { status = "planned", issue = "#681" }
+ignore-without-reason = { status = "planned", issue = "#681" }
+ignored-unit-patterns = { status = "planned", issue = "#681" }
+impl-hash-borrow-with-str-and-bytes = { status = "planned", issue = "#681" }
+impl-trait-in-params = { status = "planned", issue = "#681" }
+implicit-clone = { status = "planned", issue = "#681" }
+implicit-hasher = { status = "planned", issue = "#681" }
+implicit-saturating-add = { status = "planned", issue = "#682" }
+implicit-saturating-sub = { status = "planned", issue = "#682" }
+implied-bounds-in-impls = { status = "planned", issue = "#681" }
+impossible-comparisons = { status = "planned", issue = "#681" }
+imprecise-flops = { status = "planned", issue = "#681" }
+inconsistent-digit-grouping = { status = "planned", issue = "#682" }
+inconsistent-struct-constructor = { status = "planned", issue = "#681" }
+index-refutable-slice = { status = "planned", issue = "#681" }
+indexing-slicing = { status = "planned", issue = "#682" }
+ineffective-bit-mask = { status = "planned", issue = "#681" }
+ineffective-open-options = { status = "planned", issue = "#681" }
+inefficient-to-string = { status = "planned", issue = "#681" }
+infallible-destructuring-match = { status = "planned", issue = "#681" }
+infinite-iter = { status = "planned", issue = "#681" }
+infinite-loop = { status = "planned", issue = "#681" }
+inherent-to-string = { status = "planned", issue = "#681" }
+inherent-to-string-shadow-display = { status = "planned", issue = "#681" }
+init-numbered-fields = { status = "planned", issue = "#681" }
+inline-always = "implemented"
+inline-asm-x86-att-syntax = { status = "planned", issue = "#682" }
+inline-asm-x86-intel-syntax = { status = "planned", issue = "#682" }
+inline-fn-without-body = { status = "planned", issue = "#681" }
+inspect-for-each = { status = "planned", issue = "#681" }
+int-plus-one = "implemented"
+integer-division = { status = "planned", issue = "#681" }
+integer-division-remainder-used = { status = "planned", issue = "#681" }
+into-iter-on-ref = { status = "planned", issue = "#681" }
+into-iter-without-iter = { status = "planned", issue = "#681" }
+invalid-regex = { status = "planned", issue = "#681" }
+invalid-upcast-comparisons = { status = "planned", issue = "#681" }
+inverted-saturating-sub = { status = "planned", issue = "#681" }
+invisible-characters = { status = "planned", issue = "#681" }
+io-other-error = { status = "planned", issue = "#681" }
+is-digit-ascii-radix = { status = "planned", issue = "#681" }
+items-after-statements = { status = "planned", issue = "#682" }
+items-after-test-module = { status = "planned", issue = "#682" }
+iter-cloned-collect = "implemented"
+iter-count = { status = "planned", issue = "#681" }
+iter-filter-is-ok = { status = "planned", issue = "#681" }
+iter-filter-is-some = { status = "planned", issue = "#681" }
+iter-kv-map = { status = "planned", issue = "#681" }
+iter-next-loop = { status = "planned", issue = "#681" }
+iter-next-slice = { status = "planned", issue = "#681" }
+iter-not-returning-iterator = { status = "planned", issue = "#681" }
+iter-nth = { status = "planned", issue = "#681" }
+iter-nth-zero = "implemented"
+iter-on-empty-collections = { status = "planned", issue = "#681" }
+iter-on-single-items = { status = "planned", issue = "#681" }
+iter-out-of-bounds = { status = "planned", issue = "#681" }
+iter-over-hash-type = { status = "planned", issue = "#681" }
+iter-overeager-cloned = { status = "planned", issue = "#681" }
+iter-skip-next = { status = "planned", issue = "#681" }
+iter-skip-zero = "implemented"
+iter-with-drain = { status = "planned", issue = "#681" }
+iter-without-into-iter = { status = "planned", issue = "#681" }
+iterator-step-by-zero = { status = "planned", issue = "#681" }
+join-absolute-paths = { status = "planned", issue = "#681" }
+just-underscores-and-digits = { status = "planned", issue = "#682" }
+large-const-arrays = { status = "planned", issue = "#681" }
+large-digit-groups = { status = "planned", issue = "#682" }
+large-enum-variant = { status = "planned", issue = "#681" }
+large-futures = { status = "planned", issue = "#681" }
+large-include-file = { status = "planned", issue = "#681" }
+large-stack-arrays = { status = "planned", issue = "#681" }
+large-stack-frames = { status = "planned", issue = "#681" }
+large-types-passed-by-value = { status = "planned", issue = "#681" }
+legacy-numeric-constants = { status = "planned", issue = "#681" }
+len-without-is-empty = { status = "planned", issue = "#681" }
+len-zero = "implemented"
+let-and-return = { status = "planned", issue = "#682" }
+let-underscore-future = { status = "planned", issue = "#681" }
+let-underscore-lock = { status = "planned", issue = "#681" }
+let-underscore-must-use = { status = "planned", issue = "#681" }
+let-underscore-untyped = { status = "planned", issue = "#681" }
+let-unit-value = { status = "planned", issue = "#681" }
+let-with-type-underscore = { status = "planned", issue = "#682" }
+lines-filter-map-ok = { status = "planned", issue = "#681" }
+linkedlist = { status = "planned", issue = "#681" }
+literal-string-with-formatting-args = { status = "planned", issue = "#681" }
+little-endian-bytes = { status = "planned", issue = "#681" }
+lossy-float-literal = { status = "planned", issue = "#682" }
+macro-metavars-in-unsafe = { status = "planned", issue = "#681" }
+macro-use-imports = { status = "planned", issue = "#682" }
+main-recursion = { status = "planned", issue = "#681" }
+manual-abs-diff = { status = "planned", issue = "#682" }
+manual-assert = { status = "planned", issue = "#681" }
+manual-async-fn = { status = "planned", issue = "#681" }
+manual-bits = { status = "planned", issue = "#682" }
+manual-c-str-literals = { status = "planned", issue = "#682" }
+manual-clamp = { status = "planned", issue = "#682" }
+manual-contains = { status = "planned", issue = "#681" }
+manual-dangling-ptr = { status = "planned", issue = "#681" }
+manual-div-ceil = { status = "planned", issue = "#682" }
+manual-filter = { status = "planned", issue = "#682" }
+manual-filter-map = { status = "planned", issue = "#682" }
+manual-find = { status = "planned", issue = "#682" }
+manual-find-map = { status = "planned", issue = "#682" }
+manual-flatten = { status = "planned", issue = "#682" }
+manual-hash-one = { status = "planned", issue = "#682" }
+manual-ignore-case-cmp = { status = "planned", issue = "#681" }
+manual-inspect = { status = "planned", issue = "#682" }
+manual-instant-elapsed = { status = "planned", issue = "#681" }
+manual-is-ascii-check = { status = "planned", issue = "#682" }
+manual-is-finite = { status = "planned", issue = "#681" }
+manual-is-infinite = { status = "planned", issue = "#681" }
+manual-is-power-of-two = { status = "planned", issue = "#681" }
+manual-is-variant-and = { status = "planned", issue = "#681" }
+manual-let-else = { status = "planned", issue = "#682" }
+manual-main-separator-str = { status = "planned", issue = "#682" }
+manual-map = { status = "planned", issue = "#682" }
+manual-memcpy = { status = "planned", issue = "#681" }
+manual-midpoint = { status = "planned", issue = "#681" }
+manual-next-back = { status = "planned", issue = "#682" }
+manual-non-exhaustive = { status = "planned", issue = "#682" }
+manual-ok-err = { status = "planned", issue = "#682" }
+manual-ok-or = { status = "planned", issue = "#682" }
+manual-option-as-slice = { status = "planned", issue = "#681" }
+manual-pattern-char-comparison = { status = "planned", issue = "#682" }
+manual-range-contains = "implemented"
+manual-range-patterns = { status = "planned", issue = "#682" }
+manual-rem-euclid = { status = "planned", issue = "#682" }
+manual-repeat-n = { status = "planned", issue = "#682" }
+manual-retain = { status = "planned", issue = "#681" }
+manual-rotate = { status = "planned", issue = "#682" }
+manual-saturating-arithmetic = { status = "planned", issue = "#682" }
+manual-slice-fill = { status = "planned", issue = "#682" }
+manual-slice-size-calculation = { status = "planned", issue = "#681" }
+manual-split-once = { status = "planned", issue = "#682" }
+manual-str-repeat = { status = "planned", issue = "#681" }
+manual-string-new = "implemented"
+manual-strip = { status = "planned", issue = "#682" }
+manual-swap = { status = "planned", issue = "#682" }
+manual-try-fold = { status = "planned", issue = "#681" }
+manual-unwrap-or = { status = "planned", issue = "#682" }
+manual-unwrap-or-default = { status = "planned", issue = "#682" }
+manual-while-let-some = { status = "planned", issue = "#682" }
+many-single-char-names = { status = "planned", issue = "#682" }
+map-all-any-identity = { status = "planned", issue = "#681" }
+map-clone = "implemented"
+map-collect-result-unit = { status = "planned", issue = "#681" }
+map-entry = { status = "planned", issue = "#681" }
+map-err-ignore = { status = "planned", issue = "#681" }
+map-flatten = "implemented"
+map-identity = { status = "planned", issue = "#681" }
+map-unwrap-or = { status = "planned", issue = "#681" }
+map-with-unused-argument-over-ranges = { status = "planned", issue = "#681" }
+match-as-ref = { status = "planned", issue = "#681" }
+match-bool = { status = "planned", issue = "#681" }
+match-like-matches-macro = { status = "planned", issue = "#682" }
+match-overlapping-arm = { status = "planned", issue = "#681" }
+match-ref-pats = { status = "planned", issue = "#682" }
+match-result-ok = { status = "planned", issue = "#681" }
+match-same-arms = { status = "planned", issue = "#681" }
+match-single-binding = { status = "planned", issue = "#682" }
+match-str-case-mismatch = { status = "planned", issue = "#681" }
+match-wild-err-arm = { status = "planned", issue = "#682" }
+match-wildcard-for-single-variants = { status = "planned", issue = "#682" }
+maybe-infinite-iter = { status = "planned", issue = "#681" }
+mem-forget = "implemented"
+mem-replace-option-with-none = "implemented"
+mem-replace-option-with-some = { status = "planned", issue = "#681" }
+mem-replace-with-default = "implemented"
+mem-replace-with-uninit = { status = "planned", issue = "#681" }
+min-ident-chars = { status = "planned", issue = "#682" }
+min-max = { status = "planned", issue = "#681" }
+mismatching-type-param-order = { status = "planned", issue = "#681" }
+misnamed-getters = { status = "planned", issue = "#681" }
+misrefactored-assign-op = { status = "planned", issue = "#681" }
+missing-assert-message = { status = "planned", issue = "#682" }
+missing-asserts-for-indexing = { status = "planned", issue = "#681" }
+missing-const-for-fn = { status = "planned", issue = "#681" }
+missing-const-for-thread-local = { status = "planned", issue = "#681" }
+missing-docs-in-private-items = { status = "planned", issue = "#682" }
+missing-errors-doc = { status = "planned", issue = "#682" }
+missing-fields-in-debug = { status = "planned", issue = "#682" }
+missing-inline-in-public-items = { status = "planned", issue = "#682" }
+missing-panics-doc = { status = "planned", issue = "#682" }
+missing-safety-doc = { status = "planned", issue = "#682" }
+missing-spin-loop = { status = "planned", issue = "#681" }
+missing-trait-methods = { status = "planned", issue = "#682" }
+missing-transmute-annotations = { status = "planned", issue = "#681" }
+mistyped-literal-suffixes = { status = "planned", issue = "#681" }
+mixed-attributes-style = { status = "planned", issue = "#682" }
+mixed-case-hex-literals = "implemented"
+mixed-read-write-in-expression = { status = "planned", issue = "#681" }
+mod-module-files = { status = "planned", issue = "#682" }
+module-inception = { status = "planned", issue = "#682" }
+module-name-repetitions = { status = "planned", issue = "#682" }
+modulo-arithmetic = { status = "planned", issue = "#681" }
+modulo-one = "implemented"
+multi-assignments = { status = "planned", issue = "#681" }
+multiple-bound-locations = { status = "planned", issue = "#681" }
+multiple-crate-versions = { status = "planned", issue = "#683" }
+multiple-inherent-impl = { status = "planned", issue = "#682" }
+multiple-unsafe-ops-per-block = { status = "planned", issue = "#682" }
+must-use-candidate = { status = "planned", issue = "#681" }
+must-use-unit = { status = "planned", issue = "#681" }
+mut-from-ref = { status = "planned", issue = "#681" }
+mut-mut = { status = "planned", issue = "#681" }
+mut-mutex-lock = { status = "planned", issue = "#681" }
+mut-range-bound = { status = "planned", issue = "#681" }
+mutable-key-type = { status = "planned", issue = "#681" }
+mutex-atomic = { status = "planned", issue = "#682" }
+mutex-integer = { status = "planned", issue = "#682" }
+naive-bytecount = { status = "planned", issue = "#681" }
+needless-arbitrary-self-type = { status = "planned", issue = "#681" }
+needless-as-bytes = { status = "planned", issue = "#681" }
+needless-bitwise-bool = { status = "planned", issue = "#681" }
+needless-bool = "implemented"
+needless-bool-assign = { status = "planned", issue = "#681" }
+needless-borrow = { status = "planned", issue = "#681" }
+needless-borrowed-reference = { status = "planned", issue = "#682" }
+needless-borrows-for-generic-args = { status = "planned", issue = "#681" }
+needless-character-iteration = { status = "planned", issue = "#681" }
+needless-collect = { status = "planned", issue = "#681" }
+needless-continue = { status = "planned", issue = "#682" }
+needless-doctest-main = { status = "planned", issue = "#682" }
+needless-for-each = { status = "planned", issue = "#681" }
+needless-if = "implemented"
+needless-late-init = { status = "planned", issue = "#682" }
+needless-lifetimes = { status = "planned", issue = "#682" }
+needless-match = { status = "planned", issue = "#682" }
+needless-maybe-sized = { status = "planned", issue = "#681" }
+needless-option-as-deref = { status = "planned", issue = "#681" }
+needless-option-take = { status = "planned", issue = "#682" }
+needless-parens-on-range-literals = { status = "planned", issue = "#682" }
+needless-pass-by-ref-mut = { status = "planned", issue = "#681" }
+needless-pass-by-value = { status = "planned", issue = "#681" }
+needless-pub-self = "implemented"
+needless-question-mark = { status = "planned", issue = "#682" }
+needless-range-loop = { status = "planned", issue = "#682" }
+needless-raw-string-hashes = { status = "planned", issue = "#681" }
+needless-raw-strings = { status = "planned", issue = "#681" }
+needless-return = "implemented"
+needless-return-with-question-mark = { status = "planned", issue = "#682" }
+needless-splitn = { status = "planned", issue = "#682" }
+needless-update = { status = "planned", issue = "#682" }
+neg-cmp-op-on-partial-ord = { status = "planned", issue = "#681" }
+neg-multiply = "implemented"
+negative-feature-names = { status = "planned", issue = "#683" }
+never-loop = { status = "planned", issue = "#682" }
+new-ret-no-self = { status = "planned", issue = "#681" }
+new-without-default = { status = "planned", issue = "#681" }
+no-effect = { status = "planned", issue = "#681" }
+no-effect-replace = { status = "planned", issue = "#681" }
+no-effect-underscore-binding = { status = "planned", issue = "#681" }
+no-mangle-with-rust-abi = { status = "planned", issue = "#681" }
+non-ascii-literal = { status = "planned", issue = "#681" }
+non-canonical-clone-impl = { status = "planned", issue = "#681" }
+non-canonical-partial-ord-impl = { status = "planned", issue = "#681" }
+non-minimal-cfg = { status = "planned", issue = "#682" }
+non-octal-unix-permissions = { status = "planned", issue = "#681" }
+non-send-fields-in-send-ty = { status = "planned", issue = "#681" }
+non-std-lazy-statics = { status = "planned", issue = "#681" }
+non-zero-suggestions = { status = "planned", issue = "#681" }
+nonminimal-bool = { status = "planned", issue = "#682" }
+nonsensical-open-options = { status = "planned", issue = "#681" }
+nonstandard-macro-braces = { status = "planned", issue = "#681" }
+not-unsafe-ptr-arg-deref = { status = "planned", issue = "#681" }
+obfuscated-if-else = { status = "planned", issue = "#681" }
+octal-escapes = { status = "planned", issue = "#681" }
+ok-expect = "implemented"
+only-used-in-recursion = { status = "planned", issue = "#681" }
+op-ref = { status = "planned", issue = "#681" }
+option-as-ref-cloned = { status = "planned", issue = "#681" }
+option-as-ref-deref = { status = "planned", issue = "#681" }
+option-env-unwrap = { status = "planned", issue = "#681" }
+option-filter-map = { status = "planned", issue = "#681" }
+option-if-let-else = { status = "planned", issue = "#681" }
+option-map-or-none = "implemented"
+option-map-unit-fn = { status = "planned", issue = "#681" }
+option-option = { status = "planned", issue = "#681" }
+or-fun-call = { status = "planned", issue = "#681" }
+or-then-unwrap = { status = "planned", issue = "#681" }
+out-of-bounds-indexing = { status = "planned", issue = "#681" }
+overly-complex-bool-expr = { status = "planned", issue = "#681" }
+owned-cow = { status = "planned", issue = "#681" }
+panic = "implemented"
+panic-in-result-fn = { status = "planned", issue = "#681" }
+panicking-overflow-checks = { status = "planned", issue = "#681" }
+panicking-unwrap = { status = "planned", issue = "#681" }
+partial-pub-fields = { status = "planned", issue = "#681" }
+partialeq-ne-impl = { status = "planned", issue = "#681" }
+partialeq-to-none = "implemented"
+path-buf-push-overwrite = { status = "planned", issue = "#681" }
+path-ends-with-ext = { status = "planned", issue = "#681" }
+pathbuf-init-then-push = { status = "planned", issue = "#681" }
+pattern-type-mismatch = { status = "planned", issue = "#681" }
+permissions-set-readonly-false = { status = "planned", issue = "#681" }
+pointers-in-nomem-asm-block = { status = "planned", issue = "#681" }
+possible-missing-comma = { status = "planned", issue = "#681" }
+precedence = { status = "planned", issue = "#682" }
+precedence-bits = { status = "planned", issue = "#681" }
+print-in-format-impl = { status = "planned", issue = "#681" }
+print-literal = "implemented"
+print-stderr = "implemented"
+print-stdout = "implemented"
+print-with-newline = "implemented"
+println-empty-string = "implemented"
+ptr-arg = { status = "planned", issue = "#681" }
+ptr-as-ptr = { status = "planned", issue = "#681" }
+ptr-cast-constness = { status = "planned", issue = "#681" }
+ptr-eq = { status = "planned", issue = "#681" }
+ptr-offset-with-cast = { status = "planned", issue = "#681" }
+pub-underscore-fields = { status = "planned", issue = "#681" }
+pub-use = { status = "planned", issue = "#681" }
+pub-with-shorthand = { status = "planned", issue = "#682" }
+pub-without-shorthand = { status = "planned", issue = "#682" }
+question-mark = { status = "planned", issue = "#682" }
+question-mark-used = { status = "planned", issue = "#681" }
+range-minus-one = { status = "planned", issue = "#681" }
+range-plus-one = { status = "planned", issue = "#681" }
+range-zip-with-len = { status = "planned", issue = "#681" }
+rc-buffer = { status = "planned", issue = "#682" }
+rc-clone-in-vec-init = { status = "planned", issue = "#681" }
+rc-mutex = { status = "planned", issue = "#682" }
+read-line-without-trim = { status = "planned", issue = "#681" }
+read-zero-byte-vec = { status = "planned", issue = "#681" }
+readonly-write-lock = { status = "planned", issue = "#681" }
+recursive-format-impl = { status = "planned", issue = "#681" }
+redundant-allocation = { status = "planned", issue = "#681" }
+redundant-as-str = { status = "planned", issue = "#681" }
+redundant-async-block = { status = "planned", issue = "#681" }
+redundant-at-rest-pattern = { status = "planned", issue = "#682" }
+redundant-clone = { status = "planned", issue = "#681" }
+redundant-closure = "implemented"
+redundant-closure-call = { status = "planned", issue = "#682" }
+redundant-closure-for-method-calls = { status = "planned", issue = "#681" }
+redundant-comparisons = { status = "planned", issue = "#681" }
+redundant-else = { status = "planned", issue = "#682" }
+redundant-feature-names = { status = "planned", issue = "#683" }
+redundant-field-names = "implemented"
+redundant-guards = { status = "planned", issue = "#682" }
+redundant-locals = { status = "planned", issue = "#681" }
+redundant-pattern = { status = "planned", issue = "#682" }
+redundant-pattern-matching = "implemented"
+redundant-pub-crate = { status = "planned", issue = "#681" }
+redundant-slicing = { status = "planned", issue = "#681" }
+redundant-static-lifetimes = "implemented"
+redundant-test-prefix = { status = "planned", issue = "#681" }
+redundant-type-annotations = { status = "planned", issue = "#681" }
+ref-as-ptr = { status = "planned", issue = "#681" }
+ref-binding-to-reference = { status = "planned", issue = "#681" }
+ref-option = { status = "planned", issue = "#681" }
+ref-option-ref = { status = "planned", issue = "#681" }
+ref-patterns = { status = "planned", issue = "#682" }
+regex-creation-in-loops = { status = "planned", issue = "#681" }
+renamed-function-params = { status = "planned", issue = "#681" }
+repeat-once = { status = "planned", issue = "#681" }
+repeat-vec-with-capacity = { status = "planned", issue = "#681" }
+repr-packed-without-abi = { status = "planned", issue = "#681" }
+reserve-after-initialization = { status = "planned", issue = "#681" }
+rest-pat-in-fully-bound-structs = { status = "planned", issue = "#681" }
+result-filter-map = { status = "planned", issue = "#681" }
+result-large-err = { status = "planned", issue = "#681" }
+result-map-or-into-option = { status = "planned", issue = "#681" }
+result-map-unit-fn = { status = "planned", issue = "#681" }
+result-unit-err = { status = "planned", issue = "#681" }
+return-and-then = { status = "planned", issue = "#681" }
+return-self-not-must-use = { status = "planned", issue = "#681" }
+reversed-empty-ranges = { status = "planned", issue = "#681" }
+rust-cognitive-complexity = { status = "planned", issue = "#682" }
+rust-collapsible-else-if = { status = "planned", issue = "#682" }
+rust-collapsible-if = { status = "planned", issue = "#682" }
+rust-implicit-return = { status = "planned", issue = "#681" }
+rust-needless-else = "implemented"
+rust-self-assignment = "implemented"
+rust-string-to-string = { status = "planned", issue = "#681" }
+rust-unnecessary-cast = { status = "planned", issue = "#681" }
+rust-unnecessary-semicolon = { status = "planned", issue = "#682" }
+rust-unreachable = "implemented"
+rust-unused-async = { status = "planned", issue = "#681" }
+same-functions-in-if-condition = { status = "planned", issue = "#681" }
+same-item-push = { status = "planned", issue = "#682" }
+same-name-method = { status = "planned", issue = "#681" }
+search-is-some = "implemented"
+seek-from-current = { status = "planned", issue = "#681" }
+seek-to-start-instead-of-rewind = { status = "planned", issue = "#681" }
+self-named-constructors = { status = "planned", issue = "#681" }
+self-named-module-files = { status = "planned", issue = "#682" }
+semicolon-if-nothing-returned = { status = "planned", issue = "#682" }
+semicolon-inside-block = { status = "planned", issue = "#682" }
+semicolon-outside-block = { status = "planned", issue = "#682" }
+separated-literal-suffix = { status = "planned", issue = "#682" }
+serde-api-misuse = { status = "planned", issue = "#681" }
+set-contains-or-insert = { status = "planned", issue = "#681" }
+shadow-reuse = { status = "planned", issue = "#681" }
+shadow-same = { status = "planned", issue = "#681" }
+shadow-unrelated = { status = "planned", issue = "#681" }
+short-circuit-statement = { status = "planned", issue = "#681" }
+should-implement-trait = { status = "planned", issue = "#681" }
+should-panic-without-expect = { status = "planned", issue = "#681" }
+significant-drop-in-scrutinee = { status = "planned", issue = "#681" }
+significant-drop-tightening = { status = "planned", issue = "#681" }
+similar-names = { status = "planned", issue = "#682" }
+single-call-fn = { status = "planned", issue = "#682" }
+single-char-add-str = "implemented"
+single-char-lifetime-names = { status = "planned", issue = "#682" }
+single-char-pattern = { status = "planned", issue = "#681" }
+single-component-path-imports = "implemented"
+single-element-loop = { status = "planned", issue = "#682" }
+single-match = { status = "planned", issue = "#682" }
+single-match-else = { status = "planned", issue = "#682" }
+single-option-map = { status = "planned", issue = "#681" }
+single-range-in-vec-init = { status = "planned", issue = "#681" }
+size-of-in-element-count = { status = "planned", issue = "#681" }
+size-of-ref = { status = "planned", issue = "#681" }
+skip-while-next = { status = "planned", issue = "#681" }
+sliced-string-as-bytes = { status = "planned", issue = "#681" }
+slow-vector-initialization = { status = "planned", issue = "#681" }
+stable-sort-primitive = { status = "planned", issue = "#681" }
+std-instead-of-alloc = { status = "planned", issue = "#682" }
+std-instead-of-core = { status = "planned", issue = "#682" }
+str-split-at-newline = { status = "planned", issue = "#681" }
+str-to-string = { status = "planned", issue = "#681" }
+string-add = { status = "planned", issue = "#681" }
+string-add-assign = { status = "planned", issue = "#681" }
+string-extend-chars = { status = "planned", issue = "#681" }
+string-from-utf8-as-bytes = { status = "planned", issue = "#681" }
+string-lit-as-bytes = { status = "planned", issue = "#682" }
+string-lit-chars-any = { status = "planned", issue = "#681" }
+string-slice = { status = "planned", issue = "#682" }
+strlen-on-c-strings = { status = "planned", issue = "#681" }
+struct-excessive-bools = { status = "planned", issue = "#682" }
+struct-field-names = { status = "planned", issue = "#682" }
+suboptimal-flops = { status = "planned", issue = "#681" }
+suspicious-arithmetic-impl = { status = "planned", issue = "#681" }
+suspicious-assignment-formatting = { status = "planned", issue = "#682" }
+suspicious-command-arg-space = { status = "planned", issue = "#681" }
+suspicious-doc-comments = { status = "planned", issue = "#682" }
+suspicious-else-formatting = { status = "planned", issue = "#682" }
+suspicious-map = { status = "planned", issue = "#681" }
+suspicious-op-assign-impl = { status = "planned", issue = "#681" }
+suspicious-open-options = { status = "planned", issue = "#681" }
+suspicious-operation-groupings = { status = "planned", issue = "#681" }
+suspicious-splitn = { status = "planned", issue = "#681" }
+suspicious-to-owned = { status = "planned", issue = "#681" }
+suspicious-unary-op-formatting = { status = "planned", issue = "#682" }
+suspicious-xor-used-as-pow = { status = "planned", issue = "#681" }
+swap-ptr-to-ref = { status = "planned", issue = "#681" }
+swap-with-temporary = { status = "planned", issue = "#681" }
+tabs-in-doc-comments = { status = "planned", issue = "#682" }
+temporary-assignment = { status = "planned", issue = "#681" }
+test-attr-in-doctest = { status = "planned", issue = "#682" }
+tests-outside-test-module = { status = "planned", issue = "#681" }
+to-digit-is-some = { status = "planned", issue = "#681" }
+to-string-in-format-args = { status = "planned", issue = "#681" }
+to-string-trait-impl = { status = "planned", issue = "#681" }
+todo = "implemented"
+too-long-first-doc-paragraph = { status = "planned", issue = "#682" }
+too-many-arguments = "implemented"
+too-many-lines = "implemented"
+toplevel-ref-arg = { status = "planned", issue = "#681" }
+trailing-empty-array = { status = "planned", issue = "#681" }
+trait-duplication-in-bounds = { status = "planned", issue = "#681" }
+transmute-bytes-to-str = { status = "planned", issue = "#681" }
+transmute-int-to-bool = { status = "planned", issue = "#681" }
+transmute-int-to-non-zero = { status = "planned", issue = "#681" }
+transmute-null-to-fn = { status = "planned", issue = "#681" }
+transmute-ptr-to-ptr = { status = "planned", issue = "#681" }
+transmute-ptr-to-ref = { status = "planned", issue = "#681" }
+transmute-undefined-repr = { status = "planned", issue = "#681" }
+transmutes-expressible-as-ptr-casts = { status = "planned", issue = "#681" }
+transmuting-null = { status = "planned", issue = "#681" }
+trim-split-whitespace = { status = "planned", issue = "#681" }
+trivial-regex = { status = "planned", issue = "#681" }
+trivially-copy-pass-by-ref = { status = "planned", issue = "#681" }
+try-err = { status = "planned", issue = "#681" }
+tuple-array-conversions = { status = "planned", issue = "#682" }
+type-complexity = { status = "planned", issue = "#682" }
+type-id-on-box = { status = "planned", issue = "#681" }
+type-repetition-in-bounds = { status = "planned", issue = "#681" }
+unbuffered-bytes = { status = "planned", issue = "#681" }
+unchecked-duration-subtraction = { status = "planned", issue = "#681" }
+unconditional-recursion = { status = "planned", issue = "#681" }
+undocumented-unsafe-blocks = { status = "planned", issue = "#682" }
+unicode-not-nfc = { status = "planned", issue = "#681" }
+unimplemented = "implemented"
+uninhabited-references = { status = "planned", issue = "#681" }
+uninit-assumed-init = { status = "planned", issue = "#681" }
+uninit-vec = { status = "planned", issue = "#681" }
+uninlined-format-args = { status = "planned", issue = "#681" }
+unit-arg = { status = "planned", issue = "#681" }
+unit-cmp = { status = "planned", issue = "#681" }
+unit-hash = { status = "planned", issue = "#681" }
+unit-return-expecting-ord = { status = "planned", issue = "#681" }
+unnecessary-box-returns = { status = "planned", issue = "#681" }
+unnecessary-debug-formatting = { status = "planned", issue = "#681" }
+unnecessary-fallible-conversions = { status = "planned", issue = "#681" }
+unnecessary-filter-map = { status = "planned", issue = "#681" }
+unnecessary-find-map = { status = "planned", issue = "#681" }
+unnecessary-first-then-check = { status = "planned", issue = "#681" }
+unnecessary-fold = { status = "planned", issue = "#681" }
+unnecessary-get-then-check = { status = "planned", issue = "#681" }
+unnecessary-join = { status = "planned", issue = "#681" }
+unnecessary-lazy-evaluations = { status = "planned", issue = "#681" }
+unnecessary-literal-bound = { status = "planned", issue = "#681" }
+unnecessary-literal-unwrap = { status = "planned", issue = "#681" }
+unnecessary-map-on-constructor = { status = "planned", issue = "#681" }
+unnecessary-map-or = { status = "planned", issue = "#681" }
+unnecessary-min-or-max = { status = "planned", issue = "#681" }
+unnecessary-mut-passed = { status = "planned", issue = "#681" }
+unnecessary-operation = { status = "planned", issue = "#681" }
+unnecessary-owned-empty-strings = { status = "planned", issue = "#681" }
+unnecessary-result-map-or-else = { status = "planned", issue = "#681" }
+unnecessary-safety-comment = { status = "planned", issue = "#681" }
+unnecessary-safety-doc = { status = "planned", issue = "#681" }
+unnecessary-self-imports = { status = "planned", issue = "#682" }
+unnecessary-sort-by = { status = "planned", issue = "#681" }
+unnecessary-struct-initialization = { status = "planned", issue = "#681" }
+unnecessary-to-owned = { status = "planned", issue = "#681" }
+unnecessary-unwrap = { status = "planned", issue = "#681" }
+unnecessary-wraps = { status = "planned", issue = "#681" }
+unneeded-field-pattern = { status = "planned", issue = "#682" }
+unneeded-struct-pattern = { status = "planned", issue = "#682" }
+unneeded-wildcard-pattern = { status = "planned", issue = "#682" }
+unnested-or-patterns = { status = "planned", issue = "#682" }
+unreadable-literal = "implemented"
+unsafe-derive-deserialize = { status = "planned", issue = "#681" }
+unsafe-removed-from-name = { status = "planned", issue = "#681" }
+unseparated-literal-suffix = "implemented"
+unsound-collection-transmute = { status = "planned", issue = "#681" }
+unused-enumerate-index = { status = "planned", issue = "#681" }
+unused-format-specs = { status = "planned", issue = "#681" }
+unused-io-amount = { status = "planned", issue = "#681" }
+unused-peekable = { status = "planned", issue = "#681" }
+unused-result-ok = { status = "planned", issue = "#681" }
+unused-rounding = { status = "planned", issue = "#681" }
+unused-self = { status = "planned", issue = "#681" }
+unused-trait-names = { status = "planned", issue = "#681" }
+unused-unit = "implemented"
+unusual-byte-groupings = { status = "planned", issue = "#682" }
+unwrap-in-result = { status = "planned", issue = "#681" }
+unwrap-or-default = "implemented"
+unwrap-used = "implemented"
+upper-case-acronyms = { status = "planned", issue = "#682" }
+use-debug = { status = "planned", issue = "#681" }
+use-self = { status = "planned", issue = "#681" }
+used-underscore-binding = { status = "planned", issue = "#681" }
+used-underscore-items = { status = "planned", issue = "#681" }
+useless-asref = { status = "planned", issue = "#681" }
+useless-attribute = { status = "planned", issue = "#682" }
+useless-conversion = { status = "planned", issue = "#681" }
+useless-format = "implemented"
+useless-let-if-seq = { status = "planned", issue = "#681" }
+useless-nonzero-new-unchecked = { status = "planned", issue = "#681" }
+useless-transmute = { status = "planned", issue = "#681" }
+useless-vec = { status = "planned", issue = "#681" }
+vec-box = { status = "planned", issue = "#681" }
+vec-init-then-push = { status = "planned", issue = "#681" }
+vec-resize-to-zero = { status = "planned", issue = "#681" }
+verbose-bit-mask = { status = "planned", issue = "#681" }
+verbose-file-reads = { status = "planned", issue = "#681" }
+waker-clone-wake = { status = "planned", issue = "#681" }
+while-float = { status = "planned", issue = "#681" }
+while-immutable-condition = { status = "planned", issue = "#681" }
+while-let-loop = { status = "planned", issue = "#682" }
+while-let-on-iterator = { status = "planned", issue = "#682" }
+wildcard-dependencies = { status = "planned", issue = "#683" }
+wildcard-enum-match-arm = { status = "planned", issue = "#682" }
+wildcard-imports = "implemented"
+wildcard-in-or-patterns = { status = "planned", issue = "#682" }
+write-literal = { status = "planned", issue = "#681" }
+write-with-newline = "implemented"
+writeln-empty-string = "implemented"
+wrong-self-convention = { status = "planned", issue = "#681" }
+wrong-transmute = { status = "planned", issue = "#681" }
+zero-divided-by-zero = { status = "planned", issue = "#681" }
+zero-prefixed-literal = "implemented"
+zero-ptr = "implemented"
+zero-repeat-side-effects = { status = "planned", issue = "#681" }
+zero-sized-map-values = { status = "planned", issue = "#681" }
+zombie-processes = { status = "planned", issue = "#681" }
+zst-offset = { status = "planned", issue = "#681" }

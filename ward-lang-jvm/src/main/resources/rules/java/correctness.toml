@@ -139,15 +139,16 @@ message = "hasNext() calls next(), which moves the iterator"
 [[rules]]
 id = "ward:java/dmi-collections-should-not-contain-themselves"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "correctness"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["expression"]
+check = "call-match"
+names = ["add", "offer", "push", "addFirst", "addLast"]
+receiver-types = ["java.util.Collection", "java.util.List", "java.util.Set", "java.util.Queue", "java.util.Deque", "java.util.ArrayList", "java.util.LinkedList", "java.util.ArrayDeque", "java.util.HashSet", "java.util.LinkedHashSet", "java.util.TreeSet", "java.util.SortedSet", "java.util.NavigableSet"]
 text = '^(\w+)\.(add|offer|push|addFirst|addLast)\(\s*\1\s*\)$'
-message = "{value} adds a collection to itself"
+message = "a collection is added to itself"
 '''
 
 [[rules]]
@@ -259,6 +260,7 @@ body = '''
 check = "forbidden-node"
 kinds = ["classBodyDeclaration"]
 text = 'booleanequals\(\s*(?:final)?+(?!(?:java\.lang\.)?Object)[\w.<>\[\]]+\w+\s*\)'
+not-parent-text = 'booleanequals\((?:final)?(?:java\.lang\.)?Object\w+\)'
 message = "equals() does not override equals(Object), so collections never call it"
 '''
 

@@ -11,7 +11,7 @@ import java.util.Objects;
  * name with its scope ({@code @types/node}), PyPI name normalized by PEP 503 ({@code
  * django-rest-framework}), and SwiftPM the cleaned repository location without scheme, user, {@code
  * .git} or trailing slash, in lower case ({@code github.com/apple/swift-nio}), which is the name
- * OSV gives SwiftPM packages. The version is the exact text the source wrote.
+ * OSV gives SwiftPM packages, and NuGet the id as the lockfile writes it, compared in lower case. The version is the exact text the source wrote.
  *
  * @param ecosystem the ecosystem
  * @param name the canonical package name

@@ -2,6 +2,7 @@ package dev.ward.infrastructure.rule;
 
 import dev.ward.analysis.application.android.AndroidCheckProvider;
 import dev.ward.analysis.application.android.AndroidRuleFiles;
+import dev.ward.analysis.application.csharp.CSharpRuleFiles;
 import dev.ward.analysis.application.jvm.JvmCheckProvider;
 import dev.ward.analysis.application.jvm.JvmRuleFiles;
 import dev.ward.analysis.application.node.NodeCheckProvider;
@@ -13,12 +14,15 @@ import dev.ward.analysis.application.python.PythonRuleFiles;
 import dev.ward.analysis.application.rule.CheckProvider;
 import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.RuleFileProvider;
+import dev.ward.analysis.application.rust.RustRuleFiles;
 import dev.ward.analysis.application.swift.SwiftCheckProvider;
 import dev.ward.analysis.application.swift.SwiftLintCheckProvider;
 import dev.ward.analysis.application.swift.SwiftRuleFiles;
 import dev.ward.analysis.domain.api.ApiSurfaceReader;
+import dev.ward.analysis.domain.csharp.CSharpApiSurfaceReader;
 import dev.ward.analysis.domain.jvm.types.JavaApiSurfaceReader;
 import dev.ward.analysis.domain.jvm.types.KotlinApiSurfaceReader;
+import dev.ward.analysis.domain.rust.RustApiSurfaceReader;
 import java.util.List;
 
 /**
@@ -36,6 +40,8 @@ public final class BundledLanguages {
         new NodeRuleFiles(),
         new PythonRuleFiles(),
         new SwiftRuleFiles(),
+        new RustRuleFiles(),
+        new CSharpRuleFiles(),
         new SecretRuleFiles(),
         new OpenApiRuleFiles(),
         new AndroidRuleFiles()
@@ -58,7 +64,12 @@ public final class BundledLanguages {
 
   /** Returns the API readers of the languages that can be compared by {@code api-compat}. */
   public static List<ApiSurfaceReader> apiSurfaceReaders() {
-    return List.of(new JavaApiSurfaceReader(), new KotlinApiSurfaceReader());
+    return List.of(
+        new JavaApiSurfaceReader(),
+        new KotlinApiSurfaceReader(),
+        new RustApiSurfaceReader(),
+        new CSharpApiSurfaceReader()
+    );
   }
 
   /** Returns the registry of every bundled check. */

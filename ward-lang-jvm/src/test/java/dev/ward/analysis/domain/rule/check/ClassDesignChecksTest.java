@@ -3,6 +3,7 @@ package dev.ward.analysis.domain.rule.check;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -83,7 +84,9 @@ class ClassDesignChecksTest extends DesignInterfaceTrees {
     final InnerTypeLastCheck check = new InnerTypeLastCheck(MESSAGE);
     final SyntaxNode innerFirst =
         classNode("Outer", innerMember(), member(List.of(), method("run")));
-    assertThat(check.matches(root(innerFirst))).hasSize(1);
+    assertThat(check.matches(root(innerFirst)))
+        .extracting(RuleMatch::message)
+        .containsExactly("Inner");
     final SyntaxNode innerLast =
         classNode("Outer", member(List.of(), method("run")), innerMember());
     assertThat(check.matches(root(innerLast))).isEmpty();
