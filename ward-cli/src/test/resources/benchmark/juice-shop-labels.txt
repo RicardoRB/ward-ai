@@ -11,7 +11,6 @@ ward:typescript/cookie-missing-same-site | lib/insecurity.ts:192 | tp | the sess
 ward:typescript/cookie-missing-same-site | routes/updateUserProfile.ts:42 | tp | the session token cookie is set with no options
 ward:typescript/cookie-missing-secure | lib/insecurity.ts:192 | tp | the session token cookie is set with no options
 ward:typescript/cookie-missing-secure | routes/updateUserProfile.ts:42 | tp | the session token cookie is set with no options
-ward:typescript/dom-xss | frontend/src/hacking-instructor/helpers/helpers.ts:138 | fp | innerHTML is read and compared, never assigned
 ward:typescript/dom-xss | frontend/src/hacking-instructor/index.ts:126 | fp | the hint text is Juice Shop's own static content, not attacker input
 ward:typescript/header-injection | routes/userProfile.ts:97 | tp | profile image URL of the user goes into the Content-Security-Policy header
 ward:typescript/insecure-random | frontend/src/app/Services/conversation-storage.service.ts:15 | tp | the identifier of a stored conversation is built from Math.random; predictable, though the id guards nothing
@@ -50,6 +49,5 @@ ward:typescript/unsafe-framework-trust | frontend/src/app/track-result/track-res
 ward:typescript/untrusted-redirect | routes/redirect.ts:18 | tp | the allowlist test is url.includes(allowed), so any URL that contains an allowed string is accepted
 ward:typescript/weak-hash | lib/insecurity.ts:41 | tp | MD5 is the password hash
 ward:typescript/weak-hash | lib/utils.ts:83 | fp | HMAC-SHA1 over a CTF flag, which does not rely on collision resistance
-ward:typescript/xss | routes/dataExport.ts:108 | fp | the response is a JSON object that holds the requesting user's own export, not markup
 ward:typescript/xss | routes/userProfile.ts:101 | tp | the profile page is rendered from a template filled with the user's name and sent as HTML
 ward:typescript/xss | routes/userProfile.ts:65 | tp | eval runs the code that the user's name carries, which the template then renders

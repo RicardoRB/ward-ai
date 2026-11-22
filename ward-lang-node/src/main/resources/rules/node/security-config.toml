@@ -38,7 +38,7 @@ presets = ["strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["singleExpression"]
-text = '^(?:fetch|axios|got|(?:axios|got|http|ky)\.(?:get|post|put|patch|delete|head|request))\([\"\x27`]http://(?!(?:[^/@\"\x27`]*@)?(?:localhost|127\.0\.0\.1|\[::1\]))[^\"\x27`]*[\"\x27`](?:,(?:[^()]|\([^()]*\))*)?\)$|^newWebSocket\([\"\x27`]ws://(?!(?:[^/@\"\x27`]*@)?(?:localhost|127\.0\.0\.1|\[::1\]))[^\"\x27`]*[\"\x27`]\)$'
+text = '^(?:fetch|axios|got|(?:axios|got|http|ky)\.(?:get|post|put|patch|delete|head|request))\([\"\x27`]http://(?!(?:[^/@\"\x27`]*@)?(?:localhost|127\.0\.0\.1|\[::1\]|\$\{))[^\"\x27`]*[\"\x27`](?:,(?:[^()]|\([^()]*\))*)?\)$|^newWebSocket\([\"\x27`]ws://(?!(?:[^/@\"\x27`]*@)?(?:localhost|127\.0\.0\.1|\[::1\]|\$\{))[^\"\x27`]*[\"\x27`]\)$'
 message = "this address uses http or ws, which send data in clear text; use https or wss"
 '''
 
@@ -52,7 +52,7 @@ presets = ["strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["singleExpression"]
-text = '^(?:fetch|axios|got|(?:axios|got|http|ky)\.(?:get|post|put|patch|delete|head|request))\([\"\x27`]http://(?!(?:[^/@\"\x27`]*@)?(?:localhost|127\.0\.0\.1|\[::1\]))[^\"\x27`]*[\"\x27`](?:,(?:[^()]|\([^()]*\))*)?\)$|^newWebSocket\([\"\x27`]ws://(?!(?:[^/@\"\x27`]*@)?(?:localhost|127\.0\.0\.1|\[::1\]))[^\"\x27`]*[\"\x27`]\)$'
+text = '^(?:fetch|axios|got|(?:axios|got|http|ky)\.(?:get|post|put|patch|delete|head|request))\([\"\x27`]http://(?!(?:[^/@\"\x27`]*@)?(?:localhost|127\.0\.0\.1|\[::1\]|\$\{))[^\"\x27`]*[\"\x27`](?:,(?:[^()]|\([^()]*\))*)?\)$|^newWebSocket\([\"\x27`]ws://(?!(?:[^/@\"\x27`]*@)?(?:localhost|127\.0\.0\.1|\[::1\]|\$\{))[^\"\x27`]*[\"\x27`]\)$'
 message = "this address uses http or ws, which send data in clear text; use https or wss"
 '''
 
@@ -208,7 +208,7 @@ presets = ["strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["singleExpression"]
-text = '^\w+(?:\.\w+)*\.(?:innerHTML|outerHTML)=(?![\"\x27`][^"\x27`$]*[\"\x27`]$)(?:[^()]|\([^()]*\))*$|^document\.(?:write|writeln)\((?![\"\x27`][^"\x27`$]*[\"\x27`]\)$)(?:[^()]|\([^()]*\))*\)$|^[\w.]+\.insertAdjacentHTML\([^,()]+,(?![\"\x27`][^"\x27`$]*[\"\x27`]\)$)(?:[^()]|\([^()]*\))*\)$'
+text = '^\w+(?:\.\w+)*\.(?:innerHTML|outerHTML)=(?!=)(?![\"\x27`][^"\x27`$]*[\"\x27`]$)(?:[^()]|\([^()]*\))*$|^document\.(?:write|writeln)\((?![\"\x27`][^"\x27`$]*[\"\x27`]\)$)(?:[^()]|\([^()]*\))*\)$|^[\w.]+\.insertAdjacentHTML\([^,()]+,(?![\"\x27`][^"\x27`$]*[\"\x27`]\)$)(?:[^()]|\([^()]*\))*\)$'
 message = "this call writes a computed string as markup; use textContent, or sanitize the string first"
 '''
 
@@ -222,7 +222,7 @@ presets = ["strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["singleExpression"]
-text = '^\w+(?:\.\w+)*\.(?:innerHTML|outerHTML)=(?![\"\x27`][^"\x27`$]*[\"\x27`]$)(?:[^()]|\([^()]*\))*$|^document\.(?:write|writeln)\((?![\"\x27`][^"\x27`$]*[\"\x27`]\)$)(?:[^()]|\([^()]*\))*\)$|^[\w.]+\.insertAdjacentHTML\([^,()]+,(?![\"\x27`][^"\x27`$]*[\"\x27`]\)$)(?:[^()]|\([^()]*\))*\)$'
+text = '^\w+(?:\.\w+)*\.(?:innerHTML|outerHTML)=(?!=)(?![\"\x27`][^"\x27`$]*[\"\x27`]$)(?:[^()]|\([^()]*\))*$|^document\.(?:write|writeln)\((?![\"\x27`][^"\x27`$]*[\"\x27`]\)$)(?:[^()]|\([^()]*\))*\)$|^[\w.]+\.insertAdjacentHTML\([^,()]+,(?![\"\x27`][^"\x27`$]*[\"\x27`]\)$)(?:[^()]|\([^()]*\))*\)$'
 message = "this call writes a computed string as markup; use textContent, or sanitize the string first"
 '''
 

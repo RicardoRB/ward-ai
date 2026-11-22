@@ -88,6 +88,13 @@ class GotBenchmarkSmokeTest {
       Files.writeString(resources.resolve(REPORT), report);
     }
     assertThat(report).isEqualTo(Files.readString(resources.resolve(REPORT)));
+    assertThat(
+        CorpusApproximations.unlistedIn(
+            resources.resolve("benchmark/got-approximations.txt"),
+            found,
+            labels
+        )
+    ).as("false positives without an approximation with a reason and an open issue").isEmpty();
   }
 
   private static List<RuleDefinition> rules() {
