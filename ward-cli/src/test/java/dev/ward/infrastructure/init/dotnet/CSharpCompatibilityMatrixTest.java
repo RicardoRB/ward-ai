@@ -59,6 +59,7 @@ class CSharpCompatibilityMatrixTest {
         fixture.equals(System.getProperty(FIXTURE_PROPERTY, fixture)),
         "row is for " + fixture
     );
+    pinSdk(project, sdk);
     assertThat(exec(project, List.of("dotnet", "--version")).output())
         .as("the SDK on the PATH")
         .startsWith(sdk + ".");
@@ -106,6 +107,17 @@ class CSharpCompatibilityMatrixTest {
         .isEqualTo(FAILED);
     assertThat(report.output()).as("coverage finding").contains("Line coverage", "is below");
     MatrixFileTrees.remove(untested, project);
+  }
+
+  /**
+   * Pins the cell's SDK major with a {@code global.json}, since {@code dotnet} otherwise picks the
+   * newest SDK installed on the machine, such as the one a CI image ships.
+   */
+  private static void pinSdk(final Path project, final String sdk) throws IOException {
+    Files.writeString(
+        project.resolve("global.json"),
+        "{\"sdk\":{\"version\":\"" + sdk + ".0.100\",\"rollForward\":\"latestFeature\"}}\n"
+    );
   }
 
   /** Sets the target framework of the fixture's projects to the SDK of the cell. */
