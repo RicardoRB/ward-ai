@@ -5,10 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RulePreset;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import dev.ward.application.gate.RuleConflicts;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -24,16 +21,12 @@ import org.junit.jupiter.api.Test;
  * a language that runs on every platform (#686).
  */
 class PresetContractTest {
-  private static final Path CONFLICTS = Path.of(
-      "src/main/resources/dev/ward/application/gate/rule-conflicts.txt"
-  );
-  private static final int FIELDS = 3;
   private static final String NO_PREFIX = "no-";
   private static final Set<AnalysisLanguage> PLATFORM_FREE =
       Set.of(AnalysisLanguage.JAVA, AnalysisLanguage.KOTLIN);
 
   @Test
-  void noPresetEnablesTwoContradictoryRules() throws IOException {
+  void noPresetEnablesTwoContradictoryRules() {
     // Given the shipped rules and the committed pairs that contradict each other
     final Map<String, RuleDefinition> rules =
         CatalogRuleDefinitions.shipped().stream()
@@ -62,7 +55,7 @@ class PresetContractTest {
   }
 
   @Test
-  void theCommittedPairsNameShippedRules() throws IOException {
+  void theCommittedPairsNameShippedRules() {
     final Set<String> ids =
         CatalogRuleDefinitions.shipped().stream()
             .map(RuleDefinition::id)
@@ -100,10 +93,9 @@ class PresetContractTest {
     return preset.selects(rule.presets());
   }
 
-  private static List<String[]> committedPairs() throws IOException {
-    return Files.readAllLines(CONFLICTS, StandardCharsets.UTF_8).stream()
-        .filter(line -> !line.startsWith("#") && !line.isBlank())
-        .map(line -> line.split(" \\| ", FIELDS))
+  private static List<String[]> committedPairs() {
+    return RuleConflicts.pairs().stream()
+        .map(pair -> new String[] {pair.first(), pair.second()})
         .toList();
   }
 }
