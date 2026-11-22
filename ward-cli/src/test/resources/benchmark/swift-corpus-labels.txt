@@ -181,3 +181,4 @@ ward:swift/unneeded-throws-rethrows | alamofire/Tests/RequestTests.swift:1479 | 
 ward:swift/unneeded-throws-rethrows | sample-food-truck/App/Donut/ShowTopDonutsIntent.swift:19 | un | the throws matches the signature of the protocol requirement perform
 ward:swift/untyped-error-in-catch | sample-food-truck/App/Orders/OrderDetailView.swift:107 | tp | catch let error without a cast
 ward:swift/discouraged-none-name | alamofire/Tests/BaseTestCase.swift:32 | tp | an enum case declared with the name none
+ward:swift/private-swiftui-state | sample-food-truck/App/Navigation/DetailColumn.swift:22 | tp | a @State property that is not private

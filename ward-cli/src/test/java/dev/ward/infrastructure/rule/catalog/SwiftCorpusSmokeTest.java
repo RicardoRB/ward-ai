@@ -98,7 +98,9 @@ class SwiftCorpusSmokeTest {
     assertThat(formatProblems).as("files the formatter refuses or breaks").isEmpty();
     assertThat(found).as("labels without a finding").containsAll(labels.keySet());
     assertThat(underLabelled(rules, found, labels)).as("rules with too few labels").isEmpty();
-    assertThat(CorpusApproximations.unlisted(RESOURCES.resolve("benchmark"), "swift", found, labels))
+    assertThat(
+        CorpusApproximations.unlisted(RESOURCES.resolve("benchmark"), "swift", found, labels)
+    )
         .as("false positives without an approximation with a reason and an open issue")
         .isEmpty();
     assertThat(report).isEqualTo(Files.readString(file));

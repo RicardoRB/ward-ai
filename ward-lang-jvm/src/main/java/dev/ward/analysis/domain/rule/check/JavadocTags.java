@@ -98,11 +98,7 @@ public final class JavadocTags {
       if (text.isEmpty()) {
         return;
       }
-      if (text.startsWith(FENCE)) {
-        fenced = !fenced;
-        return;
-      }
-      if (fenced) {
+      if (insideFence(text)) {
         return;
       }
       final int offset = comment.span().startOffset() + rowStart + content;
@@ -115,6 +111,15 @@ public final class JavadocTags {
         final Span at = new Span(line, column, line, column + 1, offset, offset + 1);
         continuation.add(new Line(at, content - star));
       }
+    }
+
+    /** Tells whether {@code text} is a fence line or lies between two; tags there are code. */
+    private boolean insideFence(final String text) {
+      if (text.startsWith(FENCE)) {
+        fenced = !fenced;
+        return true;
+      }
+      return fenced;
     }
 
     private void startTag(final String text, final int line, final int column, final int offset) {
