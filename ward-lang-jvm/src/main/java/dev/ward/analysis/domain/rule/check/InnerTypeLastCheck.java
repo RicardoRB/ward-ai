@@ -40,14 +40,14 @@ public final class InnerTypeLastCheck implements RuleCheck {
   }
 
   private void misplaced(final SyntaxNode body, final List<RuleMatch> matches) {
-    boolean seenInnerType = false;
+    String innerName = null;
     for (final SyntaxNode wrapper : body.children()) {
       if (BODY_WRAPPERS.contains(wrapper.kind()) && !SEMICOLON.equals(SyntaxWalk.text(wrapper))) {
         final Optional<SyntaxNode> inner = innerType(wrapper);
         if (inner.isPresent()) {
-          seenInnerType = true;
-        } else if (seenInnerType) {
-          matches.add(CheckSupport.at(wrapper.span(), CheckSupport.fill(message, "", "")));
+          innerName = JavaNodes.kid(inner.get(), "identifier").map(SyntaxWalk::text).orElse("");
+        } else if (innerName != null) {
+          matches.add(CheckSupport.at(wrapper.span(), CheckSupport.fill(message, innerName, "")));
         }
       }
     }

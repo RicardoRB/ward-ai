@@ -83,7 +83,9 @@ class ClassDesignChecksTest extends DesignInterfaceTrees {
     final InnerTypeLastCheck check = new InnerTypeLastCheck(MESSAGE);
     final SyntaxNode innerFirst =
         classNode("Outer", innerMember(), member(List.of(), method("run")));
-    assertThat(check.matches(root(innerFirst))).hasSize(1);
+    assertThat(check.matches(root(innerFirst)))
+        .extracting(match -> match.message())
+        .containsExactly("Inner");
     final SyntaxNode innerLast =
         classNode("Outer", member(List.of(), method("run")), innerMember());
     assertThat(check.matches(root(innerLast))).isEmpty();
