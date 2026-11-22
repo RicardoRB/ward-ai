@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 
 /**
- * Runs Ward's Python rules (the {@code standard} preset and every security rule) over the source of
+ * Runs Ward's Python rules (the {@code strict} preset and every security rule) over the source of
  * Healthchecks, a Django application (BSD-3-Clause), and compares the per-rule counts with the
  * committed report {@code benchmark/python-corpus-report.txt}. It is skipped unless {@code
  * -Dward.benchmark.python-corpus=<extracted archive>} is set; {@code

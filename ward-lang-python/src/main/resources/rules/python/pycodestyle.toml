@@ -40,7 +40,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["comparison"]
-text = '(==|!=)\s*(True|False)\b|\b(True|False)\s*(==|!=)'
+text = '(?<![A-Z]\w{0,60}\.\w{1,60}\s{0,3})(==|!=)\s*(True|False)\b|\b(True|False)\s*(==|!=)'
 message = "comparison to True or False should use the value or 'is'"
 '''
 

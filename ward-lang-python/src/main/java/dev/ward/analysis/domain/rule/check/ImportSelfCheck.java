@@ -9,7 +9,8 @@ import java.util.Set;
 
 /** Reports a module that imports itself by its dotted path, like Pylint W0406. */
 public final class ImportSelfCheck implements UnitCheck {
-  private static final Set<String> IMPORTS = Set.of("import_name", "import_from");
+  private static final String FROM = "import_from";
+  private static final Set<String> IMPORTS = Set.of("import_name", FROM);
   private static final Set<String> DOTTED = Set.of("dotted_name");
   private static final String PACKAGE_INIT = ".__init__";
 
@@ -27,7 +28,12 @@ public final class ImportSelfCheck implements UnitCheck {
     if (module.isEmpty()) {
       return found;
     }
+    final boolean init = file.path().endsWith("/__init__.py") || "__init__.py".equals(file.path());
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, IMPORTS)) {
+      if (init && FROM.equals(visit.node().kind())) {
+        // from pkg import sub in pkg/__init__.py loads a submodule, not the package itself
+        continue;
+      }
       for (final SyntaxNode name : FunctionBodies.own(visit.node(), DOTTED, Set.of())) {
         if (module.equals(SyntaxWalk.text(name))) {
           found.add(new RuleMatch(name.span(), message));

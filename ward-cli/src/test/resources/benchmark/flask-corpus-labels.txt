@@ -19,10 +19,6 @@ ward:python/broad-exception-raised | CTFd/utils/exports/__init__.py:168 | tp | t
 ward:python/broad-exception-raised | CTFd/utils/exports/__init__.py:178 | tp | the code raises the base Exception
 ward:python/broad-exception-raised | CTFd/utils/exports/__init__.py:201 | tp | the code raises the base Exception
 ward:python/broad-exception-raised | CTFd/utils/exports/__init__.py:222 | tp | the code raises the base Exception
-ward:python/cached-instance-method | CTFd/models/__init__.py:558 | fp | the decorator is a cache of the Flask extension, which keeps results outside the instance; the rule means functools caches
-ward:python/cached-instance-method | CTFd/models/__init__.py:591 | fp | the decorator is a cache of the Flask extension, which keeps results outside the instance; the rule means functools caches
-ward:python/cached-instance-method | CTFd/models/__init__.py:842 | fp | the decorator is a cache of the Flask extension, which keeps results outside the instance; the rule means functools caches
-ward:python/cached-instance-method | CTFd/models/__init__.py:849 | fp | the decorator is a cache of the Flask extension, which keeps results outside the instance; the rule means functools caches
 ward:python/complexity | CTFd/__init__.py:187 | tp | the function holds more decision points than the limit
 ward:python/complexity | CTFd/admin/__init__.py:220 | tp | the function holds more decision points than the limit
 ward:python/complexity | CTFd/api/v1/challenges.py:146 | tp | the function holds more decision points than the limit
@@ -72,8 +68,8 @@ ward:python/function-length | CTFd/admin/__init__.py:220 | tp | the function hol
 ward:python/function-length | CTFd/admin/statistics.py:12 | tp | the function holds more lines than the limit
 ward:python/function-length | CTFd/api/v1/challenges.py:146 | tp | the function holds more lines than the limit
 ward:python/function-length | CTFd/api/v1/challenges.py:335 | tp | the function holds more lines than the limit
-ward:python/function-redefined | tests/test_config.py:34 | fp | each class is local to its own test function, so they do not shadow each other
-ward:python/function-redefined | tests/test_config.py:46 | fp | each class is local to its own test function, so they do not shadow each other
+ward:python/function-redefined | tests/test_config.py:34 | tp | the same class name is defined again in one function scope; Pylint reports it even when the first class is used in between
+ward:python/function-redefined | tests/test_config.py:46 | tp | the same class name is defined again in one function scope; Pylint reports it even when the first class is used in between
 ward:python/hardcoded-password-default | tests/helpers.py:125 | fp | a default value of a test helper, not a secret
 ward:python/hardcoded-password-default | tests/helpers.py:169 | fp | a default value of a test helper, not a secret
 ward:python/hardcoded-password-default | tests/helpers.py:206 | fp | a default value of a test helper, not a secret
@@ -100,11 +96,6 @@ ward:python/import-outside-toplevel | CTFd/__init__.py:193 | tp | the import is 
 ward:python/import-outside-toplevel | CTFd/__init__.py:232 | tp | the import is inside a function
 ward:python/import-outside-toplevel | CTFd/__init__.py:266 | tp | the import is inside a function
 ward:python/import-outside-toplevel | CTFd/__init__.py:267 | tp | the import is inside a function
-ward:python/import-self | CTFd/__init__.py:19 | fp | a package imports one of its own submodules in its __init__; that is not the module importing itself
-ward:python/import-self | CTFd/admin/__init__.py:21 | fp | a package imports one of its own submodules in its __init__; that is not the module importing itself
-ward:python/import-self | CTFd/admin/__init__.py:22 | fp | a package imports one of its own submodules in its __init__; that is not the module importing itself
-ward:python/import-self | CTFd/admin/__init__.py:23 | fp | a package imports one of its own submodules in its __init__; that is not the module importing itself
-ward:python/import-self | CTFd/admin/__init__.py:24 | fp | a package imports one of its own submodules in its __init__; that is not the module importing itself
 ward:python/inconsistent-return-statements | CTFd/admin/__init__.py:79 | tp | some paths return a value and others fall off the end
 ward:python/inconsistent-return-statements | CTFd/admin/__init__.py:107 | tp | some paths return a value and others fall off the end
 ward:python/inconsistent-return-statements | CTFd/api/v1/challenges.py:651 | tp | some paths return a value and others fall off the end
@@ -160,7 +151,7 @@ ward:python/no-else-return | CTFd/admin/__init__.py:120 | tp | the else follows 
 ward:python/no-else-return | CTFd/admin/__init__.py:165 | tp | the else follows a branch that returns
 ward:python/no-else-return | CTFd/api/v1/challenges.py:400 | tp | the else follows a branch that returns
 ward:python/no-else-return | CTFd/api/v1/challenges.py:928 | tp | the else follows a branch that returns
-ward:python/no-method-argument | CTFd/forms/teams.py:166 | fp | a function defined inside a method is a plain function, not a method
+ward:python/no-method-argument | CTFd/forms/teams.py:166 | tp | a function in a class body takes no parameter, though it is called through the class
 ward:python/no-method-argument | tests/helpers.py:76 | tp | a function in a class body takes no parameter
 ward:python/no-method-argument | tests/helpers.py:89 | tp | a function in a class body takes no parameter
 ward:python/no-method-argument | tests/helpers.py:101 | tp | a function in a class body takes no parameter
@@ -185,10 +176,6 @@ ward:python/possibly-used-before-assignment | CTFd/api/v1/challenges.py:467 | fp
 ward:python/possibly-used-before-assignment | CTFd/api/v1/challenges.py:491 | un | the name is set under authed() and read under the same condition
 ward:python/possibly-used-before-assignment | CTFd/api/v1/challenges.py:508 | un | the name is set under authed() and read under the same condition
 ward:python/private-member-access | CTFd/plugins/__init__.py:178 | tp | the code reaches a private member of another object
-ward:python/private-member-access | CTFd/utils/user/__init__.py:54 | fp | _fields is the public API of namedtuple
-ward:python/private-member-access | CTFd/utils/user/__init__.py:184 | fp | _fields is the public API of namedtuple
-ward:python/private-member-access | ping.py:20 | fp | _replace is the public API of the parsed URL tuple
-ward:python/private-member-access | tests/test_share.py:100 | fp | _replace is the public API of the parsed URL tuple
 ward:python/raise-without-from-inside-except | CTFd/constants/assets.py:34 | tp | an exception is raised inside a handler without a cause
 ward:python/raise-without-from-inside-except | CTFd/models/__init__.py:774 | tp | an exception is raised inside a handler without a cause
 ward:python/raise-without-from-inside-except | CTFd/models/__init__.py:776 | tp | an exception is raised inside a handler without a cause
@@ -295,11 +282,6 @@ ward:python/too-many-statements | CTFd/admin/__init__.py:220 | tp | the function
 ward:python/too-many-statements | CTFd/api/v1/challenges.py:335 | tp | the function has more statements than the limit
 ward:python/too-many-statements | CTFd/api/v1/challenges.py:651 | tp | the function has more statements than the limit
 ward:python/too-many-statements | CTFd/api/v1/unlocks.py:108 | tp | the function has more statements than the limit
-ward:python/true-false-comparison | CTFd/admin/statistics.py:20 | fp | the comparison builds a SQL expression, where is False would not
-ward:python/true-false-comparison | CTFd/admin/statistics.py:21 | fp | the comparison builds a SQL expression, where is False would not
-ward:python/true-false-comparison | CTFd/admin/statistics.py:22 | fp | the comparison builds a SQL expression, where is False would not
-ward:python/true-false-comparison | CTFd/admin/statistics.py:26 | fp | the comparison builds a SQL expression, where is False would not
-ward:python/true-false-comparison | CTFd/admin/statistics.py:27 | fp | the comparison builds a SQL expression, where is False would not
 ward:python/try-except-continue | CTFd/api/v1/challenges.py:241 | tp | the handler only continues the loop
 ward:python/try-except-continue | CTFd/utils/exports/__init__.py:311 | tp | the handler only continues the loop
 ward:python/type-comparison | CTFd/utils/helpers/models.py:13 | tp | the type of a value is compared with ==
@@ -379,3 +361,126 @@ ward:python/zip-without-explicit-strict | CTFd/forms/setup.py:79 | tp | zip with
 ward:python/zip-without-explicit-strict | CTFd/plugins/flags/__init__.py:40 | tp | zip without strict=
 ward:python/zip-without-explicit-strict | CTFd/plugins/flags/__init__.py:43 | tp | zip without strict=
 ward:python/zip-without-explicit-strict | CTFd/utils/csv/__init__.py:28 | tp | zip without strict=
+ward:python/avoid-inline-conditionals | CTFd/__init__.py:101 | tp | a conditional expression
+ward:python/avoid-inline-conditionals | CTFd/admin/challenges.py:87 | tp | a conditional expression
+ward:python/avoid-inline-conditionals | CTFd/admin/challenges.py:89 | tp | a conditional expression
+ward:python/avoid-inline-conditionals | CTFd/admin/scoreboard.py:13 | tp | a conditional expression
+ward:python/avoid-inline-conditionals | CTFd/api/v1/challenges.py:443 | tp | a conditional expression
+ward:python/bad-builtin | CTFd/utils/uploads/uploaders.py:176 | tp | map over an iterable that a comprehension or generator writes directly
+ward:python/bad-builtin | CTFd/utils/uploads/uploaders.py:182 | tp | map over an iterable that a comprehension or generator writes directly
+ward:python/bidirectional-unicode | tests/utils/test_validators.py:137 | tp | a bidirectional control character in a string literal
+ward:python/blanket-noqa | CTFd/forms/teams.py:14 | tp | a noqa comment without rule codes
+ward:python/blanket-noqa | CTFd/forms/teams.py:36 | tp | a noqa comment without rule codes
+ward:python/blanket-noqa | CTFd/forms/users.py:91 | tp | a noqa comment without rule codes
+ward:python/blanket-noqa | CTFd/forms/users.py:104 | tp | a noqa comment without rule codes
+ward:python/blanket-noqa | CTFd/forms/users.py:116 | tp | a noqa comment without rule codes
+ward:python/blanket-type-ignore | CTFd/api/v1/helpers/schemas.py:34 | tp | a type: ignore comment without an error code
+ward:python/collapsible-if | CTFd/admin/challenges.py:19 | tp | an if whose only statement is another if without else
+ward:python/collapsible-if | CTFd/admin/teams.py:17 | tp | an if whose only statement is another if without else
+ward:python/collapsible-if | CTFd/admin/users.py:20 | tp | an if whose only statement is another if without else
+ward:python/collapsible-if | CTFd/api/v1/helpers/schemas.py:19 | tp | an if whose only statement is another if without else
+ward:python/collapsible-if | CTFd/api/v1/hints.py:124 | tp | an if whose only statement is another if without else
+ward:python/confusing-consecutive-elif | CTFd/schemas/teams.py:361 | tp | the elif follows a block that ends with an if
+ward:python/confusing-consecutive-elif | CTFd/schemas/users.py:352 | tp | the elif follows a block that ends with an if
+ward:python/confusing-consecutive-elif | CTFd/utils/decorators/visibility.py:32 | tp | the elif follows a block that ends with an if
+ward:python/confusing-consecutive-elif | CTFd/utils/decorators/visibility.py:46 | tp | the elif follows a block that ends with an if
+ward:python/confusing-consecutive-elif | CTFd/utils/decorators/visibility.py:71 | tp | the elif follows a block that ends with an if
+ward:python/consider-ternary-expression | CTFd/__init__.py:65 | tp | both branches assign the same variable one value
+ward:python/consider-ternary-expression | CTFd/api/v1/challenges.py:655 | tp | both branches assign the same variable one value
+ward:python/consider-ternary-expression | CTFd/api/v1/statistics/challenges.py:127 | tp | both branches assign the same variable one value
+ward:python/consider-ternary-expression | CTFd/auth.py:313 | tp | both branches assign the same variable one value
+ward:python/consider-ternary-expression | CTFd/auth.py:318 | tp | both branches assign the same variable one value
+ward:python/consider-using-assignment-expr | CTFd/__init__.py:291 | tp | a variable assigned on the line before the if that tests it
+ward:python/consider-using-assignment-expr | CTFd/admin/pages.py:29 | tp | a variable assigned on the line before the if that tests it
+ward:python/consider-using-assignment-expr | CTFd/api/v1/awards.py:107 | tp | a variable assigned on the line before the if that tests it
+ward:python/consider-using-assignment-expr | CTFd/api/v1/challenges.py:365 | tp | a variable assigned on the line before the if that tests it
+ward:python/consider-using-assignment-expr | CTFd/api/v1/challenges.py:477 | tp | a variable assigned on the line before the if that tests it
+ward:python/consider-using-tuple | migrations/versions/1093835a1051_add_default_email_templates.py:49 | tp | a list literal iterated in place
+ward:python/consider-using-tuple | tests/users/test_auth.py:191 | tp | a list literal iterated in place
+ward:python/consider-using-tuple | tests/utils/test_validators.py:218 | tp | a list literal iterated in place
+ward:python/dict-get-with-none-default | CTFd/auth.py:261 | tp | dict.get with an explicit None default
+ward:python/dict-get-with-none-default | CTFd/teams.py:231 | tp | dict.get with an explicit None default
+ward:python/dict-get-with-none-default | CTFd/utils/csv/__init__.py:515 | tp | dict.get with an explicit None default
+ward:python/dot-format-in-exception | CTFd/constants/__init__.py:49 | tp | the exception message is built with str.format
+ward:python/dot-format-in-exception | CTFd/constants/__init__.py:62 | tp | the exception message is built with str.format
+ward:python/dot-format-in-exception | CTFd/utils/exports/__init__.py:421 | tp | the exception message is built with str.format
+ward:python/explicit-string-concatenation | CTFd/utils/uploads/uploaders.py:161 | tp | two string literals joined with +
+ward:python/f-string-in-exception | CTFd/config.py:327 | tp | the exception message is an f-string argument
+ward:python/f-string-in-exception | CTFd/plugins/challenges/__init__.py:81 | tp | the exception message is an f-string argument
+ward:python/f-string-in-exception | CTFd/plugins/challenges/__init__.py:147 | tp | the exception message is an f-string argument
+ward:python/f-string-in-exception | CTFd/plugins/challenges/__init__.py:156 | tp | the exception message is an f-string argument
+ward:python/f-string-in-exception | CTFd/plugins/challenges/__init__.py:269 | tp | the exception message is an f-string argument
+ward:python/in-dict-keys | CTFd/api/v1/statistics/challenges.py:23 | un | columns is a SQLAlchemy collection whose type Ward does not know; it may not be a dict
+ward:python/in-dict-keys | CTFd/api/v1/statistics/submissions.py:13 | un | columns is a SQLAlchemy collection whose type Ward does not know; it may not be a dict
+ward:python/in-dict-keys | CTFd/api/v1/statistics/users.py:23 | un | columns is a SQLAlchemy collection whose type Ward does not know; it may not be a dict
+ward:python/in-dict-keys | migrations/1_2_0_upgrade_2_0_0.py:56 | tp | membership or iteration over dict.keys() of a dict
+ward:python/in-dict-keys | migrations/1_2_0_upgrade_2_0_0.py:242 | tp | membership or iteration over dict.keys() of a dict
+ward:python/invalid-character-zero-width-space | tests/utils/test_validators.py:138 | tp | a zero-width space character inside a string literal
+ward:python/invalid-character-zero-width-space | tests/utils/test_validators.py:159 | tp | a zero-width space character inside a string literal
+ward:python/magic-number | CTFd/api/v1/challenges.py:1272 | tp | a number literal compared inline
+ward:python/magic-number | CTFd/auth.py:216 | tp | a number literal compared inline
+ward:python/magic-number | CTFd/auth.py:273 | tp | a number literal compared inline
+ward:python/magic-number | CTFd/auth.py:319 | tp | a number literal compared inline
+ward:python/magic-number | CTFd/schemas/config.py:19 | tp | a number literal compared inline
+ward:python/missing-trailing-period | CTFd/__init__.py:53 | tp | a one-line docstring without a final period
+ward:python/missing-trailing-period | CTFd/__init__.py:78 | tp | a one-line docstring without a final period
+ward:python/missing-trailing-period | CTFd/__init__.py:94 | tp | a one-line docstring without a final period
+ward:python/missing-trailing-period | CTFd/api/v1/challenges.py:1178 | tp | a one-line docstring without a final period
+ward:python/missing-trailing-period | CTFd/api/v1/challenges.py:1226 | tp | a one-line docstring without a final period
+ward:python/nested-for-depth | CTFd/utils/exports/__init__.py:325 | tp | a for loop nested deeper than the limit
+ward:python/nested-for-depth | CTFd/utils/security/sanitize.py:74 | tp | a for loop nested deeper than the limit
+ward:python/nested-if-depth | CTFd/__init__.py:125 | tp | an if nested deeper than the limit
+ward:python/nested-if-depth | CTFd/api/v1/awards.py:109 | tp | an if nested deeper than the limit
+ward:python/nested-if-depth | CTFd/api/v1/challenges.py:154 | tp | an if nested deeper than the limit
+ward:python/nested-if-depth | CTFd/api/v1/challenges.py:203 | tp | an if nested deeper than the limit
+ward:python/nested-if-depth | CTFd/api/v1/challenges.py:205 | tp | an if nested deeper than the limit
+ward:python/prefer-typing-namedtuple | CTFd/plugins/__init__.py:22 | tp | collections.namedtuple with literal field names
+ward:python/prefer-typing-namedtuple | CTFd/utils/challenges/__init__.py:33 | tp | collections.namedtuple with literal field names
+ward:python/prefer-typing-namedtuple | CTFd/utils/plugins/__init__.py:54 | tp | collections.namedtuple with literal field names
+ward:python/prefer-typing-namedtuple | tests/helpers.py:58 | tp | collections.namedtuple with literal field names
+ward:python/prefer-typing-namedtuple | tests/utils/test_sanitize.py:5 | tp | collections.namedtuple with literal field names
+ward:python/raw-string-in-exception | CTFd/__init__.py:107 | tp | the exception message is a string literal argument
+ward:python/raw-string-in-exception | CTFd/constants/__init__.py:49 | tp | the exception message is a string literal argument
+ward:python/raw-string-in-exception | CTFd/constants/__init__.py:62 | tp | the exception message is a string literal argument
+ward:python/raw-string-in-exception | CTFd/plugins/dynamic_challenges/__init__.py:61 | tp | the exception message is a string literal argument
+ward:python/raw-string-in-exception | CTFd/plugins/flags/__init__.py:67 | tp | the exception message is a string literal argument
+ward:python/simplify-boolean-expression | tests/api/v1/test_challenges.py:274 | tp | a value compared with a boolean literal
+ward:python/simplify-boolean-expression | tests/api/v1/test_challenges.py:447 | tp | a value compared with a boolean literal
+ward:python/simplify-boolean-expression | tests/api/v1/test_challenges.py:879 | tp | a value compared with a boolean literal
+ward:python/simplify-boolean-expression | tests/api/v1/test_config.py:150 | tp | a value compared with a boolean literal
+ward:python/simplify-boolean-expression | tests/api/v1/users/test_users.py:17 | tp | a value compared with a boolean literal
+ward:python/suppressible-exception | CTFd/admin/__init__.py:205 | tp | try with a single statement and an except that only passes
+ward:python/suppressible-exception | CTFd/config.py:86 | tp | try with a single statement and an except that only passes
+ward:python/suppressible-exception | CTFd/utils/encoding/__init__.py:13 | tp | try with a single statement and an except that only passes
+ward:python/suppressible-exception | CTFd/utils/encoding/__init__.py:22 | tp | try with a single statement and an except that only passes
+ward:python/suppressible-exception | CTFd/utils/encoding/__init__.py:34 | tp | try with a single statement and an except that only passes
+ward:python/too-many-try-statements | CTFd/api/v1/challenges.py:774 | tp | the try body holds more statements than the limit
+ward:python/too-many-try-statements | CTFd/api/v1/schemas/__init__.py:20 | tp | the try body holds more statements than the limit
+ward:python/too-many-try-statements | CTFd/api/v1/schemas/__init__.py:44 | tp | the try body holds more statements than the limit
+ward:python/too-many-try-statements | CTFd/api/v1/schemas/__init__.py:89 | tp | the try body holds more statements than the limit
+ward:python/too-many-try-statements | CTFd/auth.py:305 | tp | the try body holds more statements than the limit
+ward:python/trailing-comment | CTFd/__init__.py:173 | tp | a comment after code on the same line
+ward:python/trailing-comment | CTFd/__init__.py:232 | tp | a comment after code on the same line
+ward:python/trailing-comment | CTFd/admin/__init__.py:1 | tp | a comment after code on the same line
+ward:python/trailing-comment | CTFd/admin/__init__.py:21 | tp | a comment after code on the same line
+ward:python/trailing-comment | CTFd/admin/__init__.py:22 | tp | a comment after code on the same line
+ward:python/true-false-comparison | tests/api/v1/test_challenges.py:274 | tp | a value compared with a boolean literal
+ward:python/true-false-comparison | tests/api/v1/test_challenges.py:447 | tp | a value compared with a boolean literal
+ward:python/true-false-comparison | tests/api/v1/test_challenges.py:879 | tp | a value compared with a boolean literal
+ward:python/true-false-comparison | tests/api/v1/test_config.py:150 | tp | a value compared with a boolean literal
+ward:python/true-false-comparison | tests/api/v1/users/test_users.py:17 | tp | a value compared with a boolean literal
+ward:python/unused-class | CTFd/forms/auth.py:63 | fp | named through an attribute of a module alias (Forms.auth.X) set in the package __init__; Ward follows no attribute assignment of a module
+ward:python/unused-class | CTFd/forms/auth.py:73 | fp | named through an attribute of a module alias (Forms.auth.X) set in the package __init__; Ward follows no attribute assignment of a module
+ward:python/unused-class | CTFd/forms/auth.py:77 | fp | named through an attribute of a module alias (Forms.auth.X) set in the package __init__; Ward follows no attribute assignment of a module
+ward:python/unused-class | CTFd/forms/auth.py:84 | fp | named through an attribute of a module alias (Forms.auth.X) set in the package __init__; Ward follows no attribute assignment of a module
+ward:python/unused-class | CTFd/forms/awards.py:8 | fp | named through an attribute of a module alias (Forms.auth.X) set in the package __init__; Ward follows no attribute assignment of a module
+ward:python/unused-function | CTFd/forms/auth.py:19 | fp | named through an attribute of a module alias (Forms.auth.X) set in the package __init__; Ward follows no attribute assignment of a module
+ward:python/unused-function | CTFd/forms/language.py:7 | fp | named through an attribute of a module alias (Forms.auth.X) set in the package __init__; Ward follows no attribute assignment of a module
+ward:python/unused-function | CTFd/forms/self.py:19 | fp | named through an attribute of a module alias (Forms.auth.X) set in the package __init__; Ward follows no attribute assignment of a module
+ward:python/unused-function | CTFd/forms/teams.py:107 | fp | named through an attribute of a module alias (Forms.auth.X) set in the package __init__; Ward follows no attribute assignment of a module
+ward:python/unused-function | CTFd/forms/teams.py:124 | fp | named through an attribute of a module alias (Forms.auth.X) set in the package __init__; Ward follows no attribute assignment of a module
+ward:python/while-used | CTFd/__init__.py:199 | tp | a while loop
+ward:python/while-used | CTFd/utils/events/__init__.py:60 | tp | a while loop
+ward:python/while-used | CTFd/utils/events/__init__.py:84 | tp | a while loop
+ward:python/while-used | CTFd/utils/events/__init__.py:88 | tp | a while loop
+ward:python/while-used | CTFd/utils/events/__init__.py:109 | tp | a while loop
