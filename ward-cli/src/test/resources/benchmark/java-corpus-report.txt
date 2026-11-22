@@ -8,7 +8,7 @@
 commons-lang | files 638 | not analysed 0
 spring-petclinic | files 50 | not analysed 0
 spring-data-examples | files 6692 | not analysed 0
-rules 1057 | not run (need type facts) 252 | findings 90888
+rules 1057 | not run (need type facts) 252 | findings 90889
 ward:java/aa-assertion-of-arguments | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:java/abbreviation-as-word-in-name | findings 297 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/abstract-class-name | findings 19 | labelled 3 | tp 3 | fp 0 | un 0
@@ -675,7 +675,7 @@ ward:java/np-parameter-must-be-nonnull-but-marked-as-nullable | findings 0 | lab
 ward:java/np-store-into-nonnull-field | not run
 ward:java/np-sync-and-null-check-field | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/np-tostring-could-return-null | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
-ward:java/np-unwritten-field | findings 7 | labelled 2 | tp 0 | fp 0 | un 2
+ward:java/np-unwritten-field | findings 7 | labelled 3 | tp 0 | fp 0 | un 3
 ward:java/np-unwritten-public-or-protected-field | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/ns-dangerous-non-short-circuit | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/ns-non-short-circuit | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
@@ -861,7 +861,7 @@ ward:java/simplify-boolean-expression | findings 0 | labelled 0 | tp 0 | fp 0 | 
 ward:java/simplify-boolean-return | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/simplify-conditional | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/sing-singleton-getter-not-synchronized | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/sing-singleton-has-nonprivate-constructor | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:java/sing-singleton-has-nonprivate-constructor | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:java/sing-singleton-implements-clone-method | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/sing-singleton-implements-cloneable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/sing-singleton-implements-serializable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -991,12 +991,12 @@ ward:java/unsynchronized-static-formatter | findings 3 | labelled 3 | tp 3 | fp 
 ward:java/untrusted-deserialization | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/untrusted-redirect | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/unused-anonymous-class | findings 18 | labelled 3 | tp 1 | fp 0 | un 2
-ward:java/unused-assignment | findings 4 | labelled 2 | tp 2 | fp 0 | un 0
+ward:java/unused-assignment | findings 4 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/unused-collection-modified-in-place | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/unused-formal-parameter | findings 9 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/unused-import | findings 39 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/unused-label | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/unused-local-variable | findings 26 | labelled 1 | tp 1 | fp 0 | un 0
+ward:java/unused-local-variable | findings 26 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/unused-null-check-in-equals | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/unused-private-method | findings 12 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/unused-return-value | not run
@@ -1032,7 +1032,7 @@ ward:java/uuf-unused-public-or-protected-field | findings 0 | labelled 0 | tp 0 
 ward:java/uw-uncond-wait | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:java/uwf-field-not-initialized-in-constructor | findings 3 | labelled 3 | tp 2 | fp 0 | un 1
 ward:java/uwf-null-field | findings 3 | labelled 3 | tp 2 | fp 0 | un 1
-ward:java/uwf-unwritten-field | findings 7 | labelled 2 | tp 2 | fp 0 | un 0
+ward:java/uwf-unwritten-field | findings 7 | labelled 3 | tp 2 | fp 0 | un 1
 ward:java/uwf-unwritten-public-or-protected-field | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/va-format-string-uses-newline | findings 8 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/va-primitive-array-passed-to-object-vararg | not run

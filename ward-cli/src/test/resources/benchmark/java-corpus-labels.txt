@@ -147,9 +147,6 @@ ward:java/dm-default-encoding | commons-lang/src/test/java/org/apache/commons/la
 ward:java/dm-useless-thread | commons-lang/src/test/java/org/apache/commons/lang3/ThreadUtilsTest.java:190 | tp | a Thread is created with no Runnable; the tests need only a thread object
 ward:java/dm-useless-thread | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/BasicThreadFactoryTest.java:202 | tp | a Thread is created with no Runnable; the tests need only a thread object
 ward:java/dm-useless-thread | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/BasicThreadFactoryTest.java:244 | tp | a Thread is created with no Runnable; the tests need only a thread object
-ward:java/dmi-collections-should-not-contain-themselves | commons-lang/src/test/java/org/apache/commons/lang3/builder/ToStringBuilderAppendCycleTest.java:58 | tp | a list is added to itself; the two others add a fraction to itself, which is arithmetic
-ward:java/dmi-collections-should-not-contain-themselves | commons-lang/src/test/java/org/apache/commons/lang3/math/FractionTest.java:157 | fp | a list is added to itself; the two others add a fraction to itself, which is arithmetic
-ward:java/dmi-collections-should-not-contain-themselves | commons-lang/src/test/java/org/apache/commons/lang3/math/FractionTest.java:160 | fp | a list is added to itself; the two others add a fraction to itself, which is arithmetic
 ward:java/dmi-useless-substring | commons-lang/src/test/java/org/apache/commons/lang3/text/StrBuilderTest.java:1750 | tp | substring(0)
 ward:java/dmi-useless-substring | commons-lang/src/test/java/org/apache/commons/lang3/text/StrBuilderTest.java:1751 | tp | substring(0)
 ward:java/do-not-extend-java-lang-throwable | commons-lang/src/test/java/org/apache/commons/lang3/AnnotationUtilsTest.java:154 | tp | the class extends Throwable
@@ -171,8 +168,6 @@ ward:java/eq-always-true | commons-lang/src/test/java/org/apache/commons/lang3/A
 ward:java/eq-compareto-use-object-equals | commons-lang/src/test/java/org/apache/commons/lang3/RangeReadObjectTest.java:64 | tp | the class declares compareTo and no equals
 ward:java/eq-compareto-use-object-equals | commons-lang/src/test/java/org/apache/commons/lang3/RangeTest.java:40 | tp | the class declares compareTo and no equals
 ward:java/eq-compareto-use-object-equals | commons-lang/src/test/java/org/apache/commons/lang3/compare/ComparableUtilsTest.java:439 | tp | the class declares compareTo and no equals
-ward:java/eq-other-no-object | commons-lang/src/main/java/org/apache/commons/lang3/text/StrBuilder.java:1876 | fp | the class also overrides equals(Object); this is a typed overload beside it
-ward:java/eq-overriding-equals-not-symmetric | commons-lang/src/test/java/org/apache/commons/lang3/concurrent/TimedSemaphoreTest.java:49 | fp | the superclass is a nested class of the file that extends Thread, which defines no equals; the rule does not resolve the declaration
 ward:java/eq-unusual | commons-lang/src/test/java/org/apache/commons/lang3/ArrayUtilsTest.java:6730 | tp | equals only throws
 ward:java/equals-null | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:1056 | tp | equals(null) inside an assertion of the equals contract
 ward:java/equals-null | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:1880 | tp | equals(null) inside an assertion of the equals contract
@@ -456,8 +451,6 @@ ward:java/simple-date-format-needs-locale | commons-lang/src/test/java/org/apach
 ward:java/simplifiable-test-assertion | commons-lang/src/test/java/org/apache/commons/lang3/ArrayUtilsTest.java:4888 | tp | assertEquals with a boolean literal
 ward:java/simplifiable-test-assertion | commons-lang/src/test/java/org/apache/commons/lang3/ArrayUtilsTest.java:4897 | tp | assertEquals with a boolean literal
 ward:java/simplifiable-test-assertion | commons-lang/src/test/java/org/apache/commons/lang3/LongRangeTest.java:193 | tp | assertTrue on a != test, which assertNotEquals states directly
-ward:java/sing-singleton-has-nonprivate-constructor | commons-lang/src/main/java/org/apache/commons/lang3/text/StrTokenizer.java:97 | fp | the first class is no singleton: its static factories return new objects; the second has a shared instance and public construction
-ward:java/sing-singleton-has-nonprivate-constructor | commons-lang/src/main/java/org/apache/commons/lang3/time/CalendarUtils.java:36 | tp | the first class is no singleton: its static factories return new objects; the second has a shared instance and public construction
 ward:java/single-line-javadoc | commons-lang/src/test/java/org/apache/commons/lang3/time/FastDateParserJava15BugTest.java:44 | tp | a single-line Javadoc comment that holds a see tag
 ward:java/single-method-singleton | commons-lang/src/main/java/org/apache/commons/lang3/time/FastDateFormat.java:276 | tp | several methods named getInstance in one class
 ward:java/single-method-singleton | commons-lang/src/main/java/org/apache/commons/lang3/time/FastDateFormat.java:300 | tp | several methods named getInstance in one class
@@ -526,12 +519,9 @@ ward:java/unused-anonymous-class | commons-lang/src/test/java/org/apache/commons
 ward:java/unused-anonymous-class | commons-lang/src/test/java/org/apache/commons/lang3/FunctionsTest.java:837 | un | an anonymous object is created and dropped; the test only checks that it compiles
 ward:java/unused-anonymous-class | commons-lang/src/test/java/org/apache/commons/lang3/FunctionsTest.java:882 | un | an anonymous object is created and dropped; the test only checks that it compiles
 ward:java/unused-assignment | commons-lang/src/main/java/org/apache/commons/lang3/ClassUtils.java:638 | tp | the initial value is overwritten on every path before it is read; the second was not traced
-ward:java/unused-assignment | commons-lang/src/main/java/org/apache/commons/lang3/builder/ToStringBuilder.java:1072 | un | the initial value is overwritten on every path before it is read; the second was not traced
 ward:java/unused-formal-parameter | commons-lang/src/test/java/org/apache/commons/lang3/builder/CompareToBuilderTest.java:169 | tp | the parameter is not used in the body
 ward:java/unused-formal-parameter | commons-lang/src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java:474 | tp | the parameter is not used in the body
 ward:java/unused-formal-parameter | commons-lang/src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java:484 | tp | the parameter is not used in the body
-ward:java/unused-local-variable | commons-lang/src/main/java/org/apache/commons/lang3/ClassUtils.java:1329 | fp | the first local is read inside an anonymous class of the lambda; the second is assigned only
-ward:java/unused-local-variable | commons-lang/src/test/java/org/apache/commons/lang3/RandomUtilsTest.java:50 | un | the first local is read inside an anonymous class of the lambda; the second is assigned only
 ward:java/unused-local-variable | commons-lang/src/test/java/org/apache/commons/lang3/exception/ExceptionUtilsTest.java:265 | tp | the first local is read inside an anonymous class of the lambda; the second is assigned only
 ward:java/unused-private-method | commons-lang/src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java:469 | tp | the private method is called only by reflection from the test
 ward:java/unused-private-method | commons-lang/src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java:479 | tp | the private method is called only by reflection from the test
@@ -562,7 +552,6 @@ ward:java/useless-overriding-method | commons-lang/src/main/java/org/apache/comm
 ward:java/useless-overriding-method | commons-lang/src/main/java/org/apache/commons/lang3/builder/StandardToStringStyle.java:435 | un | the override only calls super; the first and third may widen the access of the method
 ward:java/useless-overriding-method | commons-lang/src/test/java/org/apache/commons/lang3/builder/HashCodeBuilderTest.java:82 | tp | the override only calls super; the first and third may widen the access of the method
 ward:java/uuf-unused-field | commons-lang/src/test/java/org/apache/commons/lang3/builder/ReflectionDiffBuilderTest.java:262 | tp | a private static field that nothing reads; a reflection fixture
-ward:java/uw-uncond-wait | commons-lang/src/test/java/org/apache/commons/lang3/ObjectUtilsTest.java:905 | fp | the first calls a static helper named wait; the second waits with no condition
 ward:java/uw-uncond-wait | commons-lang/src/test/java/org/apache/commons/lang3/ThreadUtilsTest.java:68 | tp | the first calls a static helper named wait; the second waits with no condition
 ward:java/uwf-field-not-initialized-in-constructor | commons-lang/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java:510 | tp | no constructor sets the field; a method sets it and another dereferences it without testing it
 ward:java/uwf-field-not-initialized-in-constructor | spring-petclinic/src/test/java/org/springframework/samples/petclinic/PostgresIntegrationTests.java:98 | tp | no constructor sets the field; a method assigns it and the class dereferences it without a null test
@@ -604,7 +593,6 @@ ward:java/avoid-inline-conditionals | commons-lang/src/main/java/org/apache/comm
 ward:java/avoid-inline-conditionals | commons-lang/src/main/java/org/apache/commons/lang3/AppendableJoiner.java:240 | tp | the line is a real instance of what the rule names
 ward:java/avoid-inline-conditionals | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:1216 | tp | the line is a real instance of what the rule names
 ward:java/avoid-instanceof-checks-in-catch-clause | spring-data-examples/couchbase/transactions/src/main/java/com/example/demo/CmdRunner.java:78 | tp | the line is a real instance of what the rule names
-ward:java/avoid-no-argument-super-constructor-call | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:157 | fp | qualified super() is required
 ward:java/avoid-print-stack-trace | spring-data-examples/redis/util/src/main/java/example/springdata/redis/test/condition/ShutdownQueue.java:42 | tp | the line is a real instance of what the rule names
 ward:java/avoid-using-hard-coded-ip | spring-data-examples/couchbase/transactions/src/main/java/com/example/demo/Config.java:36 | tp | the line is a real instance of what the rule names
 ward:java/boolean-expression-complexity | commons-lang/src/main/java/org/apache/commons/lang3/AnnotationUtils.java:332 | tp | the line is a real instance of what the rule names
@@ -640,9 +628,6 @@ ward:java/executable-statement-count | commons-lang/src/main/java/org/apache/com
 ward:java/executable-statement-count | commons-lang/src/main/java/org/apache/commons/lang3/BooleanUtils.java:762 | tp | the line is a real instance of what the rule names
 ward:java/executable-statement-count | commons-lang/src/main/java/org/apache/commons/lang3/CharSequenceUtils.java:184 | tp | the line is a real instance of what the rule names
 ward:java/explicit-initialization | spring-data-examples/jdbc/mybatis/src/main/java/example/springdata/jdbc/mybatis/Manual.java:30 | tp | the line is a real instance of what the rule names
-ward:java/field-no-init | spring-data-examples/jpa/example/src/main/java/example/springdata/jpa/compositions/ContactRepositoryImpl.java:33 | fp | Lombok constructor writes the field
-ward:java/field-no-init | spring-data-examples/jpa/example/src/main/java/example/springdata/jpa/compositions/EmployeeRepositoryImpl.java:33 | fp | Lombok constructor writes the field
-ward:java/field-no-init | spring-data-examples/jpa/example/src/main/java/example/springdata/jpa/compositions/FlushOnSaveRepositoryImpl.java:39 | fp | Lombok constructor writes the field
 ward:java/final-class | commons-lang/src/main/java/org/apache/commons/lang3/AutoCloseables.java:35 | tp | the line is a real instance of what the rule names
 ward:java/final-class | commons-lang/src/main/java/org/apache/commons/lang3/Strings.java:37 | tp | the line is a real instance of what the rule names
 ward:java/final-class | commons-lang/src/main/java/org/apache/commons/lang3/builder/CompareToBuilder.java:123 | tp | the line is a real instance of what the rule names
@@ -677,7 +662,6 @@ ward:java/method-count | commons-lang/src/main/java/org/apache/commons/lang3/Arr
 ward:java/method-count | commons-lang/src/main/java/org/apache/commons/lang3/StringUtils.java:142 | tp | the line is a real instance of what the rule names
 ward:java/method-count | commons-lang/src/main/java/org/apache/commons/lang3/SystemProperties.java:35 | tp | the line is a real instance of what the rule names
 ward:java/missing-serial-version-uid | spring-data-examples/jpa/multiple-datasources/src/main/java/example/springdata/jpa/multipleds/customer/Customer.java:59 | tp | the line is a real instance of what the rule names
-ward:java/missing-static-method-in-non-instantiatable-class | spring-data-examples/jpa/security/src/main/java/example/springdata/jpa/security/User.java:32 | fp | @RequiredArgsConstructor generates a public constructor
 ward:java/modifier-order | spring-data-examples/cassandra/example/src/test/java/example/springdata/cassandra/basic/BasicUserRepositoryTests.java:48 | tp | the line is a real instance of what the rule names
 ward:java/modifier-order | spring-data-examples/cassandra/vector-search/src/main/java/example/springdata/vector/Comment.java:32 | tp | the line is a real instance of what the rule names
 ward:java/modifier-order | spring-data-examples/couchbase/example/src/main/java/example/springdata/couchbase/model/Airline.java:36 | tp | the line is a real instance of what the rule names
@@ -704,7 +688,6 @@ ward:java/no-field-di | spring-data-examples/cassandra/example/src/test/java/exa
 ward:java/no-field-di | spring-data-examples/cassandra/example/src/test/java/example/springdata/cassandra/basic/CassandraOperationsIntegrationTests.java:47 | tp | the line is a real instance of what the rule names
 ward:java/np-unwritten-field | spring-data-examples/jpa/showcase/src/test-snippets/java/example/springdata/jpa/showcase/snippets/test/AccountRepositoryIntegrationTest.java:34 | un | field is injected by the test framework
 ward:java/np-unwritten-field | spring-data-examples/jpa/showcase/src/test-snippets/java/example/springdata/jpa/showcase/snippets/test/CustomerRepositoryIntegrationTest.java:38 | un | field is injected by the test framework
-ward:java/np-unwritten-field | spring-data-examples/mongodb/aggregation/src/main/java/example/springdata/mongodb/aggregation/Order.java:64 | fp | @AllArgsConstructor writes the field
 ward:java/openjdk-annotation-location | commons-lang/src/test/java/org/apache/commons/lang3/AnnotationUtilsTest.java:188 | un | needs more of the class or the project conventions than was read
 ward:java/openjdk-annotation-location | spring-data-examples/cassandra/vector-search/src/main/java/example/springdata/vector/Comment.java:38 | un | needs more of the class or the project conventions than was read
 ward:java/openjdk-annotation-location | spring-data-examples/jdbc/basics/src/main/java/example/springdata/jdbc/basics/aggregate/LegoSet.java:59 | un | needs more of the class or the project conventions than was read
@@ -720,9 +703,6 @@ ward:java/redundant-modifier | spring-data-examples/mongodb/jmolecules/src/main/
 ward:java/redundant-modifier | spring-data-examples/web/querydsl/src/main/java/example/users/UserRepository.java:41 | tp | the line is a real instance of what the rule names
 ward:java/regexp-singleline | spring-data-examples/jpa/jpa21/src/main/java/example/springdata/jpa/resultsetmappings/SubscriptionRepository.java:44 | tp | the line is a real instance of what the rule names
 ward:java/regexp-singleline | spring-data-examples/mongodb/reactive/src/main/java/example/springdata/mongodb/people/Person.java:30 | tp | the line is a real instance of what the rule names
-ward:java/replace-java-util-vector | spring-data-examples/cassandra/vector-search/src/main/java/example/springdata/vector/Comment.java:38 | fp | spring-data Vector is not java.util.Vector
-ward:java/replace-java-util-vector | spring-data-examples/cassandra/vector-search/src/main/java/example/springdata/vector/CommentRepository.java:28 | fp | spring-data Vector is not java.util.Vector
-ward:java/replace-java-util-vector | spring-data-examples/cassandra/vector-search/src/test/java/example/springdata/vector/CassandraVectorSearchTest.java:47 | fp | spring-data Vector is not java.util.Vector
 ward:java/return-count | commons-lang/src/main/java/org/apache/commons/lang3/AnnotationUtils.java:108 | tp | the line is a real instance of what the rule names
 ward:java/return-count | commons-lang/src/main/java/org/apache/commons/lang3/ArrayUtils.java:1007 | tp | the line is a real instance of what the rule names
 ward:java/return-count | commons-lang/src/main/java/org/apache/commons/lang3/BooleanUtils.java:474 | tp | the line is a real instance of what the rule names
@@ -764,10 +744,7 @@ ward:java/use-diamond-operator | spring-data-examples/web/querydsl/src/main/java
 ward:java/use-explicit-types | spring-data-examples/cassandra/example/src/main/java/example/springdata/cassandra/auditing/BasicConfiguration.java:60 | tp | the line is a real instance of what the rule names
 ward:java/use-explicit-types | spring-data-examples/cassandra/example/src/test/java/example/springdata/cassandra/auditing/AuditedPersonRepositoryTests.java:53 | tp | the line is a real instance of what the rule names
 ward:java/use-explicit-types | spring-data-examples/cassandra/example/src/test/java/example/springdata/cassandra/basic/CassandraOperationsIntegrationTests.java:107 | tp | the line is a real instance of what the rule names
-ward:java/uuf-unused-field | spring-data-examples/cassandra/reactive/src/main/java/example/springdata/cassandra/people/Person.java:43 | fp | @Data accessors use the field
-ward:java/uuf-unused-field | spring-data-examples/couchbase/example/src/main/java/example/springdata/couchbase/model/Airline.java:38 | un | needs more of the class than was read
 ward:java/uwf-field-not-initialized-in-constructor | spring-data-examples/jpa/showcase/src/snippets/java/example/springdata/jpa/showcase/snippets/AccountRepositoryJdbcImpl.java:30 | un | needs more of the class or the project conventions than was read
-ward:java/uwf-unwritten-field | spring-data-examples/cassandra/reactive/src/main/java/example/springdata/cassandra/spel/ApplicationConfiguration.java:64 | fp | @RequiredArgsConstructor writes the field
 ward:java/va-format-string-uses-newline | spring-data-examples/cassandra/util/src/main/java/example/springdata/cassandra/util/CassandraExtension.java:84 | tp | the line is a real instance of what the rule names
 ward:java/va-format-string-uses-newline | spring-data-examples/cassandra/vector-search/src/test/java/example/springdata/vector/CassandraVectorSearchTest.java:63 | tp | the line is a real instance of what the rule names
 ward:java/va-format-string-uses-newline | spring-data-examples/jdbc/basics/src/test/java/example/springdata/jdbc/basics/Output.java:35 | tp | the line is a real instance of what the rule names
@@ -777,3 +754,9 @@ ward:java/text-block-google-style-formatting | spring-data-examples/jdbc/basics/
 ward:java/text-block-google-style-formatting | spring-data-examples/jpa/vector-search/src/main/java/example/springdata/vector/CommentRepository.java:32 | un | needs the whole text block than was read
 ward:java/unnecessary-parentheses | spring-data-examples/rest/security/src/test/java/example/springdata/rest/security/UrlLevelSecurityTests.java:91 | tp | parentheses around a string literal
 ward:java/use-diamond-operator | spring-data-examples/web/querydsl/src/main/java/example/users/UserInitializer.java:70 | tp | the type arguments can be inferred
+ward:java/sing-singleton-has-nonprivate-constructor | commons-lang/src/main/java/org/apache/commons/lang3/time/CalendarUtils.java:36 | tp | the class exposes the shared INSTANCE field and has public constructors
+ward:java/np-unwritten-field | spring-data-examples/jpa/showcase/src/test-snippets/java/example/springdata/jpa/showcase/snippets/test/AccountRepositoryIntegrationTest.java:35 | un | field is injected by the test framework
+ward:java/uwf-unwritten-field | spring-data-examples/jpa/showcase/src/main/java/example/springdata/jpa/showcase/core/Customer.java:31 | un | the persistence provider writes the field of an entity by reflection
+ward:java/unused-assignment | spring-data-examples/rest/starbucks/src/main/java/example/springdata/rest/stores/StoreInitializer.java:104 | tp | the initial null is overwritten by the first read of the loop before anything reads it
+ward:java/unused-local-variable | commons-lang/src/test/java/org/apache/commons/lang3/SerializationUtilsTest.java:201 | tp | the local is assigned and never read
+ward:java/unused-local-variable | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsAbbreviateTest.java:278 | tp | the only other mention of the local is in a comment
