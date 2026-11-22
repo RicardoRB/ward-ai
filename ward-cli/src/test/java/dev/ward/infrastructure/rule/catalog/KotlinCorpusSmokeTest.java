@@ -17,7 +17,12 @@ class KotlinCorpusSmokeTest {
   @Test
   @EnabledIfSystemProperty(named = "ward.corpus.kotlin", matches = ".+")
   void kotlinCorpusReportMatchesTheCommittedOne() throws IOException {
-    final CorpusRun run = new CorpusRun("Kotlin", PinnedCorpus.kotlin(), RulePreset.STRICT, "both Apache-2.0");
+    final CorpusRun run = new CorpusRun(
+        "Kotlin",
+        PinnedCorpus.kotlin(),
+        RulePreset.STRICT,
+        "both Apache-2.0"
+    );
 
     assertThat(run.report()).isEqualTo(run.committed());
   }
