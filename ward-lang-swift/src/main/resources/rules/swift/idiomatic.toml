@@ -40,6 +40,7 @@ presets = ["strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["enum_case_name"]
+not-inside = ["enum_case_pattern"]
 text = '^none$'
 message = "enum case named none can conflict with Optional.none"
 '''

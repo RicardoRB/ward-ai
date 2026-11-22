@@ -52,7 +52,6 @@ ward:swift/hidden-field | alamofire/Tests/ServerTrustEvaluatorTests.swift:130 | 
 ward:swift/hidden-field | alamofire/Example/Source/DetailViewController.swift:109 | tp | a local bound by if let has the name of a property of the type
 ward:swift/inclusive-language | alamofire/Example/Source/MasterViewController.swift:2 | un | the word is in the file header comment, as part of the file name
 ward:swift/inclusive-language | alamofire/Example/Source/MasterViewController.swift:28 | tp | the type name contains master
-ward:swift/inclusive-language | alamofire/Source/Features/URLEncodedFormEncoder.swift:176 | fp | the word is part of a URL in a documentation comment (a branch name), which the author cannot change
 ward:swift/javadoc-method | alamofire/Source/Core/URLConvertible+URLRequestConvertible.swift:84 | tp | the documentation comment has no tag for this parameter or result
 ward:swift/javadoc-method | alamofire/Source/Core/AFError.swift:239 | tp | the documentation comment has no tag for this parameter or result
 ward:swift/javadoc-method | alamofire/Source/Core/AFError.swift:247 | tp | the documentation comment has no tag for this parameter or result
@@ -144,3 +143,41 @@ ward:swift/xctfail-message | alamofire/Tests/ResponseTests.swift:585 | tp | XCTF
 ward:swift/hard-coded-credential | alamofire/Tests/AuthenticationTests.swift:61 | tp | the second constant of a declaration of two is a password literal
 ward:swift/hard-coded-credential | alamofire/Tests/AuthenticationTests.swift:89 | tp | the second constant of a declaration of two is a password literal
 ward:swift/hard-coded-credential | alamofire/Tests/AuthenticationTests.swift:181 | tp | the second constant of a declaration of two is a password literal
+ward:swift/async-without-await | alamofire/Tests/ConcurrencyTests.swift:484 | tp | a local async function whose body never awaits
+ward:swift/async-without-await | alamofire/Tests/URLProtocolTests.swift:104 | fp | the async signature is the one the URLSessionDataDelegate method requires, so async cannot be dropped
+ward:swift/async-without-await | sample-food-truck/FoodTruckKit/Sources/Account/AccountStore.swift:117 | tp | a private async function whose body never awaits
+ward:swift/discouraged-optional-boolean | alamofire/Source/Core/DataRequest.swift:60 | tp | an optional Bool parameter
+ward:swift/discouraged-optional-boolean | alamofire/Source/Core/Session.swift:680 | tp | an optional Bool parameter
+ward:swift/discouraged-optional-boolean | sample-food-truck/App/City/CityView.swift:24 | tp | an optional Bool state property
+ward:swift/discouraged-optional-collection | alamofire/Example/Source/AppDelegate.swift:36 | un | the optional collection is the parameter type of a UIKit delegate method, which cannot change
+ward:swift/discouraged-optional-collection | alamofire/Tests/RequestTests.swift:1131 | tp | an optional array variable
+ward:swift/discouraged-optional-collection | sample-food-truck/FoodTruckKit/Sources/Order/OrderGenerator.swift:76 | tp | an optional dictionary variable
+ward:swift/empty-string | alamofire/Tests/RequestTests.swift:1364 | tp | a comparison with an empty string literal
+ward:swift/explicit-top-level-acl | alamofire/Example/Source/AppDelegate.swift:27 | tp | a top-level class without an access modifier
+ward:swift/explicit-top-level-acl | alamofire/Tests/TestHelpers.swift:528 | tp | a top-level struct without an access modifier
+ward:swift/explicit-top-level-acl | sample-food-truck/Widgets/Widgets.swift:11 | tp | a top-level struct without an access modifier
+ward:swift/fallthrough | sample-food-truck/FoodTruckKit/Sources/Store/StoreProductController.swift:60 | tp | a fallthrough statement
+ward:swift/fatal-error-message | sample-food-truck/App/Truck/SalesHistoryView.swift:97 | tp | fatalError without a message
+ward:swift/fatal-error-message | sample-food-truck/FoodTruckKit/Sources/Model/FoodTruckModel.swift:93 | tp | fatalError without a message
+ward:swift/fatal-error-message | sample-food-truck/FoodTruckKit/Sources/Model/FoodTruckModel.swift:98 | tp | fatalError without a message
+ward:swift/final-test-case | alamofire/Tests/BaseTestCase.swift:29 | fp | a base class that the other test cases of the project inherit from cannot be final
+ward:swift/legacy-multiple | sample-food-truck/App/Truck/Cards/TruckOrdersCard.swift:125 | tp | a remainder compared with zero
+ward:swift/no-extension-access-modifier | sample-food-truck/App/General/FlowLayout.swift:116 | tp | an access modifier on an extension
+ward:swift/no-extension-access-modifier | sample-food-truck/FoodTruckKit/Sources/Donut/Ingredients/Topping.swift:10 | tp | an access modifier on an extension
+ward:swift/no-extension-access-modifier | sample-food-truck/FoodTruckKit/Sources/Truck.swift:15 | tp | an access modifier on an extension
+ward:swift/nslocalizedstring-require-bundle | sample-food-truck/FoodTruckKit/Sources/Account/AccountStore.swift:28 | tp | NSLocalizedString without a bundle in a Swift package whose strings are not in the main bundle
+ward:swift/nslocalizedstring-require-bundle | sample-food-truck/FoodTruckKit/Sources/Account/AccountStore.swift:31 | tp | NSLocalizedString without a bundle in a Swift package whose strings are not in the main bundle
+ward:swift/prefer-nimble | alamofire/Tests/AuthenticationInterceptorTests.swift:1003 | un | an XCTAssert call in a project that does not use Nimble, so whether a matcher is wanted is the project's choice
+ward:swift/prefer-nimble | alamofire/Tests/RequestTests.swift:1357 | un | an XCTAssert call in a project that does not use Nimble, so whether a matcher is wanted is the project's choice
+ward:swift/prefer-nimble | alamofire/Tests/WebSocketTests.swift:687 | un | an XCTAssert call in a project that does not use Nimble, so whether a matcher is wanted is the project's choice
+ward:swift/private-action | alamofire/Example/Source/DetailViewController.swift:74 | tp | an IBAction that is not private
+ward:swift/shorthand-optional-binding | sample-food-truck/App/City/CityView.swift:71 | tp | bindings that repeat the name, as in let willRainSoon = willRainSoon
+ward:swift/shorthand-optional-binding | sample-food-truck/FoodTruckKit/Sources/Donut/Donut.swift:33 | tp | if let topping = topping
+ward:swift/shorthand-optional-binding | sample-food-truck/FoodTruckKit/Sources/Store/StoreSubscriptionController.swift:103 | tp | if let groupID = groupID
+ward:swift/sorted-first-last | sample-food-truck/App/Truck/Cards/TruckWeatherCard.swift:182 | tp | sorted(by:) followed by first
+ward:swift/unavailable-function | alamofire/Source/Core/Request.swift:700 | tp | a function whose body is only fatalError and that is not marked unavailable
+ward:swift/unneeded-throws-rethrows | alamofire/Source/Core/DataStreamRequest.swift:562 | un | the throws may be the signature of a protocol requirement
+ward:swift/unneeded-throws-rethrows | alamofire/Tests/RequestTests.swift:1479 | tp | a test function that is async throws and contains no try
+ward:swift/unneeded-throws-rethrows | sample-food-truck/App/Donut/ShowTopDonutsIntent.swift:19 | un | the throws matches the signature of the protocol requirement perform
+ward:swift/untyped-error-in-catch | sample-food-truck/App/Orders/OrderDetailView.swift:107 | tp | catch let error without a cast
+ward:swift/discouraged-none-name | alamofire/Tests/BaseTestCase.swift:32 | tp | an enum case declared with the name none

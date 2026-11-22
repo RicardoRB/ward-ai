@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Reads the block tags of a Javadoc comment. A block tag starts a line of the comment with an
- * {@code @}; the non-blank lines after it, up to the next block tag, continue its description.
+ * {@code @} outside a fenced code block; the non-blank lines after it, up to the next block tag, continue its description.
  */
 public final class JavadocTags {
   private static final String OPEN = "/**";
@@ -15,6 +15,7 @@ public final class JavadocTags {
   private static final String CLOSE = "*/";
   private static final String TEXT = "text";
   private static final String AT = "@";
+  private static final String FENCE = "```";
   private static final char ASTERISK = '*';
 
   private JavadocTags() {}
@@ -75,6 +76,7 @@ public final class JavadocTags {
     private final List<Tag> tags;
     private final List<Line> continuation = new ArrayList<>();
     private boolean open;
+    private boolean fenced;
     private String name = "";
     private Span span;
     private String description;
@@ -94,6 +96,13 @@ public final class JavadocTags {
       final int content = skipSpaces(row, star, end);
       final String text = row.substring(content, end).strip();
       if (text.isEmpty()) {
+        return;
+      }
+      if (text.startsWith(FENCE)) {
+        fenced = !fenced;
+        return;
+      }
+      if (fenced) {
         return;
       }
       final int offset = comment.span().startOffset() + rowStart + content;

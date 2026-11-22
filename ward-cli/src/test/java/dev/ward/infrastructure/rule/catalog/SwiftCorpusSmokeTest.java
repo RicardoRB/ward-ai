@@ -10,6 +10,7 @@ import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleNotRun;
 import dev.ward.analysis.domain.rule.RulePreset;
 import dev.ward.analysis.domain.rule.RuleRunResult;
+import dev.ward.infrastructure.rule.catalog.CorpusLabels.Place;
 import dev.ward.infrastructure.rule.BundledRuleMatchers;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -26,7 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 
 /**
- * Runs the Swift rules of the {@code standard} preset, every Swift security rule and the Swift
+ * Runs the Swift rules of the {@code strict} preset, every Swift security rule and the Swift
  * formatter over two pinned open-source projects ({@link SwiftCorpus}) and compares the per-rule
  * counts with the committed report {@code benchmark/swift-corpus-report.txt}. It is skipped unless
  * {@code -Dward.corpus.swift=<dir>} names the directory that holds both extracted archives; {@code
@@ -50,7 +51,7 @@ class SwiftCorpusSmokeTest {
   private static final int FIELDS = 4;
   private static final String SEPARATOR = " \\| ";
   private static final String HEADER =
-      "# Ward's Swift rules of the standard preset and every Swift security rule, with default"
+      "# Ward's Swift rules of the strict preset and every Swift security rule, with default"
           + " options, and the Swift formatter, over every .swift file of two pinned projects"
           + " (both MIT).\n"
           + "%s"
@@ -65,9 +66,6 @@ class SwiftCorpusSmokeTest {
           + "# Regenerate: ./mvnw -pl ward-cli -am -Dtest=SwiftCorpusSmokeTest"
           + " -Dward.corpus.swift=<dir> -Djacoco.skip=true -Dward.benchmark.write=true"
           + " -Dsurefire.failIfNoSpecifiedTests=false test\n";
-
-  /** A finding in a place of the source. */
-  private record Place(String rule, String location) {}
 
   @Test
   @EnabledIfSystemProperty(named = "ward.corpus.swift", matches = ".+")
@@ -100,6 +98,9 @@ class SwiftCorpusSmokeTest {
     assertThat(formatProblems).as("files the formatter refuses or breaks").isEmpty();
     assertThat(found).as("labels without a finding").containsAll(labels.keySet());
     assertThat(underLabelled(rules, found, labels)).as("rules with too few labels").isEmpty();
+    assertThat(CorpusApproximations.unlisted(RESOURCES.resolve("benchmark"), "swift", found, labels))
+        .as("false positives without an approximation with a reason and an open issue")
+        .isEmpty();
     assertThat(report).isEqualTo(Files.readString(file));
   }
 
@@ -120,7 +121,7 @@ class SwiftCorpusSmokeTest {
         .filter(rule -> rule.covers(AnalysisLanguage.SWIFT))
         .filter(
             rule ->
-                RulePreset.STANDARD.selects(rule.presets()) || SECURITY.equals(rule.category())
+                RulePreset.STRICT.selects(rule.presets()) || SECURITY.equals(rule.category())
         )
         .sorted(
             Comparator.comparing((final RuleDefinition rule) -> SECURITY.equals(rule.category()))

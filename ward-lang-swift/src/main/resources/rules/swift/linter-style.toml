@@ -123,7 +123,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "text-pattern"
 target = "lines"
-pattern = '(?i)(whitelist|blacklist|master|slave)'
+pattern = '(?i)(?<!/)(whitelist|blacklist|master|slave)'
 message = "use inclusive language: allow list, deny list, primary or replica"
 '''
 
