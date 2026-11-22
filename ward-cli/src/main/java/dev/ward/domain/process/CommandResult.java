@@ -1,6 +1,7 @@
 package dev.ward.domain.process;
 
 import java.time.Duration;
+import java.util.List;
 
 /**
  * The outcome of a finished or failed process.
@@ -36,5 +37,14 @@ public record CommandResult(
   /** Returns whether the process could not be run or completed. */
   public boolean hasExecutionError() {
     return executionError != null && !executionError.isBlank();
+  }
+
+  /** Returns a newline and the last {@code count} lines of stderr, or "" when it is empty. */
+  public String stderrTail(final int count) {
+    final List<String> lines = stderr == null ? List.of() : stderr.strip().lines().toList();
+    if (lines.isEmpty()) {
+      return "";
+    }
+    return "\n" + String.join("\n", lines.subList(Math.max(0, lines.size() - count), lines.size()));
   }
 }

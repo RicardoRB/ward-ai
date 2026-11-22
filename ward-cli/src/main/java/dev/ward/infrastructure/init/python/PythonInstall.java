@@ -226,17 +226,7 @@ final class PythonInstall {
             + "` failed with exit code "
             + result.exitCode()
             + "; the files init changed were restored."
-            + stderrTail(result.stderr())
+            + result.stderrTail(TAIL_LINES)
     );
-  }
-
-  /** Returns the last lines of the tool's stderr, so a failed install says why. */
-  private static String stderrTail(final String stderr) {
-    final List<String> lines = stderr == null ? List.of() : stderr.strip().lines().toList();
-    if (lines.isEmpty()) {
-      return "";
-    }
-    final List<String> tail = lines.subList(Math.max(0, lines.size() - TAIL_LINES), lines.size());
-    return "\n" + String.join("\n", tail);
   }
 }
