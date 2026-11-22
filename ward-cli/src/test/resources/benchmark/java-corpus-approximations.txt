@@ -1,5 +1,4 @@
 # False positives of the Java corpus run that are known and open: rule | file:line | reason | #issue (#698).
-ward:java/avoid-no-argument-super-constructor-call | commons-lang/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java:157 | qualified super() is required | #715
 ward:java/field-no-init | spring-data-examples/jpa/example/src/main/java/example/springdata/jpa/compositions/ContactRepositoryImpl.java:33 | Lombok constructor writes the field | #713
 ward:java/field-no-init | spring-data-examples/jpa/example/src/main/java/example/springdata/jpa/compositions/EmployeeRepositoryImpl.java:33 | Lombok constructor writes the field | #713
 ward:java/field-no-init | spring-data-examples/jpa/example/src/main/java/example/springdata/jpa/compositions/FlushOnSaveRepositoryImpl.java:39 | Lombok constructor writes the field | #713

@@ -11,3 +11,13 @@ class Child extends Base {
     super(value);
   }
 }
+
+class Outer {
+  class Inner {}
+}
+
+class Sub extends Outer.Inner {
+  Sub(final Outer outer) {
+    outer.super();
+  }
+}
