@@ -9,13 +9,13 @@ import java.util.Set;
 
 /**
  * Reports each left curly brace that starts a line of its own, so that it ends the line of the
- * token before it. Array initializers are not blocks and are not checked; enum bodies are skipped
+ * token before it. Array initializers, in code and in annotations, are not blocks and are not checked; enum bodies are skipped
  * when {@code ignoreEnums} holds, as Checkstyle does by default.
  */
 public final class LeftCurlyCheck implements RuleCheck {
   private static final String OPEN = "'{'";
   private static final Set<String> NOT_BLOCKS =
-      Set.of("arrayInitializer", "elementValueArrayInitializer");
+      Set.of("arrayInitializer", "elementValueArrayInitializer", "annotationValue");
   private static final String ENUM = "enumDeclaration";
 
   private final boolean ignoreEnums;

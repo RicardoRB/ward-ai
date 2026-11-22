@@ -13,4 +13,11 @@ final class OpenjdkPassing {
       @Deprecated @SuppressWarnings("x") final String a,
       final String b
   ) {}
+  static void multiLine(
+      @Deprecated(
+          since = "a long message",
+          forRemoval = false
+      ) @SuppressWarnings("x") final String a,
+      final String b
+  ) {}
 }
