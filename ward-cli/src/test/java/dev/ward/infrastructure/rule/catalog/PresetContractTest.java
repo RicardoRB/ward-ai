@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
  * a language that runs on every platform (#686).
  */
 class PresetContractTest {
-  private static final Path CONFLICTS = Path.of("src/test/resources/catalog/preset-conflicts.txt");
+  private static final Path CONFLICTS = Path.of("src/main/resources/dev/ward/application/gate/rule-conflicts.txt");
   private static final int FIELDS = 3;
   private static final String NO_PREFIX = "no-";
   private static final Set<AnalysisLanguage> PLATFORM_FREE =

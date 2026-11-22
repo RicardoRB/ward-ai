@@ -8,6 +8,11 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Fixed
+
+- `strict` no longer enables `ward:java/avoid-no-argument-super-constructor-call`, which contradicted `ward:java/call-super-in-constructor`; the pair is guarded by `PresetContractTest` (#701).
+- A `[select]` that holds both rules of a contradicting pair (for example `java.array-trailing-comma` and `java.no-array-trailing-comma`) is now rejected with an error that names the pair, instead of reporting findings no code can fix (#711).
+
 ## [0.12.0] - 2026-11-22
 
 Ward now checks Rust and C# projects (#642).

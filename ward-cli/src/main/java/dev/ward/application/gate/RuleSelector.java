@@ -58,7 +58,28 @@ final class RuleSelector {
       chosen.put(rule.id(), rule);
     }
     known("exclude", select.exclude()).forEach(rule -> chosen.remove(rule.id()));
+    reportConflicts(chosen);
     return chosen;
+  }
+
+  /** Rejects a selection that holds both rules of a contradicting pair (#711). */
+  private void reportConflicts(final Map<String, RuleDefinition> chosen) {
+    RuleConflicts.pairs().stream()
+        .filter(pair -> chosen.containsKey(pair.first()) && chosen.containsKey(pair.second()))
+        .forEach(
+            pair ->
+                problems.add(
+                    SELECT,
+                    "include",
+                    "\""
+                        + pair.first()
+                        + "\" and \""
+                        + pair.second()
+                        + "\" contradict each other ("
+                        + pair.reason()
+                        + "); exclude one of them"
+                )
+        );
   }
 
   private RulePreset preset() {

@@ -57,6 +57,30 @@ class RuleSelectionTest {
   }
 
   @Test
+  void includingBothRulesOfAContradictingPairIsReported() {
+    final RuleSelection.Result result =
+        RuleSelection.selected(
+            new RuleConfigFile.Select(
+                "none",
+                List.of(),
+                List.of(),
+                List.of("java.array-trailing-comma", "java.no-array-trailing-comma"),
+                List.of()
+            ),
+            List.of(
+                rule("ward:java/array-trailing-comma", RulePreset.STRICT),
+                rule("ward:java/no-array-trailing-comma", RulePreset.NONE)
+            )
+        );
+
+    assertThat(result.problems())
+        .singleElement()
+        .asString()
+        .contains("ward:java/array-trailing-comma", "ward:java/no-array-trailing-comma")
+        .contains("contradict each other", "exclude one of them");
+  }
+
+  @Test
   void aRuleWrittenAsItsIdIsReportedWithTheNameToWrite() {
     final RuleSelection.Result result =
         RuleSelection.selected(
