@@ -127,7 +127,7 @@ public final class ForbiddenNodeCheck implements UnitCheck {
         final Set<String> parent,
         final String path
     ) {
-      this(text, withChild, parent, path, Optional.empty(), "");
+      this(text, withChild, parent, path, Optional.empty(), "", Optional.empty(), Optional.empty());
     }
 
     /** Creates a condition without a path the node must not follow. */
@@ -138,32 +138,7 @@ public final class ForbiddenNodeCheck implements UnitCheck {
         final String path,
         final Optional<Pattern> parentText
     ) {
-      this(text, withChild, parent, path, parentText, "");
-    }
-
-    /** Creates a condition without a pattern on the whole file. */
-    public Condition(
-        final Optional<Pattern> text,
-        final Set<String> withChild,
-        final Set<String> parent,
-        final String path,
-        final Optional<Pattern> parentText,
-        final String notPath
-    ) {
-      this(text, withChild, parent, path, parentText, notPath, Optional.empty(), Optional.empty());
-    }
-
-    /** Creates a condition without a pattern on the text of the parent that must not match. */
-    public Condition(
-        final Optional<Pattern> text,
-        final Set<String> withChild,
-        final Set<String> parent,
-        final String path,
-        final Optional<Pattern> parentText,
-        final String notPath,
-        final Optional<Pattern> notRootText
-    ) {
-      this(text, withChild, parent, path, parentText, notPath, notRootText, Optional.empty());
+      this(text, withChild, parent, path, parentText, "", Optional.empty(), Optional.empty());
     }
 
     /**

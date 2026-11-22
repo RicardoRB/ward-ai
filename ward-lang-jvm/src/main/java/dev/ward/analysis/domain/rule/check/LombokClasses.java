@@ -40,11 +40,11 @@ final class LombokClasses {
 
   /** Returns the simple names of the annotations of the class declaration of {@code visit}. */
   static Set<String> annotations(final SyntaxWalk.Visit visit) {
-    final List<SyntaxNode> chain = new ArrayList<>(visit.ancestors());
-    chain.add(visit.node());
-    if (chain.size() < 2) {
+    if (visit.ancestors().isEmpty()) {
       return Set.of();
     }
+    final List<SyntaxNode> chain = new ArrayList<>(visit.ancestors());
+    chain.add(visit.node());
     final Set<String> names = new HashSet<>();
     NullModel.holder(chain, chain.size() - 1)
         .forEach(node -> names.add(NullSyntax.simpleName(node)));
