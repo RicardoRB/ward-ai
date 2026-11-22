@@ -103,9 +103,7 @@ final class PythonCorpusRun {
     return CatalogRuleDefinitions.shipped().stream()
         .filter(rule -> rule.id().startsWith(PREFIX))
         .filter(
-            rule -> PythonCorpusReport.isSecurity(rule) || RulePreset.STRICT.selects(
-                rule.presets()
-            )
+            rule -> PythonCorpusReport.isSecurity(rule) || RulePreset.STRICT.selects(rule.presets())
         )
         .sorted((left, right) -> left.id().compareTo(right.id()))
         .toList();
