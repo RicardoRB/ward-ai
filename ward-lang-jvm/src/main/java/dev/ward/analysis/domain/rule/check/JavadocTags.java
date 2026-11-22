@@ -95,10 +95,7 @@ public final class JavadocTags {
       final int star = asterisk ? lead + 1 : lead;
       final int content = skipSpaces(row, star, end);
       final String text = row.substring(content, end).strip();
-      if (text.isEmpty()) {
-        return;
-      }
-      if (insideFence(text)) {
+      if (text.isEmpty() || insideFence(text)) {
         return;
       }
       final int offset = comment.span().startOffset() + rowStart + content;
