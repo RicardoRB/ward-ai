@@ -10,7 +10,8 @@ import java.util.Set;
 /**
  * Checks the OpenJDK placement of declaration annotations. Annotations either all sit on one line
  * with the declaration, or each has its own line: an annotation that shares its line with the token
- * after it is reported unless every annotation and the declaration share one line.
+ * after it is reported unless the annotations and the declaration form one chain: each starts on the
+ * line where the previous one ends, and the declaration starts on the line of the last.
  */
 public final class OpenjdkAnnotationLocationCheck implements RuleCheck {
   private static final Set<String> MODIFIER_KINDS = Set.of(
@@ -44,6 +45,19 @@ public final class OpenjdkAnnotationLocationCheck implements RuleCheck {
     return List.copyOf(matches);
   }
 
+  /**
+   * Whether each annotation starts on the line where the one before it ends, as {@code ward format}
+   * writes a parameter whose annotation spans several lines: {@code ) @B String x}.
+   */
+  private static boolean startsWhereThePreviousEnds(final List<SyntaxNode> annotations) {
+    for (int i = 1; i < annotations.size(); i++) {
+      if (annotations.get(i).span().startLine() != annotations.get(i - 1).span().endLine()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   private void checkDeclaration(
       final SyntaxNode holder,
       final TokenSequence tokens,
@@ -61,10 +75,9 @@ public final class OpenjdkAnnotationLocationCheck implements RuleCheck {
     }
     final SyntaxNode last = annotations.get(annotations.size() - 1);
     final SyntaxNode target = tokens.firstFrom(last.span().endOffset());
-    final boolean oneLine =
-        annotations.get(0).span().startLine() == last.span().endLine()
-            && (target == null || target.span().startLine() == last.span().endLine());
-    if (oneLine) {
+    final boolean chained =
+        target == null || target.span().startLine() == last.span().endLine();
+    if (chained && startsWhereThePreviousEnds(annotations)) {
       return;
     }
     for (final SyntaxNode annotation : annotations) {

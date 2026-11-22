@@ -10,6 +10,8 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ### Fixed
 
+- `ward:java/openjdk-annotation-location` accepts the layout `ward format` writes for a parameter or record component whose annotation spans lines, `) @B String x` (#700).
+- `ward:java/left-curly` no longer reports the `{` of an annotation array that `ward format` moves to its own line (#705).
 - `strict` no longer enables `ward:java/avoid-no-argument-super-constructor-call`, which contradicted `ward:java/call-super-in-constructor`; the pair is guarded by `PresetContractTest` (#701).
 - A `[select]` that holds both rules of a contradicting pair (for example `java.array-trailing-comma` and `java.no-array-trailing-comma`) is now rejected with an error that names the pair, instead of reporting findings no code can fix (#711).
 
