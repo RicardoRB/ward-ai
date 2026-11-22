@@ -26,6 +26,7 @@ import java.util.Set;
  * {@code unused}. A variable that a nested body captures is never reported.
  */
 public final class UnusedAssignmentCheck implements RuleCheck {
+  private static final String FINALLY_BLOCK = "finallyBlock";
   private static final String NAME = "{value}";
   private static final String UNDERSCORE = "_";
   private static final String IGNORED = "ignored";
@@ -57,21 +58,23 @@ public final class UnusedAssignmentCheck implements RuleCheck {
   public List<RuleMatch> matches(final SyntaxNode root, final FlowView flow) {
     final List<RuleMatch> found = new ArrayList<>();
     for (final ControlFlowGraph graph : flow.graphs()) {
-      found.addAll(unused(graph));
+      found.addAll(unused(graph, finallySpans(root)));
     }
     found.sort(Comparator.comparingInt((RuleMatch match) -> match.span().startOffset()));
     return found;
   }
 
-  private List<RuleMatch> unused(final ControlFlowGraph graph) {
+  private List<RuleMatch> unused(final ControlFlowGraph graph, final List<Span> finallies) {
     final ReachingDefinitions reaching = ReachingDefinitions.of(graph);
     final DefUseChains chains = DefUseChains.of(reaching);
     final Set<Span> captured = captured(graph);
+    final Set<Span> readInFinally = readInFinally(graph, finallies);
     final List<RuleMatch> found = new ArrayList<>();
     for (final AccessSite definition : chains.definitions()) {
       final VariableAccess access = definition.access();
       if (chains.usesOf(definition).isEmpty()
           && !captured.contains(access.declaration())
+          && !(readInFinally.contains(access.declaration()) && precedesFinally(access, finallies))
           && reportable(definition, reaching)) {
         found.add(new RuleMatch(access.span(), message.replace(NAME, access.name())));
       }
@@ -95,6 +98,38 @@ public final class UnusedAssignmentCheck implements RuleCheck {
   /** Reports whether a write is a plain assignment, rather than an initializer or a parameter. */
   private static boolean isAssignment(final VariableAccess access) {
     return access.kind() == AccessKind.WRITE && !access.span().equals(access.declaration());
+  }
+
+  /** Returns the spans of the finally blocks, which any statement of their try can reach. */
+  private static List<Span> finallySpans(final SyntaxNode root) {
+    return SyntaxWalk.visits(root, Set.of(FINALLY_BLOCK)).stream()
+        .map(visit -> visit.node().span())
+        .toList();
+  }
+
+  /**
+   * Returns where each variable that a finally block reads is declared. The graph has no edge from
+   * the start of a try body to the finally block, so such a read cannot see an earlier value.
+   */
+  private static Set<Span> readInFinally(final ControlFlowGraph graph, final List<Span> finallies) {
+    final Set<Span> read = new HashSet<>();
+    for (final BasicBlock block : graph.blocks()) {
+      for (final VariableAccess access : block.accesses()) {
+        if (access.kind() == AccessKind.READ && inAny(access.span(), finallies)) {
+          read.add(access.declaration());
+        }
+      }
+    }
+    return read;
+  }
+
+  private static boolean inAny(final Span span, final List<Span> finallies) {
+    return finallies.stream()
+        .anyMatch(f -> f.startOffset() <= span.startOffset() && span.endOffset() <= f.endOffset());
+  }
+
+  private static boolean precedesFinally(final VariableAccess access, final List<Span> finallies) {
+    return finallies.stream().anyMatch(f -> access.span().endOffset() <= f.startOffset());
   }
 
   /** Returns where each variable that a nested body captures is declared. */
