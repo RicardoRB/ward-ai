@@ -1,3 +1,5 @@
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 
@@ -73,5 +75,10 @@ class Audit {
 
   String path(HttpServletRequest request) {
     return request.getRequestURI();
+  }
+
+  // Decoding a constant creates no taint.
+  void decodedConstant(Logger log) throws Exception {
+    log.info(URLDecoder.decode("constant%20text", StandardCharsets.UTF_8));
   }
 }
