@@ -51,7 +51,7 @@ final class RustScopeExpressions {
     final SyntaxNode value = node.children().get(node.children().size() - 1);
     walk.visit(value);
     walk.scopes.openAfter(value.span());
-    walk.patterns.bind(pattern, BindingKind.CONSTANT, true);
+    walk.patterns.bind(pattern, BindingKind.CONSTANT, true, false);
   }
 
   private void assignment(final List<SyntaxNode> parts, final boolean compound) {

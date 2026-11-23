@@ -15,7 +15,7 @@ import org.tomlj.TomlParseResult;
 enum GenericKind {
   IDENTIFIER_PATTERN(
       "identifier-pattern",
-      List.of("name", "skip", "pattern"),
+      List.of("name", "skip", "pattern", "exempt-attribute"),
       List.of(option("pattern", RuleOptionType.REGEX))
   ),
   FORBIDDEN_NODE(
@@ -32,7 +32,11 @@ enum GenericKind {
           "not-scope-text",
           "scope-text",
           "ancestor-kinds",
-          "not-ancestor-text"
+          "not-ancestor-text",
+          "spaced-text",
+          "last-in",
+          "not-previous-text",
+          "previous-of"
       ),
       List.of(option("text", RuleOptionType.REGEX))
   ),

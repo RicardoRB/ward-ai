@@ -22,7 +22,7 @@ import java.util.Set;
  * Reports each write of a local variable or parameter whose value no read can observe, with PMD's
  * {@code UnusedAssignment} rules. A write is reported when a later write can replace it, so an
  * initializer or incoming parameter value that nothing overwrites is left alone. A plain assignment
- * is reported unless its name is exempt, which is {@code _} or starts with {@code ignored} or
+ * is reported unless its name is exempt, which starts with {@code _}, {@code ignored} or
  * {@code unused}. A variable that a nested body captures is never reported.
  */
 public final class UnusedAssignmentCheck implements RuleCheck {
@@ -146,6 +146,6 @@ public final class UnusedAssignmentCheck implements RuleCheck {
   }
 
   private static boolean exempt(final String name) {
-    return UNDERSCORE.equals(name) || name.startsWith(IGNORED) || name.startsWith(UNUSED);
+    return name.startsWith(UNDERSCORE) || name.startsWith(IGNORED) || name.startsWith(UNUSED);
   }
 }

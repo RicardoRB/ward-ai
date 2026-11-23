@@ -8,3 +8,8 @@ pub fn early(x: i32) -> i32 {
     }
     2
 }
+
+pub fn gated() -> i32 {
+    return 1;
+    panic!();
+}

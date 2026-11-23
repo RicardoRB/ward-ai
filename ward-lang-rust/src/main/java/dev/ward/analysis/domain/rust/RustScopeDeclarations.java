@@ -52,6 +52,9 @@ final class RustScopeDeclarations {
       return;
     }
     final Set<BindingFlag> flags = flagsOf(visItem);
+    if (RustTrees.silencesUnused(item)) {
+      flags.add(BindingFlag.EXPORTED);
+    }
     visItem.children().forEach(inner -> declareInner(inner, flags));
   }
 

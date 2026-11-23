@@ -209,6 +209,7 @@ body = '''
 check = "forbidden-node"
 kinds = ["expression"]
 text = '^[A-Za-z_][\w.]*\.get\(0\)$'
+not-root-text = 'fnget\('
 message = "use first instead of get(0)"
 '''
 
@@ -293,6 +294,8 @@ body = '''
 check = "forbidden-node"
 kinds = ["expression"]
 text = '^[A-Za-z_][\w.]*\.len\(\)(==0|!=0|>0|>=1|<1)$|^0(==|!=|<)[A-Za-z_][\w.]*\.len\(\)$'
+ancestor-kinds = ["function_"]
+not-ancestor-text = '^(const|async|unsafe)*fnis_empty\('
 message = "use is_empty instead of comparing the length with zero"
 '''
 
@@ -462,6 +465,7 @@ check = "forbidden-node"
 kinds = ["expression"]
 text = '^return'
 parent-path = "expressionStatement>statement>statements>blockExpression>function_"
+last-in = "statement"
 message = "the return is the last thing the function does; the value alone is enough"
 '''
 
@@ -671,7 +675,8 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["useDeclaration"]
-text = '^use\w+;$'
+spaced-text = '^use \w+ ;$'
+not-parent-text = '^pub'
 message = "a single-component import is redundant since the 2018 edition"
 '''
 

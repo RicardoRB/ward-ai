@@ -6,7 +6,7 @@
 # Regenerate: ./mvnw -pl ward-cli -am -Dtest=RustCorpusSmokeTest -Dward.corpus.rust=<dir> -Djacoco.skip=true -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
 ripgrep | files 100 | not analysed 0
 tokio | files 811 | not analysed 0
-rules 97 | not run (need type facts) 0 | findings 6231
+rules 97 | not run (need type facts) 0 | findings 6006
 ward:rust/allow-attributes | findings 173 | labelled 4 | tp 4 | fp 0 | un 0
 ward:rust/allow-attributes-without-reason | findings 208 | labelled 4 | tp 4 | fp 0 | un 0
 ward:rust/approx-constant | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -29,14 +29,14 @@ ward:rust/exit | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
 ward:rust/expect-fun-call | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:rust/expect-used | findings 216 | labelled 4 | tp 4 | fp 0 | un 0
 ward:rust/filter-next | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:rust/get-first | findings 11 | labelled 4 | tp 2 | fp 2 | un 0
+ward:rust/get-first | findings 8 | labelled 3 | tp 2 | fp 1 | un 0
 ward:rust/identity-op | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:rust/inline-always | findings 33 | labelled 4 | tp 4 | fp 0 | un 0
 ward:rust/int-plus-one | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:rust/iter-cloned-collect | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:rust/iter-nth-zero | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:rust/iter-skip-zero | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:rust/len-zero | findings 8 | labelled 4 | tp 0 | fp 4 | un 0
+ward:rust/len-zero | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:rust/manual-range-contains | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:rust/manual-string-new | findings 4 | labelled 4 | tp 4 | fp 0 | un 0
 ward:rust/map-clone | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -50,13 +50,13 @@ ward:rust/needless-bool | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:rust/needless-else | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:rust/needless-if | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:rust/needless-pub-self | findings 4 | labelled 4 | tp 4 | fp 0 | un 0
-ward:rust/needless-return | findings 6 | labelled 4 | tp 3 | fp 1 | un 0
+ward:rust/needless-return | findings 3 | labelled 3 | tp 3 | fp 0 | un 0
 ward:rust/neg-multiply | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:rust/non-ascii-idents | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:rust/non-camel-case-types | findings 26 | labelled 4 | tp 0 | fp 4 | un 0
+ward:rust/non-camel-case-types | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:rust/non-shorthand-field-patterns | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:rust/non-snake-case | findings 10 | labelled 4 | tp 0 | fp 4 | un 0
-ward:rust/non-upper-case-globals | findings 3 | labelled 3 | tp 0 | fp 3 | un 0
+ward:rust/non-snake-case | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:rust/non-upper-case-globals | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:rust/ok-expect | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
 ward:rust/option-map-or-none | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:rust/panic | findings 249 | labelled 4 | tp 4 | fp 0 | un 0
@@ -71,12 +71,12 @@ ward:rust/println-empty-string | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:rust/redundant-closure | findings 5 | labelled 4 | tp 4 | fp 0 | un 0
 ward:rust/redundant-field-names | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:rust/redundant-pattern-matching | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
-ward:rust/redundant-semicolons | findings 8 | labelled 4 | tp 0 | fp 4 | un 0
+ward:rust/redundant-semicolons | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:rust/redundant-static-lifetimes | findings 39 | labelled 4 | tp 4 | fp 0 | un 0
 ward:rust/search-is-some | findings 4 | labelled 4 | tp 4 | fp 0 | un 0
 ward:rust/self-assignment | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:rust/single-char-add-str | findings 3 | labelled 3 | tp 3 | fp 0 | un 0
-ward:rust/single-component-path-imports | findings 6 | labelled 4 | tp 0 | fp 4 | un 0
+ward:rust/single-component-path-imports | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:rust/sql-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:rust/text-direction-codepoint-in-literal | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:rust/tls-verification-disabled | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -85,21 +85,21 @@ ward:rust/too-many-arguments | findings 4 | labelled 4 | tp 4 | fp 0 | un 0
 ward:rust/too-many-lines | findings 11 | labelled 4 | tp 4 | fp 0 | un 0
 ward:rust/unimplemented | findings 7 | labelled 4 | tp 4 | fp 0 | un 0
 ward:rust/unreachable | findings 76 | labelled 4 | tp 4 | fp 0 | un 0
-ward:rust/unreachable-code | findings 6 | labelled 4 | tp 2 | fp 2 | un 0
+ward:rust/unreachable-code | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
 ward:rust/unreadable-literal | findings 4 | labelled 4 | tp 4 | fp 0 | un 0
 ward:rust/unsafe-code | findings 1201 | labelled 4 | tp 4 | fp 0 | un 0
-ward:rust/unsafe-public-function | findings 27 | labelled 4 | tp 2 | fp 2 | un 0
+ward:rust/unsafe-public-function | findings 7 | labelled 3 | tp 3 | fp 0 | un 0
 ward:rust/unseparated-literal-suffix | findings 258 | labelled 4 | tp 4 | fp 0 | un 0
-ward:rust/unused-assignments | findings 58 | labelled 4 | tp 0 | fp 4 | un 0
-ward:rust/unused-import-braces | findings 2 | labelled 2 | tp 0 | fp 2 | un 0
+ward:rust/unused-assignments | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:rust/unused-import-braces | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:rust/unused-parens | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:rust/unused-unit | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:rust/unused-variables | findings 43 | labelled 4 | tp 0 | fp 4 | un 0
+ward:rust/unused-variables | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:rust/unwrap-or-default | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:rust/unwrap-used | findings 3309 | labelled 4 | tp 4 | fp 0 | un 0
 ward:rust/useless-format | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:rust/while-true | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:rust/wildcard-imports | findings 63 | labelled 4 | tp 2 | fp 2 | un 0
+ward:rust/wildcard-imports | findings 29 | labelled 3 | tp 3 | fp 0 | un 0
 ward:rust/write-with-newline | findings 4 | labelled 4 | tp 4 | fp 0 | un 0
 ward:rust/writeln-empty-string | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:rust/zero-prefixed-literal | findings 0 | labelled 0 | tp 0 | fp 0 | un 0

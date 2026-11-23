@@ -16,6 +16,20 @@ still change behavior. Breaking changes are called out under **Changed**.
 - A `[select]` that holds both rules of a contradicting pair (for example `java.array-trailing-comma` and `java.no-array-trailing-comma`) is now rejected with an error that names the pair, instead of reporting findings no code can fix (#711).
 - C# text rules no longer read the code of an inactive `#if`, `#elif` or `#else` branch: it is blanked like a comment, so a match there is not reported (#708). No symbol is defined at the start of a file, as with `csc` without `/define`; the project's own symbols are not read.
 - `ward init` no longer writes the `controller` / `repository` layer rule, or the matching starter rule of `ward-architecture.toml`, for Rust and C# projects, where it could never fire (#710).
+- `ward:rust/len-zero` no longer reports `self.len() == 0` inside an `is_empty` method (#709).
+- `ward:rust/wildcard-imports` leaves the glob of the variants of an enum, such as `use self::Kind::*`, to `enum-glob-use` (#709).
+- `ward:rust/get-first` skips a file that defines its own `get` method, whose `get(0)` is not a slice access (#709).
+- `ward:rust/non-camel-case-types` reads the name of an enum variant, not the attribute above it, and honours `#[allow(non_camel_case_types)]`; `non-snake-case` and `non-upper-case-globals` honour their `allow` too (#709).
+- `ward:rust/non-snake-case` accepts raw identifiers such as `r#async` and constants used as match patterns (#709).
+- `ward:rust/non-upper-case-globals` skips `const _` (#709).
+- `ward:rust/single-component-path-imports` skips aliased imports such as `use serde_json as json;` and `pub use` re-exports (#709).
+- `ward:rust/unused-import-braces` skips a braced import with a rename, `use a::{self as b};` (#709).
+- `ward:rust/redundant-semicolons` skips the `;` after a statement that is a macro call with braces (#709).
+- `ward:rust/needless-return` reports a `return` only when it is the last statement of the function (#709).
+- `ward:rust/unreachable-code` knows that a `break` in the tokens of a macro such as `select!` ends a `loop` (#709).
+- `ward:rust/unused-assignments` no longer reports a variable that a closure or async block names, or a name that starts with `_` (#709).
+- `ward:rust/unused-variables` reads the names in the format string of any macro, raw strings and `macro_rules!` bodies, skips const generic parameters, and skips a constant or `let` under `#[cfg(..)]`, whose alternative may be the one used (#709).
+- `ward:rust/unsafe-public-function` no longer reports `pub(crate)` functions, which are not public (#709).
 
 ## [0.12.0] - 2026-11-22
 

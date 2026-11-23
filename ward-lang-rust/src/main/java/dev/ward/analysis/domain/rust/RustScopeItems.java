@@ -60,7 +60,7 @@ final class RustScopeItems {
     final SyntaxNode name = RustTrees.child(node, RustKinds.IDENTIFIER);
     if (name != null) {
       final BindingKind kind =
-          CONST_PARAM.equals(node.kind()) ? BindingKind.CONSTANT : BindingKind.TYPE;
+          CONST_PARAM.equals(node.kind()) ? BindingKind.PARAMETER : BindingKind.TYPE;
       walk.builder.declare(RustTrees.name(name), kind, name.span(), Set.of());
     }
     node.children().stream().filter(child -> child != name).forEach(walk::visit);

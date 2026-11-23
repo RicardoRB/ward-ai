@@ -67,6 +67,6 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["visItem"]
-text = '^pub(\([a-z:]+\))?(const|async)*fn[A-Za-z_0-9]*.*unsafe\{'
+text = '^pub(const|async)*fn[A-Za-z_0-9]*.*unsafe\{'
 message = "a public function holds an unsafe block, so its callers rely on checks the compiler does not make; keep the block in a private function or mark the function unsafe"
 '''

@@ -29,6 +29,7 @@ final class RustKinds {
   static final String TUPLE_INDEX = "tupleIndex";
   static final String COMPOUND_ASSIGN = "compoundAssignOperator";
   static final String STRING_LITERAL = "STRING_LITERAL";
+  static final String RAW_STRING_LITERAL = "RAW_STRING_LITERAL";
 
   static final String LET = "'let'";
   static final String EQUALS = "'='";
