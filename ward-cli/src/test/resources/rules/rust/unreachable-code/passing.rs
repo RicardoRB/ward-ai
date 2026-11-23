@@ -12,3 +12,14 @@ pub fn selects(mut n: u32) -> u32 {
     }
     n
 }
+
+pub fn serve() {
+    spawn(async move {
+        loop {
+            step().await;
+        }
+
+        #[allow(unreachable_code)]
+        Ok::<(), String>(())
+    });
+}

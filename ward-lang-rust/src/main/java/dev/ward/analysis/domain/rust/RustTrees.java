@@ -39,6 +39,14 @@ final class RustTrees {
     return null;
   }
 
+  /** The outermost nodes of {@code kind} at or below {@code node}, in source order. */
+  static List<SyntaxNode> all(final SyntaxNode node, final String kind) {
+    if (kind.equals(node.kind())) {
+      return List.of(node);
+    }
+    return node.children().stream().flatMap(child -> all(child, kind).stream()).toList();
+  }
+
   /** The first leaf of {@code kind} at or below {@code node}, or null. */
   static SyntaxNode leaf(final SyntaxNode node, final String kind) {
     if (isToken(node, kind)) {

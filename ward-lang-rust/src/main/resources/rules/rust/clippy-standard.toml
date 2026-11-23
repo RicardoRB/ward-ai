@@ -206,10 +206,7 @@ severity = "warning"
 category = "style"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["expression"]
-text = '^[A-Za-z_][\w.]*\.get\(0\)$'
-not-root-text = 'fnget\('
+check = "rust-get-first"
 message = "use first instead of get(0)"
 '''
 

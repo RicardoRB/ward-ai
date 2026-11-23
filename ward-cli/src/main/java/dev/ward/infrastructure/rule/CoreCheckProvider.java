@@ -74,7 +74,11 @@ public final class CoreCheckProvider implements CheckProvider {
         entry("unused-binding", toml -> new UnusedBindingCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "unreachable-code",
-            toml -> new UnreachableCodeCheck(TomlValues.required(toml, MESSAGE))
+            toml ->
+                new UnreachableCodeCheck(
+                    TomlValues.required(toml, MESSAGE),
+                    Optional.ofNullable(toml.getString("exempt")).map(Pattern::compile)
+                )
         ),
         entry(
             "reassigned-binding",

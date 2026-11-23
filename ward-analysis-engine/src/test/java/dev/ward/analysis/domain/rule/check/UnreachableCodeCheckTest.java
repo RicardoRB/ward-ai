@@ -14,6 +14,8 @@ import dev.ward.analysis.domain.rule.FlowView;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
 
 /** The unreachable-code check on hand-built graphs: entry 0 and exit 1, then the other blocks. */
@@ -86,6 +88,38 @@ class UnreachableCodeCheckTest {
         );
 
     assertThat(check(graph)).isEmpty();
+  }
+
+  @Test
+  void aDeadRunWhoseFirstStatementMatchesTheExemptPatternIsNotReported() {
+    final SyntaxNode attributed =
+        new SyntaxNode(
+            "statement",
+            new Span(THIRD_LINE, 1, THIRD_LINE, 2, 30, 31),
+            Map.of(),
+            List.of(
+                new SyntaxNode(
+                    "text",
+                    new Span(THIRD_LINE, 1, THIRD_LINE, 2, 30, 31),
+                    Map.of("text", "#[allow(unreachable_code)]"),
+                    List.of()
+                )
+            )
+        );
+    final ControlFlowGraph graph =
+        graph(
+            block(0, statement(1), 2),
+            block(1, null),
+            block(2, statement(2), 1),
+            block(THIRD_LINE, attributed, 1)
+        );
+
+    final List<RuleMatch> found =
+        new UnreachableCodeCheck(MESSAGE, Optional.of(Pattern.compile("^#\\[allow\\(unreachable")))
+            .matches(ROOT, new FlowView(List.of(graph)));
+
+    assertThat(found).isEmpty();
+    assertThat(check(graph)).hasSize(1);
   }
 
   @Test

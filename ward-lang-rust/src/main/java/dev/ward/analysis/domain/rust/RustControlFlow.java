@@ -16,8 +16,10 @@ import java.util.Set;
  * Lowers every function with a body of a Rust file into a control-flow graph named {@code
  * Owner#name(arity)}, so a call can reach it. The owner is the type of the {@code impl} or the name
  * of the trait, after the inline modules around it; a free function has none. The arity does not
- * count {@code self}. The variable accesses come from the file's scope analysis. A closure is part
- * of the statement that holds it.
+ * count {@code self}. The variable accesses come from the file's scope analysis. A closure or {@code
+ * async} block is also a body of its own, named {@code Owner#closure@offset(0)}: it runs when it is
+ * called or polled, so its own locals follow its own flow, and in the body that holds it a name it
+ * reads from outside is a capture.
  */
 public final class RustControlFlow implements ControlFlowLowering {
   private static final String PATH_SEPARATOR = "::";
@@ -55,6 +57,8 @@ public final class RustControlFlow implements ControlFlowLowering {
     void visit(final SyntaxNode node, final String owner) {
       if (RustKinds.FUNCTION.equals(node.kind())) {
         lower(node, owner);
+      } else if (RustAccesses.DEFERRED.contains(node.kind())) {
+        lowerDeferred(node, owner);
       }
       final String inner = ownerOf(node, owner);
       node.children().forEach(child -> visit(child, inner));
@@ -76,6 +80,35 @@ public final class RustControlFlow implements ControlFlowLowering {
       graphs.add(
           new RustBodyLowering(accesses, new RustFlowSites(RustReceivers.locals(parameters, body)))
               .lower(
+                  graph,
+                  parameters == null
+                      ? List.of()
+                      : RustAccesses.parameters(scopes, parameters.span()),
+                  body,
+                  node.span()
+              )
+      );
+    }
+
+    private void lowerDeferred(final SyntaxNode node, final String owner) {
+      final boolean async = "asyncBlockExpression".equals(node.kind());
+      final SyntaxNode body =
+          async
+              ? RustTrees.child(node, RustKinds.BLOCK)
+              : RustTrees.children(node, RustKinds.EXPRESSION).stream().reduce((a, b) -> b).orElse(
+                  null
+              );
+      if (body == null) {
+        return;
+      }
+      final SyntaxNode parameters = RustTrees.child(node, "closureParameters");
+      final String graph =
+          (owner.isEmpty() ? "" : owner + "#") + "closure@" + node.span().startOffset() + "(0)";
+      final RustAccesses accesses =
+          new RustAccesses(scopes, node.span(), nested(body), writeEnds);
+      graphs.add(
+          new RustBodyLowering(accesses, new RustFlowSites(RustReceivers.locals(parameters, body)))
+              .lowerDeferred(
                   graph,
                   parameters == null
                       ? List.of()

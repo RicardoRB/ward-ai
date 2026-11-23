@@ -86,3 +86,64 @@ pub fn keep(flag: bool) {
         _old = make();
     }
 }
+
+pub fn closure_reads_outer() -> u32 {
+    let mut base = 1;
+    base = 2;
+    let get = || base + 1;
+    get()
+}
+
+pub fn closure_shadows() -> u32 {
+    let mut x = 1;
+    x += 1;
+    let c = |x: u32| {
+        let y = x;
+        y
+    };
+    c(x)
+}
+
+pub fn closure_only_writes() -> bool {
+    let mut seen = false;
+    let mut mark = || {
+        seen = true;
+    };
+    mark();
+    seen
+}
+
+pub fn closure_branches() -> impl Fn(bool) -> u32 {
+    |flag| {
+        let v;
+        if flag {
+            v = 1;
+        } else {
+            v = 2;
+        }
+        v
+    }
+}
+
+pub fn async_branches(flag: bool) {
+    let task = async move {
+        let v;
+        if flag {
+            v = 1;
+        } else {
+            v = 2;
+        }
+        v
+    };
+    spawn(task);
+}
+
+pub fn closure_loop() -> impl Fn(&[u32]) -> u32 {
+    |items| {
+        let mut sum = 0;
+        for item in items {
+            sum += item;
+        }
+        sum
+    }
+}
