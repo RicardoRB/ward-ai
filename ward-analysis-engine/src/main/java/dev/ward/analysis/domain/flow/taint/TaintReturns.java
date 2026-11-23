@@ -1,5 +1,6 @@
 package dev.ward.analysis.domain.flow.taint;
 
+import dev.ward.analysis.domain.ir.ControlFlowGraph;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.List;
@@ -29,6 +30,13 @@ final class TaintReturns {
     return SEMICOLON.equals(value.fields().get(TEXT))
         ? Optional.empty()
         : Optional.of(value.span());
+  }
+
+  /** Reports whether a node of the graph is a return statement that gives a value back. */
+  static boolean returnsValue(final ControlFlowGraph graph) {
+    return graph.blocks().stream()
+        .flatMap(block -> block.nodes().stream())
+        .anyMatch(node -> value(node).isPresent());
   }
 
   private static boolean isReturn(final SyntaxNode node) {

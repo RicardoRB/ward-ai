@@ -122,6 +122,7 @@ final class JavaFlowSites implements FlowSites {
     }
     if (parts.size() != MEMBER_PARTS || !DOT.equals(JavaFlowSyntax.text(parts.get(1)))) {
       children(node, found);
+      JavaQueryBuilds.concatenation(node).ifPresent(found::add);
       return;
     }
     final SyntaxNode receiver = parts.get(0);

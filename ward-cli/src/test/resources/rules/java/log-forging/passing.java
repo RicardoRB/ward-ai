@@ -27,4 +27,28 @@ class Audit {
     String user = request.getParameter("user");
     log.info(user.replace('\n', ' ').replace('\r', ' '));
   }
+
+  // The chain removes both line breaks, whatever expression it starts from.
+  void callReceiver(HttpServletRequest request, Logger log) {
+    String user = request.getParameter("user");
+    log.info(String.valueOf(user).replace("\r", "").replace("\n", ""));
+    log.info(java.util.Objects.toString(user).replaceAll("[\\r\\n]", ""));
+    log.info(user.toString().replace("\n", "_").replace("\r", "_"));
+  }
+
+  void keptInLocal(HttpServletRequest request, Logger log) {
+    String user = request.getParameter("user");
+    final String safe = String.valueOf(user).replace("\r", "").replace("\n", "");
+    log.info("user " + safe);
+  }
+
+  // A helper of the project that returns the stripped value.
+  void helper(HttpServletRequest request, Logger log) {
+    String user = request.getParameter("user");
+    log.info("user " + clean(String.valueOf(user)));
+  }
+
+  private static String clean(String value) {
+    return value.replace("\r", "").replace("\n", "");
+  }
 }

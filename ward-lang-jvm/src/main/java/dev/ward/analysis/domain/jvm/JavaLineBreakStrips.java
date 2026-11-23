@@ -15,7 +15,9 @@ import java.util.regex.PatternSyntaxException;
  * removes both carriage returns and line feeds from its receiver, as in {@code
  * value.replace("\r", "_").replace("\n", "_")} or {@code value.replaceAll("[\r\n]", "")}. Such a
  * chain gives a site named {@link #NAME} whose argument is the receiver (built by {@code
- * JavaFlowSites}), so a taint specification can list it as a sanitizer of the receiver.
+ * JavaFlowSites}), so a taint specification can list it as a sanitizer of the receiver. The
+ * receiver is a variable of type {@code String}, or a call that always returns one, such as {@code
+ * String.valueOf(value)} or {@code value.toString()}.
  */
 final class JavaLineBreakStrips {
   /** The name of the site of a chain that removes every line break of its receiver. */
@@ -34,6 +36,15 @@ final class JavaLineBreakStrips {
       Pattern.compile(
           "\\.(" + REPLACE + "|" + REPLACE_ALL + ")\\(" + LITERAL + "," + LITERAL + "\\)$"
       );
+  private static final String TO_STRING = ".toString()";
+  private static final Pattern STRING_FACTORY =
+      Pattern.compile(
+          "^(?:(?:java\\.lang\\.)?String\\.(?:valueOf|format|join)"
+              + "|(?:java\\.util\\.)?Objects\\.toString)\\("
+      );
+  private static final Pattern QUOTED = Pattern.compile(LITERAL);
+  private static final String PARENTHESES = "()";
+  private static final Character OPEN = '(';
   private static final Pattern WHOLE_LITERAL = Pattern.compile("^" + LITERAL + "$");
   private static final Map<Character, Character> ESCAPES =
       Map.of(
@@ -105,8 +116,34 @@ final class JavaLineBreakStrips {
       base = base.substring(0, trailing.start());
       trailing = TRAILING_CALL.matcher(base);
     }
-    final boolean string = types.apply(base).filter(STRING_TYPE::equals).isPresent();
+    final boolean string =
+        types.apply(base).filter(STRING_TYPE::equals).isPresent() || isStringExpression(base);
     return string && removed.size() == LineBreak.values().length;
+  }
+
+  /**
+   * A receiver that is a string whatever its parts: a call to {@code toString()}, or to a JDK
+   * factory that returns a {@code String}, whose call ends the text.
+   */
+  private static boolean isStringExpression(final String text) {
+    if (text.endsWith(TO_STRING)) {
+      return true;
+    }
+    final Matcher factory = STRING_FACTORY.matcher(text);
+    return factory.lookingAt() && closesAtEnd(text, factory.end() - 1);
+  }
+
+  /** Whether the parenthesis at {@code open} is closed by the last character of the text. */
+  private static boolean closesAtEnd(final String text, final int open) {
+    final String code = QUOTED.matcher(text).replaceAll("");
+    int depth = 0;
+    for (final char next : code.substring(open, code.length() - 1).toCharArray()) {
+      depth += PARENTHESES.indexOf(next) < 0 ? 0 : OPEN.equals(next) ? 1 : -1;
+      if (depth == 0) {
+        return false;
+      }
+    }
+    return code.endsWith(")");
   }
 
   private static boolean isReplace(final String name) {

@@ -52,6 +52,10 @@ final class JavaSyntheticSites {
       covered.add(0, receiver.span());
       found.add(synthetic(JavaPrimitiveCalls.NAME, qualifier, covered, call));
     }
+    if (receiver != null) {
+      JavaQueryBuilds.format(name, qualifier, JavaCallArguments.of(call), call.span())
+          .ifPresent(found::add);
+    }
     if (jsonResponse
         && JavaJsonResponses.writesBody(name, qualifier, receiverType.apply(qualifier))) {
       found.add(

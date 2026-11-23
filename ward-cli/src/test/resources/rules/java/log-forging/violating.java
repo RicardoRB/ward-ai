@@ -35,4 +35,28 @@ class Audit {
     String user = request.getParameter("user");
     log.info(user.replaceAll("([\\r\\n])", "$1"));
   }
+
+  void callReceiverLineFeedsOnly(HttpServletRequest request, org.slf4j.Logger log) {
+    String user = request.getParameter("user");
+    log.info(String.valueOf(user).replace("\n", "_"));
+  }
+
+  // The helper does not remove the line breaks.
+  void helperKeeps(HttpServletRequest request, org.slf4j.Logger log) {
+    String user = request.getParameter("user");
+    log.info(echo(user));
+  }
+
+  void helperLineFeedsOnly(HttpServletRequest request, org.slf4j.Logger log) {
+    String user = request.getParameter("user");
+    log.info(lineFeeds(user));
+  }
+
+  String echo(String value) {
+    return value.trim();
+  }
+
+  String lineFeeds(String value) {
+    return value.replace("\n", "_");
+  }
 }

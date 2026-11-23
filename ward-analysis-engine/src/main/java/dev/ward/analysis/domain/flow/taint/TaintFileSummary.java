@@ -64,6 +64,9 @@ public final class TaintFileSummary {
     prepared.effective().sinks().stream()
         .skip(spec.sinks().size())
         .forEach(entry -> lines.add("sink " + entry));
+    prepared.effective().sanitizers().stream()
+        .skip(spec.sanitizers().size())
+        .forEach(entry -> lines.add("sanitizer " + entry));
     lines.sort(null);
     for (int index = 0; index < graphs.size(); index++) {
       resolvedCalls(index, graphs.get(index), prepared.own().get(index), lines);
@@ -78,6 +81,9 @@ public final class TaintFileSummary {
       final List<String> lines
   ) {
     for (int block = 0; block < before.blocks().size(); block++) {
+      if (!before.blocks().get(block).accesses().equals(after.blocks().get(block).accesses())) {
+        lines.add("checked " + index + "." + block);
+      }
       final List<FlowSite> was = before.blocks().get(block).sites();
       final List<FlowSite> now = after.blocks().get(block).sites();
       for (int site = 0; site < was.size(); site++) {

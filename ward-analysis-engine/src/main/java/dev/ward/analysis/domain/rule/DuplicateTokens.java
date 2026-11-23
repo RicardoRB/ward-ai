@@ -62,6 +62,7 @@ public final class DuplicateTokens {
       final DuplicateCodeOptions options
   ) {
     return SKIPPED.contains(node.kind())
+        || vocabulary.headers().contains(node.kind())
         || options.ignoreAnnotations() && vocabulary.annotations().contains(node.kind());
   }
 
@@ -97,8 +98,18 @@ public final class DuplicateTokens {
   private record Vocabulary(
       Set<String> literals,
       Set<String> identifiers,
-      Set<String> annotations
+      Set<String> annotations,
+      Set<String> headers
   ) {
+    /** Package and import lines are the same in many files and are not copied code. */
+    Vocabulary(
+        final Set<String> literals,
+        final Set<String> identifiers,
+        final Set<String> annotations
+    ) {
+      this(literals, identifiers, annotations, Set.of());
+    }
+
     static Vocabulary of(final AnalysisLanguage language) {
       return switch (language) {
         case JAVA -> java();
@@ -128,7 +139,8 @@ public final class DuplicateTokens {
               "NULL_LITERAL"
           ),
           Set.of("IDENTIFIER"),
-          Set.of("annotation")
+          Set.of("annotation"),
+          Set.of("packageDeclaration", "importDeclaration")
       );
     }
 

@@ -15,6 +15,7 @@ class DuplicateTokensTest {
       new DuplicateCodeOptions(1, false, false, false, DuplicateCodeOptions.NO_SHARE_LIMIT);
   private static final DuplicateCodeOptions ABSTRACT =
       new DuplicateCodeOptions(1, true, true, true, DuplicateCodeOptions.NO_SHARE_LIMIT);
+  private static final int KEPT_BY_KOTLIN = 3;
   private static final Span SPAN = new Span(1, 1, 1, 2, 0, 1);
 
   @Test
@@ -44,6 +45,34 @@ class DuplicateTokensTest {
     final Token b = DuplicateTokens.of(leaf("IDENTIFIER", "b"), AnalysisLanguage.JAVA, KEEP).get(0);
 
     assertThat(a.value()).isNotEqualTo(b.value());
+  }
+
+  @Test
+  void javaPackageAndImportDeclarationsAreNotTokens() {
+    final SyntaxNode root =
+        new SyntaxNode(
+            "root",
+            SPAN,
+            Map.of(),
+            List.of(
+                new SyntaxNode(
+                    "packageDeclaration",
+                    SPAN,
+                    Map.of(),
+                    List.of(leaf("IDENTIFIER", "p"))
+                ),
+                new SyntaxNode(
+                    "importDeclaration",
+                    SPAN,
+                    Map.of(),
+                    List.of(leaf("IDENTIFIER", "i"))
+                ),
+                leaf("IDENTIFIER", "code")
+            )
+        );
+
+    assertThat(DuplicateTokens.of(root, AnalysisLanguage.JAVA, KEEP)).hasSize(1);
+    assertThat(DuplicateTokens.of(root, AnalysisLanguage.KOTLIN, KEEP)).hasSize(KEPT_BY_KOTLIN);
   }
 
   private static List<Token> tokens(

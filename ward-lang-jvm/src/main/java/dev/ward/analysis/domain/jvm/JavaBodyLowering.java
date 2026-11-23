@@ -216,7 +216,15 @@ final class JavaBodyLowering implements JavaStatements {
     if (!hasElse) {
       guards
           .guarded(parts.get(CONDITION_INDEX), parts.get(BODY_INDEX), accesses::isLocal)
-          .ifPresent(name -> flow.record(accesses.clean(name, node.span()), List.of()));
+          .ifPresent(
+              name ->
+                  JavaAllowListGuards.record(
+                      flow,
+                      accesses.clean(name, node.span()),
+                      name,
+                      node.span()
+                  )
+          );
     }
     return true;
   }
