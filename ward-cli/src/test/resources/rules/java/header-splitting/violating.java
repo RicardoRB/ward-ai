@@ -27,4 +27,24 @@ class Headers {
     String key = request.getHeader("X-Key");
     response.setHeader("Retry-After", key.trim());
   }
+
+  // The bytes themselves, decoded into text, are written to the header.
+  void bytesAsText(HttpServletRequest request, HttpServletResponse response) {
+    byte[] data = request.getParameter("name").getBytes();
+    response.setHeader("X-Data", new String(data));
+  }
+
+  void textAndLength(HttpServletRequest request, HttpServletResponse response) {
+    byte[] data = request.getParameter("name").getBytes();
+    response.setHeader("X-Name", new String(data) + data.length);
+  }
+
+  void viaHelper(HttpServletRequest request, HttpServletResponse response) {
+    byte[] data = request.getParameter("name").getBytes();
+    describe(response, data);
+  }
+
+  void describe(HttpServletResponse response, byte[] data) {
+    response.setHeader("X-Data", new String(data));
+  }
 }

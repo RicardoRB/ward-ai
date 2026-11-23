@@ -22,3 +22,14 @@ class Search {
     return request.getParameter("pattern");
   }
 }
+
+class Properties {
+  // A key that is not constant, or a property the deployment defines, is not trusted.
+  String[] byName(String text, String key) {
+    return text.split(System.getProperty(key));
+  }
+
+  String[] custom(String text) {
+    return text.split(System.getProperty("app.delimiter"));
+  }
+}

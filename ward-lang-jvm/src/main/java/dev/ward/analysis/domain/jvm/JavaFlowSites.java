@@ -133,15 +133,13 @@ final class JavaFlowSites implements FlowSites {
       call(member, receiver, qualifier, found);
     } else if (IDENTIFIER.equals(member.kind())) {
       walk(receiver, found);
-      found.add(
-          new FlowSite(
-              FlowSiteKind.MEMBER_READ,
-              JavaFlowSyntax.text(member),
-              qualifier,
+      found.addAll(
+          JavaSyntheticSites.memberRead(
+              node,
+              receiver,
+              member,
               receiverType(qualifier),
-              List.of(),
-              List.of(),
-              node.span()
+              declared.get(qualifier)
           )
       );
     } else {

@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 /** Checks the sites and accesses that the Java lowering adds to say what a call or guard proves. */
 class JavaSyntheticSitesTest {
   private static final int PRIMITIVE_CALLS = 3;
+  private static final int NUMBER_SITES = 4;
   private static final String PRIMITIVE =
       """
       class C {
@@ -23,6 +24,26 @@ class JavaSyntheticSitesTest {
           int d = other.hashCode();
           String local = other.toString();
           log(local.length());
+        }
+      }
+      """;
+
+  private static final String TRUSTED =
+      """
+      import java.util.List;
+
+      class C {
+        void run(byte[] data, String[] words, List<String> items, String key, Request request) {
+          int a = data.length;
+          int b = words.length;
+          int c = items.size();
+          int d = key.length();
+          String home = System.getProperty("user.home");
+          String dflt = System.getProperty("user.dir", ".");
+          String custom = System.getProperty("app.dir");
+          String dynamic = System.getProperty(key);
+          String uri = request.getRequestURI();
+          String other = request.getRequestURI(key);
         }
       }
       """;
@@ -101,6 +122,14 @@ class JavaSyntheticSitesTest {
   void stringCallsThatReturnPrimitivesAreMarked() {
     final List<String> names = names(PRIMITIVE, "run(2)", JavaPrimitiveCalls.NAME);
     assertThat(names).hasSize(PRIMITIVE_CALLS);
+  }
+
+  /** Scenario: array lengths, collection sizes, standard properties and the request URI are marked. */
+  @Test
+  void trustedValuesAreMarked() {
+    assertThat(names(TRUSTED, "run(5)", JavaPrimitiveCalls.NAME)).hasSize(NUMBER_SITES);
+    assertThat(names(TRUSTED, "run(5)", JavaTrustedCalls.PROPERTY)).hasSize(2);
+    assertThat(names(TRUSTED, "run(5)", JavaTrustedCalls.REQUEST_URI)).hasSize(1);
   }
 
   /** Scenario: a body that sets only JSON content types marks its writes. */

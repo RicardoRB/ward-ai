@@ -612,3 +612,10 @@ from = [0, 1]
 kind = "call"
 name = "append"
 from = [0]
+
+# A standard system property (user.home, line.separator, ...) with a constant key is set by the
+# JVM from the operating system, not by a request. The Java frontend names the site of such a call
+# <jvm-property> and covers the call, so the call above is not taken as a source.
+[[sanitizers]]
+kind = "call"
+name = "<jvm-property>"
