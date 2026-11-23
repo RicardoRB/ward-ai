@@ -37,6 +37,8 @@ record MetricRule(
    *     measured; a node whose parent is {@code a} and whose grandparent is {@code b} is exempt
    *     under {@code a/b}
    * @param exemptNames the declared names that a name-style measure does not check
+   * @param exemptTypeAliases whether an assignment of a type alias, which is named in CapWords, is
+   *     not checked
    */
   record MetricRuleKeys(
       String name,
@@ -45,6 +47,7 @@ record MetricRule(
       Set<String> nested,
       Set<String> decisions,
       List<List<String>> exempt,
-      Set<String> exemptNames
+      Set<String> exemptNames,
+      boolean exemptTypeAliases
   ) {}
 }

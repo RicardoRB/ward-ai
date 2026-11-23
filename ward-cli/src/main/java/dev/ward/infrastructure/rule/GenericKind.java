@@ -28,7 +28,11 @@ enum GenericKind {
           "parent-text",
           "not-parent-path",
           "not-root-text",
-          "not-parent-text"
+          "not-parent-text",
+          "not-scope-text",
+          "scope-text",
+          "ancestor-kinds",
+          "not-ancestor-text"
       ),
       List.of(option("text", RuleOptionType.REGEX))
   ),

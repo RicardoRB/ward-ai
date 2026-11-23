@@ -136,6 +136,8 @@ body = '''
 check = "forbidden-node"
 kinds = ["comparison"]
 text = "(?:==|!=)(?:\\[\\]|\\{\\}|\\(\\)|''|\"\"|list\\(\\)|dict\\(\\)|tuple\\(\\)|set\\(\\)|str\\(\\))|^(?:\\[\\]|\\{\\}|\\(\\)|''|\"\")(?:==|!=)"
+# A value read with .get and no default, or annotated as optional, may be None: None and "" differ.
+not-scope-text = '(?:(?<![\w.])|(?<=if|elif|while|and|or|not|return|assert))%name%=[\w.]+\.get\([^,()]+\)|(?:(?<![\w.])|(?<=if|elif|while|and|or|not|return|assert))%name%:[^,)=]*(?:Optional|None)|(?:(?<![\w.])|(?<=if|elif|while|and|or|not|return|assert))%name%(?:isNone|isnotNone|==None|!=None)'
 message = "comparison to an empty literal; test the value's truth instead"
 '''
 
@@ -163,7 +165,8 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["atom_expr"]
-text = "\\.r?split\\((?:'[^']*'|\"[^\"]*\"|[^(),'\"])*\\)\\[(?:0|-1)\\]"
+# A dictionary, list or tuple that holds the call is not the call: its own node reports it.
+text = "^(?![{\\[(]).*?\\.r?split\\((?:'[^']*'|\"[^\"]*\"|[^(),'\"])*\\)\\[(?:0|-1)\\]"
 message = "split result indexed at one end; pass maxsplit=1"
 '''
 

@@ -34,6 +34,9 @@ public final class ForbiddenNodeCheck implements UnitCheck {
           "else",
           "super"
       );
+  private static final String FUNCTION = "funcdef";
+  private static final String NAME_PLACEHOLDER = "%name%";
+  private static final Pattern FIRST_NAME = Pattern.compile("^[\\w.]+");
   private static final char ESCAPE = '\\';
   private static final Pattern LEADING_KEYWORD = Pattern.compile("^\\^([a-z]+)(?![a-zA-Z])");
 
@@ -97,6 +100,14 @@ public final class ForbiddenNodeCheck implements UnitCheck {
    *     empty does not limit
    * @param notRootText a pattern that the text of the whole file must not match, if any
    * @param notParentText a pattern that the text of the parent must not match, if any
+   * @param notScopeText a pattern that the text of the nearest enclosing function, or of the file,
+   *     must not match, if not empty; {@code %name%} stands for the dotted name that starts the node's text
+   * @param scopeText a pattern that the text of that scope must match, if not empty, with the same
+   *     placeholder
+   * @param ancestorKinds the kinds of which the nearest ancestor is the one {@code
+   *     notAncestorText} reads
+   * @param notAncestorText a pattern that the text of the nearest ancestor of one of {@code
+   *     ancestorKinds} must not match, if any
    */
   public record Condition(
       Optional<Pattern> text,
@@ -106,7 +117,11 @@ public final class ForbiddenNodeCheck implements UnitCheck {
       Optional<Pattern> parentText,
       String notPath,
       Optional<Pattern> notRootText,
-      Optional<Pattern> notParentText
+      Optional<Pattern> notParentText,
+      String notScopeText,
+      String scopeText,
+      Set<String> ancestorKinds,
+      Optional<Pattern> notAncestorText
   ) {
     /** The condition that every node meets. */
     public static final Condition ANY = new Condition(Optional.empty(), Set.of(), Set.of());
@@ -127,7 +142,20 @@ public final class ForbiddenNodeCheck implements UnitCheck {
         final Set<String> parent,
         final String path
     ) {
-      this(text, withChild, parent, path, Optional.empty(), "", Optional.empty(), Optional.empty());
+      this(
+          text,
+          withChild,
+          parent,
+          path,
+          Optional.empty(),
+          "",
+          Optional.empty(),
+          Optional.empty(),
+          "",
+          "",
+          Set.of(),
+          Optional.empty()
+      );
     }
 
     /** Creates a condition without a path the node must not follow. */
@@ -138,7 +166,20 @@ public final class ForbiddenNodeCheck implements UnitCheck {
         final String path,
         final Optional<Pattern> parentText
     ) {
-      this(text, withChild, parent, path, parentText, "", Optional.empty(), Optional.empty());
+      this(
+          text,
+          withChild,
+          parent,
+          path,
+          parentText,
+          "",
+          Optional.empty(),
+          Optional.empty(),
+          "",
+          "",
+          Set.of(),
+          Optional.empty()
+      );
     }
 
     /**
@@ -153,6 +194,10 @@ public final class ForbiddenNodeCheck implements UnitCheck {
       Objects.requireNonNull(notPath, "notPath");
       Objects.requireNonNull(notRootText, "notRootText");
       Objects.requireNonNull(notParentText, "notParentText");
+      Objects.requireNonNull(notScopeText, "notScopeText");
+      Objects.requireNonNull(scopeText, "scopeText");
+      Objects.requireNonNull(notAncestorText, "notAncestorText");
+      ancestorKinds = Set.copyOf(ancestorKinds);
       withChild = Set.copyOf(withChild);
       parent = Set.copyOf(parent);
     }
@@ -166,6 +211,8 @@ public final class ForbiddenNodeCheck implements UnitCheck {
           && parentTextOk(visit)
           && rootTextOk(visit)
           && notParentTextOk(visit)
+          && scopeTextOk(visit)
+          && notAncestorTextOk(visit)
           && textOk(visit.node());
     }
 
@@ -237,6 +284,37 @@ public final class ForbiddenNodeCheck implements UnitCheck {
       return notParentText.isEmpty()
           || up.isEmpty()
           || !notParentText.get().matcher(SyntaxWalk.text(up.get(up.size() - 1))).find();
+    }
+
+    private boolean notAncestorTextOk(final SyntaxWalk.Visit visit) {
+      return notAncestorText.isEmpty()
+          || visit.ancestors().reversed().stream()
+              .filter(ancestor -> ancestorKinds.contains(ancestor.kind()))
+              .findFirst()
+              .map(ancestor -> !notAncestorText.get().matcher(SyntaxWalk.text(ancestor)).find())
+              .orElse(true);
+    }
+
+    private boolean scopeTextOk(final SyntaxWalk.Visit visit) {
+      return (notScopeText.isEmpty() || !scopeMatches(visit, notScopeText))
+          && (scopeText.isEmpty() || scopeMatches(visit, scopeText));
+    }
+
+    /** Whether the scope of the node, a function or the file, has text that fits {@code regex}. */
+    private static boolean scopeMatches(final SyntaxWalk.Visit visit, final String regex) {
+      final List<SyntaxNode> up = visit.ancestors();
+      final Matcher first = FIRST_NAME.matcher(SyntaxWalk.text(visit.node()));
+      if (up.isEmpty() || !first.find()) {
+        return false;
+      }
+      final SyntaxNode scope =
+          up.reversed().stream()
+              .filter(ancestor -> FUNCTION.equals(ancestor.kind()))
+              .findFirst()
+              .orElse(up.get(0));
+      return Pattern.compile(regex.replace(NAME_PLACEHOLDER, Pattern.quote(first.group())))
+          .matcher(SyntaxWalk.text(scope))
+          .find();
     }
 
     private boolean rootTextOk(final SyntaxWalk.Visit visit) {

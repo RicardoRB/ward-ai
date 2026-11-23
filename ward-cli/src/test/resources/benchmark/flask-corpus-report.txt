@@ -4,7 +4,7 @@
 # A labelled finding is true (tp), false (fp) or undetermined (un), as read from the code at its line; the labels are in flask-corpus-labels.txt. Every finding of a security rule is labelled; of another rule, its first 5 findings in path order.
 # The measured cost of the run is in flask-corpus-cost.txt.
 # Regenerate: ./mvnw -pl ward-cli -am -Djacoco.skip=true -Dtest=FlaskCorpusSmokeTest -Dward.benchmark.flask-corpus=<dir> -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
-files 333 | findings 6648
+files 333 | findings 6573
 ward:python/abbreviation-as-word-in-name | findings 21 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/abstract-base-class-without-abstract-method | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/abstract-class-instantiated | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -137,12 +137,12 @@ ward:python/global-statement | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/global-variable-not-assigned | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/global-variable-undefined | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/hardcoded-bind-all-interfaces | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:python/hardcoded-password-default | findings 7 | labelled 7 | tp 0 | fp 7 | un 0
-ward:python/hardcoded-password-func-arg | findings 2 | labelled 2 | tp 0 | fp 2 | un 0
+ward:python/hardcoded-password-default | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:python/hardcoded-password-func-arg | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/hardcoded-password-string | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/hardcoded-temp-file | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/hashlib-digest-hex | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:python/hashlib-insecure-hash-function | findings 2 | labelled 2 | tp 0 | fp 2 | un 0
+ward:python/hashlib-insecure-hash-function | findings 1 | labelled 1 | tp 0 | fp 1 | un 0
 ward:python/hex-literal-case | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/hidden-field | findings 12 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/if-tuple | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -296,7 +296,7 @@ ward:python/pointless-exception-statement | findings 0 | labelled 0 | tp 0 | fp 
 ward:python/pointless-string-statement | findings 45 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/positional-only-arguments-expected | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/possibly-unused-variable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:python/possibly-used-before-assignment | findings 23 | labelled 5 | tp 0 | fp 3 | un 2
+ward:python/possibly-used-before-assignment | findings 8 | labelled 5 | tp 0 | fp 0 | un 5
 ward:python/potential-index-error | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/prefer-typing-namedtuple | findings 5 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/print-empty-string | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -327,7 +327,7 @@ ward:python/return-in-init | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/return-outside-function | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/reuse-of-groupby-generator | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/self-assigning-variable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:python/self-cls-assignment | findings 2 | labelled 2 | tp 0 | fp 2 | un 0
+ward:python/self-cls-assignment | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/server-side-request-forgery | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/set-attr-with-constant | findings 3 | labelled 3 | tp 3 | fp 0 | un 0
 ward:python/shadowed-import | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -370,7 +370,7 @@ ward:python/suppressible-exception | findings 13 | labelled 5 | tp 5 | fp 0 | un
 ward:python/suspicious-eval-usage | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/suspicious-insecure-hash-usage | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/suspicious-marshal-usage | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:python/suspicious-non-cryptographic-random-usage | findings 44 | labelled 44 | tp 0 | fp 44 | un 0
+ward:python/suspicious-non-cryptographic-random-usage | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/suspicious-pickle-usage | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/sys-version-cmp-str10 | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/sys-version-cmp-str3 | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -463,16 +463,16 @@ ward:python/untrusted-redirect | findings 2 | labelled 2 | tp 1 | fp 1 | un 0
 ward:python/untrusted-request-url | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/unused-annotation | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/unused-argument | findings 5 | labelled 5 | tp 5 | fp 0 | un 0
-ward:python/unused-attribute | findings 2 | labelled 2 | tp 0 | fp 1 | un 1
+ward:python/unused-attribute | findings 1 | labelled 1 | tp 0 | fp 0 | un 1
 ward:python/unused-class | findings 31 | labelled 5 | tp 0 | fp 5 | un 0
 ward:python/unused-function | findings 47 | labelled 5 | tp 0 | fp 5 | un 0
 ward:python/unused-import | findings 31 | labelled 5 | tp 0 | fp 0 | un 5
 ward:python/unused-local-variable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/unused-loop-control-variable | findings 7 | labelled 5 | tp 5 | fp 0 | un 0
-ward:python/unused-method | findings 2 | labelled 2 | tp 0 | fp 2 | un 0
+ward:python/unused-method | findings 1 | labelled 1 | tp 0 | fp 1 | un 0
 ward:python/unused-private-member | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/unused-property | findings 8 | labelled 5 | tp 0 | fp 5 | un 0
-ward:python/use-implicit-booleaness-not-comparison | findings 26 | labelled 5 | tp 5 | fp 0 | un 0
+ward:python/use-implicit-booleaness-not-comparison | findings 24 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/use-implicit-booleaness-not-len | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:python/use-maxsplit-arg | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
 ward:python/use-sequence-for-iteration | findings 1 | labelled 1 | tp 1 | fp 0 | un 0

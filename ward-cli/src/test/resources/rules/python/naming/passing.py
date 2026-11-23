@@ -13,3 +13,8 @@ import unittest
 class CartTest(unittest.TestCase):
     def setUp(self):
         self.items = []
+
+
+Lookups = Iterable[tuple[str, str]]
+Number = int | float
+Item = TypeVar("Item")

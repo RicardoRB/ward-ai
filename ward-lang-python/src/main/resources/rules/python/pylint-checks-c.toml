@@ -73,6 +73,8 @@ check = "forbidden-node"
 kinds = ["expr_stmt"]
 inside = ["funcdef"]
 text = '^(?:self|cls)\s*=(?!=)'
+# A module-level function has no self or cls parameter: cls is a plain local name there.
+not-parent-path = "simple_stmt>simple_stmts>stmt>block>funcdef>compound_stmt>stmt>file_input"
 message = "assignment to self or cls in a method"
 '''
 

@@ -97,11 +97,11 @@ ward:python/missing-module-docstring | hc/accounts/backends.py:1 | tp | the modu
 ward:python/missing-module-docstring | hc/accounts/decorators.py:1 | tp | the module has no docstring
 ward:python/missing-module-docstring | hc/accounts/forms.py:1 | tp | the module has no docstring
 ward:python/module-import-not-at-top-of-file | hc/settings.py:451 | tp | an import in an if block at the end of the module
-ward:python/naming | hc/accounts/admin.py:23 | fp | a module-level type alias, which PEP 8 names in CapWords
 ward:python/naming | hc/accounts/migrations/0018_auto_20190112_1426.py:12 | un | a model class fetched with apps.get_model keeps its class name; a Django convention
 ward:python/naming | hc/accounts/migrations/0018_auto_20190112_1426.py:13 | un | a model class fetched with apps.get_model keeps its class name; a Django convention
 ward:python/naming | hc/accounts/migrations/0018_auto_20190112_1426.py:14 | un | a model class fetched with apps.get_model keeps its class name; a Django convention
 ward:python/naming | hc/accounts/migrations/0020_auto_20190112_1950.py:12 | un | a model class fetched with apps.get_model keeps its class name; a Django convention
+ward:python/naming | hc/accounts/migrations/0036_fill_profile_reports.py:12 | un | a model class fetched with apps.get_model keeps its class name; a Django convention
 ward:python/no-else-raise | hc/api/views.py:339 | tp | an elif after a branch that raises
 ward:python/no-else-raise | hc/lib/curl.py:190 | tp | an elif after a branch that raises
 ward:python/no-else-raise | hc/lib/curl.py:192 | tp | an elif after a branch that raises
@@ -139,7 +139,6 @@ ward:python/raise-without-from-inside-except | hc/api/views.py:123 | tp | a new 
 ward:python/raise-without-from-inside-except | hc/api/views.py:130 | tp | a new exception is raised in a handler without from
 ward:python/self-cls-assignment | hc/api/models.py:511 | tp | the method assigns to its first parameter
 ward:python/self-cls-assignment | hc/api/models.py:1147 | tp | the method assigns to its first parameter
-ward:python/suspicious-non-cryptographic-random-usage | hc/accounts/models.py:380 | fp | a random minute offset that spreads report e-mails; not a security value
 ward:python/too-few-public-methods | hc/accounts/backends.py:11 | un | a framework class with a fixed small interface; the count is right
 ward:python/too-few-public-methods | hc/accounts/middleware.py:15 | un | a framework class with a fixed small interface; the count is right
 ward:python/too-few-public-methods | hc/accounts/middleware.py:28 | un | a framework class with a fixed small interface; the count is right
@@ -195,15 +194,15 @@ ward:python/unused-property | hc/api/models.py:1006 | un | a template may read t
 ward:python/unused-property | hc/api/models.py:1197 | un | a template may read the property; templates are not analysed
 ward:python/use-implicit-booleaness-not-comparison | hc/accounts/management/commands/createsuperuser.py:33 | tp | a string is compared with the empty string
 ward:python/use-implicit-booleaness-not-comparison | hc/api/models.py:952 | tp | a string is compared with the empty string
-ward:python/use-implicit-booleaness-not-comparison | hc/api/views.py:324 | fp | the value may be None, which means something else than the empty string there
-ward:python/use-implicit-booleaness-not-comparison | hc/api/views.py:333 | tp | a string is compared with the empty string
 ward:python/use-implicit-booleaness-not-comparison | hc/front/forms.py:43 | tp | a string is compared with the empty string
+ward:python/use-implicit-booleaness-not-comparison | hc/api/views.py:333 | tp | a string is compared with the empty string
+ward:python/use-implicit-booleaness-not-comparison | hc/integrations/github/forms.py:15 | tp | a string is compared with the empty string
 ward:python/use-implicit-booleaness-not-len | hc/front/views.py:1133 | tp | len() of a list is the condition
-ward:python/use-maxsplit-arg | hc/api/models.py:1108 | fp | reported on the statement that holds the dictionary; the split is two lines below and has its own finding
 ward:python/use-maxsplit-arg | hc/api/models.py:1110 | tp | only the first part of the split is read
 ward:python/use-maxsplit-arg | hc/api/models.py:1471 | tp | only the first part of the split is read
 ward:python/use-maxsplit-arg | hc/api/models.py:1475 | tp | only the first part of the split is read
 ward:python/use-maxsplit-arg | hc/api/models.py:1486 | tp | only the first part of the split is read
+ward:python/use-maxsplit-arg | hc/api/views.py:199 | tp | only the first part of the split is read
 ward:python/useless-expression | hc/api/tests/test_flip_model.py:81 | un | an attribute is read on purpose inside assertRaises
 ward:python/variable-declaration-usage-distance | hc/accounts/tests/test_signup.py:28 | un | a distance measure of a style convention; not recounted by hand
 ward:python/variable-declaration-usage-distance | hc/api/models.py:624 | un | a distance measure of a style convention; not recounted by hand
@@ -292,14 +291,9 @@ ward:python/trailing-comment | hc/api/apps.py:85 | tp | a comment after code on 
 ward:python/trailing-comment | hc/api/management/commands/sendalerts.py:103 | tp | a comment after code on the same line
 ward:python/trailing-comment | hc/api/management/commands/sendalerts.py:108 | tp | a comment after code on the same line
 ward:python/trailing-comment | hc/api/models.py:155 | tp | a comment after code on the same line
-ward:python/unused-class | hc/accounts/backends.py:22 | fp | named by a dotted path in a Django setting (AUTHENTICATION_BACKENDS); Ward reads no string as a reference
-ward:python/unused-class | hc/accounts/backends.py:44 | fp | named by a dotted path in a Django setting (AUTHENTICATION_BACKENDS); Ward reads no string as a reference
-ward:python/unused-class | hc/accounts/backends.py:65 | fp | named by a dotted path in a Django setting (AUTHENTICATION_BACKENDS); Ward reads no string as a reference
-ward:python/unused-class | hc/accounts/middleware.py:15 | fp | named by a dotted path in the MIDDLEWARE setting; Ward reads no string as a reference
-ward:python/unused-class | hc/accounts/middleware.py:28 | fp | named by a dotted path in the MIDDLEWARE setting; Ward reads no string as a reference
-ward:python/unused-function | hc/front/context_processors.py:7 | fp | named by a dotted path in the TEMPLATES context_processors setting; Ward reads no string as a reference
 ward:python/while-used | hc/accounts/management/commands/createsuperuser.py:63 | tp | a while loop
 ward:python/while-used | hc/accounts/management/commands/createsuperuser.py:71 | tp | a while loop
 ward:python/while-used | hc/accounts/models.py:382 | tp | a while loop
 ward:python/while-used | hc/accounts/models.py:555 | tp | a while loop
 ward:python/while-used | hc/accounts/models.py:581 | tp | a while loop
+ward:python/unused-class | hc/api/transports.py:125 | tp | the class is spelled nowhere else in the project

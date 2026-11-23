@@ -25,6 +25,15 @@ class SourcesTest {
   }
 
   @Test
+  void pythonTestHelpersAndSeedScriptsAreNotMainSources() {
+    assertThat(Sources.MAIN.admits("tests/helpers.py")).isFalse();
+    assertThat(Sources.MAIN.admits("populate.py")).isFalse();
+    assertThat(Sources.MAIN.admits("scripts/seed_data.py")).isFalse();
+    assertThat(Sources.MAIN.admits("app/seeding.py")).isTrue();
+    assertThat(Sources.MAIN.admits("app/views.py")).isTrue();
+  }
+
+  @Test
   void parseReadsAppAndRejectsUnknownValues() {
     assertThat(Sources.parse("app")).isEqualTo(Sources.APP);
     assertThatThrownBy(() -> Sources.parse("none")).hasMessageContaining("app");

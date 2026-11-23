@@ -9,3 +9,9 @@ class Config:
 
     def describe(self):
         return str(getattr(self, "debug")) + self.host
+
+
+import configparser
+
+parser = configparser.ConfigParser()
+parser.optionxform = str

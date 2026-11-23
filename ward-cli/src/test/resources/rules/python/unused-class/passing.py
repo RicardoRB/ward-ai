@@ -10,3 +10,14 @@ class Helper:
 
 
 value = Helper()
+
+
+class EmailBackend:
+    pass
+
+
+AUTHENTICATION_BACKENDS = ["app.backends.EmailBackend"]
+
+
+class ApiConfig(AppConfig):
+    name = "hc.api"
