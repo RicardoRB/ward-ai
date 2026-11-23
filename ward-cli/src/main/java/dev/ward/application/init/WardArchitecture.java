@@ -14,21 +14,23 @@ import java.util.List;
  * @param layers the layer boundaries of the style
  * @param cycleRoots the project-relative roots of {@code [checks.ward.cycles]}
  * @param independence the module directories of {@code [[checks.ward.independence]]}
+ * @param gate whether init writes the {@code ward} gate, even with no table to list
  */
 record WardArchitecture(
     List<LayerBoundary> layers,
     List<String> cycleRoots,
-    List<String> independence
+    List<String> independence,
+    boolean gate
 ) {
   /** The style init writes when none is chosen, as the planner and the wizard default to it. */
   private static final String DEFAULT_STYLE = "layered";
 
   /** The tables of a selection that writes none. */
-  static final WardArchitecture NONE = new WardArchitecture(List.of(), List.of(), List.of());
+  static final WardArchitecture NONE = new WardArchitecture(List.of(), List.of(), List.of(), false);
 
-  /** Whether the ward gate writes any table: it writes the layers the toolchain gives for the style. */
+  /** Whether init writes the ward gate: every selection does, with the tables it has. */
   boolean any() {
-    return !layers.isEmpty() || !cycleRoots.isEmpty() || !independence.isEmpty();
+    return gate;
   }
 
   /** Copies the lists. */
@@ -50,12 +52,13 @@ record WardArchitecture(
     final String style = style(selection);
     final List<LayerBoundary> layers = tables.layers(project, style);
     if (!wantsCycles(selection)) {
-      return new WardArchitecture(layers, List.of(), List.of());
+      return new WardArchitecture(layers, List.of(), List.of(), true);
     }
     return new WardArchitecture(
         layers,
         tables.cycleRoots(project),
-        tables.independenceModules(project, style)
+        tables.independenceModules(project, style),
+        true
     );
   }
 
