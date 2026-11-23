@@ -1,7 +1,9 @@
 package dev.ward.analysis.domain.node;
 
+import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /** Classifies the TypeScript and JavaScript expressions that matter for control-flow lowering. */
@@ -55,6 +57,14 @@ final class NodeExpressions {
     return SINGLE_EXPRESSION.equals(expression.kind())
         && parts.size() == TERNARY_PARTS
         && QUESTION.equals(NodeFlowSyntax.text(parts.get(1)));
+  }
+
+  /**
+   * The span of the condition of {@code c ? a : b}: the condition picks a branch and is not part of
+   * the value.
+   */
+  static Optional<Span> conditionSpan(final SyntaxNode expression, final List<SyntaxNode> parts) {
+    return isTernary(expression) ? Optional.of(parts.get(0).span()) : Optional.empty();
   }
 
   /** Reports whether a subtree can throw: it calls, allocates, awaits or throws. */

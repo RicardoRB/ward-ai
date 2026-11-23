@@ -10,7 +10,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["singleExpression"]
-text = '^(?:\w+\.)?createHash\([\"\x27`](?i:md2|md4|md5|sha-?1)[\"\x27`]\)$|^(?:\w+\.)?createHmac\([\"\x27`](?i:md2|md4|md5|sha-?1)[\"\x27`],(?:[^()]|\([^()]*\))*\)$|^(?:\w+\.)*subtle\.digest\([\"\x27`](?i:sha-?1)[\"\x27`],(?:[^()]|\([^()]*\))*\)$'
+text = '^(?:\w+\.)?createHash\([\"\x27`](?i:md2|md4|md5|sha-?1)[\"\x27`]\)$|^(?:\w+\.)*subtle\.digest\([\"\x27`](?i:sha-?1)[\"\x27`],(?:[^()]|\([^()]*\))*\)$'
 message = "MD2, MD4, MD5 and SHA-1 are broken for integrity and signatures; use SHA-256 or stronger"
 '''
 
@@ -24,7 +24,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["singleExpression"]
-text = '^(?:\w+\.)?createHash\([\"\x27`](?i:md2|md4|md5|sha-?1)[\"\x27`]\)$|^(?:\w+\.)?createHmac\([\"\x27`](?i:md2|md4|md5|sha-?1)[\"\x27`],(?:[^()]|\([^()]*\))*\)$|^(?:\w+\.)*subtle\.digest\([\"\x27`](?i:sha-?1)[\"\x27`],(?:[^()]|\([^()]*\))*\)$'
+text = '^(?:\w+\.)?createHash\([\"\x27`](?i:md2|md4|md5|sha-?1)[\"\x27`]\)$|^(?:\w+\.)*subtle\.digest\([\"\x27`](?i:sha-?1)[\"\x27`],(?:[^()]|\([^()]*\))*\)$'
 message = "MD2, MD4, MD5 and SHA-1 are broken for integrity and signatures; use SHA-256 or stronger"
 '''
 

@@ -190,7 +190,10 @@ public final class NodeUnusedExpressionsCheck implements RuleCheck {
         .orElseGet(() -> operatorUse(LeafText.of(children.get(1)), children));
   }
 
-  /** A call and a tagged template are used, or a tagged template is when the option says so. */
+  /**
+   * A call and a tagged template are used, or a tagged template is when the option says so. {@code
+   * f?.(x)} may read as {@code ?.} and a parenthesized operand, which is a call as well.
+   */
   private Optional<Boolean> calledOrTagged(final List<SyntaxNode> children) {
     final SyntaxNode operator = children.get(1);
     if (ARGUMENTS.equals(operator.kind())) {
@@ -202,7 +205,8 @@ public final class NodeUnusedExpressionsCheck implements RuleCheck {
     final boolean optionalCall =
         OPTIONAL_CALL.equals(LeafText.of(operator))
             && children.size() > CALL_SIZE
-            && ARGUMENTS.equals(children.get(2).kind());
+            && (ARGUMENTS.equals(children.get(2).kind())
+                || ExpressionShapes.isParenthesized(children.get(2)));
     return optionalCall ? Optional.of(false) : Optional.empty();
   }
 

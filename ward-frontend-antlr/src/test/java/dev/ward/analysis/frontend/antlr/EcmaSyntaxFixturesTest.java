@@ -78,6 +78,12 @@ class EcmaSyntaxFixturesTest {
           Map.entry("infer-extends.ts", List.of("inferType")),
           Map.entry("optional-chain-non-null.ts", List.of("'?.'", "'!'")),
           Map.entry("optional-call.ts", List.of("arguments")),
+          Map.entry("cast-precedence.ts", List.of("asExpression", "namespaceName", "primaryType")),
+          Map.entry("non-null-binary.ts", List.of("'!'", "propertyMemberDeclaration")),
+          Map.entry(
+              "arrow-block-keyword.ts",
+              List.of("arrowFunctionBody", "ifStatement", "iterationStatement")
+          ),
           Map.entry("private-names.ts", List.of("privateIdentifier")),
           Map.entry(
               "static-accessors.ts",

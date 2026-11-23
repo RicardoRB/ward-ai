@@ -19,6 +19,8 @@ final class NodeReferences {
   private static final int PAIR = 2;
   private static final int TRIPLE = 3;
   private static final String COLON = ":";
+  private static final Set<String> METHODS =
+      Set.of("generatorMethod", "getAccessor", "setAccessor");
   private static final String DOT = ".";
   private static final String OPTIONAL_DOT = "?.";
   private static final Set<String> INCREMENTS = Set.of("++", "--");
@@ -83,11 +85,18 @@ final class NodeReferences {
     final List<SyntaxNode> parts = NodeFlowSyntax.parts(node);
     if (NodeSyntax.hasToken(parts, COLON)) {
       walker.walk(parts.get(parts.size() - 1), found);
+    } else if (isMethod(parts)) {
+      captures(node, found);
     } else {
       for (final SyntaxNode child : node.children()) {
         walker.walk(child, found);
       }
     }
+  }
+
+  /** A method, getter or setter of an object literal is a nested body, like a function value. */
+  private static boolean isMethod(final List<SyntaxNode> parts) {
+    return parts.size() == 1 && METHODS.contains(parts.get(0).kind());
   }
 
   /**

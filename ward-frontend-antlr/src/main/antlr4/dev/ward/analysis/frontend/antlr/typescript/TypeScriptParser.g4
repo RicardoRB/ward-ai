@@ -168,7 +168,7 @@ typeGeneric
     ;
 
 typeName
-    : identifier
+    : {this.notQualifiedNameAhead()}? identifier
     | namespaceName
     ;
 
@@ -821,6 +821,8 @@ singleExpression
     | singleExpression '?.' singleExpression                      # OptionalChainExpression
     | singleExpression '!'? '.' '#'? identifierName typeGeneric?  # MemberDotExpression
     | singleExpression '?' '.' '#'? identifierName typeGeneric?   # MemberDotExpression
+    // TypeScript v2.0; a postfix operator, so it binds tighter than every binary operator and `=`
+    | singleExpression '!'                                            # NonNullAssertionExpression
     // Split to try `new Date()` first, then `new Date`.
     | New identifier typeArguments? arguments                         # NewExpression
     | New singleExpression typeArguments? arguments                   # NewExpression
@@ -843,6 +845,9 @@ singleExpression
     | singleExpression ('+' | '-') singleExpression                   # AdditiveExpression
     | singleExpression '??' singleExpression                          # CoalesceExpression
     | singleExpression ('<<' | '>' '>' | '>' '>' '>') singleExpression # BitShiftExpression
+    // `as` and `satisfies` bind like the relational operators, tighter than `?:`, `=` and `&&`
+    | singleExpression As asExpression                                # CastAsExpression
+    | singleExpression satisfiesClause                                # SatisfiesExpression
     | singleExpression {this.notTypeArgumentsCallAhead()}? ('<' | '>' | '<=' | '>=') singleExpression # RelationalExpression
     | singleExpression Instanceof singleExpression                    # InstanceofExpression
     | singleExpression In singleExpression                            # InExpression
@@ -871,10 +876,6 @@ singleExpression
     | {this.isJsx()}? jsxElement                                     # JsxExpression
     | '(' expressionSequence ')'                                      # ParenthesizedExpression
     | typeArguments expressionSequence?                               # GenericTypes
-    | singleExpression As asExpression                                # CastAsExpression
-    | singleExpression satisfiesClause                                # SatisfiesExpression
-// TypeScript v2.0
-    | singleExpression '!'                                            # NonNullAssertionExpression
     ;
 
 // `satisfies` is a contextual keyword: a lexer token that `identifier` also accepts, because a predicate
@@ -917,9 +918,11 @@ arrowFunctionParameters
     | '(' formalParameterList? ')'
     ;
 
+// `=> {` always opens a block (ECMAScript), so it is tried first: `{ if (x) {} }` also reads as an
+// object literal with a method named `if`
 arrowFunctionBody
-    : singleExpression
-    | '{' functionBody '}'
+    : '{' functionBody '}'
+    | singleExpression
     ;
 
 assignmentOperator

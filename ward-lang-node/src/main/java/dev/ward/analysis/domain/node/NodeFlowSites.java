@@ -3,6 +3,7 @@ package dev.ward.analysis.domain.node;
 import dev.ward.analysis.domain.ir.FlowSite;
 import dev.ward.analysis.domain.ir.FlowSiteKind;
 import dev.ward.analysis.domain.ir.FlowSites;
+import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ final class NodeFlowSites implements FlowSites {
   private static final String ARGUMENTS = "arguments";
   private static final String VARIABLE_DECLARATION = "variableDeclaration";
   private static final String CONSTRUCTOR = "<init>";
+  private static final String TEST = "<test>";
   private static final Set<String> MEMBER_TOKENS = Set.of(".", "?.");
   private static final Set<String> ASSIGNMENTS = Set.of("=", "+=");
   private static final int MEMBER_PARTS = 3;
@@ -93,8 +95,29 @@ final class NodeFlowSites implements FlowSites {
       found.add(constructor(node, parts));
     } else {
       children(node, found);
+      testOf(node, parts).ifPresent(found::add);
       writeOf(node, parts).ifPresent(found::add);
     }
+  }
+
+  /**
+   * The condition of {@code c ? a : b} yields no part of the value: a call named {@code <test>}
+   * over that span lets a specification sanitize it.
+   */
+  private Optional<FlowSite> testOf(final SyntaxNode node, final List<SyntaxNode> parts) {
+    final Optional<Span> tested = NodeExpressions.conditionSpan(node, parts);
+    return tested.map(
+        span ->
+            new FlowSite(
+                FlowSiteKind.CALL,
+                TEST,
+                "",
+                Optional.empty(),
+                List.of(),
+                List.of(span),
+                node.span()
+            )
+    );
   }
 
   /** A {@code new X(args)} expression is a call named {@code <init>} on {@code X}. */

@@ -177,3 +177,9 @@ qualifier = "document"
 kind = "member"
 name = "cookie"
 qualifier = "document"
+
+# The condition of a ternary and a comparison decide a branch or a boolean: no operand is part of
+# the value (the lowering names such a span <test>).
+[[sanitizers]]
+kind = "call"
+name = "<test>"

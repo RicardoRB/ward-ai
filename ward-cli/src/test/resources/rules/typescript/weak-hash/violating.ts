@@ -5,5 +5,5 @@ export function md5(data: any) {
 }
 
 export function sha1(data: any, key: any) {
-  return crypto.createHmac('sha1', key).update(data).digest('hex');
+  return crypto.createHash('sha1').update(data).digest('hex');
 }

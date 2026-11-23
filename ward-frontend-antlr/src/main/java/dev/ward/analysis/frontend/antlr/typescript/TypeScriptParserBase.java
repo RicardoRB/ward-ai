@@ -72,6 +72,14 @@ public abstract class TypeScriptParserBase extends Parser {
     return !TypeArgumentsLookahead.opensCall(_input);
   }
 
+  /**
+   * Whether the name at the current token is not the start of a qualified name such as {@code a.b}.
+   * Without it, {@code x as a.b['c']} reads as a cast to {@code a} followed by member accesses.
+   */
+  protected boolean notQualifiedNameAhead() {
+    return _input.LT(2).getType() != TypeScriptParser.Dot;
+  }
+
   protected boolean notLineTerminator() {
     return !lineTerminatorAhead();
   }
