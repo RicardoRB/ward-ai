@@ -56,6 +56,23 @@ class DotnetInitCliTest {
   }
 
   @Test
+  @DisplayName("no controller and repository layer rule, which no C# layout needs (#710)")
+  void noControllerAndRepositoryLayerRule() throws IOException {
+    Files.writeString(root.resolve("App.csproj"), CSPROJ);
+    Files.writeString(root.resolve("Program.cs"), "System.Console.WriteLine(1);\n");
+    final InitCommandFixture init = init();
+
+    final int exit = init.run("", "--preset", "strict", "--architecture", "layered", "--yes");
+
+    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
+    assertThat(Files.readString(root.resolve("ward.toml")))
+        .doesNotContain("[[checks.ward.layers]]", "controller", "repository");
+    assertThat(Files.readString(root.resolve("ward-architecture.toml")))
+        .doesNotContain("lower-layers-do-not-call-controllers")
+        .contains("version = 1");
+  }
+
+  @Test
   @DisplayName("tests with coverage and mutation testing")
   void testsWithCoverageAndMutationTesting() throws IOException {
     Files.writeString(root.resolve("App.csproj"), CSPROJ);

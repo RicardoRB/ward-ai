@@ -1,5 +1,6 @@
 package dev.ward.application.init;
 
+import dev.ward.domain.init.ArchitectureTables;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.OwnedSection;
@@ -103,10 +104,11 @@ public final class OwnedSections {
       final List<OwnedSection> sections,
       final Project project,
       final InitSelection selection,
+      final ArchitectureTables tables,
       final boolean exists
   ) {
     final List<OwnedSection> all = new ArrayList<>(sections);
-    ArchitectureFileTemplate.section(project, selection, exists).ifPresent(all::add);
+    ArchitectureFileTemplate.section(project, selection, tables, exists).ifPresent(all::add);
     return List.copyOf(all);
   }
 

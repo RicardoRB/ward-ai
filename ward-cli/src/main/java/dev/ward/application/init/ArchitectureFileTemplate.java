@@ -1,7 +1,7 @@
 package dev.ward.application.init;
 
 import dev.ward.analysis.domain.rule.LayerBoundary;
-import dev.ward.domain.init.ArchitectureLayers;
+import dev.ward.domain.init.ArchitectureTables;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.OwnedSection;
 import dev.ward.domain.project.Project;
@@ -67,19 +67,27 @@ final class ArchitectureFileTemplate {
   static Optional<OwnedSection> section(
       final Project project,
       final InitSelection selection,
+      final ArchitectureTables tables,
       final boolean exists
   ) {
     if (exists || !selection.architectureChosen()) {
       return Optional.empty();
     }
-    return Optional.of(new OwnedSection(path(project), BEGIN, END, body(project, selection), true));
+    return Optional.of(
+        new OwnedSection(path(project), BEGIN, END, body(project, selection, tables), true)
+    );
   }
 
   /** Returns the text between the first and the last line of the file. */
-  static String body(final Project project, final InitSelection selection) {
+  static String body(
+      final Project project,
+      final InitSelection selection,
+      final ArchitectureTables tables
+  ) {
     final String style = WardArchitecture.style(selection);
+    final List<LayerBoundary> layers = tables.layers(project, style);
     return HEADER.formatted(style)
-        + rule(style, ArchitectureLayers.forStyle(style, project.framework()))
+        + (layers.isEmpty() ? "" : rule(style, layers.get(0)))
         + EXTERNAL_EXAMPLE;
   }
 

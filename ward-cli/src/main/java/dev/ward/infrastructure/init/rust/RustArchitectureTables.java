@@ -1,5 +1,6 @@
 package dev.ward.infrastructure.init.rust;
 
+import dev.ward.analysis.domain.rule.LayerBoundary;
 import dev.ward.domain.init.ArchitectureTables;
 import dev.ward.domain.project.Project;
 import dev.ward.infrastructure.project.rust.CargoWorkspaces;
@@ -16,6 +17,11 @@ public final class RustArchitectureTables implements ArchitectureTables {
   /** Creates the stateless adapter that Dagger injects. */
   @Inject
   public RustArchitectureTables() {}
+
+  @Override
+  public List<LayerBoundary> layers(final Project project, final String style) {
+    return List.of();
+  }
 
   @Override
   public List<String> cycleRoots(final Project project) {
