@@ -26,3 +26,12 @@ export const create = <T extends object>(Factory: new (options: object) => T): {
 };
 
 export {parse};
+
+declare function clear(timeout: number): void;
+export const install = (target: {clearTimeout?: (timeout: number) => void}) => {
+  target.clearTimeout = (timeout: number) => {
+    if (timeout) {
+      clear(timeout);
+    }
+  };
+};

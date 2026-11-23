@@ -1,24 +1,12 @@
 # rule | file:line | reason | open issue. A finding labelled fp fails the corpus test unless it is listed here.
-ward:javascript/naming | documentation/examples/runkit-example.js:5 | the snake_case name is the key of a destructured property of a remote response, which the code renames to camelCase | #740
 ward:typescript/cleartext-transport | test/timings.ts:158 | plain HTTP to a test server on the loopback interface | #758
-ward:typescript/dot-notation | source/core/utils/http2-client.ts:380 | the bracket is an indexed access type inside a type assertion, not a property read | #741
 ward:typescript/header-injection | test/pagination.ts:3441 | the header is built from the address of the test server and a counter | #742
 ward:typescript/header-injection | test/pagination.ts:3683 | the header is built from the address of the test server and a counter | #742
-ward:typescript/no-self-assign | source/core/utils/http2-client.ts:1118 | the right side subtracts one from the property, so the value changes | #743
-ward:typescript/no-self-assign | source/core/utils/http2-client.ts:883 | the right side subtracts one from the property, so the value changes | #743
-ward:typescript/no-unused-expressions | source/core/utils/http2-client.ts:1118 | the statement is an assignment or a call, which has an effect | #743
-ward:typescript/no-unused-expressions | source/core/utils/http2-client.ts:1311 | the statement is an assignment or a call, which has an effect | #744
-ward:typescript/no-unused-expressions | source/core/utils/http2-client.ts:1480 | the statement is an assignment or a call, which has an effect | #744
-ward:typescript/no-unused-function-parameters | test/timeout.ts:519 | the parameter is read in the body; the grammar reads an arrow function body that starts with a block as an object literal (#502), so the read is lost | #745
-ward:typescript/unused-assignment | test/error.ts:724 | the initial value is what the assertion reads when the callback does not run | #746
-ward:typescript/unused-assignment | test/helpers/slow-data-stream.ts:16 | the incremented value is read by the comparison of the next call | #746
 ward:typescript/xss | test/cache.ts:296 | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML | #757
 ward:typescript/xss | test/cookies.ts:711 | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML | #757
 ward:typescript/xss | test/create.ts:34 | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML | #757
 ward:typescript/xss | test/diagnostics-channel.ts:42 | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML | #757
 ward:typescript/xss | test/headers.ts:20 | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML | #757
-ward:typescript/xss | test/hooks.ts:1384 | the response is one of two constants; the request header or URL only picks which one, so no request data reaches the body | #747
-ward:typescript/xss | test/hooks.ts:1412 | the response is one of two constants; the request header or URL only picks which one, so no request data reaches the body | #747
 ward:typescript/xss | test/hooks.ts:2247 | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML | #757
 ward:typescript/xss | test/hooks.ts:2277 | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML | #757
 ward:typescript/xss | test/hooks.ts:2308 | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML | #757
@@ -41,8 +29,6 @@ ward:typescript/xss | test/hooks.ts:2782 | the body is JSON built by a test serv
 ward:typescript/xss | test/hooks.ts:2804 | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML | #757
 ward:typescript/xss | test/hooks.ts:32 | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML | #757
 ward:typescript/xss | test/merge-instances.ts:8 | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML | #757
-ward:typescript/xss | test/pagination.ts:1454 | the response is one of two constants; the request header or URL only picks which one, so no request data reaches the body | #747
-ward:typescript/xss | test/pagination.ts:1478 | the response is one of two constants; the request header or URL only picks which one, so no request data reaches the body | #747
 ward:typescript/xss | test/pagination.ts:1743 | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML | #757
 ward:typescript/xss | test/pagination.ts:1774 | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML | #757
 ward:typescript/xss | test/pagination.ts:1808 | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML | #757

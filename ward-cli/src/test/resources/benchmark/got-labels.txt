@@ -10,7 +10,6 @@ ward:javascript/line-length | documentation/examples/advanced-creation.js:155 | 
 ward:javascript/magic-number | documentation/examples/gh-got.js:12 | tp | a number other than 0 or 1 is written in an expression, with no named constant
 ward:javascript/magic-number | documentation/examples/pagination.js:4 | tp | a number other than 0 or 1 is written in an expression, with no named constant
 ward:javascript/multiline-comment-leading-asterisk-presence | documentation/examples/advanced-creation.js:7 | tp | the lines of the block comment have no leading asterisk
-ward:javascript/naming | documentation/examples/runkit-example.js:5 | fp | the snake_case name is the key of a destructured property of a remote response, which the code renames to camelCase
 ward:javascript/no-default-export | documentation/examples/gh-got.js:78 | tp | the module has a default export
 ward:javascript/no-delete | documentation/examples/gh-got.js:30 | tp | the delete operator removes a property
 ward:javascript/no-delete | documentation/examples/h2c.js:12 | tp | the delete operator removes a property
@@ -34,7 +33,6 @@ ward:typescript/cleartext-transport | test/timings.ts:158 | fp | plain HTTP to a
 ward:typescript/complexity | source/core/index.ts:1155 | tp | the function has more branches than the limit of the rule
 ward:typescript/complexity | source/core/index.ts:2548 | tp | the function has more branches than the limit of the rule
 ward:typescript/complexity | source/core/index.ts:550 | tp | the function has more branches than the limit of the rule
-ward:typescript/dot-notation | source/core/utils/http2-client.ts:380 | fp | the bracket is an indexed access type inside a type assertion, not a property read
 ward:typescript/empty-catch-block | source/core/index.ts:1748 | tp | the catch block is empty
 ward:typescript/empty-catch-block | source/core/index.ts:1753 | tp | the catch block is empty
 ward:typescript/empty-catch-block | source/core/index.ts:1873 | tp | the catch block is empty
@@ -112,8 +110,6 @@ ward:typescript/no-re-export-all | source/index.ts:17 | tp | an export of every 
 ward:typescript/no-re-export-all | source/index.ts:19 | tp | an export of every name of another module
 ward:typescript/no-redundant-type-constituents | test/helpers/test.ts:157 | tp | unknown in a union absorbs the other member
 ward:typescript/no-script-url | test/redirects.ts:5141 | tp | a string literal is a javascript: URL; the test passes it as a redirect target that must be refused
-ward:typescript/no-self-assign | source/core/utils/http2-client.ts:1118 | fp | the right side subtracts one from the property, so the value changes
-ward:typescript/no-self-assign | source/core/utils/http2-client.ts:883 | fp | the right side subtracts one from the property, so the value changes
 ward:typescript/no-skipped-tests | test/cache.ts:595 | tp | the test is skipped
 ward:typescript/no-skipped-tests | test/cache.ts:626 | tp | the test is skipped
 ward:typescript/no-skipped-tests | test/stream.ts:941 | tp | the test is skipped
@@ -122,10 +118,6 @@ ward:typescript/no-throw-literal | test/arguments.ts:1486 | tp | a string is thr
 ward:typescript/no-throw-literal | test/response-parse.ts:785 | tp | a string is thrown
 ward:typescript/no-undef-init | test/agent.ts:214 | tp | a constant is initialised with undefined
 ward:typescript/no-unsafe-finally | source/core/options.ts:1723 | tp | a throw statement inside a finally block
-ward:typescript/no-unused-expressions | source/core/utils/http2-client.ts:1118 | fp | the statement is an assignment or a call, which has an effect
-ward:typescript/no-unused-expressions | source/core/utils/http2-client.ts:1311 | fp | the statement is an assignment or a call, which has an effect
-ward:typescript/no-unused-expressions | source/core/utils/http2-client.ts:1480 | fp | the statement is an assignment or a call, which has an effect
-ward:typescript/no-unused-function-parameters | test/timeout.ts:519 | fp | the parameter is read in the body; the grammar reads an arrow function body that starts with a block as an object literal (#502), so the read is lost
 ward:typescript/no-unused-function-parameters | test/types/events.ts:18 | tp | the parameter of the callback is not used
 ward:typescript/no-unused-instantiation | test/arguments.ts:845 | un | the object is created for the exception its constructor throws, inside an assertion
 ward:typescript/no-unused-instantiation | test/arguments.ts:853 | un | the object is created for the exception its constructor throws, inside an assertion
@@ -309,9 +301,6 @@ ward:typescript/tls-verification-disabled | test/timings.ts:57 | tp | certificat
 ward:typescript/todo-comment | source/core/index.ts:2408 | tp | a TODO comment
 ward:typescript/todo-comment | source/core/index.ts:2469 | tp | a TODO comment
 ward:typescript/todo-comment | source/core/response.ts:198 | tp | a TODO comment
-ward:typescript/unused-assignment | test/create.ts:1223 | un | the initial value is replaced inside a callback before the assertion reads the variable; the order is decided at run time
-ward:typescript/unused-assignment | test/error.ts:724 | fp | the initial value is what the assertion reads when the callback does not run
-ward:typescript/unused-assignment | test/helpers/slow-data-stream.ts:16 | fp | the incremented value is read by the comparison of the next call
 ward:typescript/variable-declaration-usage-distance | source/as-promise/index.ts:59 | tp | the variable is declared more statements before its first use than the limit of the rule
 ward:typescript/variable-declaration-usage-distance | source/as-promise/index.ts:60 | tp | the variable is declared more statements before its first use than the limit of the rule
 ward:typescript/variable-declaration-usage-distance | source/core/index.ts:1787 | tp | the variable is declared more statements before its first use than the limit of the rule
@@ -347,8 +336,6 @@ ward:typescript/xss | test/create.ts:34 | fp | the body is JSON built by a test 
 ward:typescript/xss | test/diagnostics-channel.ts:42 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
 ward:typescript/xss | test/headers.ts:20 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
 ward:typescript/xss | test/headers.ts:705 | un | a test server writes a request header or the request URL to the response; no browser renders it
-ward:typescript/xss | test/hooks.ts:1384 | fp | the response is one of two constants; the request header or URL only picks which one, so no request data reaches the body
-ward:typescript/xss | test/hooks.ts:1412 | fp | the response is one of two constants; the request header or URL only picks which one, so no request data reaches the body
 ward:typescript/xss | test/hooks.ts:2247 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
 ward:typescript/xss | test/hooks.ts:2277 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
 ward:typescript/xss | test/hooks.ts:2308 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
@@ -388,8 +375,6 @@ ward:typescript/xss | test/https.ts:2270 | un | a test server writes a request h
 ward:typescript/xss | test/https.ts:2357 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/https.ts:5190 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/merge-instances.ts:8 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
-ward:typescript/xss | test/pagination.ts:1454 | fp | the response is one of two constants; the request header or URL only picks which one, so no request data reaches the body
-ward:typescript/xss | test/pagination.ts:1478 | fp | the response is one of two constants; the request header or URL only picks which one, so no request data reaches the body
 ward:typescript/xss | test/pagination.ts:1743 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
 ward:typescript/xss | test/pagination.ts:1774 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML
 ward:typescript/xss | test/pagination.ts:1808 | fp | the body is JSON built by a test server from request data, or a constant chosen by it; JSON is not rendered as HTML

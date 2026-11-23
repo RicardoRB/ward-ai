@@ -9,5 +9,4 @@ ward:typescript/path-traversal | routes/vulnCodeSnippet.ts:90 | the key was look
 ward:typescript/path-traversal | server.ts:281 | the resolved path is checked with startsWith against the infrastructure folder before the read | #748
 ward:typescript/unsafe-framework-trust | frontend/src/app/data-export/data-export.component.ts:58 | server-generated captcha image | #749
 ward:typescript/unsafe-framework-trust | frontend/src/app/score-board/score-board.component.ts:103 | the challenge description is Juice Shop's own static data | #749
-ward:typescript/weak-hash | lib/utils.ts:83 | HMAC-SHA1 over a CTF flag, which does not rely on collision resistance | #751
 ward:typescript/xss | routes/dataExport.ts:108 | the response is a JSON object that holds the requesting user's own export, not markup | #757
