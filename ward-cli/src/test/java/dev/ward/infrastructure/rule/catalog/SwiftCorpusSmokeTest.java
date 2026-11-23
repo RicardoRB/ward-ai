@@ -2,6 +2,7 @@ package dev.ward.infrastructure.rule.catalog;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.application.rule.RuleEngine;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
@@ -78,11 +79,14 @@ class SwiftCorpusSmokeTest {
     }
     final List<SourceUnit> units = corpora.values().stream().flatMap(List::stream).toList();
     final List<RuleDefinition> rules = rules();
-    final RuleRunResult result =
-        new RuleEngine(BundledRuleMatchers.create())
-            .run(units, new RuleFixtureRunner().frontends(), rules);
+    final RuleEngine engine = new RuleEngine(BundledRuleMatchers.create());
+    final List<FrontendSupport> frontends =
+        new RuleFixtureRunner().frontends();
+    final RuleRunResult result = engine.run(units, frontends, rules);
+    final List<AnalysisFinding> allFindings = new ArrayList<>(result.findings());
+    allFindings.addAll(engine.runProject(units, frontends, rules));
     final Map<Place, String> labels = labels();
-    final List<Place> found = places(result.findings());
+    final List<Place> found = places(allFindings);
     final List<String> formatProblems = new ArrayList<>();
     final String report =
         report(corpora, rules, result, found, labels) + SwiftCorpusFormat.check(
@@ -92,7 +96,7 @@ class SwiftCorpusSmokeTest {
     final Path file = RESOURCES.resolve(REPORT);
     if (Boolean.getBoolean("ward.benchmark.write")) {
       Files.writeString(file, report);
-      Files.writeString(FINDINGS, findings(result.findings()));
+      Files.writeString(FINDINGS, findings(allFindings));
     }
     assertThat(notAnalysed(result)).as("files without analysis").isEmpty();
     assertThat(formatProblems).as("files the formatter refuses or breaks").isEmpty();

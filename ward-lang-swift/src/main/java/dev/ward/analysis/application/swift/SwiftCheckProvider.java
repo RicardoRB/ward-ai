@@ -8,6 +8,8 @@ import dev.ward.analysis.domain.rule.check.DocSummaryCheck;
 import dev.ward.analysis.domain.rule.check.ImportSortCheck;
 import dev.ward.analysis.domain.rule.check.JavadocMethodCheck;
 import dev.ward.analysis.domain.rule.check.VariableDistanceCheck;
+import dev.ward.analysis.domain.swift.SwiftAsyncWithoutAwaitCheck;
+import dev.ward.analysis.domain.swift.SwiftFinalTestCaseCheck;
 import dev.ward.analysis.domain.swift.SwiftHiddenFieldCheck;
 import dev.ward.analysis.domain.swift.SwiftParameterAlignmentCheck;
 import dev.ward.analysis.domain.swift.SwiftRightCurlyCheck;
@@ -36,6 +38,14 @@ public final class SwiftCheckProvider implements CheckProvider {
     checks.put(
         "swift-constructor-group",
         toml -> new ConstructorGroupCheck(TomlValues.required(toml, MESSAGE))
+    );
+    checks.put(
+        "swift-async-without-await",
+        toml -> new SwiftAsyncWithoutAwaitCheck(TomlValues.required(toml, MESSAGE))
+    );
+    checks.put(
+        "swift-final-test-case",
+        toml -> new SwiftFinalTestCaseCheck(TomlValues.required(toml, MESSAGE))
     );
     checks.put(
         "swift-hidden-field",

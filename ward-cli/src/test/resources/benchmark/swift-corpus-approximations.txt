@@ -1,3 +1,3 @@
 # rule | file:line | reason | open issue. A finding labelled fp fails SwiftCorpusSmokeTest unless it is listed here.
-ward:swift/async-without-await | alamofire/Tests/URLProtocolTests.swift:104 | the async signature is the one the delegate method requires | #756
-ward:swift/final-test-case | alamofire/Tests/BaseTestCase.swift:29 | a base class that other test cases inherit from cannot be final | #755
+ward:swift/async-without-await | alamofire/Tests/URLProtocolTests.swift:104 | the async signature is the one the URLSessionDataDelegate method requires, a protocol outside the project | #756
+ward:swift/async-without-await | sample-food-truck/App/Donut/ShowTopDonutsIntent.swift:19 | the async signature is the one the AppIntent requirement perform() has, a protocol outside the project | #756

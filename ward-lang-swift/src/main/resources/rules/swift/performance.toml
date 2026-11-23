@@ -178,9 +178,6 @@ severity = "warning"
 category = "performance"
 presets = ["strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["class_declaration"]
-not-modifiers = ["final"]
-text = '^class\w+:[^{]*XCTestCase[^{]*\{'
+check = "swift-final-test-case"
 message = "test case class should be final"
 '''
