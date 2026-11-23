@@ -29,13 +29,17 @@ final class FalseBranchScanner {
   }
 
   /** Reads the false branch from {@code stream}, which is just after the directive. */
-  static Token scan(final CharStream stream, final int startLine) {
+  static Token scan(final CharStream stream, final int startLine, final int startColumn) {
+    final int startIndex = stream.index();
     final FalseBranchScanner scanner = new FalseBranchScanner(stream);
     scanner.run();
     final CommonToken skipped =
         new CommonToken(CSharpLexer.SKIPPED_SECTION, scanner.text.toString());
     skipped.setChannel(CSharpLexer.SKIPPED);
     skipped.setLine(startLine);
+    skipped.setCharPositionInLine(startColumn);
+    skipped.setStartIndex(startIndex);
+    skipped.setStopIndex(startIndex + scanner.text.length() - 1);
     return skipped;
   }
 

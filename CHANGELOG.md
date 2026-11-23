@@ -14,6 +14,8 @@ still change behavior. Breaking changes are called out under **Changed**.
 - `ward:java/left-curly` no longer reports the `{` of an annotation array that `ward format` moves to its own line (#705).
 - `strict` no longer enables `ward:java/avoid-no-argument-super-constructor-call`, which contradicted `ward:java/call-super-in-constructor`; the pair is guarded by `PresetContractTest` (#701).
 - A `[select]` that holds both rules of a contradicting pair (for example `java.array-trailing-comma` and `java.no-array-trailing-comma`) is now rejected with an error that names the pair, instead of reporting findings no code can fix (#711).
+- C# text rules no longer read the code of an inactive `#if`, `#elif` or `#else` branch: it is blanked like a comment, so a match there is not reported (#708). No symbol is defined at the start of a file, as with `csc` without `/define`; the project's own symbols are not read.
+- `ward init` no longer writes the `controller` / `repository` layer rule, or the matching starter rule of `ward-architecture.toml`, for Rust and C# projects, where it could never fire (#710).
 
 ## [0.12.0] - 2026-11-22
 

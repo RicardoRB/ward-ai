@@ -6,7 +6,7 @@
 # Regenerate: ./mvnw -pl ward-cli -am -Dtest=CSharpCorpusSmokeTest -Dward.corpus.csharp=<dir> -Djacoco.skip=true -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
 newtonsoft-json | files 944 | not analysed 0
 eshop | files 547 | not analysed 0
-rules 36 | not run (need type facts) 0 | findings 7711
+rules 36 | not run (need type facts) 0 | findings 7709
 ward:csharp/anonymous-method-delegate | findings 9 | labelled 3 | tp 3 | fp 0 | un 0
 ward:csharp/attribute-list-split | findings 64 | labelled 3 | tp 3 | fp 0 | un 0
 ward:csharp/braces-required | findings 170 | labelled 3 | tp 2 | fp 0 | un 1
@@ -25,7 +25,7 @@ ward:csharp/interface-name-prefix | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:csharp/local-name-camel-case | findings 3 | labelled 3 | tp 3 | fp 0 | un 0
 ward:csharp/method-complexity | findings 93 | labelled 3 | tp 1 | fp 0 | un 2
 ward:csharp/mutable-static-field-visible | findings 37 | labelled 3 | tp 3 | fp 0 | un 0
-ward:csharp/nullable-shorthand | findings 2 | labelled 2 | tp 0 | fp 2 | un 0
+ward:csharp/nullable-shorthand | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:csharp/one-class-per-file | findings 70 | labelled 3 | tp 3 | fp 0 | un 0
 ward:csharp/one-namespace-per-file | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:csharp/parameter-name-camel-case | findings 6 | labelled 3 | tp 3 | fp 0 | un 0
