@@ -1,13 +1,1 @@
 # False positives of the Java corpus run that are known and open: rule | file:line | reason | #issue (#698).
-ward:java/csrf-protection-disabled | eladmin/eladmin-system/src/main/java/me/zhengjie/modules/security/config/SpringSecurityConfig.java:82 | the same chain sets a stateless session policy and authenticates with a header token, so no browser sends a credential by itself | #766
-ward:java/csrf-protection-disabled | mall/mall-security/src/main/java/com/macro/mall/security/config/SecurityConfig.java:50 | the same chain sets a stateless session policy and a token filter authenticates, so no cookie is involved | #766
-ward:java/header-splitting | ruoyi/ruoyi-generator/src/main/java/com/ruoyi/generator/controller/GenController.java:251 | the header is a constant and the decimal length of the byte array; the path variable only reaches the body | #764
-ward:java/log-forging | eladmin/eladmin-common/src/main/java/me/zhengjie/aspect/LimitAspect.java:77 | the request URI is the undecoded path, which cannot hold a line break | #763
-ward:java/log-forging | ruoyi/ruoyi-framework/src/main/java/com/ruoyi/framework/web/exception/GlobalExceptionHandler.java:109 | the request URI is the undecoded path, which cannot hold a line break | #763
-ward:java/log-forging | ruoyi/ruoyi-framework/src/main/java/com/ruoyi/framework/web/exception/GlobalExceptionHandler.java:126 | the request URI is the undecoded path, which cannot hold a line break | #763
-ward:java/log-forging | ruoyi/ruoyi-framework/src/main/java/com/ruoyi/framework/web/exception/GlobalExceptionHandler.java:40 | the request URI is the undecoded path, which cannot hold a line break | #763
-ward:java/log-forging | ruoyi/ruoyi-framework/src/main/java/com/ruoyi/framework/web/exception/GlobalExceptionHandler.java:59 | the request URI is the undecoded path, which cannot hold a line break | #763
-ward:java/log-forging | ruoyi/ruoyi-framework/src/main/java/com/ruoyi/framework/web/exception/GlobalExceptionHandler.java:70 | the request URI is the undecoded path, which cannot hold a line break | #763
-ward:java/log-forging | ruoyi/ruoyi-framework/src/main/java/com/ruoyi/framework/web/exception/GlobalExceptionHandler.java:81 | the request URI is the undecoded path, which cannot hold a line break | #763
-ward:java/path-injection | eladmin/eladmin-tools/src/main/java/me/zhengjie/config/MultipartConfig.java:38 | the home directory property plus a constant, no request input | #765
-ward:java/regex-injection | mall/mall-mbg/src/main/java/com/macro/mall/CommentGenerator.java:58 | the line separator property is split as a pattern, no request input | #765

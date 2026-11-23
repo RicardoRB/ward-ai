@@ -16,3 +16,18 @@ class Report {
     return new java.io.PrintWriter("/data/" + name);
   }
 }
+
+class Properties {
+  // A key that is not constant, or a property the deployment defines, is not trusted.
+  File byName(String key) {
+    return new File(System.getProperty(key));
+  }
+
+  File custom() {
+    return new File(System.getProperty("app.upload.dir") + "/tmp");
+  }
+
+  File fromRequest(HttpServletRequest request) {
+    return new File(System.getProperty("user.home"), request.getParameter("name"));
+  }
+}

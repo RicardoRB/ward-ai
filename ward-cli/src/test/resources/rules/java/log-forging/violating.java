@@ -1,3 +1,4 @@
+import java.net.URLDecoder;
 import javax.servlet.http.HttpServletRequest;
 
 class Audit {
@@ -58,5 +59,24 @@ class Audit {
 
   String lineFeeds(String value) {
     return value.replace("\n", "_");
+  }
+
+  // These parts of the request can hold a line break.
+  void queryString(HttpServletRequest request, org.slf4j.Logger log) {
+    log.info(request.getQueryString());
+  }
+
+  void pathInfo(HttpServletRequest request, org.slf4j.Logger log) {
+    log.info("path {}", request.getPathInfo());
+  }
+
+  void decodedUri(HttpServletRequest request, org.slf4j.Logger log) throws Exception {
+    String uri = request.getRequestURI();
+    log.info(URLDecoder.decode(uri, "UTF-8"));
+  }
+
+  void decodedUriLocal(HttpServletRequest request, org.slf4j.Logger log) throws Exception {
+    String path = URLDecoder.decode(request.getRequestURI(), "UTF-8");
+    log.warn("request " + path);
   }
 }

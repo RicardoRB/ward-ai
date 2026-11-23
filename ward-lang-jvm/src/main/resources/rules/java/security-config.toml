@@ -39,6 +39,9 @@ body = '''
 check = "forbidden-node"
 kinds = ["expression"]
 text = '^.*\.csrf\(\)\.disable\(\)$|^.*\.csrf\((?:AbstractHttpConfigurer::disable|\w+->\w+\.disable\(\))\)$'
+# A chain with a stateless session policy and no cookie login (form login, basic auth, remember-me) sends no credential by itself.
+ancestor-kinds = ["statement", "localVariableDeclaration"]
+not-ancestor-text = '^(?=.*sessionCreationPolicy\((?:\w+\.)*STATELESS\))(?!.*\.(?:formLogin|httpBasic|rememberMe)\().*$'
 message = "CSRF protection is switched off; keep it on for browser clients, or, for an API that no browser calls with cookies, leave this file out with exclude-paths for this rule in ward-rules.toml"
 '''
 

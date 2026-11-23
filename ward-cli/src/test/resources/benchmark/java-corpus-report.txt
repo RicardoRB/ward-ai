@@ -14,7 +14,7 @@ spring-data-examples | files 6692 | not analysed 0
 ruoyi | files 283 | not analysed 0
 mall | files 526 | not analysed 0
 eladmin | files 277 | not analysed 0
-rules 1056 | not run (need type facts) 252 | findings 145224
+rules 1056 | not run (need type facts) 252 | findings 145209
 ward:java/aa-assertion-of-arguments | findings 9 | labelled 1 | tp 1 | fp 0 | un 0
 ward:java/abbreviation-as-word-in-name | findings 396 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/abstract-class-name | findings 97 | labelled 3 | tp 3 | fp 0 | un 0
@@ -189,7 +189,7 @@ ward:java/control-statement-braces | findings 25 | labelled 3 | tp 3 | fp 0 | un
 ward:java/cookie-missing-secure | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
 ward:java/covariant-equals | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/cross-site-scripting | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/csrf-protection-disabled | findings 4 | labelled 4 | tp 2 | fp 2 | un 0
+ward:java/csrf-protection-disabled | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
 ward:java/ct-constructor-throw | findings 3 | labelled 3 | tp 1 | fp 0 | un 2
 ward:java/custom-import-order | findings 7924 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/cwo-closed-without-opened | not run
@@ -393,7 +393,7 @@ ward:java/he-hashcode-use-object-equals | not run
 ward:java/he-inherits-equals-use-hashcode | not run
 ward:java/he-signature-declares-hashing-of-unhashable-class | not run
 ward:java/he-use-of-unhashable-class | not run
-ward:java/header-splitting | findings 1 | labelled 1 | tp 0 | fp 1 | un 0
+ward:java/header-splitting | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/hidden-field | findings 4329 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/hostname-verification-disabled | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/hrs-request-parameter-to-cookie | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -542,7 +542,7 @@ ward:java/local-home-naming-convention | findings 0 | labelled 0 | tp 0 | fp 0 |
 ward:java/local-interface-session-naming-convention | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/local-variable-name | findings 50 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/lock-on-boxed-primitive | not run
-ward:java/log-forging | findings 10 | labelled 10 | tp 0 | fp 7 | un 3
+ward:java/log-forging | findings 3 | labelled 3 | tp 0 | fp 0 | un 3
 ward:java/logic-inversion | findings 1 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/long-literal-ending-with-lowercase-l | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/loop-condition-checker | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -722,7 +722,7 @@ ward:java/parameters-but-not-parameterized | findings 0 | labelled 0 | tp 0 | fp
 ward:java/parcelable-creator | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/pass-nullable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/pass-nullable-generic | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/path-injection | findings 5 | labelled 5 | tp 1 | fp 1 | un 3
+ward:java/path-injection | findings 1 | labelled 1 | tp 0 | fp 0 | un 1
 ward:java/pattern-variable-assignment | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/pattern-variable-name | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/period-from | not run
@@ -783,7 +783,7 @@ ward:java/redundant-setter-call | not run
 ward:java/refers-to-dagger-codegen | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/reflc-reflection-may-increase-accessibility-of-class | findings 2 | labelled 2 | tp 1 | fp 0 | un 1
 ward:java/reflf-reflection-may-increase-accessibility-of-field | findings 7 | labelled 5 | tp 5 | fp 0 | un 0
-ward:java/regex-injection | findings 1 | labelled 1 | tp 0 | fp 1 | un 0
+ward:java/regex-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/regexp-singleline | findings 1066 | labelled 2 | tp 2 | fp 0 | un 0
 ward:java/reliance-on-default-charset | not run
 ward:java/remote-interface-naming-convention | findings 0 | labelled 0 | tp 0 | fp 0 | un 0

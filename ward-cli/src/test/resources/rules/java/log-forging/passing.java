@@ -51,4 +51,27 @@ class Audit {
   private static String clean(String value) {
     return value.replace("\r", "").replace("\n", "");
   }
+
+  // The request URI is the path as sent, undecoded; a container rejects a raw line break in it.
+  void requestUri(HttpServletRequest request, Logger log) {
+    log.error("request {}", request.getRequestURI());
+  }
+
+  void requestUriLocal(HttpServletRequest request, Logger log) {
+    String uri = request.getRequestURI();
+    log.warn("request " + uri);
+  }
+
+  void requestUriHelper(HttpServletRequest request, Logger log) {
+    log.info(describe(request));
+    log.info(path(request).trim());
+  }
+
+  String describe(HttpServletRequest request) {
+    return "path " + request.getRequestURI();
+  }
+
+  String path(HttpServletRequest request) {
+    return request.getRequestURI();
+  }
 }
