@@ -62,6 +62,30 @@ final class RustBodyLowering {
     return flow.build(name, span);
   }
 
+  /**
+   * Lowers the body of a closure or an {@code async} block, which is a block or an expression.
+   *
+   * @param name the name of the body
+   * @param entry the parameter accesses, bound at the entry
+   * @param body the block or expression of the body
+   * @param span where the body is in the source
+   * @return the graph of the body
+   */
+  ControlFlowGraph lowerDeferred(
+      final String name,
+      final List<VariableAccess> entry,
+      final SyntaxNode body,
+      final Span span
+  ) {
+    flow.record(entry, List.of());
+    if (RustKinds.BLOCK.equals(body.kind())) {
+      block(body);
+    } else {
+      expression(body);
+    }
+    return flow.build(name, span);
+  }
+
   private void block(final SyntaxNode block) {
     final SyntaxNode statements = RustTrees.child(block, RustKinds.STATEMENTS);
     if (statements == null) {

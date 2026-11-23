@@ -6,6 +6,7 @@ import static dev.ward.analysis.domain.rust.RustFlowFixtures.reachesExit;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.ir.BasicBlock;
+import dev.ward.analysis.domain.ir.AccessKind;
 import dev.ward.analysis.domain.ir.ControlFlowGraph;
 import dev.ward.analysis.domain.ir.FlowEdgeKind;
 import org.junit.jupiter.api.Test;
@@ -68,12 +69,21 @@ class RustControlFlowBranchTest {
   }
 
   @Test
-  void anUnsafeBlockAndAClosureAreOnePieceOfTheBody() {
-    final ControlFlowGraph graph =
-        graph("fn f(a: u8) -> u8 { let g = |x: u8| x + a; unsafe { g(a) } }", ONE_PARAMETER);
+  void anUnsafeBlockIsPartOfTheBodyAndAClosureIsABodyOfItsOwn() {
+    final String source = "fn f(a: u8) -> u8 { let g = |x: u8| x + a; unsafe { g(a) } }";
+    final ControlFlowGraph graph = graph(source, ONE_PARAMETER);
 
     assertThat(edges(graph, FlowEdgeKind.TRUE)).isZero();
-    assertThat(RustFlowFixtures.accesses(graph)).anyMatch(access -> "x".equals(access.name()));
+    assertThat(RustFlowFixtures.accesses(graph)).noneMatch(access -> "x".equals(access.name()));
+    assertThat(RustFlowFixtures.accesses(graph)).anyMatch(
+        access -> "a".equals(access.name()) && access.kind() == AccessKind.CAPTURE
+    );
+    assertThat(RustFlowFixtures.graphs(source)).anyMatch(
+        closure -> closure.body().contains("closure@")
+            && RustFlowFixtures.accesses(closure).stream().anyMatch(
+                access -> "x".equals(access.name()) && access.kind() == AccessKind.READ
+            )
+    );
   }
 
   @Test

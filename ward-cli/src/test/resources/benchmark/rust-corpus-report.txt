@@ -1,4 +1,4 @@
-# Ward's Rust rules of the strict preset and every Rust security rule, with default options, over every .rs file of two pinned projects (ripgrep MIT or Unlicense, tokio MIT).
+# Ward's Rust rules of the strict preset and every Rust security rule, with default options, over every .rs file of 2 pinned projects (ripgrep MIT or Unlicense, tokio MIT).
 # ripgrep 15.2.0, archive sha-256 7605249d3eb0d5f170e3414498e3344e26b1e7a147aec518b57090b80036a562.
 # tokio tokio-1.54.1, archive sha-256 3d84bf16b8fdbb19b6455dfa5971cead60e0ddbd9ee1aa368a4b4206998f9bdd.
 # A labelled finding is true (tp), false (fp) or undetermined (un), as read from the code at its line; the labels are in rust-corpus-labels.txt. A rule with more than 3 findings has a sample of at least 3 labelled, so its tp, fp and un describe the sample.
@@ -29,7 +29,7 @@ ward:rust/exit | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
 ward:rust/expect-fun-call | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:rust/expect-used | findings 216 | labelled 4 | tp 4 | fp 0 | un 0
 ward:rust/filter-next | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:rust/get-first | findings 8 | labelled 3 | tp 2 | fp 1 | un 0
+ward:rust/get-first | findings 8 | labelled 6 | tp 2 | fp 4 | un 0
 ward:rust/identity-op | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:rust/inline-always | findings 33 | labelled 4 | tp 4 | fp 0 | un 0
 ward:rust/int-plus-one | findings 0 | labelled 0 | tp 0 | fp 0 | un 0

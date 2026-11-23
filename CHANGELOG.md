@@ -30,6 +30,9 @@ still change behavior. Breaking changes are called out under **Changed**.
 - `ward:rust/needless-return` reports a `return` only when it is the last statement of the function (#709).
 - `ward:rust/unreachable-code` knows that a `break` in the tokens of a macro such as `select!` ends a `loop` (#709).
 - `ward:rust/unused-assignments` no longer reports a variable that a closure or async block names, or a name that starts with `_` (#709).
+- `ward:rust/get-first` decides per call from the receiver's declared type: it reports `.get(0)` on a slice, array, `Vec` or `VecDeque` even in a file that defines its own `get`, and skips only a receiver of another type (#768).
+- `ward:rust/unused-assignments` gives a closure or async block its own flow graph: a dead store of a variable the block declares is reported again, and only a variable the block reads from outside is a capture, not one it only writes or shadows (#768).
+- `ward:rust/unreachable-code` honours `#[allow(unreachable_code)]` on the statement after an endless `loop`, which the own graph of a closure or async block now exposes (#768).
 - `ward:rust/unused-variables` reads the names in the format string of any macro, raw strings and `macro_rules!` bodies, skips const generic parameters, and skips a constant or `let` under `#[cfg(..)]`, whose alternative may be the one used (#709).
 - `ward:rust/unsafe-public-function` no longer reports `pub(crate)` functions, which are not public (#709).
 - `ward:swift/unused-local-variable` no longer reports a name declared in each branch of an `#if` block and read after it (#752).

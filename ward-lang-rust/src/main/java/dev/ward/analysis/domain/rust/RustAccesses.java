@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -23,10 +24,11 @@ import java.util.Set;
  * and a write where its {@code let} or assignment ends, the order in which the node runs.
  */
 final class RustAccesses implements VariableAccesses {
+  /** The kinds of the nodes that run when called or polled: closures and async blocks. */
+  static final Set<String> DEFERRED = Set.of("closureExpression", "asyncBlockExpression");
+
   private static final Set<BindingKind> LOCAL =
       Set.of(BindingKind.VARIABLE, BindingKind.CONSTANT, BindingKind.PARAMETER);
-
-  private static final Set<String> DEFERRED = Set.of("closureExpression", "asyncBlockExpression");
 
   private final List<NameReference> references;
   private final Span body;
@@ -68,7 +70,7 @@ final class RustAccesses implements VariableAccesses {
     ).span().startOffset() < span.endOffset(); index++) {
       final NameReference reference = references.get(index);
       if (contains(span, reference.span()) && isLocal(reference)) {
-        found.add(keyed(reference, closures));
+        keyed(reference, closures).ifPresent(found::add);
       }
     }
     found.sort(Comparator.comparingInt(Keyed::key));
@@ -96,10 +98,25 @@ final class RustAccesses implements VariableAccesses {
     );
   }
 
-  private Keyed keyed(final NameReference reference, final List<Span> closures) {
+  /**
+   * The access of one reference, or none. A closure or async block runs when it is called or
+   * polled, not where it is written, and has a graph of its own. In the body that holds it, a name
+   * that the block reads from outside is a capture, so the writes of that variable are never
+   * reported; a name that the block only writes is left out, since the write happens elsewhere; and
+   * a name that the block declares belongs to its graph.
+   */
+  private Optional<Keyed> keyed(final NameReference reference, final List<Span> closures) {
     final Binding binding = reference.resolved().orElseThrow();
     final boolean write = reference.access() == ReferenceAccess.WRITE;
-    final boolean captured = capturedBy(reference, closures);
+    final List<Span> around =
+        closures.stream().filter(closure -> contains(closure, reference.span())).toList();
+    final boolean captured = !around.isEmpty();
+    if (captured
+        && (write || around.stream().anyMatch(
+            closure -> contains(closure, binding.declaration())
+        ))) {
+      return Optional.empty();
+    }
     final VariableAccess access =
         new VariableAccess(
             reference.name(),
@@ -108,9 +125,11 @@ final class RustAccesses implements VariableAccesses {
             binding.declaration()
         );
     final int start = reference.span().startOffset();
-    return new Keyed(
-        write && !captured ? writeEnds.getOrDefault(start, reference.span().endOffset()) : start,
-        access
+    return Optional.of(
+        new Keyed(
+            write ? writeEnds.getOrDefault(start, reference.span().endOffset()) : start,
+            access
+        )
     );
   }
 
@@ -121,14 +140,7 @@ final class RustAccesses implements VariableAccesses {
     return write ? AccessKind.WRITE : AccessKind.READ;
   }
 
-  /**
-   * A closure or async block runs when it is called or polled, not where it is written, and the
-   * graph does not lower its branches. So what it names, from outside or inside, is a capture and is never reported.
-   */
-  private static boolean capturedBy(final NameReference reference, final List<Span> closures) {
-    return closures.stream().anyMatch(closure -> contains(closure, reference.span()));
-  }
-
+  /** The spans of the closures and async blocks at or below {@code node}, nested ones included. */
   private static void closureSpans(final SyntaxNode node, final List<Span> out) {
     if (DEFERRED.contains(node.kind())) {
       out.add(node.span());

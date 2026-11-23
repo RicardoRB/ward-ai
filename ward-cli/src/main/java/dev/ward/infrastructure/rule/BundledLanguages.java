@@ -14,6 +14,7 @@ import dev.ward.analysis.application.python.PythonRuleFiles;
 import dev.ward.analysis.application.rule.CheckProvider;
 import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.RuleFileProvider;
+import dev.ward.analysis.application.rust.RustCheckProvider;
 import dev.ward.analysis.application.rust.RustRuleFiles;
 import dev.ward.analysis.application.swift.SwiftCheckProvider;
 import dev.ward.analysis.application.swift.SwiftLintCheckProvider;
@@ -57,6 +58,7 @@ public final class BundledLanguages {
         new PythonCheckProvider(),
         new SwiftCheckProvider(),
         new SwiftLintCheckProvider(),
+        new RustCheckProvider(),
         new OpenApiCheckProvider(),
         new AndroidCheckProvider()
     );

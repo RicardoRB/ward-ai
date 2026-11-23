@@ -148,6 +148,7 @@ category = "correctness"
 presets = ["standard", "strict"]
 body = '''
 check = "unreachable-code"
+exempt = '^#\[(allow|expect)\([^\]]*unreachable_code'
 message = "unreachable code"
 '''
 
