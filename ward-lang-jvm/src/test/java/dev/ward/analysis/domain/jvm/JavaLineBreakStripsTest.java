@@ -92,4 +92,33 @@ class JavaLineBreakStripsTest {
     )
         .isFalse();
   }
+
+  /** Scenario: a receiver that is a call returning a String is a String. */
+  @ParameterizedTest
+  @CsvSource(
+      delimiter = '|',
+      quoteCharacter = '`',
+      value = {
+          "String.valueOf(user)|true",
+          "java.lang.String.format(user, user)|true",
+          "Objects.toString(user)|true",
+          "user.toString()|true",
+          "String.valueOf(user).toString()|true",
+          "String.valueOf(user).other()|false",
+          "String.valueOf(a).concat(String.valueOf(b))|false",
+          "other.valueOf(user)|false",
+          "helper(user)|false"
+      }
+  )
+  void callReceiversThatReturnAStringAreStrings(final String receiver, final boolean accepted) {
+    final boolean found =
+        JavaLineBreakStrips.removesAll(
+            "replace",
+            List.of("\"\\n\"", "\"_\""),
+            receiver + ".replace(\"\\r\",\"_\")",
+            text -> Optional.empty()
+        );
+
+    assertThat(found).isEqualTo(accepted);
+  }
 }

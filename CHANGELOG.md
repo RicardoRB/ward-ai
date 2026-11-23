@@ -33,6 +33,11 @@ still change behavior. Breaking changes are called out under **Changed**.
 - `ward:swift/unused-local-variable` no longer reports a name declared in each branch of an `#if` block and read after it (#752).
 - `ward:swift/unused-parameter` counts the read of a parameter by `guard case .x(let name) = name` that binds the same name (#753).
 - `ward:swift/weak-random` accepts `drand48` and `lrand48` when the same file seeds them with `srand48` and a constant or a seed parameter; a seed from the clock still reports (#754).
+- `ward:java/duplicate-code` leaves `package` and `import` declarations out of the comparison, so two files that share only their imports are no longer reported as copies (#706).
+- `ward:java/log-forging` takes the `replace` / `replaceAll` chain that removes `\r` and `\n` as a sanitizer on a receiver that is a call to `String.valueOf`, `String.format`, `String.join`, `Objects.toString` or `toString()`, and through a method of the project that returns the stripped value. A method that keeps one of the line breaks is still reported (#712).
+- `ward:java/server-side-request-forgery` no longer reports a value that only fills the query or the fragment of a URL whose `http` or `https` scheme, host and `?` or `#` are in a constant prefix (`"https://host/p?x=" + v`, `String.format`, `formatted`). A value before the `?` or in the host is still reported (#759).
+- `ward:java/server-side-request-forgery` follows an allow-list check into a method of the project: an argument that a method checks with `if (!ALLOWED.contains(v)) throw ...` is clean in the caller after the call, and a method that checks its parameter and returns an address built from it gives a clean value. A method whose check returns instead of throwing, or that can return before the check, does not count (#759).
+- Taint analysis in every language treats a call to a method of the project as a clean value when no parameter reaches a value it returns and it passes none to a sink, so a helper that strips or checks its input is a sanitizer for its callers.
 
 ## [0.12.0] - 2026-11-22
 

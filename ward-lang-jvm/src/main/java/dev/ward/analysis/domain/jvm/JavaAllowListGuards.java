@@ -1,6 +1,11 @@
 package dev.ward.analysis.domain.jvm;
 
+import dev.ward.analysis.domain.ir.ControlFlowBuilder;
+import dev.ward.analysis.domain.ir.FlowSite;
+import dev.ward.analysis.domain.ir.FlowSiteKind;
+import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.ir.VariableAccess;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +24,9 @@ import java.util.regex.Pattern;
  * needs {@code containsKey} or a positive test with an else branch.
  */
 final class JavaAllowListGuards {
+  /** The name of the site that marks a guard, for the callers of the method that holds it. */
+  static final String NAME = "<allow-listed>";
+
   private static final String BLOCK = "block";
   private static final String BLOCK_STATEMENT = "blockStatement";
   private static final String STATEMENT = "statement";
@@ -73,6 +81,38 @@ final class JavaAllowListGuards {
       return Optional.empty();
     }
     return Optional.of(guard.group(VALUE_GROUP));
+  }
+
+  /**
+   * Records the guard of {@code name}: a clean write of it and a site that marks the guard, so a
+   * caller of the method can rely on it.
+   *
+   * @param flow the builder of the body
+   * @param clean the clean write and read of the variable, empty when it is not a local
+   * @param name the guarded variable
+   * @param span the statement of the guard
+   */
+  static void record(
+      final ControlFlowBuilder flow,
+      final List<VariableAccess> clean,
+      final String name,
+      final Span span
+  ) {
+    final List<FlowSite> mark =
+        clean.isEmpty()
+            ? List.of()
+            : List.of(
+                new FlowSite(
+                    FlowSiteKind.CALL,
+                    NAME,
+                    name,
+                    Optional.empty(),
+                    List.of(),
+                    List.of(),
+                    span
+                )
+            );
+    flow.record(clean, mark);
   }
 
   /** A statement exits when it is a throw or return, or a block whose last statement does. */

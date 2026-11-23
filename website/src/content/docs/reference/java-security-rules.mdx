@@ -61,8 +61,18 @@ A sanitizer's result is clean, and a read inside its argument is clean too:
 - For `ward:java/log-forging`, a chain of `String.replace` and `replaceAll` calls with literal
   arguments that removes both carriage returns and line feeds, such as
   `value.replace("\r", "_").replace("\n", "_")`, `value.replaceAll("[\\r\\n]", "")` or
-  `value.replaceAll("\\R", " ")`. The receiver must be a declared `String`, and a replacement that
-  holds a line break, or a `$` or `\` in `replaceAll`, does not count.
+  `value.replaceAll("\\R", " ")`. The receiver must be a declared `String`, or a call that always
+  returns one: `String.valueOf(...)`, `String.format(...)`, `String.join(...)`, `Objects.toString(...)`
+  or `x.toString()`. A replacement that holds a line break, or a `$` or `\` in `replaceAll`, does not
+  count.
+- For `ward:java/server-side-request-forgery`, a string built from a constant prefix that holds an
+  `http` or `https` scheme, a host and a `?` or `#`, followed by values, as in
+  `"https://host/path?x=" + URLEncoder.encode(v, UTF_8)`, `String.format("https://host/p?x=%s", v)` or
+  `"https://host/p?x=%s".formatted(v)`. The values only fill the query or the fragment. A value before
+  the `?`, or in the host, is still reported, and so is a `StringBuilder` or `+=` build.
+- A method of the project whose returned values no parameter reaches, and that passes no parameter
+  to a sink, is a sanitizer for its callers: a helper that strips line breaks, or that checks its
+  parameter and returns an address built from it.
 
 ## Limits
 
@@ -80,8 +90,12 @@ A sanitizer's result is clean, and a read inside its argument is clean too:
 - Taint follows whole statements, so a statement that reads a tainted value and also an unrelated
   value taints what it writes. This adds false positives, such as a whitelist that picks one of two
   constants from a tainted choice.
-- A custom check, such as an allow-list test or a helper method, is not a sanitizer, so it is still
-  reported. Only the line-break chain above clears `ward:java/log-forging`; a chain whose
-  arguments are not literals, or that removes only one kind of line break, is reported.
+- An allow-list test is a guard when it is `if (!ALLOWED.contains(value)) { ...; throw ... }` against
+  a `final` collection field with an initializer, in the method that uses the value or in a method
+  of the project that the caller passes the value to. A method whose check returns instead of
+  throwing, that can return before the check, or that assigns the parameter does not count. Another
+  custom check is not a sanitizer, so it is still reported. Only the line-break chain above clears
+  `ward:java/log-forging`; a chain whose arguments are not literals, or that removes only one kind of
+  line break, is reported.
 - Interprocedural flow is not covered. The other injection classes are in
   [security rules](/reference/security-rules/).

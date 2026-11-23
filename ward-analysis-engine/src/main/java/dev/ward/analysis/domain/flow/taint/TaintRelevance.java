@@ -1,6 +1,8 @@
 package dev.ward.analysis.domain.flow.taint;
 
+import dev.ward.analysis.domain.ir.ControlFlowGraph;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Tells whether a method can have a taint summary at all. A method returns taint only when a
@@ -21,5 +23,14 @@ final class TaintRelevance {
       }
     }
     return false;
+  }
+
+  /**
+   * Reports whether a graph of the file holds a source and a sink of the specification, so that a
+   * call to a method that gives a clean value can decide whether the graph has a finding.
+   */
+  static boolean mayFind(final List<ControlFlowGraph> graphs, final TaintSpec spec) {
+    return graphs.stream()
+        .anyMatch(graph -> TaintSpans.hasSource(graph, spec) && TaintSpans.hasSink(graph, spec));
   }
 }

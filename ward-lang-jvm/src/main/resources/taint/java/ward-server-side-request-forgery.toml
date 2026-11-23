@@ -129,3 +129,10 @@ kind = "call"
 name = "parseDouble"
 receiver = "java.lang.Double"
 
+
+# A string built from a constant http or https scheme, host and path, then a ? or #, then values (the
+# Java frontend names its site <constant-host-query>); the values only fill the query or the
+# fragment, so they cannot change the host.
+[[sanitizers]]
+kind = "call"
+name = "<constant-host-query>"

@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.UnaryOperator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,9 +31,9 @@ public final class TaintFile {
   private static final int MAX_ROUNDS = 4;
 
   /** What the callers of one method need to know about it. */
-  private record Summary(boolean returnsTaint, Set<Integer> sinkParameters) {
-    static Summary of(final boolean returns, final Set<Integer> sinks) {
-      return new Summary(returns, sinks);
+  private record Summary(boolean returnsTaint, Set<Integer> sinkParameters, boolean cleanResult) {
+    static Summary of(final boolean returns, final Set<Integer> sinks, final boolean clean) {
+      return new Summary(returns, sinks, clean);
     }
   }
 
@@ -86,7 +87,12 @@ public final class TaintFile {
     final List<ControlFlowGraph> own =
         DispatchedCalls.apply(graphs, context.known(), context.implementors(), spec);
     final Map<String, LocalMethod> methods = methodsOf(own, context, spec);
-    return new Prepared(own, methods.isEmpty() ? spec : summarized(spec, methods));
+    if (methods.isEmpty()) {
+      return new Prepared(own, spec);
+    }
+    final UnaryOperator<ControlFlowGraph> guards = GuardedCalls.over(methods);
+    methods.replaceAll((key, method) -> method.withGraph(guards.apply(method.graph())));
+    return new Prepared(own.stream().map(guards).toList(), summarized(spec, methods, own));
   }
 
   /** The methods of the file and the reachable ones of other files, with their calls resolved. */
@@ -117,9 +123,11 @@ public final class TaintFile {
   private static TaintSpec summarized(
       final TaintSpec spec,
       final Map<String,
-      LocalMethod> methods
+      LocalMethod> methods,
+      final List<ControlFlowGraph> own
   ) {
-    if (!TaintRelevance.anySite(methods.values(), spec)) {
+    if (!TaintRelevance.anySite(methods.values(), spec)
+        && !TaintRelevance.mayFind(own, spec)) {
       return spec;
     }
     Map<String, Summary> known = Map.of();
@@ -146,8 +154,9 @@ public final class TaintFile {
     for (final LocalMethod method : methods.values()) {
       final boolean returns = TaintAnalysis.returned(method.graph(), spec).isPresent();
       final Set<Integer> sinks = sinkParameters(method, seeded);
-      if (returns || !sinks.isEmpty()) {
-        found.put(method.key(), Summary.of(returns, sinks));
+      final boolean clean = !returns && sinks.isEmpty() && CleanResults.of(method, seeded);
+      if (returns || clean || !sinks.isEmpty()) {
+        found.put(method.key(), Summary.of(returns, sinks, clean));
       }
     }
     return found;
@@ -193,6 +202,7 @@ public final class TaintFile {
   ) {
     final List<TaintEntry> sources = new ArrayList<>(spec.sources());
     final List<TaintEntry> sinks = new ArrayList<>(spec.sinks());
+    final List<TaintEntry> sanitizers = new ArrayList<>(spec.sanitizers());
     summaries.forEach(
         (key, summary) -> {
           final LocalMethod method = methods.get(key);
@@ -200,13 +210,16 @@ public final class TaintFile {
             if (summary.returnsTaint()) {
               sources.add(entry(method, qualifier, List.of()));
             }
+            if (summary.cleanResult()) {
+              sanitizers.add(entry(method, qualifier, List.of()));
+            }
             if (!summary.sinkParameters().isEmpty()) {
               sinks.add(entry(method, qualifier, List.copyOf(summary.sinkParameters())));
             }
           }
         }
     );
-    return new TaintSpec(sources, sinks, spec.sanitizers(), spec.propagators());
+    return new TaintSpec(sources, sinks, sanitizers, spec.propagators());
   }
 
   private static TaintEntry entry(
