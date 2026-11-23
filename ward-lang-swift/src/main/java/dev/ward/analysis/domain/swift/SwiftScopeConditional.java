@@ -14,7 +14,10 @@ import java.util.stream.IntStream;
  * Each declaration that a later branch declares again counts as read.
  */
 final class SwiftScopeConditional {
-  private static final Set<String> DECLARING = Set.of("constant_declaration", "variable_declaration");
+  private static final Set<String> DECLARING = Set.of(
+      "constant_declaration",
+      "variable_declaration"
+  );
   private static final Set<String> PASSING =
       Set.of(
           "statements",
@@ -61,11 +64,7 @@ final class SwiftScopeConditional {
         .filter(name -> later.contains(SwiftScopeWalk.text(name)))
         .forEach(
             name ->
-                walk.builder.reference(
-                    SwiftScopeWalk.text(name),
-                    name.span(),
-                    ReferenceAccess.READ
-                )
+                walk.builder.reference(SwiftScopeWalk.text(name), name.span(), ReferenceAccess.READ)
         );
   }
 
