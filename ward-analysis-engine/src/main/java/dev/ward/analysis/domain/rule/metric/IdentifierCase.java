@@ -3,6 +3,7 @@ package dev.ward.analysis.domain.rule.metric;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 /**
  * Checks a declared name against the style its node kind requires. A name is a declaration's child,
@@ -11,7 +12,15 @@ import java.util.Optional;
  */
 final class IdentifierCase implements Measure {
   private static final String ASSIGN = "=";
+  private static final int ASSIGNMENT_PARTS = 3;
   private static final String BACKTICK = "`";
+  private static final String NAME = "[A-Za-z_][\\w.]*";
+  // A subscript or a union of names, or a call that declares a type, written without spaces.
+  private static final Pattern TYPE_ALIAS =
+      Pattern.compile(
+          "^" + NAME + "\\[.*\\]$|^" + NAME + "(?:\\|" + NAME + ")+$"
+              + "|^(?:typing\\.)?(?:TypeVar|NewType|TypeAlias)\\("
+      );
 
   @Override
   public Optional<Violation> check(
@@ -26,11 +35,22 @@ final class IdentifierCase implements Measure {
         || rule.keys().exemptNames().contains(declared.get())) {
       return Optional.empty();
     }
+    if (rule.keys().exemptTypeAliases() && typeAlias(node)) {
+      return Optional.empty();
+    }
     final String bare = declared.get().replace(BACKTICK, "").replaceFirst("^_+", "");
     if (target.style().matches(bare)) {
       return Optional.empty();
     }
     return Optional.of(new Violation(node.span(), declared.get(), 0, target.style().description()));
+  }
+
+  /** Tells whether {@code node} is {@code name = value} with a type as its value. */
+  private static boolean typeAlias(final SyntaxNode node) {
+    final List<SyntaxNode> children = node.children();
+    return children.size() == ASSIGNMENT_PARTS
+        && isAssign(children.get(1))
+        && TYPE_ALIAS.matcher(SyntaxTrees.text(children.get(2))).find();
   }
 
   private static boolean skipped(final String name) {

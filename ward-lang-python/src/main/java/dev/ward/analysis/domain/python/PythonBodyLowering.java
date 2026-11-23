@@ -23,6 +23,7 @@ final class PythonBodyLowering {
   private final ControlFlowBuilder flow;
   private final PythonLoopLowering loops;
   private final PythonHandlerLowering handlers;
+  private final Map<String, String> imports;
 
   /**
    * Starts the lowering of one body.
@@ -37,6 +38,7 @@ final class PythonBodyLowering {
       final Map<String,
       String> imports
   ) {
+    this.imports = imports;
     this.accesses = new PythonAccesses(excluded, tracked);
     this.flow = new ControlFlowBuilder(accesses, new PythonFlowSites(imports));
     this.loops = new PythonLoopLowering(flow, accesses, this::statements);
@@ -74,7 +76,14 @@ final class PythonBodyLowering {
   private void statement(final SyntaxNode node) {
     switch (node.kind()) {
       case "break_stmt", "continue_stmt", "return_stmt", "raise_stmt" -> jump(node);
-      default -> compound(node);
+      default -> {
+        if (PythonNoReturnCalls.isNoReturn(node, imports)) {
+          simple(node, true);
+          flow.tries().throwOut();
+        } else {
+          compound(node);
+        }
+      }
     }
   }
 

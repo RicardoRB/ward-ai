@@ -3,7 +3,11 @@ package dev.ward.analysis.domain.rule.check;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-/** Which source files a check looks at: production code, test code, application code or all. */
+/**
+ * Which source files a check looks at: production code, test code, application code or all. A
+ * Python seed script such as {@code populate.py} fills a database with sample data and counts as
+ * test code.
+ */
 public enum Sources {
   /** Every file. */
   ALL,
@@ -20,6 +24,7 @@ public enum Sources {
       Pattern.compile(
           "(^|/)(test|tests|__tests__|spec|Tests)/|(Test|Tests|Spec)\\.(java|kt|swift)$"
               + "|(^|/)test_[^/]*\\.py$|_test\\.py$|\\.(test|spec)\\.[jt]sx?$"
+              + "|(^|/)(populate|seed)(_[^/]*)?\\.py$"
       );
 
   private static final Pattern TOOL_CONFIG = Pattern.compile("(^|/)[^/]+\\.config\\.[cm]?[jt]s$");

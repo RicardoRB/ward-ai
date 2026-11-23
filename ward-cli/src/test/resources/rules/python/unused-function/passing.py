@@ -15,3 +15,10 @@ class Service:
 
 
 Service().run()
+
+
+def user_context(request):
+    return {}
+
+
+CONTEXT_PROCESSORS = ["app.context_processors.user_context"]

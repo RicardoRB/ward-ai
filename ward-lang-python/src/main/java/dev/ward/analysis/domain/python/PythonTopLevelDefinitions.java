@@ -5,6 +5,7 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -82,6 +83,18 @@ final class PythonTopLevelDefinitions {
           "is_active"
       );
   private static final String DJANGO = "django";
+  private static final String APP_CONFIG = "AppConfig";
+  // Hooks that a library reads or calls by name, used when the module uses the library.
+  private static final Map<String, Set<String>> LIBRARY_HOOKS =
+      Map.of(
+          "configparser",
+          Set.of("optionxform"),
+          "marshmallow",
+          Set.of("_deserialize", "_serialize")
+      );
+  // A string that names a class or function by its dotted path, as a Django setting does.
+  private static final Pattern DOTTED_PATH =
+      Pattern.compile("[\"'][A-Za-z_]\\w*(?:\\.[A-Za-z_]\\w*)+[\"']");
   private static final Set<String> MOCK_WHITELIST = Set.of("return_value", "side_effect");
 
   private PythonTopLevelDefinitions() {}
@@ -94,7 +107,8 @@ final class PythonTopLevelDefinitions {
     final List<Symbol> symbols = new ArrayList<>();
     for (final SyntaxNode statement : PythonExports.topLevelStatements(tree)) {
       final String kind = kindOf(statement);
-      if (!kind.isEmpty()) {
+      // Django finds the AppConfig of an installed app by convention, so no name spells it.
+      if (!kind.isEmpty() && !isAppConfig(statement)) {
         PythonSyntax.children(statement, NAME).stream()
             .limit(1)
             .forEach(
@@ -126,7 +140,23 @@ final class PythonTopLevelDefinitions {
     if (names.contains(DJANGO)) {
       names.addAll(DJANGO_WHITELIST);
     }
+    LIBRARY_HOOKS.forEach(
+        (library, hooks) -> {
+          if (names.contains(library)) {
+            names.addAll(hooks);
+          }
+        }
+    );
     return names;
+  }
+
+  /** Whether {@code statement} is a class with {@code AppConfig} among its bases. */
+  private static boolean isAppConfig(final SyntaxNode statement) {
+    return CLASSDEF.equals(statement.kind())
+        && PythonSyntax.children(statement, "arglist").stream()
+            .flatMap(list -> PythonSyntax.tokens(list).stream())
+            .map(PythonSyntax::text)
+            .anyMatch(APP_CONFIG::equals);
   }
 
   private static String kindOf(final SyntaxNode statement) {
@@ -168,6 +198,9 @@ final class PythonTopLevelDefinitions {
   private static void addLeafNames(final String text, final Set<String> names) {
     if (IDENTIFIER.matcher(text).matches()) {
       names.add(text);
+    } else if (DOTTED_PATH.matcher(text).matches()) {
+      // "app.backends.EmailBackend" in a setting names the class by its last part.
+      names.add(text.substring(text.lastIndexOf('.') + 1, text.length() - 1));
     } else if (PythonFStrings.isFString(text)) {
       // Every word counts, so {self.port} uses the attribute port.
       final Matcher matcher = IDENTIFIER.matcher(text);

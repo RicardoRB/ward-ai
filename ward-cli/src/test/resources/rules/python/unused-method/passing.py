@@ -24,3 +24,11 @@ class ServiceTest(unittest.TestCase):
 Service.helper()
 Service().run()
 getattr(Service(), "dynamic")()
+
+
+from marshmallow import fields
+
+
+class ValueField(fields.Field):
+    def _deserialize(self, value, attr, data, **kwargs):
+        return value

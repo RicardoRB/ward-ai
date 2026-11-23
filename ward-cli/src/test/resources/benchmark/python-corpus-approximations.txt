@@ -1,18 +1,8 @@
 # False positives of the Python corpus run that are known and open: rule | file:line | reason | #issue (#724).
-ward:python/naming | hc/accounts/admin.py:23 | a module-level type alias, which PEP 8 names in CapWords | #737
-ward:python/suspicious-non-cryptographic-random-usage | hc/accounts/models.py:380 | a random minute offset that spreads report e-mails; not a security value | #730
 ward:python/untrusted-redirect | hc/accounts/views.py:115 | a validator on the same line of control accepts only a relative URL that resolves to a known route | #733
 ward:python/untrusted-redirect | hc/front/views.py:555 | the request value is only the query string, appended to the path of a route of the application | #733
 ward:python/untrusted-redirect | hc/front/views.py:578 | the request value is only the query string, appended to the path of a route of the application | #733
 ward:python/untrusted-redirect | hc/front/views.py:674 | the request value is only the query string, appended to the path of a route of the application | #733
-ward:python/use-implicit-booleaness-not-comparison | hc/api/views.py:324 | the value may be None, which means something else than the empty string there | #739
-ward:python/use-maxsplit-arg | hc/api/models.py:1108 | reported on the statement that holds the dictionary; the split is two lines below and has its own finding | #738
 ward:python/unused-method | hc/accounts/models.py:507 | a Django template calls the method (project.get_n_down); Ward reads no template | #729
 ward:python/unused-method | hc/accounts/models.py:538 | a Django template calls the property (project.auth_metrics_url); Ward reads no template | #729
 ward:python/unused-method | hc/api/models.py:436 | a Django template calls the method (check.filter_any); Ward reads no template | #729
-ward:python/unused-class | hc/accounts/backends.py:22 | named by a dotted path in a Django setting (AUTHENTICATION_BACKENDS); Ward reads no string as a reference | #727
-ward:python/unused-class | hc/accounts/backends.py:44 | named by a dotted path in a Django setting (AUTHENTICATION_BACKENDS); Ward reads no string as a reference | #727
-ward:python/unused-class | hc/accounts/backends.py:65 | named by a dotted path in a Django setting (AUTHENTICATION_BACKENDS); Ward reads no string as a reference | #727
-ward:python/unused-class | hc/accounts/middleware.py:15 | named by a dotted path in the MIDDLEWARE setting; Ward reads no string as a reference | #727
-ward:python/unused-class | hc/accounts/middleware.py:28 | named by a dotted path in the MIDDLEWARE setting; Ward reads no string as a reference | #727
-ward:python/unused-function | hc/front/context_processors.py:7 | named by a dotted path in the TEMPLATES context_processors setting; Ward reads no string as a reference | #727

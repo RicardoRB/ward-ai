@@ -48,4 +48,4 @@ capability = "SYNTAX"
 severity = "warning"
 category = "naming"
 presets = ["standard", "strict"]
-body = "measure=identifier-case; node=funcdef:snake,classdef:cap,expr_stmt:snake-or-upper; name=name; exempt-names=setUp,tearDown,setUpClass,tearDownClass,setUpModule,tearDownModule,asyncSetUp,asyncTearDown,setUpTestData; message={name} should be {expected}"
+body = "measure=identifier-case; node=funcdef:snake,classdef:cap,expr_stmt:snake-or-upper; name=name; exempt-type-aliases=true; exempt-names=setUp,tearDown,setUpClass,tearDownClass,setUpModule,tearDownModule,asyncSetUp,asyncTearDown,setUpTestData; message={name} should be {expected}"

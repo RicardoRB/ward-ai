@@ -70,17 +70,7 @@ ward:python/function-length | CTFd/api/v1/challenges.py:146 | tp | the function 
 ward:python/function-length | CTFd/api/v1/challenges.py:335 | tp | the function holds more lines than the limit
 ward:python/function-redefined | tests/test_config.py:34 | tp | the same class name is defined again in one function scope; Pylint reports it even when the first class is used in between
 ward:python/function-redefined | tests/test_config.py:46 | tp | the same class name is defined again in one function scope; Pylint reports it even when the first class is used in between
-ward:python/hardcoded-password-default | tests/helpers.py:125 | fp | a default value of a test helper, not a secret
-ward:python/hardcoded-password-default | tests/helpers.py:169 | fp | a default value of a test helper, not a secret
-ward:python/hardcoded-password-default | tests/helpers.py:206 | fp | a default value of a test helper, not a secret
-ward:python/hardcoded-password-default | tests/helpers.py:234 | fp | a default value of a test helper, not a secret
-ward:python/hardcoded-password-default | tests/helpers.py:246 | fp | a default value of a test helper, not a secret
-ward:python/hardcoded-password-default | tests/helpers.py:407 | fp | a default value of a test helper, not a secret
-ward:python/hardcoded-password-default | tests/helpers.py:416 | fp | a default value of a test helper, not a secret
-ward:python/hardcoded-password-func-arg | populate.py:238 | fp | a fixture password in a seed script, not a secret
-ward:python/hardcoded-password-func-arg | populate.py:264 | fp | a fixture password in a seed script, not a secret
 ward:python/hashlib-insecure-hash-function | CTFd/utils/uploads/__init__.py:76 | fp | the digest names an uploaded file, it protects nothing
-ward:python/hashlib-insecure-hash-function | populate.py:204 | fp | the digest names a file or a fixture, it protects nothing
 ward:python/hidden-field | CTFd/admin/__init__.py:79 | tp | the name hides a module-level name
 ward:python/hidden-field | CTFd/api/v1/comments.py:87 | tp | the name hides a module-level name
 ward:python/hidden-field | CTFd/api/v1/comments.py:132 | tp | the name hides a module-level name
@@ -170,11 +160,11 @@ ward:python/pointless-string-statement | CTFd/config.py:167 | tp | a string stat
 ward:python/pointless-string-statement | CTFd/plugins/challenges/__init__.py:335 | tp | a string statement outside the docstring position has no effect
 ward:python/pointless-string-statement | CTFd/utils/scores/__init__.py:47 | tp | a string statement outside the docstring position has no effect
 ward:python/pointless-string-statement | CTFd/utils/scores/__init__.py:55 | tp | a string statement outside the docstring position has no effect
-ward:python/possibly-used-before-assignment | CTFd/admin/challenges.py:60 | fp | the handler calls abort(), which raises, so no path reaches the read unbound
-ward:python/possibly-used-before-assignment | CTFd/admin/challenges.py:64 | fp | the handler calls abort(), which raises, so no path reaches the read unbound
-ward:python/possibly-used-before-assignment | CTFd/api/v1/challenges.py:467 | fp | the handler calls abort(), which raises, so no path reaches the read unbound
 ward:python/possibly-used-before-assignment | CTFd/api/v1/challenges.py:491 | un | the name is set under authed() and read under the same condition
 ward:python/possibly-used-before-assignment | CTFd/api/v1/challenges.py:508 | un | the name is set under authed() and read under the same condition
+ward:python/possibly-used-before-assignment | CTFd/api/v1/challenges.py:803 | un | the name is set under the timeout behavior and read under the same condition
+ward:python/possibly-used-before-assignment | CTFd/api/v1/challenges.py:807 | un | the name is set under the timeout behavior and read under the same condition
+ward:python/possibly-used-before-assignment | CTFd/api/v1/scoreboard.py:83 | un | the name is set under TEAMS_MODE and read under the same condition
 ward:python/private-member-access | CTFd/plugins/__init__.py:178 | tp | the code reaches a private member of another object
 ward:python/raise-without-from-inside-except | CTFd/constants/assets.py:34 | tp | an exception is raised inside a handler without a cause
 ward:python/raise-without-from-inside-except | CTFd/models/__init__.py:774 | tp | an exception is raised inside a handler without a cause
@@ -187,8 +177,6 @@ ward:python/redefined-builtin | CTFd/constants/assets.py:37 | tp | a parameter o
 ward:python/redefined-builtin | CTFd/models/__init__.py:915 | tp | a parameter or variable has the name of a built-in
 ward:python/redefined-builtin | CTFd/share.py:10 | tp | a parameter or variable has the name of a built-in
 ward:python/request-without-timeout | CTFd/utils/email/providers/mailgun.py:26 | tp | the HTTP call has no timeout
-ward:python/self-cls-assignment | CTFd/plugins/challenges/__init__.py:329 | fp | a plain function, not a method; cls is only a local name
-ward:python/self-cls-assignment | CTFd/plugins/flags/__init__.py:76 | fp | a plain function, not a method; cls is only a local name
 ward:python/set-attr-with-constant | CTFd/forms/teams.py:36 | tp | setattr with a constant name
 ward:python/set-attr-with-constant | CTFd/forms/users.py:104 | tp | setattr with a constant name
 ward:python/set-attr-with-constant | CTFd/forms/users.py:138 | tp | setattr with a constant name
@@ -204,50 +192,6 @@ ward:python/super-with-arguments | CTFd/__init__.py:90 | tp | super() written wi
 ward:python/super-with-arguments | CTFd/__init__.py:150 | tp | super() written with arguments
 ward:python/super-with-arguments | CTFd/__init__.py:165 | tp | super() written with arguments
 ward:python/super-with-arguments | CTFd/models/__init__.py:75 | tp | super() written with arguments
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:93 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:101 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:105 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:109 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:113 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:121 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:133 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:138 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:143 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:184 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:202 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:242 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:244 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:248 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:269 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:271 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:275 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:277 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:313 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:316 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:321 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:336 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:348 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:349 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:364 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:380 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:381 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:382 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:395 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:410 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:416 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:421 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:435 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:436 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:450 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:465 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:478 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | populate.py:482 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | tests/admin/test_config.py:57 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | tests/admin/test_config.py:58 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | tests/admin/test_config.py:167 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | tests/admin/test_config.py:168 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | tests/helpers.py:326 | fp | random picks sample data for a seed script, not a security value
-ward:python/suspicious-non-cryptographic-random-usage | tests/helpers.py:331 | fp | random picks sample data for a seed script, not a security value
 ward:python/template-injection | CTFd/admin/__init__.py:93 | fp | the template text is read from a file of a plugin whose name is checked against the plugins on disk
 ward:python/todo-comment | CTFd/__init__.py:82 | tp | a TODO comment
 ward:python/todo-comment | CTFd/__init__.py:296 | tp | a TODO comment
@@ -311,7 +255,6 @@ ward:python/unused-argument | CTFd/plugins/challenges/logic.py:7 | tp | the para
 ward:python/unused-argument | CTFd/utils/uploads/__init__.py:16 | tp | the parameter is not read in the function
 ward:python/unused-argument | migrations/env.py:68 | tp | the parameter is not read in the function
 ward:python/unused-argument | tests/test_plugin_utils.py:238 | tp | the parameter is not read in the function
-ward:python/unused-attribute | CTFd/config.py:92 | fp | optionxform is a hook of the config parser that the library reads
 ward:python/unused-attribute | CTFd/constants/languages.py:71 | un | an attribute set on another object, which a library or a template reads
 ward:python/unused-import | CTFd/__init__.py:233 | un | imported so the models register with the database; the author marks it
 ward:python/unused-import | CTFd/__init__.py:234 | un | imported for its side effect (model registration), marked by the author
@@ -324,7 +267,6 @@ ward:python/unused-loop-control-variable | populate.py:214 | tp | the loop varia
 ward:python/unused-loop-control-variable | populate.py:219 | tp | the loop variable is not read in the body
 ward:python/unused-loop-control-variable | populate.py:348 | tp | the loop variable is not read in the body
 ward:python/unused-method | CTFd/constants/assets.py:37 | fp | a template or a library calls the method by name; Ward reads neither
-ward:python/unused-method | CTFd/schemas/config.py:14 | fp | the serialization library calls _deserialize by name
 ward:python/unused-property | CTFd/constants/config.py:39 | fp | a Jinja template reads the property; Ward reads no template
 ward:python/unused-property | CTFd/constants/config.py:45 | fp | a Jinja template reads the property; Ward reads no template
 ward:python/unused-property | CTFd/constants/config.py:52 | fp | a Jinja template reads the property; Ward reads no template
