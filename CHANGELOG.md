@@ -10,6 +10,8 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ### Fixed
 
+- `ward:swift/final-test-case` no longer reports a test case class that another class of the project inherits from, since a base class cannot be final (#755).
+- `ward:swift/async-without-await` no longer reports a function that witnesses an async requirement of a protocol declared in the project; a requirement of a protocol outside the project is still unknown and reported (#756).
 - `ward:java/openjdk-annotation-location` accepts the layout `ward format` writes for a parameter or record component whose annotation spans lines, `) @B String x` (#700).
 - `ward:java/left-curly` no longer reports the `{` of an annotation array that `ward format` moves to its own line (#705).
 - `strict` no longer enables `ward:java/avoid-no-argument-super-constructor-call`, which contradicted `ward:java/call-super-in-constructor`; the pair is guarded by `PresetContractTest` (#701).

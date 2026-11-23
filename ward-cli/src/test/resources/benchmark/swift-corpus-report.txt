@@ -7,12 +7,12 @@
 # Regenerate: ./mvnw -pl ward-cli -am -Dtest=SwiftCorpusSmokeTest -Dward.corpus.swift=<dir> -Djacoco.skip=true -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
 alamofire | files 101 | not analysed 0
 sample-food-truck | files 82 | not analysed 0
-rules 183 | not run (need type facts) 1 | findings 9457
+rules 183 | not run (need type facts) 1 | findings 9458
 ward:swift/abbreviation-as-word-in-name | findings 453 | labelled 3 | tp 3 | fp 0 | un 0
 ward:swift/annotation-location | findings 51 | labelled 3 | tp 3 | fp 0 | un 0
 ward:swift/array-init | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/assign-only-property | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:swift/async-without-await | findings 6 | labelled 3 | tp 2 | fp 1 | un 0
+ward:swift/async-without-await | findings 8 | labelled 8 | tp 6 | fp 2 | un 0
 ward:swift/blanket-disable-command | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/block-based-kvo | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/capture-variable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -55,7 +55,7 @@ ward:swift/explicit-top-level-acl | findings 307 | labelled 3 | tp 3 | fp 0 | un
 ward:swift/fallthrough | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:swift/fatal-error-message | findings 3 | labelled 3 | tp 3 | fp 0 | un 0
 ward:swift/file-length | findings 32 | labelled 3 | tp 3 | fp 0 | un 0
-ward:swift/final-test-case | findings 1 | labelled 1 | tp 0 | fp 1 | un 0
+ward:swift/final-test-case | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/first-where | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/flatmap-over-map-reduce | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/for-where | findings 2 | labelled 2 | tp 2 | fp 0 | un 0

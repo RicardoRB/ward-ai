@@ -10,9 +10,7 @@ severity = "warning"
 category = "correctness"
 presets = ["strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["function_declaration"]
-text = '^(?!.*await)(?=[^{]*(?<![A-Za-z0-9_])async(?![A-Za-z0-9_]))[^{]*\{'
+check = "swift-async-without-await"
 message = "declaration is async but does not use await"
 '''
 

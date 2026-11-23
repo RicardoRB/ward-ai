@@ -140,8 +140,13 @@ ward:swift/hard-coded-credential | alamofire/Tests/AuthenticationTests.swift:61 
 ward:swift/hard-coded-credential | alamofire/Tests/AuthenticationTests.swift:89 | tp | the second constant of a declaration of two is a password literal
 ward:swift/hard-coded-credential | alamofire/Tests/AuthenticationTests.swift:181 | tp | the second constant of a declaration of two is a password literal
 ward:swift/async-without-await | alamofire/Tests/ConcurrencyTests.swift:484 | tp | a local async function whose body never awaits
+ward:swift/async-without-await | alamofire/Tests/ConcurrencyTests.swift:510 | tp | a local async function whose body never awaits
+ward:swift/async-without-await | alamofire/Tests/ConcurrencyTests.swift:538 | tp | a local async function whose body never awaits
 ward:swift/async-without-await | alamofire/Tests/URLProtocolTests.swift:104 | fp | the async signature is the one the URLSessionDataDelegate method requires, so async cannot be dropped
 ward:swift/async-without-await | sample-food-truck/FoodTruckKit/Sources/Account/AccountStore.swift:117 | tp | a private async function whose body never awaits
+ward:swift/async-without-await | sample-food-truck/App/Donut/ShowTopDonutsIntent.swift:19 | fp | the async signature is the one the AppIntent requirement perform() has, so async cannot be dropped
+ward:swift/async-without-await | sample-food-truck/FoodTruckKit/Sources/Account/AccountStore.swift:105 | tp | a public async function whose body never awaits
+ward:swift/async-without-await | sample-food-truck/FoodTruckKit/Sources/Account/AccountStore.swift:137 | tp | a private async function whose body never awaits
 ward:swift/discouraged-optional-boolean | alamofire/Source/Core/DataRequest.swift:60 | tp | an optional Bool parameter
 ward:swift/discouraged-optional-boolean | alamofire/Source/Core/Session.swift:680 | tp | an optional Bool parameter
 ward:swift/discouraged-optional-boolean | sample-food-truck/App/City/CityView.swift:24 | tp | an optional Bool state property
@@ -156,7 +161,6 @@ ward:swift/fallthrough | sample-food-truck/FoodTruckKit/Sources/Store/StoreProdu
 ward:swift/fatal-error-message | sample-food-truck/App/Truck/SalesHistoryView.swift:97 | tp | fatalError without a message
 ward:swift/fatal-error-message | sample-food-truck/FoodTruckKit/Sources/Model/FoodTruckModel.swift:93 | tp | fatalError without a message
 ward:swift/fatal-error-message | sample-food-truck/FoodTruckKit/Sources/Model/FoodTruckModel.swift:98 | tp | fatalError without a message
-ward:swift/final-test-case | alamofire/Tests/BaseTestCase.swift:29 | fp | a base class that the other test cases of the project inherit from cannot be final
 ward:swift/legacy-multiple | sample-food-truck/App/Truck/Cards/TruckOrdersCard.swift:125 | tp | a remainder compared with zero
 ward:swift/no-extension-access-modifier | sample-food-truck/App/General/FlowLayout.swift:116 | tp | an access modifier on an extension
 ward:swift/no-extension-access-modifier | sample-food-truck/FoodTruckKit/Sources/Donut/Ingredients/Topping.swift:10 | tp | an access modifier on an extension
