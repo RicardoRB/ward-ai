@@ -158,6 +158,7 @@ final class InitPlanner {
             ),
             project,
             selection,
+            files.architectureTables(),
             architectureFile
         );
     final List<PlannedFileChange> changes = new ArrayList<>();

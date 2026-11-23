@@ -1,5 +1,6 @@
 package dev.ward.infrastructure.init;
 
+import dev.ward.analysis.domain.rule.LayerBoundary;
 import dev.ward.domain.init.ArchitectureTables;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
@@ -22,6 +23,11 @@ public final class ToolchainArchitectureTables implements ArchitectureTables {
   ) {
     this.jvm = jvm;
     this.byToolchain = Map.copyOf(byToolchain);
+  }
+
+  @Override
+  public List<LayerBoundary> layers(final Project project, final String style) {
+    return tables(project.toolchain()).layers(project, style);
   }
 
   @Override

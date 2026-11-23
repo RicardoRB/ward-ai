@@ -1,7 +1,6 @@
 package dev.ward.application.init;
 
 import dev.ward.analysis.domain.rule.LayerBoundary;
-import dev.ward.domain.init.ArchitectureLayers;
 import dev.ward.domain.init.ArchitectureTables;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.project.Project;
@@ -27,7 +26,7 @@ record WardArchitecture(
   /** The tables of a selection that writes none. */
   static final WardArchitecture NONE = new WardArchitecture(List.of(), List.of(), List.of());
 
-  /** Whether the ward gate writes any table: it always writes the layers of the style. */
+  /** Whether the ward gate writes any table: it writes the layers the toolchain gives for the style. */
   boolean any() {
     return !layers.isEmpty() || !cycleRoots.isEmpty() || !independence.isEmpty();
   }
@@ -49,8 +48,7 @@ record WardArchitecture(
       final ArchitectureTables tables
   ) {
     final String style = style(selection);
-    final List<LayerBoundary> layers =
-        List.of(ArchitectureLayers.forStyle(style, project.framework()));
+    final List<LayerBoundary> layers = tables.layers(project, style);
     if (!wantsCycles(selection)) {
       return new WardArchitecture(layers, List.of(), List.of());
     }

@@ -81,6 +81,7 @@ final class InitChanges {
             ),
             project,
             selection,
+            files.architectureTables(),
             files.configuration().exists(OwnedSections.architectureFilePath(project))
         )) {
       sectionChanges.add(files.sections().apply(section));
