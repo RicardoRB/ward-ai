@@ -6,12 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The lines of a file with the text of its string literals and comments blanked, so that a pattern
+ * The lines of a file with the text of its string literals and comments blanked, and the code of an inactive C# {@code #if} branch, so that a pattern
  * for code does not match a brace or a semicolon that is written inside a string (#567). Every
  * line keeps its length, so a column in a blanked line is the column in the source.
  */
 final class CodeLines {
   private static final String TEXT = "text";
+  /** The kind (and text field) of code a false conditional branch hides from the parser. */
+  private static final String SKIPPED = "skipped";
   private static final char BLANK = ' ';
 
   private CodeLines() {}
@@ -25,7 +27,9 @@ final class CodeLines {
   }
 
   private static void blank(final SyntaxNode node, final List<StringBuilder> lines) {
-    if (node.children().isEmpty() && isText(node)) {
+    if (SKIPPED.equals(node.kind())) {
+      blank(node.span(), node.fields().get(SKIPPED), lines);
+    } else if (node.children().isEmpty() && isText(node)) {
       blank(node.span(), node.fields().get(TEXT), lines);
     }
     node.children().forEach(child -> blank(child, lines));
@@ -47,7 +51,7 @@ final class CodeLines {
       final StringBuilder line = lines.get(number - 1);
       final int from = number == span.startLine() ? Math.max(span.startColumn() - 1, 0) : 0;
       final boolean ends = number == span.startLine() + count - 1;
-      final int to = ends && count == 1 ? from + text.length() : line.length();
+      final int to = ends ? from + text.length() - text.lastIndexOf('\n') - 1 : line.length();
       for (int column = from; column < Math.min(to, line.length()); column++) {
         line.setCharAt(column, BLANK);
       }

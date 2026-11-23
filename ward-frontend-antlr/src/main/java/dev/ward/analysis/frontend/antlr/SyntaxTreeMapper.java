@@ -2,6 +2,7 @@ package dev.ward.analysis.frontend.antlr;
 
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.frontend.antlr.csharp.CSharpLexer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,9 @@ final class SyntaxTreeMapper {
 
   /** The kind of a comment node. */
   static final String COMMENT_KIND = "comment";
+
+  /** The kind of a section a false conditional branch hides from the parser (C# {@code #if}). */
+  static final String SKIPPED_KIND = "skipped";
 
   /** What separates a rule name from the name of its variant. */
   private static final String VARIANT = "__";
@@ -97,10 +101,18 @@ final class SyntaxTreeMapper {
       final Token hidden = tokens.get(nextToken);
       if (hidden.getChannel() == Token.HIDDEN_CHANNEL && !hidden.getText().isBlank()) {
         comments.add(comment(hidden));
+      } else if (isSkipped(hidden)) {
+        comments.add(skipped(hidden));
       }
       nextToken++;
     }
     return comments;
+  }
+
+  private boolean isSkipped(final Token token) {
+    return tokens.getTokenSource() instanceof CSharpLexer
+        && token.getType() == CSharpLexer.SKIPPED_SECTION
+        && !token.getText().isBlank();
   }
 
   private static SyntaxNode comment(final Token token) {
@@ -108,6 +120,16 @@ final class SyntaxTreeMapper {
         COMMENT_KIND,
         SyntaxSpans.comment(token),
         Map.of("text", token.getText()),
+        List.of()
+    );
+  }
+
+  /** The text is under {@code skipped}, not {@code text}, so no rule reads it as a token. */
+  private static SyntaxNode skipped(final Token token) {
+    return new SyntaxNode(
+        SKIPPED_KIND,
+        SyntaxSpans.comment(token),
+        Map.of(SKIPPED_KIND, token.getText()),
         List.of()
     );
   }

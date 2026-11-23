@@ -95,7 +95,11 @@ final class CSharpPreprocessor {
 
   /** Reads the false branch and moves the lexer's line and column past the text it consumed. */
   private Token skipBranch() {
-    final Token skipped = FalseBranchScanner.scan(lexer.getInputStream(), lexer.getLine());
+    final Token skipped = FalseBranchScanner.scan(
+        lexer.getInputStream(),
+        lexer.getLine(),
+        lexer.getCharPositionInLine()
+    );
     final String text = skipped.getText();
     final LexerATNSimulator position = lexer.getInterpreter();
     final int lastBreak = text.lastIndexOf('\n');

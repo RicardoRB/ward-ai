@@ -45,8 +45,6 @@ ward:csharp/method-complexity | newtonsoft-json/Src/Newtonsoft.Json/Utilities/St
 ward:csharp/mutable-static-field-visible | eshop/src/ClientApp/Services/Common/Common.cs:11 | tp | a public static field that is not readonly
 ward:csharp/mutable-static-field-visible | eshop/src/Identity.API/Quickstart/Account/AccountOptions.cs:13 | tp | a public static field that is not readonly
 ward:csharp/mutable-static-field-visible | newtonsoft-json/Src/Newtonsoft.Json.Tests/Utilities/ExpressionReflectionDelegateFactoryTests.cs:205 | tp | a public static field that is not readonly
-ward:csharp/nullable-shorthand | newtonsoft-json/Src/Newtonsoft.Json/Serialization/JsonArrayContract.cs:254 | fp | the match is inside a // comment in an inactive #if branch; #708
-ward:csharp/nullable-shorthand | newtonsoft-json/Src/Newtonsoft.Json/Serialization/JsonDictionaryContract.cs:203 | fp | the match is inside a // comment in an inactive #if branch; #708
 ward:csharp/one-class-per-file | eshop/src/Basket.API/Extensions/Extensions.cs:1 | tp | a file that declares more than one class
 ward:csharp/one-class-per-file | newtonsoft-json/Src/Newtonsoft.Json.Tests/LinqToSql/LinqToSqlClasses.designer.cs:14 | tp | a file that declares more than one class
 ward:csharp/one-class-per-file | newtonsoft-json/Src/Newtonsoft.Json/Utilities/ReflectionObject.cs:26 | tp | a file that declares more than one class

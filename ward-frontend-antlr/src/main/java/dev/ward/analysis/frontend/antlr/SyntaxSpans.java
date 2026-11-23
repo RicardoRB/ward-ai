@@ -60,7 +60,7 @@ final class SyntaxSpans {
     final int endColumn =
         newlines == 0
             ? token.getCharPositionInLine() + text.length()
-            : text.length() - text.lastIndexOf('\n') - 1;
+            : Math.max(1, text.length() - text.lastIndexOf('\n') - 1);
     return new Span(
         token.getLine(),
         token.getCharPositionInLine() + 1,

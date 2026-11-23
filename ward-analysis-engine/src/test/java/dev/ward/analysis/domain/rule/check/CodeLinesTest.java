@@ -55,4 +55,19 @@ class CodeLinesTest {
 
     assertThat(CodeLines.of(root, file)).containsExactly("run()        ");
   }
+
+  @Test
+  void aSectionSkippedByAFalseConditionalBranchIsBlankedOnEveryLine() {
+    final SourceFile file = new SourceFile("a.cs", "#if X\n  a;\n b;\n#endif\nrun();");
+    final SyntaxNode skipped =
+        new SyntaxNode(
+            "skipped",
+            new Span(2, 1, 4, 1, 0, 0),
+            Map.of("skipped", "  a;\n b;\n"),
+            List.of()
+        );
+
+    assertThat(CodeLines.of(unit(skipped), file))
+        .containsExactly("#if X", "    ", "   ", "#endif", "run();");
+  }
 }
