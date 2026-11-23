@@ -108,6 +108,7 @@ public final class ForbiddenNodeCheck implements UnitCheck {
    *     notAncestorText} reads
    * @param notAncestorText a pattern that the text of the nearest ancestor of one of {@code
    *     ancestorKinds} must not match, if any
+   * @param position the conditions on the node's place among its siblings and ancestors
    */
   public record Condition(
       Optional<Pattern> text,
@@ -121,7 +122,8 @@ public final class ForbiddenNodeCheck implements UnitCheck {
       String notScopeText,
       String scopeText,
       Set<String> ancestorKinds,
-      Optional<Pattern> notAncestorText
+      Optional<Pattern> notAncestorText,
+      Position position
   ) {
     /** The condition that every node meets. */
     public static final Condition ANY = new Condition(Optional.empty(), Set.of(), Set.of());
@@ -154,7 +156,8 @@ public final class ForbiddenNodeCheck implements UnitCheck {
           "",
           "",
           Set.of(),
-          Optional.empty()
+          Optional.empty(),
+          Position.ANYWHERE
       );
     }
 
@@ -178,7 +181,8 @@ public final class ForbiddenNodeCheck implements UnitCheck {
           "",
           "",
           Set.of(),
-          Optional.empty()
+          Optional.empty(),
+          Position.ANYWHERE
       );
     }
 
@@ -198,6 +202,7 @@ public final class ForbiddenNodeCheck implements UnitCheck {
       Objects.requireNonNull(scopeText, "scopeText");
       Objects.requireNonNull(notAncestorText, "notAncestorText");
       ancestorKinds = Set.copyOf(ancestorKinds);
+      Objects.requireNonNull(position, "position");
       withChild = Set.copyOf(withChild);
       parent = Set.copyOf(parent);
     }
@@ -207,12 +212,17 @@ public final class ForbiddenNodeCheck implements UnitCheck {
       return childOk(visit.node())
           && parentOk(visit)
           && pathOk(visit)
-          && (notPath.isEmpty() || !follows(notPath, visit))
+          && notPathOk(visit)
           && parentTextOk(visit)
           && rootTextOk(visit)
           && notParentTextOk(visit)
           && enclosingTextOk(visit)
-          && textOk(visit.node());
+          && textOk(visit.node())
+          && position.holds(visit);
+    }
+
+    private boolean notPathOk(final SyntaxWalk.Visit visit) {
+      return notPath.isEmpty() || !follows(notPath, visit);
     }
 
     private boolean textOk(final SyntaxNode node) {
@@ -344,6 +354,88 @@ public final class ForbiddenNodeCheck implements UnitCheck {
         }
       }
       return true;
+    }
+  }
+
+  /**
+   * Conditions on where a node stands; an empty part does not limit.
+   *
+   * @param spacedText a pattern that must be found in the node's text when its tokens are joined by
+   *     one space, so that it can tell {@code use a as b} from {@code use aasb}
+   * @param lastIn the kind of the nearest ancestor or the node itself that must be the last child of
+   *     its parent, so that nothing follows it
+   * @param notPreviousText a pattern that the text of the sibling before the nearest ancestor-or-self
+   *     of kind {@code previousOf} must not match
+   * @param previousOf the kind whose previous sibling {@code notPreviousText} is tested on
+   */
+  public record Position(
+      Optional<Pattern> spacedText,
+      String lastIn,
+      Optional<Pattern> notPreviousText,
+      String previousOf
+  ) {
+    /** The position that every node meets. */
+    public static final Position ANYWHERE =
+        new Position(Optional.empty(), "", Optional.empty(), "");
+
+    /**
+     * Checks that no part is missing.
+     *
+     * @throws NullPointerException if a field is missing
+     */
+    public Position {
+      Objects.requireNonNull(spacedText, "spacedText");
+      Objects.requireNonNull(lastIn, "lastIn");
+      Objects.requireNonNull(notPreviousText, "notPreviousText");
+      Objects.requireNonNull(previousOf, "previousOf");
+    }
+
+    boolean holds(final SyntaxWalk.Visit visit) {
+      return spacedOk(visit.node())
+          && (lastIn.isEmpty() || isLast(visit))
+          && (previousOf.isEmpty() || previousOk(visit));
+    }
+
+    private boolean spacedOk(final SyntaxNode node) {
+      return spacedText.map(p -> p.matcher(SyntaxWalk.spacedText(node)).find()).orElse(true);
+    }
+
+    private boolean isLast(final SyntaxWalk.Visit visit) {
+      final List<SyntaxNode> chain = chain(visit);
+      final int at = indexOf(chain, lastIn);
+      return at > 0 && lastChild(chain.get(at - 1)) == chain.get(at);
+    }
+
+    private boolean previousOk(final SyntaxWalk.Visit visit) {
+      final List<SyntaxNode> chain = chain(visit);
+      final int at = indexOf(chain, previousOf);
+      if (at <= 0) {
+        return true;
+      }
+      final List<SyntaxNode> siblings = chain.get(at - 1).children();
+      final int own = siblings.indexOf(chain.get(at));
+      return own <= 0
+          || notPreviousText.isEmpty()
+          || !notPreviousText.get().matcher(SyntaxWalk.text(siblings.get(own - 1))).find();
+    }
+
+    private static List<SyntaxNode> chain(final SyntaxWalk.Visit visit) {
+      final List<SyntaxNode> chain = new ArrayList<>(visit.ancestors());
+      chain.add(visit.node());
+      return chain;
+    }
+
+    private static int indexOf(final List<SyntaxNode> chain, final String kind) {
+      for (int i = chain.size() - 1; i >= 0; i--) {
+        if (kind.equals(chain.get(i).kind())) {
+          return i;
+        }
+      }
+      return -1;
+    }
+
+    private static SyntaxNode lastChild(final SyntaxNode parent) {
+      return parent.children().get(parent.children().size() - 1);
     }
   }
 }

@@ -21,7 +21,6 @@ final class RustScopeWalk {
           "visibility",
           "abi",
           "lifetime",
-          "macroRulesDefinition",
           "useDeclaration",
           "externCrate",
           "loopLabel",
@@ -78,6 +77,7 @@ final class RustScopeWalk {
     handlers.put("genericArgsBinding", paths::binding);
     handlers.put("macroInvocation", macros::invocation);
     handlers.put("macroInvocationSemi", macros::invocation);
+    handlers.put("macroRulesDefinition", macros::invocation);
     handlers.put("blockExpression", flow::block);
     handlers.put("letStatement", flow::letStatement);
     handlers.put("ifExpression", branches::conditional);

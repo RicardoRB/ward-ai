@@ -86,6 +86,21 @@ final class RustTrees {
   }
 
   /** Whether {@code node} is a leaf of {@code kind}, such as {@code '='}. */
+  /**
+   * Whether {@code node} has a {@code #[cfg(..)]} attribute, so that another configuration may be
+   * the one that uses it, or an {@code allow} of an unused or dead-code lint.
+   */
+  static boolean silencesUnused(final SyntaxNode node) {
+    return children(node, "outerAttribute").stream()
+        .map(RustTrees::text)
+        .anyMatch(
+            text ->
+                text.startsWith("#[cfg(")
+                    || (text.startsWith("#[allow(") || text.startsWith("#[expect("))
+                    && (text.contains("unused") || text.contains("dead_code"))
+        );
+  }
+
   static boolean isToken(final SyntaxNode node, final String kind) {
     return node.children().isEmpty() && kind.equals(node.kind());
   }

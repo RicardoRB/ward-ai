@@ -59,10 +59,13 @@ final class GenericChecks {
       case IDENTIFIER_PATTERN ->
           new IdentifierPatternCheck(
               filter,
-              TomlValues.required(toml, "name"),
-              TomlValues.optionalStrings(toml, SKIP),
+              new IdentifierPatternCheck.Name(
+                  TomlValues.required(toml, "name"),
+                  TomlValues.optionalStrings(toml, SKIP)
+              ),
               TomlValues.required(toml, PATTERN),
-              message
+              message,
+              Optional.ofNullable(toml.getString("exempt-attribute")).map(Pattern::compile)
           );
       case FORBIDDEN_NODE -> new ForbiddenNodeCheck(filter, condition(toml), message);
       case REQUIRED_NODE -> new RequiredNodeCheck(filter, requirement(toml), message);
@@ -167,7 +170,8 @@ final class GenericChecks {
         toml.getString("not-scope-text", () -> ""),
         toml.getString("scope-text", () -> ""),
         TomlValues.optionalStrings(toml, "ancestor-kinds"),
-        Optional.ofNullable(toml.getString("not-ancestor-text")).map(Pattern::compile)
+        Optional.ofNullable(toml.getString("not-ancestor-text")).map(Pattern::compile),
+        GenericPosition.of(toml)
     );
   }
 

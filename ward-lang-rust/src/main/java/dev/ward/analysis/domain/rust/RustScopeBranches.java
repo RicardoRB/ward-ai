@@ -52,7 +52,7 @@ final class RustScopeBranches {
       walk.visit(iterable);
     }
     walk.scopes.open(ScopeKind.BLOCK, node.span());
-    walk.patterns.bind(RustTrees.child(node, RustKinds.PATTERN), BindingKind.CONSTANT, true);
+    walk.patterns.bind(RustTrees.child(node, RustKinds.PATTERN), BindingKind.CONSTANT, true, false);
     walk.visit(RustTrees.child(node, RustKinds.BLOCK));
     walk.scopes.closeTo(depth);
   }
@@ -77,7 +77,7 @@ final class RustScopeBranches {
 
   private void arm(final SyntaxNode node) {
     final SyntaxNode pattern = RustTrees.child(node, RustKinds.PATTERN);
-    walk.patterns.bind(pattern, BindingKind.CONSTANT, true);
+    walk.patterns.bind(pattern, BindingKind.CONSTANT, true, false);
     node.children().stream().filter(child -> child != pattern).forEach(walk::visit);
   }
 

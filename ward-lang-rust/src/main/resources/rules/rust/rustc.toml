@@ -40,6 +40,8 @@ body = '''
 check = "identifier-pattern"
 kinds = ["structStruct", "tupleStruct", "enumeration", "union_", "trait_", "typeAlias", "enumItem"]
 name = "identifier"
+skip = ["outerAttribute"]
+exempt-attribute = '^#!?\[(allow|expect)\(.*non_camel_case_types'
 pattern = '_*[A-Z][A-Za-z0-9]*_*'
 message = "type name '{value}' is not in camel case"
 '''
@@ -70,7 +72,8 @@ body = '''
 check = "identifier-pattern"
 kinds = ["function_", "identifierPattern"]
 name = "identifier"
-pattern = '_*[a-z0-9][a-z0-9_]*|_+|[A-Z][A-Za-z0-9]*'
+exempt-attribute = '^#!?\[(allow|expect)\(.*non_snake_case'
+pattern = '(r#)?_*[a-z0-9][a-z0-9_]*|_+|[A-Z][A-Za-z0-9]*|[A-Z][A-Z0-9_]*'
 message = "name '{value}' is not in snake case"
 '''
 
@@ -86,6 +89,8 @@ body = '''
 check = "identifier-pattern"
 kinds = ["constantItem", "staticItem"]
 name = "identifier"
+skip = ["type_", "expression"]
+exempt-attribute = '^#!?\[(allow|expect)\(.*non_upper_case_globals'
 pattern = '_*[A-Z0-9][A-Z0-9_]*'
 message = "constant name '{value}' is not in upper case"
 '''
@@ -115,6 +120,8 @@ body = '''
 check = "forbidden-node"
 kinds = ["statement"]
 text = '^;$'
+previous-of = "statement"
+not-previous-text = '^[\w:]+!\{.*\}$'
 message = "the semicolon is redundant"
 '''
 
@@ -179,7 +186,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["useDeclaration"]
-text = '^use[\w:]*::\{\w+\};$'
+spaced-text = '^use (\w+ :: )*\{ \w+ \} ;$'
 message = "the braces around a single import are not needed"
 '''
 

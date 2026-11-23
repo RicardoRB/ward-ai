@@ -278,6 +278,6 @@ presets = ["strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["useDeclaration"]
-text = '^use(?!super::\*;)(?!.*prelude::\*;).*::\*;$'
+text = '^use(?!super::\*;)(?!.*prelude::\*;)(?!(.*::)?[A-Z]\w*::\*;).*::\*;$'
 message = "import the names that are used instead of a wildcard"
 '''

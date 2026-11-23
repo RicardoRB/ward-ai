@@ -25,13 +25,13 @@ final class RustScopePatterns {
   }
 
   /** What a pattern binds, and how. */
-  private record Binder(BindingKind kind, boolean written, Set<String> seen) {}
+  private record Binder(BindingKind kind, boolean written, boolean gated, Set<String> seen) {}
 
   /** A function parameter: binds its pattern as parameters, then walks the type. */
   void parameter(final SyntaxNode node) {
     for (final SyntaxNode child : node.children()) {
       if (RustKinds.PATTERN.equals(child.kind()) || RustKinds.PATTERN_NO_ALT.equals(child.kind())) {
-        bind(child, BindingKind.PARAMETER, false);
+        bind(child, BindingKind.PARAMETER, false, false);
       } else {
         walk.visit(child);
       }
@@ -50,8 +50,17 @@ final class RustScopePatterns {
    * @param kind what to bind a plain name as, unless it is {@code mut}
    * @param written whether the matched value is assigned to the names right away
    */
-  void bind(final SyntaxNode pattern, final BindingKind kind, final boolean written) {
-    node(pattern, new Binder(kind, written, new HashSet<>()), false);
+  /**
+   * Binds the names of {@code pattern}; a {@code gated} binding sits under a {@code cfg} attribute
+   * or an {@code allow} of an unused lint, so it is not judged.
+   */
+  void bind(
+      final SyntaxNode pattern,
+      final BindingKind kind,
+      final boolean written,
+      final boolean gated
+  ) {
+    node(pattern, new Binder(kind, written, gated, new HashSet<>()), false);
   }
 
   private void node(final SyntaxNode node, final Binder binder, final boolean nested) {
@@ -117,6 +126,9 @@ final class RustScopePatterns {
     final Set<BindingFlag> flags = EnumSet.noneOf(BindingFlag.class);
     if (nested) {
       flags.add(BindingFlag.DESTRUCTURED);
+    }
+    if (binder.gated()) {
+      flags.add(BindingFlag.EXPORTED);
     }
     walk.builder.declare(text, kindOf(binder.kind(), mutable), name.span(), flags);
     if (binder.written()) {

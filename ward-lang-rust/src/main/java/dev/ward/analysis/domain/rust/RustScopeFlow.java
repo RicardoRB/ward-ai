@@ -48,7 +48,12 @@ final class RustScopeFlow {
       final boolean initialized =
           node.children().stream().anyMatch(child -> RustTrees.isToken(child, RustKinds.EQUALS));
       walk.scopes.openAfter(node.span());
-      walk.patterns.bind(pattern, BindingKind.CONSTANT, initialized);
+      walk.patterns.bind(
+          pattern,
+          BindingKind.CONSTANT,
+          initialized,
+          RustTrees.silencesUnused(node)
+      );
     }
   }
 }

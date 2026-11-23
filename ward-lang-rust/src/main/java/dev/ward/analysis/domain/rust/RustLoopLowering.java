@@ -44,8 +44,25 @@ final class RustLoopLowering {
     final int after = flow.newBlock();
     flow.edge(flow.current(), header, FlowEdgeKind.NORMAL);
     flow.moveTo(header);
-    body(RustTrees.child(node, RustKinds.BLOCK), label, after, header);
+    final SyntaxNode block = RustTrees.child(node, RustKinds.BLOCK);
+    if (breaksInMacro(block, false)) {
+      // The arms of a macro such as select! are tokens, so its break is not lowered as a jump.
+      flow.edge(header, after, FlowEdgeKind.NORMAL);
+    }
+    body(block, label, after, header);
     flow.moveTo(after);
+  }
+
+  /** Whether a macro call below {@code node} has a {@code break} among its tokens. */
+  private static boolean breaksInMacro(final SyntaxNode node, final boolean inMacro) {
+    if (inMacro && RustTrees.isToken(node, "'break'")) {
+      return true;
+    }
+    final boolean macro =
+        inMacro || "macroInvocation".equals(node.kind()) || "macroInvocationSemi".equals(
+            node.kind()
+        );
+    return node.children().stream().anyMatch(child -> breaksInMacro(child, macro));
   }
 
   private void whileLoop(final SyntaxNode node, final String label) {

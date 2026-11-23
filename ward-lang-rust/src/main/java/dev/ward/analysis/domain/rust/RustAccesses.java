@@ -26,6 +26,8 @@ final class RustAccesses implements VariableAccesses {
   private static final Set<BindingKind> LOCAL =
       Set.of(BindingKind.VARIABLE, BindingKind.CONSTANT, BindingKind.PARAMETER);
 
+  private static final Set<String> DEFERRED = Set.of("closureExpression", "asyncBlockExpression");
+
   private final List<NameReference> references;
   private final Span body;
   private final List<Span> nested;
@@ -57,6 +59,8 @@ final class RustAccesses implements VariableAccesses {
   public List<VariableAccess> of(final SyntaxNode node) {
     final Span span = node.span();
     final List<Keyed> found = new ArrayList<>();
+    final List<Span> closures = new ArrayList<>();
+    closureSpans(node, closures);
     for (int index = firstAtOrAfter(
         span.startOffset()
     ); index < references.size() && references.get(
@@ -64,7 +68,7 @@ final class RustAccesses implements VariableAccesses {
     ).span().startOffset() < span.endOffset(); index++) {
       final NameReference reference = references.get(index);
       if (contains(span, reference.span()) && isLocal(reference)) {
-        found.add(keyed(reference));
+        found.add(keyed(reference, closures));
       }
     }
     found.sort(Comparator.comparingInt(Keyed::key));
@@ -92,21 +96,44 @@ final class RustAccesses implements VariableAccesses {
     );
   }
 
-  private Keyed keyed(final NameReference reference) {
+  private Keyed keyed(final NameReference reference, final List<Span> closures) {
     final Binding binding = reference.resolved().orElseThrow();
     final boolean write = reference.access() == ReferenceAccess.WRITE;
+    final boolean captured = capturedBy(reference, closures);
     final VariableAccess access =
         new VariableAccess(
             reference.name(),
-            write ? AccessKind.WRITE : AccessKind.READ,
+            kindOf(write, captured),
             reference.span(),
             binding.declaration()
         );
     final int start = reference.span().startOffset();
     return new Keyed(
-        write ? writeEnds.getOrDefault(start, reference.span().endOffset()) : start,
+        write && !captured ? writeEnds.getOrDefault(start, reference.span().endOffset()) : start,
         access
     );
+  }
+
+  private static AccessKind kindOf(final boolean write, final boolean captured) {
+    if (captured) {
+      return AccessKind.CAPTURE;
+    }
+    return write ? AccessKind.WRITE : AccessKind.READ;
+  }
+
+  /**
+   * A closure or async block runs when it is called or polled, not where it is written, and the
+   * graph does not lower its branches. So what it names, from outside or inside, is a capture and is never reported.
+   */
+  private static boolean capturedBy(final NameReference reference, final List<Span> closures) {
+    return closures.stream().anyMatch(closure -> contains(closure, reference.span()));
+  }
+
+  private static void closureSpans(final SyntaxNode node, final List<Span> out) {
+    if (DEFERRED.contains(node.kind())) {
+      out.add(node.span());
+    }
+    node.children().forEach(child -> closureSpans(child, out));
   }
 
   private boolean isLocal(final NameReference reference) {
