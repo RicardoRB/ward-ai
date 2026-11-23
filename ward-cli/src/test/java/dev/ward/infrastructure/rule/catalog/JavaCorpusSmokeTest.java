@@ -24,7 +24,7 @@ class JavaCorpusSmokeTest {
         "Java",
         PinnedCorpus.java(),
         RulePreset.STRICT,
-        "all Apache-2.0"
+        "Apache-2.0 and MIT"
     );
 
     assertThat(run.report()).isEqualTo(run.committed());

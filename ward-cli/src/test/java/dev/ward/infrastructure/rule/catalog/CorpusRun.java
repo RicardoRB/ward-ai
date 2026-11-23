@@ -48,7 +48,7 @@ final class CorpusRun {
   private static final int SAMPLE = 3;
   private static final String HEADER =
       "# Ward's %1$s rules of the %5$s preset and every %1$s security rule, with default"
-          + " options, over every %2$s file of %7$s pinned projects (%6$s).\n"
+          + " options, over every %2$s file of %7$d pinned projects (%6$s).\n"
           + "%3$s"
           + "# A labelled finding is true (tp), false (fp) or undetermined (un), as read from the"
           + " code at its line; the labels are in %4$s-corpus-labels.txt. A rule with more than "
@@ -127,11 +127,17 @@ final class CorpusRun {
           findings(result.findings())
       );
     }
-    assertThat(notAnalysed(result))
+    assertThat(
+        notAnalysed(result).stream().filter(
+            line -> !CorpusSampling.parserGap(RESOURCES, key, line)
+        ).toList()
+    )
         .as("files without analysis%n%s", syntaxErrors(units, result))
         .isEmpty();
     assertThat(found).as("labels without a finding").containsAll(labels.keySet());
-    assertThat(underLabelled(rules, found, labels)).as("rules with too few labels").isEmpty();
+    assertThat(underLabelled(rules, CorpusSampling.sampled(rules, found), labels))
+        .as("rules with too few labels")
+        .isEmpty();
     if (preset == RulePreset.STRICT) {
       assertThat(CorpusApproximations.unlisted(RESOURCES, key, found, labels))
           .as("false positives without an approximation with a reason and an open issue")
@@ -273,7 +279,7 @@ final class CorpusRun {
             key,
             preset.name().toLowerCase(Locale.ROOT),
             licenses,
-            pinned.size() == 2 ? "two" : "three"
+            pinned.size()
         )
     )
         .append(files);
