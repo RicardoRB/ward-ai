@@ -21,7 +21,7 @@ class KotlinCorpusSmokeTest {
         "Kotlin",
         PinnedCorpus.kotlin(),
         RulePreset.STRICT,
-        "both Apache-2.0"
+        "all Apache-2.0"
     );
 
     assertThat(run.report()).isEqualTo(run.committed());

@@ -743,6 +743,68 @@ jobs:
             -Dward.benchmark.juice-shop.archive="$corpus/archives/juice/juice-shop.tar.gz" \
             test
 
+  # The differential report of #760: for a pull request into a release branch, runs the strict preset
+  # and every security rule of one language over the pinned projects at the merge base and at the
+  # merge commit, and writes the findings the change adds and removes, with the line of code, to the
+  # job summary. It never fails on a difference: a human reviews it (docs/adr/0001-false-positive-policy.md).
+  corpus-diff:
+    name: Differential findings (${{ matrix.language }})
+    if: github.event_name == 'pull_request' && github.base_ref != 'main' && needs.changes.outputs.code == 'true'
+    needs: [changes, maven-cache]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [java, kotlin, csharp, rust]
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - name: Restore the Maven repository
+        uses: actions/cache/restore@v5
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: maven-shared-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-shared-${{ runner.os }}-
+
+      - name: Restore the corpus archives
+        uses: actions/cache@v5
+        with:
+          path: ${{ runner.temp }}/corpus-archives
+          key: corpus-archives-${{ hashFiles('ward-cli/src/test/resources/corpus/archives.txt') }}
+
+      - name: Download and check the corpus archives
+        run: >-
+          sh ward-cli/src/test/resources/corpus/fetch-corpora.sh
+          ward-cli/src/test/resources/corpus/archives.txt
+          "$RUNNER_TEMP/corpus-archives" "$RUNNER_TEMP/corpus"
+
+      - name: Run the differential report
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          set -eu
+          base=$(git merge-base "origin/${BASE_REF}" HEAD)
+          sh ward-cli/src/test/resources/corpus/diff-findings.sh \
+            '${{ matrix.language }}' "$base" "$RUNNER_TEMP/corpus"
+          # The step summary holds 1 MiB; the full report is also uploaded.
+          head -c 900000 "target/corpus-diff/${{ matrix.language }}.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: corpus-diff-${{ matrix.language }}
+          path: target/corpus-diff/*.md
+
   # Runs the real oasdiff on the base and revision of every OpenAPI breaking-change fixture and
   # compares its error-level results with the native rules; every difference must be listed in
   # ward-cli/src/test/resources/parity/oasdiff-approximations.txt.

@@ -97,6 +97,46 @@ record PinnedCorpus(
           AnalysisLanguage.CSHARP
       );
 
+  /** RuoYi, a layered Spring Boot admin application (controller, service, mapper) with file download, upload and HTTP calls (MIT). */
+  static final PinnedCorpus RUOYI =
+      new PinnedCorpus(
+          "ruoyi",
+          "v4.8.3",
+          "730d8259046b076ed653463e44ee028109aa4e09a87e4d3e503958e6cad6c974",
+          "RuoYi-4.8.3",
+          AnalysisLanguage.JAVA
+      );
+
+  /** Mall, a layered Spring Boot e-commerce service with an admin and a portal application (Apache-2.0). */
+  static final PinnedCorpus MALL =
+      new PinnedCorpus(
+          "mall",
+          "v1.0.3",
+          "df0a916c111d1a20ceb74569cb3168327ca48245d06d1e950b5a5aec526770b8",
+          "mall-1.0.3",
+          AnalysisLanguage.JAVA
+      );
+
+  /** Eladmin, a layered Spring Boot admin service with generated code, file and mail endpoints (Apache-2.0). */
+  static final PinnedCorpus ELADMIN =
+      new PinnedCorpus(
+          "eladmin",
+          "v2.7",
+          "31916a16e0ddfcbc589ec7b4722b90b3b1993d568f3d3b155918d94ab77497e4",
+          "eladmin-2.7",
+          AnalysisLanguage.JAVA
+      );
+
+  /** Ktor samples, small Kotlin web applications and services (Apache-2.0); the project has no tags. */
+  static final PinnedCorpus KTOR_SAMPLES =
+      new PinnedCorpus(
+          "ktor-samples",
+          "e9763d69954723094da05c3d57b34755b9a1359a",
+          "61f55b3914e47d099127f1832e4b451d2861cbc9ee9057791460a7266fa56c18",
+          "ktor-samples-e9763d69954723094da05c3d57b34755b9a1359a",
+          AnalysisLanguage.KOTLIN
+      );
+
   /** Returns the C# corpora, in report order. */
   static List<PinnedCorpus> csharp() {
     return List.of(NEWTONSOFT_JSON, ESHOP);
@@ -124,12 +164,12 @@ record PinnedCorpus(
 
   /** Returns the Java corpora, in report order. */
   static List<PinnedCorpus> java() {
-    return List.of(COMMONS_LANG, PETCLINIC, SPRING_DATA_EXAMPLES);
+    return List.of(COMMONS_LANG, PETCLINIC, SPRING_DATA_EXAMPLES, RUOYI, MALL, ELADMIN);
   }
 
   /** Returns the Kotlin corpora, in report order. */
   static List<PinnedCorpus> kotlin() {
-    return List.of(OKIO, PETCLINIC_KOTLIN);
+    return List.of(OKIO, PETCLINIC_KOTLIN, KTOR_SAMPLES);
   }
 
   /** Returns the Rust corpora, in report order. */

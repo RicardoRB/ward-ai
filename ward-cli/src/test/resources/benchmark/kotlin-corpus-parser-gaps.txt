@@ -1,0 +1,4 @@
+# Valid files that the Kotlin parser rejects, and so no rule runs on: path | reason | #issue (#760).
+# A file listed here is not counted as a file left without analysis; remove the line when the issue is fixed.
+ktor-samples/httpbin/src/main/kotlin/io/ktor/samples/httpbin/Dynamic.kt | a lambda call after a local function with an underscore float literal is a syntax error | #767
+ktor-samples/httpbin/src/main/kotlin/io/ktor/samples/httpbin/Responses.kt | a bound callable reference on a class literal (this::class::simpleName) is a syntax error | #767

@@ -688,7 +688,6 @@ ward:java/no-field-di | spring-data-examples/cassandra/example/src/test/java/exa
 ward:java/no-field-di | spring-data-examples/cassandra/example/src/test/java/example/springdata/cassandra/basic/CassandraOperationsIntegrationTests.java:47 | tp | the line is a real instance of what the rule names
 ward:java/np-unwritten-field | spring-data-examples/jpa/showcase/src/test-snippets/java/example/springdata/jpa/showcase/snippets/test/AccountRepositoryIntegrationTest.java:34 | un | field is injected by the test framework
 ward:java/np-unwritten-field | spring-data-examples/jpa/showcase/src/test-snippets/java/example/springdata/jpa/showcase/snippets/test/CustomerRepositoryIntegrationTest.java:38 | un | field is injected by the test framework
-ward:java/openjdk-annotation-location | commons-lang/src/test/java/org/apache/commons/lang3/AnnotationUtilsTest.java:188 | un | needs more of the class or the project conventions than was read
 ward:java/openjdk-annotation-location | spring-data-examples/cassandra/vector-search/src/main/java/example/springdata/vector/Comment.java:38 | un | needs more of the class or the project conventions than was read
 ward:java/openjdk-annotation-location | spring-data-examples/jdbc/basics/src/main/java/example/springdata/jdbc/basics/aggregate/LegoSet.java:59 | un | needs more of the class or the project conventions than was read
 ward:java/outer-type-number | commons-lang/src/test/java/org/apache/commons/lang3/ClassUtilsShortClassNameTest.java:18 | tp | the line is a real instance of what the rule names
@@ -760,3 +759,96 @@ ward:java/uwf-unwritten-field | spring-data-examples/jpa/showcase/src/main/java/
 ward:java/unused-assignment | spring-data-examples/rest/starbucks/src/main/java/example/springdata/rest/stores/StoreInitializer.java:104 | tp | the initial null is overwritten by the first read of the loop before anything reads it
 ward:java/unused-local-variable | commons-lang/src/test/java/org/apache/commons/lang3/SerializationUtilsTest.java:201 | tp | the local is assigned and never read
 ward:java/unused-local-variable | commons-lang/src/test/java/org/apache/commons/lang3/StringUtilsAbbreviateTest.java:278 | tp | the only other mention of the local is in a comment
+# Security findings of the layered web applications of #760 (RuoYi, mall, eladmin), read at the line.
+ward:java/cookie-missing-secure | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/CookieUtils.java:75 | tp | the cookie of a helper that sets only the path and the age is added to the response without Secure
+ward:java/cookie-missing-secure | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/CookieUtils.java:131 | tp | the same helper re-adds a cookie it read with its old attributes and no Secure
+ward:java/csrf-protection-disabled | eladmin/eladmin-system/src/main/java/me/zhengjie/modules/security/config/SpringSecurityConfig.java:82 | fp | the same chain sets a stateless session policy and authenticates with a header token, so no browser sends a credential by itself (#766)
+ward:java/csrf-protection-disabled | mall/mall-demo/src/main/java/com/macro/mall/demo/config/SecurityConfig.java:33 | tp | the chain uses form login and http basic with sessions
+ward:java/csrf-protection-disabled | mall/mall-security/src/main/java/com/macro/mall/security/config/SecurityConfig.java:50 | fp | the same chain sets a stateless session policy and a token filter authenticates, so no cookie is involved (#766)
+ward:java/header-splitting | ruoyi/ruoyi-generator/src/main/java/com/ruoyi/generator/controller/GenController.java:251 | fp | the header is a constant and the decimal length of the byte array; the path variable only reaches the body (#764)
+ward:java/insecure-random | eladmin/eladmin-tools/src/main/java/me/zhengjie/utils/AlipayUtils.java:42 | un | four digits of an order code that is also built from the time; unique, not secret
+ward:java/insecure-random | mall/mall-portal/src/main/java/com/macro/mall/portal/service/impl/UmsMemberCouponServiceImpl.java:91 | un | four digits of an order number that also holds the time; unique, not secret
+ward:java/insecure-random | mall/mall-portal/src/main/java/com/macro/mall/portal/service/impl/UmsMemberServiceImpl.java:112 | tp | six digits of an SMS verification code come from java.util.Random
+ward:java/log-forging | eladmin/eladmin-common/src/main/java/me/zhengjie/aspect/LimitAspect.java:77 | fp | the request URI is the undecoded path, which cannot hold a line break (#763)
+ward:java/log-forging | eladmin/eladmin-system/src/main/java/me/zhengjie/modules/security/security/TokenFilter.java:105 | un | a header value is logged; whether it can hold a line break depends on the container's header parser
+ward:java/log-forging | mall/mall-security/src/main/java/com/macro/mall/security/component/JwtAuthenticationTokenFilter.java:44 | un | the name is a claim of the token, logged before the signature is validated
+ward:java/log-forging | mall/mall-security/src/main/java/com/macro/mall/security/component/JwtAuthenticationTokenFilter.java:50 | un | the name is a claim of a token whose signature is validated at that point
+ward:java/log-forging | ruoyi/ruoyi-framework/src/main/java/com/ruoyi/framework/web/exception/GlobalExceptionHandler.java:109 | fp | the request URI is the undecoded path, which cannot hold a line break (#763)
+ward:java/log-forging | ruoyi/ruoyi-framework/src/main/java/com/ruoyi/framework/web/exception/GlobalExceptionHandler.java:126 | fp | the request URI is the undecoded path, which cannot hold a line break (#763)
+ward:java/log-forging | ruoyi/ruoyi-framework/src/main/java/com/ruoyi/framework/web/exception/GlobalExceptionHandler.java:40 | fp | the request URI is the undecoded path, which cannot hold a line break (#763)
+ward:java/log-forging | ruoyi/ruoyi-framework/src/main/java/com/ruoyi/framework/web/exception/GlobalExceptionHandler.java:59 | fp | the request URI is the undecoded path, which cannot hold a line break (#763)
+ward:java/log-forging | ruoyi/ruoyi-framework/src/main/java/com/ruoyi/framework/web/exception/GlobalExceptionHandler.java:70 | fp | the request URI is the undecoded path, which cannot hold a line break (#763)
+ward:java/log-forging | ruoyi/ruoyi-framework/src/main/java/com/ruoyi/framework/web/exception/GlobalExceptionHandler.java:81 | fp | the request URI is the undecoded path, which cannot hold a line break (#763)
+ward:java/path-injection | eladmin/eladmin-generator/src/main/java/me/zhengjie/utils/GenUtil.java:159 | un | the root is the working directory and the rest comes from the generator configuration an administrator edits
+ward:java/path-injection | eladmin/eladmin-generator/src/main/java/me/zhengjie/utils/GenUtil.java:166 | un | the same path as the finding at line 159, passed to the file writer
+ward:java/path-injection | eladmin/eladmin-tools/src/main/java/me/zhengjie/config/MultipartConfig.java:38 | fp | the home directory property plus a constant, no request input (#765)
+ward:java/path-injection | ruoyi/ruoyi-generator/src/main/java/com/ruoyi/generator/service/impl/GenTableServiceImpl.java:282 | tp | the output path is a field of the table that a permitted user sets in the editor, and the code is written there
+ward:java/permissive-cors | eladmin/eladmin-system/src/main/java/me/zhengjie/config/ConfigurerAdapter.java:57 | tp | every origin pattern is allowed together with credentials
+ward:java/permissive-cors | mall/mall-admin/src/main/java/com/macro/mall/config/GlobalCorsConfig.java:23 | tp | every origin pattern is allowed
+ward:java/permissive-cors | mall/mall-portal/src/main/java/com/macro/mall/portal/config/GlobalCorsConfig.java:23 | tp | every origin pattern is allowed
+ward:java/permissive-cors | mall/mall-security/src/main/java/com/macro/mall/security/component/RestAuthenticationEntryPoint.java:21 | tp | the allow-origin header is set to a star on the error response
+ward:java/permissive-cors | mall/mall-security/src/main/java/com/macro/mall/security/component/RestfulAccessDeniedHandler.java:23 | tp | the allow-origin header is set to a star on the error response
+ward:java/regex-injection | mall/mall-mbg/src/main/java/com/macro/mall/CommentGenerator.java:58 | fp | the line separator property is split as a pattern, no request input (#765)
+ward:java/session-attribute-injection | ruoyi/ruoyi-framework/src/main/java/com/ruoyi/framework/interceptor/impl/SameUrlDataInterceptor.java:56 | un | the request data is stored under a constant key only to compare with the next request
+ward:java/unauthenticated-cbc | eladmin/eladmin-common/src/main/java/me/zhengjie/utils/EncryptUtils.java:43 | tp | DES in CBC mode with PKCS5 padding and no MAC
+ward:java/unsafe-deserialization-settings | mall/mall-common/src/main/java/com/macro/mall/common/config/BaseRedisConfig.java:47 | tp | default typing for non-final types with the permissive validator
+ward:java/weak-cipher | eladmin/eladmin-common/src/main/java/me/zhengjie/utils/EncryptUtils.java:43 | tp | DES with a constant key
+ward:java/weak-cipher | eladmin/eladmin-common/src/main/java/me/zhengjie/utils/EncryptUtils.java:53 | tp | DES with a constant key
+ward:java/weak-cipher | eladmin/eladmin-common/src/main/java/me/zhengjie/utils/EncryptUtils.java:66 | tp | DES with a constant key
+ward:java/weak-hash | eladmin/eladmin-common/src/main/java/me/zhengjie/utils/FileUtil.java:304 | un | MD5 as the checksum that names an uploaded file, not as a signature
+ward:java/weak-hash | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/security/Md5Utils.java:22 | tp | a general MD5 helper that the application uses for hashing
+ward:java/weak-hash | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/uuid/UUID.java:119 | un | MD5 as the specification of the name-based UUID, not a security use
+ward:java/weak-key-size | eladmin/eladmin-common/src/main/java/me/zhengjie/utils/RsaUtils.java:166 | tp | an RSA key pair of 1024 bits
+ward:java/weak-tls-protocol | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/http/HttpUtils.java:218 | tp | the generic SSL context with a trust-all manager
+ward:java/openjdk-annotation-location | spring-data-examples/jpa/jpa21/src/main/java/example/springdata/jpa/fetchgraph/Tag.java:33 | tp | two annotations share one line, which the style puts on separate lines
+# Other security-category rules (SpotBugs exposure and reflection checks) on the same three applications.
+ward:java/dp-do-inside-do-privileged | eladmin/eladmin-common/src/main/java/me/zhengjie/base/BaseDTO.java:32 | un | setAccessible outside doPrivileged matters only where a security manager runs, which the application does not install
+ward:java/dp-do-inside-do-privileged | eladmin/eladmin-common/src/main/java/me/zhengjie/base/BaseEntity.java:77 | un | setAccessible outside doPrivileged matters only where a security manager runs, which the application does not install
+ward:java/dp-do-inside-do-privileged | eladmin/eladmin-common/src/main/java/me/zhengjie/utils/QueryHelp.java:61 | un | setAccessible outside doPrivileged matters only where a security manager runs, which the application does not install
+ward:java/dp-do-inside-do-privileged | eladmin/eladmin-system/src/main/java/me/zhengjie/modules/system/service/impl/DeptServiceImpl.java:71 | un | setAccessible outside doPrivileged matters only where a security manager runs, which the application does not install
+ward:java/dp-do-inside-do-privileged | eladmin/eladmin-system/src/main/java/me/zhengjie/modules/system/service/impl/MenuServiceImpl.java:76 | un | setAccessible outside doPrivileged matters only where a security manager runs, which the application does not install
+ward:java/dp-do-inside-do-privileged | mall/mall-common/src/main/java/com/macro/mall/common/config/BaseSwaggerConfig.java:108 | un | setAccessible outside doPrivileged matters only where a security manager runs, which the application does not install
+ward:java/dp-do-inside-do-privileged | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/poi/ExcelUtil.java:1533 | un | setAccessible outside doPrivileged matters only where a security manager runs, which the application does not install
+ward:java/dp-do-inside-do-privileged | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/poi/ExcelUtil.java:1568 | un | setAccessible outside doPrivileged matters only where a security manager runs, which the application does not install
+ward:java/dp-do-inside-do-privileged | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/reflect/ReflectUtils.java:324 | un | setAccessible outside doPrivileged matters only where a security manager runs, which the application does not install
+ward:java/dp-do-inside-do-privileged | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/reflect/ReflectUtils.java:337 | un | setAccessible outside doPrivileged matters only where a security manager runs, which the application does not install
+ward:java/ms-cannot-be-final | eladmin/eladmin-common/src/main/java/me/zhengjie/config/RsaProperties.java:32 | tp | a public static field that a setter writes at start-up and any code can reassign
+ward:java/ms-cannot-be-final | eladmin/eladmin-system/src/main/java/me/zhengjie/config/thread/AsyncTaskProperties.java:32 | tp | a public static field that a setter writes at start-up and any code can reassign
+ward:java/ms-cannot-be-final | eladmin/eladmin-system/src/main/java/me/zhengjie/config/thread/AsyncTaskProperties.java:34 | tp | a public static field that a setter writes at start-up and any code can reassign
+ward:java/ms-cannot-be-final | eladmin/eladmin-system/src/main/java/me/zhengjie/config/thread/AsyncTaskProperties.java:36 | tp | a public static field that a setter writes at start-up and any code can reassign
+ward:java/ms-cannot-be-final | eladmin/eladmin-system/src/main/java/me/zhengjie/config/thread/AsyncTaskProperties.java:38 | tp | a public static field that a setter writes at start-up and any code can reassign
+ward:java/ms-cannot-be-final | ruoyi/ruoyi-generator/src/main/java/com/ruoyi/generator/config/GenConfig.java:19 | tp | a public static field that a setter writes at start-up and any code can reassign
+ward:java/ms-cannot-be-final | ruoyi/ruoyi-generator/src/main/java/com/ruoyi/generator/config/GenConfig.java:22 | tp | a public static field that a setter writes at start-up and any code can reassign
+ward:java/ms-cannot-be-final | ruoyi/ruoyi-generator/src/main/java/com/ruoyi/generator/config/GenConfig.java:25 | tp | a public static field that a setter writes at start-up and any code can reassign
+ward:java/ms-cannot-be-final | ruoyi/ruoyi-generator/src/main/java/com/ruoyi/generator/config/GenConfig.java:28 | tp | a public static field that a setter writes at start-up and any code can reassign
+ward:java/ms-cannot-be-final | ruoyi/ruoyi-generator/src/main/java/com/ruoyi/generator/config/GenConfig.java:31 | tp | a public static field that a setter writes at start-up and any code can reassign
+ward:java/ms-should-be-final | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/DateUtils.java:22 | tp | a public static field that holds a constant and is not final
+ward:java/ms-should-be-final | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/DateUtils.java:24 | tp | a public static field that holds a constant and is not final
+ward:java/ms-should-be-final | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/DateUtils.java:26 | tp | a public static field that holds a constant and is not final
+ward:java/ms-should-be-final | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/DateUtils.java:28 | tp | a public static field that holds a constant and is not final
+ward:java/ms-should-be-final | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/DateUtils.java:30 | tp | a public static field that holds a constant and is not final
+ward:java/ms-should-be-final | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/file/FileUtils.java:30 | tp | a public static field that holds a constant and is not final
+ward:java/ms-should-be-final | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/sql/SqlUtil.java:16 | tp | a public static field that holds a constant and is not final
+ward:java/ms-should-be-final | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/sql/SqlUtil.java:21 | tp | a public static field that holds a constant and is not final
+ward:java/ms-mutable-array | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/constant/Constants.java:115 | tp | a public static final array whose elements any caller can overwrite
+ward:java/ms-mutable-array | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/constant/Constants.java:120 | tp | a public static final array whose elements any caller can overwrite
+ward:java/ms-mutable-array | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/constant/GenConstants.java:35 | tp | a public static final array whose elements any caller can overwrite
+ward:java/ms-mutable-array | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/constant/GenConstants.java:38 | tp | a public static final array whose elements any caller can overwrite
+ward:java/ms-mutable-array | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/constant/GenConstants.java:41 | tp | a public static final array whose elements any caller can overwrite
+ward:java/ms-mutable-array | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/constant/GenConstants.java:44 | tp | a public static final array whose elements any caller can overwrite
+ward:java/ms-mutable-array | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/constant/GenConstants.java:48 | tp | a public static final array whose elements any caller can overwrite
+ward:java/ms-mutable-array | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/constant/GenConstants.java:51 | tp | a public static final array whose elements any caller can overwrite
+ward:java/ms-mutable-array | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/constant/GenConstants.java:55 | tp | a public static final array whose elements any caller can overwrite
+ward:java/ms-mutable-array | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/constant/GenConstants.java:59 | tp | a public static final array whose elements any caller can overwrite
+ward:java/ms-mutable-array | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/constant/GenConstants.java:62 | tp | a public static final array whose elements any caller can overwrite
+ward:java/ms-mutable-array | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/file/MimeTypeUtils.java:20 | tp | a public static final array whose elements any caller can overwrite
+ward:java/ms-mutable-array | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/file/MimeTypeUtils.java:22 | tp | a public static final array whose elements any caller can overwrite
+ward:java/ms-mutable-array | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/file/MimeTypeUtils.java:24 | tp | a public static final array whose elements any caller can overwrite
+ward:java/ms-mutable-array | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/file/MimeTypeUtils.java:27 | tp | a public static final array whose elements any caller can overwrite
+ward:java/ms-mutable-array | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/file/MimeTypeUtils.java:29 | tp | a public static final array whose elements any caller can overwrite
+ward:java/ms-mutable-array | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/poi/ExcelUtil.java:102 | tp | a public static final array whose elements any caller can overwrite
+ward:java/ms-mutable-array | ruoyi/ruoyi-framework/src/main/java/com/ruoyi/framework/aspectj/LogAspect.java:45 | tp | a public static final array whose elements any caller can overwrite
+ward:java/reflc-reflection-may-increase-accessibility-of-class | ruoyi/ruoyi-quartz/src/main/java/com/ruoyi/quartz/util/JobInvokeUtil.java:37 | un | the class is built from a configured name with the public constructor path; no accessibility override follows
+ward:java/reflf-reflection-may-increase-accessibility-of-field | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/poi/ExcelUtil.java:1567 | tp | the declared field is read and then made accessible with setAccessible
+ward:java/reflf-reflection-may-increase-accessibility-of-field | ruoyi/ruoyi-common/src/main/java/com/ruoyi/common/utils/reflect/ReflectUtils.java:243 | tp | the declared field is read and then made accessible with setAccessible
+ward:java/dp-do-inside-do-privileged | mall/mall-common/src/main/java/com/macro/mall/common/config/BaseSwaggerConfig.java:108 | un | setAccessible outside doPrivileged matters only where a security manager runs, which the application does not install
