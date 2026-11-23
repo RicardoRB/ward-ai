@@ -87,9 +87,7 @@ public final class SwiftWeakRandomCheck implements RuleCheck {
   }
 
   private static boolean isParameter(final String text, final String name) {
-    return Pattern.compile(
-            "(?:init|func\\s+\\w+)\\s*\\([^)]*\\b" + Pattern.quote(name) + "\\s*:"
-        )
+    return Pattern.compile("(?:init|func\\s+\\w+)\\s*\\([^)]*\\b" + Pattern.quote(name) + "\\s*:")
         .matcher(text)
         .find();
   }
