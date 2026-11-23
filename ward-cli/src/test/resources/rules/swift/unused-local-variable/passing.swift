@@ -27,3 +27,23 @@ func totals(of sales: [Int]) -> Int {
     }
     return sum
 }
+
+func httpVersion() -> String {
+    #if os(Linux)
+    let version = "HTTP/1.1"
+    #else
+    let version = String(describing: 1.1)
+    #endif
+    return version
+}
+
+func tracked(session: Session?) {
+    var current: Session? = session
+    #if compiler(>=6.2)
+    weak let weakSession = current
+    #else
+    weak var weakSession = current
+    #endif
+    current = nil
+    print(weakSession as Any)
+}

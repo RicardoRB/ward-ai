@@ -18,3 +18,13 @@ struct Form {
         return text + "\(flag)"
     }
 }
+
+struct Handler {
+    private func handle(transaction: Verification<Int>) {
+        guard case .verified(let transaction) = transaction else {
+            print("unverified: \(transaction)")
+            return
+        }
+        print(transaction)
+    }
+}

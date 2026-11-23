@@ -3,6 +3,8 @@ package dev.ward.analysis.domain.swift;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.scope.ReferenceAccess;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Records the reads of an outer name by a binding that takes the same name: {@code if let name},
@@ -37,6 +39,34 @@ final class SwiftScopeShadows {
     if (name == null || initializer == null || !reads(initializer, SwiftScopeWalk.text(name))) {
       return;
     }
+    readBefore(name);
+  }
+
+  /**
+   * Records the read of the outer name in {@code guard case .some(let name) = name}: a case
+   * pattern binds new names after its initializer is evaluated, so the initializer reads the outer
+   * one (#753).
+   */
+  void caseRead(final SyntaxNode initializer, final SyntaxNode pattern) {
+    final List<SyntaxNode> names = new ArrayList<>();
+    boundNames(pattern, names);
+    names.stream()
+        .filter(name -> reads(initializer, SwiftScopeWalk.text(name)))
+        .forEach(this::readBefore);
+  }
+
+  private static void boundNames(final SyntaxNode node, final List<SyntaxNode> into) {
+    if (IDENTIFIER_PATTERN.equals(node.kind())) {
+      final SyntaxNode name = SwiftScopeWalk.child(node, IDENTIFIER);
+      if (name != null) {
+        into.add(name);
+      }
+      return;
+    }
+    node.children().forEach(child -> boundNames(child, into));
+  }
+
+  private void readBefore(final SyntaxNode name) {
     final Span at = name.span();
     final int offset = Math.max(at.startOffset() - 1, 0);
     final Span before =

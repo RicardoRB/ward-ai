@@ -56,10 +56,7 @@ severity = "error"
 category = "security"
 presets = ["standard", "strict"]
 body = '''
-check = "text-pattern"
-target = "lines"
-position = "match"
-pattern = '(?<![\w.])(rand|random|srand|srandom|drand48|lrand48)\('
+check = "swift-weak-random"
 message = "the C library generator is predictable; use SystemRandomNumberGenerator or SecRandomCopyBytes for secrets"
 '''
 

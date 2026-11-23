@@ -57,6 +57,7 @@ final class SwiftScopeWalk {
   final SwiftScopeClosures closures;
   final SwiftScopePatterns patterns;
   final SwiftScopeExpressions expressions;
+  private final SwiftScopeConditional conditional;
   private final Map<String, Consumer<SyntaxNode>> handlers = new HashMap<>();
 
   SwiftScopeWalk(final ScopeBuilder builder) {
@@ -64,6 +65,7 @@ final class SwiftScopeWalk {
     this.closures = new SwiftScopeClosures(this);
     this.patterns = new SwiftScopePatterns(this);
     this.expressions = new SwiftScopeExpressions(this);
+    this.conditional = new SwiftScopeConditional(this);
     this.builder = builder;
     this.scopes = new SwiftScopeStack(builder);
     handlers.put("import_declaration", types::importDeclaration);
@@ -80,6 +82,8 @@ final class SwiftScopeWalk {
     handlers.put("variable_declaration", node -> types.declaration(node, BindingKind.VARIABLE));
     handlers.put("pattern_initializer", patterns::patternInitializer);
     handlers.put("optional_binding_condition", patterns::optionalBinding);
+    handlers.put("case_condition", patterns::caseCondition);
+    handlers.put("conditional_compilation_block", conditional::block);
     handlers.put("for_in_statement", patterns::forIn);
     handlers.put("catch_clause", patterns::catchClause);
     handlers.put("closure_expression", closures::closure);
