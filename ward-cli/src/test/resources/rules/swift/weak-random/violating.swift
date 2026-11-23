@@ -6,3 +6,8 @@ func token() -> Int {
     let second = random()
     return Int(first) + Int(second)
 }
+
+func clockSeeded() -> Double {
+    srand48(Int(time(nil)))
+    return drand48()
+}

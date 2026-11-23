@@ -126,17 +126,13 @@ ward:swift/unneeded-synthesized-initializer | alamofire/Tests/AuthenticationInte
 ward:swift/unused-closure-parameter | sample-food-truck/App/Truck/SalesHistoryView.swift:50 | tp | the closure never uses the named parameter
 ward:swift/unused-closure-parameter | sample-food-truck/App/Donut/TopDonutSalesChart.swift:55 | tp | the closure never uses the named parameter
 ward:swift/unused-closure-parameter | sample-food-truck/App/Truck/Cards/TruckOrdersCard.swift:64 | tp | the closure never uses the named parameter
-ward:swift/unused-local-variable | alamofire/Tests/ResponseSerializationTests.swift:1406 | fp | the name is declared once in each branch of a conditional compilation block and read after it
-ward:swift/unused-local-variable | alamofire/Tests/SessionTests.swift:565 | fp | the name is declared once in each branch of a conditional compilation block and read after it
 ward:swift/unused-parameter | sample-food-truck/FoodTruckKit/Sources/Order/OrderGenerator.swift:107 | tp | the body never uses the parameter
 ward:swift/unused-parameter | sample-food-truck/FoodTruckKit/Sources/Order/OrderGenerator.swift:71 | tp | the body never uses the parameter
-ward:swift/unused-parameter | sample-food-truck/FoodTruckKit/Sources/Store/StoreActor.swift:117 | fp | guard case .verified(let transaction) = transaction reads the parameter and binds a new constant of the same name
 ward:swift/unused-setter-value | alamofire/Source/Features/AlamofireExtended.swift:53 | tp | the setter body is empty
 ward:swift/unused-setter-value | alamofire/Source/Features/AlamofireExtended.swift:59 | tp | the setter body is empty
 ward:swift/variable-declaration-usage-distance | sample-food-truck/App/General/FlowLayout.swift:57 | tp | several statements stand between the declaration and the first use; the count was not recomputed by hand
 ward:swift/variable-declaration-usage-distance | alamofire/Source/Features/URLEncodedFormEncoder.swift:237 | tp | several statements stand between the declaration and the first use; the count was not recomputed by hand
 ward:swift/variable-declaration-usage-distance | alamofire/Tests/RedirectHandlerTests.swift:42 | tp | several statements stand between the declaration and the first use; the count was not recomputed by hand
-ward:swift/weak-random | sample-food-truck/FoodTruckKit/Sources/Order/OrderGenerator.swift:143 | fp | drand48 fills a seeded generator for sample data, on purpose repeatable; no secret is involved
 ward:swift/xctfail-message | alamofire/Tests/DownloadTests.swift:1076 | tp | XCTFail() without a message
 ward:swift/xctfail-message | alamofire/Tests/DownloadTests.swift:958 | tp | XCTFail() without a message
 ward:swift/xctfail-message | alamofire/Tests/ResponseTests.swift:585 | tp | XCTFail() without a message

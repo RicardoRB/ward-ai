@@ -7,7 +7,7 @@
 # Regenerate: ./mvnw -pl ward-cli -am -Dtest=SwiftCorpusSmokeTest -Dward.corpus.swift=<dir> -Djacoco.skip=true -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
 alamofire | files 101 | not analysed 0
 sample-food-truck | files 82 | not analysed 0
-rules 183 | not run (need type facts) 1 | findings 9461
+rules 183 | not run (need type facts) 1 | findings 9457
 ward:swift/abbreviation-as-word-in-name | findings 453 | labelled 3 | tp 3 | fp 0 | un 0
 ward:swift/annotation-location | findings 51 | labelled 3 | tp 3 | fp 0 | un 0
 ward:swift/array-init | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -171,9 +171,9 @@ ward:swift/unused-closure-parameter | findings 5 | labelled 3 | tp 3 | fp 0 | un
 ward:swift/unused-control-flow-label | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/unused-declaration | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/unused-enumerated | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:swift/unused-local-variable | findings 2 | labelled 2 | tp 0 | fp 2 | un 0
+ward:swift/unused-local-variable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/unused-optional-binding | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:swift/unused-parameter | findings 3 | labelled 3 | tp 2 | fp 1 | un 0
+ward:swift/unused-parameter | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
 ward:swift/unused-setter-value | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
 ward:swift/valid-ibinspectable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/variable-declaration-usage-distance | findings 568 | labelled 3 | tp 3 | fp 0 | un 0
@@ -190,5 +190,5 @@ security | ward:swift/sql-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un
 security | ward:swift/userdefaults-secret | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 security | ward:swift/weak-cipher | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 security | ward:swift/weak-hash | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-security | ward:swift/weak-random | findings 1 | labelled 1 | tp 0 | fp 1 | un 0
+security | ward:swift/weak-random | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward format | files 183 | need formatting 160 | refused or broken 0

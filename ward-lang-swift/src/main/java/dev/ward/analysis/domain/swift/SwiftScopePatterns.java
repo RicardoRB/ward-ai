@@ -49,6 +49,19 @@ final class SwiftScopePatterns {
     walk.declaring = outer;
   }
 
+  /** {@code case .some(let x) = x}: the initializer is read before the pattern binds. */
+  void caseCondition(final SyntaxNode node) {
+    final SyntaxNode initializer = SwiftScopeWalk.child(node, INITIALIZER);
+    final SyntaxNode pattern = SwiftScopeWalk.child(node, PATTERN);
+    if (initializer == null || pattern == null) {
+      walk.generic(node);
+      return;
+    }
+    walk.visit(initializer);
+    shadows.caseRead(initializer, pattern);
+    walk.visit(pattern);
+  }
+
   void forIn(final SyntaxNode node) {
     walk.scopes.open(ScopeKind.BLOCK, node.span());
     node.children().stream().filter(c -> "expression".equals(c.kind())).forEach(walk::visit);

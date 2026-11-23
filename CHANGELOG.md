@@ -30,6 +30,9 @@ still change behavior. Breaking changes are called out under **Changed**.
 - `ward:rust/unused-assignments` no longer reports a variable that a closure or async block names, or a name that starts with `_` (#709).
 - `ward:rust/unused-variables` reads the names in the format string of any macro, raw strings and `macro_rules!` bodies, skips const generic parameters, and skips a constant or `let` under `#[cfg(..)]`, whose alternative may be the one used (#709).
 - `ward:rust/unsafe-public-function` no longer reports `pub(crate)` functions, which are not public (#709).
+- `ward:swift/unused-local-variable` no longer reports a name declared in each branch of an `#if` block and read after it (#752).
+- `ward:swift/unused-parameter` counts the read of a parameter by `guard case .x(let name) = name` that binds the same name (#753).
+- `ward:swift/weak-random` accepts `drand48` and `lrand48` when the same file seeds them with `srand48` and a constant or a seed parameter; a seed from the clock still reports (#754).
 
 ## [0.12.0] - 2026-11-22
 

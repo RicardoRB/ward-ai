@@ -7,6 +7,20 @@
 # do not run), default options. Each project had only a ward.toml with the ward check over **/*.kt and that
 # ward-rules.toml; nothing of the project was built.
 #
+# Strict preset, measured 2026-11-23 with the jar of the 0.12.1 branch (java -jar ward.jar, default heap), on the same
+# machine, through /usr/bin/time -l. The 1-minute load average at the start of each run was 7 to 13 (other sessions and a
+# commit hook ran at the same time), so every wall time is an upper bound. Rule set: preset strict, languages kotlin
+# (the Kotlin security rules are in it), default options, ward check over **/*.kt; ward format --check has no path filter.
+#
+# project | run | findings | wall time | user CPU | peak memory
+# okio                    | ward check, cold    | 5,940 findings | 56.1 s | 86.7 s | 2.61 GB
+# okio                    | ward check, cached  | 5,940 findings | 22.3 s | 35.0 s | 2.71 GB
+# okio                    | ward format --check | 258 files need formatting | 62.7 s | 77.3 s | 2.34 GB
+# spring-petclinic-kotlin | ward check, cold    | 71 findings |  4.5 s | 14.4 s | 0.60 GB
+# spring-petclinic-kotlin | ward check, cached  | 71 findings |  3.2 s |  9.2 s | 0.58 GB
+# spring-petclinic-kotlin | ward format --check | 30 files need formatting |  3.4 s |  6.2 s | 0.76 GB
+# The numbers below are those of the standard preset, kept for the comparison.
+#
 # run | files | lines | findings | wall time | user CPU | peak memory | 1-minute load
 okio                    | ward check, cold    | 313 | 53,554 | 6,050 | 44.0 s | 70.6 s | 2.23 GB | 4.9
 okio                    | ward check, cached  | 313 | 53,554 | 6,050 | 18.1 s | 29.4 s | 2.22 GB | 4.6

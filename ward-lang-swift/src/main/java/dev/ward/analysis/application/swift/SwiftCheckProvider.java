@@ -12,6 +12,7 @@ import dev.ward.analysis.domain.swift.SwiftHiddenFieldCheck;
 import dev.ward.analysis.domain.swift.SwiftParameterAlignmentCheck;
 import dev.ward.analysis.domain.swift.SwiftRightCurlyCheck;
 import dev.ward.analysis.domain.swift.SwiftUnusedParameterCheck;
+import dev.ward.analysis.domain.swift.SwiftWeakRandomCheck;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,6 +65,10 @@ public final class SwiftCheckProvider implements CheckProvider {
     checks.put(
         "swift-unused-parameter",
         toml -> new SwiftUnusedParameterCheck(TomlValues.required(toml, MESSAGE))
+    );
+    checks.put(
+        "swift-weak-random",
+        toml -> new SwiftWeakRandomCheck(TomlValues.required(toml, MESSAGE))
     );
     checks.put(
         "swift-variable-distance",
