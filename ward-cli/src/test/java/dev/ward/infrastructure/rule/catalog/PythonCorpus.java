@@ -4,6 +4,7 @@ import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.FileSummary;
 import dev.ward.analysis.domain.ir.SourceUnit;
+import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.analysis.domain.port.LanguageFrontend;
 import dev.ward.analysis.domain.python.PythonFileSummarizer;
 import java.io.IOException;
@@ -50,6 +51,23 @@ final class PythonCorpus {
           .map(file -> unit(root, file))
           .toList();
     }
+  }
+
+  /** Returns the template files of the corpus, which name members of the objects they render. */
+  static ProjectFiles templates(final Path root) throws IOException {
+    final Map<String, String> texts = new java.util.TreeMap<>();
+    try (Stream<Path> files = Files.walk(root)) {
+      for (final Path file : files.filter(Files::isRegularFile).toList()) {
+        final String name = file.toString();
+        if (name.endsWith(".html") || name.endsWith(".jinja") || name.endsWith(".txt")) {
+          texts.put(
+              root.relativize(file).toString().replace('\\', '/'),
+              Files.readString(file, StandardCharsets.UTF_8)
+          );
+        }
+      }
+    }
+    return new ProjectFiles(texts);
   }
 
   private static SourceUnit unit(final Path root, final Path file) {

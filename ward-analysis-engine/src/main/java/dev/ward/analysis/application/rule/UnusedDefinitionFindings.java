@@ -3,6 +3,7 @@ package dev.ward.analysis.application.rule;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.FileSummary;
 import dev.ward.analysis.domain.ir.Symbol;
+import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -77,7 +78,25 @@ public final class UnusedDefinitionFindings {
       final Function<String,
       Optional<String>> moduleOf
   ) {
+    return findings(rules, summaries, moduleOf, ProjectFiles.empty());
+  }
+
+  /**
+   * Like {@link #findings(List, Map, Function)}, and counts the words of the template files of
+   * {@code files} as used names: a template reads the members of the objects it renders by name.
+   *
+   * @throws NullPointerException if an argument is missing
+   */
+  public static List<AnalysisFinding> findings(
+      final List<RuleDefinition> rules,
+      final Map<String,
+      FileSummary> summaries,
+      final Function<String,
+      Optional<String>> moduleOf,
+      final ProjectFiles files
+  ) {
     Objects.requireNonNull(summaries, "summaries");
+    Objects.requireNonNull(files, "files");
     Objects.requireNonNull(moduleOf, "moduleOf");
     final Set<String> used = new HashSet<>();
     final Set<String> assigned = new HashSet<>();
@@ -89,6 +108,7 @@ public final class UnusedDefinitionFindings {
               assigned.addAll(summary.assignedNames());
             }
         );
+    used.addAll(TemplateWords.of(files));
     final List<AnalysisFinding> findings = new ArrayList<>();
     for (final RuleDefinition rule : rules) {
       if (SwiftModuleAccessibility.isRule(rule)) {

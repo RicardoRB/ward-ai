@@ -4,7 +4,7 @@
 # A labelled finding is true (tp), false (fp) or undetermined (un), as read from the code at its line; the labels are in flask-corpus-labels.txt. Every finding of a security rule is labelled; of another rule, its first 5 findings in path order.
 # The measured cost of the run is in flask-corpus-cost.txt.
 # Regenerate: ./mvnw -pl ward-cli -am -Djacoco.skip=true -Dtest=FlaskCorpusSmokeTest -Dward.benchmark.flask-corpus=<dir> -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
-files 333 | findings 6573
+files 333 | findings 6491
 ward:python/abbreviation-as-word-in-name | findings 21 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/abstract-base-class-without-abstract-method | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/abstract-class-instantiated | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -281,7 +281,7 @@ ward:python/overload-methods-declaration-order | findings 0 | labelled 0 | tp 0 
 ward:python/overridden-final-method | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/parameter-count | findings 14 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/parameter-name | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
-ward:python/path-injection | findings 3 | labelled 3 | tp 0 | fp 3 | un 0
+ward:python/path-injection | findings 2 | labelled 2 | tp 0 | fp 2 | un 0
 ward:python/path-traversal | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/percent-format-expected-mapping | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/percent-format-expected-sequence | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -382,7 +382,7 @@ ward:python/sys-version-slice3 | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/sys-version0 | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/sys-version2 | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/template-autoescape-disabled | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:python/template-injection | findings 1 | labelled 1 | tp 0 | fp 1 | un 0
+ward:python/template-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/todo-comment | findings 56 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/too-few-public-methods | findings 3 | labelled 3 | tp 0 | fp 0 | un 3
 ward:python/too-many-ancestors | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -464,14 +464,14 @@ ward:python/untrusted-request-url | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/unused-annotation | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/unused-argument | findings 5 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/unused-attribute | findings 1 | labelled 1 | tp 0 | fp 0 | un 1
-ward:python/unused-class | findings 31 | labelled 5 | tp 0 | fp 5 | un 0
-ward:python/unused-function | findings 47 | labelled 5 | tp 0 | fp 5 | un 0
+ward:python/unused-class | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
+ward:python/unused-function | findings 4 | labelled 4 | tp 3 | fp 0 | un 1
 ward:python/unused-import | findings 31 | labelled 5 | tp 0 | fp 0 | un 5
 ward:python/unused-local-variable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/unused-loop-control-variable | findings 7 | labelled 5 | tp 5 | fp 0 | un 0
-ward:python/unused-method | findings 1 | labelled 1 | tp 0 | fp 1 | un 0
+ward:python/unused-method | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/unused-private-member | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:python/unused-property | findings 8 | labelled 5 | tp 0 | fp 5 | un 0
+ward:python/unused-property | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:python/use-implicit-booleaness-not-comparison | findings 24 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/use-implicit-booleaness-not-len | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:python/use-maxsplit-arg | findings 2 | labelled 2 | tp 2 | fp 0 | un 0

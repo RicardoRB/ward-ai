@@ -40,6 +40,10 @@ public final class GateFrontends {
       )
           .collect(Collectors.toUnmodifiableSet());
 
+  // The templates that name the members of a Python project, read as a source of used names.
+  private static final Set<String> PYTHON_TEMPLATES =
+      Set.of("*.html", "*.jinja", "*.jinja2", "*.j2", "*.txt");
+
   private GateFrontends() {}
 
   /** Creates the support of every language over one parser. */
@@ -67,7 +71,8 @@ public final class GateFrontends {
             flow,
             new PythonControlFlow(),
             new CachedScopes(new PythonScopes(ClasspathBuiltinNames.python()))
-        ),
+        )
+            .withManifests(PYTHON_TEMPLATES),
         new FrontendSupport(
             AnalysisLanguage.TYPESCRIPT,
             frontend,

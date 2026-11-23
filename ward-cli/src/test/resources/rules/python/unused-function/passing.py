@@ -22,3 +22,14 @@ def user_context(request):
 
 
 CONTEXT_PROCESSORS = ["app.context_processors.user_context"]
+
+
+from alembic import op
+
+
+def upgrade():
+    op.drop_table("old")
+
+
+def downgrade():
+    op.create_table("old")

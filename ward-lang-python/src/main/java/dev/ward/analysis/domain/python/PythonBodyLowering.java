@@ -5,6 +5,7 @@ import dev.ward.analysis.domain.ir.ControlFlowGraph;
 import dev.ward.analysis.domain.ir.FlowEdgeKind;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.ir.VariableAccess;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,6 +25,7 @@ final class PythonBodyLowering {
   private final PythonLoopLowering loops;
   private final PythonHandlerLowering handlers;
   private final Map<String, String> imports;
+  private final Set<String> collections;
 
   /**
    * Starts the lowering of one body.
@@ -31,14 +33,17 @@ final class PythonBodyLowering {
    * @param excluded the names the body declares {@code global} or {@code nonlocal}
    * @param tracked false when a star import makes every name of the body possibly bound elsewhere
    * @param imports what the names bound by the imports of the file stand for
+   * @param collections the names that the file binds once, to a collection the program fixes
    */
   PythonBodyLowering(
       final Set<String> excluded,
       final boolean tracked,
       final Map<String,
-      String> imports
+      String> imports,
+      final Set<String> collections
   ) {
     this.imports = imports;
+    this.collections = collections;
     this.accesses = new PythonAccesses(excluded, tracked);
     this.flow = new ControlFlowBuilder(accesses, new PythonFlowSites(imports));
     this.loops = new PythonLoopLowering(flow, accesses, this::statements);
@@ -137,6 +142,10 @@ final class PythonBodyLowering {
       final int next = flow.newBlock();
       flow.branch(then, next);
       flow.moveTo(then);
+      final SyntaxNode condition = conditions.get(index);
+      PythonMembershipGuards.inside(condition, collections).ifPresent(
+          name -> clean(name, condition)
+      );
       statements(blocks.get(index));
       flow.edge(flow.current(), after, FlowEdgeKind.NORMAL);
       flow.moveTo(next);
@@ -146,5 +155,16 @@ final class PythonBodyLowering {
     }
     flow.edge(flow.current(), after, FlowEdgeKind.NORMAL);
     flow.moveTo(after);
+    if (conditions.size() == 1 && blocks.size() == 1) {
+      PythonMembershipGuards.past(conditions.get(0), blocks.get(0), imports, collections)
+          .ifPresent(name -> clean(name, node));
+    }
+  }
+
+  private void clean(final String name, final SyntaxNode guard) {
+    final List<VariableAccess> clean = accesses.clean(name, guard.span());
+    if (!clean.isEmpty()) {
+      flow.record(clean, List.of());
+    }
   }
 }

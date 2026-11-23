@@ -189,9 +189,6 @@ ward:python/unused-loop-control-variable | hc/api/management/commands/sendreport
 ward:python/unused-loop-control-variable | hc/lib/date.py:110 | tp | the body repeats without reading the loop variable
 ward:python/unused-loop-control-variable | hc/lib/date.py:128 | tp | the body repeats without reading the loop variable
 ward:python/unused-loop-control-variable | hc/lib/date.py:141 | tp | the body repeats without reading the loop variable
-ward:python/unused-property | hc/api/models.py:974 | un | a template may read the property; templates are not analysed
-ward:python/unused-property | hc/api/models.py:1006 | un | a template may read the property; templates are not analysed
-ward:python/unused-property | hc/api/models.py:1197 | un | a template may read the property; templates are not analysed
 ward:python/use-implicit-booleaness-not-comparison | hc/accounts/management/commands/createsuperuser.py:33 | tp | a string is compared with the empty string
 ward:python/use-implicit-booleaness-not-comparison | hc/api/models.py:952 | tp | a string is compared with the empty string
 ward:python/use-implicit-booleaness-not-comparison | hc/front/forms.py:43 | tp | a string is compared with the empty string
@@ -217,10 +214,7 @@ ward:python/zip-without-explicit-strict | hc/integrations/prometheus/views.py:10
 ward:python/too-few-public-methods | hc/api/models.py:169 | tp | a plain class with one public method besides the constructor
 ward:python/unused-import | hc/logs/tests/test_sendlogs.py:3 | tp | the name is not read in the module
 ward:python/unused-method | hc/accounts/models.py:391 | tp | no file of the project calls the method
-ward:python/unused-method | hc/accounts/models.py:507 | fp | a Django template calls the method (project.get_n_down); Ward reads no template
 ward:python/unused-method | hc/accounts/models.py:528 | tp | no file of the project calls the method
-ward:python/unused-method | hc/accounts/models.py:538 | fp | a Django template calls the property (project.auth_metrics_url); Ward reads no template
-ward:python/unused-method | hc/api/models.py:436 | fp | a Django template calls the method (check.filter_any); Ward reads no template
 ward:python/avoid-inline-conditionals | docker/gunicorn.conf.py:14 | tp | a conditional expression
 ward:python/avoid-inline-conditionals | hc/accounts/forms.py:73 | tp | a conditional expression
 ward:python/avoid-inline-conditionals | hc/accounts/models.py:148 | tp | a conditional expression

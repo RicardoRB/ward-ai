@@ -4,7 +4,7 @@
 # A labelled finding is true (tp), false (fp) or undetermined (un), as read from the code at its line; the labels are in python-corpus-labels.txt. Every finding of a security rule is labelled; of another rule, its first 5 findings in path order.
 # The measured cost of the run is in python-corpus-cost.txt.
 # Regenerate: ./mvnw -pl ward-cli -am -Djacoco.skip=true -Dtest=PythonCorpusSmokeTest -Dward.benchmark.python-corpus=<dir> -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
-files 657 | findings 4945
+files 657 | findings 4932
 ward:python/abbreviation-as-word-in-name | findings 11 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/abstract-base-class-without-abstract-method | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/abstract-class-instantiated | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -469,9 +469,9 @@ ward:python/unused-function | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/unused-import | findings 6 | labelled 5 | tp 4 | fp 0 | un 1
 ward:python/unused-local-variable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/unused-loop-control-variable | findings 5 | labelled 5 | tp 5 | fp 0 | un 0
-ward:python/unused-method | findings 12 | labelled 5 | tp 2 | fp 3 | un 0
+ward:python/unused-method | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
 ward:python/unused-private-member | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:python/unused-property | findings 3 | labelled 3 | tp 0 | fp 0 | un 3
+ward:python/unused-property | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/use-implicit-booleaness-not-comparison | findings 7 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/use-implicit-booleaness-not-len | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:python/use-maxsplit-arg | findings 9 | labelled 5 | tp 5 | fp 0 | un 0

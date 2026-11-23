@@ -3,6 +3,3 @@ ward:python/untrusted-redirect | hc/accounts/views.py:115 | a validator on the s
 ward:python/untrusted-redirect | hc/front/views.py:555 | the request value is only the query string, appended to the path of a route of the application | #733
 ward:python/untrusted-redirect | hc/front/views.py:578 | the request value is only the query string, appended to the path of a route of the application | #733
 ward:python/untrusted-redirect | hc/front/views.py:674 | the request value is only the query string, appended to the path of a route of the application | #733
-ward:python/unused-method | hc/accounts/models.py:507 | a Django template calls the method (project.get_n_down); Ward reads no template | #729
-ward:python/unused-method | hc/accounts/models.py:538 | a Django template calls the property (project.auth_metrics_url); Ward reads no template | #729
-ward:python/unused-method | hc/api/models.py:436 | a Django template calls the method (check.filter_any); Ward reads no template | #729

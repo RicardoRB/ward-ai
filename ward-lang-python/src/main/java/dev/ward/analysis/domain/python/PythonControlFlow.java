@@ -34,8 +34,11 @@ public final class PythonControlFlow implements ControlFlowLowering {
   public ControlFlowResult lower(final SourceUnit unit, final SyntaxNode tree) {
     final List<ControlFlowGraph> graphs = new ArrayList<>();
     final Map<String, String> imports = PythonImportAliases.of(tree);
-    graphs.add(body(MODULE, tree, PythonParameters.NONE, tree.span(), imports));
-    collectDefinitions(tree, graphs, imports, List.of());
+    final Set<String> collections = PythonLiteralCollections.of(tree);
+    graphs.add(
+        body(MODULE, tree, PythonParameters.NONE, tree.span(), new FileFacts(imports, collections))
+    );
+    collectDefinitions(tree, graphs, imports, collections, List.of());
     return new ControlFlowResult(graphs, List.of());
   }
 
@@ -45,15 +48,22 @@ public final class PythonControlFlow implements ControlFlowLowering {
       final List<ControlFlowGraph> out,
       final Map<String,
       String> imports,
+      final Set<String> collections,
       final List<SyntaxNode> decorators
   ) {
     final List<SyntaxNode> inherited =
         "decorated".equals(node.kind()) ? PythonParameters.decoratorsOf(node) : decorators;
     for (final SyntaxNode child : node.children()) {
       if (FUNCDEF.equals(child.kind()) || CLASSDEF.equals(child.kind())) {
-        out.add(definition(child, imports, inherited));
+        out.add(definition(child, imports, collections, inherited));
       }
-      collectDefinitions(child, out, imports, FUNCDEF.equals(child.kind()) ? List.of() : inherited);
+      collectDefinitions(
+          child,
+          out,
+          imports,
+          collections,
+          FUNCDEF.equals(child.kind()) ? List.of() : inherited
+      );
     }
   }
 
@@ -61,27 +71,38 @@ public final class PythonControlFlow implements ControlFlowLowering {
       final SyntaxNode definition,
       final Map<String,
       String> imports,
+      final Set<String> collections,
       final List<SyntaxNode> decorators
   ) {
     final SyntaxNode block = PythonSyntax.children(definition, BLOCK).get(0);
+    final PythonParameters parameters = PythonParameters.of(definition, decorators);
+    final Set<String> usable = new HashSet<>(collections);
+    parameters.accesses().forEach(access -> usable.remove(access.name()));
     return body(
         PythonSyntax.firstOfKind(definition, NAME).map(PythonControlFlow::text).orElse(MODULE),
         block,
-        PythonParameters.of(definition, decorators),
+        parameters,
         definition.span(),
-        imports
+        new FileFacts(imports, usable)
     );
   }
+
+  /** What the whole file says that a body needs: its imports and the collections it fixes. */
+  private record FileFacts(Map<String, String> imports, Set<String> collections) {}
 
   private static ControlFlowGraph body(
       final String name,
       final SyntaxNode block,
       final PythonParameters parameters,
       final Span span,
-      final Map<String,
-      String> imports
+      final FileFacts facts
   ) {
-    return new PythonBodyLowering(declaredNames(block), !hasStarImport(block), imports)
+    return new PythonBodyLowering(
+        declaredNames(block),
+        !hasStarImport(block),
+        facts.imports(),
+        facts.collections()
+    )
         .lower(name, block, parameters, span);
   }
 

@@ -90,7 +90,23 @@ final class PythonTopLevelDefinitions {
           "configparser",
           Set.of("optionxform"),
           "marshmallow",
-          Set.of("_deserialize", "_serialize")
+          Set.of("_deserialize", "_serialize"),
+          "StatsClientBase",
+          Set.of("_send", "pipeline", "close"),
+          "alembic",
+          Set.of("upgrade", "downgrade"),
+          "HTMLParser",
+          Set.of(
+              "handle_starttag",
+              "handle_endtag",
+              "handle_startendtag",
+              "handle_data",
+              "handle_comment",
+              "handle_entityref",
+              "handle_charref",
+              "handle_decl",
+              "handle_pi"
+          )
       );
   // A string that names a class or function by its dotted path, as a Django setting does.
   private static final Pattern DOTTED_PATH =
