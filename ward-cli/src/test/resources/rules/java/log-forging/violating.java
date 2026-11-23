@@ -70,13 +70,14 @@ class Audit {
     log.info("path {}", request.getPathInfo());
   }
 
-  void decodedUri(HttpServletRequest request, org.slf4j.Logger log) throws Exception {
-    String uri = request.getRequestURI();
-    log.info(URLDecoder.decode(uri, "UTF-8"));
+  // Decoding keeps the taint of the query string.
+  void decodedQuery(HttpServletRequest request, org.slf4j.Logger log) throws Exception {
+    String query = request.getQueryString();
+    log.info(URLDecoder.decode(query, "UTF-8"));
   }
 
-  void decodedUriLocal(HttpServletRequest request, org.slf4j.Logger log) throws Exception {
-    String path = URLDecoder.decode(request.getRequestURI(), "UTF-8");
+  void decodedQueryDirect(HttpServletRequest request, org.slf4j.Logger log) throws Exception {
+    String path = URLDecoder.decode(request.getQueryString(), "UTF-8");
     log.warn("request " + path);
   }
 }
