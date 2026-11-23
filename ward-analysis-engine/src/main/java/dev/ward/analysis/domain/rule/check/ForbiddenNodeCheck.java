@@ -211,8 +211,7 @@ public final class ForbiddenNodeCheck implements UnitCheck {
           && parentTextOk(visit)
           && rootTextOk(visit)
           && notParentTextOk(visit)
-          && scopeTextOk(visit)
-          && notAncestorTextOk(visit)
+          && enclosingTextOk(visit)
           && textOk(visit.node());
     }
 
@@ -284,6 +283,10 @@ public final class ForbiddenNodeCheck implements UnitCheck {
       return notParentText.isEmpty()
           || up.isEmpty()
           || !notParentText.get().matcher(SyntaxWalk.text(up.get(up.size() - 1))).find();
+    }
+
+    private boolean enclosingTextOk(final SyntaxWalk.Visit visit) {
+      return scopeTextOk(visit) && notAncestorTextOk(visit);
     }
 
     private boolean notAncestorTextOk(final SyntaxWalk.Visit visit) {
