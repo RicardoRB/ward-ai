@@ -32,3 +32,25 @@ from marshmallow import fields
 class ValueField(fields.Field):
     def _deserialize(self, value, attr, data, **kwargs):
         return value
+
+
+from html.parser import HTMLParser
+
+
+class TagCounter(HTMLParser):
+    def handle_starttag(self, tag, attrs):
+        self.count = getattr(self, "count", 0) + 1
+
+    def handle_data(self, data):
+        self.last = data
+
+
+from statsd.client.base import StatsClientBase
+
+
+class QuietClient(StatsClientBase):
+    def _send(self, data):
+        return None
+
+    def pipeline(self):
+        return None

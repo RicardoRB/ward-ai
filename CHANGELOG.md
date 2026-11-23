@@ -10,8 +10,14 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ### Fixed
 
+<<<<<<< HEAD
 - `ward:swift/final-test-case` no longer reports a test case class that another class of the project inherits from, since a base class cannot be final (#755).
 - `ward:swift/async-without-await` no longer reports a function that witnesses an async requirement of a protocol declared in the project; a requirement of a protocol outside the project is still unknown and reported (#756).
+=======
+- `ward:python/path-injection` and `ward:python/template-injection` treat a name as clean inside `if name in names:` and past `if name not in names:` when that branch exits, only when `names` is a literal of constants, a name bound once to one, or the listing of a directory (#734; the `send_file(output)` lines stay listed).
+- `ward:python/unused-function`, `unused-class`, `unused-method` and `unused-property` count the words of `*.html`, `*.jinja`, `*.jinja2`, `*.j2` and `*.txt` files as used names, so members that only a template reads are not reported (#728, #729).
+- The Python unused-definition rules count `upgrade`/`downgrade` (alembic), the `handle_*` callbacks of `HTMLParser` and `_send`/`pipeline`/`close` of `StatsClientBase` as used (#729).
+>>>>>>> 98d5f01fd (Fix Python false positives of path-injection, template-injection and unused definitions (#728, #729, #734))
 - `ward:java/openjdk-annotation-location` accepts the layout `ward format` writes for a parameter or record component whose annotation spans lines, `) @B String x` (#700).
 - `ward:java/left-curly` no longer reports the `{` of an annotation array that `ward format` moves to its own line (#705).
 - `strict` no longer enables `ward:java/avoid-no-argument-super-constructor-call`, which contradicted `ward:java/call-super-in-constructor`; the pair is guarded by `PresetContractTest` (#701).

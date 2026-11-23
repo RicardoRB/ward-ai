@@ -39,7 +39,8 @@ final class PythonCorpusRun {
     if (archive != null) {
       assertThat(JulietCorpus.sha256(Path.of(archive))).isEqualTo(spec.sha256());
     }
-    final List<SourceUnit> units = PythonCorpus.units(Path.of(System.getProperty(spec.property())));
+    final Path root = Path.of(System.getProperty(spec.property()));
+    final List<SourceUnit> units = PythonCorpus.units(root);
     final List<RuleDefinition> rules = rules();
     final List<FrontendSupport> frontends = new RuleFixtureRunner().frontends();
     final RuleEngine engine = new RuleEngine(BundledRuleMatchers.create());
@@ -48,7 +49,12 @@ final class PythonCorpusRun {
     findings.addAll(engine.runProject(units, frontends, rules));
     findings.addAll(DuplicateCodeFindings.findings(rules, units, frontends));
     findings.addAll(
-        UnusedDefinitionFindings.findings(rules, PythonCorpus.summaries(units, frontends))
+        UnusedDefinitionFindings.findings(
+            rules,
+            PythonCorpus.summaries(units, frontends),
+            path -> java.util.Optional.empty(),
+            PythonCorpus.templates(root)
+        )
     );
     final Map<String, List<Place>> found = PythonCorpusReport.places(findings);
     final Map<Place, String> labels = PythonCorpusReport.labels(spec);

@@ -8,10 +8,12 @@ import dev.ward.analysis.domain.ir.AnalysisSeverity;
 import dev.ward.analysis.domain.ir.FileSummary;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.Symbol;
+import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
@@ -56,6 +58,27 @@ final class UnusedDefinitionFindingsTest {
         );
 
     assertThat(UnusedDefinitionFindings.findings(List.of(FUNCTION), files)).isEmpty();
+  }
+
+  @Test
+  void aNameThatATemplateSpellsIsUsed() {
+    final Map<String, FileSummary> files =
+        Map.of(LIB_PY, summary(LIB_PY, Set.of(), symbol("shown"), symbol("lonely")));
+    final ProjectFiles templates =
+        new ProjectFiles(Map.of("t/page.html", "{{ item.shown }}", "t/notes.md", "lonely"));
+
+    assertThat(
+        UnusedDefinitionFindings.findings(
+            List.of(FUNCTION),
+            files,
+            path -> Optional.empty(),
+            templates
+        )
+    )
+        .extracting(AnalysisFinding::message)
+        .singleElement()
+        .asString()
+        .contains("lonely");
   }
 
   @Test

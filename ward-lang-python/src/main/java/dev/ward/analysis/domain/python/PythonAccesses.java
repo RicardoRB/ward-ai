@@ -1,5 +1,6 @@
 package dev.ward.analysis.domain.python;
 
+import dev.ward.analysis.domain.ir.AccessKind;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.ir.VariableAccess;
@@ -53,6 +54,25 @@ final class PythonAccesses implements VariableAccesses {
       names.reads(node, found);
     }
     planned.put(node, found);
+  }
+
+  /**
+   * Returns a write of a local name that no statement makes, and a read of it, so that the value
+   * the name held before no longer reaches the next statements.
+   *
+   * @param name the name
+   * @param span where the guard that proves the value is
+   * @return the write and the read, or none when the name is not bound in this body
+   */
+  List<VariableAccess> clean(final String name, final Span span) {
+    final Span declaration = declarations.get(name);
+    if (!tracked || declaration == null) {
+      return List.of();
+    }
+    return List.of(
+        new VariableAccess(name, AccessKind.WRITE, span, declaration),
+        new VariableAccess(name, AccessKind.READ, span, declaration)
+    );
   }
 
   /** Records the parameters, whose own spans are the declarations of their names. */

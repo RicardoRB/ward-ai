@@ -152,7 +152,6 @@ ward:python/parameter-count | tests/helpers.py:169 | tp | the function takes mor
 ward:python/parameter-count | tests/helpers.py:206 | tp | the function takes more parameters than the limit
 ward:python/parameter-count | tests/helpers.py:261 | tp | the function takes more parameters than the limit
 ward:python/parameter-name | CTFd/utils/email/providers/smtp.py:78 | tp | the parameter name is not snake_case
-ward:python/path-injection | CTFd/admin/__init__.py:90 | fp | the path is checked against a list of known names first, or the argument is not a path
 ward:python/path-injection | CTFd/admin/__init__.py:176 | fp | the path is checked against a list of known names first, or the argument is not a path
 ward:python/path-injection | CTFd/api/v1/exports.py:32 | fp | the path is checked against a list of known names first, or the argument is not a path
 ward:python/pointless-string-statement | CTFd/__init__.py:43 | tp | a string statement outside the docstring position has no effect
@@ -192,7 +191,6 @@ ward:python/super-with-arguments | CTFd/__init__.py:90 | tp | super() written wi
 ward:python/super-with-arguments | CTFd/__init__.py:150 | tp | super() written with arguments
 ward:python/super-with-arguments | CTFd/__init__.py:165 | tp | super() written with arguments
 ward:python/super-with-arguments | CTFd/models/__init__.py:75 | tp | super() written with arguments
-ward:python/template-injection | CTFd/admin/__init__.py:93 | fp | the template text is read from a file of a plugin whose name is checked against the plugins on disk
 ward:python/todo-comment | CTFd/__init__.py:82 | tp | a TODO comment
 ward:python/todo-comment | CTFd/__init__.py:296 | tp | a TODO comment
 ward:python/todo-comment | CTFd/admin/teams.py:64 | tp | a TODO comment
@@ -266,12 +264,6 @@ ward:python/unused-loop-control-variable | populate.py:201 | tp | the loop varia
 ward:python/unused-loop-control-variable | populate.py:214 | tp | the loop variable is not read in the body
 ward:python/unused-loop-control-variable | populate.py:219 | tp | the loop variable is not read in the body
 ward:python/unused-loop-control-variable | populate.py:348 | tp | the loop variable is not read in the body
-ward:python/unused-method | CTFd/constants/assets.py:37 | fp | a template or a library calls the method by name; Ward reads neither
-ward:python/unused-property | CTFd/constants/config.py:39 | fp | a Jinja template reads the property; Ward reads no template
-ward:python/unused-property | CTFd/constants/config.py:45 | fp | a Jinja template reads the property; Ward reads no template
-ward:python/unused-property | CTFd/constants/config.py:52 | fp | a Jinja template reads the property; Ward reads no template
-ward:python/unused-property | CTFd/constants/config.py:58 | fp | a Jinja template reads the property; Ward reads no template
-ward:python/unused-property | CTFd/constants/config.py:62 | fp | a Jinja template reads the property; Ward reads no template
 ward:python/use-implicit-booleaness-not-comparison | CTFd/api/v1/teams.py:367 | tp | a list compared with an empty list
 ward:python/use-implicit-booleaness-not-comparison | CTFd/api/v1/teams.py:368 | tp | a list compared with an empty list
 ward:python/use-implicit-booleaness-not-comparison | CTFd/api/v1/teams.py:369 | tp | a list compared with an empty list
@@ -411,18 +403,15 @@ ward:python/true-false-comparison | tests/api/v1/test_challenges.py:447 | tp | a
 ward:python/true-false-comparison | tests/api/v1/test_challenges.py:879 | tp | a value compared with a boolean literal
 ward:python/true-false-comparison | tests/api/v1/test_config.py:150 | tp | a value compared with a boolean literal
 ward:python/true-false-comparison | tests/api/v1/users/test_users.py:17 | tp | a value compared with a boolean literal
-ward:python/unused-class | CTFd/forms/auth.py:63 | fp | named through an attribute of a module alias (Forms.auth.X) set in the package __init__; Ward follows no attribute assignment of a module
-ward:python/unused-class | CTFd/forms/auth.py:73 | fp | named through an attribute of a module alias (Forms.auth.X) set in the package __init__; Ward follows no attribute assignment of a module
-ward:python/unused-class | CTFd/forms/auth.py:77 | fp | named through an attribute of a module alias (Forms.auth.X) set in the package __init__; Ward follows no attribute assignment of a module
-ward:python/unused-class | CTFd/forms/auth.py:84 | fp | named through an attribute of a module alias (Forms.auth.X) set in the package __init__; Ward follows no attribute assignment of a module
-ward:python/unused-class | CTFd/forms/awards.py:8 | fp | named through an attribute of a module alias (Forms.auth.X) set in the package __init__; Ward follows no attribute assignment of a module
-ward:python/unused-function | CTFd/forms/auth.py:19 | fp | named through an attribute of a module alias (Forms.auth.X) set in the package __init__; Ward follows no attribute assignment of a module
-ward:python/unused-function | CTFd/forms/language.py:7 | fp | named through an attribute of a module alias (Forms.auth.X) set in the package __init__; Ward follows no attribute assignment of a module
-ward:python/unused-function | CTFd/forms/self.py:19 | fp | named through an attribute of a module alias (Forms.auth.X) set in the package __init__; Ward follows no attribute assignment of a module
-ward:python/unused-function | CTFd/forms/teams.py:107 | fp | named through an attribute of a module alias (Forms.auth.X) set in the package __init__; Ward follows no attribute assignment of a module
-ward:python/unused-function | CTFd/forms/teams.py:124 | fp | named through an attribute of a module alias (Forms.auth.X) set in the package __init__; Ward follows no attribute assignment of a module
 ward:python/while-used | CTFd/__init__.py:199 | tp | a while loop
 ward:python/while-used | CTFd/utils/events/__init__.py:60 | tp | a while loop
 ward:python/while-used | CTFd/utils/events/__init__.py:84 | tp | a while loop
 ward:python/while-used | CTFd/utils/events/__init__.py:88 | tp | a while loop
 ward:python/while-used | CTFd/utils/events/__init__.py:109 | tp | a while loop
+ward:python/unused-class | CTFd/forms/challenges.py:24 | tp | no file names the class, in Python or in a template
+ward:python/unused-class | CTFd/forms/pages.py:42 | tp | no file names the class, in Python or in a template
+ward:python/unused-function | CTFd/plugins/migrations.py:16 | un | a helper that the plugin documentation hands to plugin migrations; no file of the project calls it
+ward:python/unused-function | CTFd/utils/decorators/modes.py:19 | tp | the decorator factory is never applied
+ward:python/unused-function | CTFd/utils/security/passwords.py:13 | tp | no file calls the function
+ward:python/unused-function | tests/helpers.py:330 | tp | no test calls the helper
+ward:python/unused-property | CTFd/constants/plugins.py:50 | tp | no Python file or template reads the property

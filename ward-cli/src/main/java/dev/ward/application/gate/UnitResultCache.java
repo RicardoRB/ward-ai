@@ -151,7 +151,7 @@ final class UnitResultCache {
         new ArrayList<>(ArchitectureRun.findings(rules, snapshot, units));
     wholeRunFindings.addAll(DuplicateCodeFindings.findings(rules, units, frontends));
     wholeRunFindings.addAll(
-        UnusedDefinitionFindings.findings(rules, snapshot.summaries(), moduleOf())
+        UnusedDefinitionFindings.findings(rules, snapshot.summaries(), moduleOf(), files)
     );
     wholeRunFindings.addAll(engine.runProject(units, frontends, rules, files));
     return new CachedRun(
