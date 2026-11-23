@@ -13,6 +13,8 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** Runs {@code ward init} on .NET projects and checks what init writes. */
 class DotnetInitCliTest {
+  private static final String APP_PROJECT = "App.csproj";
+  private static final String YES = "--yes";
   private static final String CSPROJ = "<Project Sdk=\"Microsoft.NET.Sdk\"/>";
 
   @TempDir Path root;
@@ -20,16 +22,16 @@ class DotnetInitCliTest {
   @Test
   @DisplayName("a single C# project")
   void aSingleCSharpProject() throws IOException {
-    Files.writeString(root.resolve("App.csproj"), CSPROJ);
+    Files.writeString(root.resolve(APP_PROJECT), CSPROJ);
     Files.writeString(root.resolve("Program.cs"), "System.Console.WriteLine(1);\n");
     final InitCommandFixture init = init();
 
-    final int exit = init.run("", "--yes");
+    final int exit = init.run("", YES);
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     final String toml = Files.readString(root.resolve("ward.toml"));
     assertThat(toml).contains("dotnet-build", "dotnet-test").doesNotContain("mvn", "swift-");
-    assertThat(Files.readString(root.resolve("App.csproj"))).isEqualTo(CSPROJ);
+    assertThat(Files.readString(root.resolve(APP_PROJECT))).isEqualTo(CSPROJ);
   }
 
   @Test
@@ -47,7 +49,7 @@ class DotnetInitCliTest {
     }
     final InitCommandFixture init = init();
 
-    final int exit = init.run("", "--preset", "strict", "--yes");
+    final int exit = init.run("", "--preset", "strict", YES);
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     final String toml = Files.readString(root.resolve("ward.toml"));
@@ -58,11 +60,11 @@ class DotnetInitCliTest {
   @Test
   @DisplayName("no controller and repository layer rule, which no C# layout needs (#710)")
   void noControllerAndRepositoryLayerRule() throws IOException {
-    Files.writeString(root.resolve("App.csproj"), CSPROJ);
+    Files.writeString(root.resolve(APP_PROJECT), CSPROJ);
     Files.writeString(root.resolve("Program.cs"), "System.Console.WriteLine(1);\n");
     final InitCommandFixture init = init();
 
-    final int exit = init.run("", "--preset", "strict", "--architecture", "layered", "--yes");
+    final int exit = init.run("", "--preset", "strict", "--architecture", "layered", YES);
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(Files.readString(root.resolve("ward.toml")))
@@ -75,11 +77,11 @@ class DotnetInitCliTest {
   @Test
   @DisplayName("tests with coverage and mutation testing")
   void testsWithCoverageAndMutationTesting() throws IOException {
-    Files.writeString(root.resolve("App.csproj"), CSPROJ);
+    Files.writeString(root.resolve(APP_PROJECT), CSPROJ);
     Files.writeString(root.resolve("Program.cs"), "System.Console.WriteLine(1);\n");
     final InitCommandFixture init = init();
 
-    final int exit = init.run("", "--preset", "strict", "--yes");
+    final int exit = init.run("", "--preset", "strict", YES);
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     final String toml = Files.readString(root.resolve("ward.toml"));
@@ -97,11 +99,11 @@ class DotnetInitCliTest {
   @Test
   @DisplayName("the ward gate selects the C# rules")
   void theWardGateSelectsTheCSharpRules() throws IOException {
-    Files.writeString(root.resolve("App.csproj"), CSPROJ);
+    Files.writeString(root.resolve(APP_PROJECT), CSPROJ);
     Files.writeString(root.resolve("Program.cs"), "System.Console.WriteLine(1);\n");
     final InitCommandFixture init = init();
 
-    final int exit = init.run("", "--preset", "strict", "--yes");
+    final int exit = init.run("", "--preset", "strict", YES);
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(Files.readString(root.resolve("ward-rules.toml")))
@@ -115,11 +117,11 @@ class DotnetInitCliTest {
   @Test
   @DisplayName("build output is ignored")
   void buildOutputIsIgnored() throws IOException {
-    Files.writeString(root.resolve("App.csproj"), CSPROJ);
+    Files.writeString(root.resolve(APP_PROJECT), CSPROJ);
     Files.writeString(root.resolve("Program.cs"), "System.Console.WriteLine(1);\n");
     final InitCommandFixture init = init();
 
-    final int exit = init.run("", "--yes");
+    final int exit = init.run("", YES);
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(Files.readString(root.resolve(".gitignore")))
@@ -129,11 +131,11 @@ class DotnetInitCliTest {
   @Test
   @DisplayName("standard has no mutation gate")
   void standardHasNoMutationGate() throws IOException {
-    Files.writeString(root.resolve("App.csproj"), CSPROJ);
+    Files.writeString(root.resolve(APP_PROJECT), CSPROJ);
     Files.writeString(root.resolve("Program.cs"), "System.Console.WriteLine(1);\n");
     final InitCommandFixture init = init();
 
-    final int exit = init.run("", "--yes");
+    final int exit = init.run("", YES);
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(Files.readString(root.resolve("ward.toml")))
@@ -145,14 +147,14 @@ class DotnetInitCliTest {
   @Test
   @DisplayName("an existing tool manifest stays")
   void anExistingToolManifestStays() throws IOException {
-    Files.writeString(root.resolve("App.csproj"), CSPROJ);
+    Files.writeString(root.resolve(APP_PROJECT), CSPROJ);
     Files.writeString(root.resolve("Program.cs"), "System.Console.WriteLine(1);\n");
     Files.createDirectories(root.resolve(".config"));
     final String own = "{\"version\":1,\"isRoot\":true,\"tools\":{}}";
     Files.writeString(root.resolve(".config/dotnet-tools.json"), own);
     final InitCommandFixture init = init();
 
-    final int exit = init.run("", "--preset", "strict", "--yes");
+    final int exit = init.run("", "--preset", "strict", YES);
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(Files.readString(root.resolve(".config/dotnet-tools.json"))).isEqualTo(own);

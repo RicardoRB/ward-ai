@@ -2,6 +2,7 @@ package dev.ward.infrastructure.init;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.domain.init.ArchitectureTables;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
@@ -17,7 +18,7 @@ class LayerTablesTest {
 
   @Test
   void rustAndCSharpGiveNoLayerBoundaryAndMavenKeepsTheControllerOne() {
-    final var tables = ArchitectureTablesFixtures.create();
+    final ArchitectureTables tables = ArchitectureTablesFixtures.create();
 
     assertThat(tables.layers(project(Language.RUST, BuildTool.CARGO), "layered")).isEmpty();
     assertThat(tables.layers(project(Language.CSHARP, BuildTool.DOTNET), "hexagonal")).isEmpty();
