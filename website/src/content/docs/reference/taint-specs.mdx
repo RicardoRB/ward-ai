@@ -72,6 +72,12 @@ from = ["receiver", 0]
   with `application/json`), so only the arguments of that call are clean; a string built around it,
   a call chained on it or taint elsewhere in the argument is still reported. TypeScript and
   JavaScript provide the content-type sites.
+- TypeScript and JavaScript treat a value that an allow-list accepted as clean: `LIST.includes(x)`
+  or `LIST.has(x)` where `LIST` is a literal array or a constant table of the file, inside the
+  branch that holds, past a branch that exits when it does not, and in `LIST.includes(x) ? x :
+  'default'`. A function that throws unless its parameter is on the list also cleans the argument of
+  its callers. A value that a conditional or logical operator picks is tainted when one of its
+  operands is; the condition alone does not taint it.
 - `from` on a propagator lists its inputs, as argument positions or `"receiver"`. The argument
   positions are the arguments that the call stores into its receiver variable, so `list.add(v)`
   with `from = [0]` taints `list` when `v` is tainted. `"receiver"` is checked but does not change

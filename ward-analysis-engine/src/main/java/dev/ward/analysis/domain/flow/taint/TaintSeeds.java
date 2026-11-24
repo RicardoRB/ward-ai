@@ -8,8 +8,8 @@ import dev.ward.analysis.domain.ir.FlowSite;
 import dev.ward.analysis.domain.ir.FlowSiteKind;
 import dev.ward.analysis.domain.ir.FlowStep;
 import dev.ward.analysis.domain.ir.Span;
-import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.ir.VariableAccess;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -88,13 +88,18 @@ final class TaintSeeds {
     );
   }
 
-  /** A call or member read taints the last write before it in the same statement. */
+  /**
+   * A call or member read taints the last write before it in the same statement. A statement with
+   * a conditional or logical operator is split over several blocks, so the write can be in another
+   * block than the read: the one whose statement holds the read.
+   */
   private void seedValue(final BasicBlock block, final FlowSite site) {
-    final Optional<SyntaxNode> node = TaintSpans.nodeContaining(block, site.span());
-    if (node.isEmpty()) {
-      return;
-    }
-    final Optional<AccessSite> write = lastWriteBefore(block, node.get().span(), site.span());
+    final Optional<AccessSite> write =
+        graph.blocks().stream()
+            .sorted(Comparator.comparingInt((BasicBlock other) -> other.id() == block.id() ? 0 : 1))
+            .map(other -> writeInStatementOf(other, site))
+            .flatMap(Optional::stream)
+            .findFirst();
     write.ifPresent(
         definition ->
             tainted.putIfAbsent(
@@ -102,6 +107,13 @@ final class TaintSeeds {
                 new Taint(site.name(), List.of(new FlowStep(site.span(), SOURCE + site.name())))
             )
     );
+  }
+
+  private Optional<AccessSite> writeInStatementOf(final BasicBlock block, final FlowSite site) {
+    final boolean here = block.sites().contains(site);
+    return TaintSpans.nodeContaining(block, site.span())
+        .filter(node -> here || SplitValues.covers(block, site.span()))
+        .flatMap(node -> lastWriteBefore(block, node.span(), site.span()));
   }
 
   private Optional<AccessSite> lastWriteBefore(

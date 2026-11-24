@@ -18,7 +18,9 @@ import java.util.Optional;
  * The tainted writes of one graph. A source taints the write that its statement makes, or the
  * parameter's entry write. A write is tainted when its statement reads a value that reaches it from
  * a tainted write, outside any sanitizer argument. Each tainted write keeps the path that reached
- * it, which grows by one step per propagating write.
+ * it, which grows by one step per propagating write. A read of the statement may sit in another
+ * block of the graph, when the statement holds a conditional or logical operator that the graph
+ * splits; it still counts, as the value of the write is made of it.
  */
 final class TaintOrigins {
   private static final String ASSIGNED = "assigned to ";
@@ -79,7 +81,7 @@ final class TaintOrigins {
       return false;
     }
     for (final AccessSite use : reaching.uses()) {
-      if (inheritsFrom(use, definition, block, node.get().span())) {
+      if (inheritsFrom(use, definition, node.get().span(), block)) {
         return taintFrom(use, definition);
       }
     }
@@ -89,13 +91,14 @@ final class TaintOrigins {
   private boolean inheritsFrom(
       final AccessSite use,
       final AccessSite definition,
-      final BasicBlock block,
-      final Span statement
+      final Span statement,
+      final BasicBlock block
   ) {
-    return use.block() == definition.block()
-        && use.access().kind() == AccessKind.READ
+    return use.access().kind() == AccessKind.READ
+        && (use.block() == definition.block()
+            || SplitValues.covers(block, use.access().span()))
         && TaintSpans.contains(statement, use.access().span())
-        && !TaintSpans.sanitized(block, use.access().span(), spec)
+        && !TaintSpans.sanitized(graph.blocks().get(use.block()), use.access().span(), spec)
         && reaching.reaching(use).stream().anyMatch(tainted::containsKey);
   }
 

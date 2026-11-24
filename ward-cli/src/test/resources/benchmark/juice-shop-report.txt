@@ -64,7 +64,7 @@ ward:typescript/log-forging | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/missing-frame-protection | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/no-blank-target | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/no-dangerously-set-inner-html | findings 0 | tp 0 | fp 0 | un 0
-ward:typescript/nosql-injection | findings 2 | tp 2 | fp 0 | un 0
+ward:typescript/nosql-injection | findings 4 | tp 4 | fp 0 | un 0
 ward:typescript/path-traversal | findings 9 | tp 4 | fp 5 | un 0
 ward:typescript/permissive-cors | findings 2 | tp 2 | fp 0 | un 0
 ward:typescript/prototype-pollution | findings 0 | tp 0 | fp 0 | un 0
@@ -72,7 +72,7 @@ ward:typescript/regex-injection | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/script-injection | findings 1 | tp 1 | fp 0 | un 0
 ward:typescript/server-side-request-forgery | findings 1 | tp 1 | fp 0 | un 0
 ward:typescript/shell-option | findings 0 | tp 0 | fp 0 | un 0
-ward:typescript/sql-injection | findings 1 | tp 1 | fp 0 | un 0
+ward:typescript/sql-injection | findings 6 | tp 6 | fp 0 | un 0
 ward:typescript/static-iv | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/template-injection | findings 1 | tp 1 | fp 0 | un 0
 ward:typescript/tls-verification-disabled | findings 0 | tp 0 | fp 0 | un 0
