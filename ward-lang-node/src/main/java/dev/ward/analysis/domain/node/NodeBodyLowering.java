@@ -111,7 +111,7 @@ final class NodeBodyLowering implements NodeStatements {
       final Span span
   ) {
     flow.record(accesses.parameters(function), parameterSites.of(function));
-    branches.emitValue(expression);
+    jumps.returnValue(expression);
     return flow.build(body, span);
   }
 

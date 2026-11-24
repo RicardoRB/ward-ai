@@ -10,3 +10,12 @@ export function json(req, res) {
 export function branch(req, res) {
   res.send(req.query.flag ? req.query.x : 'none');
 }
+
+// A JSON document inside markup, or changed after serializing, is not exempt.
+export function wrapped(req, res) {
+  res.end('<script>var x = ' + JSON.stringify(req.query.x) + '</script>');
+}
+
+export function changed(req, res) {
+  res.end(JSON.stringify(req.query.x).toUpperCase());
+}

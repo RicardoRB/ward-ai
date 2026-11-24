@@ -35,7 +35,8 @@ class NodeStringBuildTaintTest {
                   Optional.empty(),
                   Optional.empty(),
                   List.of(),
-                  Optional.of(HTML_TAG)
+                  Optional.of(HTML_TAG),
+                  List.of()
               )
           ),
           List.of(),

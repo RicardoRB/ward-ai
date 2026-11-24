@@ -95,7 +95,9 @@ public final class TaintAnalysis {
     for (final int index : guardedArguments(site, sink.get())) {
       if (index < site.arguments().size()) {
         final Span argument = site.arguments().get(index);
-        taintOf(block, argument, reaching, origins, spec)
+        final GuardedArgument guarded = GuardedArgument.of(block, argument, sink.get());
+        directSource(guarded, spec)
+            .or(() -> fromReads(guarded, reaching, origins, spec))
             .map(taint -> finding(site, index, taint))
             .ifPresent(found::add);
       }
@@ -112,8 +114,8 @@ public final class TaintAnalysis {
       Taint> origins,
       final TaintSpec spec
   ) {
-    return directSource(block, argument, spec)
-        .or(() -> fromReads(block, argument, reaching, origins, spec));
+    final GuardedArgument guarded = GuardedArgument.plain(block, argument);
+    return directSource(guarded, spec).or(() -> fromReads(guarded, reaching, origins, spec));
   }
 
   /**
@@ -141,13 +143,12 @@ public final class TaintAnalysis {
   }
 
   /** A source call written directly in the guarded argument, such as {@code sink(source())}. */
-  private static Optional<Taint> directSource(
-      final BasicBlock block,
-      final Span argument,
-      final TaintSpec spec
-  ) {
+  private static Optional<Taint> directSource(final GuardedArgument guarded, final TaintSpec spec) {
+    final BasicBlock block = guarded.block();
+    final Span argument = guarded.span();
     return block.sites().stream()
         .filter(site -> TaintSpans.contains(argument, site.span()))
+        .filter(site -> !guarded.isClean(site.span()))
         .filter(site -> site.kind() != FlowSiteKind.PARAMETER)
         .filter(site -> site.kind() != FlowSiteKind.LITERAL || site.span().equals(argument))
         .filter(site -> TaintSpans.sourceOf(site, spec).isPresent())
@@ -164,15 +165,17 @@ public final class TaintAnalysis {
    * is clean, as it is for a write.
    */
   private static Optional<Taint> fromReads(
-      final BasicBlock block,
-      final Span argument,
+      final GuardedArgument guarded,
       final ReachingDefinitions reaching,
       final Map<AccessSite,
       Taint> origins,
       final TaintSpec spec
   ) {
+    final BasicBlock block = guarded.block();
+    final Span argument = guarded.span();
     for (final AccessSite use : reaching.uses()) {
       if (use.block() == block.id()
+          && !guarded.isClean(use.access().span())
           && isRead(use.access())
           && TaintSpans.contains(argument, use.access().span())
           && !TaintSpans.sanitized(block, use.access().span(), spec)) {

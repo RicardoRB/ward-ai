@@ -17,3 +17,10 @@ export function crossFunction(req: any, res: any) {
 function read(req: any) {
   return req.query.origin;
 }
+
+const rawPage = (target: string): string => target.split('?', 2)[1];
+
+export function pagedLinkRaw(req: any, res: any, base: string) {
+  const page = rawPage(req.url);
+  res.setHeader('link', `<${base}/?page=${page}>; rel="next"`);
+}

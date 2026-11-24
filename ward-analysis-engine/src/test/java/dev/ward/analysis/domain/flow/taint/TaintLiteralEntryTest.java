@@ -37,7 +37,8 @@ class TaintLiteralEntryTest {
         Optional.empty(),
         Optional.empty(),
         List.of(),
-        pattern
+        pattern,
+        List.of()
     );
   }
 
