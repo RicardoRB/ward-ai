@@ -85,6 +85,9 @@ final class JavaSyntheticSites {
     if (JavaTrustedCalls.isRequestUri(name, receiver != null, texts)) {
       found.add(synthetic(JavaTrustedCalls.REQUEST_URI, qualifier, List.of(call.span()), call));
     }
+    if (JavaTrustedCalls.isDecodedRequestUri(name, receiverType.apply(qualifier), texts)) {
+      found.add(synthetic(JavaTrustedCalls.DECODED_URI, qualifier, List.of(), call));
+    }
     return found;
   }
 

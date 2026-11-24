@@ -142,8 +142,14 @@ arguments = [0, 1, 2]
 
 # getRequestURI returns the path as sent, without percent-decoding, and a servlet container rejects a
 # raw line break in the request line. The Java frontend names the site of that call <undecoded-uri>
-# and covers the call, so the getRequestURI source does not apply here. A decoded form of it is not
-# followed: taint entries have no labels, so a decode step cannot be tied to this one source.
+# and covers the call, so the getRequestURI source does not apply here. Percent-decoding it can
+# produce a line break, so the Java frontend names the site of URLDecoder.decode or UriUtils.decode
+# of a direct getRequestURI() call <decoded-uri>, which is a source below. A decode of a constant
+# has no such site; a request URI kept in a variable before the decode is not followed.
+
+[[sources]]
+kind = "call"
+name = "<decoded-uri>"
 
 [[sanitizers]]
 kind = "call"

@@ -31,8 +31,15 @@ Untrusted values come from:
   `ServletRequest`: `getParameter`, `getParameterValues`, `getParameterMap`, `getHeader`,
   `getHeaders`, `getQueryString`, `getCookies`, `getInputStream`, `getReader`, `getRequestURI` and
   `getPathInfo`. A variable named `request` or `req` also matches when its type is not resolved.
+  For `ward:java/log-forging` a raw `getRequestURI()` is not a source, because the path as sent is
+  percent-encoded and cannot hold a line break; `URLDecoder.decode` and `UriUtils.decode` of a
+  direct `getRequestURI()` call are a source, since decoding can produce one. A request URI that is
+  first stored in a variable and then decoded is not followed.
 - Spring MVC handler parameters annotated `@RequestParam`, `@PathVariable`, `@RequestHeader`,
-  `@RequestBody`, `@CookieValue` or `@ModelAttribute`, when the annotation is imported by name.
+  `@RequestBody`, `@CookieValue` or `@ModelAttribute`, when the annotation is imported by name. The
+  values that the getters of a bound entity return are untrusted too, in the handler and in the
+  methods of the file that receive the entity or the value. An entity that a repository or mapper
+  loads in another class is not tracked back to the request that edited it.
 
 ## Sinks
 

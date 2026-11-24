@@ -30,6 +30,7 @@ class JavaSyntheticSitesTest {
 
   private static final String TRUSTED =
       """
+      import java.net.URLDecoder;
       import java.util.List;
 
       class C {
@@ -44,6 +45,9 @@ class JavaSyntheticSitesTest {
           String dynamic = System.getProperty(key);
           String uri = request.getRequestURI();
           String other = request.getRequestURI(key);
+          String decoded = URLDecoder.decode(request.getRequestURI(), "UTF-8");
+          String constant = URLDecoder.decode("a%20b", "UTF-8");
+          String query = URLDecoder.decode(request.getQueryString(), "UTF-8");
         }
       }
       """;
@@ -129,7 +133,8 @@ class JavaSyntheticSitesTest {
   void trustedValuesAreMarked() {
     assertThat(names(TRUSTED, "run(5)", JavaPrimitiveCalls.NAME)).hasSize(NUMBER_SITES);
     assertThat(names(TRUSTED, "run(5)", JavaTrustedCalls.PROPERTY)).hasSize(2);
-    assertThat(names(TRUSTED, "run(5)", JavaTrustedCalls.REQUEST_URI)).hasSize(1);
+    assertThat(names(TRUSTED, "run(5)", JavaTrustedCalls.REQUEST_URI)).hasSize(2);
+    assertThat(names(TRUSTED, "run(5)", JavaTrustedCalls.DECODED_URI)).hasSize(1);
   }
 
   /** Scenario: a body that sets only JSON content types marks its writes. */

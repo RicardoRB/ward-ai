@@ -3,6 +3,7 @@ package dev.ward.analysis.domain.jvm;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * Finds calls whose value does not come from the remote user: {@code System.getProperty} of a
@@ -18,6 +19,12 @@ final class JavaTrustedCalls {
   /** The name of the site of a {@code getRequestURI} call. */
   static final String REQUEST_URI = "<undecoded-uri>";
 
+  /** The name of the site of a percent-decode of a {@code getRequestURI} call. */
+  static final String DECODED_URI = "<decoded-uri>";
+
+  private static final Set<String> DECODER_TYPES =
+      Set.of("java.net.URLDecoder", "org.springframework.web.util.UriUtils");
+  private static final Pattern REQUEST_URI_CALL = Pattern.compile("[\\w.]+\\.getRequestURI\\(\\)");
   private static final String SYSTEM_TYPE = "java.lang.System";
   private static final int WITH_DEFAULT = 2;
   private static final Set<String> STANDARD_KEYS =
@@ -65,5 +72,24 @@ final class JavaTrustedCalls {
       final List<String> arguments
   ) {
     return hasReceiver && "getRequestURI".equals(name) && arguments.isEmpty();
+  }
+
+  /**
+   * Returns whether a call is {@code URLDecoder.decode} or {@code UriUtils.decode} of a direct
+   * {@code getRequestURI()} call: decoding turns {@code %0A} into a line break.
+   *
+   * @param name the called name
+   * @param receiverType the resolved type of the receiver
+   * @param arguments the text of the arguments
+   */
+  static boolean isDecodedRequestUri(
+      final String name,
+      final Optional<String> receiverType,
+      final List<String> arguments
+  ) {
+    return "decode".equals(name)
+        && receiverType.filter(DECODER_TYPES::contains).isPresent()
+        && !arguments.isEmpty()
+        && REQUEST_URI_CALL.matcher(arguments.get(0)).matches();
   }
 }

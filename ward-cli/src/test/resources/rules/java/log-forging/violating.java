@@ -1,4 +1,5 @@
 import java.net.URLDecoder;
+import org.springframework.web.util.UriUtils;
 import javax.servlet.http.HttpServletRequest;
 
 class Audit {
@@ -79,5 +80,14 @@ class Audit {
   void decodedQueryDirect(HttpServletRequest request, org.slf4j.Logger log) throws Exception {
     String path = URLDecoder.decode(request.getQueryString(), "UTF-8");
     log.warn("request " + path);
+  }
+
+  // Percent-decoding the request URI can produce a line break (%0A).
+  void decodedUri(HttpServletRequest request, org.slf4j.Logger log) throws Exception {
+    log.info(URLDecoder.decode(request.getRequestURI(), "UTF-8"));
+  }
+
+  void decodedUriSpring(HttpServletRequest request, org.slf4j.Logger log) {
+    log.info("path {}", UriUtils.decode(request.getRequestURI(), "UTF-8"));
   }
 }

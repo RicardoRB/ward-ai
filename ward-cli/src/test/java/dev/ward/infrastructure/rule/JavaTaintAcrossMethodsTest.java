@@ -72,4 +72,16 @@ class JavaTaintAcrossMethodsTest {
     assertThat(run("void loop(String v) { loop(v); sink(v); }\nvoid run() { loop(source()); }"))
         .hasSize(1);
   }
+
+  @Test
+  void entityPassedToAHelperWhoseGetterReachesASinkIsReported() {
+    final List<TaintFinding> found =
+        run("void put(Box b) { sink(b.get()); }\nvoid run(@Untrusted Box b) { put(b); }");
+    final List<TaintFinding> joined =
+        run("void put(Box b) { sink(b.get() + \"/x\"); }\nvoid run(@Untrusted Box b) { put(b); }");
+
+    assertThat(found).hasSize(1);
+    assertThat(found.get(0).sink().name()).isEqualTo("put");
+    assertThat(joined).hasSize(1);
+  }
 }

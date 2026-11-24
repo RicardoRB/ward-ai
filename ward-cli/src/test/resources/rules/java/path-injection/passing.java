@@ -1,7 +1,9 @@
 import java.io.File;
+import org.apache.commons.io.FilenameUtils;
 import java.sql.Connection;
 import java.sql.Statement;
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.RequestBody;
 
 class Download {
   File find(HttpServletRequest request) {
@@ -38,5 +40,26 @@ class Temp {
 
   String base() {
     return System.getProperty("user.home");
+  }
+}
+
+// The getters of a value that is not bound from the request are not input, and neither is a
+// getter of a bound entity that is only compared (#769).
+class GeneratorNear {
+  private final Settings settings = new Settings();
+
+  File fixedDirectory() {
+    return new File(settings.getGenPath());
+  }
+
+  void nameOnly(@RequestBody Table table) {
+    new File("/data/" + FilenameUtils.getName(table.getGenPath()));
+  }
+
+  void allowListed(@RequestBody Table table) {
+    if (!"a".equals(table.getGenPath())) {
+      throw new IllegalArgumentException();
+    }
+    new File("/data/fixed");
   }
 }
