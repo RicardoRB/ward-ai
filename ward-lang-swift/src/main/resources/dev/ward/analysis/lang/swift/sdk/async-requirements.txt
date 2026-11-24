@@ -1,0 +1,68 @@
+# Async requirements of Apple SDK protocols, from Apple's public documentation, in Ward's words.
+# One line per requirement: <protocol> | <name>(<argument labels, each followed by a colon>).
+# A method of a type that conforms to the protocol, with this name and labels, keeps its async
+# signature because the protocol requires it, so it needs no await.
+
+# Foundation: URLSession delegates
+URLSessionDelegate | urlSession(_:didReceive:)
+URLSessionTaskDelegate | urlSession(_:didReceive:)
+URLSessionTaskDelegate | urlSession(_:task:didReceive:)
+URLSessionTaskDelegate | urlSession(_:task:willBeginDelayedRequest:)
+URLSessionTaskDelegate | urlSession(_:task:willPerformHTTPRedirection:newRequest:)
+URLSessionDataDelegate | urlSession(_:didReceive:)
+URLSessionDataDelegate | urlSession(_:task:didReceive:)
+URLSessionDataDelegate | urlSession(_:task:willBeginDelayedRequest:)
+URLSessionDataDelegate | urlSession(_:task:willPerformHTTPRedirection:newRequest:)
+URLSessionDataDelegate | urlSession(_:dataTask:didReceive:)
+URLSessionDownloadDelegate | urlSession(_:didReceive:)
+URLSessionDownloadDelegate | urlSession(_:task:didReceive:)
+URLSessionDownloadDelegate | urlSession(_:task:willBeginDelayedRequest:)
+URLSessionDownloadDelegate | urlSession(_:task:willPerformHTTPRedirection:newRequest:)
+URLSessionStreamDelegate | urlSession(_:didReceive:)
+URLSessionStreamDelegate | urlSession(_:task:didReceive:)
+URLSessionWebSocketDelegate | urlSession(_:didReceive:)
+URLSessionWebSocketDelegate | urlSession(_:task:didReceive:)
+
+# AppIntents: perform() of an intent and the async requirements of entity queries
+AppIntent | perform()
+AudioPlaybackIntent | perform()
+DeleteIntent | perform()
+LiveActivityIntent | perform()
+OpenIntent | perform()
+SetValueIntent | perform()
+SnippetIntent | perform()
+WidgetConfigurationIntent | perform()
+EntityQuery | entities(for:)
+EntityQuery | suggestedEntities()
+EntityStringQuery | entities(matching:)
+EntityPropertyQuery | entities(matching:mode:sortedBy:limit:)
+EnumerableEntityQuery | allEntities()
+DynamicOptionsProvider | results()
+
+# WidgetKit
+AppIntentTimelineProvider | snapshot(for:in:)
+AppIntentTimelineProvider | timeline(for:in:)
+AppIntentTimelineProvider | recommendations()
+
+# UserNotifications
+UNUserNotificationCenterDelegate | userNotificationCenter(_:willPresent:)
+UNUserNotificationCenterDelegate | userNotificationCenter(_:didReceive:)
+
+# UIKit
+UIApplicationDelegate | application(_:didReceiveRemoteNotification:)
+
+# WebKit
+WKNavigationDelegate | webView(_:decidePolicyFor:)
+WKNavigationDelegate | webView(_:decidePolicyFor:preferences:)
+WKUIDelegate | webView(_:runJavaScriptAlertPanelWithMessage:initiatedByFrame:)
+WKUIDelegate | webView(_:runJavaScriptConfirmPanelWithMessage:initiatedByFrame:)
+WKUIDelegate | webView(_:runJavaScriptTextInputPanelWithPrompt:defaultText:initiatedByFrame:)
+
+# CloudKit
+CKSyncEngineDelegate | handleEvent(_:syncEngine:)
+CKSyncEngineDelegate | nextRecordZoneChangeBatch(_:syncEngine:)
+CKSyncEngineDelegate | nextFetchChangesOptions(_:syncEngine:)
+
+# Swift standard library
+AsyncIteratorProtocol | next()
+AsyncIteratorProtocol | next(isolation:)

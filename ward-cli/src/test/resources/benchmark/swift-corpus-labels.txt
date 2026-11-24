@@ -142,9 +142,7 @@ ward:swift/hard-coded-credential | alamofire/Tests/AuthenticationTests.swift:181
 ward:swift/async-without-await | alamofire/Tests/ConcurrencyTests.swift:484 | tp | a local async function whose body never awaits
 ward:swift/async-without-await | alamofire/Tests/ConcurrencyTests.swift:510 | tp | a local async function whose body never awaits
 ward:swift/async-without-await | alamofire/Tests/ConcurrencyTests.swift:538 | tp | a local async function whose body never awaits
-ward:swift/async-without-await | alamofire/Tests/URLProtocolTests.swift:104 | fp | the async signature is the one the URLSessionDataDelegate method requires, so async cannot be dropped
 ward:swift/async-without-await | sample-food-truck/FoodTruckKit/Sources/Account/AccountStore.swift:117 | tp | a private async function whose body never awaits
-ward:swift/async-without-await | sample-food-truck/App/Donut/ShowTopDonutsIntent.swift:19 | fp | the async signature is the one the AppIntent requirement perform() has, so async cannot be dropped
 ward:swift/async-without-await | sample-food-truck/FoodTruckKit/Sources/Account/AccountStore.swift:105 | tp | a public async function whose body never awaits
 ward:swift/async-without-await | sample-food-truck/FoodTruckKit/Sources/Account/AccountStore.swift:137 | tp | a private async function whose body never awaits
 ward:swift/discouraged-optional-boolean | alamofire/Source/Core/DataRequest.swift:60 | tp | an optional Bool parameter

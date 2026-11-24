@@ -17,8 +17,9 @@ import java.util.SortedMap;
 /**
  * Reports an async function whose body never awaits, like SwiftLint's {@code async_without_await},
  * unless the function witnesses an async requirement of a protocol that its type conforms to,
- * declared anywhere in the project, since then {@code async} cannot be dropped. A requirement of a
- * protocol outside the project is not known, so a witness of it is still reported.
+ * declared in the project or listed in {@link SwiftSdkAsyncRequirements}, since then {@code async}
+ * cannot be dropped. A requirement of any other protocol outside the project is not known, so a
+ * witness of it is still reported.
  */
 public final class SwiftAsyncWithoutAwaitCheck implements RuleCheck, ProjectCheck {
   private static final String FUNCTION = "function_declaration";
@@ -62,7 +63,7 @@ public final class SwiftAsyncWithoutAwaitCheck implements RuleCheck, ProjectChec
 
   /** The async requirement keys each type name must satisfy, through every conformance. */
   private static Map<String, Set<String>> witnessedKeys(final SortedMap<String, SyntaxNode> trees) {
-    final Map<String, Set<String>> requirements = new HashMap<>();
+    final Map<String, Set<String>> requirements = SwiftSdkAsyncRequirements.load();
     final Map<String, Set<String>> inherits = new HashMap<>();
     for (final SyntaxNode tree : trees.values()) {
       for (final String kind : SwiftInheritance.KINDS) {
