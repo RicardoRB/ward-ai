@@ -219,7 +219,23 @@ returns, or that is passed into another function that reaches a sink, is followe
 Java files; a call in another file must name the class (`Helper.run(x)`, `Helper().run(x)`) or a `val`
 that holds a new object (`val helper = Helper()`, then `helper.run(x)`). A `var`, a declared type and a call
 that leaves out a parameter with a default value are not paired.
-The rules use the specifications of Java (the types are the same) and `taint/kotlin/sources.toml`.
+The rules use the specifications of Java (the types are the same), `taint/kotlin/sources.toml`,
+`taint/kotlin/sanitizers.toml` and, for two rules, the Ktor sinks of `taint/kotlin/ward-ktor-*.toml`.
+
+A call through a property of a class (`class Controller(private val service: Service)`, then
+`service.find(name)`) reaches the method of that class, also when the class is another file of the project.
+A `val` that holds a well-known logger factory (`LoggerFactory.getLogger`, `java.util.logging.Logger.getLogger`,
+`LogManager.getLogger`, `LogFactory.getLog`) has the type of the logger, so `log.info("x $value")` is a log
+sink. An annotation that a wildcard import brings in (`import org.springframework.web.bind.annotation.*`) is
+found. An extension function of the same file (`fun String.run(service: Service)`) is followed: the receiver
+of the call is its first argument and the `this` of its body (an extension function of another file is not
+followed). `toInt()`, `toLongOrNull()`, `toDouble()`, `toBoolean()` and the other conversions of a string to a
+number leave the value clean. `call.respondRedirect(url)` is a sink of `untrusted-redirect`, and `get`, `post`
+and the other calls of a Ktor `HttpClient` are sinks of `server-side-request-forgery`.
+A value checked against an allow-list is clean past the check: `if (x !in ALLOWED) throw ...`,
+`if (!ALLOWED.contains(x)) return`, `require(x in ALLOWED)` and `check(ALLOWED.contains(x))`, where `ALLOWED`
+is a `val` of the file that holds `setOf(...)` or `listOf(...)`; a function that makes the check on its
+parameter and returns only when it holds leaves the argument of its callers clean.
 
 A lambda has its statements in blocks of its own, so a branch inside it keeps its paths apart. `it`, or the
 named parameter, takes the taint of the receiver, and the last expression of the lambda is its value: the

@@ -1,5 +1,6 @@
 package dev.ward.analysis.domain.jvm;
 
+import dev.ward.analysis.domain.ir.AccessKind;
 import dev.ward.analysis.domain.ir.ControlFlowGraph;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.Span;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -54,12 +56,13 @@ public final class KotlinControlFlow implements ControlFlowLowering {
     final UnitScopes scopes = new KotlinScopeAnalysis(environments -> Set.of()).analyze(unit, tree);
     final Map<Integer, Integer> writeEnds = new HashMap<>();
     KotlinWriteEnds.collect(tree, writeEnds);
+    final JavaTypeNames names = KotlinTypeNames.of(tree);
     final Collector collector = new Collector(
         scopes,
-        KotlinTypeNames.of(tree),
+        names,
         writeEnds,
         KotlinThisReads.functions(tree),
-        KotlinFileTypes.of(tree)
+        KotlinFileTypes.of(tree, names)
     );
     collector.visit(tree, "", false);
     return new ControlFlowResult(collector.graphs, List.of());
@@ -116,7 +119,7 @@ public final class KotlinControlFlow implements ControlFlowLowering {
     private void lowerProperty(final SyntaxNode node, final String scope, final boolean local) {
       if (!local) {
         for (final KotlinPropertyBodies.Body body : KotlinPropertyBodies.of(node)) {
-          lower(scope + "#" + body.name(), body.owner(), null, body.body());
+          lower(scope + "#" + body.name(), body.owner(), null, body.body(), Optional.empty());
         }
       }
     }
@@ -133,7 +136,8 @@ public final class KotlinControlFlow implements ControlFlowLowering {
           scope + "#" + name,
           node,
           KotlinFlowSyntax.child(node, PARAMETERS),
-          block == null ? body : block
+          block == null ? body : block,
+          KotlinExtensions.receiverOf(node)
       );
     }
 
@@ -142,21 +146,31 @@ public final class KotlinControlFlow implements ControlFlowLowering {
           scope + "#<init>",
           node,
           KotlinFlowSyntax.child(node, PARAMETERS),
-          KotlinFlowSyntax.child(node, BLOCK)
+          KotlinFlowSyntax.child(node, BLOCK),
+          Optional.empty()
       );
     }
 
     private void lowerInitializer(final SyntaxNode node, final String scope) {
-      lower(scope + "#<init>(0)", node, null, KotlinFlowSyntax.child(node, BLOCK));
+      lower(
+          scope + "#<init>(0)",
+          node,
+          null,
+          KotlinFlowSyntax.child(node, BLOCK),
+          Optional.empty()
+      );
     }
 
     private void lower(
         final String base,
         final SyntaxNode owner,
         final SyntaxNode parameters,
-        final SyntaxNode body
+        final SyntaxNode body,
+        final Optional<Span> receiver
     ) {
-      final String name = base.endsWith("(0)") ? base : base + "(" + count(parameters) + ")";
+      final int receivers = receiver.isPresent() ? 1 : 0;
+      final String name =
+          base.endsWith("(0)") ? base : base + "(" + (count(parameters) + receivers) + ")";
       final Span span = owner.span();
       final KotlinView view = new KotlinView();
       final KotlinAccesses accesses =
@@ -167,8 +181,16 @@ public final class KotlinControlFlow implements ControlFlowLowering {
               new KotlinAccesses.Hints(writeEnds, KotlinThisReads.of(owner, functions)),
               view
           );
-      final List<VariableAccess> entry =
-          parameters == null ? List.of() : KotlinAccesses.parameters(scopes, parameters.span());
+      final List<VariableAccess> entry = new ArrayList<>();
+      receiver.ifPresent(
+          written ->
+              entry.add(
+                  new VariableAccess(KotlinThisReads.THIS, AccessKind.PARAMETER, written, written)
+              )
+      );
+      if (parameters != null) {
+        entry.addAll(KotlinAccesses.parameters(scopes, parameters.span()));
+      }
       graphs.add(
           new KotlinBodyLowering(accesses, new KotlinFlowSites(types, view, fileTypes), view)
               .lower(name, entry, parameters, body, span)

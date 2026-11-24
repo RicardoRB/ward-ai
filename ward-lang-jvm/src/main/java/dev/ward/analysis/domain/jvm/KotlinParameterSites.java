@@ -50,6 +50,18 @@ final class KotlinParameterSites {
     return found;
   }
 
+  /** Records the declared type of a local, a for variable or a lambda parameter. */
+  void declare(final SyntaxNode node) {
+    final SyntaxNode name = KotlinFlowSyntax.child(node, "simpleIdentifier");
+    final SyntaxNode type = KotlinFlowSyntax.child(node, "type");
+    if (name != null && type != null) {
+      declared.put(
+          KotlinFlowSyntax.text(name),
+          KotlinCalls.erasedNullability(KotlinFlowSyntax.text(type))
+      );
+    }
+  }
+
   private void parameter(final SyntaxNode node, final List<FlowSite> found) {
     final SyntaxNode parameter = KotlinFlowSyntax.child(node, PARAMETER);
     final SyntaxNode name =
@@ -90,7 +102,7 @@ final class KotlinParameterSites {
   private void collect(final SyntaxNode node, final List<String> found) {
     for (final SyntaxNode child : node.children()) {
       if (ANNOTATION.equals(child.kind()) || UNESCAPED.equals(child.kind())) {
-        found.add(types.annotation(nameOf(child)));
+        found.addAll(types.annotationCandidates(nameOf(child)));
       } else {
         collect(child, found);
       }

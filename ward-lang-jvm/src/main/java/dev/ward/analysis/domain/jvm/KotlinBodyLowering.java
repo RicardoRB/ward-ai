@@ -25,6 +25,8 @@ final class KotlinBodyLowering implements KotlinStatements {
   private final KotlinValueLowering values;
   private final KotlinConstructLowering constructs;
   private final KotlinJumpLowering jumps;
+  private final KotlinAccesses accesses;
+  private final KotlinAllowListGuards guards;
 
   /**
    * Starts the lowering of one body.
@@ -39,10 +41,12 @@ final class KotlinBodyLowering implements KotlinStatements {
       final KotlinView view
   ) {
     this.sites = sites;
+    this.accesses = accesses;
+    this.guards = new KotlinAllowListGuards(sites.allowLists());
     this.flow = new ControlFlowBuilder(accesses, sites);
     this.values = new KotlinValueLowering(flow, view, this);
     this.jumps = new KotlinJumpLowering(flow, values);
-    this.constructs = new KotlinConstructLowering(flow, values, this);
+    this.constructs = new KotlinConstructLowering(flow, values, this, accesses, guards);
   }
 
   /**
@@ -129,8 +133,36 @@ final class KotlinBodyLowering implements KotlinStatements {
     switch (construct.kind()) {
       case "declaration" -> declaration(construct);
       case "jumpExpression" -> jumps.jump(construct);
-      default -> constructs.lower(construct, label, result);
+      default -> {
+        constructs.lower(construct, label, result);
+        guards
+            .ofCheck(construct)
+            .ifPresent(
+                name ->
+                    JavaAllowListGuards.record(
+                        flow,
+                        accesses.clean(name, construct.span(), after(construct.span())),
+                        name,
+                        construct.span()
+                    )
+            );
+      }
     }
+  }
+
+  /**
+   * A span past every statement of the body, at the line where {@code span} ends, so no statement
+   * contains the write that follows a check and it takes no taint from the check's own reads.
+   */
+  private static Span after(final Span span) {
+    return new Span(
+        span.endLine(),
+        span.endColumn(),
+        span.endLine(),
+        span.endColumn(),
+        Integer.MAX_VALUE,
+        Integer.MAX_VALUE
+    );
   }
 
   /** A property is a node; a nested function, class or alias is another body, so it is skipped. */

@@ -14,3 +14,17 @@ class Subject {
     response.sendRedirect(value)
   }
 }
+
+class KtorRedirectSafe {
+  fun go() {
+    val target = call.request.queryParameters["to"]
+    call.respondRedirect("/home")
+  }
+}
+
+class KtorRedirectCounted {
+  fun next() {
+    val n = (call.parameters["n"]?.toIntOrNull() ?: 0).coerceAtLeast(0)
+    call.respondRedirect("/relative-redirect/${n - 1}")
+  }
+}

@@ -1,0 +1,109 @@
+# Request sinks of the Ktor client: the address string that HttpClient connects to.
+
+[[sinks]]
+kind = "call"
+name = "get"
+receiver = "io.ktor.client.HttpClient"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "post"
+receiver = "io.ktor.client.HttpClient"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "put"
+receiver = "io.ktor.client.HttpClient"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "delete"
+receiver = "io.ktor.client.HttpClient"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "head"
+receiver = "io.ktor.client.HttpClient"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "patch"
+receiver = "io.ktor.client.HttpClient"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "options"
+receiver = "io.ktor.client.HttpClient"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "request"
+receiver = "io.ktor.client.HttpClient"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "prepareGet"
+receiver = "io.ktor.client.HttpClient"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "prepareRequest"
+receiver = "io.ktor.client.HttpClient"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "preparePost"
+receiver = "io.ktor.client.HttpClient"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "preparePut"
+receiver = "io.ktor.client.HttpClient"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "prepareDelete"
+receiver = "io.ktor.client.HttpClient"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "preparePatch"
+receiver = "io.ktor.client.HttpClient"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "prepareHead"
+receiver = "io.ktor.client.HttpClient"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "prepareOptions"
+receiver = "io.ktor.client.HttpClient"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "webSocket"
+receiver = "io.ktor.client.HttpClient"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "webSocketSession"
+receiver = "io.ktor.client.HttpClient"
+arguments = [0]

@@ -24,3 +24,21 @@ class Subject {
 
   fun read(request: HttpServletRequest): String? = request.getParameter("x")
 }
+
+class KtorRedirect {
+  fun go() {
+    val target = call.request.queryParameters["to"]!!
+    call.respondRedirect(target)
+  }
+
+  fun scoped() {
+    call.parameters["to"]?.also { call.respondRedirect(it) }
+  }
+}
+
+class KtorRedirectTrimmed {
+  fun next() {
+    val target = call.parameters["to"]?.trim() ?: "/"
+    call.respondRedirect("/r/" + target)
+  }
+}

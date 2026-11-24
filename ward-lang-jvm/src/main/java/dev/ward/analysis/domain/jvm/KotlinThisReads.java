@@ -104,7 +104,9 @@ final class KotlinThisReads {
   /** The reads of {@code this} in the body of {@code owner}, in source order. */
   static List<VariableAccess> of(final SyntaxNode owner, final Set<String> declared) {
     final KotlinThisReads found = new KotlinThisReads(declared);
-    owner.children().forEach(child -> found.walk(child, null, false));
+    final Span receiver =
+        FUNCTION.equals(owner.kind()) ? KotlinExtensions.receiverOf(owner).orElse(null) : null;
+    owner.children().forEach(child -> found.walk(child, receiver, false));
     return List.copyOf(found.reads);
   }
 

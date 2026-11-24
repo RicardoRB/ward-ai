@@ -1,6 +1,8 @@
 import javax.servlet.http.HttpServletRequest
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.client.RestTemplate
+import java.net.URL
+import io.ktor.client.HttpClient
 
 class Subject {
   fun direct(request: HttpServletRequest, rest: RestTemplate) {
@@ -23,4 +25,10 @@ class Subject {
   }
 
   fun read(request: HttpServletRequest): String? = request.getParameter("x")
+}
+
+class KtorClient(private val client: HttpClient) {
+  suspend fun fetchRemote() {
+    client.get(call.request.queryParameters["url"]!!)
+  }
 }
