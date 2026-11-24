@@ -101,8 +101,11 @@ final class PythonBodyLowering {
       case "try_stmt" -> handlers.tryStatement(node);
       case "with_stmt" -> handlers.withStatement(node);
       case "match_stmt" -> handlers.matchStatement(node);
-      default ->
-          simple(node, !DEFINITIONS.contains(node.kind()) && PythonFlowSyntax.mayThrow(node));
+      default -> {
+        simple(node, !DEFINITIONS.contains(node.kind()) && PythonFlowSyntax.mayThrow(node));
+        PythonFixedLookups.target(node, collections)
+            .ifPresent(name -> clean(name, after(node.span())));
+      }
     }
   }
 
@@ -161,8 +164,24 @@ final class PythonBodyLowering {
     }
   }
 
+  /** A span just past a statement, which no statement contains, so its write takes no taint. */
+  private static Span after(final Span statement) {
+    return new Span(
+        statement.endLine(),
+        statement.endColumn(),
+        statement.endLine(),
+        statement.endColumn() + 1,
+        statement.endOffset(),
+        statement.endOffset() + 1
+    );
+  }
+
   private void clean(final String name, final SyntaxNode guard) {
-    final List<VariableAccess> clean = accesses.clean(name, guard.span());
+    clean(name, guard.span());
+  }
+
+  private void clean(final String name, final Span span) {
+    final List<VariableAccess> clean = accesses.clean(name, span);
     if (!clean.isEmpty()) {
       flow.record(clean, List.of());
     }

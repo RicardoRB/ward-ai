@@ -20,5 +20,11 @@ public enum FlowSiteKind {
    * argument, with an optional {@code getBytes} or {@code toCharArray} conversion. The name is the
    * literal contents and the qualifier is {@code value} or {@code argument}.
    */
-  LITERAL
+  LITERAL,
+  /**
+   * The value parts of a string built after a literal {@code ?}, such as {@code x} in {@code "/p?"
+   * + x}: the name is {@code ?} and the arguments are the spans of those parts. They can only be
+   * part of the query of a URL, never its scheme, host or path.
+   */
+  QUERY_PART
 }

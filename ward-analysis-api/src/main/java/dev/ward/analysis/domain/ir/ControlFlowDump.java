@@ -38,7 +38,9 @@ public final class ControlFlowDump {
           FlowSiteKind.STRING_BUILD,
           "string",
           FlowSiteKind.LITERAL,
-          "literal"
+          "literal",
+          FlowSiteKind.QUERY_PART,
+          "query"
       );
 
   private ControlFlowDump() {}

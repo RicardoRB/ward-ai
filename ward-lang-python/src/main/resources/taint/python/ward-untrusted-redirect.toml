@@ -59,3 +59,8 @@ name = "reverse"
 [[sanitizers]]
 kind = "call"
 name = "url_for"
+
+# A value that only follows a literal "?" is part of the query, never of the scheme, host or path.
+[[sanitizers]]
+kind = "query-part"
+name = "?"

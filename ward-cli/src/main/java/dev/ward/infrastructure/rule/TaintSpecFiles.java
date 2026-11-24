@@ -42,6 +42,7 @@ final class TaintSpecFiles {
   private static final String PATTERN = "pattern";
   private static final String STRING = "string";
   private static final String LITERAL = "literal";
+  private static final String QUERY_PART = "query-part";
   private static final Set<String> TABLES = Set.of(SOURCES, SINKS, SANITIZERS, PROPAGATORS);
   private static final Set<String> KEYS =
       Set.of(KIND, NAME, RECEIVER, QUALIFIER, ARGUMENTS, FROM, PATTERN);
@@ -58,12 +59,14 @@ final class TaintSpecFiles {
           STRING,
           FlowSiteKind.STRING_BUILD,
           LITERAL,
-          FlowSiteKind.LITERAL
+          FlowSiteKind.LITERAL,
+          QUERY_PART,
+          FlowSiteKind.QUERY_PART
       );
   private static final Set<String> SOURCE_KINDS = Set.of("call", "member", "parameter", LITERAL);
   private static final Set<String> SINK_KINDS = Set.of("call", "member-write", STRING);
   private static final Set<String> CALL_KIND = Set.of("call");
-  private static final Set<String> SANITIZER_KINDS = Set.of("call", "member");
+  private static final Set<String> SANITIZER_KINDS = Set.of("call", "member", QUERY_PART);
 
   private TaintSpecFiles() {}
 
