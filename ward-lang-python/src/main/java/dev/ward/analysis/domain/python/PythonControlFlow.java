@@ -19,6 +19,9 @@ import java.util.Set;
  */
 public final class PythonControlFlow implements ControlFlowLowering {
   private static final String MODULE = "<module>";
+  private static final String VARIADIC = "(*)";
+  /** shortcut: the project root is the only source root, so a src layout names no module; upgrade by passing the layout. */
+  private static final PythonProjectLayout ROOT = new PythonProjectLayout(List.of(""));
   private static final String BLOCK = "block";
   private static final String NAME = "name";
   private static final String FUNCDEF = "funcdef";
@@ -35,10 +38,12 @@ public final class PythonControlFlow implements ControlFlowLowering {
     final List<ControlFlowGraph> graphs = new ArrayList<>();
     final Map<String, String> imports = PythonImportAliases.of(tree);
     final Set<String> collections = PythonLiteralCollections.of(tree);
-    graphs.add(
-        body(MODULE, tree, PythonParameters.NONE, tree.span(), new FileFacts(imports, collections))
-    );
-    collectDefinitions(tree, graphs, imports, collections, List.of());
+    final String owner =
+        ROOT.moduleOf(unit.path()).map(module -> module.name() + "#").orElse("");
+    final PythonFileFacts facts =
+        new PythonFileFacts(imports, collections, owner, topLevelFunctions(tree));
+    graphs.add(body(MODULE, tree, PythonParameters.NONE, tree.span(), facts));
+    collectDefinitions(tree, graphs, facts, List.of());
     return new ControlFlowResult(graphs, List.of());
   }
 
@@ -46,63 +51,77 @@ public final class PythonControlFlow implements ControlFlowLowering {
   private static void collectDefinitions(
       final SyntaxNode node,
       final List<ControlFlowGraph> out,
-      final Map<String,
-      String> imports,
-      final Set<String> collections,
+      final PythonFileFacts facts,
       final List<SyntaxNode> decorators
   ) {
     final List<SyntaxNode> inherited =
         "decorated".equals(node.kind()) ? PythonParameters.decoratorsOf(node) : decorators;
     for (final SyntaxNode child : node.children()) {
       if (FUNCDEF.equals(child.kind()) || CLASSDEF.equals(child.kind())) {
-        out.add(definition(child, imports, collections, inherited));
+        out.add(definition(child, facts, inherited));
       }
-      collectDefinitions(
-          child,
-          out,
-          imports,
-          collections,
-          FUNCDEF.equals(child.kind()) ? List.of() : inherited
-      );
+      collectDefinitions(child, out, facts, FUNCDEF.equals(child.kind()) ? List.of() : inherited);
     }
   }
 
   private static ControlFlowGraph definition(
       final SyntaxNode definition,
-      final Map<String,
-      String> imports,
-      final Set<String> collections,
+      final PythonFileFacts facts,
       final List<SyntaxNode> decorators
   ) {
     final SyntaxNode block = PythonSyntax.children(definition, BLOCK).get(0);
     final PythonParameters parameters = PythonParameters.of(definition, decorators);
-    final Set<String> usable = new HashSet<>(collections);
+    final Set<String> usable = new HashSet<>(facts.collections());
     parameters.accesses().forEach(access -> usable.remove(access.name()));
+    final String name =
+        PythonSyntax.firstOfKind(definition, NAME).map(PythonControlFlow::text).orElse(MODULE);
     return body(
-        PythonSyntax.firstOfKind(definition, NAME).map(PythonControlFlow::text).orElse(MODULE),
+        facts.owner() + name + (isVariadic(definition) ? VARIADIC : ""),
         block,
         parameters,
         definition.span(),
-        new FileFacts(imports, usable)
+        facts.with(usable)
     );
   }
 
-  /** What the whole file says that a body needs: its imports and the collections it fixes. */
-  private record FileFacts(Map<String, String> imports, Set<String> collections) {}
+  /**
+   * A body with {@code *args} or {@code **kwargs} takes no fixed number of arguments, so it has no
+   * arity, which a call site could not match positionally anyway: its name carries {@value
+   * #VARIADIC}, which no call names, and so no summary of the callee reaches a caller.
+   */
+  private static boolean isVariadic(final SyntaxNode definition) {
+    return definition.children().stream()
+        .filter(child -> !BLOCK.equals(child.kind()))
+        .flatMap(child -> PythonSyntax.tokens(child).stream())
+        .map(PythonSyntax::text)
+        .anyMatch(token -> "*".equals(token) || "**".equals(token));
+  }
+
+  /** The names of the functions defined at the top level of the file, decorated or not. */
+  private static Set<String> topLevelFunctions(final SyntaxNode tree) {
+    final Set<String> names = new HashSet<>();
+    for (final SyntaxNode statement : PythonStatementLeaves.leaves(tree)) {
+      final SyntaxNode definition =
+          "decorated".equals(statement.kind())
+              ? PythonSyntax.firstOfKind(statement, FUNCDEF).orElse(statement)
+              : statement;
+      if (FUNCDEF.equals(definition.kind())) {
+        PythonSyntax.firstOfKind(definition, NAME).map(PythonControlFlow::text).ifPresent(
+            names::add
+        );
+      }
+    }
+    return names;
+  }
 
   private static ControlFlowGraph body(
       final String name,
       final SyntaxNode block,
       final PythonParameters parameters,
       final Span span,
-      final FileFacts facts
+      final PythonFileFacts facts
   ) {
-    return new PythonBodyLowering(
-        declaredNames(block),
-        !hasStarImport(block),
-        facts.imports(),
-        facts.collections()
-    )
+    return new PythonBodyLowering(declaredNames(block), !hasStarImport(block), facts)
         .lower(name, block, parameters, span);
   }
 

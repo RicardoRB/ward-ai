@@ -152,8 +152,6 @@ ward:python/parameter-count | tests/helpers.py:169 | tp | the function takes mor
 ward:python/parameter-count | tests/helpers.py:206 | tp | the function takes more parameters than the limit
 ward:python/parameter-count | tests/helpers.py:261 | tp | the function takes more parameters than the limit
 ward:python/parameter-name | CTFd/utils/email/providers/smtp.py:78 | tp | the parameter name is not snake_case
-ward:python/path-injection | CTFd/admin/__init__.py:176 | fp | send_file receives the result of dump_csv, a buffer built in another module; Ward has no cross-module function summaries for Python, so it cannot see that the argument is not a path
-ward:python/path-injection | CTFd/api/v1/exports.py:32 | fp | send_file receives the result of dump_csv, a buffer built in another module; Ward has no cross-module function summaries for Python, so it cannot see that the argument is not a path
 ward:python/pointless-string-statement | CTFd/__init__.py:43 | tp | a string statement outside the docstring position has no effect
 ward:python/pointless-string-statement | CTFd/config.py:167 | tp | a string statement outside the docstring position has no effect
 ward:python/pointless-string-statement | CTFd/plugins/challenges/__init__.py:335 | tp | a string statement outside the docstring position has no effect
@@ -246,8 +244,6 @@ ward:python/unspecified-encoding | CTFd/utils/__init__.py:33 | tp | a text file 
 ward:python/unspecified-encoding | CTFd/utils/initialization/__init__.py:164 | tp | a text file is opened without an encoding
 ward:python/unspecified-encoding | CTFd/utils/plugins/__init__.py:64 | tp | a text file is opened without an encoding
 ward:python/unspecified-encoding | CTFd/utils/uploads/uploaders.py:128 | tp | a text file is opened without an encoding
-ward:python/untrusted-redirect | CTFd/auth.py:406 | fp | a validator function of the project (is_safe_url) tests the value in the condition above
-ward:python/untrusted-redirect | CTFd/auth.py:494 | tp | the redirect target comes straight from the query string
 ward:python/unused-argument | CTFd/plugins/__init__.py:25 | tp | the parameter is not read in the function
 ward:python/unused-argument | CTFd/plugins/challenges/logic.py:7 | tp | the parameter is not read in the function
 ward:python/unused-argument | CTFd/utils/uploads/__init__.py:16 | tp | the parameter is not read in the function

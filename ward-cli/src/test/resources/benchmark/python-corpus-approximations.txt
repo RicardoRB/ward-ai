@@ -1,2 +1,1 @@
 # False positives of the Python corpus run that are known and open: rule | file:line | reason | #issue (#724).
-ward:python/untrusted-redirect | hc/accounts/views.py:115 | a validator on the same line of control accepts only a relative URL that resolves to a known route | #733

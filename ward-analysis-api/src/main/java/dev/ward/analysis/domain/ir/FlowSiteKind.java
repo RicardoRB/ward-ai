@@ -32,5 +32,13 @@ public enum FlowSiteKind {
    * res.setHeader('Content-Type', 'application/json')}: the name is {@code json} and the qualifier
    * is the response as written.
    */
-  CONTENT_TYPE
+  CONTENT_TYPE,
+  /**
+   * One use of a value that a condition of the body proved with a validator function, such as the
+   * {@code next} of {@code redirect(next)} under {@code if is_safe(next)}: the name is {@code
+   * <what>:<function>@<index>}, the annotation {@code ward:arity:<n>} gives the arity of the
+   * validator, and the argument is the span of the use. A specification trusts the site only for a
+   * validator whose body proves what {@code <what>} says.
+   */
+  VALIDATED
 }

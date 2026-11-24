@@ -1,7 +1,7 @@
-from urllib.parse import urlencode, urlparse
+from urllib.parse import urlencode, urljoin, urlparse
 
 from django.urls import reverse
-from flask import redirect, request, url_for
+from flask import abort, redirect, request, url_for
 
 
 def go():
@@ -50,3 +50,57 @@ def go_with_chained_query():
     tail = request.args.get("tail")
     more = request.args.get("more")
     return redirect("/search?" + tail + "&" + more)
+
+
+def relative_only(url):
+    if not url:
+        return False
+    parsed = urlparse(url)
+    if parsed.netloc:
+        return False
+    return parsed.path.startswith("/")
+
+
+def same_host(target):
+    own = urlparse(request.host_url)
+    joined = urlparse(urljoin(request.host_url, target))
+    return joined.scheme in ("http", "https") and own.netloc == joined.netloc
+
+
+def is_trusted(target):
+    return same_host(target) and same_host(target.replace("\\", "/"))
+
+
+def go_guarded_by_relative_check():
+    target = request.args.get("next")
+    if target and relative_only(target):
+        return redirect(target)
+    return redirect("/")
+
+
+def go_guarded_by_negated_check():
+    target = request.args.get("next")
+    if not relative_only(target):
+        abort(400)
+    return redirect(target)
+
+
+def go_guarded_by_negated_check_in_a_chain():
+    target = request.args.get("next")
+    if target is None or not is_trusted(target):
+        return redirect("/")
+    return redirect(target)
+
+
+def go_guarded_expression():
+    if request.args.get("next") and is_trusted(request.args.get("next")):
+        return redirect(request.args.get("next"))
+    return redirect("/")
+
+
+def go_guarded_else_branch():
+    target = request.args.get("next")
+    if not same_host(target):
+        return redirect("/")
+    else:
+        return redirect(target)

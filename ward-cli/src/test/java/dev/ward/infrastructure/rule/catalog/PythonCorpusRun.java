@@ -4,7 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.application.rule.DuplicateCodeFindings;
 import dev.ward.analysis.application.rule.FrontendSupport;
+import dev.ward.analysis.application.rule.DependencyAnalysis;
+import dev.ward.analysis.application.rule.DependencySnapshot;
+import dev.ward.analysis.application.rule.FileSummaryCache;
 import dev.ward.analysis.application.rule.RuleEngine;
+import dev.ward.analysis.domain.ir.FileSummary;
+import dev.ward.infrastructure.analysis.python.PythonDependencyAdapters;
 import dev.ward.analysis.application.rule.UnusedDefinitionFindings;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.SourceUnit;
@@ -44,7 +49,10 @@ final class PythonCorpusRun {
     final List<RuleDefinition> rules = rules();
     final List<FrontendSupport> frontends = new RuleFixtureRunner().frontends();
     final RuleEngine engine = new RuleEngine(BundledRuleMatchers.create());
-    final RuleRunResult result = engine.run(units, frontends, rules);
+    final DependencySnapshot snapshot =
+        new DependencyAnalysis(frontends, new PythonDependencyAdapters().forProject(root, units))
+            .analyze(units, new NoSummaries());
+    final RuleRunResult result = engine.run(units, frontends, rules, snapshot);
     final List<AnalysisFinding> findings = new ArrayList<>(result.findings());
     findings.addAll(engine.runProject(units, frontends, rules));
     findings.addAll(DuplicateCodeFindings.findings(rules, units, frontends));
@@ -122,5 +130,18 @@ final class PythonCorpusRun {
         .distinct()
         .sorted()
         .toList();
+  }
+
+  /** Keeps no summaries, so the run resolves the project once. */
+  private static final class NoSummaries implements FileSummaryCache {
+    @Override
+    public java.util.Optional<FileSummary> read(final SourceUnit unit) {
+      return java.util.Optional.empty();
+    }
+
+    @Override
+    public void write(final SourceUnit unit, final FileSummary summary) {
+      // nothing is kept
+    }
   }
 }

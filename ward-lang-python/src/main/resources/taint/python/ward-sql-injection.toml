@@ -203,3 +203,9 @@ name = "float"
 kind = "call"
 name = "bool"
 
+
+# An operand of a comparison is compared, not run: with a query builder it is bound as a parameter,
+# and with plain values the comparison gives a boolean. Neither makes it part of the SQL text.
+[[sanitizers]]
+kind = "validated"
+name = "comparison"

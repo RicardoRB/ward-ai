@@ -4,7 +4,7 @@
 [[rules]]
 id = "ward:python/sql-injection"
 language = "python"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
@@ -17,7 +17,7 @@ message = "untrusted data from {source} is part of the SQL text that {sink} runs
 [[rules]]
 id = "ward:python/command-injection"
 language = "python"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
@@ -30,7 +30,7 @@ message = "untrusted data from {source} is part of the command that {sink} runs;
 [[rules]]
 id = "ward:python/code-injection"
 language = "python"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
@@ -43,7 +43,7 @@ message = "untrusted data from {source} is run as code by {sink}; never evaluate
 [[rules]]
 id = "ward:python/untrusted-deserialization"
 language = "python"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
@@ -56,7 +56,7 @@ message = "untrusted data from {source} is turned into objects by {sink}; use a 
 [[rules]]
 id = "ward:python/path-injection"
 language = "python"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
@@ -69,7 +69,7 @@ message = "untrusted data from {source} chooses the path that {sink} opens; redu
 [[rules]]
 id = "ward:python/untrusted-request-url"
 language = "python"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 body = '''
@@ -81,7 +81,7 @@ message = "untrusted data from {source} chooses the address that {sink} requests
 [[rules]]
 id = "ward:python/untrusted-redirect"
 language = "python"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
@@ -94,7 +94,7 @@ message = "untrusted data from {source} decides where {sink} redirects; allow on
 [[rules]]
 id = "ward:python/template-injection"
 language = "python"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
@@ -107,7 +107,7 @@ message = "untrusted data from {source} is the template text of {sink}; pass it 
 [[rules]]
 id = "ward:python/argument-injection"
 language = "python"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
