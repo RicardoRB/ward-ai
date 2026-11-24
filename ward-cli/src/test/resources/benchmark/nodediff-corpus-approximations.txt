@@ -1,1 +1,2 @@
 # rule | file:line | reason | open issue. A finding labelled fp fails the corpus test unless it is listed here.
+ward:typescript/xss | nest/packages/platform-node/adapters/node-adapter.ts:945 | a reflected value in a plain-text response with nosniff is not an XSS sink | #785
