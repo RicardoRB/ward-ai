@@ -3,7 +3,7 @@
 [[rules]]
 id = "ward:typescript/command-injection"
 language = "TYPESCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "style"
 presets = ["standard", "strict"]
@@ -18,7 +18,7 @@ message = "untrusted data from {source} reaches the command of {sink}"
 [[rules]]
 id = "ward:javascript/command-injection"
 language = "JAVASCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "style"
 presets = ["standard", "strict"]
@@ -33,7 +33,7 @@ message = "untrusted data from {source} reaches the command of {sink}"
 [[rules]]
 id = "ward:typescript/path-traversal"
 language = "TYPESCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
@@ -48,7 +48,7 @@ message = "untrusted data from {source} reaches the file path of {sink}"
 [[rules]]
 id = "ward:javascript/path-traversal"
 language = "JAVASCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
@@ -63,7 +63,7 @@ message = "untrusted data from {source} reaches the file path of {sink}"
 [[rules]]
 id = "ward:typescript/xss"
 language = "TYPESCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
@@ -78,7 +78,7 @@ message = "untrusted data from {source} reaches the HTML sink {sink}"
 [[rules]]
 id = "ward:javascript/xss"
 language = "JAVASCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]

@@ -78,6 +78,10 @@ from = ["receiver", 0]
   'default'`. A function that throws unless its parameter is on the list also cleans the argument of
   its callers. A value that a conditional or logical operator picks is tainted when one of its
   operands is; the condition alone does not taint it.
+- TypeScript and JavaScript read a keyed read, `obj[key]` or `map.get(key)` on a name that the
+  function declared as a `Map`, as a member of `obj`: the key adds nothing to the value, but a
+  tainted `obj` still taints it. A parameter is not read this way, because the function does not
+  know what its callers pass.
 - `from` on a propagator lists its inputs, as argument positions or `"receiver"`. The argument
   positions are the arguments that the call stores into its receiver variable, so `list.add(v)`
   with `from = [0]` taints `list` when `v` is tainted. `"receiver"` is checked but does not change
@@ -180,6 +184,13 @@ no declared type, so the SQL sinks match the method name on any receiver.
   share is not followed. In Java the owner carries its package, so two classes with one simple name,
   method name and argument count in different packages are told apart by the import or package that
   the call's type resolves through.
+- In TypeScript and JavaScript, a function that the file exports is named `module#name`, where the
+  module is its path without the extension (an `index` file names its folder). A call through an
+  import (`import { f } from '../lib/files'`, `import * as files from '../lib/files'` and
+  `require`) that names a relative path reaches that function, so its summary applies: a callee
+  that returns a constant is clean, one that returns its parameter, or an operand of a conditional
+  on it, is tainted. An import through a package name or a path alias, a default import, a
+  re-export and a method of an object are not followed.
 - In Java, a call through a variable, a field or a parameter is followed when the class of the
   receiver is decided: the class the receiver was created as (`Base b = new Impl(); b.run(x)` calls
   `Impl.run`, when every value assigned to `b` in the body is a creation of that class, or a final

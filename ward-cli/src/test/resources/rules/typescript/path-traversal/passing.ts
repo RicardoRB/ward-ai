@@ -99,3 +99,19 @@ export function defaultedConstant(req) {
   const file = req.query.file ? 'index.html' : 'about.html';
   return fs.readFileSync('public/' + file);
 }
+
+// A keyed read picks a member of the object or map: the key adds nothing to the value.
+function loadIndex() {
+  return { a: 'a.txt' };
+}
+
+export function keyedObjectRead(req) {
+  const index = loadIndex();
+  return fs.readFileSync('public/' + index[req.query.key]);
+}
+
+export function keyedMapRead(req) {
+  const names = new Map();
+  names.set('a', 'a.txt');
+  return fs.readFileSync('public/' + names.get(req.query.key));
+}

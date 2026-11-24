@@ -164,3 +164,14 @@ export function assignedConditional(req) {
   file = req.query.other ? req.query.other : file;
   return fs.readFileSync('public/' + file);
 }
+
+// A keyed read of an object or map that holds untrusted values is untrusted.
+export function keyedReadOfTaintedObject(req) {
+  const index = req.body.index;
+  return fs.readFileSync('public/' + index[req.query.key]);
+}
+
+export function keyedReadOfTaintedMap(req) {
+  const names = new Map([['a', req.query.name]]);
+  return fs.readFileSync('public/' + names.get('a'));
+}

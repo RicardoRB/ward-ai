@@ -17,6 +17,6 @@ class NodeContextualKeywordFunctionNameTest {
     final ControlFlowResult result = NodeFlowFixtures.lower(source);
 
     // Then
-    assertThat(NodeFlowFixtures.names(result)).contains("global");
+    assertThat(NodeFlowFixtures.names(result)).contains("src/a#global");
   }
 }
