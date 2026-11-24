@@ -1,7 +1,7 @@
 #!/bin/sh
 # Usage: diff-findings.sh <language> <base-ref> <corpus-dir>
 # The differential report of #760: runs CorpusDiffSmokeTest (the strict preset plus every security
-# rule of <language>: java, kotlin, csharp or rust) over the pinned projects in <corpus-dir> at
+# rule of <language>: java, kotlin, csharp, rust, python, node or swift) over the pinned projects in <corpus-dir> at
 # <base-ref> (a throwaway worktree) and at the working tree, and writes the findings that the
 # change adds and removes, rule by rule, as "path:line | line of code" to
 # target/corpus-diff/<language>.md. The report is never committed. <corpus-dir> is filled by

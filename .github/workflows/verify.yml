@@ -663,7 +663,7 @@ jobs:
           -Dward.parity.enforcer=true
           test
 
-  # Runs every corpus smoke test (Java, Kotlin, C#, Rust, Swift, Python, Flask, got, Juice Shop) over its
+  # Runs every corpus smoke test (Java, Kotlin, C#, Rust, Swift, Python, Flask, got, Juice Shop and the differential NetBox, NestJS and Vapor) over its
   # pinned archive and compares the per-rule counts with the committed reports, so a rule change that
   # brings back a skipped file or a false positive fails here. corpus/fetch-corpora.sh checks every
   # archive against its sha-256 before unpacking it; the archives are cached by that manifest and
@@ -685,9 +685,9 @@ jobs:
           - name: kotlin, csharp, rust
             tests: KotlinCorpusSmokeTest,CSharpCorpusSmokeTest,RustCorpusSmokeTest
           - name: swift
-            tests: SwiftCorpusSmokeTest
+            tests: SwiftCorpusSmokeTest,SwiftDiffCorpusSmokeTest
           - name: python, typescript
-            tests: PythonCorpusSmokeTest,FlaskCorpusSmokeTest,GotBenchmarkSmokeTest,JuiceShopBenchmarkSmokeTest
+            tests: PythonCorpusSmokeTest,PythonDiffCorpusSmokeTest,FlaskCorpusSmokeTest,GotBenchmarkSmokeTest,NodeDiffCorpusSmokeTest,JuiceShopBenchmarkSmokeTest
     steps:
       - uses: actions/checkout@v5
 
@@ -733,6 +733,8 @@ jobs:
             -Dward.corpus.csharp="$corpus/csharp" -Dward.corpus.csharp.archives="$corpus/archives/csharp" \
             -Dward.corpus.rust="$corpus/rust" -Dward.corpus.rust.archives="$corpus/archives/rust" \
             -Dward.corpus.swift="$corpus/swift" -Dward.corpus.swift.archives="$corpus/archives/swift" \
+            -Dward.corpus.swiftdiff="$corpus/swift" -Dward.corpus.pythondiff="$corpus/python" \
+            -Dward.corpus.nodediff="$corpus/node" \
             -Dward.benchmark.python-corpus="$corpus/python/healthchecks-5.0.3" \
             -Dward.benchmark.python-corpus.archive="$corpus/archives/python/healthchecks.tar.gz" \
             -Dward.benchmark.flask-corpus="$corpus/flask/CTFd-3.8.9" \
@@ -756,7 +758,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [java, kotlin, csharp, rust]
+        language: [java, kotlin, csharp, rust, python, node, swift]
     steps:
       - uses: actions/checkout@v5
         with:

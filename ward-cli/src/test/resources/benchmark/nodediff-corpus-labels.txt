@@ -1,0 +1,56 @@
+# rule | file:line | label | reason. Read from the code at each line (tp, fp, un).
+ward:typescript/cookie-missing-http-only | nest/packages/platform-node/test/adapters/node-request.spec.ts:560 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/cookie-missing-http-only | nest/packages/platform-node/test/adapters/node-request.spec.ts:572 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/cookie-missing-http-only | nest/packages/platform-node/test/adapters/node-request.spec.ts:603 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/cookie-missing-http-only | nest/packages/platform-node/test/adapters/node-request.spec.ts:613 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/cookie-missing-http-only | nest/packages/platform-node/test/adapters/node-request.spec.ts:628 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/cookie-missing-same-site | nest/packages/platform-node/test/adapters/node-request.spec.ts:560 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/cookie-missing-same-site | nest/packages/platform-node/test/adapters/node-request.spec.ts:572 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/cookie-missing-same-site | nest/packages/platform-node/test/adapters/node-request.spec.ts:603 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/cookie-missing-same-site | nest/packages/platform-node/test/adapters/node-request.spec.ts:613 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/cookie-missing-same-site | nest/packages/platform-node/test/adapters/node-request.spec.ts:628 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/cookie-missing-secure | nest/packages/platform-node/test/adapters/node-request.spec.ts:560 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/cookie-missing-secure | nest/packages/platform-node/test/adapters/node-request.spec.ts:572 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/cookie-missing-secure | nest/packages/platform-node/test/adapters/node-request.spec.ts:603 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/cookie-missing-secure | nest/packages/platform-node/test/adapters/node-request.spec.ts:613 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/cookie-missing-secure | nest/packages/platform-node/test/adapters/node-request.spec.ts:628 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/hard-coded-secret | nest/sample/19-auth-jwt/src/auth/constants.ts:2 | tp | the sample keeps its JWT secret as a literal in the source
+ward:typescript/header-injection | nest/packages/platform-node/test/adapters/node-adapter.spec.ts:2491 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/header-injection | nest/packages/platform-node/test/adapters/node-adapter.spec.ts:2509 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/insecure-random | nest/integration/microservices/src/kafka/entities/business.entity.ts:6 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/insecure-random | nest/integration/microservices/src/kafka/entities/user.entity.ts:5 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/insecure-random | nest/integration/scopes/src/inject-inquirer/hello-request/request-logger.service.ts:16 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/insecure-random | nest/integration/scopes/src/inject-inquirer/hello-request/request-logger.service.ts:18 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/insecure-random | nest/packages/core/test/injector/injector.spec.ts:1571 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/insecure-random | nest/packages/core/test/injector/injector.spec.ts:1572 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/insecure-random | nest/packages/core/test/injector/injector.spec.ts:1573 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/insecure-random | nest/packages/core/test/injector/injector.spec.ts:1958 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/insecure-random | nest/packages/core/test/injector/injector.spec.ts:1959 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/insecure-random | nest/packages/core/test/injector/injector.spec.ts:1960 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/insecure-random | nest/packages/core/test/injector/injector.spec.ts:255 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/insecure-random | nest/packages/core/test/injector/injector.spec.ts:257 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/insecure-random | nest/packages/core/test/injector/injector.spec.ts:259 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/insecure-random | nest/packages/core/test/injector/injector.spec.ts:260 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/missing-frame-protection | nest/integration/hello-world/e2e/exclude-middleware.spec.ts:1 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/missing-frame-protection | nest/integration/hello-world/e2e/express-instance.spec.ts:1 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/missing-frame-protection | nest/integration/hello-world/e2e/express-multiple.spec.ts:1 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/missing-frame-protection | nest/integration/hello-world/e2e/middleware-strict-routing.spec.ts:1 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/missing-frame-protection | nest/integration/microservices/e2e/orders-grpc.spec.ts:1 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/missing-frame-protection | nest/integration/nest-application/get-url/e2e/express.spec.ts:1 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/missing-frame-protection | nest/integration/nest-application/listen/e2e/express.spec.ts:1 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/missing-frame-protection | nest/packages/platform-express/test/adapters/express-adapter.spec.ts:1 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/missing-frame-protection | nest/tools/benchmarks/src/frameworks/express.ts:1 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/path-traversal | nest/packages/platform-node/test/adapters/node-adapter.spec.ts:217 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/path-traversal | nest/packages/platform-node/test/adapters/node-adapter.spec.ts:259 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/prototype-pollution | nest/integration/cookies/e2e/cookies.spec.ts:151 | fp | a string literal that begins with __proto__= is test data, not an assignment
+ward:typescript/prototype-pollution | nest/packages/core/test/helpers/cookies/parse-cookie-header.spec.ts:80 | fp | a string literal that begins with __proto__= is test data, not an assignment
+ward:typescript/prototype-pollution | nest/packages/platform-fastify/test/adapters/fastify-adapter.spec.ts:2537 | fp | a string literal that begins with __proto__= is test data, not an assignment
+ward:typescript/prototype-pollution | nest/packages/platform-node/test/body-parser/body-parser.spec.ts:855 | fp | a string literal that begins with __proto__= is test data, not an assignment
+ward:typescript/prototype-pollution | nest/packages/platform-node/test/body-parser/body-parser.spec.ts:856 | fp | a string literal that begins with __proto__= is test data, not an assignment
+ward:typescript/prototype-pollution | nest/packages/platform-node/test/body-parser/body-parser.spec.ts:857 | fp | a string literal that begins with __proto__= is test data, not an assignment
+ward:typescript/prototype-pollution | nest/packages/platform-node/test/body-parser/body-parser.spec.ts:904 | fp | a string literal that begins with __proto__= is test data, not an assignment
+ward:typescript/prototype-pollution | nest/packages/platform-node/test/multer/interceptors/no-files.interceptor.spec.ts:36 | un | a test writes __proto__ on purpose to check that the interceptor copes with it
+ward:typescript/tls-verification-disabled | nest/packages/microservices/test/client/client-tcp-tls.spec.ts:120 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/tls-verification-disabled | nest/packages/platform-node/test/adapters/node-adapter.spec.ts:2990 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/tls-verification-disabled | nest/packages/platform-node/test/adapters/node-request.spec.ts:326 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/xss | nest/packages/platform-node/test/adapters/node-adapter.spec.ts:2496 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark

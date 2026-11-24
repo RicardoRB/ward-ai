@@ -1,0 +1,8 @@
+# rule | file:line | reason | open issue. A finding labelled fp fails the corpus test unless it is listed here.
+ward:typescript/prototype-pollution | nest/integration/cookies/e2e/cookies.spec.ts:151 | a string literal that begins with __proto__= is test data, not an assignment | #782
+ward:typescript/prototype-pollution | nest/packages/core/test/helpers/cookies/parse-cookie-header.spec.ts:80 | a string literal that begins with __proto__= is test data, not an assignment | #782
+ward:typescript/prototype-pollution | nest/packages/platform-fastify/test/adapters/fastify-adapter.spec.ts:2537 | a string literal that begins with __proto__= is test data, not an assignment | #782
+ward:typescript/prototype-pollution | nest/packages/platform-node/test/body-parser/body-parser.spec.ts:855 | a string literal that begins with __proto__= is test data, not an assignment | #782
+ward:typescript/prototype-pollution | nest/packages/platform-node/test/body-parser/body-parser.spec.ts:856 | a string literal that begins with __proto__= is test data, not an assignment | #782
+ward:typescript/prototype-pollution | nest/packages/platform-node/test/body-parser/body-parser.spec.ts:857 | a string literal that begins with __proto__= is test data, not an assignment | #782
+ward:typescript/prototype-pollution | nest/packages/platform-node/test/body-parser/body-parser.spec.ts:904 | a string literal that begins with __proto__= is test data, not an assignment | #782

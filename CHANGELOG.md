@@ -8,6 +8,10 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Added
+
+- The differential corpus covers Python, TypeScript/JavaScript and Swift (#760): the full-stack FastAPI template, NestJS and Vapor are pinned in `corpus/archives.txt`, measured with the `strict` preset by three new corpus smoke tests, and `diff-findings.sh` and the `corpus-diff` job accept `python`, `node` and `swift`. The three false-positive causes and ten parser gaps it found are open as issues and listed in the corpus files.
+
 ### Fixed
 
 - The Kotlin taint rules follow a request value through a layered service: a call through a constructor property (`class Controller(private val service: Service)`) reaches the method of `Service`; `import org.springframework.web.bind.annotation.*` finds `@RequestParam`, `@PathVariable` and `@RequestBody`; a `val` that holds `LoggerFactory.getLogger(...)`, `Logger.getLogger(...)`, `LogManager.getLogger(...)` or `LogFactory.getLog(...)` has the logger type, so `ward:kotlin/log-forging` reports it; an extension function of the same file is followed with its receiver as the first argument and `this`; `toInt()`, `toLongOrNull()` and the other string conversions clean the value (#760).

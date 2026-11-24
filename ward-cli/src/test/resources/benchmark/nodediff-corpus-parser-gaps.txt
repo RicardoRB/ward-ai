@@ -1,0 +1,83 @@
+# path | reason | open issue. A valid file the parser rejects; it is not counted as left without analysis.
+nest/integration/injector/e2e/optional-failing-dependency.spec.ts | constructor parameter property | #774
+nest/integration/injector/e2e/request-scoped-forward-ref.spec.ts | constructor parameter property | #774
+nest/integration/injector/src/defaults/defaults.service.ts | constructor parameter property | #774
+nest/integration/inspector/src/defaults/defaults.service.ts | constructor parameter property | #774
+nest/integration/scopes/src/durable/durable-zoo.service.ts | constructor parameter property | #774
+nest/packages/common/interfaces/http/http-server.interface.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/common/interfaces/nest-application.interface.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/common/interfaces/nest-microservice.interface.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/common/interfaces/websockets/web-socket-adapter.interface.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/common/module-utils/configurable-module.builder.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/common/module-utils/interfaces/configurable-module-async-options.interface.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/common/module-utils/interfaces/configurable-module-cls.interface.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/common/module-utils/interfaces/configurable-module-host.interface.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/common/pipes/file/file-validator.interface.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/core/adapters/http-adapter.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/core/exceptions/base-exception-filter.ts | type predicate | #772
+nest/packages/core/helpers/context-creator.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/core/helpers/context-id-factory.ts | type predicate | #772
+nest/packages/core/helpers/external-context-creator.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/core/helpers/handler-metadata-storage.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/core/helpers/http-adapter-host.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/core/injector/compiler.ts | type predicate | #772
+nest/packages/core/injector/container.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/core/injector/module.ts | type predicate | #772
+nest/packages/core/middleware/middleware-module.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/core/middleware/routes-mapper.ts | type predicate | #772
+nest/packages/core/nest-application-context.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/core/nest-factory.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/core/repl/repl-function.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/core/router/interfaces/route-params-factory.interface.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/core/router/route-params-factory.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/core/router/router-execution-context.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/core/router/router-response-controller.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/core/scanner.ts | type predicate | #772
+nest/packages/core/services/reflector.service.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/core/test/nest-factory.spec.ts | type arguments on a value or decorator | #773
+nest/packages/core/test/router/sse-options-older-common.spec.ts | type arguments on a value or decorator | #773
+nest/packages/microservices/client/client-kafka.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/microservices/client/client-mqtt.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/microservices/client/client-nats.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/microservices/client/client-proxy-factory.ts | type predicate | #772
+nest/packages/microservices/client/client-proxy.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/microservices/client/client-redis.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/microservices/client/client-rmq.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/microservices/client/client-tcp.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/microservices/context/request-context-host.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/microservices/decorators/event-pattern.decorator.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/microservices/exceptions/base-rpc-exception-filter.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/microservices/interfaces/request-context.interface.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/microservices/microservices-module.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/microservices/server/server-grpc.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/microservices/server/server-kafka.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/microservices/server/server-mqtt.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/microservices/server/server-nats.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/microservices/server/server-redis.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/microservices/server/server-rmq.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/microservices/server/server-tcp.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/microservices/server/server.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/microservices/test/decorators/event-pattern.decorator.spec.ts | type arguments on a value or decorator | #773
+nest/packages/microservices/test/server/server.spec.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/microservices/test/utils/param.utils.spec.ts | type arguments on a value or decorator | #773
+nest/packages/platform-express/adapters/express-adapter.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/platform-express/adapters/utils/get-body-parser-options.util.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/platform-express/interfaces/nest-express-application.interface.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/platform-express/interfaces/nest-express-body-parser.interface.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/platform-fastify/adapters/fastify-adapter.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/platform-fastify/interfaces/nest-fastify-application.interface.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/platform-node/adapters/node-adapter.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/platform-node/adapters/node-request.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/platform-node/interfaces/nest-node-application.interface.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/platform-node/interfaces/nest-node-body-parser.interface.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/testing/testing-module.ts | type predicate | #772
+nest/packages/websockets/adapters/ws-adapter.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/websockets/decorators/socket-gateway.decorator.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/websockets/exceptions/base-ws-exception-filter.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/websockets/socket-module.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/websockets/socket-server-provider.ts | multi-line type parameter list with trailing comma | #771
+nest/packages/websockets/test/utils/param.utils.spec.ts | type arguments on a value or decorator | #773
+nest/sample/09-babel-example/src/app.module.js | decorator before export class in JavaScript | #775
+nest/sample/09-babel-example/src/cats/cats.controller.js | decorator before export class in JavaScript | #775
+nest/sample/09-babel-example/src/cats/cats.module.js | decorator before export class in JavaScript | #775
+nest/sample/09-babel-example/src/cats/cats.service.js | decorator before export class in JavaScript | #775

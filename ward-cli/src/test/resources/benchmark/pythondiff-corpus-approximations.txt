@@ -1,0 +1,6 @@
+# rule | file:line | reason | open issue. A finding labelled fp fails the corpus test unless it is listed here.
+ward:python/code-injection | fastapi-template/backend/app/api/routes/items.py:27 | Session.exec of SQLModel runs a query statement, not Python exec | #781
+ward:python/code-injection | fastapi-template/backend/app/api/routes/items.py:34 | Session.exec of SQLModel runs a query statement, not Python exec | #781
+ward:python/code-injection | fastapi-template/backend/app/api/routes/items.py:42 | Session.exec of SQLModel runs a query statement, not Python exec | #781
+ward:python/code-injection | fastapi-template/backend/app/api/routes/users.py:229 | Session.exec of SQLModel runs a query statement, not Python exec | #781
+ward:python/code-injection | fastapi-template/backend/app/api/routes/users.py:48 | Session.exec of SQLModel runs a query statement, not Python exec | #781

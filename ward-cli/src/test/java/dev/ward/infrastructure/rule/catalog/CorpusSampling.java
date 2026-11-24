@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 final class CorpusSampling {
   private static final String SECURITY = "security";
   private static final Set<String> DIFFERENTIAL =
-      Set.of("ruoyi", "mall", "eladmin", "ktor-samples");
+      Set.of("ruoyi", "mall", "eladmin", "ktor-samples", "fastapi-template", "nest", "vapor");
 
   private CorpusSampling() {}
 
