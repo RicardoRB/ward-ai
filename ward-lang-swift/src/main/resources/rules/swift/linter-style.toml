@@ -95,7 +95,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["variable_declaration"]
-text = '^[^{]*\{get\{(?!.*\}set[({]).*\}\}$'
+text = '^[^{]*\{get\{(?!.*\}(?:nonmutating|mutating)?set[({]).*\}\}$'
 message = "omit the get keyword of a read-only computed property"
 '''
 

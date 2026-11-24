@@ -27,9 +27,10 @@ module
           variable k @16:14 [destructured]
           variable v @16:17 [destructured]
           block @16:28
-    function @21:9
+    block @21:13
     function @22:9
       parameter newValue @22:9
+      block @22:13
   function @26:1
     parameter a @26:10
     block @26:25

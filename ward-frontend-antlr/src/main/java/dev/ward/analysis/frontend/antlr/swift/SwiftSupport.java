@@ -252,7 +252,9 @@ public final class SwiftSupport {
     final Token nextToken = tokens.get(stop + 1);
     final boolean prevIsWS = isLeftOperatorWS(prevToken);
     final boolean nextIsWS = isRightOperatorWS(nextToken);
-    return !prevIsWS && nextIsWS || !prevIsWS && nextToken.getType() == SwiftParser.DOT;
+    final int next = nextToken.getType();
+    // `value?[...]` and `value?.name` continue the expression after the optional chain
+    return !prevIsWS && (nextIsWS || next == SwiftParser.DOT || next == SwiftParser.LBRACK);
   }
 
   /** Tells whether the operator at the current position has the given text. */
