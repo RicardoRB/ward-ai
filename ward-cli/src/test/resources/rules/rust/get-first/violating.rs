@@ -36,7 +36,7 @@ pub fn locals(names: Vec<String>, flags: &mut [bool]) -> usize {
     names.get(0).map_or(0, |n| n.len())
 }
 
-pub struct Tokens(Vec<u8>);
+pub type Tokens = Vec<u8>;
 
 pub struct Glob {
     tokens: Tokens,
@@ -45,5 +45,35 @@ pub struct Glob {
 impl Glob {
     pub fn lead(&self) -> Option<&u8> {
         self.tokens.get(0)
+    }
+}
+
+pub fn names() -> Result<Vec<String>, Error> {
+    Ok(Vec::new())
+}
+
+pub fn through_return() -> Option<String> {
+    let all = names().unwrap();
+    let first = all.get(0);
+    first.cloned()
+}
+
+pub struct Rows {
+    cells: Vec<Vec<u8>>,
+}
+
+impl Rows {
+    pub fn row(&self) -> Result<Vec<u8>, Error> {
+        Ok(Vec::new())
+    }
+
+    pub fn lead(&self) -> Option<u8> {
+        let row = self.row().ok()?;
+        let by_method = self.row().unwrap();
+        by_method.get(0).copied()
+    }
+
+    pub fn each(&self) -> usize {
+        self.cells.iter().map(|cell| cell.len()).sum()
     }
 }

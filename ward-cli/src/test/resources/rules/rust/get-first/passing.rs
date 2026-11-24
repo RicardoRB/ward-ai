@@ -29,3 +29,38 @@ pub trait Lookup {
 pub fn through_trait(found: &Lookup) -> Option<u32> {
     found.get(0)
 }
+
+pub trait Matcher {
+    type Captures: Captures;
+
+    fn new_captures(&self) -> Result<Self::Captures, Error>;
+}
+
+pub trait Captures {
+    fn get(&self, index: usize) -> Option<Span>;
+}
+
+pub struct Unit;
+
+impl Matcher for Unit {
+    type Captures = Slots;
+
+    fn new_captures(&self) -> Result<Slots, Error> {
+        Ok(Slots::new())
+    }
+}
+
+pub fn first_slot<M: Matcher>(matcher: &M) -> Option<Span> {
+    let caps = matcher.new_captures().unwrap();
+    caps.get(0)
+}
+
+pub fn through_question(matcher: &Unit) -> Result<Option<Span>, Error> {
+    let caps = matcher.new_captures()?;
+    Ok(caps.get(0))
+}
+
+pub fn unknown(source: Source) -> Option<u8> {
+    let found = source.load();
+    found.get(0).copied()
+}

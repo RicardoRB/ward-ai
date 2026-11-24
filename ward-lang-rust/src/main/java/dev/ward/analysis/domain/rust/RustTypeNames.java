@@ -21,33 +21,38 @@ final class RustTypeNames {
   private static final Pattern LEADING = Pattern.compile("^&(?:mut)?");
   private static final Pattern NAME = Pattern.compile("^(?:\\w+::)*(\\w+)");
   private static final Pattern CREATION = Pattern.compile("^([A-Z]\\w*)::\\w+\\(");
-  private static final String REFERENCE = "referenceType";
   private static final String TYPE = "type_";
 
   private RustTypeNames() {}
 
   /** Classifies a written type, looking through references. */
   static String ofType(final SyntaxNode type) {
-    SyntaxNode target = type;
-    SyntaxNode reference = RustTrees.find(target, REFERENCE);
-    while (reference != null && RustTrees.text(target).startsWith("&")) {
-      target = reference.children().get(reference.children().size() - 1);
-      reference = RustTrees.find(target, REFERENCE);
-    }
-    final String text = RustTrees.text(target);
-    if (text.startsWith("[")) {
-      return SEQUENCE;
-    }
-    return named(NAME.matcher(text));
+    return classify(RustTrees.text(type));
   }
 
-  /** Classifies the expression that creates a value, when it states what it creates. */
+  /** Classifies the written type {@code text}, looking through references. */
+  static String classify(final String text) {
+    final String bare = RustTypeText.bare(text);
+    if (bare.startsWith("[")) {
+      return SEQUENCE;
+    }
+    return named(NAME.matcher(bare));
+  }
+
+  /** The written type of the expression that creates a value, when it states what it creates. */
   static String ofCreation(final SyntaxNode expression) {
     final String text = LEADING.matcher(RustTrees.text(expression)).replaceFirst("");
     if (text.startsWith("vec!") || text.startsWith("[")) {
-      return SEQUENCE;
+      return "Vec";
     }
-    return named(CREATION.matcher(text));
+    final Matcher type = CREATION.matcher(text);
+    return type.find() ? type.group(1) : UNKNOWN;
+  }
+
+  /** The written type that the {@code type_} child of {@code node} states, or unknown. */
+  static String declaredText(final SyntaxNode node) {
+    final SyntaxNode type = RustTrees.child(node, TYPE);
+    return type == null ? UNKNOWN : RustTrees.text(type);
   }
 
   /** The type that the node {@code type_} child of {@code node} states, or {@link #UNKNOWN}. */

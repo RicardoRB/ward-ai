@@ -6,7 +6,7 @@
 # Regenerate: ./mvnw -pl ward-cli -am -Dtest=RustCorpusSmokeTest -Dward.corpus.rust=<dir> -Djacoco.skip=true -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
 ripgrep | files 100 | not analysed 0
 tokio | files 811 | not analysed 0
-rules 97 | not run (need type facts) 0 | findings 6006
+rules 97 | not run (need type facts) 0 | findings 6002
 ward:rust/allow-attributes | findings 173 | labelled 4 | tp 4 | fp 0 | un 0
 ward:rust/allow-attributes-without-reason | findings 208 | labelled 4 | tp 4 | fp 0 | un 0
 ward:rust/approx-constant | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -29,7 +29,7 @@ ward:rust/exit | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
 ward:rust/expect-fun-call | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:rust/expect-used | findings 216 | labelled 4 | tp 4 | fp 0 | un 0
 ward:rust/filter-next | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:rust/get-first | findings 8 | labelled 6 | tp 2 | fp 4 | un 0
+ward:rust/get-first | findings 4 | labelled 4 | tp 4 | fp 0 | un 0
 ward:rust/identity-op | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:rust/inline-always | findings 33 | labelled 4 | tp 4 | fp 0 | un 0
 ward:rust/int-plus-one | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
