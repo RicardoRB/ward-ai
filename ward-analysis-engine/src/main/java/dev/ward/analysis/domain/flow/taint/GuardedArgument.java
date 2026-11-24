@@ -1,10 +1,23 @@
 package dev.ward.analysis.domain.flow.taint;
 
+import dev.ward.analysis.domain.flow.AccessSite;
+import dev.ward.analysis.domain.flow.ReachingDefinitions;
+import dev.ward.analysis.domain.ir.AccessKind;
 import dev.ward.analysis.domain.ir.BasicBlock;
+import dev.ward.analysis.domain.ir.ControlFlowGraph;
+import dev.ward.analysis.domain.ir.FlowEdge;
 import dev.ward.analysis.domain.ir.FlowSite;
+import dev.ward.analysis.domain.ir.FlowSiteKind;
+import dev.ward.analysis.domain.ir.FlowStep;
 import dev.ward.analysis.domain.ir.Span;
+import java.util.ArrayDeque;
 import java.util.Comparator;
+import java.util.Deque;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * An argument that a sink guards, and the spans inside it that hold no taint.
@@ -25,12 +38,19 @@ record GuardedArgument(BasicBlock block, Span span, List<Span> clean) {
 
   /**
    * An argument of a sink. When the sink lists the call that is the whole argument, such as {@code
-   * JSON.stringify(x)}, the arguments of that call are clean: nothing else starts where the
-   * argument starts and runs longer, so a call chained on it or a string built around it is not
-   * the whole argument.
+   * JSON.stringify(x)}, and a call that sets a JSON content type on the same response runs before
+   * the sink on every path, the arguments of that call are clean. Nothing else may start where the
+   * argument starts and run longer, so a call chained on it or a string built around it is not the
+   * whole argument.
    */
-  static GuardedArgument of(final BasicBlock block, final Span span, final TaintEntry sink) {
-    if (sink.exceptCalls().isEmpty()) {
+  static GuardedArgument of(
+      final TaintState state,
+      final BasicBlock block,
+      final FlowSite sink,
+      final Span span,
+      final TaintEntry entry
+  ) {
+    if (entry.exceptCalls().isEmpty() || !typedBefore(state.graph(), block, sink)) {
       return plain(block, span);
     }
     final FlowSite longest =
@@ -42,8 +62,110 @@ record GuardedArgument(BasicBlock block, Span span, List<Span> clean) {
     return new GuardedArgument(
         block,
         span,
-        longest != null && sink.exempts(longest) ? longest.arguments() : List.of()
+        longest != null && entry.exempts(longest) ? longest.arguments() : List.of()
     );
+  }
+
+  /**
+   * Whether a call that sets a JSON content type on the response of the sink is made before it on
+   * every path: earlier in its block, or in a block that every path to its block passes.
+   */
+  private static boolean typedBefore(
+      final ControlFlowGraph graph,
+      final BasicBlock block,
+      final FlowSite sink
+  ) {
+    for (final BasicBlock other : graph.blocks()) {
+      for (final FlowSite site : other.sites()) {
+        if (site.kind() == FlowSiteKind.CONTENT_TYPE
+            && site.qualifier().equals(sink.qualifier())
+            && (other.id() == block.id()
+                ? site.span().startOffset() < sink.span().startOffset()
+                : passes(graph, other.id(), block.id()))) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  /** Whether every path from the entry to {@code target} passes {@code through}. */
+  private static boolean passes(final ControlFlowGraph graph, final int through, final int target) {
+    if (through == graph.entry()) {
+      return true;
+    }
+    final Set<Integer> seen = new HashSet<>();
+    final Deque<Integer> work = new ArrayDeque<>();
+    work.add(graph.entry());
+    seen.add(graph.entry());
+    while (!work.isEmpty()) {
+      final int current = work.poll();
+      if (current == target) {
+        return false;
+      }
+      for (final FlowEdge edge : graph.blocks().get(current).successors()) {
+        if (edge.target() != through && seen.add(edge.target())) {
+          work.add(edge.target());
+        }
+      }
+    }
+    return true;
+  }
+
+  /** The taint that reaches the argument: a source written in it, or a tainted read. */
+  Optional<Taint> taint(
+      final ReachingDefinitions reaching,
+      final Map<AccessSite,
+      Taint> origins,
+      final TaintSpec spec
+  ) {
+    return directSource(spec).or(() -> fromReads(reaching, origins, spec));
+  }
+
+  /** A source call written directly in the argument, such as {@code sink(source())}. */
+  private Optional<Taint> directSource(final TaintSpec spec) {
+    return block.sites().stream()
+        .filter(site -> TaintSpans.contains(span, site.span()))
+        .filter(site -> !isClean(site.span()))
+        .filter(site -> site.kind() != FlowSiteKind.PARAMETER)
+        .filter(site -> site.kind() != FlowSiteKind.LITERAL || site.span().equals(span))
+        .filter(site -> TaintSpans.sourceOf(site, spec).isPresent())
+        .filter(site -> !TaintSpans.sanitized(block, site.span(), spec))
+        .findFirst()
+        .map(
+            site ->
+                new Taint(site.name(), List.of(new FlowStep(site.span(), "source: " + site.name())))
+        );
+  }
+
+  /**
+   * A read in the argument that sees a tainted write. A read inside a sanitizer's argument is
+   * clean, as it is for a write.
+   */
+  private Optional<Taint> fromReads(
+      final ReachingDefinitions reaching,
+      final Map<AccessSite,
+      Taint> origins,
+      final TaintSpec spec
+  ) {
+    for (final AccessSite use : reaching.uses()) {
+      final Span read = use.access().span();
+      if (use.block() == block.id()
+          && use.access().kind() == AccessKind.READ
+          && !isClean(read)
+          && TaintSpans.contains(span, read)
+          && !TaintSpans.sanitized(block, read, spec)) {
+        final Optional<Taint> taint =
+            reaching.reaching(use).stream()
+                .map(origins::get)
+                .filter(t -> t != null)
+                .findFirst();
+        if (taint.isPresent()) {
+          return taint;
+        }
+      }
+    }
+    return Optional.empty();
   }
 
   /** Reports whether a span lies inside a clean part. */

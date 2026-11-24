@@ -26,5 +26,11 @@ public enum FlowSiteKind {
    * + x}: the name is {@code ?} and the arguments are the spans of those parts. They can only be
    * part of the query of a URL, never its scheme, host or path.
    */
-  QUERY_PART
+  QUERY_PART,
+  /**
+   * A call that sets the content type of a response to JSON, such as {@code
+   * res.setHeader('Content-Type', 'application/json')}: the name is {@code json} and the qualifier
+   * is the response as written.
+   */
+  CONTENT_TYPE
 }

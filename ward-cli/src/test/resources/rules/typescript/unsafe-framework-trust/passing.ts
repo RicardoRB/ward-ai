@@ -7,3 +7,9 @@ export class View {
     return this.sanitizer.sanitize(1, html);
   }
 }
+
+export class Widths {
+  style(percent: number) {
+    return this.sanitizer.bypassSecurityTrustStyle('width: ' + percent * 2 + '%');
+  }
+}

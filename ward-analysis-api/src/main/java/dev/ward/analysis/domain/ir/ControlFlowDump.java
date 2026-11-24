@@ -40,7 +40,9 @@ public final class ControlFlowDump {
           FlowSiteKind.LITERAL,
           "literal",
           FlowSiteKind.QUERY_PART,
-          "query"
+          "query",
+          FlowSiteKind.CONTENT_TYPE,
+          "content-type"
       );
 
   private ControlFlowDump() {}

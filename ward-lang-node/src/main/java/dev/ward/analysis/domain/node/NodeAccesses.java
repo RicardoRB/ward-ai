@@ -41,7 +41,8 @@ final class NodeAccesses implements VariableAccesses {
   /** Property keys and labels, which name no variable. */
   private static final Set<String> NAMELESS = Set.of(PROPERTY_NAME, LABELLED, BREAK, CONTINUE);
 
-  private final NodeScopes scopes = new NodeScopes();
+  /** The block scopes of the body, which a guard reads to find a declaration. */
+  final NodeScopes scopes = new NodeScopes();
   private final NodeDeclarations declarations = new NodeDeclarations(scopes, this::walk);
   private final NodeReferences references = new NodeReferences(scopes, this::walk, declarations);
   private final Set<SyntaxNode> skipped = Collections.newSetFromMap(new IdentityHashMap<>());

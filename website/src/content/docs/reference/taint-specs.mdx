@@ -65,6 +65,13 @@ from = ["receiver", 0]
   any qualifier that ends with the rest, so `*.environment()` matches `builder.environment()`.
 - `arguments` is required for a sink and lists the argument positions it guards, counted from 0.
   Other entries cannot name arguments.
+- `except-calls` on a sink lists calls, written `Qualifier.name` such as `"JSON.stringify"`, whose
+  result is data and not markup when the call is the whole guarded argument. It applies only when
+  the same response was given a JSON content type before the sink on every path of the function
+  (`setHeader`, `header`, `set` or `append` of `Content-Type`, `type`, `contentType` or `writeHead`
+  with `application/json`), so only the arguments of that call are clean; a string built around it,
+  a call chained on it or taint elsewhere in the argument is still reported. TypeScript and
+  JavaScript provide the content-type sites.
 - `from` on a propagator lists its inputs, as argument positions or `"receiver"`. The argument
   positions are the arguments that the call stores into its receiver variable, so `list.add(v)`
   with `from = [0]` taints `list` when `v` is tainted. `"receiver"` is checked but does not change

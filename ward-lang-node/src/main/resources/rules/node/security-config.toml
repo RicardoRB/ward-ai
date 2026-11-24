@@ -31,13 +31,14 @@ message = "this setting turns off certificate checks, so anyone can impersonate 
 [[rules]]
 id = "ward:javascript/cleartext-transport"
 language = "JAVASCRIPT"
-capability = "SYNTAX"
+capability = "DATAFLOW"
 severity = "WARNING"
 category = "security"
 presets = ["strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["singleExpression"]
+check = "node-unsafe-value"
+argument = "first"
+safe = "local-host"
 text = '^(?:fetch|axios|got|(?:axios|got|http|ky)\.(?:get|post|put|patch|delete|head|request))\([\"\x27`]http://(?!(?:[^/@\"\x27`]*@)?(?:localhost|127\.0\.0\.1|\[::1\]))[^\"\x27`]*[\"\x27`](?:,(?:[^()]|\([^()]*\))*)?\)$|^newWebSocket\([\"\x27`]ws://(?!(?:[^/@\"\x27`]*@)?(?:localhost|127\.0\.0\.1|\[::1\]))[^\"\x27`]*[\"\x27`]\)$'
 message = "this address uses http or ws, which send data in clear text; use https or wss"
 '''
@@ -45,13 +46,14 @@ message = "this address uses http or ws, which send data in clear text; use http
 [[rules]]
 id = "ward:typescript/cleartext-transport"
 language = "TYPESCRIPT"
-capability = "SYNTAX"
+capability = "DATAFLOW"
 severity = "WARNING"
 category = "security"
 presets = ["strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["singleExpression"]
+check = "node-unsafe-value"
+argument = "first"
+safe = "local-host"
 text = '^(?:fetch|axios|got|(?:axios|got|http|ky)\.(?:get|post|put|patch|delete|head|request))\([\"\x27`]http://(?!(?:[^/@\"\x27`]*@)?(?:localhost|127\.0\.0\.1|\[::1\]))[^\"\x27`]*[\"\x27`](?:,(?:[^()]|\([^()]*\))*)?\)$|^newWebSocket\([\"\x27`]ws://(?!(?:[^/@\"\x27`]*@)?(?:localhost|127\.0\.0\.1|\[::1\]))[^\"\x27`]*[\"\x27`]\)$'
 message = "this address uses http or ws, which send data in clear text; use https or wss"
 '''
@@ -201,13 +203,14 @@ message = "the target origin * sends the message to any page that holds the wind
 [[rules]]
 id = "ward:javascript/dom-xss"
 language = "JAVASCRIPT"
-capability = "SYNTAX"
+capability = "DATAFLOW"
 severity = "WARNING"
 category = "security"
 presets = ["strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["singleExpression"]
+check = "node-unsafe-value"
+argument = "last"
+safe = "markup"
 text = '^\w+(?:\.\w+)*\.(?:innerHTML|outerHTML)=(?!=)(?![\"\x27`][^"\x27`$]*[\"\x27`]$)(?:[^()]|\([^()]*\))*$|^document\.(?:write|writeln)\((?![\"\x27`][^"\x27`$]*[\"\x27`]\)$)(?:[^()]|\([^()]*\))*\)$|^[\w.]+\.insertAdjacentHTML\([^,()]+,(?![\"\x27`][^"\x27`$]*[\"\x27`]\)$)(?:[^()]|\([^()]*\))*\)$'
 message = "this call writes a computed string as markup; use textContent, or sanitize the string first"
 '''
@@ -215,13 +218,14 @@ message = "this call writes a computed string as markup; use textContent, or san
 [[rules]]
 id = "ward:typescript/dom-xss"
 language = "TYPESCRIPT"
-capability = "SYNTAX"
+capability = "DATAFLOW"
 severity = "WARNING"
 category = "security"
 presets = ["strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["singleExpression"]
+check = "node-unsafe-value"
+argument = "last"
+safe = "markup"
 text = '^\w+(?:\.\w+)*\.(?:innerHTML|outerHTML)=(?!=)(?![\"\x27`][^"\x27`$]*[\"\x27`]$)(?:[^()]|\([^()]*\))*$|^document\.(?:write|writeln)\((?![\"\x27`][^"\x27`$]*[\"\x27`]\)$)(?:[^()]|\([^()]*\))*\)$|^[\w.]+\.insertAdjacentHTML\([^,()]+,(?![\"\x27`][^"\x27`$]*[\"\x27`]\)$)(?:[^()]|\([^()]*\))*\)$'
 message = "this call writes a computed string as markup; use textContent, or sanitize the string first"
 '''
@@ -229,13 +233,14 @@ message = "this call writes a computed string as markup; use textContent, or san
 [[rules]]
 id = "ward:javascript/unsafe-framework-trust"
 language = "JAVASCRIPT"
-capability = "SYNTAX"
+capability = "DATAFLOW"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["singleExpression"]
+check = "node-unsafe-value"
+argument = "last"
+safe = "markup"
 text = '^[\w.]+\.bypassSecurityTrust(?:Html|Script|Style|Url|ResourceUrl)\((?![\"\x27`][^"\x27`$]*[\"\x27`]\)$)(?:[^()]|\([^()]*\))*\)$'
 message = "this call tells Angular to skip its sanitizer for a computed value; sanitize it or bind it as text"
 '''
@@ -243,13 +248,14 @@ message = "this call tells Angular to skip its sanitizer for a computed value; s
 [[rules]]
 id = "ward:typescript/unsafe-framework-trust"
 language = "TYPESCRIPT"
-capability = "SYNTAX"
+capability = "DATAFLOW"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["singleExpression"]
+check = "node-unsafe-value"
+argument = "last"
+safe = "markup"
 text = '^[\w.]+\.bypassSecurityTrust(?:Html|Script|Style|Url|ResourceUrl)\((?![\"\x27`][^"\x27`$]*[\"\x27`]\)$)(?:[^()]|\([^()]*\))*\)$'
 message = "this call tells Angular to skip its sanitizer for a computed value; sanitize it or bind it as text"
 '''

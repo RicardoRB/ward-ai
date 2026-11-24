@@ -62,4 +62,23 @@ final class NodeScopes {
       found.add(new VariableAccess(text, kind, span, declaration));
     }
   }
+
+  /**
+   * Returns a write of a local name that no statement makes, and a read of it, so that the value
+   * the name held before no longer reaches the next statements.
+   *
+   * @param name the name
+   * @param span where the guard that proves the value is
+   * @return the write and the read, or none when the name is not bound in this body
+   */
+  List<VariableAccess> clean(final String name, final Span span) {
+    final Span declaration = resolve(name);
+    if (declaration == null) {
+      return List.of();
+    }
+    return List.of(
+        new VariableAccess(name, AccessKind.WRITE, span, declaration),
+        new VariableAccess(name, AccessKind.READ, span, declaration)
+    );
+  }
 }

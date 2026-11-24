@@ -9,7 +9,7 @@ ward:javascript/cookie-broad-scope | findings 0 | tp 0 | fp 0 | un 0
 ward:javascript/cookie-missing-http-only | findings 0 | tp 0 | fp 0 | un 0
 ward:javascript/cookie-missing-same-site | findings 0 | tp 0 | fp 0 | un 0
 ward:javascript/cookie-missing-secure | findings 0 | tp 0 | fp 0 | un 0
-ward:javascript/dom-xss | findings 1 | tp 0 | fp 1 | un 0
+ward:javascript/dom-xss | findings 0 | tp 0 | fp 0 | un 0
 ward:javascript/ecb-mode | findings 0 | tp 0 | fp 0 | un 0
 ward:javascript/hard-coded-secret | findings 0 | tp 0 | fp 0 | un 0
 ward:javascript/header-injection | findings 0 | tp 0 | fp 0 | un 0
@@ -65,7 +65,7 @@ ward:typescript/missing-frame-protection | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/no-blank-target | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/no-dangerously-set-inner-html | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/nosql-injection | findings 2 | tp 2 | fp 0 | un 0
-ward:typescript/path-traversal | findings 10 | tp 4 | fp 6 | un 0
+ward:typescript/path-traversal | findings 9 | tp 4 | fp 5 | un 0
 ward:typescript/permissive-cors | findings 2 | tp 2 | fp 0 | un 0
 ward:typescript/prototype-pollution | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/regex-injection | findings 0 | tp 0 | fp 0 | un 0

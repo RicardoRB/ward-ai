@@ -29,7 +29,6 @@ ward:typescript/cleartext-transport | test/abort.ts:796 | un | a plain HTTP URL 
 ward:typescript/cleartext-transport | test/dns-cache-integration.ts:306 | un | a plain HTTP URL of a host that the test never reaches or that does not exist
 ward:typescript/cleartext-transport | test/error.ts:51 | un | a plain HTTP URL of a host that the test never reaches or that does not exist
 ward:typescript/cleartext-transport | test/timeout.ts:527 | un | a plain HTTP URL of a host that the test never reaches or that does not exist
-ward:typescript/cleartext-transport | test/timings.ts:158 | fp | plain HTTP to a test server on the loopback interface
 ward:typescript/complexity | source/core/index.ts:1155 | tp | the function has more branches than the limit of the rule
 ward:typescript/complexity | source/core/index.ts:2548 | tp | the function has more branches than the limit of the rule
 ward:typescript/complexity | source/core/index.ts:550 | tp | the function has more branches than the limit of the rule
@@ -359,3 +358,92 @@ ward:typescript/xss | test/retry.ts:140 | un | a test server writes a request he
 ward:typescript/xss | test/retry.ts:2078 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/stream.ts:161 | un | a test server writes a request header or the request URL to the response; no browser renders it
 ward:typescript/xss | test/stream.ts:535 | un | a test server writes a request header or the request URL to the response; no browser renders it
+ward:typescript/xss | test/cache.ts:296 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/cookies.ts:711 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/create.ts:34 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/diagnostics-channel.ts:42 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/headers.ts:20 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/hooks.ts:2247 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/hooks.ts:2277 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/hooks.ts:2308 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/hooks.ts:2330 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/hooks.ts:2353 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/hooks.ts:2401 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/hooks.ts:2422 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/hooks.ts:2446 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/hooks.ts:2469 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/hooks.ts:2558 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/hooks.ts:2578 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/hooks.ts:2601 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/hooks.ts:2622 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/hooks.ts:2654 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/hooks.ts:2688 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/hooks.ts:2715 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/hooks.ts:2737 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/hooks.ts:2758 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/hooks.ts:2782 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/hooks.ts:2804 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/hooks.ts:32 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/merge-instances.ts:8 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/pagination.ts:1743 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/pagination.ts:1774 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/pagination.ts:1808 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/pagination.ts:588 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/pagination.ts:634 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/pagination.ts:684 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/pagination.ts:736 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/post.ts:33 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:1020 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:1158 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:1199 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:1247 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:1346 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:2015 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:2165 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:2501 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:2545 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:2630 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:2669 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:2935 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:2956 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:2978 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:3000 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:3022 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:3054 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:3107 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:3125 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:3143 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:3243 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:3279 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:3310 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:3342 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:3378 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:3407 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:3440 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:3477 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:3525 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:3570 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:3616 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:3664 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:3712 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:3754 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:3786 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:3822 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:3857 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:501 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:896 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:937 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/redirects.ts:979 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/response-parse.ts:272 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/retry.ts:1230 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/retry.ts:1287 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/retry.ts:1348 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/retry.ts:1404 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/retry.ts:1460 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/retry.ts:1517 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/retry.ts:1594 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/stream.ts:480 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/stream.ts:507 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/stream.ts:583 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/stream.ts:64 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
+ward:typescript/xss | test/unix-socket.ts:273 | un | a test server writes JSON built from request data without a content type; a browser could sniff it as HTML, but no browser reads a got test server
