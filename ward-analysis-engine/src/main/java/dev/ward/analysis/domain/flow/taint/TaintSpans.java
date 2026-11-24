@@ -29,7 +29,12 @@ final class TaintSpans {
    */
   static boolean sanitized(final BasicBlock block, final Span span, final TaintSpec spec) {
     return block.sites().stream()
-        .filter(site -> site.kind() == FlowSiteKind.CALL || site.kind() == FlowSiteKind.MEMBER_READ)
+        .filter(
+            site ->
+                site.kind() == FlowSiteKind.CALL
+                    || site.kind() == FlowSiteKind.MEMBER_READ
+                    || site.kind() == FlowSiteKind.QUERY_PART
+        )
         .filter(site -> spec.sanitizers().stream().anyMatch(entry -> entry.matches(site)))
         .flatMap(site -> site.arguments().stream())
         .anyMatch(argument -> contains(argument, span));

@@ -78,7 +78,11 @@ final class PythonFlowSites implements FlowSites {
     if (OTHER_BODIES.contains(node.kind())) {
       return;
     }
-    if (ATOM_EXPR.equals(node.kind())) {
+    PythonQuerySites.of(node).ifPresent(found::add);
+    final List<SyntaxNode> sum = PythonQuerySites.operandsOf(node);
+    if (!sum.isEmpty()) {
+      sum.forEach(operand -> walk(operand, found));
+    } else if (ATOM_EXPR.equals(node.kind())) {
       chain(node, found);
     } else {
       node.children().forEach(child -> walk(child, found));

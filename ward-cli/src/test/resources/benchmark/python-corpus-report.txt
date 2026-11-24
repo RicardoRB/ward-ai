@@ -4,7 +4,7 @@
 # A labelled finding is true (tp), false (fp) or undetermined (un), as read from the code at its line; the labels are in python-corpus-labels.txt. Every finding of a security rule is labelled; of another rule, its first 5 findings in path order.
 # The measured cost of the run is in python-corpus-cost.txt.
 # Regenerate: ./mvnw -pl ward-cli -am -Djacoco.skip=true -Dtest=PythonCorpusSmokeTest -Dward.benchmark.python-corpus=<dir> -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
-files 657 | findings 4932
+files 657 | findings 4929
 ward:python/abbreviation-as-word-in-name | findings 11 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/abstract-base-class-without-abstract-method | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/abstract-class-instantiated | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -459,7 +459,7 @@ ward:python/unsupported-assignment-operation | findings 0 | labelled 0 | tp 0 | 
 ward:python/unsupported-delete-operation | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/unsupported-membership-test | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/untrusted-deserialization | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:python/untrusted-redirect | findings 4 | labelled 4 | tp 0 | fp 4 | un 0
+ward:python/untrusted-redirect | findings 1 | labelled 1 | tp 0 | fp 1 | un 0
 ward:python/untrusted-request-url | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/unused-annotation | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/unused-argument | findings 32 | labelled 5 | tp 0 | fp 0 | un 5

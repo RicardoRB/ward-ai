@@ -152,8 +152,8 @@ ward:python/parameter-count | tests/helpers.py:169 | tp | the function takes mor
 ward:python/parameter-count | tests/helpers.py:206 | tp | the function takes more parameters than the limit
 ward:python/parameter-count | tests/helpers.py:261 | tp | the function takes more parameters than the limit
 ward:python/parameter-name | CTFd/utils/email/providers/smtp.py:78 | tp | the parameter name is not snake_case
-ward:python/path-injection | CTFd/admin/__init__.py:176 | fp | the path is checked against a list of known names first, or the argument is not a path
-ward:python/path-injection | CTFd/api/v1/exports.py:32 | fp | the path is checked against a list of known names first, or the argument is not a path
+ward:python/path-injection | CTFd/admin/__init__.py:176 | fp | send_file receives the result of dump_csv, a buffer built in another module; Ward has no cross-module function summaries for Python, so it cannot see that the argument is not a path
+ward:python/path-injection | CTFd/api/v1/exports.py:32 | fp | send_file receives the result of dump_csv, a buffer built in another module; Ward has no cross-module function summaries for Python, so it cannot see that the argument is not a path
 ward:python/pointless-string-statement | CTFd/__init__.py:43 | tp | a string statement outside the docstring position has no effect
 ward:python/pointless-string-statement | CTFd/config.py:167 | tp | a string statement outside the docstring position has no effect
 ward:python/pointless-string-statement | CTFd/plugins/challenges/__init__.py:335 | tp | a string statement outside the docstring position has no effect

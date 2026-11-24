@@ -131,3 +131,14 @@ receiver = "os.path"
 kind = "call"
 name = "secure_filename"
 
+
+# An in-memory buffer is not a path, whatever bytes it is filled with.
+[[sanitizers]]
+kind = "call"
+name = "BytesIO"
+receiver = "io"
+
+[[sanitizers]]
+kind = "call"
+name = "StringIO"
+receiver = "io"
