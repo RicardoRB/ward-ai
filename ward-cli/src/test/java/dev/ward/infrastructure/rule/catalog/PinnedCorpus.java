@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 /**
@@ -162,6 +163,83 @@ record PinnedCorpus(
           AnalysisLanguage.RUST
       );
 
+  /** The full-stack FastAPI template, a FastAPI service with SQLModel and JWT login (MIT). */
+  static final PinnedCorpus FASTAPI_TEMPLATE =
+      new PinnedCorpus(
+          "fastapi-template",
+          "0.12.0",
+          "5083f1af1a64788bedbfceeca93889b3290f5edacbd6f27c3da2d80c9db5bf98",
+          "full-stack-fastapi-template-0.12.0",
+          AnalysisLanguage.PYTHON
+      );
+
+  /** NestJS, a TypeScript server framework with its integration samples (MIT). */
+  static final PinnedCorpus NEST =
+      new PinnedCorpus(
+          "nest",
+          "v12.6.0",
+          "ad6a1244f13cf6c08252366bbaf292de5997bede5e96c2a747d05f3a6a108e03",
+          "nest-12.6.0",
+          AnalysisLanguage.TYPESCRIPT
+      );
+
+  /** Vapor, a server-side Swift web framework (MIT). */
+  static final PinnedCorpus VAPOR =
+      new PinnedCorpus(
+          "vapor",
+          "4.122.4",
+          "26be73ba4f715f58ade6640088942c47c47f6f5376807d89fb639b56e21366f5",
+          "vapor-4.122.4",
+          AnalysisLanguage.SWIFT
+      );
+
+  /** Returns the corpora of the differential run of {@code key}, the name of a language group. */
+  static List<PinnedCorpus> forLanguage(final String key) {
+    final Map<String, List<PinnedCorpus>> byKey =
+        Map.of(
+            "java",
+            java(),
+            "kotlin",
+            kotlin(),
+            "csharp",
+            csharp(),
+            "rust",
+            rust(),
+            "python",
+            python(),
+            "node",
+            node(),
+            "swift",
+            swift()
+        );
+    final List<PinnedCorpus> found = byKey.get(key);
+    if (found == null) {
+      throw new IllegalArgumentException("no differential run for " + key);
+    }
+    return found;
+  }
+
+  /** Returns the Python corpora of the differential run. */
+  static List<PinnedCorpus> python() {
+    return List.of(FASTAPI_TEMPLATE);
+  }
+
+  /** Returns the TypeScript and JavaScript corpora of the differential run. */
+  static List<PinnedCorpus> node() {
+    return List.of(NEST);
+  }
+
+  /** Returns the Swift corpora of the differential run. */
+  static List<PinnedCorpus> swift() {
+    return List.of(VAPOR);
+  }
+
+  /** Returns whether the corpora of this language are read by a rule that covers {@code rule}. */
+  boolean readBy(final dev.ward.analysis.domain.rule.RuleDefinition rule) {
+    return rule.covers(language)
+        || language == AnalysisLanguage.TYPESCRIPT && rule.covers(AnalysisLanguage.JAVASCRIPT);
+  }
+
   /** Returns the Java corpora, in report order. */
   static List<PinnedCorpus> java() {
     return List.of(COMMONS_LANG, PETCLINIC, SPRING_DATA_EXAMPLES, RUOYI, MALL, ELADMIN);
@@ -183,6 +261,9 @@ record PinnedCorpus(
       case KOTLIN -> ".kt";
       case CSHARP -> ".cs";
       case RUST -> ".rs";
+      case PYTHON -> ".py";
+      case SWIFT -> ".swift";
+      case TYPESCRIPT -> ".ts";
       default -> ".java";
     };
   }
@@ -193,6 +274,11 @@ record PinnedCorpus(
    */
   List<SourceUnit> units(final Path directory) throws IOException {
     final Path root = directory.resolve(folder);
+    if (language == AnalysisLanguage.TYPESCRIPT) {
+      return new NodeCorpus(root).units().stream()
+          .map(unit -> new SourceUnit(name + "/" + unit.path(), unit.language(), unit.text()))
+          .toList();
+    }
     try (Stream<Path> files = Files.walk(root)) {
       return files
           .filter(Files::isRegularFile)

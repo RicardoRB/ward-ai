@@ -17,3 +17,6 @@ csharp newtonsoft-json 71fb8eda5ee37ab3405ea5df6c2a9490716e411db82e6c0878132bdf2
 csharp eshop e9eb4454c1fcb46dc39f425d0d510ab242af5cddf53570d7de47da9bcb68438c https://github.com/dotnet/eShop/archive/ab10e4c68fd26369578ebfb3fd1ccf3b867d0444.tar.gz
 rust ripgrep 7605249d3eb0d5f170e3414498e3344e26b1e7a147aec518b57090b80036a562 https://github.com/BurntSushi/ripgrep/archive/refs/tags/15.2.0.tar.gz
 rust tokio 3d84bf16b8fdbb19b6455dfa5971cead60e0ddbd9ee1aa368a4b4206998f9bdd https://github.com/tokio-rs/tokio/archive/refs/tags/tokio-1.54.1.tar.gz
+python fastapi-template 5083f1af1a64788bedbfceeca93889b3290f5edacbd6f27c3da2d80c9db5bf98 https://github.com/fastapi/full-stack-fastapi-template/archive/refs/tags/0.12.0.tar.gz
+node nest ad6a1244f13cf6c08252366bbaf292de5997bede5e96c2a747d05f3a6a108e03 https://github.com/nestjs/nest/archive/refs/tags/v12.6.0.tar.gz
+swift vapor 26be73ba4f715f58ade6640088942c47c47f6f5376807d89fb639b56e21366f5 https://github.com/vapor/vapor/archive/refs/tags/4.122.4.tar.gz

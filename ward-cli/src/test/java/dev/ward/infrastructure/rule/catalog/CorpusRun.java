@@ -126,6 +126,12 @@ final class CorpusRun {
           Path.of("target", key + "-corpus-findings.txt"),
           findings(result.findings())
       );
+      Files.writeString(
+          Path.of("target", key + "-corpus-needed.txt"),
+          CorpusSampling.sampled(rules, found).stream()
+              .map(place -> place.rule() + " | " + place.location() + "\n")
+              .collect(Collectors.joining())
+      );
     }
     assertThat(
         notAnalysed(result).stream().filter(
@@ -160,7 +166,7 @@ final class CorpusRun {
 
   private List<RuleDefinition> rules() {
     return CatalogRuleDefinitions.shipped().stream()
-        .filter(rule -> rule.covers(language))
+        .filter(rule -> pinned.get(0).readBy(rule))
         .filter(rule -> preset.selects(rule.presets()) || SECURITY.equals(rule.category()))
         .sorted(Comparator.comparing(RuleDefinition::id))
         .toList();

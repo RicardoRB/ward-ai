@@ -79,6 +79,9 @@ class CorpusArchivesTest {
     jvm.addAll(PinnedCorpus.kotlin());
     jvm.addAll(PinnedCorpus.csharp());
     jvm.addAll(PinnedCorpus.rust());
+    jvm.addAll(PinnedCorpus.python());
+    jvm.addAll(PinnedCorpus.node());
+    jvm.addAll(PinnedCorpus.swift());
     jvm.forEach(corpus -> pins.put(corpus.name(), corpus.archiveSha256()));
     SwiftCorpus.all().forEach(corpus -> pins.put(corpus.name(), corpus.archiveSha256()));
     pins.put("healthchecks", PythonCorpus.HEALTHCHECKS.sha256());

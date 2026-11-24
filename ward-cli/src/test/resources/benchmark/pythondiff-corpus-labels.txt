@@ -1,0 +1,6 @@
+# rule | file:line | label | reason. Read from the code at each line (tp, fp, un).
+ward:python/code-injection | fastapi-template/backend/app/api/routes/items.py:27 | fp | Session.exec of SQLModel runs a query statement, not Python exec
+ward:python/code-injection | fastapi-template/backend/app/api/routes/items.py:34 | fp | Session.exec of SQLModel runs a query statement, not Python exec
+ward:python/code-injection | fastapi-template/backend/app/api/routes/items.py:42 | fp | Session.exec of SQLModel runs a query statement, not Python exec
+ward:python/code-injection | fastapi-template/backend/app/api/routes/users.py:229 | fp | Session.exec of SQLModel runs a query statement, not Python exec
+ward:python/code-injection | fastapi-template/backend/app/api/routes/users.py:48 | fp | Session.exec of SQLModel runs a query statement, not Python exec
