@@ -1,3 +1,1 @@
 # rule | file:line | reason | open issue. A finding labelled fp fails the corpus test unless it is listed here.
-ward:swift/weak-random | vapor/Sources/Vapor/Utilities/Array+Random.swift:14 | the line declares an own function named random on top of the secure system generator | #783
-ward:swift/weak-random | vapor/Sources/Vapor/Utilities/Array+Random.swift:2 | the line declares an own function named random on top of the secure system generator | #783

@@ -4,7 +4,7 @@
 # The cost of the run is in swiftdiff-corpus-cost.txt.
 # Regenerate: ./mvnw -pl ward-cli -am -Dtest=SwiftDiffCorpusSmokeTest -Dward.corpus.swiftdiff=<dir> -Djacoco.skip=true -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
 vapor | files 295 | not analysed 25
-rules 183 | not run (need type facts) 1 | findings 5734
+rules 183 | not run (need type facts) 1 | findings 5732
 ward:swift/abbreviation-as-word-in-name | findings 133 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/annotation-location | findings 38 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/array-init | findings 2 | labelled 0 | tp 0 | fp 0 | un 0
@@ -186,5 +186,5 @@ ward:swift/void-return | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/weak-cipher | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/weak-delegate | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/weak-hash | findings 2 | labelled 2 | tp 0 | fp 0 | un 2
-ward:swift/weak-random | findings 2 | labelled 2 | tp 0 | fp 2 | un 0
+ward:swift/weak-random | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/xctfail-message | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
