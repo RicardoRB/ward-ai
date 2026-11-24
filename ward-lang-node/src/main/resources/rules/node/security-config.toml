@@ -270,7 +270,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["singleExpression"]
-text = '^[\w.\[\]"\x27]*__proto__[\w.\[\]"\x27]*=|^[\w.]*\.constructor\.prototype\.\w+='
+text = '^(?=\w)[\w.\[\]"\x27]*__proto__[\w.\[\]"\x27]*=|^[\w.]*\.constructor\.prototype\.\w+='
 message = "this write changes the prototype shared by every object; build objects with Object.create(null) or a Map"
 '''
 
@@ -284,7 +284,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["singleExpression"]
-text = '^[\w.\[\]"\x27]*__proto__[\w.\[\]"\x27]*=|^[\w.]*\.constructor\.prototype\.\w+='
+text = '^(?=\w)[\w.\[\]"\x27]*__proto__[\w.\[\]"\x27]*=|^[\w.]*\.constructor\.prototype\.\w+='
 message = "this write changes the prototype shared by every object; build objects with Object.create(null) or a Map"
 '''
 

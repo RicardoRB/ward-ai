@@ -4,7 +4,7 @@
 # The cost of the run is in pythondiff-corpus-cost.txt.
 # Regenerate: ./mvnw -pl ward-cli -am -Dtest=PythonDiffCorpusSmokeTest -Dward.corpus.pythondiff=<dir> -Djacoco.skip=true -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
 fastapi-template | files 47 | not analysed 0
-rules 494 | not run (need type facts) 0 | findings 359
+rules 494 | not run (need type facts) 0 | findings 354
 ward:python/abbreviation-as-word-in-name | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/abstract-base-class-without-abstract-method | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/abstract-class-instantiated | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -60,7 +60,7 @@ ward:python/cached-instance-method | findings 0 | labelled 0 | tp 0 | fp 0 | un 
 ward:python/chained-comparison | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/chained-comparison-all-equal | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/class-variable-slots-conflict | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:python/code-injection | findings 5 | labelled 5 | tp 0 | fp 5 | un 0
+ward:python/code-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/collapsible-if | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/command-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/comparison-of-constants | findings 0 | labelled 0 | tp 0 | fp 0 | un 0

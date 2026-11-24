@@ -1,13 +1,27 @@
-# Dynamic code execution: the source text that eval and exec run, and the import of a computed module.
+# Dynamic code execution (the builtins, written bare or as builtins.x; a method named exec is not one): the source text that eval and exec run, and the import of a computed module.
 
 [[sinks]]
 kind = "call"
 name = "eval"
+qualifier = "<none>"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "eval"
+qualifier = "builtins"
 arguments = [0]
 
 [[sinks]]
 kind = "call"
 name = "exec"
+qualifier = "<none>"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "exec"
+qualifier = "builtins"
 arguments = [0]
 
 [[sinks]]

@@ -42,6 +42,8 @@ public record TaintEntry(
     List<String> assumptions
 ) {
   private static final String ANY_PREFIX = "*";
+  /** A qualifier that matches only a call written without a receiver, such as {@code exec(x)}. */
+  private static final String UNQUALIFIED = "<none>";
   private static final Pattern CHAIN_SEPARATOR = Pattern.compile("\\??\\.");
 
   /**
@@ -150,6 +152,9 @@ public record TaintEntry(
    * sequelize} both match {@code db.sequelize}.
    */
   private static boolean qualifierMatches(final String expected, final FlowSite site) {
+    if (UNQUALIFIED.equals(expected)) {
+      return site.qualifier().isEmpty();
+    }
     return expected.startsWith(ANY_PREFIX)
         ? site.qualifier().endsWith(expected.substring(ANY_PREFIX.length()))
         : expected.equals(site.qualifier())

@@ -42,13 +42,6 @@ ward:typescript/missing-frame-protection | nest/packages/platform-express/test/a
 ward:typescript/missing-frame-protection | nest/tools/benchmarks/src/frameworks/express.ts:1 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
 ward:typescript/path-traversal | nest/packages/platform-node/test/adapters/node-adapter.spec.ts:217 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
 ward:typescript/path-traversal | nest/packages/platform-node/test/adapters/node-adapter.spec.ts:259 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
-ward:typescript/prototype-pollution | nest/integration/cookies/e2e/cookies.spec.ts:151 | fp | a string literal that begins with __proto__= is test data, not an assignment
-ward:typescript/prototype-pollution | nest/packages/core/test/helpers/cookies/parse-cookie-header.spec.ts:80 | fp | a string literal that begins with __proto__= is test data, not an assignment
-ward:typescript/prototype-pollution | nest/packages/platform-fastify/test/adapters/fastify-adapter.spec.ts:2537 | fp | a string literal that begins with __proto__= is test data, not an assignment
-ward:typescript/prototype-pollution | nest/packages/platform-node/test/body-parser/body-parser.spec.ts:855 | fp | a string literal that begins with __proto__= is test data, not an assignment
-ward:typescript/prototype-pollution | nest/packages/platform-node/test/body-parser/body-parser.spec.ts:856 | fp | a string literal that begins with __proto__= is test data, not an assignment
-ward:typescript/prototype-pollution | nest/packages/platform-node/test/body-parser/body-parser.spec.ts:857 | fp | a string literal that begins with __proto__= is test data, not an assignment
-ward:typescript/prototype-pollution | nest/packages/platform-node/test/body-parser/body-parser.spec.ts:904 | fp | a string literal that begins with __proto__= is test data, not an assignment
 ward:typescript/prototype-pollution | nest/packages/platform-node/test/multer/interceptors/no-files.interceptor.spec.ts:36 | un | a test writes __proto__ on purpose to check that the interceptor copes with it
 ward:typescript/tls-verification-disabled | nest/packages/microservices/test/client/client-tcp-tls.spec.ts:120 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
 ward:typescript/tls-verification-disabled | nest/packages/platform-node/test/adapters/node-adapter.spec.ts:2990 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark

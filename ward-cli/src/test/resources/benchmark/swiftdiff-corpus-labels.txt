@@ -1,5 +1,3 @@
 # rule | file:line | label | reason. Read from the code at each line (tp, fp, un).
 ward:swift/weak-hash | vapor/Sources/Vapor/Security/OTP.swift:115 | un | HMAC-SHA1 is what the one-time password standard fixes, chosen by the caller
 ward:swift/weak-hash | vapor/Sources/Vapor/Security/OTP.swift:97 | un | HMAC-SHA1 is what the one-time password standard fixes, chosen by the caller
-ward:swift/weak-random | vapor/Sources/Vapor/Utilities/Array+Random.swift:14 | fp | the line declares an own function named random on top of the secure system generator
-ward:swift/weak-random | vapor/Sources/Vapor/Utilities/Array+Random.swift:2 | fp | the line declares an own function named random on top of the secure system generator

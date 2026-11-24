@@ -16,3 +16,17 @@ struct SeededRandomGenerator: RandomNumberGenerator {
         UInt64(drand48() * Double(UInt64.max))
     }
 }
+
+extension FixedWidthInteger {
+    public static func random() -> Self {
+        return Self.random(in: .min ... .max)
+    }
+}
+
+func rand() -> Int {
+    return 4
+}
+
+func useOwn() -> Int {
+    return rand()
+}

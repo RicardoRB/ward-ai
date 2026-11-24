@@ -4,7 +4,7 @@
 # The cost of the run is in nodediff-corpus-cost.txt.
 # Regenerate: ./mvnw -pl ward-cli -am -Dtest=NodeDiffCorpusSmokeTest -Dward.corpus.nodediff=<dir> -Djacoco.skip=true -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
 nest | files 2366 | not analysed 82
-rules 671 | not run (need type facts) 19 | findings 22692
+rules 671 | not run (need type facts) 19 | findings 22685
 ward:javascript/array-callback-return | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:javascript/catch-parameter-name | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:javascript/cleartext-transport | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -593,7 +593,7 @@ ward:typescript/prefer-spread | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:typescript/prefer-standalone | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:typescript/prefer-template | findings 87 | labelled 0 | tp 0 | fp 0 | un 0
 ward:typescript/preserve-caught-error | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:typescript/prototype-pollution | findings 8 | labelled 8 | tp 0 | fp 7 | un 1
+ward:typescript/prototype-pollution | findings 1 | labelled 1 | tp 0 | fp 0 | un 1
 ward:typescript/radix | findings 2 | labelled 0 | tp 0 | fp 0 | un 0
 ward:typescript/regex-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:typescript/regexp-singleline | findings 0 | labelled 0 | tp 0 | fp 0 | un 0

@@ -13,3 +13,9 @@ def run_snippet():
 
 def direct():
     return eval(request.args["x"])
+
+
+def builtin_module():
+    import builtins
+    builtins.exec(request.args["c"])
+    builtins.eval(request.args["e"])
