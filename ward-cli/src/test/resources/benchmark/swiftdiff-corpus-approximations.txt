@@ -1,1 +1,6 @@
 # rule | file:line | reason | open issue. A finding labelled fp fails the corpus test unless it is listed here.
+ward:swift/duplicated-key-in-dictionary-literal | vapor/Tests/VaporTests/ConditionalResponseCompressionTests.swift:100 | a header collection built from a dictionary literal keeps repeated names, and the rule has no type facts | #784
+ward:swift/duplicated-key-in-dictionary-literal | vapor/Tests/VaporTests/ConditionalResponseCompressionTests.swift:54 | a header collection built from a dictionary literal keeps repeated names, and the rule has no type facts | #784
+ward:swift/duplicated-key-in-dictionary-literal | vapor/Tests/VaporTests/ConditionalResponseCompressionTests.swift:824 | a header collection built from a dictionary literal keeps repeated names, and the rule has no type facts | #784
+ward:swift/duplicated-key-in-dictionary-literal | vapor/Tests/VaporTests/ConditionalResponseCompressionTests.swift:90 | a header collection built from a dictionary literal keeps repeated names, and the rule has no type facts | #784
+ward:swift/duplicated-key-in-dictionary-literal | vapor/Tests/VaporTests/ConditionalResponseCompressionTests.swift:95 | a header collection built from a dictionary literal keeps repeated names, and the rule has no type facts | #784
