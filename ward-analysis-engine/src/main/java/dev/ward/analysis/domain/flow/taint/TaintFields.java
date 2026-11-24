@@ -109,6 +109,7 @@ final class TaintFields {
     return new TaintSpec(sources, spec.sinks(), spec.sanitizers(), spec.propagators());
   }
 
+  /** The order in which methods run is ignored, so the read of the field is an assumed step. */
   private static TaintEntry entry(final String field) {
     return new TaintEntry(
         FlowSiteKind.MEMBER_READ,
@@ -116,6 +117,6 @@ final class TaintFields {
         Optional.empty(),
         Optional.of(THIS),
         List.of()
-    );
+    ).assuming(List.of("the field " + field + " is written by another method"));
   }
 }

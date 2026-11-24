@@ -244,6 +244,23 @@ public class SarifReportRenderer {
   public record MessageDto(String text) {}
 
   /**
+   * The Ward properties of a data-flow result.
+   *
+   * @param confidence {@code proven} or {@code possible}
+   * @param assumptions the steps of a possible flow that the analysis assumed; omitted when empty
+   */
+  @JsonType
+  public record ResultPropertiesDto(
+      String confidence,
+      @JsonProperty(include = JsonProperty.Include.NON_EMPTY) List<String> assumptions
+  ) {
+    /** Copies the assumptions. */
+    public ResultPropertiesDto {
+      assumptions = List.copyOf(assumptions);
+    }
+  }
+
+  /**
    * One SARIF result.
    *
    * @param ruleId the rule that produced it
@@ -251,6 +268,7 @@ public class SarifReportRenderer {
    * @param message the result message
    * @param locations where it applies; empty for gate-level results
    * @param codeFlows the path of the finding; empty when it has none
+   * @param properties the confidence of a data-flow finding; omitted for any other
    */
   @JsonType
   public record ResultDto(
@@ -258,7 +276,8 @@ public class SarifReportRenderer {
       String level,
       MessageDto message,
       List<LocationDto> locations,
-      @JsonProperty(include = JsonProperty.Include.NON_EMPTY) List<CodeFlowDto> codeFlows
+      @JsonProperty(include = JsonProperty.Include.NON_EMPTY) List<CodeFlowDto> codeFlows,
+      @JsonProperty(include = JsonProperty.Include.NON_NULL) ResultPropertiesDto properties
   ) {
     /** Copies the locations and code flows. */
     public ResultDto {
@@ -273,7 +292,7 @@ public class SarifReportRenderer {
         final MessageDto message,
         final List<LocationDto> locations
     ) {
-      this(ruleId, level, message, locations, List.of());
+      this(ruleId, level, message, locations, List.of(), null);
     }
 
     static ResultDto from(final Finding finding, final String prefix) {
@@ -295,7 +314,10 @@ public class SarifReportRenderer {
           finding.severity().label(),
           new MessageDto(finding.message()),
           locations,
-          codeFlows(finding, prefix)
+          codeFlows(finding, prefix),
+          finding.confidence() == null
+              ? null
+              : new ResultPropertiesDto(finding.confidence(), finding.assumptions())
       );
     }
 

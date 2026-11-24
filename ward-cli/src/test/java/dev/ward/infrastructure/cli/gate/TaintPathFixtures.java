@@ -61,6 +61,8 @@ final class TaintPathFixtures {
           SINK_LINE,
           SINK_COLUMN,
           null,
+          List.of(),
+          null,
           List.of()
       );
     }
@@ -74,7 +76,9 @@ final class TaintPathFixtures {
             match.span().startLine(),
             match.span().startColumn(),
             null,
-            match.path()
+            match.path(),
+            null,
+            List.of()
         );
     return new AnalysisFindingMapper().map("ward", "ward", List.of(analysis)).get(0);
   }

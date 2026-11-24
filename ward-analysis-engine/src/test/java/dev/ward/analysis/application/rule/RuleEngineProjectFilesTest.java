@@ -52,6 +52,8 @@ final class RuleEngineProjectFilesTest {
                 LINE,
                 COLUMN,
                 null,
+                List.of(),
+                null,
                 List.of()
             )
         );
@@ -88,6 +90,8 @@ final class RuleEngineProjectFilesTest {
                 SOURCE,
                 LINE,
                 COLUMN,
+                null,
+                List.of(),
                 null,
                 List.of()
             )

@@ -5,6 +5,8 @@ import static java.util.Map.entry;
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.CheckProvider;
 import dev.ward.analysis.application.rule.TomlValues;
+import dev.ward.analysis.domain.ir.Confidence;
+import dev.ward.analysis.domain.rule.RuleConfigurationException;
 import dev.ward.analysis.domain.rule.check.CognitiveComplexityCheck;
 import dev.ward.analysis.domain.rule.check.CognitiveTokens;
 import dev.ward.analysis.domain.rule.check.CountedKinds;
@@ -42,6 +44,7 @@ public final class CoreCheckProvider implements CheckProvider {
   private static final String EXCLUDED = "excluded";
   private static final String SPECS = "specs";
   private static final String COUNT_EMPTY = "count-empty";
+  private static final String MIN_CONFIDENCE = "min-confidence";
 
   @Override
   public Map<String, CheckFactory> checks() {
@@ -93,12 +96,26 @@ public final class CoreCheckProvider implements CheckProvider {
             toml ->
                 new TaintCheck(
                     TaintSpecFiles.load(SpecPaths.of(toml, SPECS)),
-                    TomlValues.required(toml, MESSAGE)
+                    TomlValues.required(toml, MESSAGE),
+                    minConfidence(toml)
                 )
         ),
         entry("preceding-comment", CoreCheckProvider::precedingComment),
         entry("secret-scan", SecretScanFactory::create)
     );
+  }
+
+  /** The {@code min-confidence} of a taint body: {@code proven} unless it says {@code possible}. */
+  private static Confidence minConfidence(final TomlParseResult toml) {
+    final String key = Optional.ofNullable(toml.getString(MIN_CONFIDENCE))
+        .orElse(Confidence.PROVEN.key());
+    return Confidence.byKey(key)
+        .orElseThrow(
+            () ->
+                new RuleConfigurationException(
+                    "'" + MIN_CONFIDENCE + "' must be proven or possible, not '" + key + "'"
+                )
+        );
   }
 
   private static RuleCheck undefinedName(final TomlParseResult toml) {

@@ -27,7 +27,8 @@ diagnostics go to stderr.
     "findings": [{
       "tool": "string", "rule": "string", "severity": "error|warning|note", "message": "string",
       "file": "string", "line": "number", "column": "number", "helpUri": "string",
-      "path": [{ "file": "string", "line": "number", "column": "number", "message": "string" }]
+      "path": [{ "file": "string", "line": "number", "column": "number", "message": "string" }],
+      "confidence": "proven|possible", "assumptions": ["string"]
     }],
     "findingsTotal": "number", "findingsHidden": "number", "findingsTruncated": "boolean",
     "scope": "skipped|narrowed|full",
@@ -101,6 +102,11 @@ array, `findingsTotal` `0`, `findingsHidden` `0`, and `findingsTruncated` `false
   `file`, `line`, `column`, and `message` of one point, such as the source call, a write that
   carried the value on, and the sink call. A finding without a path has no `path` field. Paths are
   written by the taint rules; see [writing taint specs](/reference/taint-specs/).
+- A taint finding has `confidence`: `proven` when every step of its flow was resolved, `possible`
+  when the flow crosses a step the analysis assumed, such as a project call it does not follow. A
+  `possible` finding lists those steps in `assumptions`. Only rules with `min-confidence =
+  "possible"` report `possible` findings; see [taint confidence](/reference/taint-specs/#confidence).
+  Other findings have neither field.
 - `secrets` findings never contain the matched secret or any source text.
 - Swift compiler errors from `swift-build` and `xcodebuild-test` have `tool` and `rule` `swiftc`.
 - When a report is missing, stale, or unreadable, the check keeps its status and simply has no

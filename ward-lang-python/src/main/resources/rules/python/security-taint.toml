@@ -8,8 +8,10 @@ capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/python/sources.toml", "taint/python/ward-sql-injection.toml"]
 message = "untrusted data from {source} is part of the SQL text that {sink} runs; pass it as a bound parameter instead"
 '''
@@ -21,8 +23,10 @@ capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/python/sources.toml", "taint/python/ward-command-injection.toml"]
 message = "untrusted data from {source} is part of the command that {sink} runs; pass an argument list and validate the value"
 '''
@@ -34,8 +38,10 @@ capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/python/sources.toml", "taint/python/ward-code-injection.toml"]
 message = "untrusted data from {source} is run as code by {sink}; never evaluate request data"
 '''
@@ -47,8 +53,10 @@ capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/python/sources.toml", "taint/python/ward-untrusted-deserialization.toml"]
 message = "untrusted data from {source} is turned into objects by {sink}; use a data-only format such as JSON or yaml.safe_load"
 '''
@@ -60,8 +68,10 @@ capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/python/sources.toml", "taint/python/ward-path-injection.toml"]
 message = "untrusted data from {source} chooses the path that {sink} opens; reduce it with os.path.basename or secure_filename and check the folder"
 '''
@@ -72,8 +82,10 @@ language = "python"
 capability = "TAINT"
 severity = "error"
 category = "security"
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/python/sources.toml", "taint/python/ward-untrusted-request-url.toml"]
 message = "untrusted data from {source} chooses the address that {sink} requests; check the host against an allow-list"
 '''
@@ -85,8 +97,10 @@ capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/python/sources.toml", "taint/python/ward-untrusted-redirect.toml"]
 message = "untrusted data from {source} decides where {sink} redirects; allow only known targets"
 '''
@@ -98,8 +112,10 @@ capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/python/sources.toml", "taint/python/ward-template-injection.toml"]
 message = "untrusted data from {source} is the template text of {sink}; pass it as a template variable instead"
 '''
@@ -111,8 +127,10 @@ capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/python/sources.toml", "taint/python/ward-argument-injection.toml"]
 message = "untrusted data from {source} becomes the program or an option of the argument list that {sink} runs; validate it against an allow-list and put -- before values that are not options"
 '''

@@ -63,6 +63,8 @@ class QualityGateRunnerFindingsTest {
         line,
         1,
         null,
+        List.of(),
+        null,
         List.of()
     );
   }

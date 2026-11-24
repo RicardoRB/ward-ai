@@ -65,6 +65,8 @@ final class SwiftCompilerOutputFindings implements GateFindingSource {
         positive(error.group("line")),
         positive(error.group("column")),
         null,
+        List.of(),
+        null,
         List.of()
     );
   }

@@ -166,6 +166,8 @@ final class OpenApiDiffGate implements QualityGate {
         breaking.at().anchor().startLine(),
         breaking.at().anchor().startColumn(),
         null,
+        List.of(),
+        null,
         List.of()
     );
   }

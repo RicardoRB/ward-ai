@@ -40,6 +40,8 @@ class JsonFindingsRendererTest {
         line,
         FINDING_COLUMN,
         "https://checkstyle.org/checks/javadoc/missingjavadocmethod.html",
+        List.of(),
+        null,
         List.of()
     );
   }
@@ -72,6 +74,38 @@ class JsonFindingsRendererTest {
                 SeverityThreshold.INFO
             )
     );
+  }
+
+  /** Scenario: a taint finding carries its confidence and assumed steps; another has neither. */
+  @Test
+  void taintFindingCarriesItsConfidence() {
+    final Finding possible =
+        new Finding(
+            "ward",
+            "ward",
+            "ward:java/sql-injection",
+            FindingSeverity.ERROR,
+            "untrusted",
+            "src/A.java",
+            2,
+            FINDING_COLUMN,
+            null,
+            List.of(),
+            "possible",
+            List.of("the call pick is not followed")
+        );
+
+    final JsonTree found =
+        render(
+            result("ward", GateStatus.FAILED, "log")
+                .withFindings(GateFindings.of(List.of(finding(1), possible)))
+        ).get("checks").get(0).get("findings");
+
+    assertThat(found.get(0).has("confidence")).isFalse();
+    assertThat(found.get(0).has("assumptions")).isFalse();
+    assertThat(found.get(1).get("confidence").asString()).isEqualTo("possible");
+    assertThat(found.get(1).get("assumptions").get(0).asString())
+        .isEqualTo("the call pick is not followed");
   }
 
   @Test

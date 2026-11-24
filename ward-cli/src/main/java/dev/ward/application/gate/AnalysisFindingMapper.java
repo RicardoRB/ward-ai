@@ -59,7 +59,9 @@ public final class AnalysisFindingMapper {
         finding.line(),
         finding.column(),
         finding.helpUri(),
-        pathOf(finding)
+        pathOf(finding),
+        finding.confidence() == null ? null : finding.confidence().key(),
+        finding.assumptions()
     );
   }
 

@@ -25,7 +25,8 @@ import java.util.regex.Pattern;
  * function or in a callee that receives it, sees the taint.
  *
  * <p>The model is coarse on purpose: one tainted element taints the whole container, the order of
- * stores and reads is ignored, and a later store of a clean value does not clean it. Only a
+ * stores and reads is ignored, and a later store of a clean value does not clean it. The store is
+ * not an assumed step: a container that a sink receives does hold the value. Only a
  * variable named by itself is a container; {@code this.items} and {@code a.b.c} are not followed.
  */
 final class TaintStores {
@@ -152,12 +153,14 @@ final class TaintStores {
       final Map<AccessSite,
       Taint> tainted
   ) {
-    if (tainted.containsKey(definition)) {
+    final Taint known = tainted.get(definition);
+    if (known != null && (known.proven() || !taint.proven())) {
       return false;
     }
-    final List<FlowStep> path = new ArrayList<>(taint.path());
-    path.add(new FlowStep(site.span(), STORED + site.qualifier()));
-    tainted.put(definition, new Taint(taint.source(), path));
+    tainted.put(
+        definition,
+        taint.extended(new FlowStep(site.span(), STORED + site.qualifier()), List.of())
+    );
     return true;
   }
 }

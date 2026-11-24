@@ -191,6 +191,8 @@ public final class UnusedDefinitionFindings {
         symbol.span().startLine(),
         symbol.span().startColumn(),
         null,
+        List.of(),
+        null,
         List.of()
     );
   }

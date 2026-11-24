@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisSeverity;
+import dev.ward.analysis.domain.ir.Confidence;
 import dev.ward.analysis.domain.ir.FlowStep;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.application.gate.AnalysisResultCodec;
@@ -23,6 +24,8 @@ class JsonAnalysisResultCodecTest {
           3,
           5,
           "https://example.invalid/rule",
+          List.of(),
+          null,
           List.of()
       );
   private final AnalysisResultCodec codec = new JsonAnalysisResultCodec(new ForyJsonCodec());
@@ -42,10 +45,32 @@ class JsonAnalysisResultCodecTest {
             List.of(
                 new FlowStep(new Span(7, 18, 7, 26, 100, 108), "source: source"),
                 new FlowStep(new Span(9, 5, 9, 16, 150, 161), "sink: sink argument 0")
-            )
+            ),
+            null,
+            List.of()
         );
 
     assertThat(codec.decode(KEY, codec.encode(KEY, List.of(withPath)))).contains(List.of(withPath));
+  }
+
+  /** Scenario: a cached taint finding keeps its confidence and assumed steps. */
+  @Test
+  void roundTripKeepsTheConfidence() {
+    final AnalysisFinding possible =
+        new AnalysisFinding(
+            "ward:java/sql-injection",
+            AnalysisSeverity.ERROR,
+            "untrusted",
+            "src/A.java",
+            9,
+            5,
+            null,
+            List.of(),
+            Confidence.POSSIBLE,
+            List.of("the call pick is not followed")
+        );
+
+    assertThat(codec.decode(KEY, codec.encode(KEY, List.of(possible)))).contains(List.of(possible));
   }
 
   @Test

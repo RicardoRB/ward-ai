@@ -34,6 +34,8 @@ class AnalysisFindingOrderTest {
             null,
             null,
             null,
+            List.of(),
+            null,
             List.of()
         );
     final List<AnalysisFinding> findings = new ArrayList<>(List.of(located, unlocated));
@@ -57,6 +59,8 @@ class AnalysisFindingOrderTest {
         file,
         line,
         column,
+        null,
+        List.of(),
         null,
         List.of()
     );

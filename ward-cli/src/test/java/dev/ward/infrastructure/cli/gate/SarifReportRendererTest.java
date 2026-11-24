@@ -53,6 +53,8 @@ class SarifReportRendererTest {
         line,
         null,
         "https://docs.pmd-code.org/" + rule,
+        List.of(),
+        null,
         List.of()
     );
   }
@@ -164,6 +166,8 @@ class SarifReportRendererTest {
             null,
             null,
             null,
+            List.of(),
+            null,
             List.of()
         );
     final Finding outside =
@@ -176,6 +180,8 @@ class SarifReportRendererTest {
             "/x/B.java",
             OUTSIDE_LINE,
             OUTSIDE_COLUMN,
+            null,
+            List.of(),
             null,
             List.of()
         );

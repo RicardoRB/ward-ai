@@ -9,8 +9,10 @@ capability = "DATAFLOW"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/csharp/sources.toml", "taint/csharp/ward-command-injection.toml"]
 message = "untrusted data from {source} reaches {sink}, which decides the program or the arguments of a process; start a fixed program and check the value against a list"
 '''
@@ -22,8 +24,10 @@ capability = "DATAFLOW"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/csharp/sources.toml", "taint/csharp/ward-path-injection.toml"]
 message = "untrusted data from {source} is part of the file path that {sink} opens; keep the last path component only and join it to a fixed directory"
 '''
@@ -35,8 +39,10 @@ capability = "DATAFLOW"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/csharp/sources.toml", "taint/csharp/ward-sql-injection.toml"]
 message = "untrusted data from {source} is part of the SQL text that {sink} runs; pass it as a SqlParameter instead"
 '''

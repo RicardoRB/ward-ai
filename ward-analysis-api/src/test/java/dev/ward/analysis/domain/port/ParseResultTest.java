@@ -24,6 +24,8 @@ class ParseResultTest {
           2,
           19,
           null,
+          List.of(),
+          null,
           List.of()
       );
 

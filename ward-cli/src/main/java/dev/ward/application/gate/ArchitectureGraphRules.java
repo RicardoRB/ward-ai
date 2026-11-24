@@ -75,7 +75,9 @@ final class ArchitectureGraphRules {
         span == null ? null : span.startLine(),
         span == null ? null : span.startColumn(),
         null,
-        match.match().path()
+        match.match().path(),
+        null,
+        List.of()
     );
   }
 

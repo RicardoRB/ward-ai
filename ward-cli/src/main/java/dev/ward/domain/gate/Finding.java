@@ -8,7 +8,9 @@ import java.util.Objects;
  *
  * <p>{@code file} is project-root-relative with {@code /} separators. Location parts and {@code
  * helpUri} are {@code null} when the tool does not report them. {@code path} is empty for a finding
- * that has no path.
+ * that has no path. {@code confidence} is {@code proven} or {@code possible} for a data-flow
+ * finding and {@code null} for any other; {@code assumptions} lists the steps of a possible flow
+ * that the analysis assumed.
  */
 public record Finding(
     String gateId,
@@ -20,7 +22,9 @@ public record Finding(
     Integer line,
     Integer column,
     String helpUri,
-    List<FindingStep> path
+    List<FindingStep> path,
+    String confidence,
+    List<String> assumptions
 ) {
   /**
    * Validates the required fields and copies the path.
@@ -35,6 +39,7 @@ public record Finding(
     Objects.requireNonNull(severity, "severity");
     Objects.requireNonNull(message, "message");
     path = List.copyOf(Objects.requireNonNull(path, "path"));
+    assumptions = List.copyOf(Objects.requireNonNull(assumptions, "assumptions"));
     if (line != null && line < 1 || column != null && column < 1) {
       throw new IllegalArgumentException("line and column are 1-based");
     }

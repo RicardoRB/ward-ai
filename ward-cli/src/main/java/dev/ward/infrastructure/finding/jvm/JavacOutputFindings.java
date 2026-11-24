@@ -91,6 +91,8 @@ public final class JavacOutputFindings implements GateFindingSource {
         positive(location.line()),
         positive(location.column()),
         null,
+        List.of(),
+        null,
         List.of()
     );
   }

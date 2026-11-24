@@ -59,6 +59,8 @@ class RuleEngineTest {
                 AT_2_5.startLine(),
                 AT_2_5.startColumn(),
                 null,
+                List.of(),
+                null,
                 List.of()
             )
         );
@@ -222,6 +224,8 @@ class RuleEngineTest {
                 UNIT_A,
                 null,
                 null,
+                null,
+                List.of(),
                 null,
                 List.of()
             )

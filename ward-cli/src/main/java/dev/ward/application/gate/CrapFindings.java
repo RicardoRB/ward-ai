@@ -40,6 +40,8 @@ final class CrapFindings {
         function.span().startLine(),
         function.span().startColumn(),
         null,
+        List.of(),
+        null,
         List.of()
     );
   }

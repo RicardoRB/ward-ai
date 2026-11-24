@@ -3,6 +3,7 @@ package dev.ward.analysis.domain.rule.check;
 import dev.ward.analysis.domain.flow.taint.TaintFile;
 import dev.ward.analysis.domain.flow.taint.TaintFinding;
 import dev.ward.analysis.domain.flow.taint.TaintSpec;
+import dev.ward.analysis.domain.ir.Confidence;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.port.AnalysisFailedException;
 import dev.ward.analysis.domain.rule.FlowView;
@@ -13,8 +14,10 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Reports each value from a source that reaches a sink argument, with its path. The message may use
- * {@code {source}} for the source name and {@code {sink}} for the sink name.
+ * Reports each value from a source that reaches a sink argument, with its path and its confidence.
+ * The message may use {@code {source}} for the source name and {@code {sink}} for the sink name. A
+ * finding whose flow crosses a step that the analysis assumed is {@link Confidence#POSSIBLE}, and
+ * it is reported only when the minimum confidence allows it; by default only proven flows are.
  */
 public final class TaintCheck implements RuleCheck {
   private static final String SOURCE = "{source}";
@@ -22,16 +25,30 @@ public final class TaintCheck implements RuleCheck {
 
   private final TaintSpec spec;
   private final String message;
+  private final Confidence minimum;
+
+  /**
+   * Creates the check that reports proven flows only.
+   *
+   * @param spec the taint specification, already loaded
+   * @param message the message of each finding
+   */
+  public TaintCheck(final TaintSpec spec, final String message) {
+    this(spec, message, Confidence.PROVEN);
+  }
 
   /**
    * Creates the check.
    *
    * @param spec the taint specification, already loaded
    * @param message the message of each finding
+   * @param minimum the least confidence a reported finding has: {@link Confidence#PROVEN} reports
+   *     proven flows only, {@link Confidence#POSSIBLE} reports assumed ones too
    */
-  public TaintCheck(final TaintSpec spec, final String message) {
+  public TaintCheck(final TaintSpec spec, final String message, final Confidence minimum) {
     this.spec = spec;
     this.message = message;
+    this.minimum = minimum;
   }
 
   /**
@@ -48,7 +65,8 @@ public final class TaintCheck implements RuleCheck {
   @Override
   public List<RuleMatch> matches(final SyntaxNode root, final FlowView flow) {
     final List<RuleMatch> found = new ArrayList<>();
-    TaintFile.run(flow.graphs(), flow.related(), spec)
+    TaintFile.run(flow.graphs(), flow.related(), spec).stream()
+        .filter(finding -> finding.confidence().compareTo(minimum) <= 0)
         .forEach(finding -> found.add(match(finding)));
     found.sort(Comparator.comparingInt((RuleMatch match) -> match.span().startOffset()));
     return found;
@@ -62,6 +80,12 @@ public final class TaintCheck implements RuleCheck {
   private RuleMatch match(final TaintFinding finding) {
     final String text =
         message.replace(SOURCE, finding.source()).replace(SINK, finding.sink().name());
-    return new RuleMatch(finding.sink().span(), text, finding.path());
+    return new RuleMatch(
+        finding.sink().span(),
+        text,
+        finding.path(),
+        finding.confidence(),
+        finding.assumptions()
+    );
   }
 }

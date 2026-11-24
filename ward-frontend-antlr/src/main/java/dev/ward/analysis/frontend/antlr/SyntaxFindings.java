@@ -40,6 +40,8 @@ public final class SyntaxFindings {
             Math.max(1, line),
             Math.max(1, column),
             null,
+            List.of(),
+            null,
             List.of()
         )
     );

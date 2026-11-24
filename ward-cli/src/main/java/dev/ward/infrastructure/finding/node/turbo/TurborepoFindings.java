@@ -106,6 +106,8 @@ public final class TurborepoFindings implements GateFindingSource {
         finding.line(),
         finding.column(),
         finding.helpUri(),
+        List.of(),
+        null,
         List.of()
     );
   }

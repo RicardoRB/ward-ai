@@ -26,7 +26,8 @@ class GuardedArgumentTest {
           Optional.of(RESPONSE),
           List.of(0),
           Optional.empty(),
-          List.of("JSON.stringify")
+          List.of("JSON.stringify"),
+          List.of()
       );
 
   @Test

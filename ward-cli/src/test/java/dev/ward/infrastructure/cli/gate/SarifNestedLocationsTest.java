@@ -56,6 +56,8 @@ class SarifNestedLocationsTest {
             LINE,
             null,
             null,
+            List.of(),
+            null,
             List.of()
         );
     final GateResult result =

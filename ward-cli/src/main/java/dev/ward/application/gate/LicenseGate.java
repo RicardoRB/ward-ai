@@ -136,6 +136,8 @@ public final class LicenseGate implements QualityGate {
         null,
         null,
         null,
+        List.of(),
+        null,
         List.of()
     );
   }

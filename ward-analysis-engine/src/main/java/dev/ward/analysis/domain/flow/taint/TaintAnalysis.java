@@ -56,7 +56,8 @@ public final class TaintAnalysis {
    *
    * @param graph the control-flow graph of a function
    * @param spec the taint specification
-   * @return the taint of the first returned value that a source reaches, if any
+   * @return the taint of the first returned value that a source reaches, or of the first one whose
+   *     flow is proven when another one is assumed; empty when none is reached
    */
   static Optional<Taint> returned(final ControlFlowGraph graph, final TaintSpec spec) {
     if (!TaintSpans.hasSource(graph, spec)) {
@@ -64,17 +65,21 @@ public final class TaintAnalysis {
     }
     final ReachingDefinitions reaching = ReachingDefinitions.of(graph);
     final Map<AccessSite, Taint> origins = TaintOrigins.of(graph, reaching, spec);
+    Taint best = null;
     for (final BasicBlock block : graph.blocks()) {
       for (final SyntaxNode node : block.nodes()) {
         final Optional<Taint> taint =
             TaintReturns.value(node)
                 .flatMap(value -> taintOf(block, value, reaching, origins, spec));
         if (taint.isPresent()) {
-          return taint;
+          best = best == null ? taint.get() : Taint.better(best, taint.get());
+          if (best.proven()) {
+            return Optional.of(best);
+          }
         }
       }
     }
-    return Optional.empty();
+    return Optional.ofNullable(best);
   }
 
   private static List<TaintFinding> sinkFindings(
@@ -100,7 +105,7 @@ public final class TaintAnalysis {
             sink.get()
         );
         guarded.taint(state.reaching(), state.origins(), spec)
-            .map(taint -> finding(site, index, taint))
+            .map(taint -> finding(site, index, taint.assuming(sink.get().assumptions())))
             .ifPresent(found::add);
       }
     }
@@ -141,7 +146,12 @@ public final class TaintAnalysis {
   }
 
   private static TaintFinding finding(final FlowSite site, final int index, final Taint taint) {
-    return new TaintFinding(site, taint.source(), withSink(taint, site, index));
+    return new TaintFinding(
+        site,
+        taint.source(),
+        withSink(taint, site, index),
+        taint.assumptions()
+    );
   }
 
   private static String sinkStep(final FlowSite site, final int index) {

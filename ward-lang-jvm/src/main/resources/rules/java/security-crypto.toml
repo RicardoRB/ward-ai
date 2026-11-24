@@ -91,8 +91,10 @@ capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/java/ward-hard-coded-password.toml"]
 message = "this password is a string literal in the source ({source}), used by {sink}; read it from the environment or a secret store"
 '''

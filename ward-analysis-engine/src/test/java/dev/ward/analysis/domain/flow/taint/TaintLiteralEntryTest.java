@@ -38,6 +38,7 @@ class TaintLiteralEntryTest {
         Optional.empty(),
         List.of(),
         pattern,
+        List.of(),
         List.of()
     );
   }

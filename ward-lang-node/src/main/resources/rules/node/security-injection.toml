@@ -8,8 +8,10 @@ capability = "DATAFLOW"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/node/sources.toml", "taint/node/ward-sql-injection.toml"]
 message = "untrusted data from {source} is part of the SQL text of {sink}; pass it as a bound parameter instead"
 '''
@@ -21,8 +23,10 @@ capability = "DATAFLOW"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/node/sources.toml", "taint/node/ward-sql-injection.toml"]
 message = "untrusted data from {source} is part of the SQL text of {sink}; pass it as a bound parameter instead"
 '''
@@ -34,8 +38,10 @@ capability = "DATAFLOW"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/node/sources.toml", "taint/node/ward-nosql-injection.toml"]
 message = "untrusted data from {source} is used as a query filter by {sink}; an object with operators such as $ne would change the query, so convert the value to a string first"
 '''
@@ -47,8 +53,10 @@ capability = "DATAFLOW"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/node/sources.toml", "taint/node/ward-nosql-injection.toml"]
 message = "untrusted data from {source} is used as a query filter by {sink}; an object with operators such as $ne would change the query, so convert the value to a string first"
 '''
@@ -60,8 +68,10 @@ capability = "DATAFLOW"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/node/sources.toml", "taint/node/ward-script-injection.toml"]
 message = "untrusted data from {source} is run as code by {sink}; never build a script from request data"
 '''
@@ -73,8 +83,10 @@ capability = "DATAFLOW"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/node/sources.toml", "taint/node/ward-script-injection.toml"]
 message = "untrusted data from {source} is run as code by {sink}; never build a script from request data"
 '''
@@ -86,8 +98,10 @@ capability = "DATAFLOW"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/node/sources.toml", "taint/node/ward-untrusted-redirect.toml"]
 message = "untrusted data from {source} decides where the user is sent, through {sink}; allow only known targets"
 '''
@@ -99,8 +113,10 @@ capability = "DATAFLOW"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/node/sources.toml", "taint/node/ward-untrusted-redirect.toml"]
 message = "untrusted data from {source} decides where the user is sent, through {sink}; allow only known targets"
 '''
@@ -112,8 +128,10 @@ capability = "DATAFLOW"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/node/sources.toml", "taint/node/ward-server-side-request-forgery.toml"]
 message = "untrusted data from {source} chooses the address that {sink} requests; check the host against an allow-list"
 '''
@@ -125,8 +143,10 @@ capability = "DATAFLOW"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/node/sources.toml", "taint/node/ward-server-side-request-forgery.toml"]
 message = "untrusted data from {source} chooses the address that {sink} requests; check the host against an allow-list"
 '''
@@ -138,8 +158,10 @@ capability = "DATAFLOW"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/node/sources.toml", "taint/node/ward-untrusted-deserialization.toml"]
 message = "untrusted data from {source} is deserialized by {sink}, which can run attacker-chosen code; parse a data format such as JSON instead"
 '''
@@ -151,8 +173,10 @@ capability = "DATAFLOW"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/node/sources.toml", "taint/node/ward-untrusted-deserialization.toml"]
 message = "untrusted data from {source} is deserialized by {sink}, which can run attacker-chosen code; parse a data format such as JSON instead"
 '''
@@ -164,8 +188,10 @@ capability = "DATAFLOW"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/node/sources.toml", "taint/node/ward-template-injection.toml"]
 message = "untrusted data from {source} is compiled as a template by {sink}; keep the template fixed and pass the data as a variable"
 '''
@@ -177,8 +203,10 @@ capability = "DATAFLOW"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/node/sources.toml", "taint/node/ward-template-injection.toml"]
 message = "untrusted data from {source} is compiled as a template by {sink}; keep the template fixed and pass the data as a variable"
 '''
@@ -190,8 +218,10 @@ capability = "DATAFLOW"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/node/sources.toml", "taint/node/ward-log-forging.toml"]
 message = "untrusted data from {source} is written to the log by {sink}; line breaks in it could forge log entries"
 '''
@@ -203,8 +233,10 @@ capability = "DATAFLOW"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/node/sources.toml", "taint/node/ward-log-forging.toml"]
 message = "untrusted data from {source} is written to the log by {sink}; line breaks in it could forge log entries"
 '''
@@ -216,8 +248,10 @@ capability = "DATAFLOW"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/node/sources.toml", "taint/node/ward-header-injection.toml"]
 message = "untrusted data from {source} is written into a response header by {sink}; a line break in it would split the response"
 '''
@@ -229,8 +263,10 @@ capability = "DATAFLOW"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/node/sources.toml", "taint/node/ward-header-injection.toml"]
 message = "untrusted data from {source} is written into a response header by {sink}; a line break in it would split the response"
 '''
@@ -242,8 +278,10 @@ capability = "DATAFLOW"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/node/sources.toml", "taint/node/ward-regex-injection.toml"]
 message = "untrusted data from {source} becomes a regular expression in {sink}; escape it or limit its length"
 '''
@@ -255,8 +293,10 @@ capability = "DATAFLOW"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/node/sources.toml", "taint/node/ward-regex-injection.toml"]
 message = "untrusted data from {source} becomes a regular expression in {sink}; escape it or limit its length"
 '''
