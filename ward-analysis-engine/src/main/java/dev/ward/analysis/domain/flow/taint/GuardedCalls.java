@@ -115,7 +115,11 @@ final class GuardedCalls {
             );
   }
 
-  /** Writes the variable that the argument names clean, right after the last access of the call. */
+  /**
+   * Writes the variable that the argument names clean, right after the last access of the call. The
+   * call holds the accesses in its span and in its arguments, since the span of a Node call is only
+   * the name that is called.
+   */
   private static boolean cleanArgument(
       final FlowSite site,
       final Span argument,
@@ -125,7 +129,9 @@ final class GuardedCalls {
     int last = -1;
     for (int index = 0; index < accesses.size(); index++) {
       final VariableAccess access = accesses.get(index);
-      if (TaintSpans.contains(site.span(), access.span())) {
+      if (TaintSpans.contains(site.span(), access.span())
+          || site.arguments().stream()
+              .anyMatch(part -> TaintSpans.contains(part, access.span()))) {
         last = index;
       }
       if (access.kind() == AccessKind.READ && access.span().equals(argument)) {

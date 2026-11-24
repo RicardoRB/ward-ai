@@ -56,3 +56,46 @@ export function mapLookup(req) {
   const file = FILES.get(req.params.id);
   return fs.readFileSync(file);
 }
+
+// A value that a list of constants accepted is one of those constants.
+const KIND_LIST = ['avatar', 'logo'];
+
+export function ternaryAllowList(req) {
+  const url = req.body.imageUrl;
+  const ext = ['jpg', 'png'].includes(url.split('.').slice(-1)[0]) ? url.split('.').slice(-1)[0] : 'jpg';
+  fs.writeFileSync(`uploads/avatar.${ext}`, 'x');
+}
+
+export function insideAllowList(req) {
+  const kind = req.query.kind;
+  if (KIND_LIST.includes(kind)) {
+    return fs.readFileSync('images/' + kind);
+  }
+  return undefined;
+}
+
+export function pastAllowList(req) {
+  const kind = req.query.kind;
+  if (!KIND_LIST.includes(kind)) {
+    throw new Error('unknown kind');
+  }
+  return fs.readFileSync('images/' + kind);
+}
+
+// A function that throws unless its parameter is on the list vouches for its callers.
+function requireKind(value) {
+  if (!KIND_LIST.includes(value)) {
+    throw new Error('unknown kind');
+  }
+}
+
+export function validatedByCallee(req) {
+  const kind = req.query.kind;
+  requireKind(kind);
+  return fs.readFileSync('images/' + kind);
+}
+
+export function defaultedConstant(req) {
+  const file = req.query.file ? 'index.html' : 'about.html';
+  return fs.readFileSync('public/' + file);
+}

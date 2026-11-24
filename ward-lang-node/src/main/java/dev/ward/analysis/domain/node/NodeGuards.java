@@ -1,12 +1,15 @@
 package dev.ward.analysis.domain.node;
 
 import dev.ward.analysis.domain.ir.ControlFlowBuilder;
+import dev.ward.analysis.domain.ir.FlowSite;
+import dev.ward.analysis.domain.ir.FlowSiteKind;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.ir.VariableAccess;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,6 +23,17 @@ import java.util.regex.Pattern;
  * assigned the result of {@code path.resolve}, {@code normalize}, {@code join} or {@code realpath},
  * and a bare name assigned the whole lookup {@code TABLE[key]} or {@code TABLE.get(key)} with one
  * key; upgrade when a project guards a member or a call result.
+ *
+ * <p>An allow-list is a literal array or a constant table of the file. A value that {@code
+ * ALLOWED.includes(x)} or {@code ALLOWED.has(x)} accepted is one of the program's constants, so the
+ * name is clean in the branch that holds, past a branch that exits when it does not, and in {@code
+ * ALLOWED.includes(e) ? e : 'default'}. Past an exit the guard also leaves a site that names the
+ * variable, so a function that checks its parameter vouches for its callers when every path that
+ * returns passes the check.
+ *
+ * <p>shortcut: a constant table is not proved to stay unmodified, and the tested value is a bare
+ * name (a call chain of literal arguments in the ternary); upgrade when a project fills an
+ * allow-list at run time.
  */
 final class NodeGuards {
   private static final String NAME = "([A-Za-z_$][\\w$]*)";
@@ -36,6 +50,7 @@ final class NodeGuards {
   private static final Pattern NOT_STARTS_WITH = Pattern.compile(
       "^!" + NAME + "\\.startsWith\\(.+\\)$"
   );
+  private static final String GUARD = "<allow-listed>";
   private static final Set<String> EXITS = Set.of("returnStatement", "throwStatement");
   private static final String BLOCK = "block";
   private static final int NAME_GROUP = 1;
@@ -46,12 +61,14 @@ final class NodeGuards {
   private final ControlFlowBuilder flow;
   private final NodeAccesses accesses;
   private final Set<String> tables;
+  private final NodeAllowLists lists;
   private final Set<String> resolved = new HashSet<>();
 
   NodeGuards(final ControlFlowBuilder flow, final NodeAccesses accesses, final Set<String> tables) {
     this.flow = flow;
     this.accesses = accesses;
     this.tables = Set.copyOf(tables);
+    this.lists = new NodeAllowLists(tables);
   }
 
   /**
@@ -64,6 +81,7 @@ final class NodeGuards {
     if (path.matches()) {
       resolved.add(path.group(NAME_GROUP));
     }
+    lists.ternary(text).ifPresent(name -> clean(name, after(statement.span())));
     final Matcher lookup = LOOKUP.matcher(text);
     if (lookup.matches() && tables.contains(lookup.group(TABLE_GROUP))) {
       clean(lookup.group(NAME_GROUP), after(statement.span()));
@@ -78,6 +96,10 @@ final class NodeGuards {
         .filter(Matcher::matches)
         .map(match -> match.group(NAME_GROUP))
         .filter(resolved::contains)
+        .forEach(name -> clean(name, condition.span()));
+    conjuncts(condition).stream()
+        .map(part -> lists.tested(part, false))
+        .flatMap(Optional::stream)
         .forEach(name -> clean(name, condition.span()));
   }
 
@@ -95,6 +117,31 @@ final class NodeGuards {
         .map(match -> match.group(NAME_GROUP))
         .filter(resolved::contains)
         .forEach(name -> clean(name, after(branch.span())));
+    alternatives(condition).stream()
+        .map(part -> lists.tested(part, true))
+        .flatMap(Optional::stream)
+        .forEach(name -> guard(name, after(branch.span())));
+  }
+
+  /** Cleans the checked name past the exit, and marks the check for the callers. */
+  private void guard(final String name, final Span span) {
+    final List<VariableAccess> clean = accesses.scopes.clean(name, span);
+    if (!clean.isEmpty()) {
+      flow.record(
+          clean,
+          List.of(
+              new FlowSite(
+                  FlowSiteKind.CALL,
+                  GUARD,
+                  name,
+                  Optional.empty(),
+                  List.of(),
+                  List.of(),
+                  span
+              )
+          )
+      );
+    }
   }
 
   private static List<SyntaxNode> conjuncts(final SyntaxNode condition) {

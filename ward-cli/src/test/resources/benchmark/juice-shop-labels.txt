@@ -16,6 +16,8 @@ ward:typescript/insecure-random | frontend/src/app/Services/conversation-storage
 ward:typescript/insecure-random | lib/insecurity.ts:53 | tp | Math.random builds the JWT secret of denyAll
 ward:typescript/nosql-injection | routes/likeProductReviews.ts:25 | tp | req.body.id is passed to findOne as the filter; an operator object such as {"$ne": -1} changes the query
 ward:typescript/nosql-injection | routes/likeProductReviews.ts:43 | tp | the same req.body.id reaches the second findOne filter
+ward:typescript/nosql-injection | routes/showProductReviews.ts:36 | tp | when the NoSQL challenge is enabled, utils.trunc(req.params.id, 40) is concatenated into the $where JavaScript string; the other branch of the ternary converts to Number
+ward:typescript/nosql-injection | routes/trackOrder.ts:18 | tp | when the reflected XSS challenge is enabled, utils.trunc(req.params.id, 60) is interpolated into the $where string; the other branch strips non-word characters
 ward:typescript/path-traversal | routes/fileServer.ts:18 | tp | params.file reaches res.sendFile(path.resolve(...)); only a slash test and a null-byte cut guard it
 ward:typescript/path-traversal | routes/keyServer.ts:14 | tp | params.file reaches res.sendFile(path.resolve(...)) of the key folder; only a slash test guards it
 ward:typescript/path-traversal | routes/logfileServer.ts:14 | tp | params.file reaches res.sendFile(path.resolve(...)) of the log folder; only a slash test guards it
@@ -29,7 +31,12 @@ ward:typescript/permissive-cors | server.ts:184 | tp | cors() with defaults allo
 ward:typescript/permissive-cors | server.ts:185 | tp | cors() with defaults allows every origin
 ward:typescript/script-injection | routes/userProfile.ts:65 | tp | eval of a substring of the user name
 ward:typescript/server-side-request-forgery | routes/profileImageUrlUpload.ts:24 | tp | fetch of a URL from the request body
+ward:typescript/sql-injection | data/static/codefixes/dbSchemaChallenge_1.ts:5 | tp | a wrong fix option of the coding challenge: the same concatenation of req.query.q into the SQL text
+ward:typescript/sql-injection | data/static/codefixes/dbSchemaChallenge_3.ts:11 | tp | a wrong fix option: a deny-list regex check, which a crafted search string passes
+ward:typescript/sql-injection | data/static/codefixes/unionSqlInjectionChallenge_1.ts:6 | tp | a wrong fix option: a deny-list through replace(), whose result the code drops, so the query still takes req.query.q
+ward:typescript/sql-injection | data/static/codefixes/unionSqlInjectionChallenge_3.ts:10 | tp | a wrong fix option: limiting the search by startsWith still lets a prefixed payload reach the query, as the challenge's own explanation says
 ward:typescript/sql-injection | routes/login.ts:34 | tp | req.body.email is concatenated into the SQL text of models.sequelize.query
+ward:typescript/sql-injection | routes/search.ts:23 | tp | req.query.q is interpolated into the SQL text of models.sequelize.query
 ward:typescript/template-injection | routes/userProfile.ts:90 | tp | pug.compile of a template that holds the user name
 ward:typescript/unsafe-framework-trust | data/static/codefixes/localXssChallenge_1.ts:6 | tp | snippet of the vulnerable variant shown by the coding challenges
 ward:typescript/unsafe-framework-trust | data/static/codefixes/localXssChallenge_3.ts:6 | tp | snippet of the vulnerable variant shown by the coding challenges

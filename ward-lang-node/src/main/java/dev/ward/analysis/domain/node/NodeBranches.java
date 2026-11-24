@@ -2,14 +2,19 @@ package dev.ward.analysis.domain.node;
 
 import dev.ward.analysis.domain.ir.ControlFlowBuilder;
 import dev.ward.analysis.domain.ir.FlowEdgeKind;
+import dev.ward.analysis.domain.ir.FlowSite;
+import dev.ward.analysis.domain.ir.FlowSiteKind;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Lowers the expressions of a TypeScript or JavaScript statement that split the graph: a logical
  * operator, a conditional operator, or the right-hand side of an assignment that holds either.
  */
 final class NodeBranches {
+  /** The name of the site that marks a statement whose value was made in several blocks. */
+  static final String SPLIT = "<value-split>";
   private static final String AND = "&&";
   private static final int RIGHT_INDEX = 2;
   private static final int DECLARATION_PARTS = 3;
@@ -41,6 +46,7 @@ final class NodeBranches {
     }
     emitValue(split);
     accesses.skip(split);
+    markSplit(split);
     if (wholeStatement || !split.equals(value)) {
       NodeSteps.add(flow, statement, NodeExpressions.mayThrow(statement));
     }
@@ -69,10 +75,43 @@ final class NodeBranches {
       if (NodeExpressions.isLogical(value) || NodeExpressions.isTernary(value)) {
         emitValue(value);
         accesses.skip(value);
+        markSplit(value);
       }
     }
     NodeSteps.add(flow, part, NodeExpressions.mayThrow(part));
     return true;
+  }
+
+  /**
+   * Marks the join block: the statement in it takes the value that the blocks before it made, so
+   * the data flow reads the operands there as part of the statement. The marks cover the operands
+   * that can be the value, not the condition of a conditional operator, which only picks one.
+   */
+  private void markSplit(final SyntaxNode expression) {
+    final SyntaxNode value = NodeFlowSyntax.unwrap(expression);
+    final List<SyntaxNode> parts = NodeFlowSyntax.parts(value);
+    if (NodeExpressions.isTernary(value)) {
+      markSplit(parts.get(RIGHT_INDEX));
+      markSplit(parts.get(TERNARY_ELSE_INDEX));
+    } else if (NodeExpressions.isLogical(value)) {
+      markSplit(parts.get(0));
+      markSplit(parts.get(RIGHT_INDEX));
+    } else {
+      flow.record(
+          List.of(),
+          List.of(
+              new FlowSite(
+                  FlowSiteKind.CALL,
+                  SPLIT,
+                  "",
+                  Optional.empty(),
+                  List.of(),
+                  List.of(),
+                  value.span()
+              )
+          )
+      );
+    }
   }
 
   /** Branches from the current block on a condition, short-circuiting the logical operators. */
