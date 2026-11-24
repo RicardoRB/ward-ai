@@ -57,7 +57,7 @@ typeParameters
     ;
 
 typeParameterList
-    : typeParameter (',' typeParameter)*
+    : typeParameter (',' typeParameter)* ','?
     ;
 
 typeParameter
@@ -113,9 +113,14 @@ unionOrIntersectionOrPrimaryType
 primaryType
     : '(' type_ ')'                              # ParenthesizedPrimType
     | readonlyType                               # ReadonlyPrimType
+    | importType                                 # ImportPrimType
     | templateStringType                         # TemplateStringPrimType
     | inferType                                  # InferPrimType
     | predefinedType                             # PredefinedPrimType
+    // Predicates before the reference: in a member signature the reference alone can also be followed by
+    // an empty `eos`, so `m(): x is T` is ambiguous and the earlier alternative must be the predicate
+    | Asserts (This | typeReference) (Is primaryType)? # AssertsPrimType
+    | (typeReference | This | Module) Is primaryType # RedefinitionOfType
     // Before the reference: `keyof` is also a name, and `x as keyof T` would end at `keyof`
     | KeyOf primaryType                          # KeyOfType
     | typeReference                              # ReferencePrimType
@@ -125,8 +130,6 @@ primaryType
     | '[' tupleElementTypes ']'                  # TuplePrimType
     | typeQuery                                  # QueryPrimType
     | This                                       # ThisPrimType
-    | Asserts (This | typeReference) (Is primaryType)? # AssertsPrimType
-    | typeReference Is primaryType               # RedefinitionOfType
     | ReadOnly primaryType                       # ReadonlyPrimType
     ;
 
@@ -232,7 +235,12 @@ constructorType
     ;
 
 typeQuery
-    : 'typeof' typeQueryExpression
+    : 'typeof' (importType | typeQueryExpression)
+    ;
+
+// `import('module').Name<Args>`
+importType
+    : Import '(' StringLiteral ')' ('.' identifierName)* typeGeneric?
     ;
 
 typeQueryExpression
@@ -382,7 +390,7 @@ decoratorMemberExpression
     ;
 
 decoratorCallExpression
-    : decoratorMemberExpression arguments
+    : decoratorMemberExpression typeArguments? arguments
     ;
 
 // ECMAPart
@@ -674,7 +682,7 @@ propertyMemberDeclaration
     : propertyMemberBase (getAccessor | setAccessor)                                     # GetterSetterDeclarationExpression
     // Methods and accessors come before the property: a property ends at a line break, so `get`
     // followed by `size(): number;` could be read as two members, and the earlier alternative wins.
-    | propertyMemberBase '*'? (propertyName | privateIdentifier) callSignature (('{' functionBody '}') | eos) # MethodDeclarationExpression
+    | propertyMemberBase '*'? (propertyName | privateIdentifier) '?'? callSignature (('{' functionBody '}') | eos) # MethodDeclarationExpression
     | propertyMemberBase (getter | setter) callSignature SemiColon                         # AccessorSignatureDeclaration
     | propertyMemberBase (propertyName | privateIdentifier) ('?' | '!')? typeAnnotation? initializer? eos # PropertyDeclarationExpression
     | abstractDeclaration                                                                # AbstractMemberDeclaration
@@ -736,7 +744,7 @@ formalParameterList
     ;
 
 formalParameterArg
-    : decorator? (accessibilityModifier ReadOnly? | ReadOnly)? assignable '?'? typeAnnotation? (
+    : decorator* (accessibilityModifier ReadOnly? | ReadOnly)? assignable '?'? typeAnnotation? (
         '=' singleExpression
     )? // ECMAScript 6: Initialization
     ;
@@ -823,6 +831,8 @@ singleExpression
     | singleExpression '?' '.' '#'? identifierName typeGeneric?   # MemberDotExpression
     // TypeScript v2.0; a postfix operator, so it binds tighter than every binary operator and `=`
     | singleExpression '!'                                            # NonNullAssertionExpression
+    // `createThing<Config>` without a call: an instantiation expression, tried after the comparison
+    | singleExpression typeArguments                                  # InstantiationExpression
     // Split to try `new Date()` first, then `new Date`.
     | New identifier typeArguments? arguments                         # NewExpression
     | New singleExpression typeArguments? arguments                   # NewExpression

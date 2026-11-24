@@ -47,3 +47,7 @@ ward:typescript/tls-verification-disabled | nest/packages/microservices/test/cli
 ward:typescript/tls-verification-disabled | nest/packages/platform-node/test/adapters/node-adapter.spec.ts:2990 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
 ward:typescript/tls-verification-disabled | nest/packages/platform-node/test/adapters/node-request.spec.ts:326 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
 ward:typescript/xss | nest/packages/platform-node/test/adapters/node-adapter.spec.ts:2496 | un | true by the letter of the rule and of no consequence in a test, fixture or benchmark
+ward:typescript/insecure-random | nest/packages/core/helpers/context-id-factory.ts:14 | un | a context identifier whose comment says it need be neither unique nor unpredictable; true by the letter of the rule, no security role
+ward:typescript/insecure-random | nest/packages/core/helpers/context-id-factory.ts:5 | un | same function as line 14; no security role
+ward:typescript/missing-frame-protection | nest/packages/platform-express/adapters/express-adapter.ts:1 | un | a framework adapter that wraps Express, not an application; the application chooses its headers
+ward:typescript/xss | nest/packages/platform-node/adapters/node-adapter.ts:945 | fp | the path is percent-encoded and the response is plain text with nosniff, so it cannot run as HTML

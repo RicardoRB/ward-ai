@@ -132,7 +132,7 @@ aliasName
     ;
 
 exportStatement
-    : Export Default? (exportFromBlock | declaration) eos # ExportDeclaration
+    : decoratorList? Export Default? (exportFromBlock | declaration) eos # ExportDeclaration
     | Export Default singleExpression eos                 # ExportDefaultDeclaration
     ;
 

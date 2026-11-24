@@ -115,7 +115,14 @@ class EcmaSyntaxFixturesTest {
           Map.entry("type-alias.ts", List.of("typeAliasDeclaration")),
           Map.entry("type-only-specifiers.ts", List.of("typeOnlyModifier")),
           Map.entry("using.ts", List.of("usingDeclaration")),
-          Map.entry("variance.ts", List.of("varianceModifier"))
+          Map.entry("variance.ts", List.of("varianceModifier")),
+          Map.entry("type-parameters-trailing-comma.ts", List.of("typeParameterList")),
+          Map.entry("type-predicates.ts", List.of("primaryType", "callSignature")),
+          Map.entry(
+              "type-arguments-on-values.ts",
+              List.of("importType", "decoratorCallExpression")
+          ),
+          Map.entry("parameter-properties.ts", List.of("formalParameterArg", "decorator"))
       );
 
   /** The node kinds each JavaScript fixture must produce; see {@link #TYPESCRIPT_KINDS}. */
@@ -133,7 +140,8 @@ class EcmaSyntaxFixturesTest {
           Map.entry("private-names.js", List.of("privateIdentifier")),
           Map.entry("static-accessors.js", List.of("getter", "setter")),
           Map.entry("template-escapes.js", List.of("TemplateStringEscapeAtom")),
-          Map.entry("using.js", List.of("usingDeclaration"))
+          Map.entry("using.js", List.of("usingDeclaration")),
+          Map.entry("decorated-export-class.js", List.of("decorator", "exportStatement"))
       );
 
   static List<Path> typeScriptFixtures() throws IOException {
