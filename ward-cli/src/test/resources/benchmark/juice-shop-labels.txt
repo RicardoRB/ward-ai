@@ -14,6 +14,7 @@ ward:typescript/dom-xss | frontend/src/hacking-instructor/index.ts:126 | fp | th
 ward:typescript/header-injection | routes/userProfile.ts:97 | tp | profile image URL of the user goes into the Content-Security-Policy header
 ward:typescript/insecure-random | frontend/src/app/Services/conversation-storage.service.ts:15 | tp | the identifier of a stored conversation is built from Math.random; predictable, though the id guards nothing
 ward:typescript/insecure-random | lib/insecurity.ts:53 | tp | Math.random builds the JWT secret of denyAll
+ward:typescript/log-forging | routes/repeatNotification.ts:12 | tp | the challenge name from the query reaches logger.warn in findChallengeByName, which writes it into the log when no challenge matches
 ward:typescript/nosql-injection | routes/likeProductReviews.ts:25 | tp | req.body.id is passed to findOne as the filter; an operator object such as {"$ne": -1} changes the query
 ward:typescript/nosql-injection | routes/likeProductReviews.ts:43 | tp | the same req.body.id reaches the second findOne filter
 ward:typescript/nosql-injection | routes/showProductReviews.ts:36 | tp | when the NoSQL challenge is enabled, utils.trunc(req.params.id, 40) is concatenated into the $where JavaScript string; the other branch of the ternary converts to Number

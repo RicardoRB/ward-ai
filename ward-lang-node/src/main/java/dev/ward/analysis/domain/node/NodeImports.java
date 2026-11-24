@@ -42,17 +42,21 @@ final class NodeImports {
 
   private final Map<String, String> modules = new HashMap<>();
   private final Map<String, String> imported = new HashMap<>();
+  private final String directory;
 
-  private NodeImports() {}
+  private NodeImports(final String directory) {
+    this.directory = directory;
+  }
 
   /**
    * Reads the imports of a file.
    *
    * @param root the root of the syntax tree of the file
+   * @param path the path of the file, which a relative module specifier is resolved against
    * @return the imports of the file
    */
-  static NodeImports of(final SyntaxNode root) {
-    final NodeImports imports = new NodeImports();
+  static NodeImports of(final SyntaxNode root, final String path) {
+    final NodeImports imports = new NodeImports(NodeModuleNames.directoryOf(path));
     imports.collect(root);
     return imports;
   }
@@ -146,7 +150,10 @@ final class NodeImports {
     }
   }
 
-  private static String module(final String specifier) {
-    return specifier.startsWith(NODE_PREFIX) ? specifier.substring(NODE_PREFIX_LENGTH) : specifier;
+  private String module(final String specifier) {
+    if (specifier.startsWith(NODE_PREFIX)) {
+      return specifier.substring(NODE_PREFIX_LENGTH);
+    }
+    return NodeModuleNames.resolve(directory, specifier);
   }
 }

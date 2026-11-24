@@ -96,6 +96,7 @@ final class NodeFlowSites implements FlowSites {
     } else {
       children(node, found);
       testOf(node, parts).ifPresent(found::add);
+      NodeKeyedReads.index(types, node, parts).ifPresent(found::add);
       writeOf(node, parts).ifPresent(found::add);
     }
   }
@@ -181,6 +182,7 @@ final class NodeFlowSites implements FlowSites {
     values.forEach(value -> walk(value, found));
     if (isMember(calleeParts)) {
       found.add(siteOf(FlowSiteKind.CALL, callee, calleeParts, values));
+      NodeKeyedReads.mapGet(types, calleeParts, values).ifPresent(found::add);
       NodeContentTypes.of(callee, calleeParts, values).ifPresent(found::add);
     } else {
       final String written = NodeFlowSyntax.text(callee);

@@ -1,6 +1,12 @@
 package dev.ward.infrastructure.rule.catalog;
 
+import dev.ward.analysis.application.rule.DependencyAnalysis;
+import dev.ward.analysis.application.rule.DependencySnapshot;
+import dev.ward.analysis.application.rule.FileSummaryCache;
+import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.analysis.domain.ir.FileSummary;
+import dev.ward.infrastructure.analysis.node.NodeDependencyAdapters;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -51,6 +57,12 @@ final class NodeCorpus {
     }
   }
 
+  /** The dependencies of the units, so that the taint rules follow calls into other files. */
+  DependencySnapshot snapshot(final List<SourceUnit> units, final List<FrontendSupport> frontends) {
+    return new DependencyAnalysis(frontends, new NodeDependencyAdapters().forProject(root, units))
+        .analyze(units, new NoSummaries());
+  }
+
   private boolean skippedFolder(final Path file) {
     for (final Path part : root.relativize(file.getParent())) {
       if (SKIPPED_FOLDERS.contains(part.toString())) {
@@ -79,5 +91,18 @@ final class NodeCorpus {
       return AnalysisLanguage.TYPESCRIPT;
     }
     return JAVASCRIPT.contains("." + extension) ? AnalysisLanguage.JAVASCRIPT : null;
+  }
+
+  /** Keeps no summaries, so the run resolves the project once. */
+  private static final class NoSummaries implements FileSummaryCache {
+    @Override
+    public java.util.Optional<FileSummary> read(final SourceUnit unit) {
+      return java.util.Optional.empty();
+    }
+
+    @Override
+    public void write(final SourceUnit unit, final FileSummary summary) {
+      // nothing is kept
+    }
   }
 }

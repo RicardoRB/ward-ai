@@ -60,7 +60,7 @@ ward:typescript/header-injection | findings 1 | tp 1 | fp 0 | un 0
 ward:typescript/insecure-cookie | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/insecure-random | findings 2 | tp 2 | fp 0 | un 0
 ward:typescript/jwt-without-verification | findings 0 | tp 0 | fp 0 | un 0
-ward:typescript/log-forging | findings 0 | tp 0 | fp 0 | un 0
+ward:typescript/log-forging | findings 1 | tp 1 | fp 0 | un 0
 ward:typescript/missing-frame-protection | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/no-blank-target | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/no-dangerously-set-inner-html | findings 0 | tp 0 | fp 0 | un 0

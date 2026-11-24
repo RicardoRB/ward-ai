@@ -4,7 +4,7 @@
 [[rules]]
 id = "ward:javascript/sql-injection"
 language = "JAVASCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
@@ -19,7 +19,7 @@ message = "untrusted data from {source} is part of the SQL text of {sink}; pass 
 [[rules]]
 id = "ward:typescript/sql-injection"
 language = "TYPESCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
@@ -34,7 +34,7 @@ message = "untrusted data from {source} is part of the SQL text of {sink}; pass 
 [[rules]]
 id = "ward:javascript/nosql-injection"
 language = "JAVASCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
@@ -49,7 +49,7 @@ message = "untrusted data from {source} is used as a query filter by {sink}; an 
 [[rules]]
 id = "ward:typescript/nosql-injection"
 language = "TYPESCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
@@ -64,7 +64,7 @@ message = "untrusted data from {source} is used as a query filter by {sink}; an 
 [[rules]]
 id = "ward:javascript/script-injection"
 language = "JAVASCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
@@ -79,7 +79,7 @@ message = "untrusted data from {source} is run as code by {sink}; never build a 
 [[rules]]
 id = "ward:typescript/script-injection"
 language = "TYPESCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
@@ -94,7 +94,7 @@ message = "untrusted data from {source} is run as code by {sink}; never build a 
 [[rules]]
 id = "ward:javascript/untrusted-redirect"
 language = "JAVASCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
@@ -109,7 +109,7 @@ message = "untrusted data from {source} decides where the user is sent, through 
 [[rules]]
 id = "ward:typescript/untrusted-redirect"
 language = "TYPESCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
@@ -124,7 +124,7 @@ message = "untrusted data from {source} decides where the user is sent, through 
 [[rules]]
 id = "ward:javascript/server-side-request-forgery"
 language = "JAVASCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
@@ -139,7 +139,7 @@ message = "untrusted data from {source} chooses the address that {sink} requests
 [[rules]]
 id = "ward:typescript/server-side-request-forgery"
 language = "TYPESCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
@@ -154,7 +154,7 @@ message = "untrusted data from {source} chooses the address that {sink} requests
 [[rules]]
 id = "ward:javascript/untrusted-deserialization"
 language = "JAVASCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
@@ -169,7 +169,7 @@ message = "untrusted data from {source} is deserialized by {sink}, which can run
 [[rules]]
 id = "ward:typescript/untrusted-deserialization"
 language = "TYPESCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
@@ -184,7 +184,7 @@ message = "untrusted data from {source} is deserialized by {sink}, which can run
 [[rules]]
 id = "ward:javascript/template-injection"
 language = "JAVASCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
@@ -199,7 +199,7 @@ message = "untrusted data from {source} is compiled as a template by {sink}; kee
 [[rules]]
 id = "ward:typescript/template-injection"
 language = "TYPESCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
@@ -214,7 +214,7 @@ message = "untrusted data from {source} is compiled as a template by {sink}; kee
 [[rules]]
 id = "ward:javascript/log-forging"
 language = "JAVASCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
@@ -229,7 +229,7 @@ message = "untrusted data from {source} is written to the log by {sink}; line br
 [[rules]]
 id = "ward:typescript/log-forging"
 language = "TYPESCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
@@ -244,7 +244,7 @@ message = "untrusted data from {source} is written to the log by {sink}; line br
 [[rules]]
 id = "ward:javascript/header-injection"
 language = "JAVASCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
@@ -259,7 +259,7 @@ message = "untrusted data from {source} is written into a response header by {si
 [[rules]]
 id = "ward:typescript/header-injection"
 language = "TYPESCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
@@ -274,7 +274,7 @@ message = "untrusted data from {source} is written into a response header by {si
 [[rules]]
 id = "ward:javascript/regex-injection"
 language = "JAVASCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
@@ -289,7 +289,7 @@ message = "untrusted data from {source} becomes a regular expression in {sink}; 
 [[rules]]
 id = "ward:typescript/regex-injection"
 language = "TYPESCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]

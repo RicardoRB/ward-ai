@@ -2,6 +2,7 @@ package dev.ward.infrastructure.rule.catalog;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.application.rule.RuleEngine;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.rule.RuleDefinition;
@@ -66,12 +67,13 @@ class GotBenchmarkSmokeTest {
     if (archive != null) {
       assertThat(JulietCorpus.sha256(Path.of(archive))).isEqualTo(ARCHIVE_SHA256);
     }
-    final List<SourceUnit> units =
-        new NodeCorpus(Path.of(System.getProperty("ward.benchmark.got"))).units();
+    final NodeCorpus corpus = new NodeCorpus(Path.of(System.getProperty("ward.benchmark.got")));
+    final List<SourceUnit> units = corpus.units();
+    final List<FrontendSupport> frontends = new RuleFixtureRunner().frontends();
     final List<RuleDefinition> rules = rules();
     final RuleRunResult result =
         new RuleEngine(BundledRuleMatchers.create())
-            .run(units, new RuleFixtureRunner().frontends(), rules);
+            .run(units, frontends, rules, corpus.snapshot(units, frontends));
     assertThat(CorpusLabels.notAnalysed(result)).as("files without analysis").isEmpty();
     final List<Place> found = CorpusLabels.places(result.findings());
     final List<Place> sampled = sampled(rules, found);

@@ -22,6 +22,8 @@ public final class NodeControlFlow implements ControlFlowLowering {
   private static final String RULE_ID = "control-flow";
   private static final String SEMICOLON = ";";
   private static final String MODULE = "<module>";
+  private static final String EXPORT = "exportStatement";
+  private static final String EXPORT_KEYWORD = "'export'";
   private static final String PROGRAM = "program";
   private static final String VARIABLE = "variableDeclaration";
   private static final String ARROW_BODY = "arrowFunctionBody";
@@ -69,11 +71,11 @@ public final class NodeControlFlow implements ControlFlowLowering {
   @Override
   public ControlFlowResult lower(final SourceUnit unit, final SyntaxNode tree) {
     final Collector collector =
-        new Collector(unit, NodeImports.of(tree), NodeFixedTables.of(tree));
+        new Collector(unit, NodeImports.of(tree, unit.path()), NodeFixedTables.of(tree));
     if (PROGRAM.equals(tree.kind()) && hasTopLevelCode(tree)) {
       collector.lowerModule(tree);
     }
-    collector.visit(tree, null);
+    collector.visit(tree, null, false);
     return new ControlFlowResult(collector.graphs, collector.failures);
   }
 
@@ -131,17 +133,19 @@ public final class NodeControlFlow implements ControlFlowLowering {
       this.tables = tables;
     }
 
-    void visit(final SyntaxNode node, final String hint) {
+    void visit(final SyntaxNode node, final String hint, final boolean exported) {
       String childHint = null;
       if (NodeFlowSyntax.isFunction(node)) {
-        lowerFunction(node, hint);
+        lowerFunction(node, hint, exported);
       } else if (VARIABLE.equals(node.kind())) {
         childHint = variableName(node);
       } else if (NAME_CARRIERS.contains(node.kind())) {
         childHint = hint;
       }
+      final boolean inExport =
+          !NodeFlowSyntax.isFunction(node) && (exported || exports(node));
       for (final SyntaxNode child : node.children()) {
-        visit(child, childHint);
+        visit(child, childHint, inExport);
       }
     }
 
@@ -155,8 +159,18 @@ public final class NodeControlFlow implements ControlFlowLowering {
       );
     }
 
-    private void lowerFunction(final SyntaxNode function, final String hint) {
-      final String name = functionName(function, hint);
+    /** An {@code export} keyword before a statement, or an export statement of its own. */
+    private static boolean exports(final SyntaxNode node) {
+      return EXPORT.equals(node.kind())
+          || !node.children().isEmpty() && EXPORT_KEYWORD.equals(node.children().get(0).kind());
+    }
+
+    private void lowerFunction(
+        final SyntaxNode function,
+        final String hint,
+        final boolean exported
+    ) {
+      final String name = owned(functionName(function, hint), exported);
       final SyntaxNode body = NodeFlowSyntax.body(function);
       lower(name, function.span(), () -> lowerBody(name, function, body));
     }
@@ -210,6 +224,16 @@ public final class NodeControlFlow implements ControlFlowLowering {
             )
         );
       }
+    }
+
+    /**
+     * A function that the file exports is {@code module#name}, so that a call through an import of
+     * another file reaches it; any other function is named by its own name.
+     */
+    private String owned(final String name, final boolean exported) {
+      return exported && !name.startsWith("<")
+          ? NodeModuleNames.of(unit.path()) + "#" + name
+          : name;
     }
 
     private static String functionName(final SyntaxNode function, final String hint) {

@@ -2,6 +2,7 @@ package dev.ward.infrastructure.rule.catalog;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.application.rule.RuleEngine;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.rule.RuleDefinition;
@@ -59,12 +60,15 @@ class JuiceShopBenchmarkSmokeTest {
     if (archive != null) {
       assertThat(JulietCorpus.sha256(Path.of(archive))).isEqualTo(ARCHIVE_SHA256);
     }
-    final List<SourceUnit> units =
-        new NodeCorpus(Path.of(System.getProperty("ward.benchmark.juice-shop"))).units();
+    final NodeCorpus corpus = new NodeCorpus(
+        Path.of(System.getProperty("ward.benchmark.juice-shop"))
+    );
+    final List<SourceUnit> units = corpus.units();
+    final List<FrontendSupport> frontends = new RuleFixtureRunner().frontends();
     final List<RuleDefinition> rules = securityRules();
     final RuleRunResult result =
         new RuleEngine(BundledRuleMatchers.create())
-            .run(units, new RuleFixtureRunner().frontends(), rules);
+            .run(units, frontends, rules, corpus.snapshot(units, frontends));
     final Map<Place, String> labels =
         CorpusLabels.read(Path.of("src/test/resources").resolve(LABELS));
     final List<Place> found = CorpusLabels.places(result.findings());

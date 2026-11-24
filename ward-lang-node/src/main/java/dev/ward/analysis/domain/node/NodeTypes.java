@@ -14,9 +14,15 @@ final class NodeTypes {
   private static final String SINGLE = "singleExpression";
   private static final String NEW = "new";
   private static final String TYPE_ANNOTATION = "typeAnnotation";
+  private static final java.util.Set<String> MAPS = java.util.Set.of(
+      "Map",
+      "ReadonlyMap",
+      "WeakMap"
+  );
 
   private final NodeImports imports;
   private final Map<String, String> declared = new HashMap<>();
+  private final java.util.Set<String> parameters = new java.util.HashSet<>();
 
   /**
    * Creates the types of one body.
@@ -34,6 +40,7 @@ final class NodeTypes {
    * @param formal the parameter node
    */
   void declareParameter(final String name, final SyntaxNode formal) {
+    parameters.add(name);
     final SyntaxNode type = NodeFlowSyntax.firstOf(NodeFlowSyntax.parts(formal), TYPE_ANNOTATION);
     if (type != null) {
       declared.put(name, typeText(type));
@@ -72,6 +79,21 @@ final class NodeTypes {
     }
     final String written = declared.getOrDefault(qualifier, qualifier);
     return Optional.ofNullable(imports.typeOf(written)).or(() -> imports.moduleOf(root(written)));
+  }
+
+  /** Whether the root of a written receiver is a parameter, whose content the body cannot know. */
+  boolean isParameter(final String receiver) {
+    return parameters.contains(root(receiver));
+  }
+
+  /** Whether the name is declared in the body as a {@code Map}, so its {@code get} reads a member. */
+  boolean isMap(final String name) {
+    if (parameters.contains(name)) {
+      return false;
+    }
+    final String type = declared.getOrDefault(name, "");
+    final int generics = type.indexOf('<');
+    return MAPS.contains(generics < 0 ? type : type.substring(0, generics));
   }
 
   /** The module of an unqualified callee that an import or {@code require()} binds, if any. */

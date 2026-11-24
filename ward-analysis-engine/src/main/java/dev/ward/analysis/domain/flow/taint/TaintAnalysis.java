@@ -66,11 +66,15 @@ public final class TaintAnalysis {
     final ReachingDefinitions reaching = ReachingDefinitions.of(graph);
     final Map<AccessSite, Taint> origins = TaintOrigins.of(graph, reaching, spec);
     Taint best = null;
+    final SplitReturns.Flow flow = new SplitReturns.Flow(reaching, origins, spec);
     for (final BasicBlock block : graph.blocks()) {
       for (final SyntaxNode node : block.nodes()) {
         final Optional<Taint> taint =
             TaintReturns.value(node)
-                .flatMap(value -> taintOf(block, value, reaching, origins, spec));
+                .flatMap(
+                    value -> taintOf(block, value, reaching, origins, spec)
+                        .or(() -> SplitReturns.taint(graph, block, value, flow))
+                );
         if (taint.isPresent()) {
           best = best == null ? taint.get() : Taint.better(best, taint.get());
           if (best.proven()) {
