@@ -560,10 +560,15 @@ fragment Sign
 
 Multiline_string_literal
     : '"""' .*? '"""'
+    | '#"""' .*? '"""#'
+    | '##"""' .*? '"""##'
     ;
 
+// a raw string ends at the first quote followed by its hashes, so it may hold quotes and brackets
 Static_string_literal
     : '"' Quoted_text? '"'
+    | '#"' ~[\n\r]*? '"#'
+    | '##"' ~[\n\r]*? '"##'
     ;
 
 fragment Quoted_text
@@ -578,9 +583,7 @@ fragment Quoted_text_item
 fragment Escaped_character
     : '\\' [0\\tnr"']
     | '\\x' Hexadecimal_digit Hexadecimal_digit
-    | '\\u' '{' Hexadecimal_digit Hexadecimal_digit Hexadecimal_digit Hexadecimal_digit '}'
-    | '\\u' '{' Hexadecimal_digit Hexadecimal_digit Hexadecimal_digit Hexadecimal_digit Hexadecimal_digit Hexadecimal_digit Hexadecimal_digit
-        Hexadecimal_digit '}'
+    | '\\u' '{' Hexadecimal_digit+ '}'
     ;
 
 Interpolated_string_literal

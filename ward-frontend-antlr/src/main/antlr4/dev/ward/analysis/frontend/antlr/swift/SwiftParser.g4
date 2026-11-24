@@ -570,9 +570,10 @@ initializer
 // GRAMMAR OF A VARIABLE DECLARATION
 
 variable_declaration
-    : variable_declaration_head variable_name type_annotation code_block
-    | variable_declaration_head variable_name type_annotation getter_setter_block
+// the accessor blocks come before the code block: `{ get { 1 } set { } }` also reads as two statements
+    : variable_declaration_head variable_name type_annotation getter_setter_block
     | variable_declaration_head variable_name type_annotation getter_setter_keyword_block
+    | variable_declaration_head variable_name type_annotation code_block
     | variable_declaration_head variable_name type_annotation initializer? willSet_didSet_block
     | variable_declaration_head variable_name type_annotation type_annotation initializer? willSet_didSet_block
     | variable_declaration_head pattern_initializer_list
@@ -789,7 +790,7 @@ struct_body
     ;
 
 struct_member
-    : declaration
+    : declaration ';'?
     | compiler_control_statement
     ;
 
@@ -819,7 +820,7 @@ class_body
     ;
 
 class_member
-    : declaration
+    : declaration ';'?
     | compiler_control_statement
     ;
 
@@ -917,16 +918,16 @@ extension_body
     ;
 
 extension_member
-    : declaration
+    : declaration ';'?
     | compiler_control_statement
     ;
 
 // GRAMMAR OF A SUBSCRIPT DECLARATION
 
 subscript_declaration
-    : subscript_head subscript_result generic_where_clause? code_block
-    | subscript_head subscript_result generic_where_clause? getter_setter_block
+    : subscript_head subscript_result generic_where_clause? getter_setter_block
     | subscript_head subscript_result generic_where_clause? getter_setter_keyword_block
+    | subscript_head subscript_result generic_where_clause? code_block
     ;
 
 subscript_head
@@ -1272,6 +1273,7 @@ type_casting_operator
 
 primary_expression
     : declaration_identifier generic_argument_clause?
+    | 'Any'
     | literal_expression
     | self_expression
     | superclass_expression
@@ -1500,6 +1502,7 @@ postfix_expression
     | dynamic_type_expression                    # dynamic_type
     | postfix_expression {SwiftLookahead.isOnSameLine(_input)}? '[' expression_list ']' # subscript_expression
     | postfix_expression {SwiftPatternLookahead.isLabeledSubscript(_input)}? '[' function_call_argument_list ']' # labeled_subscript_expression
+    | postfix_expression {SwiftLookahead.isOnSameLine(_input)}? '[' operator_ ']' # operator_subscript_expression
     // ! is a postfix operator already
     // | postfix_expression '!'                                            # forced_value_expression
     // ? is a postfix operator already
@@ -1576,6 +1579,7 @@ postfix_expression__next
     | dynamic_type_expression                    # dynamic_type_next
     | postfix_expression__next {SwiftLookahead.isOnSameLine(_input)}? '[' expression_list ']' # subscript_expression_next
     | postfix_expression__next {SwiftPatternLookahead.isLabeledSubscript(_input)}? '[' function_call_argument_list ']' # labeled_subscript_expression_next
+    | postfix_expression__next {SwiftLookahead.isOnSameLine(_input)}? '[' operator_ ']' # operator_subscript_expression_next
     // ! is a postfix operator already
     // | postfix_expression__next '!'                                            # forced_value_expression_next
     // ? is a postfix operator already
@@ -1584,6 +1588,7 @@ postfix_expression__next
 
 primary_expression__next
     : declaration_identifier generic_argument_clause?
+    | 'Any'
     | literal_expression
     | self_expression
     | superclass_expression
@@ -1775,7 +1780,8 @@ tuple_type_element_list
     ;
 
 tuple_type_element
-    : element_name type_annotation default_argument_clause?
+    : element_name element_name type_annotation default_argument_clause?
+    | element_name type_annotation default_argument_clause?
     | type_
     ;
 
@@ -1902,6 +1908,7 @@ label_identifier
 
 keyword_as_identifier_in_declarations
     : 'Protocol'
+    | 'async'
     | 'Type'
     | 'alpha'
     | 'arch'
