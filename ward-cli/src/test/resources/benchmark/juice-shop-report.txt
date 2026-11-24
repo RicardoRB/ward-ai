@@ -77,7 +77,7 @@ ward:typescript/static-iv | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/template-injection | findings 1 | tp 1 | fp 0 | un 0
 ward:typescript/tls-verification-disabled | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/unfinished-aead | findings 0 | tp 0 | fp 0 | un 0
-ward:typescript/unsafe-framework-trust | findings 13 | tp 11 | fp 2 | un 0
+ward:typescript/unsafe-framework-trust | findings 13 | tp 11 | fp 0 | un 2
 ward:typescript/untrusted-deserialization | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/untrusted-redirect | findings 1 | tp 1 | fp 0 | un 0
 ward:typescript/weak-argon2-parameters | findings 0 | tp 0 | fp 0 | un 0
