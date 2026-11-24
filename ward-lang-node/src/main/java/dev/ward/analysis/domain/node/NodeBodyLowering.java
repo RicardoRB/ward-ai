@@ -55,13 +55,15 @@ final class NodeBodyLowering implements NodeStatements {
   private final NodeSwitches switches;
   private final NodeTries tries;
   private final NodeJumps jumps;
+  private final NodeGuards guards;
 
   /**
    * Starts the lowering of one body.
    *
    * @param imports the named imports of the file the body is in
+   * @param tables the names of the constant tables of the file
    */
-  NodeBodyLowering(final NodeImports imports) {
+  NodeBodyLowering(final NodeImports imports, final Set<String> tables) {
     final NodeTypes types = new NodeTypes(imports);
     this.sites = new NodeFlowSites(types, accesses::isSkipped);
     this.parameterSites = new NodeParameterSites(types);
@@ -71,6 +73,7 @@ final class NodeBodyLowering implements NodeStatements {
     this.switches = new NodeSwitches(flow, this);
     this.tries = new NodeTries(flow, this, accesses);
     this.jumps = new NodeJumps(flow, branches);
+    this.guards = new NodeGuards(flow, accesses, tables);
   }
 
   /**
@@ -150,7 +153,7 @@ final class NodeBodyLowering implements NodeStatements {
       case "switchStatement" -> switches.switchOn(NodeFlowSyntax.parts(part));
       case LABELLED -> labelled(part);
       case EXPRESSION_STATEMENT -> expressionStatement(part);
-      case VARIABLE -> branches.variableStatement(part);
+      case VARIABLE -> branches.variableStatement(part) && guards.declared(part);
       default -> false;
     };
   }
@@ -186,6 +189,7 @@ final class NodeBodyLowering implements NodeStatements {
     final int elseBlock = hasElse ? flow.newBlock() : after;
     branches.condition(parts.get(CONDITION_INDEX), thenBlock, elseBlock);
     flow.moveTo(thenBlock);
+    guards.inside(parts.get(CONDITION_INDEX));
     statement(parts.get(BODY_INDEX), null);
     flow.edge(flow.current(), after, FlowEdgeKind.NORMAL);
     if (hasElse) {
@@ -194,6 +198,9 @@ final class NodeBodyLowering implements NodeStatements {
       flow.edge(flow.current(), after, FlowEdgeKind.NORMAL);
     }
     flow.moveTo(after);
+    if (!hasElse) {
+      guards.past(parts.get(CONDITION_INDEX), parts.get(BODY_INDEX));
+    }
     return true;
   }
 

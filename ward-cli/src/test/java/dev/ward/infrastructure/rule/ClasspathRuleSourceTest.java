@@ -189,7 +189,7 @@ class ClasspathRuleSourceTest {
   private static boolean readsDataFlow(final RuleDefinition rule) {
     return rule.id().endsWith("/unused-assignment")
         || isJavaInjection(rule.id())
-        || Stream.of("unused-assignment", "dead-store", "taint")
+        || Stream.of("unused-assignment", "dead-store", "taint", "node-unsafe-value")
             .anyMatch(check -> rule.body().contains("check = \"" + check + "\""));
   }
 }

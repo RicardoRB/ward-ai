@@ -21,6 +21,7 @@ public final class NodeCheckProvider implements CheckProvider {
             EslintChecks.checks(),
             EslintScopeChecks.checks(),
             EslintSyntaxChecks.checks(),
+            SecurityChecks.checks(),
             StyleChecks.checks(),
             TypeScriptEslintChecks.checks()
         )

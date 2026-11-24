@@ -2,7 +2,6 @@
 # Format: rule | file:line | tp, fp or un | reason.
 # tp: the line is a real instance of the weakness the rule names. fp: it is not. un: it cannot be
 # decided from the code, or the code is not Juice Shop's own (vendored libraries).
-ward:javascript/dom-xss | frontend/src/assets/private/three.js:11375 | fp | innerHTML is set to a message built from numeric progress values and constants; vendored three.js
 ward:javascript/insecure-random | frontend/src/assets/private/three.js:6337 | un | vendored three.js generateUUID built from Math.random; third-party code, not Juice Shop code
 ward:javascript/weak-hash | scripts/package.mjs:122 | un | MD5 as a checksum of build artifacts; weak against deliberate collisions, no documented challenge
 ward:typescript/cookie-missing-http-only | lib/insecurity.ts:192 | tp | the session token cookie is set with no options
@@ -26,7 +25,6 @@ ward:typescript/path-traversal | routes/quarantineServer.ts:14 | tp | params.fil
 ward:typescript/path-traversal | routes/vulnCodeFixes.ts:83 | fp | readFixes(key) answers 404 unless a fix file starts with the key, so a traversal key never reaches this read
 ward:typescript/path-traversal | routes/vulnCodeSnippet.ts:89 | fp | the key was looked up among the known challenge keys, and the handler returned a 404 before this line otherwise
 ward:typescript/path-traversal | routes/vulnCodeSnippet.ts:90 | fp | the key was looked up among the known challenge keys, and the handler returned a 404 before this line otherwise
-ward:typescript/path-traversal | server.ts:281 | fp | the resolved path is checked with startsWith against the infrastructure folder before the read
 ward:typescript/permissive-cors | server.ts:184 | tp | cors() with defaults allows every origin
 ward:typescript/permissive-cors | server.ts:185 | tp | cors() with defaults allows every origin
 ward:typescript/script-injection | routes/userProfile.ts:65 | tp | eval of a substring of the user name

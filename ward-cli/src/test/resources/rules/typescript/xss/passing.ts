@@ -7,12 +7,28 @@ export function pick(request, response) {
   response.end(request.url === '/items?page=2' ? '[2]' : '[1]');
 }
 
-// The body of a raw response write that is one JSON document is data, not markup.
-export function jsonBody(request, response) {
+// A JSON document written after the same response was given a JSON content type is data.
+export function typedHeader(request, response) {
+  response.setHeader('Content-Type', 'application/json');
   response.end(JSON.stringify({headers: request.headers}));
 }
 
-export function jsonList(req, res) {
+export function typedHead(req, res) {
+  res.writeHead(200, {'Content-Type': 'application/json; charset=utf-8'});
   res.write(JSON.stringify([req.url]));
   res.end(JSON.stringify(req.query.page));
+}
+
+export function typedType(req, res) {
+  res.type('json');
+  res.end(JSON.stringify(req.query.x));
+}
+
+export function typedBeforeBranch(req, res) {
+  res.header('content-type', 'application/vnd.api+json');
+  if (req.query.flag) {
+    res.end(JSON.stringify(req.query.x));
+  } else {
+    res.write(JSON.stringify(req.query.y));
+  }
 }

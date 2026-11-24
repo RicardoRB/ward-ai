@@ -181,6 +181,7 @@ final class NodeFlowSites implements FlowSites {
     values.forEach(value -> walk(value, found));
     if (isMember(calleeParts)) {
       found.add(siteOf(FlowSiteKind.CALL, callee, calleeParts, values));
+      NodeContentTypes.of(callee, calleeParts, values).ifPresent(found::add);
     } else {
       final String written = NodeFlowSyntax.text(callee);
       found.add(

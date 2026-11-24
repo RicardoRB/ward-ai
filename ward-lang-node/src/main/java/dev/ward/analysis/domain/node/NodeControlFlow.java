@@ -68,7 +68,8 @@ public final class NodeControlFlow implements ControlFlowLowering {
    */
   @Override
   public ControlFlowResult lower(final SourceUnit unit, final SyntaxNode tree) {
-    final Collector collector = new Collector(unit, NodeImports.of(tree));
+    final Collector collector =
+        new Collector(unit, NodeImports.of(tree), NodeFixedTables.of(tree));
     if (PROGRAM.equals(tree.kind()) && hasTopLevelCode(tree)) {
       collector.lowerModule(tree);
     }
@@ -120,12 +121,14 @@ public final class NodeControlFlow implements ControlFlowLowering {
   private static final class Collector {
     private final SourceUnit unit;
     private final NodeImports imports;
+    private final Set<String> tables;
     private final List<ControlFlowGraph> graphs = new ArrayList<>();
     private final List<AnalysisFinding> failures = new ArrayList<>();
 
-    Collector(final SourceUnit unit, final NodeImports imports) {
+    Collector(final SourceUnit unit, final NodeImports imports, final Set<String> tables) {
       this.unit = unit;
       this.imports = imports;
+      this.tables = tables;
     }
 
     void visit(final SyntaxNode node, final String hint) {
@@ -147,7 +150,7 @@ public final class NodeControlFlow implements ControlFlowLowering {
           MODULE,
           program.span(),
           () ->
-              new NodeBodyLowering(imports)
+              new NodeBodyLowering(imports, tables)
                   .lowerStatements(MODULE, null, NodeFlowSyntax.statements(program), program.span())
       );
     }
@@ -167,7 +170,7 @@ public final class NodeControlFlow implements ControlFlowLowering {
         final SyntaxNode expression =
             NodeFlowSyntax.firstOf(NodeFlowSyntax.parts(body), SINGLE_EXPRESSION);
         if (expression != null) {
-          return new NodeBodyLowering(imports)
+          return new NodeBodyLowering(imports, tables)
               .lowerExpression(name, function, expression, function.span());
         }
         return lowerStatements(
@@ -184,7 +187,7 @@ public final class NodeControlFlow implements ControlFlowLowering {
         final SyntaxNode function,
         final SyntaxNode body
     ) {
-      return new NodeBodyLowering(imports)
+      return new NodeBodyLowering(imports, tables)
           .lowerStatements(name, function, NodeFlowSyntax.statements(body), function.span());
     }
 

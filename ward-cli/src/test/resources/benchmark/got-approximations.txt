@@ -1,2 +1,1 @@
 # rule | file:line | reason | open issue. A finding labelled fp fails the corpus test unless it is listed here.
-ward:typescript/cleartext-transport | test/timings.ts:158 | plain HTTP to a test server on the loopback interface | #758

@@ -3,7 +3,7 @@
 # Every ward:typescript/* and ward:javascript/* rule ran with its default options, whatever its preset, over every .ts, .js and .mjs file outside node_modules.
 # A labelled finding is true (tp), false (fp) or undetermined (un), as read from the code at its line; the labels are in got-labels.txt. Every finding of a security rule is labelled; of another rule, the first 3 in path order. Rules without a finding are not listed. The cost of the run is in got-cost.txt.
 # Regenerate: ./mvnw -pl ward-cli -am -Dtest=GotBenchmarkSmokeTest -Dward.benchmark.got=<dir> -Dward.benchmark.write=true -Djacoco.skip=true -Dsurefire.failIfNoSpecifiedTests=false test
-files 96 | not analysed 0 | rules 686 | rules with findings 57 | findings 5503
+files 96 | not analysed 0 | rules 686 | rules with findings 57 | findings 5591
 ward:javascript/hard-coded-secret | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:javascript/line-length | findings 3 | labelled 3 | tp 3 | fp 0 | un 0
 ward:javascript/magic-number | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
@@ -15,7 +15,7 @@ ward:javascript/no-process-env | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
 ward:javascript/no-unused-function-parameters | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:javascript/no-use-before-define | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
 ward:typescript/array-callback-return | findings 1 | labelled 1 | tp 0 | fp 0 | un 1
-ward:typescript/cleartext-transport | findings 10 | labelled 10 | tp 0 | fp 1 | un 9
+ward:typescript/cleartext-transport | findings 9 | labelled 9 | tp 0 | fp 0 | un 9
 ward:typescript/complexity | findings 5 | labelled 3 | tp 3 | fp 0 | un 0
 ward:typescript/empty-catch-block | findings 14 | labelled 3 | tp 3 | fp 0 | un 0
 ward:typescript/file-length | findings 41 | labelled 3 | tp 3 | fp 0 | un 0
@@ -60,4 +60,4 @@ ward:typescript/tls-verification-disabled | findings 161 | labelled 161 | tp 161
 ward:typescript/todo-comment | findings 4 | labelled 3 | tp 3 | fp 0 | un 0
 ward:typescript/variable-declaration-usage-distance | findings 14 | labelled 3 | tp 3 | fp 0 | un 0
 ward:typescript/weak-key-size | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
-ward:typescript/xss | findings 55 | labelled 55 | tp 0 | fp 0 | un 55
+ward:typescript/xss | findings 144 | labelled 144 | tp 0 | fp 0 | un 144

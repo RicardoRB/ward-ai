@@ -2,7 +2,6 @@ package dev.ward.analysis.domain.flow.taint;
 
 import dev.ward.analysis.domain.flow.AccessSite;
 import dev.ward.analysis.domain.flow.ReachingDefinitions;
-import dev.ward.analysis.domain.ir.AccessKind;
 import dev.ward.analysis.domain.ir.BasicBlock;
 import dev.ward.analysis.domain.ir.ControlFlowGraph;
 import dev.ward.analysis.domain.ir.FlowSite;
@@ -10,7 +9,6 @@ import dev.ward.analysis.domain.ir.FlowSiteKind;
 import dev.ward.analysis.domain.ir.FlowStep;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
-import dev.ward.analysis.domain.ir.VariableAccess;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -43,10 +41,11 @@ public final class TaintAnalysis {
     }
     final ReachingDefinitions reaching = ReachingDefinitions.of(graph);
     final Map<AccessSite, Taint> origins = TaintOrigins.of(graph, reaching, spec);
+    final TaintState state = new TaintState(graph, reaching, origins);
     final List<TaintFinding> found = new ArrayList<>();
     for (final BasicBlock block : graph.blocks()) {
       for (final FlowSite site : block.sites()) {
-        found.addAll(sinkFindings(block, site, spec, reaching, origins));
+        found.addAll(sinkFindings(block, site, spec, state));
       }
     }
     return found;
@@ -82,9 +81,7 @@ public final class TaintAnalysis {
       final BasicBlock block,
       final FlowSite site,
       final TaintSpec spec,
-      final ReachingDefinitions reaching,
-      final Map<AccessSite,
-      Taint> origins
+      final TaintState state
   ) {
     final List<TaintFinding> found = new ArrayList<>();
     final Optional<TaintEntry> sink =
@@ -95,9 +92,14 @@ public final class TaintAnalysis {
     for (final int index : guardedArguments(site, sink.get())) {
       if (index < site.arguments().size()) {
         final Span argument = site.arguments().get(index);
-        final GuardedArgument guarded = GuardedArgument.of(block, argument, sink.get());
-        directSource(guarded, spec)
-            .or(() -> fromReads(guarded, reaching, origins, spec))
+        final GuardedArgument guarded = GuardedArgument.of(
+            state,
+            block,
+            site,
+            argument,
+            sink.get()
+        );
+        guarded.taint(state.reaching(), state.origins(), spec)
             .map(taint -> finding(site, index, taint))
             .ifPresent(found::add);
       }
@@ -114,8 +116,8 @@ public final class TaintAnalysis {
       Taint> origins,
       final TaintSpec spec
   ) {
-    final GuardedArgument guarded = GuardedArgument.plain(block, argument);
-    return directSource(guarded, spec).or(() -> fromReads(guarded, reaching, origins, spec));
+    return GuardedArgument.plain(block, argument)
+        .taint(reaching, origins, spec);
   }
 
   /**
@@ -140,57 +142,6 @@ public final class TaintAnalysis {
 
   private static TaintFinding finding(final FlowSite site, final int index, final Taint taint) {
     return new TaintFinding(site, taint.source(), withSink(taint, site, index));
-  }
-
-  /** A source call written directly in the guarded argument, such as {@code sink(source())}. */
-  private static Optional<Taint> directSource(final GuardedArgument guarded, final TaintSpec spec) {
-    final BasicBlock block = guarded.block();
-    final Span argument = guarded.span();
-    return block.sites().stream()
-        .filter(site -> TaintSpans.contains(argument, site.span()))
-        .filter(site -> !guarded.isClean(site.span()))
-        .filter(site -> site.kind() != FlowSiteKind.PARAMETER)
-        .filter(site -> site.kind() != FlowSiteKind.LITERAL || site.span().equals(argument))
-        .filter(site -> TaintSpans.sourceOf(site, spec).isPresent())
-        .filter(site -> !TaintSpans.sanitized(block, site.span(), spec))
-        .findFirst()
-        .map(
-            site ->
-                new Taint(site.name(), List.of(new FlowStep(site.span(), SOURCE + site.name())))
-        );
-  }
-
-  /**
-   * A read in the guarded argument that sees a tainted write. A read inside a sanitizer's argument
-   * is clean, as it is for a write.
-   */
-  private static Optional<Taint> fromReads(
-      final GuardedArgument guarded,
-      final ReachingDefinitions reaching,
-      final Map<AccessSite,
-      Taint> origins,
-      final TaintSpec spec
-  ) {
-    final BasicBlock block = guarded.block();
-    final Span argument = guarded.span();
-    for (final AccessSite use : reaching.uses()) {
-      if (use.block() == block.id()
-          && !guarded.isClean(use.access().span())
-          && isRead(use.access())
-          && TaintSpans.contains(argument, use.access().span())
-          && !TaintSpans.sanitized(block, use.access().span(), spec)) {
-        final Optional<Taint> taint =
-            reaching.reaching(use).stream().map(origins::get).filter(t -> t != null).findFirst();
-        if (taint.isPresent()) {
-          return taint;
-        }
-      }
-    }
-    return Optional.empty();
-  }
-
-  private static boolean isRead(final VariableAccess access) {
-    return access.kind() == AccessKind.READ;
   }
 
   private static String sinkStep(final FlowSite site, final int index) {
