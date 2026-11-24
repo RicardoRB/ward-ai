@@ -4,7 +4,7 @@
 # A labelled finding is true (tp), false (fp) or undetermined (un), as read from the code at its line; the labels are in flask-corpus-labels.txt. Every finding of a security rule is labelled; of another rule, its first 5 findings in path order.
 # The measured cost of the run is in flask-corpus-cost.txt.
 # Regenerate: ./mvnw -pl ward-cli -am -Djacoco.skip=true -Dtest=FlaskCorpusSmokeTest -Dward.benchmark.flask-corpus=<dir> -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
-files 333 | findings 6491
+files 333 | findings 6487
 ward:python/abbreviation-as-word-in-name | findings 21 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/abstract-base-class-without-abstract-method | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/abstract-class-instantiated | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -281,7 +281,7 @@ ward:python/overload-methods-declaration-order | findings 0 | labelled 0 | tp 0 
 ward:python/overridden-final-method | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/parameter-count | findings 14 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/parameter-name | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
-ward:python/path-injection | findings 2 | labelled 2 | tp 0 | fp 2 | un 0
+ward:python/path-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/path-traversal | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/percent-format-expected-mapping | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/percent-format-expected-sequence | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -459,7 +459,7 @@ ward:python/unsupported-assignment-operation | findings 0 | labelled 0 | tp 0 | 
 ward:python/unsupported-delete-operation | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/unsupported-membership-test | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/untrusted-deserialization | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:python/untrusted-redirect | findings 2 | labelled 2 | tp 1 | fp 1 | un 0
+ward:python/untrusted-redirect | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/untrusted-request-url | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/unused-annotation | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/unused-argument | findings 5 | labelled 5 | tp 5 | fp 0 | un 0

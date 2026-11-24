@@ -33,6 +33,7 @@ final class PythonFlowSites implements FlowSites {
       Set.of("funcdef", "classdef", "decorated", "async_funcdef", "lambdef", "lambdef_nocond");
 
   private final Map<String, String> imports;
+  private final PythonValidatedSites validated;
   /** Names of this body assigned from a call to {@code cursor} or {@code connect}, so far. */
   private final Set<String> handles = new HashSet<>();
 
@@ -42,13 +43,25 @@ final class PythonFlowSites implements FlowSites {
    * @param imports what the names bound by the imports of the file stand for
    */
   PythonFlowSites(final Map<String, String> imports) {
+    this(imports, new PythonValidatedSites(imports, "", Set.of()));
+  }
+
+  /**
+   * Creates the finder of one body of a module.
+   *
+   * @param imports what the names bound by the imports of the file stand for
+   * @param validated the sites of the checked values of the body
+   */
+  PythonFlowSites(final Map<String, String> imports, final PythonValidatedSites validated) {
     this.imports = imports;
+    this.validated = validated;
   }
 
   @Override
   public List<FlowSite> of(final SyntaxNode node) {
     final List<FlowSite> found = new ArrayList<>();
     walk(node, found);
+    validated.add(node, found);
     learn(node);
     return found;
   }
@@ -79,6 +92,7 @@ final class PythonFlowSites implements FlowSites {
       return;
     }
     PythonQuerySites.of(node).ifPresent(found::add);
+    PythonValidatedSites.comparison(node).ifPresent(found::add);
     final List<SyntaxNode> sum = PythonQuerySites.operandsOf(node);
     if (!sum.isEmpty()) {
       sum.forEach(operand -> walk(operand, found));
@@ -167,9 +181,9 @@ final class PythonFlowSites implements FlowSites {
       );
     }
     final Optional<String> receiver =
-        receiverOf(qualifier).or(
-            () -> Optional.of(HANDLE).filter(h -> handles.contains(qualifier))
-        );
+        receiverOf(qualifier)
+            .or(() -> Optional.of(HANDLE).filter(h -> handles.contains(qualifier)))
+            .or(() -> validated.own(qualifier, chain.name()));
     return withVector(
         site(
             chain.name(),
@@ -225,16 +239,7 @@ final class PythonFlowSites implements FlowSites {
 
   /** The module of a dotted qualifier whose first name an import binds. */
   private Optional<String> receiverOf(final String qualifier) {
-    if (!qualifier.matches("[A-Za-z_][\\w.]*")) {
-      return Optional.empty();
-    }
-    final int dot = qualifier.indexOf(DOT);
-    final String root = dot < 0 ? qualifier : qualifier.substring(0, dot);
-    final String module = imports.get(root);
-    if (module == null) {
-      return Optional.empty();
-    }
-    return Optional.of(dot < 0 ? module : module + qualifier.substring(dot));
+    return validated.receiverOf(qualifier);
   }
 
   /** The running state of one atom and its trailers. */

@@ -43,3 +43,8 @@ def manager(User):
 def renamed():
     handle = sqlite3.connect("app.db").cursor()
     handle.execute("SELECT * FROM t WHERE id = " + request.args["id"])
+
+
+def compared_and_concatenated(session):
+    state = request.args["state"]
+    session.execute("SELECT * FROM t WHERE open = " + state + " AND done = " + str(state == "x"))

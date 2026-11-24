@@ -3,7 +3,6 @@ package dev.ward.analysis.domain.python;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
-import dev.ward.analysis.domain.ir.ControlFlowGraph;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.ControlFlowResult;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
@@ -46,6 +45,6 @@ final class PythonJumpOutsideLoopTest {
   }
 
   private static List<String> bodies(final ControlFlowResult result) {
-    return result.graphs().stream().map(ControlFlowGraph::body).toList();
+    return result.graphs().stream().map(graph -> graph.body().replace("m#", "")).toList();
   }
 }

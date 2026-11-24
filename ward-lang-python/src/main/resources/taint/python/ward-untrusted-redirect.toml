@@ -64,3 +64,9 @@ name = "url_for"
 [[sanitizers]]
 kind = "query-part"
 name = "?"
+
+# A value that a function of the program checked in a condition, when the body of that function
+# proves that the host of the value is the host of the application or that the value has no host.
+[[sanitizers]]
+kind = "validated"
+name = "host"

@@ -42,3 +42,17 @@ class Job:
 def not_a_handle(Runner):
     handle = Runner()
     handle.execute(request.args["id"])
+
+
+def page_by_route(route):
+    return db.session.execute(PAGES.select().where(PAGES.c.route == route)).fetchone()
+
+
+@app.route("/page/<route>")
+def page(route):
+    return page_by_route(route)
+
+
+def known_state():
+    state = request.args.get("state")
+    return db.session.execute(PAGES.select().where(state in ("open", "closed"))).all()

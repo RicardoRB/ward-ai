@@ -1,5 +1,6 @@
 package dev.ward.analysis.domain.python;
 
+import dev.ward.analysis.domain.ir.AccessKind;
 import dev.ward.analysis.domain.ir.ControlFlowBuilder;
 import dev.ward.analysis.domain.ir.ControlFlowGraph;
 import dev.ward.analysis.domain.ir.FlowEdgeKind;
@@ -26,26 +27,27 @@ final class PythonBodyLowering {
   private final PythonHandlerLowering handlers;
   private final Map<String, String> imports;
   private final Set<String> collections;
+  private final PythonGuardRegions regions;
 
   /**
    * Starts the lowering of one body.
    *
    * @param excluded the names the body declares {@code global} or {@code nonlocal}
    * @param tracked false when a star import makes every name of the body possibly bound elsewhere
-   * @param imports what the names bound by the imports of the file stand for
-   * @param collections the names that the file binds once, to a collection the program fixes
+   * @param facts what the whole file says that the body needs
    */
   PythonBodyLowering(
       final Set<String> excluded,
       final boolean tracked,
-      final Map<String,
-      String> imports,
-      final Set<String> collections
+      final PythonFileFacts facts
   ) {
-    this.imports = imports;
-    this.collections = collections;
+    this.imports = facts.imports();
+    this.collections = facts.collections();
     this.accesses = new PythonAccesses(excluded, tracked);
-    this.flow = new ControlFlowBuilder(accesses, new PythonFlowSites(imports));
+    final PythonValidatedSites validated =
+        new PythonValidatedSites(imports, facts.module(), facts.functions());
+    this.regions = new PythonGuardRegions(validated);
+    this.flow = new ControlFlowBuilder(accesses, new PythonFlowSites(imports, validated));
     this.loops = new PythonLoopLowering(flow, accesses, this::statements);
     this.handlers = new PythonHandlerLowering(flow, this::statements);
   }
@@ -67,14 +69,32 @@ final class PythonBodyLowering {
   ) {
     accesses.declare(parameters.accesses());
     flow.record(parameters.accesses(), parameters.sites());
+    flow.record(
+        List.of(),
+        PythonHostValidators.marks(
+            block,
+            parameters.accesses().stream()
+                .filter(access -> access.kind() == AccessKind.PARAMETER)
+                .map(VariableAccess::name)
+                .toList()
+        )
+    );
     statements(block);
     return flow.build(name, span);
   }
 
   /** Lowers every statement under a block or a file, in source order. */
   private void statements(final SyntaxNode block) {
-    for (final SyntaxNode leaf : PythonStatementLeaves.leaves(block)) {
-      statement(leaf);
+    int entered = 0;
+    final List<SyntaxNode> leaves = PythonStatementLeaves.leaves(block);
+    for (int index = 0; index < leaves.size(); index++) {
+      statement(leaves.get(index));
+      if (regions.enterCarried(leaves.subList(index + 1, leaves.size()))) {
+        entered++;
+      }
+    }
+    for (int leave = 0; leave < entered; leave++) {
+      regions.leave();
     }
   }
 
@@ -149,18 +169,29 @@ final class PythonBodyLowering {
       PythonMembershipGuards.inside(condition, collections).ifPresent(
           name -> clean(name, condition)
       );
+      regions.enterInside(condition, blocks.get(index));
       statements(blocks.get(index));
+      regions.leave();
       flow.edge(flow.current(), after, FlowEdgeKind.NORMAL);
       flow.moveTo(next);
     }
     if (blocks.size() > conditions.size()) {
+      regions.enterElse(
+          conditions.get(conditions.size() - 1),
+          blocks.get(conditions.size()),
+          conditions.size() == 1
+      );
       statements(blocks.get(conditions.size()));
+      regions.leave();
     }
     flow.edge(flow.current(), after, FlowEdgeKind.NORMAL);
     flow.moveTo(after);
     if (conditions.size() == 1 && blocks.size() == 1) {
       PythonMembershipGuards.past(conditions.get(0), blocks.get(0), imports, collections)
           .ifPresent(name -> clean(name, node));
+      if (PythonMembershipGuards.exits(blocks.get(0), imports)) {
+        regions.carry(conditions.get(0));
+      }
     }
   }
 

@@ -19,7 +19,9 @@ class PythonFlowSitesTest {
     final ControlFlowGraph graph =
         new PythonControlFlow()
             .lower(unit, new AntlrLanguageFrontend().parse(unit).tree()).graphs().stream()
-            .filter(candidate -> candidate.body().equals(body))
+            .filter(
+                candidate -> candidate.body().equals(body) || candidate.body().equals("m#" + body)
+            )
             .findFirst()
             .orElseThrow();
     return graph.blocks().stream().map(BasicBlock::sites).flatMap(List::stream).toList();

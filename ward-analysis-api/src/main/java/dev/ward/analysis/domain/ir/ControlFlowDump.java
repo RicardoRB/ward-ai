@@ -42,7 +42,9 @@ public final class ControlFlowDump {
           FlowSiteKind.QUERY_PART,
           "query",
           FlowSiteKind.CONTENT_TYPE,
-          "content-type"
+          "content-type",
+          FlowSiteKind.VALIDATED,
+          "validated"
       );
 
   private ControlFlowDump() {}

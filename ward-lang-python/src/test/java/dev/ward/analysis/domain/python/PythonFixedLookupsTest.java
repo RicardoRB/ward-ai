@@ -22,7 +22,7 @@ class PythonFixedLookupsTest {
     final ControlFlowGraph graph =
         new PythonControlFlow()
             .lower(unit, new AntlrLanguageFrontend().parse(unit).tree()).graphs().stream()
-            .filter(candidate -> "f".equals(candidate.body()))
+            .filter(candidate -> "m#f".equals(candidate.body()))
             .findFirst()
             .orElseThrow();
     return graph.blocks().stream()

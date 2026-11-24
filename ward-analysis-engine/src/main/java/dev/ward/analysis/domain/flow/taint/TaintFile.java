@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,9 +32,21 @@ public final class TaintFile {
   private static final int MAX_ROUNDS = 4;
 
   /** What the callers of one method need to know about it. */
-  private record Summary(boolean returnsTaint, Set<Integer> sinkParameters, boolean cleanResult) {
-    static Summary of(final boolean returns, final Set<Integer> sinks, final boolean clean) {
-      return new Summary(returns, sinks, clean);
+  private record Summary(
+      boolean returnsTaint,
+      Set<Integer> sinkParameters,
+      boolean cleanResult,
+      Map<String,
+      Set<Integer>> validated
+  ) {
+    static Summary of(
+        final boolean returns,
+        final Set<Integer> sinks,
+        final boolean clean,
+        final Map<String,
+        Set<Integer>> validated
+    ) {
+      return new Summary(returns, sinks, clean, validated);
     }
   }
 
@@ -132,7 +145,7 @@ public final class TaintFile {
     }
     Map<String, Summary> known = Map.of();
     for (int round = 0; round < MAX_ROUNDS; round++) {
-      final Map<String, Summary> next = summarize(derived(spec, methods, known), methods);
+      final Map<String, Summary> next = summarize(derived(spec, methods, known), methods, known);
       if (next.equals(known)) {
         break;
       }
@@ -147,7 +160,9 @@ public final class TaintFile {
   private static Map<String, Summary> summarize(
       final TaintSpec spec,
       final Map<String,
-      LocalMethod> methods
+      LocalMethod> methods,
+      final Map<String,
+      Summary> previous
   ) {
     final Map<String, Summary> found = new HashMap<>();
     final TaintSpec seeded = withParameterSource(spec);
@@ -155,8 +170,17 @@ public final class TaintFile {
       final boolean returns = TaintAnalysis.returned(method.graph(), spec).isPresent();
       final Set<Integer> sinks = sinkParameters(method, seeded);
       final boolean clean = !returns && sinks.isEmpty() && CleanResults.of(method, seeded);
-      if (returns || clean || !sinks.isEmpty()) {
-        found.put(method.key(), Summary.of(returns, sinks, clean));
+      final Map<String, Set<Integer>> validated =
+          ValidatingMethods.of(
+              method,
+              spec,
+              methods,
+              previous.entrySet().stream().collect(
+                  Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().validated())
+              )
+          );
+      if (returns || clean || !sinks.isEmpty() || !validated.isEmpty()) {
+        found.put(method.key(), Summary.of(returns, sinks, clean, validated));
       }
     }
     return found;
@@ -216,6 +240,11 @@ public final class TaintFile {
             if (!summary.sinkParameters().isEmpty()) {
               sinks.add(entry(method, qualifier, List.copyOf(summary.sinkParameters())));
             }
+            summary.validated().forEach(
+                (what, parameters) -> parameters.forEach(
+                    index -> sanitizers.add(ValidatedUses.use(method, qualifier, what, index))
+                )
+            );
           }
         }
     );

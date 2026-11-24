@@ -80,3 +80,13 @@ def lookup_param(table):
     key = request.args.get("key")
     picked = table[key]
     return send_file(picked)
+
+
+def name_of(table):
+    return table
+
+
+@app.route("/echo")
+def echo():
+    table = request.args.get("table")
+    return send_file(name_of(table))

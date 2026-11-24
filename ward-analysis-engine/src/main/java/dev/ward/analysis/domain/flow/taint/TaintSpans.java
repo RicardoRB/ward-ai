@@ -34,6 +34,7 @@ final class TaintSpans {
                 site.kind() == FlowSiteKind.CALL
                     || site.kind() == FlowSiteKind.MEMBER_READ
                     || site.kind() == FlowSiteKind.QUERY_PART
+                    || site.kind() == FlowSiteKind.VALIDATED
         )
         .filter(site -> spec.sanitizers().stream().anyMatch(entry -> entry.matches(site)))
         .flatMap(site -> site.arguments().stream())

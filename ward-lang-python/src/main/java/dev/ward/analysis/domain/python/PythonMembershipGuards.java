@@ -68,7 +68,7 @@ final class PythonMembershipGuards {
         : Optional.empty();
   }
 
-  private static boolean exits(final SyntaxNode branch, final Map<String, String> imports) {
+  static boolean exits(final SyntaxNode branch, final Map<String, String> imports) {
     final List<SyntaxNode> leaves = PythonStatementLeaves.leaves(branch);
     if (leaves.isEmpty()) {
       return false;

@@ -101,3 +101,15 @@ def export_buffer():
     table = request.args.get("table")
     output = BytesIO(table.encode("utf-8"))
     return send_file(output, as_attachment=True)
+
+
+def build_report(name):
+    output = StringIO()
+    csv.writer(output).writerow([name])
+    return output
+
+
+@app.route("/report")
+def report():
+    table = request.args.get("table")
+    return send_file(build_report(table), as_attachment=True)

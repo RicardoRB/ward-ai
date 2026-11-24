@@ -85,13 +85,16 @@ final class DispatchedCalls {
       final Implementors implementors,
       final TaintSpec spec
   ) {
-    if (site.kind() != FlowSiteKind.CALL || site.qualifier().isEmpty() || TaintSpans.matched(
-        site,
-        spec
-    )) {
+    if (!(site.kind() == FlowSiteKind.CALL || site.kind() == FlowSiteKind.VALIDATED)
+        || site.qualifier().isEmpty() && site.receiverType().isEmpty()
+        || TaintSpans.matched(site, spec)) {
       return site;
     }
-    return ownerOf(site, known, implementors).map(owner -> named(site, owner)).orElse(site);
+    final Optional<String> owner =
+        site.qualifier().isEmpty()
+            ? site.receiverType().filter(type -> known.contains(type + "#" + callKey(site)))
+            : ownerOf(site, known, implementors);
+    return owner.map(found -> named(site, found)).orElse(site);
   }
 
   /**
@@ -137,7 +140,9 @@ final class DispatchedCalls {
   }
 
   private static String callKey(final FlowSite site) {
-    return LocalMethod.key(site.name(), site.arguments().size());
+    return site.kind() == FlowSiteKind.VALIDATED
+        ? LocalMethod.key(ValidatedUses.function(site), ValidatedUses.arity(site))
+        : LocalMethod.key(site.name(), site.arguments().size());
   }
 
   private static FlowSite named(final FlowSite site, final String owner) {

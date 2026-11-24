@@ -100,7 +100,7 @@ final class GuardedCalls {
     return changed;
   }
 
-  private static boolean calls(final LocalMethod method, final FlowSite site) {
+  static boolean calls(final LocalMethod method, final FlowSite site) {
     return method.arity() == site.arguments().size()
         && method.qualifiers().stream()
             .anyMatch(

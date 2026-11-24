@@ -1,5 +1,2 @@
 # False positives of the Flask corpus run that are known and open: rule | file:line | reason | #issue (#724).
 ward:python/hashlib-insecure-hash-function | CTFd/utils/uploads/__init__.py:76 | the digest names an uploaded file, it protects nothing | #732
-ward:python/path-injection | CTFd/admin/__init__.py:176 | send_file receives the result of dump_csv, a buffer built in another module; Ward has no cross-module function summaries for Python, so it cannot see that the argument is not a path | #734
-ward:python/path-injection | CTFd/api/v1/exports.py:32 | send_file receives the result of dump_csv, a buffer built in another module; Ward has no cross-module function summaries for Python, so it cannot see that the argument is not a path | #734
-ward:python/untrusted-redirect | CTFd/auth.py:406 | a validator function of the project (is_safe_url) tests the value in the condition above | #733

@@ -171,7 +171,6 @@ ward:python/ungrouped-imports | hc/integrations/email/transport.py:5 | tp | two 
 ward:python/ungrouped-imports | hc/test.py:17 | un | the import is in a type-checking branch
 ward:python/unspecified-encoding | hc/front/management/commands/pygmentize.py:18 | tp | a text file is opened without an encoding
 ward:python/unspecified-encoding | hc/front/management/commands/pygmentize.py:24 | tp | a text file is opened without an encoding
-ward:python/untrusted-redirect | hc/accounts/views.py:115 | fp | a validator on the same line of control accepts only a relative URL that resolves to a known route
 ward:python/unused-argument | hc/accounts/migrations/0018_auto_20190112_1426.py:11 | un | the signature of the callback is fixed by the migration API of Django
 ward:python/unused-argument | hc/accounts/migrations/0020_auto_20190112_1950.py:11 | un | the signature of the callback is fixed by the migration API of Django
 ward:python/unused-argument | hc/accounts/migrations/0036_fill_profile_reports.py:11 | un | the signature of the callback is fixed by the migration API of Django
