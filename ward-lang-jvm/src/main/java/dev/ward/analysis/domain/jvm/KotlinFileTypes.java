@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * The types that a Kotlin file declares for names its bodies share: its properties, which every
@@ -20,6 +21,9 @@ import java.util.Set;
  * @param constructed the type that each such name was created as, when it is a {@code val} that
  *     holds {@code Type()}
  * @param returns the declared return type of each function name that has one
+ * @param extensions the extension functions, each written {@code name/arity} with the receiver
+ *     counted as a parameter
+ * @param allowLists the {@code val} properties that hold {@code setOf(...)} or {@code listOf(...)}
  */
 record KotlinFileTypes(
     Map<String,
@@ -27,27 +31,35 @@ record KotlinFileTypes(
     Map<String,
     String> constructed,
     Map<String,
-    String> returns
+    String> returns,
+    Set<String> extensions,
+    Set<String> allowLists
 ) {
   private static final String ASSIGN = "=";
   private static final String SIMPLE = "simpleIdentifier";
   private static final String TYPE = "type";
   private static final String VARIABLE = "variableDeclaration";
+  private static final Pattern ALLOW_LIST =
+      Pattern.compile("^(?:setOf|listOf|persistentSetOf|persistentListOf)(?:<[^()]*>)?\\(");
 
   KotlinFileTypes {
     declared = Map.copyOf(declared);
     constructed = Map.copyOf(constructed);
     returns = Map.copyOf(returns);
+    extensions = Set.copyOf(extensions);
+    allowLists = Set.copyOf(allowLists);
   }
 
   /** Reads the declarations of a file. */
-  static KotlinFileTypes of(final SyntaxNode tree) {
-    final Collector collector = new Collector();
+  static KotlinFileTypes of(final SyntaxNode tree, final JavaTypeNames types) {
+    final Collector collector = new Collector(types);
     collector.visit(tree);
     return new KotlinFileTypes(
         collector.declared.resolved(),
         collector.constructed.resolved(),
-        collector.returns.resolved()
+        collector.returns.resolved(),
+        collector.extensions,
+        collector.allowLists
     );
   }
 
@@ -55,9 +67,20 @@ record KotlinFileTypes(
   private static final class NameTypes {
     private final Map<String, String> types = new HashMap<>();
     private final Set<String> lost = new HashSet<>();
+    private final JavaTypeNames names;
+
+    NameTypes(final JavaTypeNames names) {
+      this.names = names;
+    }
+
+    /** Two spellings of one type, {@code Logger} and its qualified name, are one type. */
+    private boolean same(final String first, final String second) {
+      return first.equals(second)
+          || names.resolve(first).equals(names.resolve(second));
+    }
 
     void note(final String name, final String type) {
-      if (type == null || types.containsKey(name) && !types.get(name).equals(type)) {
+      if (type == null || types.containsKey(name) && !same(types.get(name), type)) {
         lost.add(name);
       } else {
         types.put(name, type);
@@ -71,16 +94,44 @@ record KotlinFileTypes(
     }
   }
 
+  private static int parameterCount(final SyntaxNode function) {
+    final SyntaxNode list = KotlinFlowSyntax.child(function, "functionValueParameters");
+    return list == null ? 0 : KotlinFlowSyntax.children(list, "functionValueParameter").size();
+  }
+
+  /** The type after the colon of a function's signature; a receiver type is not a return type. */
+  private static SyntaxNode returnType(final SyntaxNode function) {
+    boolean afterColon = false;
+    for (final SyntaxNode part : KotlinFlowSyntax.parts(function)) {
+      if (part.children().isEmpty() && ":".equals(KotlinFlowSyntax.tokenText(part))) {
+        afterColon = true;
+      } else if (afterColon && TYPE.equals(part.kind())) {
+        return part;
+      }
+    }
+    return null;
+  }
+
   private static final class Collector {
-    private final NameTypes declared = new NameTypes();
-    private final NameTypes constructed = new NameTypes();
-    private final NameTypes returns = new NameTypes();
+    private final NameTypes declared;
+    private final NameTypes constructed;
+    private final NameTypes returns;
+    private final Set<String> extensions = new HashSet<>();
+    private final Set<String> allowLists = new HashSet<>();
+    private final JavaTypeNames types;
+
+    Collector(final JavaTypeNames types) {
+      this.types = types;
+      this.declared = new NameTypes(types);
+      this.constructed = new NameTypes(types);
+      this.returns = new NameTypes(types);
+    }
 
     void visit(final SyntaxNode node) {
       switch (node.kind()) {
         case "propertyDeclaration" -> property(node);
-        case VARIABLE -> variable(node, null);
-        case "parameter" -> parameter(node);
+        case VARIABLE -> variable(node, null, "");
+        case "parameter", "classParameter" -> parameter(node);
         case "functionDeclaration" -> function(node);
         default -> node.children().forEach(this::visit);
       }
@@ -89,9 +140,13 @@ record KotlinFileTypes(
     private void property(final SyntaxNode node) {
       final SyntaxNode variable = KotlinFlowSyntax.child(node, VARIABLE);
       final String created = variable == null ? "" : created(node, variable);
+      final String factory = variable == null || !created.isEmpty() ? "" : factory(node, variable);
+      if (variable != null) {
+        allowList(node, variable);
+      }
       for (final SyntaxNode child : node.children()) {
         if (child == variable) {
-          variable(child, created.isEmpty() ? null : created);
+          variable(child, created.isEmpty() ? null : created, factory);
         } else {
           visit(child);
         }
@@ -113,7 +168,40 @@ record KotlinFileTypes(
       return "";
     }
 
-    private void variable(final SyntaxNode node, final String created) {
+    /** Notes a {@code val} that holds the constants of {@code setOf} or {@code listOf}. */
+    private void allowList(final SyntaxNode property, final SyntaxNode variable) {
+      final SyntaxNode name = KotlinFlowSyntax.child(variable, SIMPLE);
+      if (name == null || !KotlinFlowSyntax.hasToken(property, "val")) {
+        return;
+      }
+      final List<SyntaxNode> parts = KotlinFlowSyntax.parts(property);
+      for (int index = 0; index < parts.size() - 1; index++) {
+        if (ASSIGN.equals(KotlinFlowSyntax.tokenText(parts.get(index)))
+            && ALLOW_LIST
+                .matcher(KotlinFlowSyntax.text(parts.get(index + 1)).replaceAll("\\s", ""))
+                .find()) {
+          allowLists.add(KotlinFlowSyntax.text(name));
+        }
+      }
+    }
+
+    /** The type of a well-known factory call that initializes a {@code val}, or an empty string. */
+    private String factory(final SyntaxNode property, final SyntaxNode variable) {
+      if (KotlinFlowSyntax.child(variable, TYPE) != null
+          || !KotlinFlowSyntax.hasToken(property, "val")) {
+        return "";
+      }
+      final List<SyntaxNode> parts = KotlinFlowSyntax.parts(property);
+      for (int index = 0; index < parts.size() - 1; index++) {
+        if (ASSIGN.equals(KotlinFlowSyntax.tokenText(parts.get(index)))) {
+          return KotlinFactoryTypes.returnType(KotlinFlowSyntax.text(parts.get(index + 1)), types)
+              .orElse("");
+        }
+      }
+      return "";
+    }
+
+    private void variable(final SyntaxNode node, final String created, final String factory) {
       final SyntaxNode name = KotlinFlowSyntax.child(node, SIMPLE);
       if (name == null) {
         return;
@@ -123,7 +211,7 @@ record KotlinFileTypes(
       if (type != null) {
         declared.note(text, KotlinCalls.erasedNullability(KotlinFlowSyntax.text(type)));
       } else {
-        declared.note(text, created);
+        declared.note(text, created == null && !factory.isEmpty() ? factory : created);
         if (created != null) {
           constructed.note(text, created);
         }
@@ -144,7 +232,10 @@ record KotlinFileTypes(
 
     private void function(final SyntaxNode node) {
       final SyntaxNode name = KotlinFlowSyntax.child(node, "identifier");
-      final SyntaxNode type = KotlinFlowSyntax.child(node, TYPE);
+      final SyntaxNode type = returnType(node);
+      if (name != null && KotlinExtensions.receiverOf(node).isPresent()) {
+        extensions.add(KotlinFlowSyntax.text(name) + "/" + (parameterCount(node) + 1));
+      }
       if (name != null) {
         returns.note(
             KotlinFlowSyntax.text(name),

@@ -1,6 +1,8 @@
 import java.sql.Statement
 import javax.servlet.http.HttpServletRequest
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
+import org.springframework.jdbc.core.JdbcTemplate
 
 class Subject {
   fun direct(request: HttpServletRequest, statement: Statement) {
@@ -34,3 +36,26 @@ class Subject {
 
   fun read(request: HttpServletRequest): String? = request.getParameter("x")
 }
+
+class LayeredController(private val users: LayeredUsers) {
+  @GetMapping("/users")
+  fun listUsers(@RequestParam name: String) {
+    users.byName(name)
+  }
+
+  fun scopedUsers() {
+    call.parameters["n"]?.let { users.byName(it) }
+  }
+
+  fun extensionUsers() {
+    call.parameters["n"]?.queryUsers(users)
+  }
+}
+
+class LayeredUsers(private val jdbc: JdbcTemplate) {
+  fun byName(wanted: String) {
+    jdbc.queryForList("select * from t where n = '$wanted'")
+  }
+}
+
+fun String.queryUsers(users: LayeredUsers) = users.byName(this)

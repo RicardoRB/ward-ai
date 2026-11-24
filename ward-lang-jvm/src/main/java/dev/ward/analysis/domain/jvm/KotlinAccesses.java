@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -133,6 +134,35 @@ final class KotlinAccesses implements VariableAccesses {
         name.span(),
         name.span()
     );
+  }
+
+  /**
+   * A write of a local that no statement makes, and a read of it, so that the value the variable
+   * held before is no longer the one that reaches the next statements.
+   *
+   * @param name the name of the variable
+   * @param within the node that reads the name, such as the condition of a guard
+   * @param at where the guard that proves the value is
+   * @return the write and the read, or none when the name is not a local of the body
+   */
+  List<VariableAccess> clean(final String name, final Span within, final Span at) {
+    final Optional<Span> declaration = localDeclaration(name, within);
+    if (declaration.isEmpty()) {
+      return List.of();
+    }
+    return List.of(
+        new VariableAccess(name, AccessKind.WRITE, at, declaration.get()),
+        new VariableAccess(name, AccessKind.READ, at, declaration.get())
+    );
+  }
+
+  /** Where the local that {@code within} reads under this name is declared. */
+  private Optional<Span> localDeclaration(final String name, final Span within) {
+    return references.stream()
+        .filter(reference -> name.equals(reference.name()))
+        .filter(reference -> contains(within, reference.span()) && isLocal(reference))
+        .map(reference -> reference.resolved().orElseThrow().declaration())
+        .findFirst();
   }
 
   private Keyed keyed(final NameReference reference) {

@@ -164,6 +164,24 @@ final class JavaTypeNames {
     return imports.getOrDefault(written, written);
   }
 
+  /**
+   * Resolves an annotation name to every name it may have: the imported name, or, when no single
+   * import names it, the name as written and the name in each package of a wildcard import. A
+   * taint entry matches the one of them that exists.
+   *
+   * @param written the annotation name as written
+   * @return the candidate qualified names, never empty
+   */
+  List<String> annotationCandidates(final String written) {
+    if (imports.containsKey(written) || written.contains(DOT)) {
+      return List.of(annotation(written));
+    }
+    final List<String> names = new ArrayList<>();
+    names.add(written);
+    wildcards.forEach(wildcard -> names.add(wildcard + DOT + written));
+    return names;
+  }
+
   private static void addImport(
       final SyntaxNode node,
       final Map<String,

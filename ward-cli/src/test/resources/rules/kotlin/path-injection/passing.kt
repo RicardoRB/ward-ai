@@ -14,3 +14,21 @@ class Subject {
     File(value)
   }
 }
+
+class SafeFileController(private val files: SafeFileService) {
+  fun show(@RequestParam name: String) {
+    files.open(name)
+  }
+
+  fun shown() {
+    "fixed".openFile()
+  }
+}
+
+class SafeFileService {
+  fun open(wanted: String) {
+    File("/data/fixed")
+  }
+}
+
+fun String.openFile() = File(this)

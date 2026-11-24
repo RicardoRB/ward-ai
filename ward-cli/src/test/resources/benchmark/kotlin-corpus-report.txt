@@ -7,18 +7,18 @@
 # Regenerate: ./mvnw -pl ward-cli -am -Dtest=KotlinCorpusSmokeTest -Dward.corpus.kotlin=<dir> -Djacoco.skip=true -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
 okio | files 313 | not analysed 0
 spring-petclinic-kotlin | files 38 | not analysed 0
-ktor-samples | files 151 | not analysed 2
-rules 159 | not run (need type facts) 10 | findings 5062
+ktor-samples | files 151 | not analysed 0
+rules 159 | not run (need type facts) 10 | findings 5123
 ward:kotlin/array-primitive | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/avoid-referential-equality | not run
 ward:kotlin/backing-property-naming | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:kotlin/cognitive-complexity | findings 23 | labelled 3 | tp 1 | fp 0 | un 2
+ward:kotlin/cognitive-complexity | findings 25 | labelled 3 | tp 1 | fp 0 | un 2
 ward:kotlin/command-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/complex-condition | findings 11 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/constructor-parameter-naming | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:kotlin/constructors-declaration-grouping | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/cross-site-scripting | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:kotlin/cyclomatic-complexity | findings 33 | labelled 3 | tp 1 | fp 0 | un 2
+ward:kotlin/cyclomatic-complexity | findings 35 | labelled 3 | tp 1 | fp 0 | un 2
 ward:kotlin/destructuring-declaration-with-too-many-entries | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/double-mutability-for-collection | findings 4 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/duplicate-code | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -47,18 +47,18 @@ ward:kotlin/file-length | findings 16 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/filename | findings 22 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/for-each-on-range | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/forbidden-void | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:kotlin/function-expression-body | findings 184 | labelled 3 | tp 3 | fp 0 | un 0
-ward:kotlin/function-length | findings 47 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/function-expression-body | findings 187 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/function-length | findings 49 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/function-name | findings 32 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/function-only-returning-constant | findings 1 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/global-coroutine-usage | findings 5 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/has-platform-type | not run
 ward:kotlin/header-splitting | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:kotlin/hidden-field | findings 74 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/hidden-field | findings 76 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/ignored-return-value | not run
 ward:kotlin/illegal-token-text | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/implicit-default-locale | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
-ward:kotlin/inject-dispatcher | findings 11 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/inject-dispatcher | findings 12 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/instance-of-check-for-exception | findings 1 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/invalid-javadoc-position | findings 43 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/invalid-package-declaration | findings 18 | labelled 0 | tp 0 | fp 0 | un 0
@@ -76,17 +76,17 @@ ward:kotlin/large-class | findings 4 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/lateinit-usage | findings 11 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/ldap-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/log-forging | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:kotlin/loop-with-too-many-jump-statements | findings 10 | labelled 3 | tp 3 | fp 0 | un 0
-ward:kotlin/magic-number | findings 2890 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/loop-with-too-many-jump-statements | findings 11 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/magic-number | findings 2909 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/map-get-with-not-null-assertion-operator | not run
 ward:kotlin/matching-declaration-name | findings 11 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/may-be-const | findings 40 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/member-name-equals-class-name | findings 1 | labelled 1 | tp 0 | fp 0 | un 1
-ward:kotlin/missing-javadoc-type | findings 247 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/missing-javadoc-type | findings 272 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/multiline-comment-leading-asterisk-presence | findings 72 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/multiple-variable-declarations | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/nested-classes-visibility | findings 2 | labelled 0 | tp 0 | fp 0 | un 0
-ward:kotlin/new-line-at-end-of-file | findings 61 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/new-line-at-end-of-file | findings 63 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/no-consecutive-comments | findings 31 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/no-empty-file | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/no-finalizer | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -102,7 +102,7 @@ ward:kotlin/overload-methods-declaration-order | findings 44 | labelled 3 | tp 3
 ward:kotlin/parameter-count | findings 11 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/path-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/print-stack-trace | findings 1 | labelled 0 | tp 0 | fp 0 | un 0
-ward:kotlin/property-name | findings 98 | labelled 3 | tp 3 | fp 0 | un 0
+ward:kotlin/property-name | findings 99 | labelled 3 | tp 3 | fp 0 | un 0
 ward:kotlin/redundant-higher-order-map-usage | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/redundant-suspend-modifier | not run
 ward:kotlin/regex-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -112,7 +112,7 @@ ward:kotlin/rethrow-caught-exception | findings 0 | labelled 0 | tp 0 | fp 0 | u
 ward:kotlin/return-from-finally | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/safe-cast | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/script-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:kotlin/serial-version-uid-in-serializable-class | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:kotlin/serial-version-uid-in-serializable-class | findings 1 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/server-side-request-forgery | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/session-attribute-injection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:kotlin/single-line-javadoc | findings 1 | labelled 1 | tp 1 | fp 0 | un 0

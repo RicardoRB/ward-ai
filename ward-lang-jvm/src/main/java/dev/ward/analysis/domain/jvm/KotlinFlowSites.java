@@ -53,6 +53,8 @@ final class KotlinFlowSites implements FlowSites {
   private final KotlinParameterSites parameters;
   private final KotlinView view;
   private final Map<String, String> returns;
+  private final KotlinReceiverCalls receiverCalls;
+  private final Set<String> allowLists;
 
   /**
    * Creates the finder of one body.
@@ -65,9 +67,16 @@ final class KotlinFlowSites implements FlowSites {
     this.types = types;
     this.view = view;
     this.returns = file.returns();
+    this.receiverCalls = new KotlinReceiverCalls(file.extensions());
+    this.allowLists = file.allowLists();
     declared.putAll(file.declared());
     constructed.putAll(file.constructed());
     this.parameters = new KotlinParameterSites(types, declared);
+  }
+
+  /** The names of the allow-list properties of the file. */
+  Set<String> allowLists() {
+    return allowLists;
   }
 
   @Override
@@ -82,9 +91,9 @@ final class KotlinFlowSites implements FlowSites {
       return;
     }
     switch (node.kind()) {
-      case POSTFIX -> chain(node, "", found);
+      case POSTFIX -> chain(node, "", null, null, found);
       case "functionValueParameters" -> found.addAll(parameters.of(node));
-      case "variableDeclaration" -> variable(node);
+      case "variableDeclaration" -> parameters.declare(node);
       case PROPERTY -> {
         construction(node);
         node.children().forEach(child -> walk(child, found));
@@ -108,39 +117,48 @@ final class KotlinFlowSites implements FlowSites {
     final List<SyntaxNode> parts = KotlinFlowSyntax.parts(property);
     for (int index = 0; index < parts.size() - 1; index++) {
       if (ASSIGN.equals(KotlinFlowSyntax.tokenText(parts.get(index)))) {
-        final String type = KotlinCalls.createdType(parts.get(index + 1));
-        final String returned = returns.get(KotlinCalls.calledName(parts.get(index + 1)));
-        if (type.isEmpty() && returned != null) {
-          declared.put(KotlinFlowSyntax.text(KotlinScopeWalk.simple(variable)), returned);
-        }
-        if (!type.isEmpty()) {
-          final String name = KotlinFlowSyntax.text(KotlinScopeWalk.simple(variable));
-          declared.put(name, type);
-          constructed.put(name, type);
-        }
+        initialized(KotlinFlowSyntax.text(KotlinScopeWalk.simple(variable)), parts.get(index + 1));
       }
     }
   }
 
-  /** Records the declared type of a local, a for variable or a lambda parameter. */
-  private void variable(final SyntaxNode node) {
-    final SyntaxNode name = KotlinFlowSyntax.child(node, SIMPLE);
-    final SyntaxNode type = KotlinFlowSyntax.child(node, "type");
-    if (name != null && type != null) {
-      declared.put(
-          KotlinFlowSyntax.text(name),
-          KotlinCalls.erasedNullability(KotlinFlowSyntax.text(type))
-      );
+  /** Records the type that the initializer of the {@code val} {@code name} gives it. */
+  private void initialized(final String name, final SyntaxNode initializer) {
+    final String type = KotlinCalls.createdType(initializer);
+    if (!type.isEmpty()) {
+      declared.put(name, type);
+      constructed.put(name, type);
+      return;
+    }
+    final Optional<String> factory =
+        KotlinFactoryTypes.returnType(KotlinFlowSyntax.text(initializer), types);
+    final String returned = returns.get(KotlinCalls.calledName(initializer));
+    if (factory.isPresent()) {
+      declared.put(name, factory.get());
+    } else if (returned != null) {
+      declared.put(name, returned);
     }
   }
 
-  /** One atom and its operations, with the text of the receiver that came before the atom. */
-  private void chain(final SyntaxNode node, final String qualifier, final List<FlowSite> found) {
+  /**
+   * One atom and its operations, with the text of the receiver that came before the atom. {@code
+   * origin} is where the whole expression starts and {@code before} where its receiver part ends,
+   * so a call of an extension function can name its receiver as the first argument.
+   */
+  private void chain(
+      final SyntaxNode node,
+      final String qualifier,
+      final Span origin,
+      final Span before,
+      final List<FlowSite> found
+  ) {
     final List<SyntaxNode> parts = KotlinFlowSyntax.parts(node);
     final SyntaxNode atom = parts.get(0);
     final List<SyntaxNode> operations = parts.subList(1, parts.size());
     final String name = KotlinCalls.nameOf(atom);
     final StringBuilder path = new StringBuilder(KotlinFlowSyntax.text(atom));
+    final Span start = origin == null ? atom.span() : origin;
+    final Span receiver = before == null ? null : KotlinFlowSyntax.between(start, before);
     if (name.isEmpty()) {
       walk(atom, found);
     } else {
@@ -151,19 +169,22 @@ final class KotlinFlowSites implements FlowSites {
       }
     }
     String callee = name;
+    Span last = atom.span();
+    final KotlinReceiverCalls.Chain spans = new KotlinReceiverCalls.Chain(atom.span(), receiver);
     for (final SyntaxNode operation : operations) {
       final SyntaxNode suffix = KotlinFlowSyntax.child(operation, CALL_SUFFIX);
       if (suffix != null) {
-        call(callee, qualifier, atom.span(), operation, found);
+        call(callee, qualifier, spans, operation, found);
         path.append(KotlinFlowSyntax.text(operation));
         callee = "";
       } else if (KotlinFlowSyntax.child(operation, MEMBER) != null) {
-        chain(KotlinFlowSyntax.child(operation, POSTFIX), path.toString(), found);
+        chain(KotlinFlowSyntax.child(operation, POSTFIX), path.toString(), start, last, found);
       } else {
         operation.children().forEach(child -> walk(child, found));
         path.append(KotlinFlowSyntax.text(operation));
         callee = "";
       }
+      last = operation.span();
     }
   }
 
@@ -171,10 +192,11 @@ final class KotlinFlowSites implements FlowSites {
   private void call(
       final String name,
       final String qualifier,
-      final Span start,
+      final KotlinReceiverCalls.Chain chain,
       final SyntaxNode operation,
       final List<FlowSite> found
   ) {
+    final Span start = chain.start();
     final SyntaxNode suffix = KotlinFlowSyntax.child(operation, CALL_SUFFIX);
     final List<SyntaxNode> arguments = KotlinCalls.argumentsOf(suffix);
     arguments.forEach(argument -> walk(argument, found));
@@ -184,6 +206,10 @@ final class KotlinFlowSites implements FlowSites {
     }
     final List<Span> spans = arguments.stream().map(SyntaxNode::span).toList();
     final Span span = KotlinFlowSyntax.between(start, operation.span());
+    if (chain.receiver() != null
+        && receiverCalls.add(name, chain, spans, operation.span(), found)) {
+      return;
+    }
     if (KotlinCalls.isConstructor(name, qualifier)) {
       final String written = qualifier.isEmpty() ? name : qualifier + DOT + name;
       found.add(

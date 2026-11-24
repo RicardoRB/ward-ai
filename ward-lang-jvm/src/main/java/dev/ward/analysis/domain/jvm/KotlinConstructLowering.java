@@ -14,12 +14,14 @@ final class KotlinConstructLowering {
   KotlinConstructLowering(
       final ControlFlowBuilder flow,
       final KotlinValueLowering values,
-      final KotlinStatements statements
+      final KotlinStatements statements,
+      final KotlinAccesses accesses,
+      final KotlinAllowListGuards guards
   ) {
     this.values = values;
     this.loops = new KotlinLoopLowering(flow, statements);
     this.handlers = new KotlinHandlerLowering(flow, statements);
-    this.branches = new KotlinIfLowering(flow, statements);
+    this.branches = new KotlinIfLowering(flow, statements, accesses, guards);
     this.shorts = new KotlinShortCircuitLowering(flow, statements);
   }
 

@@ -95,3 +95,25 @@ fun template(items: List<Any>, flag: Boolean): String =
     "${items.map { item ->
         item as String
     }} ${if (flag) this else items} ${items is List<*>}"
+
+fun describe(value: Any?): String =
+    value?.let { "ok" } ?: error("The ${value::class::simpleName} value is not supported")
+
+fun Route.timing() {
+    fun nowMillis(): Float {
+        return System.nanoTime() / 1000_000f
+    }
+
+    get("/clock") {
+        val delay = parameters["delay"]?.toLongOrNull() ?: 2
+        respond(nowMillis() + delay)
+    }
+}
+
+fun drip(count: Int, clock: () -> Float) {
+    for (i in 0 ..< count) {
+        println(clock() + i)
+    }
+    val first = 0..<count
+    println(first)
+}

@@ -24,3 +24,21 @@ class Subject {
 
   fun read(request: HttpServletRequest): String? = request.getParameter("x")
 }
+
+class FileController(private val files: FileService) {
+  fun show(@RequestParam name: String) {
+    files.open(name)
+  }
+
+  fun shown() {
+    call.parameters["n"]?.openFile()
+  }
+}
+
+class FileService {
+  fun open(wanted: String) {
+    File("/data/$wanted")
+  }
+}
+
+fun String.openFile() = File(this)

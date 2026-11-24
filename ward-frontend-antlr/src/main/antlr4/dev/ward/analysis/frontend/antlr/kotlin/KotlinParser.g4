@@ -350,7 +350,7 @@ infixFunctionCall
     ;
 
 rangeExpression
-    : additiveExpression (RANGE NL* additiveExpression)*
+    : additiveExpression ((RANGE | RANGE_UNTIL) NL* additiveExpression)*
     ;
 
 additiveExpression
@@ -370,7 +370,7 @@ prefixUnaryExpression
     ;
 
 postfixUnaryExpression
-    : (atomicExpression | callableReference) postfixUnaryOperation*
+    : (atomicExpression | callableReference (NL* (COLONCOLON | Q_COLONCOLON) NL* (identifier | CLASS))*) postfixUnaryOperation*
     ;
 
 atomicExpression

@@ -57,4 +57,63 @@ class KotlinFileTypesTest {
     assertThat(site.receiverType()).contains("javax.naming.InitialContext");
     assertThat(clash.receiverType()).isEqualTo(Optional.empty());
   }
+
+  private static FlowSite callIn(final String source, final String name) {
+    return KotlinFlowFixtures.graph(source, "C#f(1)").blocks().stream()
+        .map(BasicBlock::sites)
+        .flatMap(List::stream)
+        .filter(site -> site.kind() == FlowSiteKind.CALL && name.equals(site.name()))
+        .findFirst()
+        .orElseThrow();
+  }
+
+  @Test
+  void aConstructorPropertyGivesItsDeclaredTypeToACallInAMethod() {
+    final FlowSite site =
+        callIn(
+            IMPORT + "class C(private val c: InitialContext) {\n fun f(a: String) { c.lookup(a) }\n}\n",
+            "lookup"
+        );
+
+    assertThat(site.receiverType()).contains("javax.naming.InitialContext");
+  }
+
+  @Test
+  void aLoggerFromAFactoryHasTheTypeOfTheLogger() {
+    final String factories =
+        "import org.slf4j.LoggerFactory\nimport java.util.logging.Logger\n"
+            + "class C {\n private val log = LoggerFactory.getLogger(C::class.java)\n"
+            + " fun f(a: String) {\n log.info(a)\n val l = Logger.getLogger(\"x\")\n l.warning(a)\n }\n}\n";
+
+    assertThat(callIn(factories, "info").receiverType()).contains("org.slf4j.Logger");
+    assertThat(callIn(factories, "warning").receiverType())
+        .contains("java.util.logging.Logger");
+  }
+
+  @Test
+  void aCallOfAnUnknownFactoryHasNoType() {
+    final FlowSite site =
+        callIn(
+            "class C {\n private val log = Other.make()\n fun f(a: String) { log.info(a) }\n}\n",
+            "info"
+        );
+
+    assertThat(site.receiverType()).isEqualTo(Optional.empty());
+  }
+
+  @Test
+  void anAnnotationFromAWildcardImportNamesEachPackageItMayComeFrom() {
+    final String source =
+        "import org.springframework.web.bind.annotation.*\nclass C {\n"
+            + " fun f(@RequestParam a: String) {\n }\n}\n";
+    final List<String> annotations =
+        KotlinFlowFixtures.graph(source, "C#f(1)").blocks().stream()
+            .flatMap(block -> block.sites().stream())
+            .filter(site -> site.kind() == FlowSiteKind.PARAMETER)
+            .flatMap(site -> site.annotations().stream())
+            .toList();
+
+    assertThat(annotations)
+        .contains("org.springframework.web.bind.annotation.RequestParam");
+  }
 }

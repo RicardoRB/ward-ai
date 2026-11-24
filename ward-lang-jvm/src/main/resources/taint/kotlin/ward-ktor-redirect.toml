@@ -1,0 +1,8 @@
+# Redirect sinks of a Ktor handler: the target of respondRedirect. The `call` of a handler is the
+# receiver of the route lambda and has no declared type, so the entry names the qualifier.
+
+[[sinks]]
+kind = "call"
+name = "respondRedirect"
+qualifier = "call"
+arguments = [0]

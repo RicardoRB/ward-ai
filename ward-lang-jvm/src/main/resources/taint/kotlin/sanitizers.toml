@@ -1,0 +1,94 @@
+# Conversions of a string to a number or a boolean: the result holds no markup, quote or line break,
+# so it is clean for every Kotlin taint rule. A call matches by name, as the receiver is a string.
+
+[[sanitizers]]
+kind = "call"
+name = "toInt"
+
+[[sanitizers]]
+kind = "call"
+name = "toIntOrNull"
+
+[[sanitizers]]
+kind = "call"
+name = "toLong"
+
+[[sanitizers]]
+kind = "call"
+name = "toLongOrNull"
+
+[[sanitizers]]
+kind = "call"
+name = "toShort"
+
+[[sanitizers]]
+kind = "call"
+name = "toShortOrNull"
+
+[[sanitizers]]
+kind = "call"
+name = "toByte"
+
+[[sanitizers]]
+kind = "call"
+name = "toByteOrNull"
+
+[[sanitizers]]
+kind = "call"
+name = "toDouble"
+
+[[sanitizers]]
+kind = "call"
+name = "toDoubleOrNull"
+
+[[sanitizers]]
+kind = "call"
+name = "toFloat"
+
+[[sanitizers]]
+kind = "call"
+name = "toFloatOrNull"
+
+[[sanitizers]]
+kind = "call"
+name = "toBoolean"
+
+[[sanitizers]]
+kind = "call"
+name = "toBooleanStrict"
+
+[[sanitizers]]
+kind = "call"
+name = "toBooleanStrictOrNull"
+
+[[sanitizers]]
+kind = "call"
+name = "toBigDecimal"
+
+[[sanitizers]]
+kind = "call"
+name = "toBigDecimalOrNull"
+
+[[sanitizers]]
+kind = "call"
+name = "toBigInteger"
+
+[[sanitizers]]
+kind = "call"
+name = "toBigIntegerOrNull"
+
+[[sanitizers]]
+kind = "call"
+name = "toUInt"
+
+[[sanitizers]]
+kind = "call"
+name = "toUIntOrNull"
+
+[[sanitizers]]
+kind = "call"
+name = "toULong"
+
+[[sanitizers]]
+kind = "call"
+name = "toULongOrNull"
