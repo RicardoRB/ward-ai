@@ -28,6 +28,9 @@
       "glob": "dev/ward/analysis/lang/*/builtins/*.txt"
     },
     {
+      "glob": "dev/ward/analysis/lang/swift/sdk/*.txt"
+    },
+    {
       "glob": "dev/ward/analysis/lang/python/stubs/*.pyi"
     },
     {

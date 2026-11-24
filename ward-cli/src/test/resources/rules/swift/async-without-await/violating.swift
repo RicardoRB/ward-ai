@@ -15,3 +15,13 @@ struct Other: Loader {
 struct Plain {
     func load() async -> Int { 5 }
 }
+final class Fetcher: NSObject, URLSessionDataDelegate {
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse) async -> URLSession.ResponseDisposition {
+        .allow
+    }
+    func perform() async throws {}
+}
+struct NotAnIntent {
+    func perform() async throws {}
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse) async -> Int { 1 }
+}
