@@ -81,4 +81,14 @@ class Audit {
   void decodedConstant(Logger log) throws Exception {
     log.info(URLDecoder.decode("constant%20text", StandardCharsets.UTF_8));
   }
+
+  // A decoded value that is stripped or parsed as a number stays clean.
+  void decodedThenStripped(HttpServletRequest request, Logger log) throws Exception {
+    String path = URLDecoder.decode(request.getQueryString(), "UTF-8");
+    log.info(path.replace("\r", "").replace("\n", ""));
+  }
+
+  void decodedNumber(HttpServletRequest request, Logger log) throws Exception {
+    log.info("n {}", Integer.parseInt(URLDecoder.decode(request.getParameter("n"), "UTF-8")));
+  }
 }
