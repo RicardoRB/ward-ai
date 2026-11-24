@@ -102,6 +102,8 @@ public final class FormatGate implements QualityGate {
         outcome.line(),
         null,
         null,
+        List.of(),
+        null,
         List.of()
     );
   }

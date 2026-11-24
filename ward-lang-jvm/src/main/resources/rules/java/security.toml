@@ -8,8 +8,10 @@ capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/java/sources.toml", "taint/java/sql.toml"]
 message = "untrusted data from {source} reaches the SQL query of {sink}"
 '''
@@ -21,8 +23,10 @@ capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/java/sources.toml", "taint/java/command.toml"]
 message = "untrusted data from {source} reaches the command of {sink}"
 '''
@@ -34,8 +38,10 @@ capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
 check = "taint"
+min-confidence = "proven"
 specs = ["taint/java/sources.toml", "taint/java/path.toml"]
 message = "untrusted data from {source} reaches the file path of {sink}"
 '''

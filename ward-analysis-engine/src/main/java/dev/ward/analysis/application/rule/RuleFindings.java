@@ -37,7 +37,9 @@ final class RuleFindings {
         span == null ? null : span.startLine(),
         span == null ? null : span.startColumn(),
         null,
-        match.path()
+        match.path(),
+        match.confidence(),
+        match.assumptions()
     );
   }
 }

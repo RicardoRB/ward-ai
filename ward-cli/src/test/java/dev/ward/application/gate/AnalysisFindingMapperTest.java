@@ -37,6 +37,8 @@ class AnalysisFindingMapperTest {
             4,
             2,
             "https://help",
+            List.of(),
+            null,
             List.of()
         );
 
@@ -58,7 +60,18 @@ class AnalysisFindingMapperTest {
         Arrays.stream(AnalysisSeverity.values())
             .map(
                 severity ->
-                    new AnalysisFinding("r", severity, "m", "a.java", LINE, COLUMN, null, List.of())
+                    new AnalysisFinding(
+                        "r",
+                        severity,
+                        "m",
+                        "a.java",
+                        LINE,
+                        COLUMN,
+                        null,
+                        List.of(),
+                        null,
+                        List.of()
+                    )
             )
             .toList();
 
@@ -126,6 +139,8 @@ class AnalysisFindingMapperTest {
         file,
         line,
         column,
+        null,
+        List.of(),
         null,
         List.of()
     );

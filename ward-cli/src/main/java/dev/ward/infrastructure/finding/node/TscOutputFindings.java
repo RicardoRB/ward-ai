@@ -63,6 +63,8 @@ public final class TscOutputFindings implements GateFindingSource {
         positive(diagnostic.group("line")),
         positive(diagnostic.group("column")),
         null,
+        List.of(),
+        null,
         List.of()
     );
   }

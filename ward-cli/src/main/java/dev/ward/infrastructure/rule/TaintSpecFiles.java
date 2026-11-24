@@ -200,7 +200,8 @@ final class TaintSpecFiles {
         optional(where, entry, QUALIFIER),
         arguments,
         Optional.empty(),
-        exceptCalls(where, table, entry)
+        exceptCalls(where, table, entry),
+        List.of()
     );
   }
 
@@ -239,6 +240,7 @@ final class TaintSpecFiles {
           Optional.empty(),
           List.of(),
           Optional.of(Pattern.compile(pattern)),
+          List.of(),
           List.of()
       );
     } catch (final PatternSyntaxException exception) {

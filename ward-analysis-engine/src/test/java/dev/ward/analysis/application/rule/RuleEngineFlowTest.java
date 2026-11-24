@@ -69,6 +69,8 @@ class RuleEngineFlowTest {
             1,
             1,
             null,
+            List.of(),
+            null,
             List.of()
         );
     final CountingLowering lowering =

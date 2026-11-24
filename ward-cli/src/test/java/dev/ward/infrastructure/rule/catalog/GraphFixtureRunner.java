@@ -49,6 +49,8 @@ final class GraphFixtureRunner {
                     match.match().span().startLine(),
                     match.match().span().startColumn(),
                     null,
+                    List.of(),
+                    null,
                     List.of()
                 )
         )

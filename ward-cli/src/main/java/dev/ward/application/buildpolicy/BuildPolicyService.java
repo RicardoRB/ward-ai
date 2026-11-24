@@ -91,6 +91,8 @@ public final class BuildPolicyService {
         found.line() > 0 ? found.line() : null,
         null,
         null,
+        List.of(),
+        null,
         List.of()
     );
   }

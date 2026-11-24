@@ -128,6 +128,8 @@ final class OwnLanguageMemberChecks {
         finding.line(),
         finding.column(),
         finding.helpUri(),
+        List.of(),
+        null,
         List.of()
     );
   }

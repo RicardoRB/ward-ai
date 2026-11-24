@@ -75,6 +75,8 @@ class AnalysisGateTest {
                 AT.startLine(),
                 AT.startColumn(),
                 null,
+                List.of(),
+                null,
                 List.of()
             )
         );

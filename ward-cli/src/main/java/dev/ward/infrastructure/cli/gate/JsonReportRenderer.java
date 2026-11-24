@@ -315,6 +315,12 @@ public class JsonReportRenderer {
     @JsonProperty(include = JsonProperty.Include.NON_EMPTY)
     public List<PathStepDto> path;
 
+    @JsonProperty(include = JsonProperty.Include.NON_NULL)
+    public String confidence;
+
+    @JsonProperty(include = JsonProperty.Include.NON_EMPTY)
+    public List<String> assumptions;
+
     static FindingDto from(final Finding finding) {
       final FindingDto dto = new FindingDto();
       dto.tool = finding.tool();
@@ -326,6 +332,8 @@ public class JsonReportRenderer {
       dto.column = finding.column();
       dto.helpUri = finding.helpUri();
       dto.path = PathStepDto.allOf(finding.path());
+      dto.confidence = finding.confidence();
+      dto.assumptions = finding.assumptions();
       return dto;
     }
   }

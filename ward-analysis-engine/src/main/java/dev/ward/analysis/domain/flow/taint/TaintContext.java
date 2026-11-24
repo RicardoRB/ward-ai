@@ -16,8 +16,15 @@ import java.util.stream.Stream;
  * @param known the {@code Owner#name/arity} keys of the methods of the file and of other files
  * @param index the methods of other files, by key
  * @param implementors the subtypes of the types the graphs record
+ * @param declared the {@code name/arity} keys of every body of the file and of other files
  */
-record TaintContext(Set<String> known, Map<String, LocalMethod> index, Implementors implementors) {
+record TaintContext(
+    Set<String> known,
+    Map<String,
+    LocalMethod> index,
+    Implementors implementors,
+    Set<String> declared
+) {
   /** Reads the context of a file with its own graphs and those of the files it depends on. */
   static TaintContext of(
       final List<ControlFlowGraph> graphs,
@@ -31,7 +38,8 @@ record TaintContext(Set<String> known, Map<String, LocalMethod> index, Implement
     return new TaintContext(
         known,
         LocalMethod.indexExternal(externals),
-        Implementors.of(Stream.concat(graphs.stream(), related.stream()).toList())
+        Implementors.of(Stream.concat(graphs.stream(), related.stream()).toList()),
+        LocalMethod.declared(Stream.concat(graphs.stream(), related.stream()).toList())
     );
   }
 }

@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.logging.Level;
@@ -30,25 +29,6 @@ import java.util.logging.Logger;
 public final class TaintFile {
   private static final Logger LOG = Logger.getLogger(TaintFile.class.getName());
   private static final int MAX_ROUNDS = 4;
-
-  /** What the callers of one method need to know about it. */
-  private record Summary(
-      boolean returnsTaint,
-      Set<Integer> sinkParameters,
-      boolean cleanResult,
-      Map<String,
-      Set<Integer>> validated
-  ) {
-    static Summary of(
-        final boolean returns,
-        final Set<Integer> sinks,
-        final boolean clean,
-        final Map<String,
-        Set<Integer>> validated
-    ) {
-      return new Summary(returns, sinks, clean, validated);
-    }
-  }
 
   private TaintFile() {}
 
@@ -97,15 +77,20 @@ public final class TaintFile {
       final List<ControlFlowGraph> graphs,
       final TaintSpec spec
   ) {
-    final List<ControlFlowGraph> own =
+    final List<ControlFlowGraph> dispatched =
         DispatchedCalls.apply(graphs, context.known(), context.implementors(), spec);
-    final Map<String, LocalMethod> methods = methodsOf(own, context, spec);
+    final Map<String, LocalMethod> methods = methodsOf(dispatched, context, spec);
+    final UnfollowedCalls unfollowed = UnfollowedCalls.of(context, methods.values(), spec);
     if (methods.isEmpty()) {
-      return new Prepared(own, spec);
+      return new Prepared(dispatched.stream().map(unfollowed::apply).toList(), spec);
     }
     final UnaryOperator<ControlFlowGraph> guards = GuardedCalls.over(methods);
-    methods.replaceAll((key, method) -> method.withGraph(guards.apply(method.graph())));
-    return new Prepared(own.stream().map(guards).toList(), summarized(spec, methods, own));
+    methods.replaceAll(
+        (key, method) -> method.withGraph(unfollowed.apply(guards.apply(method.graph())))
+    );
+    final List<ControlFlowGraph> own =
+        dispatched.stream().map(guards).map(unfollowed::apply).toList();
+    return new Prepared(own, summarized(spec, methods, own));
   }
 
   /** The methods of the file and the reachable ones of other files, with their calls resolved. */
@@ -143,9 +128,13 @@ public final class TaintFile {
         && !TaintRelevance.mayFind(own, spec)) {
       return spec;
     }
-    Map<String, Summary> known = Map.of();
+    Map<String, MethodSummary> known = Map.of();
     for (int round = 0; round < MAX_ROUNDS; round++) {
-      final Map<String, Summary> next = summarize(derived(spec, methods, known), methods, known);
+      final Map<String, MethodSummary> next = summarize(
+          derived(spec, methods, known),
+          methods,
+          known
+      );
       if (next.equals(known)) {
         break;
       }
@@ -157,49 +146,24 @@ public final class TaintFile {
     return derived(spec, methods, known);
   }
 
-  private static Map<String, Summary> summarize(
+  private static Map<String, MethodSummary> summarize(
       final TaintSpec spec,
       final Map<String,
       LocalMethod> methods,
       final Map<String,
-      Summary> previous
+      MethodSummary> previous
   ) {
-    final Map<String, Summary> found = new HashMap<>();
+    final Map<String, MethodSummary> found = new HashMap<>();
     final TaintSpec seeded = withParameterSource(spec);
+    final Map<String, Map<String, Set<Integer>>> validating =
+        previous.entrySet().stream().collect(
+            Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().validated())
+        );
     for (final LocalMethod method : methods.values()) {
-      final boolean returns = TaintAnalysis.returned(method.graph(), spec).isPresent();
-      final Set<Integer> sinks = sinkParameters(method, seeded);
-      final boolean clean = !returns && sinks.isEmpty() && CleanResults.of(method, seeded);
-      final Map<String, Set<Integer>> validated =
-          ValidatingMethods.of(
-              method,
-              spec,
-              methods,
-              previous.entrySet().stream().collect(
-                  Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().validated())
-              )
-          );
-      if (returns || clean || !sinks.isEmpty() || !validated.isEmpty()) {
-        found.put(method.key(), Summary.of(returns, sinks, clean, validated));
-      }
+      MethodSummary.of(method, spec, seeded, methods, validating)
+          .ifPresent(summary -> found.put(method.key(), summary));
     }
     return found;
-  }
-
-  private static Set<Integer> sinkParameters(final LocalMethod method, final TaintSpec seeded) {
-    final Set<Integer> sinks = new TreeSet<>();
-    final List<String> parameters = method.parameters();
-    if (parameters.size() != method.arity() || !TaintSpans.mayReachSink(method.graph(), seeded)) {
-      return sinks;
-    }
-    for (int index = 0; index < parameters.size(); index++) {
-      final ControlFlowGraph marked = method.withTaintedParameter(parameters.get(index));
-      if (TaintAnalysis.run(marked, seeded).stream()
-          .anyMatch(finding -> LocalMethod.mark().equals(finding.source()))) {
-        sinks.add(index);
-      }
-    }
-    return sinks;
   }
 
   private static TaintSpec withParameterSource(final TaintSpec spec) {
@@ -222,7 +186,7 @@ public final class TaintFile {
       final Map<String,
       LocalMethod> methods,
       final Map<String,
-      Summary> summaries
+      MethodSummary> summaries
   ) {
     final List<TaintEntry> sources = new ArrayList<>(spec.sources());
     final List<TaintEntry> sinks = new ArrayList<>(spec.sinks());
@@ -232,13 +196,18 @@ public final class TaintFile {
           final LocalMethod method = methods.get(key);
           for (final String qualifier : method.qualifiers()) {
             if (summary.returnsTaint()) {
-              sources.add(entry(method, qualifier, List.of()));
+              sources.add(
+                  entry(method, qualifier, List.of()).assuming(summary.returnAssumptions())
+              );
             }
             if (summary.cleanResult()) {
               sanitizers.add(entry(method, qualifier, List.of()));
             }
             if (!summary.sinkParameters().isEmpty()) {
-              sinks.add(entry(method, qualifier, List.copyOf(summary.sinkParameters())));
+              sinks.add(
+                  entry(method, qualifier, List.copyOf(summary.sinkParameters()))
+                      .assuming(summary.sinkAssumptions())
+              );
             }
             summary.validated().forEach(
                 (what, parameters) -> parameters.forEach(

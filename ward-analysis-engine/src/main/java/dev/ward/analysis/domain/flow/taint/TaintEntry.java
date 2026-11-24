@@ -28,6 +28,8 @@ import java.util.regex.Pattern;
  * @param pattern the literal-text pattern of a string entry, matched with {@code find}
  * @param exceptCalls for a sink: the calls, written {@code Qualifier.name}, whose result is a safe
  *     value when it is the whole guarded argument, such as {@code JSON.stringify}
+ * @param assumptions for an entry that the analysis derived from a method body: the steps of that
+ *     body's flow that it assumed rather than proved; empty for the entries of a specification file
  */
 public record TaintEntry(
     FlowSiteKind kind,
@@ -36,7 +38,8 @@ public record TaintEntry(
     Optional<String> qualifier,
     List<Integer> arguments,
     Optional<Pattern> pattern,
-    List<String> exceptCalls
+    List<String> exceptCalls,
+    List<String> assumptions
 ) {
   private static final String ANY_PREFIX = "*";
   private static final Pattern CHAIN_SEPARATOR = Pattern.compile("\\??\\.");
@@ -59,7 +62,26 @@ public record TaintEntry(
       final Optional<String> qualifier,
       final List<Integer> arguments
   ) {
-    this(kind, name, receiver, qualifier, arguments, Optional.empty(), List.of());
+    this(kind, name, receiver, qualifier, arguments, Optional.empty(), List.of(), List.of());
+  }
+
+  /**
+   * Returns the entry with the assumptions of the flow it was derived from.
+   *
+   * @param assumed the assumed steps, sorted
+   * @return the entry with those assumptions
+   */
+  public TaintEntry assuming(final List<String> assumed) {
+    return new TaintEntry(
+        kind,
+        name,
+        receiver,
+        qualifier,
+        arguments,
+        pattern,
+        exceptCalls,
+        assumed
+    );
   }
 
   /**
@@ -75,6 +97,7 @@ public record TaintEntry(
     Objects.requireNonNull(pattern, "pattern");
     arguments = List.copyOf(Objects.requireNonNull(arguments, "arguments"));
     exceptCalls = List.copyOf(Objects.requireNonNull(exceptCalls, "exceptCalls"));
+    assumptions = List.copyOf(Objects.requireNonNull(assumptions, "assumptions"));
   }
 
   /**

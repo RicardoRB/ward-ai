@@ -160,6 +160,8 @@ final class ApiCompatGate implements QualityGate {
         change.location().line(),
         change.location().column(),
         null,
+        List.of(),
+        null,
         List.of()
     );
   }

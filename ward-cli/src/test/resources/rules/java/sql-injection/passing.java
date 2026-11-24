@@ -22,3 +22,20 @@ class Orm {
     create.fetch("select * from t where id = ?", id);
   }
 }
+
+/** The overload that a call reaches is not decided, so the flow is possible and not reported. */
+class Overloads {
+  void run(HttpServletRequest request, Statement statement) throws Exception {
+    String id = request.getParameter("id");
+    String where = condition(id);
+    statement.executeQuery("select * from t where " + where);
+  }
+
+  String condition(String id) {
+    return "id = " + id;
+  }
+
+  String condition(Object id) {
+    return "id = 0";
+  }
+}

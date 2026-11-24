@@ -24,6 +24,8 @@ class GateFindingsTest {
         line,
         null,
         null,
+        List.of(),
+        null,
         List.of()
     );
   }
@@ -99,6 +101,8 @@ class GateFindingsTest {
         line,
         null,
         null,
+        List.of(),
+        null,
         List.of()
     );
   }
@@ -115,6 +119,8 @@ class GateFindingsTest {
             "src/main/java/Foo.java",
             null,
             null,
+            null,
+            List.of(),
             null,
             List.of()
         );
@@ -139,6 +145,8 @@ class GateFindingsTest {
                 0,
                 null,
                 null,
+                List.of(),
+                null,
                 List.of()
             )
     )
@@ -155,6 +163,8 @@ class GateFindingsTest {
                 1,
                 0,
                 null,
+                List.of(),
+                null,
                 List.of()
             )
     )
@@ -169,6 +179,8 @@ class GateFindingsTest {
             null,
             null,
             null,
+            null,
+            List.of(),
             null,
             List.of()
         )

@@ -26,6 +26,8 @@ class GateOutputVisibilityTest {
                         null,
                         null,
                         null,
+                        List.of(),
+                        null,
                         List.of()
                     )
                 )
@@ -75,6 +77,8 @@ class GateOutputVisibilityTest {
         null,
         null,
         null,
+        null,
+        List.of(),
         null,
         List.of()
     );

@@ -114,6 +114,8 @@ public final class DuplicateCodeFindings {
         1,
         1,
         null,
+        List.of(),
+        null,
         List.of()
     );
   }
@@ -147,7 +149,9 @@ public final class DuplicateCodeFindings {
         first.span().startLine(),
         first.span().startColumn(),
         null,
-        steps
+        steps,
+        null,
+        List.of()
     );
   }
 }

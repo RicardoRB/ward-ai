@@ -8,10 +8,9 @@ import dev.ward.analysis.domain.ir.ControlFlowGraph;
 import dev.ward.analysis.domain.ir.FlowStep;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -59,13 +58,18 @@ final class TaintOrigins {
     return origins.tainted;
   }
 
-  /** Repeats until no write gains taint; writes are visited in block order, so paths are stable. */
+  /**
+   * Repeats until no write gains taint or turns proven; writes are visited in block order, so paths
+   * are stable. A write that took an assumed taint is visited again, so a proven flow that reaches
+   * it later replaces that taint.
+   */
   private void propagate() {
     boolean changed = true;
     while (changed) {
       changed = false;
       for (final AccessSite definition : reaching.definitions()) {
-        if (!tainted.containsKey(definition) && inherit(definition)) {
+        final Taint known = tainted.get(definition);
+        if ((known == null || !known.proven()) && inherit(definition, known)) {
           changed = true;
         }
       }
@@ -73,19 +77,31 @@ final class TaintOrigins {
     }
   }
 
-  /** Taints a write when a read in its statement sees a tainted write, unless it is sanitized. */
-  private boolean inherit(final AccessSite definition) {
+  /**
+   * Taints a write when a read in its statement sees a tainted write, unless it is sanitized; of
+   * several such reads, a proven flow wins.
+   */
+  private boolean inherit(final AccessSite definition, final Taint known) {
     final BasicBlock block = graph.blocks().get(definition.block());
     final Optional<SyntaxNode> node = TaintSpans.nodeContaining(block, definition.access().span());
     if (node.isEmpty()) {
       return false;
     }
+    Taint best = null;
     for (final AccessSite use : reaching.uses()) {
       if (inheritsFrom(use, definition, node.get().span(), block)) {
-        return taintFrom(use, definition);
+        final Taint taint = taintFrom(use, definition, node.get().span());
+        best = best == null ? taint : Taint.better(best, taint);
+        if (best.proven()) {
+          break;
+        }
       }
     }
-    return false;
+    if (best == null || known != null && !best.proven()) {
+      return false;
+    }
+    tainted.put(definition, best);
+    return true;
   }
 
   private boolean inheritsFrom(
@@ -102,13 +118,16 @@ final class TaintOrigins {
         && reaching.reaching(use).stream().anyMatch(tainted::containsKey);
   }
 
-  private boolean taintFrom(final AccessSite use, final AccessSite definition) {
-    final AccessSite source =
-        reaching.reaching(use).stream().filter(tainted::containsKey).findFirst().orElseThrow();
-    final Taint from = tainted.get(source);
-    final List<FlowStep> path = new ArrayList<>(from.path());
-    path.add(new FlowStep(definition.access().span(), ASSIGNED + definition.access().name()));
-    tainted.put(definition, new Taint(from.source(), path));
-    return true;
+  private Taint taintFrom(final AccessSite use, final AccessSite definition, final Span statement) {
+    final Taint from =
+        reaching.reaching(use).stream()
+            .map(tainted::get)
+            .filter(Objects::nonNull)
+            .reduce(Taint::better)
+            .orElseThrow();
+    return from.extended(
+        new FlowStep(definition.access().span(), ASSIGNED + definition.access().name()),
+        UnfollowedCalls.through(graph.blocks().get(use.block()), statement, use.access().span())
+    );
   }
 }

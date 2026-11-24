@@ -34,8 +34,8 @@ Ward keeps false positives down with four mechanisms, one for each way a false p
    - Full labelling is kept for security rules only. Those rules are few and report few findings.
 
 4. **Confidence for taint findings** (#762):
-   - A taint flow that crosses something the engine assumed rather than proved gets `low` confidence. Examples: a call into project code that the engine does not follow, a guard it cannot evaluate, a type it cannot resolve, or a non-final collection read as an allow-list.
-   - By default, presets report only `high` findings, and a rule option shows the `low` ones as well.
+   - A taint flow that crosses something the engine assumed rather than proved gets the confidence `possible`; a fully resolved flow is `proven`. Examples: a call into project code that the engine does not follow, a guard it cannot evaluate, a type it cannot resolve, or a non-final collection read as an allow-list.
+   - By default, presets report only `proven` findings, and the rule option `min-confidence = "possible"` shows the `possible` ones as well.
    - The differential report of mechanism 3 measures the change. No labelled true positive may be lost without a listed reason and an issue to make the engine follow that path.
 
 The rule set is never made quieter by any of these means:

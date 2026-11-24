@@ -139,6 +139,8 @@ final class SwiftModuleAccessibility {
         symbol.span().startLine(),
         symbol.span().startColumn(),
         null,
+        List.of(),
+        null,
         List.of()
     );
   }

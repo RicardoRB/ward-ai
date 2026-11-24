@@ -25,6 +25,7 @@ class TaintStringEntryTest {
             Optional.empty(),
             List.of(),
             Optional.of(Pattern.compile("<[a-zA-Z]")),
+            List.of(),
             List.of()
         );
 

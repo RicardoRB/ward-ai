@@ -204,6 +204,8 @@ public final class NodeControlFlow implements ControlFlowLowering {
                 span.startLine(),
                 span.startColumn(),
                 null,
+                List.of(),
+                null,
                 List.of()
             )
         );

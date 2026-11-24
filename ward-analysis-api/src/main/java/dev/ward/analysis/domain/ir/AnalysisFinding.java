@@ -17,6 +17,9 @@ import java.util.Objects;
  * @param helpUri link to the rule's documentation, or {@code null}
  * @param path the steps of the finding's path in order, all in {@code file}; empty when the finding
  *     has no path
+ * @param confidence how sure a data-flow finding is, or {@code null} for a finding without a flow
+ * @param assumptions the steps of the flow that the analysis assumed rather than proved; empty when
+ *     the flow is proven or the finding has none
  */
 public record AnalysisFinding(
     String ruleId,
@@ -26,7 +29,9 @@ public record AnalysisFinding(
     Integer line,
     Integer column,
     String helpUri,
-    List<FlowStep> path
+    List<FlowStep> path,
+    Confidence confidence,
+    List<String> assumptions
 ) {
   /**
    * Validates the required fields and the location, and copies the path.
@@ -39,6 +44,7 @@ public record AnalysisFinding(
     Objects.requireNonNull(severity, "severity");
     Objects.requireNonNull(message, "message");
     path = List.copyOf(Objects.requireNonNull(path, "path"));
+    assumptions = List.copyOf(Objects.requireNonNull(assumptions, "assumptions"));
     if (line != null && line < 1 || column != null && column < 1) {
       throw new IllegalArgumentException("line and column are 1-based");
     }

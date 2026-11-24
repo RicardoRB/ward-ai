@@ -107,7 +107,9 @@ final class SecretHistoryScan {
         line,
         finding.column(),
         finding.helpUri(),
-        finding.path()
+        finding.path(),
+        null,
+        List.of()
     );
   }
 

@@ -113,7 +113,7 @@ Taint follows the data-flow writes of each function, along normal, branch and ex
 - A sink argument that reads a tainted variable, or that contains a source call directly, is a
   finding.
 
-Taint does not cross function calls. Each statement is one unit, so a statement that reads a tainted
+Each statement is one unit, so a statement that reads a tainted
 value and also an unrelated value taints what it writes. This favours reporting over missing a
 flow.
 
@@ -122,6 +122,29 @@ flow.
 Each finding carries its path: the source, each write that carried the value on, and the sink, in
 that order. The path is deterministic for the same source and specifications. It appears as the
 `path` field in [JSON output](/reference/json-output/) and as `codeFlows` in SARIF output.
+
+## Confidence
+
+Each finding has a confidence. It is `proven` when the source, every step and the sink were
+resolved. It is `possible` when the flow crosses a step that the analysis assumed rather than
+proved:
+
+- a call into project code that is not followed: a project function or method has its name and
+  argument count, but the analysis cannot tell which one the call reaches, because the call is an
+  overload, goes through an interface with several implementors, or has a receiver whose type is not
+  known. That body may check or clean the value. A call to a library type is not such a step.
+- a field that one method writes and another method reads, because the order in which the methods
+  run is ignored.
+
+A container (a list, a map, an array, a holder object) that received the value is not an assumed
+step, as a sink that receives the container does receive the value. A flow through a function whose
+own flow was `possible` is `possible` too. When a value reaches a
+place through several flows, a proven one wins, so an assumed step never hides a proven flow.
+
+By default every taint rule reports only `proven` findings. The rule option `min-confidence =
+"possible"` in [`ward-rules.toml`](/configuration/ward-rules/) reports the `possible` ones too.
+Each finding carries its confidence, and a `possible` one its assumed steps, in the
+[JSON output](/reference/json-output/) and in the SARIF `properties` of each result.
 
 ## Bundled specifications
 

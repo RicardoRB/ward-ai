@@ -34,6 +34,8 @@ public final class OpenApiLanguageFrontend implements LanguageFrontend {
         problem.line(),
         problem.column(),
         null,
+        List.of(),
+        null,
         List.of()
     );
   }

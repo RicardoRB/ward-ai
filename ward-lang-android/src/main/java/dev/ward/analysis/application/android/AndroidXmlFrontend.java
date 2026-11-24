@@ -34,6 +34,8 @@ public final class AndroidXmlFrontend implements LanguageFrontend {
         problem.line(),
         problem.column(),
         null,
+        List.of(),
+        null,
         List.of()
     );
   }

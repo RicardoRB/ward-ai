@@ -166,6 +166,8 @@ public final class JavaControlFlow implements ControlFlowLowering {
                 node.span().startLine(),
                 node.span().startColumn(),
                 null,
+                List.of(),
+                null,
                 List.of()
             )
         );

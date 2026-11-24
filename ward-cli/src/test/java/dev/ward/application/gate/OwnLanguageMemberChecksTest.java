@@ -35,6 +35,8 @@ class OwnLanguageMemberChecksTest {
             1,
             null,
             null,
+            List.of(),
+            null,
             List.of()
         );
     final CheckReport member =

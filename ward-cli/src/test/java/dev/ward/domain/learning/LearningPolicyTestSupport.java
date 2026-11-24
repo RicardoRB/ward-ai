@@ -46,6 +46,8 @@ class LearningPolicyTestSupport {
         1,
         null,
         null,
+        List.of(),
+        null,
         List.of()
     );
   }

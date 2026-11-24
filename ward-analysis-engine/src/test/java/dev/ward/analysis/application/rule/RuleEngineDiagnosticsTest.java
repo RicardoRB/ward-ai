@@ -64,6 +64,8 @@ final class RuleEngineDiagnosticsTest {
         1,
         1,
         null,
+        List.of(),
+        null,
         List.of()
     );
   }

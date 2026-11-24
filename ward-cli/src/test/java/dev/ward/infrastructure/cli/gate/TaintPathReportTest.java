@@ -45,6 +45,8 @@ class TaintPathReportTest {
             1,
             1,
             null,
+            List.of(),
+            null,
             List.of()
         );
     final JsonTree check = JsonTree.parse(jsonOf(plain)).get("checks").get(0);

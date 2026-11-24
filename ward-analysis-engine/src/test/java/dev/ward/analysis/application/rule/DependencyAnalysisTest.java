@@ -88,6 +88,8 @@ class DependencyAnalysisTest {
                     null,
                     null,
                     null,
+                    List.of(),
+                    null,
                     List.of()
                 )
             )

@@ -53,9 +53,9 @@ final class TaintSeeds {
       return;
     }
     if (site.kind() == FlowSiteKind.PARAMETER) {
-      seedParameter(block, site, entry.get().name());
+      seedParameter(block, site, entry.get());
     } else if (!TaintSpans.sanitized(block, site.span(), spec)) {
-      seedValue(block, site);
+      seedValue(block, site, entry.get());
     }
   }
 
@@ -65,10 +65,10 @@ final class TaintSeeds {
   }
 
   /** The incoming value of an annotated parameter is the source, so the entry write is tainted. */
-  private void seedParameter(final BasicBlock block, final FlowSite site, final String annotation) {
+  private void seedParameter(final BasicBlock block, final FlowSite site, final TaintEntry entry) {
     IntStream.range(0, block.accesses().size())
         .filter(index -> isParameterNamed(block.accesses().get(index), site.name()))
-        .forEach(index -> taintParameter(block, index, site, annotation));
+        .forEach(index -> taintParameter(block, index, site, entry));
   }
 
   private static boolean isParameterNamed(final VariableAccess access, final String name) {
@@ -79,12 +79,12 @@ final class TaintSeeds {
       final BasicBlock block,
       final int index,
       final FlowSite site,
-      final String annotation
+      final TaintEntry entry
   ) {
-    final List<FlowStep> path = List.of(new FlowStep(site.span(), SOURCE + annotation));
+    final List<FlowStep> path = List.of(new FlowStep(site.span(), SOURCE + entry.name()));
     tainted.put(
         new AccessSite(block.id(), index, block.accesses().get(index)),
-        new Taint(annotation, path)
+        new Taint(entry.name(), path, entry.assumptions())
     );
   }
 
@@ -93,20 +93,24 @@ final class TaintSeeds {
    * a conditional or logical operator is split over several blocks, so the write can be in another
    * block than the read: the one whose statement holds the read.
    */
-  private void seedValue(final BasicBlock block, final FlowSite site) {
+  private void seedValue(final BasicBlock block, final FlowSite site, final TaintEntry entry) {
     final Optional<AccessSite> write =
         graph.blocks().stream()
             .sorted(Comparator.comparingInt((BasicBlock other) -> other.id() == block.id() ? 0 : 1))
             .map(other -> writeInStatementOf(other, site))
             .flatMap(Optional::stream)
             .findFirst();
-    write.ifPresent(
-        definition ->
-            tainted.putIfAbsent(
-                definition,
-                new Taint(site.name(), List.of(new FlowStep(site.span(), SOURCE + site.name())))
-            )
-    );
+    final List<String> through =
+        TaintSpans.nodeContaining(block, site.span())
+            .map(node -> UnfollowedCalls.through(block, node.span(), site.span()))
+            .orElse(List.of());
+    final Taint taint =
+        new Taint(
+            site.name(),
+            List.of(new FlowStep(site.span(), SOURCE + site.name())),
+            entry.assumptions()
+        ).assuming(through);
+    write.ifPresent(definition -> tainted.merge(definition, taint, Taint::better));
   }
 
   private Optional<AccessSite> writeInStatementOf(final BasicBlock block, final FlowSite site) {

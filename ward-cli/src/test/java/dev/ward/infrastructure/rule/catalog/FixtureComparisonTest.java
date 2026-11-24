@@ -84,6 +84,8 @@ class FixtureComparisonTest {
         line,
         column,
         null,
+        List.of(),
+        null,
         List.of()
     );
   }

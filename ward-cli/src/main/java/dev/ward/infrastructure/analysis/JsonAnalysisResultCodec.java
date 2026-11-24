@@ -3,6 +3,7 @@ package dev.ward.infrastructure.analysis;
 import dev.ward.analysis.domain.graph.DependencyGraph;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisSeverity;
+import dev.ward.analysis.domain.ir.Confidence;
 import dev.ward.analysis.domain.ir.FileSummary;
 import dev.ward.analysis.domain.ir.FlowStep;
 import dev.ward.analysis.domain.ir.Span;
@@ -20,7 +21,7 @@ import org.apache.fory.json.annotation.JsonType;
  * miss.
  */
 public final class JsonAnalysisResultCodec implements AnalysisResultCodec {
-  static final int FORMAT_VERSION = 5;
+  static final int FORMAT_VERSION = 6;
   private final JsonCodec codec;
   private final JsonDependencyCodec dependencies;
 
@@ -104,6 +105,8 @@ public final class JsonAnalysisResultCodec implements AnalysisResultCodec {
     public Integer column;
     public String helpUri;
     public List<StepDto> path;
+    public String confidence;
+    public List<String> assumptions;
 
     static FindingDto from(final AnalysisFinding finding) {
       final FindingDto dto = new FindingDto();
@@ -115,6 +118,8 @@ public final class JsonAnalysisResultCodec implements AnalysisResultCodec {
       dto.column = finding.column();
       dto.helpUri = finding.helpUri();
       dto.path = finding.path().stream().map(StepDto::from).toList();
+      dto.confidence = finding.confidence() == null ? null : finding.confidence().name();
+      dto.assumptions = finding.assumptions();
       return dto;
     }
 
@@ -130,7 +135,9 @@ public final class JsonAnalysisResultCodec implements AnalysisResultCodec {
           line,
           column,
           helpUri,
-          path == null ? List.of() : path.stream().map(StepDto::toStep).toList()
+          path == null ? List.of() : path.stream().map(StepDto::toStep).toList(),
+          confidence == null ? null : Confidence.valueOf(confidence),
+          assumptions == null ? List.of() : assumptions
       );
     }
   }

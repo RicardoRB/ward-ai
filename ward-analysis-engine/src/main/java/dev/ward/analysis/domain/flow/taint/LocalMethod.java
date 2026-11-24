@@ -119,6 +119,15 @@ record LocalMethod(
         .collect(Collectors.toSet());
   }
 
+  /** The {@code name/arity} keys of every body of the graphs, with or without an owner. */
+  static Set<String> declared(final List<ControlFlowGraph> graphs) {
+    return graphs.stream()
+        .map(LocalMethod::parse)
+        .flatMap(Optional::stream)
+        .map(method -> key(method.name(), method.arity()))
+        .collect(Collectors.toSet());
+  }
+
   /** Returns the method with another graph for its body. */
   LocalMethod withGraph(final ControlFlowGraph replaced) {
     return new LocalMethod(name, owner, arity, replaced, external, bare);

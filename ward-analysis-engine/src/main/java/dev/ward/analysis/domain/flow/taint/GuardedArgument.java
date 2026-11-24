@@ -16,6 +16,7 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -112,30 +113,50 @@ record GuardedArgument(BasicBlock block, Span span, List<Span> clean) {
     return true;
   }
 
-  /** The taint that reaches the argument: a source written in it, or a tainted read. */
+  /**
+   * The taint that reaches the argument: a source written in it, or a tainted read; a proven flow
+   * wins over an assumed one.
+   */
   Optional<Taint> taint(
       final ReachingDefinitions reaching,
       final Map<AccessSite,
       Taint> origins,
       final TaintSpec spec
   ) {
-    return directSource(spec).or(() -> fromReads(reaching, origins, spec));
+    final Optional<Taint> direct = directSource(spec);
+    if (direct.isPresent() && direct.get().proven()) {
+      return direct;
+    }
+    final Optional<Taint> read = fromReads(reaching, origins, spec);
+    return direct.isPresent() && read.isPresent()
+        ? Optional.of(Taint.better(direct.get(), read.get()))
+        : direct.or(() -> read);
   }
 
   /** A source call written directly in the argument, such as {@code sink(source())}. */
   private Optional<Taint> directSource(final TaintSpec spec) {
     return block.sites().stream()
-        .filter(site -> TaintSpans.contains(span, site.span()))
-        .filter(site -> !isClean(site.span()))
-        .filter(site -> site.kind() != FlowSiteKind.PARAMETER)
-        .filter(site -> site.kind() != FlowSiteKind.LITERAL || site.span().equals(span))
-        .filter(site -> TaintSpans.sourceOf(site, spec).isPresent())
-        .filter(site -> !TaintSpans.sanitized(block, site.span(), spec))
-        .findFirst()
-        .map(
-            site ->
-                new Taint(site.name(), List.of(new FlowStep(site.span(), "source: " + site.name())))
-        );
+        .flatMap(site -> directEntry(site, spec).map(entry -> sourceTaint(site, entry)).stream())
+        .reduce(Taint::better);
+  }
+
+  private Taint sourceTaint(final FlowSite site, final TaintEntry entry) {
+    return new Taint(
+        site.name(),
+        List.of(new FlowStep(site.span(), "source: " + site.name())),
+        entry.assumptions()
+    ).assuming(UnfollowedCalls.through(block, span, site.span()));
+  }
+
+  private Optional<TaintEntry> directEntry(final FlowSite site, final TaintSpec spec) {
+    if (!TaintSpans.contains(span, site.span())
+        || isClean(site.span())
+        || site.kind() == FlowSiteKind.PARAMETER
+        || site.kind() == FlowSiteKind.LITERAL && !site.span().equals(span)
+        || TaintSpans.sanitized(block, site.span(), spec)) {
+      return Optional.empty();
+    }
+    return TaintSpans.sourceOf(site, spec);
   }
 
   /**
@@ -148,24 +169,33 @@ record GuardedArgument(BasicBlock block, Span span, List<Span> clean) {
       Taint> origins,
       final TaintSpec spec
   ) {
-    for (final AccessSite use : reaching.uses()) {
-      final Span read = use.access().span();
-      if (use.block() == block.id()
-          && use.access().kind() == AccessKind.READ
-          && !isClean(read)
-          && TaintSpans.contains(span, read)
-          && !TaintSpans.sanitized(block, read, spec)) {
-        final Optional<Taint> taint =
-            reaching.reaching(use).stream()
-                .map(origins::get)
-                .filter(t -> t != null)
-                .findFirst();
-        if (taint.isPresent()) {
-          return taint;
-        }
-      }
-    }
-    return Optional.empty();
+    return reaching.uses().stream()
+        .filter(use -> taintedRead(use, spec))
+        .flatMap(use -> readTaint(reaching, origins, use).stream())
+        .reduce(Taint::better);
+  }
+
+  private boolean taintedRead(final AccessSite use, final TaintSpec spec) {
+    final Span read = use.access().span();
+    return use.block() == block.id()
+        && use.access().kind() == AccessKind.READ
+        && !isClean(read)
+        && TaintSpans.contains(span, read)
+        && !TaintSpans.sanitized(block, read, spec);
+  }
+
+  private Optional<Taint> readTaint(
+      final ReachingDefinitions reaching,
+      final Map<AccessSite,
+      Taint> origins,
+      final AccessSite use
+  ) {
+    final Span read = use.access().span();
+    return reaching.reaching(use).stream()
+        .map(origins::get)
+        .filter(Objects::nonNull)
+        .reduce(Taint::better)
+        .map(found -> found.assuming(UnfollowedCalls.through(block, span, read)));
   }
 
   /** Reports whether a span lies inside a clean part. */
