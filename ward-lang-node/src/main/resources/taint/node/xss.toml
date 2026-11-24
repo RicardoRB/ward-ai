@@ -17,24 +17,28 @@ kind = "call"
 name = "write"
 qualifier = "res"
 arguments = [0]
+except-calls = ["JSON.stringify"]
 
 [[sinks]]
 kind = "call"
 name = "write"
 qualifier = "response"
 arguments = [0]
+except-calls = ["JSON.stringify"]
 
 [[sinks]]
 kind = "call"
 name = "end"
 qualifier = "res"
 arguments = [0]
+except-calls = ["JSON.stringify"]
 
 [[sinks]]
 kind = "call"
 name = "end"
 qualifier = "response"
 arguments = [0]
+except-calls = ["JSON.stringify"]
 
 [[sinks]]
 kind = "call"

@@ -10,6 +10,7 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ### Fixed
 
+- The taint analysis follows an arrow function whose body is one expression (`const pageOf = (url) => Number(url) || 1`) like a function with a `return`, so a sanitizer inside it is seen at the call (#742).
 - `ward:swift/final-test-case` no longer reports a test case class that another class of the project inherits from, since a base class cannot be final (#755).
 - `ward:python/path-injection` and `ward:python/template-injection` treat a name as clean inside `if name in names:` and past `if name not in names:` when that branch exits, only when `names` is a literal of constants, a name bound once to one, or the listing of a directory (#734; the `send_file(output)` lines stay listed).
 - `ward:python/unused-function`, `unused-class`, `unused-method` and `unused-property` count the words of `*.html`, `*.jinja`, `*.jinja2`, `*.j2` and `*.txt` files as used names, so members that only a template reads are not reported (#728, #729).

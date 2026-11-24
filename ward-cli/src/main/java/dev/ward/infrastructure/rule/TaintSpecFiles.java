@@ -40,12 +40,13 @@ final class TaintSpecFiles {
   private static final String ARGUMENTS = "arguments";
   private static final String FROM = "from";
   private static final String PATTERN = "pattern";
+  private static final String EXCEPT_CALLS = "except-calls";
   private static final String STRING = "string";
   private static final String LITERAL = "literal";
   private static final String QUERY_PART = "query-part";
   private static final Set<String> TABLES = Set.of(SOURCES, SINKS, SANITIZERS, PROPAGATORS);
   private static final Set<String> KEYS =
-      Set.of(KIND, NAME, RECEIVER, QUALIFIER, ARGUMENTS, FROM, PATTERN);
+      Set.of(KIND, NAME, RECEIVER, QUALIFIER, ARGUMENTS, FROM, PATTERN, EXCEPT_CALLS);
   private static final Map<String, FlowSiteKind> KINDS =
       Map.of(
           "call",
@@ -189,8 +190,30 @@ final class TaintSpecFiles {
         text(where, entry, NAME),
         optional(where, entry, RECEIVER),
         optional(where, entry, QUALIFIER),
-        arguments
+        arguments,
+        Optional.empty(),
+        exceptCalls(where, table, entry)
     );
+  }
+
+  /** The calls that a sink treats as a safe value when one is its whole argument. */
+  private static List<String> exceptCalls(
+      final String where,
+      final String table,
+      final TomlTable entry
+  ) {
+    if (!entry.contains(EXCEPT_CALLS)) {
+      return List.of();
+    }
+    final TomlArray array = entry.getArray(EXCEPT_CALLS);
+    if (!SINKS.equals(table) || array == null) {
+      throw new RuleConfigurationException(where + " names except-calls, which only sinks take");
+    }
+    final List<String> calls = new ArrayList<>();
+    for (int index = 0; index < array.size(); index++) {
+      calls.add(array.getString(index));
+    }
+    return calls;
   }
 
   /** A string sink or literal source matches the literal text of its site against its pattern. */
@@ -207,7 +230,8 @@ final class TaintSpecFiles {
           Optional.empty(),
           Optional.empty(),
           List.of(),
-          Optional.of(Pattern.compile(pattern))
+          Optional.of(Pattern.compile(pattern)),
+          List.of()
       );
     } catch (final PatternSyntaxException exception) {
       throw new RuleConfigurationException(where + " has an invalid pattern", exception);

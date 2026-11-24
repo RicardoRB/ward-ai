@@ -26,6 +26,8 @@ import java.util.regex.Pattern;
  *     *.environment()}
  * @param arguments the argument positions a sink guards; empty for other entries
  * @param pattern the literal-text pattern of a string entry, matched with {@code find}
+ * @param exceptCalls for a sink: the calls, written {@code Qualifier.name}, whose result is a safe
+ *     value when it is the whole guarded argument, such as {@code JSON.stringify}
  */
 public record TaintEntry(
     FlowSiteKind kind,
@@ -33,7 +35,8 @@ public record TaintEntry(
     Optional<String> receiver,
     Optional<String> qualifier,
     List<Integer> arguments,
-    Optional<Pattern> pattern
+    Optional<Pattern> pattern,
+    List<String> exceptCalls
 ) {
   private static final String ANY_PREFIX = "*";
   private static final Pattern CHAIN_SEPARATOR = Pattern.compile("\\??\\.");
@@ -56,7 +59,7 @@ public record TaintEntry(
       final Optional<String> qualifier,
       final List<Integer> arguments
   ) {
-    this(kind, name, receiver, qualifier, arguments, Optional.empty());
+    this(kind, name, receiver, qualifier, arguments, Optional.empty(), List.of());
   }
 
   /**
@@ -71,6 +74,18 @@ public record TaintEntry(
     Objects.requireNonNull(qualifier, "qualifier");
     Objects.requireNonNull(pattern, "pattern");
     arguments = List.copyOf(Objects.requireNonNull(arguments, "arguments"));
+    exceptCalls = List.copyOf(Objects.requireNonNull(exceptCalls, "exceptCalls"));
+  }
+
+  /**
+   * Reports whether a site is a call that this sink exempts: one of {@code exceptCalls}.
+   *
+   * @param site the call that is the whole guarded argument
+   * @return true when the call is named by an {@code Qualifier.name} entry
+   */
+  public boolean exempts(final FlowSite site) {
+    final String call = site.qualifier().isEmpty() ? site.name() : site.qualifier() + "." + site.name();
+    return site.kind() == FlowSiteKind.CALL && exceptCalls.contains(call);
   }
 
   /**

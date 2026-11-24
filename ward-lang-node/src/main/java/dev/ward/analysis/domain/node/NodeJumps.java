@@ -1,8 +1,10 @@
 package dev.ward.analysis.domain.node;
 
 import dev.ward.analysis.domain.ir.ControlFlowBuilder;
+import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Lowers the statements that leave a TypeScript or JavaScript block: return, throw, break,
@@ -30,6 +32,15 @@ final class NodeJumps {
     }
     flow.tries().returnFrom();
     return true;
+  }
+
+  /** Lowers the body of an expression-bodied arrow function as the {@code return} it stands for. */
+  void returnValue(final SyntaxNode expression) {
+    final Span span = expression.span();
+    final SyntaxNode keyword = new SyntaxNode("token", span, Map.of("text", "return"), List.of());
+    final SyntaxNode value =
+        new SyntaxNode("expressionSequence", span, Map.of(), List.of(expression));
+    returnStatement(new SyntaxNode("returnStatement", span, Map.of(), List.of(keyword, value)));
   }
 
   boolean throwStatement(final SyntaxNode part) {

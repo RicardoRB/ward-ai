@@ -24,7 +24,8 @@ class TaintStringEntryTest {
             Optional.empty(),
             Optional.empty(),
             List.of(),
-            Optional.of(Pattern.compile("<[a-zA-Z]"))
+            Optional.of(Pattern.compile("<[a-zA-Z]")),
+            List.of()
         );
 
     assertThat(entry.matches(stringBuild("<p></p>"))).isTrue();
