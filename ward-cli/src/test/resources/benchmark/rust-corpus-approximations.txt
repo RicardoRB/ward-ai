@@ -1,5 +1,1 @@
 # rule | file:line | reason | open issue. A finding labelled fp fails RustCorpusSmokeTest unless it is listed here.
-ward:rust/get-first | ripgrep/crates/matcher/tests/test_matcher.rs:103 | the receiver is a Captures value, not a slice | #761
-ward:rust/get-first | ripgrep/crates/matcher/tests/test_matcher.rs:118 | the receiver is a Captures value, not a slice | #761
-ward:rust/get-first | ripgrep/crates/matcher/tests/test_matcher.rs:138 | the receiver is a Captures value, not a slice | #761
-ward:rust/get-first | ripgrep/crates/printer/src/util.rs:572 | the receiver is a Captures value, not a slice | #761

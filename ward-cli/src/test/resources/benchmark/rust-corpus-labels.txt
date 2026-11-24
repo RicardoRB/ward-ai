@@ -23,10 +23,8 @@ ward:rust/expect-used | tokio/tokio/src/net/unix/split_owned.rs:79 | tp | the co
 ward:rust/expect-used | tokio/tokio/tests/process_issue_8042.rs:121 | tp | the code at the line is what the rule describes
 ward:rust/expect-used | tokio/tokio/tests/udp.rs:69 | tp | the code at the line is what the rule describes
 ward:rust/get-first | ripgrep/crates/globset/src/glob.rs:357 | tp | the code at the line is what the rule describes
-ward:rust/get-first | ripgrep/crates/matcher/tests/test_matcher.rs:103 | fp | the receiver is a Captures value, not a slice
-ward:rust/get-first | ripgrep/crates/matcher/tests/test_matcher.rs:118 | fp | the receiver is a Captures value, not a slice
-ward:rust/get-first | ripgrep/crates/matcher/tests/test_matcher.rs:138 | fp | the receiver is a Captures value, not a slice
-ward:rust/get-first | ripgrep/crates/printer/src/util.rs:572 | fp | the receiver is a Captures value, not a slice
+ward:rust/get-first | ripgrep/crates/globset/src/glob.rs:467 | tp | the code at the line is what the rule describes
+ward:rust/get-first | ripgrep/crates/globset/src/glob.rs:514 | tp | the code at the line is what the rule describes
 ward:rust/get-first | ripgrep/crates/searcher/src/line_buffer.rs:546 | tp | the code at the line is what the rule describes
 ward:rust/identity-op | ripgrep/crates/printer/src/jsont.rs:244 | tp | the code at the line is what the rule describes
 ward:rust/inline-always | ripgrep/crates/ignore/src/walk.rs:1135 | tp | the code at the line is what the rule describes
