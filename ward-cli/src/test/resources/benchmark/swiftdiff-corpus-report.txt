@@ -4,7 +4,7 @@
 # The cost of the run is in swiftdiff-corpus-cost.txt.
 # Regenerate: ./mvnw -pl ward-cli -am -Dtest=SwiftDiffCorpusSmokeTest -Dward.corpus.swiftdiff=<dir> -Djacoco.skip=true -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
 vapor | files 295 | not analysed 0
-rules 183 | not run (need type facts) 1 | findings 8192
+rules 183 | not run (need type facts) 1 | findings 8189
 ward:swift/abbreviation-as-word-in-name | findings 177 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/annotation-location | findings 46 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/array-init | findings 2 | labelled 0 | tp 0 | fp 0 | un 0
@@ -41,7 +41,7 @@ ward:swift/duplicate-code | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/duplicate-conditions | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/duplicate-enum-cases | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/duplicate-imports | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:swift/duplicated-key-in-dictionary-literal | findings 5 | labelled 0 | tp 0 | fp 0 | un 0
+ward:swift/duplicated-key-in-dictionary-literal | findings 2 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/dynamic-inline | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/empty-catch-block | findings 8 | labelled 0 | tp 0 | fp 0 | un 0
 ward:swift/empty-collection-literal | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
