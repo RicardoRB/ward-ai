@@ -756,8 +756,8 @@ classOrInterfaceType
     ;
 
 creator
-    : nonWildcardTypeArguments? createdName classCreatorRest
-    | createdName arrayCreatorRest
+    : nonWildcardTypeArguments? annotation* createdName classCreatorRest
+    | annotation* createdName arrayCreatorRest
     ;
 
 createdName
@@ -770,8 +770,8 @@ innerCreator
     ;
 
 arrayCreatorRest
-    : ('[' ']')+ arrayInitializer
-    | ('[' expression ']')+ ('[' ']')*
+    : (annotation* '[' ']')+ arrayInitializer
+    | (annotation* '[' expression ']')+ (annotation* '[' ']')*
     ;
 
 classCreatorRest
