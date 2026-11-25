@@ -193,18 +193,15 @@ message = "random is not for security; use secrets"
 [[rules]]
 id = "ward:python/hashlib-insecure-hash-function"
 language = "python"
-capability = "SYNTAX"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["strict"]
+options.min-confidence = { type = "enum", values = ["proven", "possible"] }
 body = '''
-check = "forbidden-node"
-kinds = ["atom_expr"]
+check = "weak-digest"
+min-confidence = "proven"
 sources = "main"
-# A digest that is only the stem of a file name, as in md5(data).hexdigest() + ".bin", protects nothing.
-ancestor-kinds = ["expr_stmt", "return_stmt"]
-not-ancestor-text = '(?:hexdigest|digest)\(\)\+[\x22\x27][^\x22\x27]*\.[A-Za-z0-9]+[\x22\x27]'
-text = "^hashlib\\.(md5|sha1)\\((?![^)]*usedforsecurity=False)"
 message = "insecure hash function; use sha256 or pass usedforsecurity=False"
 '''
 

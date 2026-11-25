@@ -44,7 +44,8 @@ final class PythonFixtureFrontends {
                 RuleCapability.SYMBOLS,
                 RuleCapability.CFG,
                 RuleCapability.DATAFLOW,
-                RuleCapability.SCOPES
+                RuleCapability.SCOPES,
+                RuleCapability.TAINT
             ),
             new PythonControlFlow(),
             new CachedScopes(new PythonScopes(builtins()))

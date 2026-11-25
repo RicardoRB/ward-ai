@@ -70,7 +70,7 @@ ward:python/function-length | CTFd/api/v1/challenges.py:146 | tp | the function 
 ward:python/function-length | CTFd/api/v1/challenges.py:335 | tp | the function holds more lines than the limit
 ward:python/function-redefined | tests/test_config.py:34 | tp | the same class name is defined again in one function scope; Pylint reports it even when the first class is used in between
 ward:python/function-redefined | tests/test_config.py:46 | tp | the same class name is defined again in one function scope; Pylint reports it even when the first class is used in between
-ward:python/hashlib-insecure-hash-function | CTFd/utils/uploads/__init__.py:76 | fp | the digest names an uploaded file, it protects nothing
+ward:python/hashlib-insecure-hash-function | CTFd/cache/__init__.py:122 | fp | the digest is the key of a memoized call and its callers are in other files, it protects nothing
 ward:python/hidden-field | CTFd/admin/__init__.py:79 | tp | the name hides a module-level name
 ward:python/hidden-field | CTFd/api/v1/comments.py:87 | tp | the name hides a module-level name
 ward:python/hidden-field | CTFd/api/v1/comments.py:132 | tp | the name hides a module-level name
