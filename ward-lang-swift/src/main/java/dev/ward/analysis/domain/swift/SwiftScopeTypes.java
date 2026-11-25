@@ -98,7 +98,7 @@ final class SwiftScopeTypes {
       walk.generic(node);
     } else {
       walk.declare(name, kind, false, false);
-      node.children().stream().filter(c -> !c.equals(name)).forEach(walk.closures::bodyOrAccessors);
+      node.children().stream().filter(c -> !c.equals(name)).forEach(walk::visit);
     }
     walk.declaring = outer;
   }
