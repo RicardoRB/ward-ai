@@ -510,6 +510,20 @@ name = "org.springframework.web.bind.annotation.CookieValue"
 kind = "parameter"
 name = "org.springframework.web.bind.annotation.ModelAttribute"
 
+# An entity that a handler binds from the request is edited by the user, so the getters of its type
+# are untrusted wherever the project reads them, also on an instance that was stored and loaded again.
+# That step is assumed, not proved, so such a flow is possible (see "getters" in the taint reference).
+
+[[sources]]
+kind = "parameter"
+name = "org.springframework.web.bind.annotation.RequestBody"
+qualifier = "getters"
+
+[[sources]]
+kind = "parameter"
+name = "org.springframework.web.bind.annotation.ModelAttribute"
+qualifier = "getters"
+
 # Values that the process takes in from outside the program: the environment, system properties,
 # standard input, network sockets, database results, property files and files (CWE-20).
 

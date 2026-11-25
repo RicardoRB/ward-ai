@@ -11,7 +11,7 @@ import java.util.Optional;
 /**
  * Finds the flow sites of the formal or lambda parameters of one Java body. Each parameter's
  * declared type is recorded for the receiver types of later calls, and each annotated parameter is
- * a site that carries the annotation names.
+ * a site that carries the annotation names and the resolved type of the parameter.
  */
 final class JavaParameterSites {
   private static final String ANNOTATION = "annotation";
@@ -55,7 +55,8 @@ final class JavaParameterSites {
       return;
     }
     final String name = JavaFlowSyntax.text(JavaSyntaxNames.identifierOf(id));
-    declareType(name, JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(formal), TYPE_TYPE));
+    final SyntaxNode type = JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(formal), TYPE_TYPE);
+    declareType(name, type);
     final List<String> annotations = annotationsOf(formal);
     if (!annotations.isEmpty()) {
       found.add(
@@ -63,7 +64,7 @@ final class JavaParameterSites {
               FlowSiteKind.PARAMETER,
               name,
               "",
-              Optional.empty(),
+              type == null ? Optional.empty() : types.resolve(JavaFlowSyntax.text(type)),
               annotations,
               List.of(),
               formal.span()

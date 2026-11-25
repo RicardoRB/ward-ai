@@ -10,7 +10,9 @@ import java.util.regex.Pattern;
 
 /**
  * Finds, by the text of the Java units, which files name a type after {@code extends} or {@code
- * implements}, by the simple name of that type. It over-approximates (a comment can match), which
+ * implements}, and which files bind a type from the request with a {@code @RequestBody} or
+ * {@code @ModelAttribute} parameter (the getters of such a type are assumed sources, see the taint
+ * {@code BoundGetters}), by the simple name of that type. It over-approximates (a comment can match), which
  * only widens the files a taint run reads; the supertype graphs of the lowering decide the dispatch.
  */
 final class Subtypes {
@@ -18,6 +20,11 @@ final class Subtypes {
   private static final Pattern CLAUSE =
       Pattern.compile(
           "\\b(?:extends|implements)\\s+([\\w$.,\\s<>?]+?)\\s*(?:\\{|\\bimplements\\b|\\bpermits\\b)"
+      );
+  private static final Pattern BINDING =
+      Pattern.compile(
+          "@(?:RequestBody|ModelAttribute)\\b(?:\\([^)]*\\))?\\s+(?:(?:@[\\w.]+(?:\\([^)]*\\))?|final)\\s+)*"
+              + "([\\w$]+)"
       );
   private static final Pattern NAME = Pattern.compile("([\\w$]+)\\s*(?:<[^>]*>)?\\s*(?:,|$)");
 
@@ -29,6 +36,7 @@ final class Subtypes {
     for (final SourceUnit unit : units.values()) {
       if (unit.path().endsWith(JAVA)) {
         names(unit.text()).forEach(name -> add(found, name, unit.path()));
+        bound(unit.text()).forEach(name -> add(found, name, unit.path()));
       }
     }
     return found;
@@ -41,6 +49,15 @@ final class Subtypes {
       final String path
   ) {
     found.computeIfAbsent(name, key -> new TreeSet<>()).add(path);
+  }
+
+  private static Set<String> bound(final String text) {
+    final Set<String> names = new TreeSet<>();
+    final Matcher binding = BINDING.matcher(text);
+    while (binding.find()) {
+      names.add(binding.group(1));
+    }
+    return names;
   }
 
   private static Set<String> names(final String text) {

@@ -18,6 +18,11 @@ import java.util.regex.Pattern;
  * every value part of that site. A literal entry matches a literal whose text matches its {@code
  * pattern}.
  *
+ * <p>A parameter entry whose {@code qualifier} is {@code getters} also makes the getters of the
+ * parameter's type sources wherever the project reads them, as an assumed flow (see {@code
+ * BoundGetters}). A call entry whose {@code name} ends with {@code *} matches a call without
+ * arguments whose name starts with the rest and is longer than it.
+ *
  * @param kind the kind of site the entry matches
  * @param name the called name, the member name, or the annotation of a parameter
  * @param receiver the receiver type the site must have, when the entry names one
@@ -134,7 +139,17 @@ public record TaintEntry(
     if (kind == FlowSiteKind.PARAMETER) {
       return site.annotations().stream().anyMatch(name::equals);
     }
-    return name.equals(site.name()) && receiverMatches(site);
+    return nameMatches(site) && receiverMatches(site);
+  }
+
+  private boolean nameMatches(final FlowSite site) {
+    if (!name.endsWith(ANY_PREFIX)) {
+      return name.equals(site.name());
+    }
+    final String prefix = name.substring(0, name.length() - ANY_PREFIX.length());
+    return site.arguments().isEmpty()
+        && site.name().startsWith(prefix)
+        && site.name().length() > prefix.length();
   }
 
   private boolean receiverMatches(final FlowSite site) {

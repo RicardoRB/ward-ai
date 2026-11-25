@@ -63,3 +63,18 @@ class GeneratorNear {
     new File("/data/fixed");
   }
 }
+
+// An entity that is loaded again after a handler bound its type is only possibly user-edited, so
+// it is not reported unless min-confidence is "possible" (see violating-entity.java).
+class StoredController {
+  void save(@RequestBody Stored stored) {}
+}
+
+class StoredService {
+  private final StoredMapper mapper = new StoredMapper();
+
+  File target(String name) {
+    Stored stored = mapper.selectByName(name);
+    return new File(stored.getGenPath());
+  }
+}

@@ -38,8 +38,11 @@ Untrusted values come from:
 - Spring MVC handler parameters annotated `@RequestParam`, `@PathVariable`, `@RequestHeader`,
   `@RequestBody`, `@CookieValue` or `@ModelAttribute`, when the annotation is imported by name. The
   values that the getters of a bound entity return are untrusted too, in the handler and in the
-  methods of the file that receive the entity or the value. An entity that a repository or mapper
-  loads in another class is not tracked back to the request that edited it.
+  methods of the file that receive the entity or the value. The getters (`getX()` without arguments)
+  of a type that a `@RequestBody` or `@ModelAttribute` parameter binds anywhere in the project are
+  also sources where other classes read them, for example in a service that loads the entity again
+  from a database. That a stored entity still holds what a request set is assumed, so such a flow
+  has the confidence `possible` and is reported only with `min-confidence = "possible"`.
 
 ## Sinks
 
