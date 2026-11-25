@@ -62,9 +62,14 @@ final class GuardedGraphs {
 
   /** A call that sets a JSON content type on the response. */
   static FlowSite typed(final String qualifier, final int offset) {
+    return typed("json", qualifier, offset);
+  }
+
+  /** A call that sets a content type of the kind on the response. */
+  static FlowSite typed(final String kind, final String qualifier, final int offset) {
     return new FlowSite(
         FlowSiteKind.CONTENT_TYPE,
-        "json",
+        kind,
         qualifier,
         Optional.empty(),
         List.of(),

@@ -1,44 +1,47 @@
 # HTML sinks: markup written to a response or the document, and code that evaluates a string.
+# A response sink also exempts its value when the response is typed text/plain and carries nosniff.
 
 [[sinks]]
 kind = "call"
 name = "send"
 qualifier = "res"
 arguments = [0]
+except-calls = ["<text-response>"]
 
 [[sinks]]
 kind = "call"
 name = "send"
 qualifier = "response"
 arguments = [0]
+except-calls = ["<text-response>"]
 
 [[sinks]]
 kind = "call"
 name = "write"
 qualifier = "res"
 arguments = [0]
-except-calls = ["JSON.stringify"]
+except-calls = ["JSON.stringify", "<text-response>"]
 
 [[sinks]]
 kind = "call"
 name = "write"
 qualifier = "response"
 arguments = [0]
-except-calls = ["JSON.stringify"]
+except-calls = ["JSON.stringify", "<text-response>"]
 
 [[sinks]]
 kind = "call"
 name = "end"
 qualifier = "res"
 arguments = [0]
-except-calls = ["JSON.stringify"]
+except-calls = ["JSON.stringify", "<text-response>"]
 
 [[sinks]]
 kind = "call"
 name = "end"
 qualifier = "response"
 arguments = [0]
-except-calls = ["JSON.stringify"]
+except-calls = ["JSON.stringify", "<text-response>"]
 
 [[sinks]]
 kind = "call"

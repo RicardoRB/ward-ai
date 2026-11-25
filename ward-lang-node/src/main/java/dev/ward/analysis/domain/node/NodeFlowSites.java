@@ -183,7 +183,7 @@ final class NodeFlowSites implements FlowSites {
     if (isMember(calleeParts)) {
       found.add(siteOf(FlowSiteKind.CALL, callee, calleeParts, values));
       NodeKeyedReads.mapGet(types, calleeParts, values).ifPresent(found::add);
-      NodeContentTypes.of(callee, calleeParts, values).ifPresent(found::add);
+      found.addAll(NodeContentTypes.of(callee, calleeParts, values));
     } else {
       final String written = NodeFlowSyntax.text(callee);
       found.add(

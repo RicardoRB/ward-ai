@@ -85,7 +85,9 @@ public final class TaintFile {
     if (methods.isEmpty()) {
       return new Prepared(dispatched.stream().map(unfollowed::apply).toList(), spec);
     }
-    final UnaryOperator<ControlFlowGraph> guards = GuardedCalls.over(methods);
+    final UnaryOperator<ControlFlowGraph> checks = GuardedCalls.over(methods);
+    final UnaryOperator<ControlFlowGraph> types = TypedCalls.over(methods);
+    final UnaryOperator<ControlFlowGraph> guards = graph -> types.apply(checks.apply(graph));
     methods.replaceAll(
         (key, method) -> method.withGraph(unfollowed.apply(guards.apply(method.graph())))
     );
