@@ -212,7 +212,7 @@ final class GuardedCalls {
    * Whether control can reach the exit without passing the block and without throwing. A throw
    * ends in the exit through an exception edge, so only the other edges to the exit count.
    */
-  private static boolean returnsAround(final ControlFlowGraph graph, final int guard) {
+  static boolean returnsAround(final ControlFlowGraph graph, final int guard) {
     final Set<Integer> seen = new HashSet<>();
     final Deque<Integer> pending = new ArrayDeque<>(List.of(graph.entry()));
     while (!pending.isEmpty()) {

@@ -72,6 +72,11 @@ from = ["receiver", 0]
   with `application/json`), so only the arguments of that call are clean; a string built around it,
   a call chained on it or taint elsewhere in the argument is still reported. TypeScript and
   JavaScript provide the content-type sites.
+- The marker `"<text-response>"` in `except-calls` makes the whole guarded argument clean when the
+  same response was given the content type `text/plain` and the header `X-Content-Type-Options:
+  nosniff` before the sink on every path, and nothing else set another content type, a type that is
+  not a literal, or removed one of the two headers. A function that does this on every path to a
+  parameter counts for the response its caller passes it.
 - TypeScript and JavaScript treat a value that an allow-list accepted as clean: `LIST.includes(x)`
   or `LIST.has(x)` where `LIST` is a literal array or a constant table of the file, inside the
   branch that holds, past a branch that exits when it does not, and in `LIST.includes(x) ? x :

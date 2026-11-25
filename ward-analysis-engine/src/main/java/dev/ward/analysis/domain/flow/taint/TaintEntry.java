@@ -49,6 +49,8 @@ public record TaintEntry(
   private static final String ANY_PREFIX = "*";
   /** A qualifier that matches only a call written without a receiver, such as {@code exec(x)}. */
   private static final String UNQUALIFIED = "<none>";
+  /** The {@code except-calls} marker of a sink that a plain-text, {@code nosniff} response makes safe. */
+  static final String TEXT_RESPONSE = "<text-response>";
   private static final Pattern CHAIN_SEPARATOR = Pattern.compile("\\??\\.");
 
   /**
@@ -105,6 +107,16 @@ public record TaintEntry(
     arguments = List.copyOf(Objects.requireNonNull(arguments, "arguments"));
     exceptCalls = List.copyOf(Objects.requireNonNull(exceptCalls, "exceptCalls"));
     assumptions = List.copyOf(Objects.requireNonNull(assumptions, "assumptions"));
+  }
+
+  /**
+   * Reports whether the sink writes nothing that can run as markup when its response is typed as
+   * plain text and carries {@code nosniff}: its {@code exceptCalls} hold {@value #TEXT_RESPONSE}.
+   *
+   * @return true when such a response makes every value of the sink harmless
+   */
+  public boolean safeInTextResponse() {
+    return exceptCalls.contains(TEXT_RESPONSE);
   }
 
   /**

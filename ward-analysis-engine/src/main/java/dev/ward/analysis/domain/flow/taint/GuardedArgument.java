@@ -28,6 +28,12 @@ import java.util.Set;
  * @param clean the spans whose sources and reads do not count
  */
 record GuardedArgument(BasicBlock block, Span span, List<Span> clean) {
+  /** The names of the content type sites that a frontend gives. */
+  static final String JSON = "json";
+  static final String PLAIN = "plain";
+  static final String NOSNIFF = "nosniff";
+  static final String OTHER = "other";
+
   GuardedArgument {
     clean = List.copyOf(clean);
   }
@@ -51,7 +57,10 @@ record GuardedArgument(BasicBlock block, Span span, List<Span> clean) {
       final Span span,
       final TaintEntry entry
   ) {
-    if (entry.exceptCalls().isEmpty() || !typedBefore(state.graph(), block, sink)) {
+    if (entry.safeInTextResponse() && typedText(state.graph(), block, sink)) {
+      return new GuardedArgument(block, span, List.of(span));
+    }
+    if (entry.exceptCalls().isEmpty() || !typedBefore(state.graph(), block, sink, JSON)) {
       return plain(block, span);
     }
     final FlowSite longest =
@@ -68,17 +77,44 @@ record GuardedArgument(BasicBlock block, Span span, List<Span> clean) {
   }
 
   /**
-   * Whether a call that sets a JSON content type on the response of the sink is made before it on
-   * every path: earlier in its block, or in a block that every path to its block passes.
+   * Whether the response of the sink is plain text that a browser may not sniff: calls that set
+   * {@code text/plain} and {@code nosniff} on it run before the sink on every path, and nothing in
+   * the body gives it another content type, removes a header or sets a type that is not a literal.
    */
-  private static boolean typedBefore(
+  private static boolean typedText(
       final ControlFlowGraph graph,
       final BasicBlock block,
       final FlowSite sink
   ) {
+    final boolean otherType =
+        graph.blocks().stream()
+            .flatMap(other -> other.sites().stream())
+            .anyMatch(
+                site ->
+                    site.kind() == FlowSiteKind.CONTENT_TYPE
+                        && site.qualifier().equals(sink.qualifier())
+                        && (site.name().equals(OTHER) || site.name().equals(JSON))
+            );
+    return !otherType
+        && typedBefore(graph, block, sink, PLAIN)
+        && typedBefore(graph, block, sink, NOSNIFF);
+  }
+
+  /**
+   * Whether a call that sets a content type of the given kind on the response of the sink is made
+   * before it on every path: earlier in its block, or in a block that every path to its block
+   * passes.
+   */
+  private static boolean typedBefore(
+      final ControlFlowGraph graph,
+      final BasicBlock block,
+      final FlowSite sink,
+      final String kind
+  ) {
     for (final BasicBlock other : graph.blocks()) {
       for (final FlowSite site : other.sites()) {
         if (site.kind() == FlowSiteKind.CONTENT_TYPE
+            && site.name().equals(kind)
             && site.qualifier().equals(sink.qualifier())
             && (other.id() == block.id()
                 ? site.span().startOffset() < sink.span().startOffset()
