@@ -8,6 +8,10 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+## [0.12.1] - 2026-11-25
+
+The `strict` preset reports fewer false positives in every language (#726): each one found by the pinned corpora is now a passing fixture or is listed with an issue, taint findings carry a confidence, and the differential corpus covers Python, TypeScript/JavaScript and Swift.
+
 ### Added
 
 - The differential corpus covers Python, TypeScript/JavaScript and Swift (#760): the full-stack FastAPI template, NestJS and Vapor are pinned in `corpus/archives.txt`, measured with the `strict` preset by three new corpus smoke tests, and `diff-findings.sh` and the `corpus-diff` job accept `python`, `node` and `swift`. The three false-positive causes and ten parser gaps it found are open as issues and listed in the corpus files.
