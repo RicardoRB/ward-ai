@@ -16,6 +16,7 @@ import java.util.stream.Stream;
  * @param known the {@code Owner#name/arity} keys of the methods of the file and of other files
  * @param index the methods of other files, by key
  * @param implementors the subtypes of the types the graphs record
+ * @param bound the types of the annotated parameters of the graphs, by annotation
  * @param declared the {@code name/arity} keys of every body of the file and of other files
  */
 record TaintContext(
@@ -23,7 +24,9 @@ record TaintContext(
     Map<String,
     LocalMethod> index,
     Implementors implementors,
-    Set<String> declared
+    Set<String> declared,
+    Map<String,
+    Set<String>> bound
 ) {
   /** Reads the context of a file with its own graphs and those of the files it depends on. */
   static TaintContext of(
@@ -39,7 +42,8 @@ record TaintContext(
         known,
         LocalMethod.indexExternal(externals),
         Implementors.of(Stream.concat(graphs.stream(), related.stream()).toList()),
-        LocalMethod.declared(Stream.concat(graphs.stream(), related.stream()).toList())
+        LocalMethod.declared(Stream.concat(graphs.stream(), related.stream()).toList()),
+        BoundGetters.typesOf(graphs, related)
     );
   }
 }

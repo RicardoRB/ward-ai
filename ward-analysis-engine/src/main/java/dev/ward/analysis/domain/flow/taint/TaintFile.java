@@ -75,8 +75,9 @@ public final class TaintFile {
   static Prepared prepare(
       final TaintContext context,
       final List<ControlFlowGraph> graphs,
-      final TaintSpec spec
+      final TaintSpec declared
   ) {
+    final TaintSpec spec = BoundGetters.extend(declared, context.bound());
     final List<ControlFlowGraph> dispatched =
         DispatchedCalls.apply(graphs, context.known(), context.implementors(), spec);
     final Map<String, LocalMethod> methods = methodsOf(dispatched, context, spec);
