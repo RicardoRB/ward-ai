@@ -37159,6 +37159,13 @@
           "items": {
             "type": "string"
           }
+        },
+        "min-confidence": {
+          "type": "string",
+          "enum": [
+            "proven",
+            "possible"
+          ]
         }
       }
     },

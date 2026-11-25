@@ -4,7 +4,7 @@
 # A labelled finding is true (tp), false (fp) or undetermined (un), as read from the code at its line; the labels are in python-corpus-labels.txt. Every finding of a security rule is labelled; of another rule, its first 5 findings in path order.
 # The measured cost of the run is in python-corpus-cost.txt.
 # Regenerate: ./mvnw -pl ward-cli -am -Djacoco.skip=true -Dtest=PythonCorpusSmokeTest -Dward.benchmark.python-corpus=<dir> -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
-files 657 | findings 4928
+files 657 | findings 4923
 ward:python/abbreviation-as-word-in-name | findings 11 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/abstract-base-class-without-abstract-method | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/abstract-class-instantiated | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -142,7 +142,7 @@ ward:python/hardcoded-password-func-arg | findings 0 | labelled 0 | tp 0 | fp 0 
 ward:python/hardcoded-password-string | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/hardcoded-temp-file | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/hashlib-digest-hex | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:python/hashlib-insecure-hash-function | findings 6 | labelled 6 | tp 0 | fp 0 | un 6
+ward:python/hashlib-insecure-hash-function | findings 1 | labelled 1 | tp 0 | fp 0 | un 1
 ward:python/hex-literal-case | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:python/hidden-field | findings 53 | labelled 5 | tp 5 | fp 0 | un 0
 ward:python/if-tuple | findings 0 | labelled 0 | tp 0 | fp 0 | un 0

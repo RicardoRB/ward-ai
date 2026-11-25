@@ -45,11 +45,6 @@ ward:python/function-length | hc/api/views.py:181 | tp | the function spans the 
 ward:python/global-statement | hc/lib/s3.py:33 | tp | a module-level client is cached through a global statement
 ward:python/hardcoded-bind-all-interfaces | hc/api/management/commands/smtpd.py:132 | tp | the default listen address of the mail listener command is every interface
 ward:python/hashlib-insecure-hash-function | hc/api/models.py:434 | un | SHA-1 builds a bucket key or an identifier, not a signature or a password hash; the weak function is there, the harm is not shown
-ward:python/hashlib-insecure-hash-function | hc/api/models.py:1490 | un | SHA-1 builds a bucket key or an identifier, not a signature or a password hash; the weak function is there, the harm is not shown
-ward:python/hashlib-insecure-hash-function | hc/api/models.py:1505 | un | SHA-1 builds a bucket key or an identifier, not a signature or a password hash; the weak function is there, the harm is not shown
-ward:python/hashlib-insecure-hash-function | hc/api/models.py:1518 | un | SHA-1 builds a bucket key or an identifier, not a signature or a password hash; the weak function is there, the harm is not shown
-ward:python/hashlib-insecure-hash-function | hc/api/models.py:1533 | un | SHA-1 builds a bucket key or an identifier, not a signature or a password hash; the weak function is there, the harm is not shown
-ward:python/hashlib-insecure-hash-function | hc/api/models.py:1541 | un | SHA-1 builds a bucket key or an identifier, not a signature or a password hash; the weak function is there, the harm is not shown
 ward:python/hidden-field | hc/accounts/views.py:82 | tp | a local variable has the name of a view function of the module
 ward:python/hidden-field | hc/accounts/views.py:102 | tp | a local variable has the name of a view function of the module
 ward:python/hidden-field | hc/accounts/views.py:119 | tp | a local variable has the name of a view function of the module

@@ -1,2 +1,2 @@
 # False positives of the Flask corpus run that are known and open: rule | file:line | reason | #issue (#724).
-ward:python/hashlib-insecure-hash-function | CTFd/utils/uploads/__init__.py:76 | the digest names an uploaded file, it protects nothing | #732
+ward:python/hashlib-insecure-hash-function | CTFd/cache/__init__.py:122 | the digest is the key of a memoized call, returned to callers in other files that the rule does not see | #732
