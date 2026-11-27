@@ -15,6 +15,9 @@ final class TaintSpecOptions {
   private static final String FROM = "from";
   private static final String RECEIVER = "receiver";
   private static final String SINKS = "sinks";
+  private static final String SOURCES = "sources";
+  private static final String EXCEPT_CALLS = "except-calls";
+  private static final String ASSUMED = "assumed";
 
   private TaintSpecOptions() {}
 
@@ -80,5 +83,35 @@ final class TaintSpecOptions {
       }
     }
     return positions;
+  }
+
+  /** The reason a source is only assumed to hold untrusted data, which makes its flows possible. */
+  static List<String> assumed(final String where, final String table, final TomlTable entry) {
+    if (!entry.contains(ASSUMED)) {
+      return List.of();
+    }
+    final String reason = entry.getString(ASSUMED);
+    if (!SOURCES.equals(table) || reason == null || reason.isBlank()) {
+      throw new RuleConfigurationException(
+          where + " names assumed, which only sources take, with a reason"
+      );
+    }
+    return List.of(reason);
+  }
+
+  /** The calls that a sink treats as a safe value when one is its whole argument. */
+  static List<String> exceptCalls(final String where, final String table, final TomlTable entry) {
+    if (!entry.contains(EXCEPT_CALLS)) {
+      return List.of();
+    }
+    final TomlArray array = entry.getArray(EXCEPT_CALLS);
+    if (!SINKS.equals(table) || array == null) {
+      throw new RuleConfigurationException(where + " names except-calls, which only sinks take");
+    }
+    final List<String> calls = new ArrayList<>();
+    for (int index = 0; index < array.size(); index++) {
+      calls.add(array.getString(index));
+    }
+    return calls;
   }
 }
