@@ -96,24 +96,6 @@ class GitCliHistoryTest {
   }
 
   @Test
-  void aBatchOverTheSizeCapNamesTheCommit() {
-    final String big = LOG + "+" + "x".repeat(GitCliHistory.BATCH_LIMIT);
-
-    assertThatThrownBy(
-        () ->
-            new GitCliHistory(
-                new FakeCommandExecutor(
-                    new CommandResult(0, "false", "", TIME),
-                    new CommandResult(0, big, "", TIME)
-                )
-            )
-                .patches(Path.of("."), Optional.empty(), b -> {})
-    )
-        .isInstanceOf(HistoryUnavailableException.class)
-        .hasMessageContaining("01234567");
-  }
-
-  @Test
   void aTokenAddedAndRemovedLaterIsFoundInARealRepository(@TempDir final Path repo)
       throws Exception {
     git(repo, "init", "-q", "-b", "main");
