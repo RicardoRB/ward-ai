@@ -161,21 +161,13 @@ final class NodeImports {
   }
 
   /**
-   * The owner of the methods of an object that another file of the project exports: {@code
-   * module#object} for {@code ns.object}, where {@code ns} is bound to a relative module as a whole.
+   * Tells whether a name is bound, as a whole module, to a file of the project.
    *
-   * @param written a receiver as written, such as {@code security.authenticatedUsers}
-   * @return the owner, or empty when the receiver is not a member of such a module
+   * @param local the name as the file uses it
+   * @return true for a default import, a namespace import or a {@code require} of a relative path
    */
-  Optional<String> objectOwner(final String written) {
-    final int dot = written.indexOf('.');
-    if (dot < 0 || written.indexOf('.', dot + 1) >= 0) {
-      return Optional.empty();
-    }
-    final String local = written.substring(0, dot);
-    return projectLocals.contains(local)
-        ? Optional.of(modules.get(local) + "#" + written.substring(dot + 1))
-        : Optional.empty();
+  boolean isProjectModule(final String local) {
+    return projectLocals.contains(local);
   }
 
   private String module(final String specifier) {

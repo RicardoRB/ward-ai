@@ -201,44 +201,9 @@ final class TaintSpecFiles {
         optional(where, entry, QUALIFIER),
         arguments,
         Optional.empty(),
-        exceptCalls(where, table, entry),
-        assumed(where, table, entry)
+        TaintSpecOptions.exceptCalls(where, table, entry),
+        TaintSpecOptions.assumed(where, table, entry)
     );
-  }
-
-  /** The reason a source is only assumed to hold untrusted data, which makes its findings possible. */
-  private static List<String> assumed(
-      final String where,
-      final String table,
-      final TomlTable entry
-  ) {
-    if (!entry.contains(ASSUMED)) {
-      return List.of();
-    }
-    if (!SOURCES.equals(table)) {
-      throw new RuleConfigurationException(where + " names assumed, which only sources take");
-    }
-    return List.of(text(where, entry, ASSUMED));
-  }
-
-  /** The calls that a sink treats as a safe value when one is its whole argument. */
-  private static List<String> exceptCalls(
-      final String where,
-      final String table,
-      final TomlTable entry
-  ) {
-    if (!entry.contains(EXCEPT_CALLS)) {
-      return List.of();
-    }
-    final TomlArray array = entry.getArray(EXCEPT_CALLS);
-    if (!SINKS.equals(table) || array == null) {
-      throw new RuleConfigurationException(where + " names except-calls, which only sinks take");
-    }
-    final List<String> calls = new ArrayList<>();
-    for (int index = 0; index < array.size(); index++) {
-      calls.add(array.getString(index));
-    }
-    return calls;
   }
 
   /** A string sink or literal source matches the literal text of its site against its pattern. */

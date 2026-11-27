@@ -43,9 +43,6 @@ public final class NodeControlFlow implements ControlFlowLowering {
   /** A {@code name: value} member of an object literal, which names the function it holds. */
   private static final String PROPERTY = "propertyAssignment";
 
-  private static final Set<String> NAME_PARTS =
-      Set.of("identifier", "classElementName", "propertyName");
-
   /** Nodes that only wrap one statement or expression, which are looked through. */
   private static final Set<String> WRAPPERS =
       Set.of(
@@ -147,11 +144,11 @@ public final class NodeControlFlow implements ControlFlowLowering {
       if (NodeFlowSyntax.isFunction(node)) {
         lowerFunction(node, hint, exported);
       } else if (VARIABLE.equals(node.kind())) {
-        childHint = variableName(node);
+        childHint = NodeFunctionNames.variable(node);
       } else if (NAME_CARRIERS.contains(node.kind())) {
         childHint = hint;
       } else if (PROPERTY.equals(node.kind())) {
-        childHint = member(node, hint);
+        childHint = NodeFunctionNames.member(node, hint);
       }
       final boolean inExport =
           !NodeFlowSyntax.isFunction(node) && (exported || exports(node));
@@ -181,7 +178,7 @@ public final class NodeControlFlow implements ControlFlowLowering {
         final String hint,
         final boolean exported
     ) {
-      final String name = owned(functionName(function, hint), exported);
+      final String name = owned(NodeFunctionNames.of(function, hint), exported);
       final SyntaxNode body = NodeFlowSyntax.body(function);
       lower(name, function.span(), () -> lowerBody(name, function, body));
     }
@@ -245,33 +242,6 @@ public final class NodeControlFlow implements ControlFlowLowering {
       return exported && !name.startsWith("<")
           ? NodeModuleNames.of(unit.path()) + "#" + name
           : name;
-    }
-
-    private static String functionName(final SyntaxNode function, final String hint) {
-      for (final SyntaxNode part : NodeFlowSyntax.parts(function)) {
-        if (NAME_PARTS.contains(part.kind())) {
-          return NodeFlowSyntax.text(part);
-        }
-      }
-      if (hint != null) {
-        return hint;
-      }
-      final Span span = function.span();
-      return "<anonymous>@" + span.startLine() + ":" + span.startColumn();
-    }
-
-    /** The owner and name of a member of the object that a variable holds, or null. */
-    private static String member(final SyntaxNode property, final String owner) {
-      final SyntaxNode name = NodeFlowSyntax.firstOf(
-          NodeFlowSyntax.parts(property),
-          "propertyName"
-      );
-      return owner == null || name == null ? null : owner + "#" + NodeFlowSyntax.text(name);
-    }
-
-    private static String variableName(final SyntaxNode variable) {
-      final SyntaxNode identifier = NodeFlowSyntax.firstIdentifier(variable);
-      return identifier == null ? null : NodeFlowSyntax.text(identifier);
     }
   }
 

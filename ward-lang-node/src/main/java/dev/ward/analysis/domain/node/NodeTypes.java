@@ -78,7 +78,7 @@ final class NodeTypes {
       return Optional.empty();
     }
     final String written = declared.getOrDefault(qualifier, qualifier);
-    return imports.objectOwner(written)
+    return ObjectOwners.of(imports, written)
         .or(() -> Optional.ofNullable(imports.typeOf(written)))
         .or(() -> imports.moduleOf(root(written)));
   }
