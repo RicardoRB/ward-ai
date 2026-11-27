@@ -58,24 +58,35 @@ public final class TaintFile {
       final List<ControlFlowGraph> related,
       final TaintSpec spec
   ) {
-    final Prepared prepared = prepare(TaintContext.of(graphs, related), graphs, spec);
-    final Map<String, Set<String>> fields = TaintFields.of(prepared.own(), prepared.effective());
-    final List<TaintFinding> found = new ArrayList<>();
-    for (final ControlFlowGraph graph : prepared.own()) {
-      found.addAll(
-          TaintAnalysis.run(graph, TaintFields.specFor(graph, prepared.effective(), fields))
-      );
-    }
-    return found;
+    return prepare(TaintContext.of(graphs, related), graphs, spec, true).analyse();
   }
 
   /** The graphs of the file with their calls resolved, and the specification they run with. */
-  record Prepared(List<ControlFlowGraph> own, TaintSpec effective) {}
+  record Prepared(List<ControlFlowGraph> own, TaintSpec effective) {
+    /** The findings of all graphs, graph by graph. */
+    List<TaintFinding> analyse() {
+      final Map<String, Set<String>> fields = TaintFields.of(own, effective);
+      final List<TaintFinding> found = new ArrayList<>();
+      for (final ControlFlowGraph graph : own) {
+        found.addAll(TaintAnalysis.run(graph, TaintFields.specFor(graph, effective, fields)));
+      }
+      return found;
+    }
+  }
 
   static Prepared prepare(
       final TaintContext context,
       final List<ControlFlowGraph> graphs,
       final TaintSpec declared
+  ) {
+    return prepare(context, graphs, declared, true);
+  }
+
+  static Prepared prepare(
+      final TaintContext context,
+      final List<ControlFlowGraph> graphs,
+      final TaintSpec declared,
+      final boolean members
   ) {
     final TaintSpec spec = BoundGetters.extend(declared, context.bound());
     final List<ControlFlowGraph> dispatched =
@@ -87,7 +98,15 @@ public final class TaintFile {
     }
     final UnaryOperator<ControlFlowGraph> checks = GuardedCalls.over(methods);
     final UnaryOperator<ControlFlowGraph> types = TypedCalls.over(methods);
-    final UnaryOperator<ControlFlowGraph> guards = graph -> types.apply(checks.apply(graph));
+    final UnaryOperator<ControlFlowGraph> lookups =
+        members ? MemberLookups.over(
+            methods,
+            dispatched,
+            context.universe(),
+            spec
+        ) : graph -> graph;
+    final UnaryOperator<ControlFlowGraph> guards =
+        graph -> lookups.apply(types.apply(checks.apply(graph)));
     methods.replaceAll(
         (key, method) -> method.withGraph(unfollowed.apply(guards.apply(method.graph())))
     );

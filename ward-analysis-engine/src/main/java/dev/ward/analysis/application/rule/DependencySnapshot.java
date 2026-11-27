@@ -109,6 +109,19 @@ public record DependencySnapshot(
     return seen.stream().map(units::get).filter(Objects::nonNull).toList();
   }
 
+  /**
+   * Returns the source units of the files that depend, directly or through others, on the file at
+   * {@code path} or on a file it depends on, and are neither of those; in path order.
+   */
+  public List<SourceUnit> dependentsAround(final String path) {
+    final Set<String> around = new TreeSet<>(graph.closureOf(path));
+    around.add(path);
+    final Set<String> found = new TreeSet<>();
+    around.forEach(file -> found.addAll(graph.dependentClosureOf(file)));
+    found.removeAll(around);
+    return found.stream().map(units::get).filter(Objects::nonNull).toList();
+  }
+
   /** The files that extend or implement a type that the file declares, by simple name. */
   private Set<String> subtypesDeclaredIn(final String path) {
     final FileSummary summary = summaries.get(path);

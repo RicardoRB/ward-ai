@@ -39,6 +39,12 @@ final class TaintReturns {
         .anyMatch(node -> value(node).isPresent());
   }
 
+  /** Reports whether a node is a return statement, with or without a value. */
+  static boolean isReturnStatement(final SyntaxNode node) {
+    return RETURN_STATEMENT.equals(node.kind())
+        || !node.children().isEmpty() && RETURN.equals(node.children().get(0).fields().get(TEXT));
+  }
+
   private static boolean isReturn(final SyntaxNode node) {
     return RETURN_STATEMENT.equals(node.kind())
         || RETURN.equals(node.children().get(0).fields().get(TEXT));

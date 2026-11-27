@@ -34,6 +34,9 @@ import java.util.regex.Pattern;
  * <p>shortcut: a constant table is not proved to stay unmodified, and the tested value is a bare
  * name (a call chain of literal arguments in the ternary); upgrade when a project fills an
  * allow-list at run time.
+ *
+ * <p>Two more facts are left as sites for the taint analysis: see {@link NodeReturnMarks} and
+ * {@link NodeNullChecks}.
  */
 final class NodeGuards {
   private static final String NAME = "([A-Za-z_$][\\w$]*)";
@@ -55,6 +58,7 @@ final class NodeGuards {
   private static final String BLOCK = "block";
   private static final int NAME_GROUP = 1;
   private static final int TABLE_GROUP = 2;
+  private static final int SECOND_GROUP = 2;
   private static final int OPERATOR_INDEX = 1;
   private static final int RIGHT_INDEX = 2;
 
@@ -63,12 +67,19 @@ final class NodeGuards {
   private final Set<String> tables;
   private final NodeAllowLists lists;
   private final Set<String> resolved = new HashSet<>();
+  private final NodeNullChecks nullChecks;
 
-  NodeGuards(final ControlFlowBuilder flow, final NodeAccesses accesses, final Set<String> tables) {
+  NodeGuards(
+      final ControlFlowBuilder flow,
+      final NodeAccesses accesses,
+      final Set<String> tables,
+      final NodeNullChecks nullChecks
+  ) {
     this.flow = flow;
     this.accesses = accesses;
     this.tables = Set.copyOf(tables);
     this.lists = new NodeAllowLists(tables);
+    this.nullChecks = nullChecks;
   }
 
   /**
@@ -86,6 +97,7 @@ final class NodeGuards {
     if (lookup.matches() && tables.contains(lookup.group(TABLE_GROUP))) {
       clean(lookup.group(NAME_GROUP), after(statement.span()));
     }
+    nullChecks.assigned(text);
     return true;
   }
 
@@ -121,6 +133,7 @@ final class NodeGuards {
         .map(part -> lists.tested(part, true))
         .flatMap(Optional::stream)
         .forEach(name -> guard(name, after(branch.span())));
+    nullChecks.checked(alternatives(condition), after(branch.span()));
   }
 
   /** Cleans the checked name past the exit, and marks the check for the callers. */
@@ -144,7 +157,7 @@ final class NodeGuards {
     }
   }
 
-  private static List<SyntaxNode> conjuncts(final SyntaxNode condition) {
+  static List<SyntaxNode> conjuncts(final SyntaxNode condition) {
     return split(condition, "&&");
   }
 

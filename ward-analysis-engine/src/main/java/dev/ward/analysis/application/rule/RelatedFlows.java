@@ -1,5 +1,6 @@
 package dev.ward.analysis.application.rule;
 
+import dev.ward.analysis.domain.flow.taint.MemberVouching;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.ControlFlowGraph;
 import dev.ward.analysis.domain.ir.SourceUnit;
@@ -10,6 +11,7 @@ import dev.ward.analysis.domain.rule.FlowView;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 
 /**
  * Gives a rule that follows calls into other files the graphs of the files its unit depends on,
@@ -36,11 +38,27 @@ final class RelatedFlows {
     if (!rule.definition().capability().readsDependencyBodies()) {
       return own;
     }
+    return new FlowView(own.graphs(), relatedOf(unit, own.graphs()));
+  }
+
+  /**
+   * The graphs of the files the unit depends on. When the unit or one of them has a null check
+   * that a membership may vouch for, also the graphs of the files that depend on them: the proof
+   * reads every place that can write to the collection.
+   */
+  List<ControlFlowGraph> relatedOf(final SourceUnit unit, final List<ControlFlowGraph> own) {
     final List<ControlFlowGraph> related =
         snapshot.closureOf(unit.path()).stream()
             .flatMap(other -> graphsOf(other).stream())
             .toList();
-    return new FlowView(own.graphs(), related);
+    if (!MemberVouching.mayVouch(own) && !MemberVouching.mayVouch(related)) {
+      return related;
+    }
+    return Stream.concat(
+        related.stream(),
+        snapshot.dependentsAround(unit.path()).stream()
+            .flatMap(other -> graphsOf(other).stream())
+    ).toList();
   }
 
   /** The graphs of a file of the run, lowered once. Lowers outside the map, so no thread waits for another file; a second result is dropped. */

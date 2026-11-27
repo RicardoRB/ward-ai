@@ -72,6 +72,22 @@ public final class DependencyGraph {
     return List.copyOf(seen);
   }
 
+  /**
+   * Returns the sorted paths that depend on {@code path}, directly or through other files, not
+   * including {@code path} itself.
+   */
+  public List<String> dependentClosureOf(final String path) {
+    final Set<String> seen = new TreeSet<>();
+    final Deque<String> pending = new ArrayDeque<>(dependentsOf(path));
+    while (!pending.isEmpty()) {
+      final String next = pending.poll();
+      if (!next.equals(path) && seen.add(next)) {
+        pending.addAll(dependentsOf(next));
+      }
+    }
+    return List.copyOf(seen);
+  }
+
   /** Returns the edges that leave {@code path}, in the graph's order, with their references. */
   public List<DependencyEdge> outgoingEdgesOf(final String path) {
     return outgoingEdges.getOrDefault(path, List.of());
