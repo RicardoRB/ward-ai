@@ -1,5 +1,6 @@
 package dev.ward.analysis.domain.rule.check;
 
+import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.node.NodeSafeValues;
 import dev.ward.analysis.domain.node.NodeSinkValues;
@@ -58,7 +59,22 @@ public final class NodeUnsafeValueCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(final SyntaxNode root, final FlowView flow) {
-    final NodeSafeValues safe = new NodeSafeValues(flow.graphs(), mode);
+    return found(root, new NodeSafeValues(flow.graphs(), mode));
+  }
+
+  @Override
+  public List<RuleMatch> matches(
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
+    if (mode != NodeSafeValues.Mode.MARKUP) {
+      return matches(root, flow);
+    }
+    return found(root, new NodeSafeValues(flow.graphs(), unit, root, flow.files()));
+  }
+
+  private List<RuleMatch> found(final SyntaxNode root, final NodeSafeValues safe) {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, KINDS)) {
       final SyntaxNode node = visit.node();

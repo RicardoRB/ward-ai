@@ -90,6 +90,7 @@ final class NodeFixtureFrontends {
             RuleCapability.SYMBOLS,
             RuleCapability.CFG,
             RuleCapability.DATAFLOW,
+            RuleCapability.TAINT,
             RuleCapability.SCOPES,
             RuleCapability.TYPES
         );

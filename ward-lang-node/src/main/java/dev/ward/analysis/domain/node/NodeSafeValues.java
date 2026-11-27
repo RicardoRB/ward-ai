@@ -2,7 +2,9 @@ package dev.ward.analysis.domain.node;
 
 import dev.ward.analysis.domain.flow.AccessSite;
 import dev.ward.analysis.domain.ir.ControlFlowGraph;
+import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.rule.RelatedFile;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -49,8 +51,12 @@ public final class NodeSafeValues {
   private static final String AWAIT = "await";
   private static final String ADDRESS = "address";
 
+  private static final int MAX_NESTING = 3;
+
   private final NodeValueFlow flow;
   private final Mode mode;
+  private final NodeProgramData data;
+  private int nesting;
 
   /**
    * Creates the analysis over the graphs of a file.
@@ -61,6 +67,28 @@ public final class NodeSafeValues {
   public NodeSafeValues(final List<ControlFlowGraph> graphs, final Mode mode) {
     this.flow = new NodeValueFlow(graphs);
     this.mode = mode;
+    this.data = null;
+  }
+
+  /**
+   * Creates the analysis over the graphs of a file, which also accepts the data the program wrote:
+   * constants reached through names, parameters and loops, in the file and in the files it
+   * imports.
+   *
+   * @param graphs the control-flow graphs of the file
+   * @param unit the file
+   * @param root the syntax tree of the file
+   * @param related the files it depends on, with their trees
+   */
+  public NodeSafeValues(
+      final List<ControlFlowGraph> graphs,
+      final SourceUnit unit,
+      final SyntaxNode root,
+      final List<RelatedFile> related
+  ) {
+    this.flow = new NodeValueFlow(graphs);
+    this.mode = Mode.MARKUP;
+    this.data = new NodeProgramData(unit, root, related, this::fallback);
   }
 
   /**
@@ -84,6 +112,26 @@ public final class NodeSafeValues {
   }
 
   private boolean safe(final SyntaxNode node, final Set<AccessSite> visiting, final int depth) {
+    return plain(node, visiting, depth) || programData(node);
+  }
+
+  private boolean programData(final SyntaxNode node) {
+    if (data == null || nesting >= MAX_NESTING) {
+      return false;
+    }
+    nesting++;
+    try {
+      return data.holds(node);
+    } finally {
+      nesting--;
+    }
+  }
+
+  private boolean fallback(final SyntaxNode node) {
+    return plain(node, new HashSet<>(), 0);
+  }
+
+  private boolean plain(final SyntaxNode node, final Set<AccessSite> visiting, final int depth) {
     final SyntaxNode value = NodeFlowSyntax.unwrap(node);
     final List<SyntaxNode> parts = NodeFlowSyntax.parts(value);
     if (depth > MAX_DEPTH || !NodeTemplates.SINGLE.equals(value.kind())) {
