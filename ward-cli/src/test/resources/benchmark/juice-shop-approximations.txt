@@ -1,4 +1,3 @@
 # rule | file:line | reason | open issue. A finding labelled fp fails the corpus test unless it is listed here.
-ward:typescript/dom-xss | frontend/src/hacking-instructor/index.ts:126 | the hint text is Juice Shop's own static content, not attacker input | #749
 ward:typescript/path-traversal | routes/vulnCodeFixes.ts:83 | readFixes(key) answers 404 unless a fix file starts with the key, so a traversal key never reaches this read | #748
 ward:typescript/xss | routes/dataExport.ts:108 | the response is a JSON object that holds the requesting user's own export, not markup | #757

@@ -1,3 +1,5 @@
+import snarkdown from 'snarkdown';
+
 export function show(element: any, text: any) {
   element.textContent = text;
   element.innerHTML = '<b>fixed</b>';
@@ -32,4 +34,20 @@ export function product(a: string, b: string, element: any) {
 
 export function converted(value: string, element: any) {
   element.innerHTML = Number(value);
+}
+
+const HINTS = [
+  { text: 'Open the **menu**', fixture: '#menu' },
+  { text: `Press ${1 + 1} times`, fixture: '#button' }
+];
+
+// The parameter of a private function that every caller feeds from a constant array.
+function renderHint(hint: { text: string }, element: any) {
+  element.innerHTML = snarkdown(hint.text);
+}
+
+export function startTutorial(element: any) {
+  for (const hint of HINTS) {
+    renderHint(hint, element);
+  }
 }

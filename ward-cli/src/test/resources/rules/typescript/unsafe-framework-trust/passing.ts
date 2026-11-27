@@ -13,3 +13,13 @@ export class Widths {
     return this.sanitizer.bypassSecurityTrustStyle('width: ' + percent * 2 + '%');
   }
 }
+
+const SNIPPETS = ['<b>a</b>', '<i>b</i>'];
+
+export class Snippets {
+  first() {
+    for (const snippet of SNIPPETS) {
+      return this.sanitizer.bypassSecurityTrustHtml(snippet);
+    }
+  }
+}

@@ -203,7 +203,7 @@ message = "the target origin * sends the message to any page that holds the wind
 [[rules]]
 id = "ward:javascript/dom-xss"
 language = "JAVASCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "WARNING"
 category = "security"
 presets = ["strict"]
@@ -218,7 +218,7 @@ message = "this call writes a computed string as markup; use textContent, or san
 [[rules]]
 id = "ward:typescript/dom-xss"
 language = "TYPESCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "WARNING"
 category = "security"
 presets = ["strict"]
@@ -233,7 +233,7 @@ message = "this call writes a computed string as markup; use textContent, or san
 [[rules]]
 id = "ward:javascript/unsafe-framework-trust"
 language = "JAVASCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]
@@ -248,7 +248,7 @@ message = "this call tells Angular to skip its sanitizer for a computed value; s
 [[rules]]
 id = "ward:typescript/unsafe-framework-trust"
 language = "TYPESCRIPT"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "ERROR"
 category = "security"
 presets = ["standard", "strict"]

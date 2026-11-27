@@ -1,3 +1,5 @@
+import snarkdown from 'snarkdown';
+
 export function show(element: any, html: any) {
   element.innerHTML = html;
 }
@@ -37,4 +39,57 @@ export function joined(element: any, name: string) {
 
 export function converted(element: any, name: string) {
   element.innerHTML = name.toUpperCase();
+}
+
+const HINTS = [{ text: 'fixed' }];
+
+// An exported function can be called from anywhere, so its parameter is not program data.
+export function exportedRender(hint: { text: string }, element: any) {
+  element.innerHTML = snarkdown(hint.text);
+}
+
+// A function passed as a value is called from places the file does not show.
+function callbackRender(hint: { text: string }) {
+  document.body.innerHTML = snarkdown(hint.text);
+}
+HINTS.forEach(callbackRender);
+
+// One caller that passes request data is enough.
+function twoCallers(hint: { text: string }, element: any) {
+  element.innerHTML = snarkdown(hint.text);
+}
+export function fromConstants(element: any) {
+  for (const hint of HINTS) {
+    twoCallers(hint, element);
+  }
+}
+export function fromRequest(request: any, element: any) {
+  twoCallers({ text: request.query.q }, element);
+}
+
+// A constant array that code fills with request data is not program data.
+const FILLED = [{ text: 'fixed' }];
+function filledRender(hint: { text: string }, element: any) {
+  element.innerHTML = snarkdown(hint.text);
+}
+export function fill(request: any) {
+  FILLED.push({ text: request.query.q });
+}
+export function runFilled(element: any) {
+  for (const hint of FILLED) {
+    filledRender(hint, element);
+  }
+}
+
+const CHANGED = [{ text: 'fixed' }];
+function changedRender(hint: { text: string }, element: any) {
+  element.innerHTML = snarkdown(hint.text);
+}
+export function change(request: any) {
+  CHANGED[0].text = request.query.q;
+}
+export function runChanged(element: any) {
+  for (const hint of CHANGED) {
+    changedRender(hint, element);
+  }
 }

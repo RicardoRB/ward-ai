@@ -10,7 +10,6 @@ ward:typescript/cookie-missing-same-site | lib/insecurity.ts:192 | tp | the sess
 ward:typescript/cookie-missing-same-site | routes/updateUserProfile.ts:42 | tp | the session token cookie is set with no options
 ward:typescript/cookie-missing-secure | lib/insecurity.ts:192 | tp | the session token cookie is set with no options
 ward:typescript/cookie-missing-secure | routes/updateUserProfile.ts:42 | tp | the session token cookie is set with no options
-ward:typescript/dom-xss | frontend/src/hacking-instructor/index.ts:126 | fp | the hint text is Juice Shop's own static content, not attacker input
 ward:typescript/header-injection | routes/userProfile.ts:97 | tp | profile image URL of the user goes into the Content-Security-Policy header
 ward:typescript/insecure-random | frontend/src/app/Services/conversation-storage.service.ts:15 | tp | the identifier of a stored conversation is built from Math.random; predictable, though the id guards nothing
 ward:typescript/insecure-random | lib/insecurity.ts:53 | tp | Math.random builds the JWT secret of denyAll
