@@ -36,16 +36,6 @@ final class PatchParser {
     return count;
   }
 
-  /** Returns the short id of the first commit of {@code output}. */
-  static String firstCommit(final String output, final String marker, final int shortId) {
-    final int at = output.indexOf(marker);
-    if (at < 0) {
-      return "";
-    }
-    final int start = at + marker.length();
-    return output.substring(start, Math.min(output.length(), start + shortId));
-  }
-
   /** Returns one patch per commit and file with added lines. */
   static List<HistoryPatch> parse(final String output, final String marker, final int shortId) {
     final PatchParser parser = new PatchParser(marker, shortId);
