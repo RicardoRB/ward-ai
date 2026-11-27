@@ -5,6 +5,7 @@ import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -57,8 +58,41 @@ public final class NullableParameterCheck implements RuleCheck {
     }
   }
 
+  /**
+   * Tells whether a {@code Nullable} annotation applies to the parameter itself: one on the
+   * parameter or in front of its type when the type is no array (on an array it annotates the
+   * component), one on the outermost array brackets, or one on the varargs ellipsis. An annotation
+   * in a type argument or a qualified type's inner part annotates another type.
+   */
   private static boolean nullable(final SyntaxNode parameter) {
-    return SyntaxWalk.visits(parameter, Set.of("annotation")).stream()
-        .anyMatch(visit -> "Nullable".equals(NullSyntax.simpleName(visit.node())));
+    final Optional<SyntaxNode> type = NullSyntax.first(parameter, "typeType");
+    final List<SyntaxNode> notes = new ArrayList<>(NullSyntax.annotations(parameter));
+    final List<SyntaxNode> inType = type.map(NullSyntax::annotations).orElse(List.of());
+    if (type.isPresent() && NullSyntax.isArray(type.get())) {
+      notes.clear();
+      notes.addAll(outerBrackets(type.get()));
+    } else {
+      notes.addAll(inType);
+    }
+    parameter.children().stream().filter(c -> "annotation".equals(c.kind())).forEach(notes::add);
+    return notes.stream().anyMatch(note -> "Nullable".equals(NullSyntax.simpleName(note)));
+  }
+
+  /** The annotations between the element type and the first array bracket of {@code type}. */
+  private static List<SyntaxNode> outerBrackets(final SyntaxNode type) {
+    final List<SyntaxNode> out = new ArrayList<>();
+    boolean element = false;
+    for (final SyntaxNode child : type.children()) {
+      if ("[".equals(SyntaxWalk.text(child))) {
+        break;
+      }
+      if (element && "annotation".equals(child.kind())) {
+        out.add(child);
+      }
+      element |= "classOrInterfaceType".equals(child.kind()) || "primitiveType".equals(
+          child.kind()
+      );
+    }
+    return out;
   }
 }

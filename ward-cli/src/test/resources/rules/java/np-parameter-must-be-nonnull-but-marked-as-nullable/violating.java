@@ -4,3 +4,13 @@ class Sample {
   }
 }
 
+
+class Containers {
+  int map(@Nullable Map<String, Object> properties) {
+    return properties.size();
+  }
+
+  int array(String @Nullable [] items) {
+    return items.length;
+  }
+}
