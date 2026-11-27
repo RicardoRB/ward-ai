@@ -39,6 +39,14 @@ final class ParsedFacts {
     return this;
   }
 
+  /** Sets the facts of every node of {@code kind}. */
+  ParsedFacts atKind(final String kind, final SpanFacts known) {
+    SyntaxWalk.descendants(tree).stream()
+        .filter(node -> kind.equals(node.kind()))
+        .forEach(node -> facts.put(UnitTypeFacts.key(node.span()), known));
+    return this;
+  }
+
   /** Runs {@code check} and returns each finding as {@code line:column}. */
   List<String> run(final RuleCheck check) {
     final List<RuleMatch> found =

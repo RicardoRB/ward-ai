@@ -4,7 +4,7 @@
 [[rules]]
 id = "ward:java/return-nullable"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -16,7 +16,7 @@ message = "{value} may be null, but this method must not return null"
 [[rules]]
 id = "ward:java/unbox-nullable"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -28,7 +28,7 @@ message = "{value} may be null and is unboxed here"
 [[rules]]
 id = "ward:java/assign-field-nullable"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -40,7 +40,7 @@ message = "{value} may be null, but the field it is assigned to must not be"
 [[rules]]
 id = "ward:java/pass-nullable"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -52,7 +52,7 @@ message = "{value} may be null, but the parameter it is passed for must not be"
 [[rules]]
 id = "ward:java/dereference-nullable"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -64,7 +64,7 @@ message = "{value} may be null and is dereferenced without a check"
 [[rules]]
 id = "ward:java/assign-nullable-to-nonnull-array"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -76,7 +76,7 @@ message = "null is stored in {value}, whose elements must not be null"
 [[rules]]
 id = "ward:java/cast-to-nonnull-arg-nonnull"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -89,7 +89,7 @@ message = "{value} is never null, so castToNonNull is not needed"
 id = "ward:java/switch-expression-nullable"
 language = "java"
 min-java-release = 14
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -101,7 +101,7 @@ message = "this switch expression yields {value}, but the method must not return
 [[rules]]
 id = "ward:java/field-no-init"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -113,7 +113,7 @@ message = "the non-null field {value} is never initialized"
 [[rules]]
 id = "ward:java/method-no-init"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -125,7 +125,7 @@ message = "this constructor does not initialize the non-null fields {value}"
 [[rules]]
 id = "ward:java/nonnull-field-read-before-init"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -137,7 +137,7 @@ message = "the non-null field {value} is read before it is initialized"
 [[rules]]
 id = "ward:java/wrong-override-return"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -149,7 +149,7 @@ message = "{value} may return null, but the method it overrides never does"
 [[rules]]
 id = "ward:java/wrong-override-param"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -161,7 +161,7 @@ message = "{value} must not be null, but the method it overrides accepts null"
 [[rules]]
 id = "ward:java/wrong-override-precondition"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -173,7 +173,7 @@ message = "this override requires {value} to be non-null, which the overridden m
 [[rules]]
 id = "ward:java/wrong-override-postcondition"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -185,7 +185,7 @@ message = "this override does not ensure {value} is non-null, which the overridd
 [[rules]]
 id = "ward:java/annotation-value-invalid"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -197,7 +197,7 @@ message = "{value} is not a field of this class"
 [[rules]]
 id = "ward:java/postcondition-not-satisfied"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -209,7 +209,7 @@ message = "this method ensures {value} is non-null but never sets it"
 [[rules]]
 id = "ward:java/precondition-not-satisfied"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -221,7 +221,7 @@ message = "this call requires {value} to be non-null, but it may be null here"
 [[rules]]
 id = "ward:java/nullable-on-wrong-nested-class-level"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -233,7 +233,7 @@ message = "@Nullable on {value} applies to the outer class; write Outer.@Nullabl
 [[rules]]
 id = "ward:java/nullable-varargs-unsupported"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -245,7 +245,7 @@ message = "@Nullable cannot be placed before the dots of {value}"
 [[rules]]
 id = "ward:java/get-on-empty-optional"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -257,7 +257,7 @@ message = "get() on {value} always fails: the optional is empty"
 [[rules]]
 id = "ward:java/assign-generic-nullable"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -269,7 +269,7 @@ message = "{value} has nullable type arguments, but the declared type allows non
 [[rules]]
 id = "ward:java/pass-nullable-generic"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -281,7 +281,7 @@ message = "{value} has nullable type arguments, but the parameter type allows no
 [[rules]]
 id = "ward:java/return-nullable-generic"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -293,7 +293,7 @@ message = "{value} has nullable type arguments, but the return type allows none"
 [[rules]]
 id = "ward:java/wrong-override-return-generic"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -305,7 +305,7 @@ message = "{value} returns nullable type arguments that the overridden method do
 [[rules]]
 id = "ward:java/wrong-override-param-generic"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -317,7 +317,7 @@ message = "{value} does not accept the nullable type arguments that the overridd
 [[rules]]
 id = "ward:java/type-parameter-cannot-be-nullable"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -329,7 +329,7 @@ message = "a type argument of {value} cannot be nullable; declare its type param
 [[rules]]
 id = "ward:java/generic-inference-failure"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]
@@ -341,7 +341,7 @@ message = "{value} passes null, but the declared type arguments are non-null"
 [[rules]]
 id = "ward:java/unrecognized-nullness-annotation-location"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "null-safety"
 presets = ["standard", "strict"]

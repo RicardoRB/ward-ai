@@ -1,7 +1,13 @@
 package dev.ward.analysis.domain.rule.check;
 
+import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.rule.FactNeed;
+import dev.ward.analysis.domain.rule.FlowView;
 import dev.ward.analysis.domain.rule.RuleMatch;
+import dev.ward.analysis.domain.rule.ScopeView;
+import dev.ward.analysis.domain.types.FactKind;
+import dev.ward.analysis.domain.types.UnitTypeFacts;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -16,6 +22,7 @@ import java.util.TreeMap;
  */
 public final class NullnessCheck implements RuleCheck {
   private static final Map<String, NullFinder> FINDERS = finders();
+  private static final FactNeed NEED = new FactNeed(NullSyntax.TYPES, Set.of(FactKind.ANNOTATIONS));
 
   private final NullFinder finder;
   private final String message;
@@ -46,8 +53,34 @@ public final class NullnessCheck implements RuleCheck {
   }
 
   @Override
+  public FactNeed needs() {
+    return NEED;
+  }
+
+  @Override
   public List<RuleMatch> matches(final SyntaxNode root) {
-    final NullFinder.Unit unit = new NullFinder.Unit(root, NullModel.types(root));
+    return matches(root, UnitTypeFacts.none());
+  }
+
+  @Override
+  public List<RuleMatch> matches(
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView scopes,
+      final UnitTypeFacts types,
+      final SourceUnit unit
+  ) {
+    return matches(root, types);
+  }
+
+  /** Reads the package default from the facts: the scopes of the file's first type. */
+  private List<RuleMatch> matches(final SyntaxNode root, final UnitTypeFacts facts) {
+    final boolean packageMarked =
+        SyntaxWalk.visits(root, NullSyntax.TYPES).stream()
+            .findFirst()
+            .map(visit -> NullPackages.marked(facts.at(visit.node().span()).scopes()))
+            .orElse(false);
+    final NullFinder.Unit unit = new NullFinder.Unit(root, NullModel.types(root, packageMarked));
     return finder.find(unit).stream()
         .map(hit -> CheckSupport.at(hit.node().span(), CheckSupport.fill(message, hit.value(), "")))
         .toList();

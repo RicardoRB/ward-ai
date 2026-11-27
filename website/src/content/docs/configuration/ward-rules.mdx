@@ -72,6 +72,18 @@ selected is a configuration error, so a tuned rule is never silently off.
 `ward rules disable` add a rule to `include` or `exclude` without losing the file's comments. See the
 [`ward rules` command](/commands/rules/).
 
+## Null-safety rules
+
+The Java `null-safety` rules follow the JSpecify scopes: a class is `@NullMarked` when it, a class
+around it, or its package says so, and the nearest of `@NullMarked` and `@NullUnmarked` decides. The
+package's annotation is read from the `package-info.java` of the same source root, so a project
+that marks its packages needs no class-level annotation. `dereference-nullable` also knows the JDK
+methods whose Javadoc says they may return null (`Map.get`, `Map.getOrDefault` with a null default,
+`System.getProperty`, `System.getenv(String)`, `Class.getResource`, `Throwable.getMessage`,
+`Reference.get`, `Queue.poll` and similar). It reports the result only when the method declares or
+names the receiver's type, and stays quiet when the same method checks the result for null or asks
+the receiver `containsKey`.
+
 ## Rule tables
 
 A rule table is named `[rules.<language>.<rule-name>]`, such as `[rules.java.method-length]`, which

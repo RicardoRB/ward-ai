@@ -73,6 +73,11 @@ final class JavaUnitModel {
     return declared;
   }
 
+  /** The package this file declares, empty for the default package. */
+  String packageName() {
+    return imports.packageName();
+  }
+
   TypeScope scope() {
     return scope;
   }

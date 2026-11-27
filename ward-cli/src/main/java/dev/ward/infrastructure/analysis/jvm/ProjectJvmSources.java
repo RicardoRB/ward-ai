@@ -19,7 +19,9 @@ import java.util.regex.Pattern;
  */
 public final class ProjectJvmSources implements JvmSources {
   private static final Logger LOGGER = Logger.getLogger(ProjectJvmSources.class.getName());
-  private static final Pattern NAME = Pattern.compile("[\\p{L}\\p{N}_$]+(\\.[\\p{L}\\p{N}_$]+)*");
+  private static final Pattern NAME = Pattern.compile(
+      "[\\p{L}\\p{N}_$]+(\\.[\\p{L}\\p{N}_$]+)*(\\.package-info)?"
+  );
 
   private final Path projectRoot;
   private final List<JavaSourceRoot> roots;

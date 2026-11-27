@@ -1,0 +1,4 @@
+{
+  "3:1": {"scopes": ["org.jspecify.annotations.NullMarked"]},
+  "4:1": {"scopes": ["org.jspecify.annotations.NullMarked"]}
+}

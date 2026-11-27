@@ -50,7 +50,8 @@ final class NullCallFinders {
             if (parts.size() == NullSyntax.BINARY
                 && ".".equals(SyntaxWalk.text(parts.get(1)))
                 && EXPRESSION.equals(parts.get(0).kind())
-                && NullFlow.nullable(parts.get(0), names, calls)) {
+                && (NullFlow.nullable(parts.get(0), names, calls)
+                    || NullLibrary.nullable(parts.get(0), type, method))) {
               hits.add(NullHit.at(parts.get(0), SyntaxWalk.text(parts.get(0))));
             }
           }
