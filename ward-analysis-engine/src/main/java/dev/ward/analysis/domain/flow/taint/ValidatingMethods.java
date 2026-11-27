@@ -47,6 +47,7 @@ final class ValidatingMethods {
       Set<Integer>>> previous
   ) {
     return kinds(spec).stream()
+        .filter(what -> marked(method.graph(), what))
         .map(what -> Map.entry(what, parameters(method, what, methods, known(previous, what))))
         .filter(found -> !found.getValue().isEmpty())
         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -65,6 +66,13 @@ final class ValidatingMethods {
                 entry -> entry.getValue().getOrDefault(what, Set.of())
             )
         );
+  }
+
+  /** Whether any return site of the graph carries the kind; a method with none validates nothing. */
+  private static boolean marked(final ControlFlowGraph graph, final String what) {
+    return graph.blocks().stream()
+        .flatMap(block -> block.sites().stream())
+        .anyMatch(site -> RETURN.equals(site.name()) && site.annotations().contains(what));
   }
 
   /** The kinds a specification trusts: its validated sanitizers that no method of a file named. */
