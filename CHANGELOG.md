@@ -8,6 +8,10 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Fixed
+
+- The Node taint rules treat the rows that an ORM reads (Sequelize `findByPk`, `findOne`, `findAll`; TypeORM `findOneBy`, `findBy` and the other repository reads; Prisma `findUnique`, `findFirst`, `findMany`) as stored data that users wrote, with `possible` confidence, so default `strict` stays quiet and `min-confidence = "possible"` shows them. A taint specification source may now carry `assumed = "<reason>"` to make its flows `possible`. A method of an exported object (`security.authenticatedUsers.get(token)`) is named `module#object#method` and `ns.object.method()` is followed across a relative import, so a keyed read does not carry the key's taint: the Juice Shop false positives `profileImageUrlUpload.ts:29` and `profileImageFileUpload.ts:42` are gone (#748), and the five `routes/userProfile.ts` true positives stay, through the stored user (#786). `file-type`'s `fromBuffer` is a path sanitizer. The Juice Shop benchmark now runs with `min-confidence = "possible"`.
+
 ## [0.12.1] - 2026-11-25
 
 The `strict` preset reports fewer false positives in every language (#726): each one found by the pinned corpora is now a passing fixture or is listed with an issue, taint findings carry a confidence, and the differential corpus covers Python, TypeScript/JavaScript and Swift.

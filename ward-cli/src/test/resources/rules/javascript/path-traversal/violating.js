@@ -30,3 +30,10 @@ export function keyedReadOfTaintedMap(req) {
   const names = new Map([['a', req.query.name]]);
   return fs.readFileSync('public/' + names.get('a'));
 }
+
+// A detector of another package is not known to return only its own table's extensions.
+import detector from 'other-detector';
+export async function unknownDetector(req) {
+  const detected = await detector.fromBuffer(req.body.data);
+  return fs.readFileSync('uploads/1.' + detected.ext);
+}

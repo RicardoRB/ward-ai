@@ -22,8 +22,6 @@ ward:typescript/nosql-injection | routes/trackOrder.ts:18 | tp | when the reflec
 ward:typescript/path-traversal | routes/fileServer.ts:18 | tp | params.file reaches res.sendFile(path.resolve(...)); only a slash test and a null-byte cut guard it
 ward:typescript/path-traversal | routes/keyServer.ts:14 | tp | params.file reaches res.sendFile(path.resolve(...)) of the key folder; only a slash test guards it
 ward:typescript/path-traversal | routes/logfileServer.ts:14 | tp | params.file reaches res.sendFile(path.resolve(...)) of the log folder; only a slash test guards it
-ward:typescript/path-traversal | routes/profileImageFileUpload.ts:42 | fp | the path holds a user id read from the session and an extension detected from the file bytes
-ward:typescript/path-traversal | routes/profileImageUrlUpload.ts:29 | fp | the extension comes from an allowlist with a jpg default and the id from the session
 ward:typescript/path-traversal | routes/quarantineServer.ts:14 | tp | params.file reaches res.sendFile(path.resolve(...)) of the quarantine folder; only a slash test guards it
 ward:typescript/path-traversal | routes/vulnCodeFixes.ts:83 | fp | readFixes(key) answers 404 unless a fix file starts with the key, so a traversal key never reaches this read
 ward:typescript/path-traversal | routes/vulnCodeSnippet.ts:89 | fp | the key was looked up among the known challenge keys, and the handler returned a 404 before this line otherwise

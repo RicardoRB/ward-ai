@@ -6,6 +6,7 @@ import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.application.rule.RuleEngine;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.rule.RuleDefinition;
+import dev.ward.analysis.domain.rule.RuleOptions;
 import dev.ward.analysis.domain.rule.RuleRunResult;
 import dev.ward.infrastructure.rule.BundledRuleMatchers;
 import dev.ward.infrastructure.rule.catalog.CorpusLabels.Place;
@@ -45,7 +46,7 @@ class JuiceShopBenchmarkSmokeTest {
       "# OWASP Juice Shop %s (MIT) against Ward's TypeScript and JavaScript security rules.\n"
           + "# Archive sha-256 %s.\n"
           + "# Every ward:typescript/* and ward:javascript/* rule of category security ran with"
-          + " the strict preset, over every .ts, .tsx, .js and .mjs file outside node_modules.\n"
+          + " the strict preset and min-confidence = possible, over every .ts, .tsx, .js and .mjs file outside node_modules.\n"
           + "# A finding is true (tp), false (fp) or undetermined (un), as read from the code at its"
           + " line; the labels are in juice-shop-labels.txt and the categories in"
           + " juice-shop-categories.txt.\n"
@@ -96,8 +97,16 @@ class JuiceShopBenchmarkSmokeTest {
             rule ->
                 rule.id().startsWith(LANGUAGE_PREFIX) || rule.id().startsWith(JAVASCRIPT_PREFIX)
         )
+        .map(JuiceShopBenchmarkSmokeTest::withPossibleFlows)
         .sorted((left, right) -> left.id().compareTo(right.id()))
         .toList();
+  }
+
+  /** The stored-data flows of userProfile.ts are possible ones, so a taint rule reports them too. */
+  private static RuleDefinition withPossibleFlows(final RuleDefinition rule) {
+    return rule.options().stream().anyMatch(option -> "min-confidence".equals(option.name()))
+        ? RuleOptions.apply(rule, Map.of("min-confidence", "possible"))
+        : rule;
   }
 
   private static String report(
