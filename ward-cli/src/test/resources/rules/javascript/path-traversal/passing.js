@@ -35,3 +35,49 @@ export async function detectedExtension(req) {
   const detected = await fileType.fromBuffer(req.body.data);
   return fs.readFileSync('uploads/1.' + detected.ext);
 }
+
+// A key that a lookup accepted into a collection that only this file writes to, with names of the
+// program, and that the caller checked for null, is one of those names.
+let knownNames = null;
+
+async function loadKnown() {
+  if (knownNames === null) {
+    knownNames = new Map();
+    for (const name of ['a', 'b']) {
+      knownNames.set(name, 'x');
+    }
+  }
+  return knownNames;
+}
+
+const lookupKnown = async (key) => {
+  const known = await loadKnown();
+  if (known.has(key)) {
+    return known.get(key) ?? null;
+  }
+  return null;
+};
+
+export async function readKnown(req, res) {
+  const key = req.query.key;
+  let found;
+  try {
+    found = await lookupKnown(key);
+    if (found == null) {
+      res.status(404).end();
+      return;
+    }
+  } catch (error) {
+    return;
+  }
+  return fs.readFileSync('public/' + key);
+}
+
+export async function readKnownFalsy(req, res) {
+  const key = req.query.key;
+  const found = await lookupKnown(key);
+  if (!found) {
+    return res.status(404).end();
+  }
+  return fs.readFileSync('public/' + key);
+}

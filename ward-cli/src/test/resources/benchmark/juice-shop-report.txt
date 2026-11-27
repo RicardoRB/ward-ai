@@ -65,7 +65,7 @@ ward:typescript/missing-frame-protection | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/no-blank-target | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/no-dangerously-set-inner-html | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/nosql-injection | findings 4 | tp 4 | fp 0 | un 0
-ward:typescript/path-traversal | findings 7 | tp 4 | fp 3 | un 0
+ward:typescript/path-traversal | findings 5 | tp 4 | fp 1 | un 0
 ward:typescript/permissive-cors | findings 2 | tp 2 | fp 0 | un 0
 ward:typescript/prototype-pollution | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/regex-injection | findings 0 | tp 0 | fp 0 | un 0

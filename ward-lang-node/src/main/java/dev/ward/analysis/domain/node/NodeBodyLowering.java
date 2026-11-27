@@ -56,14 +56,21 @@ final class NodeBodyLowering implements NodeStatements {
   private final NodeTries tries;
   private final NodeJumps jumps;
   private final NodeGuards guards;
+  private final NodeReturnMarks marks;
+  private final NodeNullChecks nullChecks;
 
   /**
    * Starts the lowering of one body.
    *
    * @param imports the named imports of the file the body is in
    * @param tables the names of the constant tables of the file
+   * @param collections the names of the collections that only the file writes to
    */
-  NodeBodyLowering(final NodeImports imports, final Set<String> tables) {
+  NodeBodyLowering(
+      final NodeImports imports,
+      final Set<String> tables,
+      final Set<String> collections
+  ) {
     final NodeTypes types = new NodeTypes(imports);
     this.sites = new NodeFlowSites(types, accesses::isSkipped);
     this.parameterSites = new NodeParameterSites(types);
@@ -73,7 +80,9 @@ final class NodeBodyLowering implements NodeStatements {
     this.switches = new NodeSwitches(flow, this);
     this.tries = new NodeTries(flow, this, accesses);
     this.jumps = new NodeJumps(flow, branches);
-    this.guards = new NodeGuards(flow, accesses, tables);
+    this.nullChecks = new NodeNullChecks(flow);
+    this.marks = new NodeReturnMarks(flow, collections);
+    this.guards = new NodeGuards(flow, accesses, tables, nullChecks);
   }
 
   /**
@@ -95,6 +104,7 @@ final class NodeBodyLowering implements NodeStatements {
     for (final SyntaxNode statement : statements) {
       statement(statement, null);
     }
+    marks.finish();
     return flow.build(body, span);
   }
 
@@ -161,7 +171,10 @@ final class NodeBodyLowering implements NodeStatements {
   /** Lowers the statements that leave a block. */
   private boolean jump(final SyntaxNode part) {
     return switch (part.kind()) {
-      case "returnStatement" -> jumps.returnStatement(part);
+      case "returnStatement" -> {
+        marks.returned(part);
+        yield jumps.returnStatement(part);
+      }
       case "throwStatement" -> jumps.throwStatement(part);
       case "breakStatement" -> jumps.breakStatement(part);
       case "continueStatement" -> jumps.continueStatement(part);
@@ -190,7 +203,9 @@ final class NodeBodyLowering implements NodeStatements {
     branches.condition(parts.get(CONDITION_INDEX), thenBlock, elseBlock);
     flow.moveTo(thenBlock);
     guards.inside(parts.get(CONDITION_INDEX));
+    marks.enter(parts.get(CONDITION_INDEX));
     statement(parts.get(BODY_INDEX), null);
+    marks.leave();
     flow.edge(flow.current(), after, FlowEdgeKind.NORMAL);
     if (hasElse) {
       flow.moveTo(elseBlock);
@@ -222,6 +237,7 @@ final class NodeBodyLowering implements NodeStatements {
   }
 
   private boolean expressionStatement(final SyntaxNode part) {
+    nullChecks.assigned(NodeFlowSyntax.text(part));
     branches.valueStatement(part, NodeFlowSyntax.parts(part).get(0), false);
     return true;
   }

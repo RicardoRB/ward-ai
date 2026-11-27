@@ -22,7 +22,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class FileTaintSummaries {
   private final List<PreparedRule> taintRules;
-  private final DependencySnapshot snapshot;
   private final RelatedFlows flows;
   private final Map<AnalysisLanguage, Optional<List<TaintSpec>>> specsByLanguage =
       new ConcurrentHashMap<>();
@@ -44,7 +43,6 @@ public final class FileTaintSummaries {
                         .isPresent()
             )
             .toList();
-    this.snapshot = snapshot;
     this.flows = new RelatedFlows(support, snapshot);
   }
 
@@ -62,11 +60,8 @@ public final class FileTaintSummaries {
     if (specs.get().isEmpty()) {
       return Optional.of("");
     }
-    final List<ControlFlowGraph> related =
-        snapshot.closureOf(unit.path()).stream()
-            .flatMap(other -> flows.graphsOf(other).stream())
-            .toList();
-    return Optional.of(TaintFileSummary.of(flows.graphsOf(unit), related, specs.get()));
+    final List<ControlFlowGraph> own = flows.graphsOf(unit);
+    return Optional.of(TaintFileSummary.of(own, flows.relatedOf(unit, own), specs.get()));
   }
 
   /** The distinct specifications of the taint rules of the language, or none when one has none. */

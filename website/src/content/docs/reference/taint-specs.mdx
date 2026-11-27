@@ -93,6 +93,14 @@ from = ["receiver", 0]
   `findAndCountAll`, `findOrCreate` (Sequelize, Mongoose), `findOneBy`, `findBy`, `findOneOrFail`,
   `findOneByOrFail`, `findAndCount` (TypeORM), `findUnique`, `findFirst`, `findMany` and their
   `OrThrow` forms (Prisma). `Array.find` is not one.
+- TypeScript and JavaScript read a null check as a membership proof when a function returns `null`
+  unless `if (known.has(key))` holds, `known` is a local assigned once from `await getter()`, and
+  the getter returns the one collection that its file writes to. After `x = await f(key)` and a
+  branch that exits when `x == null` or `!x`, `key` is clean in the caller. The proof reads the
+  graphs of the files that depend on the getter's file too: every call of the getter must keep its
+  result in a local that is only read or written with `set`, and no key of such a `set` may carry
+  taint of the specification. A getter that is passed as a value or imported under another name is
+  not followed.
 - `from` on a propagator lists its inputs, as argument positions or `"receiver"`. The argument
   positions are the arguments that the call stores into its receiver variable, so `list.add(v)`
   with `from = [0]` taints `list` when `v` is tainted. `"receiver"` is checked but does not change
