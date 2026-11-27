@@ -10,6 +10,7 @@ import dev.ward.analysis.domain.port.ControlFlowLowering;
 import dev.ward.analysis.domain.port.ControlFlowResult;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -81,7 +82,8 @@ public final class NodeControlFlow implements ControlFlowLowering {
             unit,
             NodeImports.of(tree, unit.path()),
             NodeFixedTables.of(tree),
-            NodeCollections.of(tree)
+            NodeCollections.of(tree),
+            NodeObjectCaches.of(tree)
         );
     if (PROGRAM.equals(tree.kind()) && hasTopLevelCode(tree)) {
       collector.lowerModule(tree);
@@ -136,6 +138,7 @@ public final class NodeControlFlow implements ControlFlowLowering {
     private final NodeImports imports;
     private final Set<String> tables;
     private final Set<String> collections;
+    private final Map<String, List<Integer>> caches;
     private final List<ControlFlowGraph> graphs = new ArrayList<>();
     private final List<AnalysisFinding> failures = new ArrayList<>();
 
@@ -143,12 +146,15 @@ public final class NodeControlFlow implements ControlFlowLowering {
         final SourceUnit unit,
         final NodeImports imports,
         final Set<String> tables,
-        final Set<String> collections
+        final Set<String> collections,
+        final Map<String,
+        List<Integer>> caches
     ) {
       this.unit = unit;
       this.imports = imports;
       this.tables = tables;
       this.collections = collections;
+      this.caches = caches;
     }
 
     void visit(final SyntaxNode node, final String hint, final boolean exported) {
@@ -174,7 +180,7 @@ public final class NodeControlFlow implements ControlFlowLowering {
           MODULE,
           program.span(),
           () ->
-              new NodeBodyLowering(imports, tables, collections)
+              new NodeBodyLowering(imports, tables, collections, caches)
                   .lowerStatements(MODULE, null, NodeFlowSyntax.statements(program), program.span())
       );
     }
@@ -204,7 +210,7 @@ public final class NodeControlFlow implements ControlFlowLowering {
         final SyntaxNode expression =
             NodeFlowSyntax.firstOf(NodeFlowSyntax.parts(body), SINGLE_EXPRESSION);
         if (expression != null) {
-          return new NodeBodyLowering(imports, tables, collections)
+          return new NodeBodyLowering(imports, tables, collections, caches)
               .lowerExpression(name, function, expression, function.span());
         }
         return lowerStatements(
@@ -221,7 +227,7 @@ public final class NodeControlFlow implements ControlFlowLowering {
         final SyntaxNode function,
         final SyntaxNode body
     ) {
-      return new NodeBodyLowering(imports, tables, collections)
+      return new NodeBodyLowering(imports, tables, collections, caches)
           .lowerStatements(name, function, NodeFlowSyntax.statements(body), function.span());
     }
 

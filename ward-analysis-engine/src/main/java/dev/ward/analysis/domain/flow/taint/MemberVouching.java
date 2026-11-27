@@ -9,6 +9,6 @@ public final class MemberVouching {
 
   /** Whether a graph has a null check that the files that depend on it may be needed to prove. */
   public static boolean mayVouch(final List<ControlFlowGraph> graphs) {
-    return graphs.stream().anyMatch(MemberLookups::marked);
+    return graphs.stream().anyMatch(MemberLookups::nullChecked);
   }
 }

@@ -6,6 +6,7 @@ import dev.ward.analysis.domain.ir.FlowEdgeKind;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -65,11 +66,14 @@ final class NodeBodyLowering implements NodeStatements {
    * @param imports the named imports of the file the body is in
    * @param tables the names of the constant tables of the file
    * @param collections the names of the collections that only the file writes to
+   * @param caches the objects that start empty, with the places that mention them
    */
   NodeBodyLowering(
       final NodeImports imports,
       final Set<String> tables,
-      final Set<String> collections
+      final Set<String> collections,
+      final Map<String,
+      List<Integer>> caches
   ) {
     final NodeTypes types = new NodeTypes(imports);
     this.sites = new NodeFlowSites(types, accesses::isSkipped);
@@ -81,7 +85,7 @@ final class NodeBodyLowering implements NodeStatements {
     this.tries = new NodeTries(flow, this, accesses);
     this.jumps = new NodeJumps(flow, branches);
     this.nullChecks = new NodeNullChecks(flow);
-    this.marks = new NodeReturnMarks(flow, collections);
+    this.marks = new NodeReturnMarks(flow, collections, caches);
     this.guards = new NodeGuards(flow, accesses, tables, nullChecks);
   }
 
@@ -100,7 +104,7 @@ final class NodeBodyLowering implements NodeStatements {
       final List<SyntaxNode> statements,
       final Span span
   ) {
-    flow.record(accesses.parameters(function), parameterSites.of(function));
+    marks.entry(function, accesses.parameters(function), parameterSites.of(function));
     for (final SyntaxNode statement : statements) {
       statement(statement, null);
     }
@@ -209,6 +213,7 @@ final class NodeBodyLowering implements NodeStatements {
     flow.edge(flow.current(), after, FlowEdgeKind.NORMAL);
     if (hasElse) {
       flow.moveTo(elseBlock);
+      nullChecks.otherwise(parts.get(CONDITION_INDEX));
       statement(parts.get(ELSE_BODY_INDEX), null);
       flow.edge(flow.current(), after, FlowEdgeKind.NORMAL);
     }

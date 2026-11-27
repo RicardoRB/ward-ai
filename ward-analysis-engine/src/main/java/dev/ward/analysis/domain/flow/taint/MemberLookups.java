@@ -60,8 +60,13 @@ final class MemberLookups {
     );
   }
 
-  /** Whether a graph has a null check that a membership may vouch for. */
+  /** Whether a graph has a check that a membership or a listing may vouch for. */
   static boolean marked(final ControlFlowGraph graph) {
+    return nullChecked(graph) || ListingMarks.checked(graph);
+  }
+
+  /** Whether a graph has a null check that a membership may vouch for. */
+  static boolean nullChecked(final ControlFlowGraph graph) {
     return graph.blocks().stream()
         .flatMap(block -> block.sites().stream())
         .anyMatch(site -> NULL_CHECKED.equals(site.name()));
@@ -90,13 +95,28 @@ final class MemberLookups {
   ) {
     final List<VariableAccess> accesses = new ArrayList<>(block.accesses());
     for (final FlowSite site : block.sites()) {
-      if (NULL_CHECKED.equals(site.name())) {
-        clean(graph, site, methods, proved).ifPresent(write -> accesses.add(0, write));
+      final Predicate<LocalMethod> vouches = vouching(site, proved);
+      if (vouches != null) {
+        clean(graph, site, methods, vouches).ifPresent(write -> accesses.add(0, write));
       }
     }
     return accesses.size() == block.accesses().size()
         ? block
         : new BasicBlock(block.id(), block.nodes(), block.successors(), accesses, block.sites());
+  }
+
+  /** What a method must prove for the check, or null when the site is no check. */
+  private static Predicate<LocalMethod> vouching(
+      final FlowSite site,
+      final Predicate<String> proved
+  ) {
+    if (NULL_CHECKED.equals(site.name())) {
+      return method -> proved.test(method.key());
+    }
+    if (ListingMarks.LENGTH_CHECKED.equals(site.name())) {
+      return method -> ListingMarks.vouches(method, site.annotations().get(2));
+    }
+    return null;
   }
 
   /**
@@ -108,7 +128,7 @@ final class MemberLookups {
       final FlowSite check,
       final Map<String,
       LocalMethod> methods,
-      final Predicate<String> proved
+      final Predicate<LocalMethod> proved
   ) {
     final String key = check.qualifier();
     final String callee = check.annotations().get(0);
@@ -144,11 +164,11 @@ final class MemberLookups {
       final FlowSite call,
       final Map<String,
       LocalMethod> methods,
-      final Predicate<String> proved
+      final Predicate<LocalMethod> proved
   ) {
     final List<LocalMethod> reached =
         methods.values().stream().filter(method -> GuardedCalls.calls(method, call)).toList();
-    return !reached.isEmpty() && reached.stream().allMatch(method -> proved.test(method.key()));
+    return !reached.isEmpty() && reached.stream().allMatch(proved);
   }
 
   /** The number of places that give the variable a value: its writes and its parameter entry. */
