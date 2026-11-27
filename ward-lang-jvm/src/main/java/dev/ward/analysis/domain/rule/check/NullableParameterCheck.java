@@ -14,6 +14,8 @@ import java.util.Set;
  * passes on or assigns is left alone.
  */
 public final class NullableParameterCheck implements RuleCheck {
+  private static final String OPEN_BRACKET = "[";
+
   private final String message;
 
   /**
@@ -83,7 +85,7 @@ public final class NullableParameterCheck implements RuleCheck {
     final List<SyntaxNode> out = new ArrayList<>();
     boolean element = false;
     for (final SyntaxNode child : type.children()) {
-      if ("[".equals(SyntaxWalk.text(child))) {
+      if (OPEN_BRACKET.equals(SyntaxWalk.text(child))) {
         break;
       }
       if (element && "annotation".equals(child.kind())) {
