@@ -1,5 +1,6 @@
 package dev.ward.analysis.application.rule;
 
+import dev.ward.analysis.domain.flow.taint.SummaryMemo;
 import dev.ward.analysis.domain.flow.taint.TaintFileSummary;
 import dev.ward.analysis.domain.flow.taint.TaintSpec;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
@@ -21,6 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * can be keyed on the summary instead of on the text of the other files.
  */
 public final class FileTaintSummaries {
+  private final SummaryMemo memo = SummaryMemo.shared();
   private final List<PreparedRule> taintRules;
   private final RelatedFlows flows;
   private final Map<AnalysisLanguage, Optional<List<TaintSpec>>> specsByLanguage =
@@ -61,7 +63,7 @@ public final class FileTaintSummaries {
       return Optional.of("");
     }
     final List<ControlFlowGraph> own = flows.graphsOf(unit);
-    return Optional.of(TaintFileSummary.of(own, flows.relatedOf(unit, own), specs.get()));
+    return Optional.of(TaintFileSummary.of(own, flows.relatedOf(unit, own), specs.get(), memo));
   }
 
   /** The distinct specifications of the taint rules of the language, or none when one has none. */

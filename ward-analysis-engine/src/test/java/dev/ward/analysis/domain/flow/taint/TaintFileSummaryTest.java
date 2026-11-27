@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 /** What the taint summary of a file holds, and what it ignores. */
 class TaintFileSummaryTest {
   private static final int CALLEE = 10;
-  private static final TaintSpec SPEC =
+  static final TaintSpec SPEC =
       new TaintSpec(
           List.of(entry("source", Optional.empty(), List.of())),
           List.of(entry("sink", Optional.empty(), List.of(0))),
@@ -26,7 +26,7 @@ class TaintFileSummaryTest {
           List.of()
       );
 
-  private static TaintEntry entry(
+  static TaintEntry entry(
       final String name,
       final Optional<String> qualifier,
       final List<Integer> arguments
@@ -34,11 +34,11 @@ class TaintFileSummaryTest {
     return new TaintEntry(FlowSiteKind.CALL, name, Optional.empty(), qualifier, arguments);
   }
 
-  private static Span span(final int offset) {
+  static Span span(final int offset) {
     return new Span(1, 1, 1, 2, offset, offset + 1);
   }
 
-  private static FlowSite call(final String name, final String qualifier, final int offset) {
+  static FlowSite call(final String name, final String qualifier, final int offset) {
     return new FlowSite(
         FlowSiteKind.CALL,
         name,
@@ -51,7 +51,7 @@ class TaintFileSummaryTest {
   }
 
   /** The graph of {@code A#get(0)}: it returns the result of {@code inner}, {@code shift} later. */
-  private static ControlFlowGraph getter(final String inner, final int shift) {
+  static ControlFlowGraph getter(final String inner, final int shift) {
     final SyntaxNode keyword =
         new SyntaxNode("token", span(shift), Map.of("text", "return"), List.of());
     final SyntaxNode value = new SyntaxNode("expression", span(shift + 1), Map.of(), List.of());
@@ -75,7 +75,7 @@ class TaintFileSummaryTest {
   }
 
   /** The graph of {@code B#use(0)}, which calls {@code A.get()}, {@code shift} later. */
-  private static ControlFlowGraph caller(final int shift) {
+  static ControlFlowGraph caller(final int shift) {
     final BasicBlock body =
         new BasicBlock(
             0,

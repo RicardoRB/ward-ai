@@ -123,10 +123,7 @@ final class TaintOrigins {
   /** Whether a use sits in a sanitizer argument; it does not change while taint propagates. */
   private boolean sanitized(final AccessSite use) {
     return sanitizerArguments
-        .computeIfAbsent(
-            use.block(),
-            id -> TaintSpans.sanitizerArguments(graph.blocks().get(id), spec)
-        )
+        .computeIfAbsent(use.block(), id -> SanitizedSpans.arguments(graph.blocks().get(id), spec))
         .stream()
         .anyMatch(argument -> TaintSpans.contains(argument, use.access().span()));
   }

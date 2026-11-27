@@ -29,24 +29,37 @@ record MethodSummary(
     sinkAssumptions = List.copyOf(sinkAssumptions);
   }
 
+  /** What the analysis of a method decides: what it returns, passes to a sink and keeps clean. */
+  static SummaryMemo.Core core(
+      final LocalMethod method,
+      final TaintSpec spec,
+      final TaintSpec seeded
+  ) {
+    final Optional<Taint> returned = TaintAnalysis.returned(method.graph(), spec);
+    final Map<Integer, List<String>> sinkFlows = SinkParameters.of(method, seeded);
+    final boolean clean =
+        returned.isEmpty() && sinkFlows.isEmpty() && CleanResults.of(method, seeded);
+    return new SummaryMemo.Core(returned, sinkFlows, clean);
+  }
+
   /** The summary of a method, or empty when its callers need to know nothing about it. */
   static Optional<MethodSummary> of(
       final LocalMethod method,
-      final TaintSpec spec,
-      final TaintSpec seeded,
+      final SummaryMemo.Core core,
+      final Set<String> kinds,
       final Map<String,
       LocalMethod> methods,
       final Map<String,
       Map<String,
       Set<Integer>>> validating
   ) {
-    final Optional<Taint> returned = TaintAnalysis.returned(method.graph(), spec);
+    final Optional<Taint> returned = core.returned();
     final boolean returns = returned.isPresent();
-    final Map<Integer, List<String>> sinkFlows = SinkParameters.of(method, seeded);
+    final Map<Integer, List<String>> sinkFlows = core.sinkFlows();
     final Set<Integer> sinks = new TreeSet<>(sinkFlows.keySet());
-    final boolean clean = !returns && sinks.isEmpty() && CleanResults.of(method, seeded);
+    final boolean clean = core.clean();
     final Map<String, Set<Integer>> validated =
-        ValidatingMethods.of(method, spec, methods, validating);
+        ValidatingMethods.of(method, kinds, methods, validating);
     if (!returns && !clean && sinks.isEmpty() && validated.isEmpty()) {
       return Optional.empty();
     }

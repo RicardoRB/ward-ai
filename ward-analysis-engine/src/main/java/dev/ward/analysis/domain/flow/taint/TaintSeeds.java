@@ -54,7 +54,7 @@ final class TaintSeeds {
     }
     if (site.kind() == FlowSiteKind.PARAMETER) {
       seedParameter(block, site, entry.get());
-    } else if (!TaintSpans.sanitized(block, site.span(), spec)) {
+    } else if (!SanitizedSpans.sanitized(block, site.span(), spec)) {
       seedValue(block, site, entry.get());
     }
   }

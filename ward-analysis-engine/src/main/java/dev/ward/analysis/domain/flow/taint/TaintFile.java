@@ -3,13 +3,11 @@ package dev.ward.analysis.domain.flow.taint;
 import dev.ward.analysis.domain.ir.ControlFlowGraph;
 import dev.ward.analysis.domain.ir.FlowSiteKind;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,7 +56,26 @@ public final class TaintFile {
       final List<ControlFlowGraph> related,
       final TaintSpec spec
   ) {
-    return prepare(TaintContext.of(graphs, related), graphs, spec, true).analyse();
+    return run(graphs, related, spec, SummaryMemo.disabled());
+  }
+
+  /**
+   * Like {@link #run(List, List, TaintSpec)}, and shares the analysis of the methods that the file
+   * reaches with the other files of the run through {@code memo}.
+   *
+   * @param graphs the control-flow graphs of the file, in source order
+   * @param related the graphs of the files it depends on, directly or not
+   * @param spec the taint specification
+   * @param memo the results that files of one run share
+   * @return the findings of all graphs, graph by graph in the order given
+   */
+  public static List<TaintFinding> run(
+      final List<ControlFlowGraph> graphs,
+      final List<ControlFlowGraph> related,
+      final TaintSpec spec,
+      final SummaryMemo memo
+  ) {
+    return prepare(TaintContext.of(graphs, related, memo), graphs, spec, true).analyse();
   }
 
   /** The graphs of the file with their calls resolved, and the specification they run with. */
@@ -112,7 +129,7 @@ public final class TaintFile {
     );
     final List<ControlFlowGraph> own =
         dispatched.stream().map(guards).map(unfollowed::apply).toList();
-    return new Prepared(own, summarized(spec, methods, own));
+    return new Prepared(own, summarized(spec, methods, own, context.memo()));
   }
 
   /** The methods of the file and the reachable ones of other files, with their calls resolved. */
@@ -144,18 +161,22 @@ public final class TaintFile {
       final TaintSpec spec,
       final Map<String,
       LocalMethod> methods,
-      final List<ControlFlowGraph> own
+      final List<ControlFlowGraph> own,
+      final SummaryMemo memo
   ) {
     if (!TaintRelevance.anySite(methods.values(), spec)
         && !TaintRelevance.mayFind(own, spec)) {
       return spec;
     }
+    final Map<String, SummaryMemo.Print> prints = SummaryRounds.prints(methods);
     Map<String, MethodSummary> known = Map.of();
     for (int round = 0; round < MAX_ROUNDS; round++) {
-      final Map<String, MethodSummary> next = summarize(
+      final Map<String, MethodSummary> next = SummaryRounds.summarize(
           derived(spec, methods, known),
           methods,
-          known
+          known,
+          memo,
+          prints
       );
       if (next.equals(known)) {
         break;
@@ -166,40 +187,6 @@ public final class TaintFile {
       LOG.log(Level.FINE, "taint summaries for {0} local methods", methods.size());
     }
     return derived(spec, methods, known);
-  }
-
-  private static Map<String, MethodSummary> summarize(
-      final TaintSpec spec,
-      final Map<String,
-      LocalMethod> methods,
-      final Map<String,
-      MethodSummary> previous
-  ) {
-    final Map<String, MethodSummary> found = new HashMap<>();
-    final TaintSpec seeded = withParameterSource(spec);
-    final Map<String, Map<String, Set<Integer>>> validating =
-        previous.entrySet().stream().collect(
-            Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().validated())
-        );
-    for (final LocalMethod method : methods.values()) {
-      MethodSummary.of(method, spec, seeded, methods, validating)
-          .ifPresent(summary -> found.put(method.key(), summary));
-    }
-    return found;
-  }
-
-  private static TaintSpec withParameterSource(final TaintSpec spec) {
-    final List<TaintEntry> sources = new ArrayList<>(spec.sources());
-    sources.add(
-        new TaintEntry(
-            FlowSiteKind.PARAMETER,
-            LocalMethod.mark(),
-            Optional.empty(),
-            Optional.empty(),
-            List.of()
-        )
-    );
-    return new TaintSpec(sources, spec.sinks(), spec.sanitizers(), spec.propagators());
   }
 
   /** The specification plus a source or sink entry per summarized method, for each qualifier. */

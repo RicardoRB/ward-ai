@@ -1,5 +1,6 @@
 package dev.ward.analysis.domain.rule.check;
 
+import dev.ward.analysis.domain.flow.taint.SummaryMemo;
 import dev.ward.analysis.domain.flow.taint.TaintFile;
 import dev.ward.analysis.domain.flow.taint.TaintFinding;
 import dev.ward.analysis.domain.flow.taint.TaintSpec;
@@ -23,6 +24,7 @@ public final class TaintCheck implements RuleCheck {
   private static final String SOURCE = "{source}";
   private static final String SINK = "{sink}";
 
+  private final SummaryMemo memo = SummaryMemo.shared();
   private final TaintSpec spec;
   private final String message;
   private final Confidence minimum;
@@ -65,7 +67,7 @@ public final class TaintCheck implements RuleCheck {
   @Override
   public List<RuleMatch> matches(final SyntaxNode root, final FlowView flow) {
     final List<RuleMatch> found = new ArrayList<>();
-    TaintFile.run(flow.graphs(), flow.related(), spec).stream()
+    TaintFile.run(flow.graphs(), flow.related(), spec, memo).stream()
         .filter(finding -> finding.confidence().compareTo(minimum) <= 0)
         .forEach(finding -> found.add(match(finding)));
     found.sort(Comparator.comparingInt((RuleMatch match) -> match.span().startOffset()));

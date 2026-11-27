@@ -23,32 +23,6 @@ final class TaintSpans {
     return block.nodes().stream().filter(node -> contains(node.span(), span)).findFirst();
   }
 
-  /**
-   * Reports whether a span lies within the argument of a sanitizer call of the block, or within the
-   * receiver that a sanitizing member read lists as its argument.
-   */
-  static boolean sanitized(final BasicBlock block, final Span span, final TaintSpec spec) {
-    return sanitizerArguments(block, spec).stream().anyMatch(argument -> contains(argument, span));
-  }
-
-  /**
-   * The spans of the arguments of the sanitizer sites of a block; a caller that tests many spans of
-   * one block reads them once.
-   */
-  static List<Span> sanitizerArguments(final BasicBlock block, final TaintSpec spec) {
-    return block.sites().stream()
-        .filter(
-            site ->
-                site.kind() == FlowSiteKind.CALL
-                    || site.kind() == FlowSiteKind.MEMBER_READ
-                    || site.kind() == FlowSiteKind.QUERY_PART
-                    || site.kind() == FlowSiteKind.VALIDATED
-        )
-        .filter(site -> spec.sanitizers().stream().anyMatch(entry -> entry.matches(site)))
-        .flatMap(site -> site.arguments().stream())
-        .toList();
-  }
-
   /** Returns the source entry that a call or member read matches, if any. */
   static Optional<TaintEntry> sourceOf(final FlowSite site, final TaintSpec spec) {
     return firstMatch(spec.sources(), site);

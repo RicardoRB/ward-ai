@@ -20,6 +20,7 @@ import java.util.stream.Stream;
  * @param declared the {@code name/arity} keys of every body of the file and of other files
  * @param bound the types of the annotated parameters of the graphs, by annotation
  * @param universe every graph of the file and of the files around it
+ * @param memo the results that files of one run share
  */
 record TaintContext(
     Set<String> known,
@@ -29,12 +30,22 @@ record TaintContext(
     Set<String> declared,
     Map<String,
     Set<String>> bound,
-    List<ControlFlowGraph> universe
+    List<ControlFlowGraph> universe,
+    SummaryMemo memo
 ) {
   /** Reads the context of a file with its own graphs and those of the files it depends on. */
   static TaintContext of(
       final List<ControlFlowGraph> graphs,
       final List<ControlFlowGraph> related
+  ) {
+    return of(graphs, related, SummaryMemo.disabled());
+  }
+
+  /** Reads the context of a file, sharing method results through {@code memo}. */
+  static TaintContext of(
+      final List<ControlFlowGraph> graphs,
+      final List<ControlFlowGraph> related,
+      final SummaryMemo memo
   ) {
     final Set<String> known = new HashSet<>(LocalMethod.owned(graphs));
     final List<LocalMethod> externals = LocalMethod.externals(related);
@@ -47,7 +58,8 @@ record TaintContext(
         Implementors.of(Stream.concat(graphs.stream(), related.stream()).toList()),
         LocalMethod.declared(Stream.concat(graphs.stream(), related.stream()).toList()),
         BoundGetters.typesOf(graphs, related),
-        Stream.concat(graphs.stream(), related.stream()).toList()
+        Stream.concat(graphs.stream(), related.stream()).toList(),
+        memo
     );
   }
 }
