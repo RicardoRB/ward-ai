@@ -43,7 +43,26 @@ public final class TaintFileSummary {
       final List<ControlFlowGraph> related,
       final List<TaintSpec> specs
   ) {
-    final TaintContext context = TaintContext.of(graphs, related);
+    return of(graphs, related, specs, SummaryMemo.disabled());
+  }
+
+  /**
+   * Like {@link #of(List, List, List)}, and shares the analysis of the methods that the file
+   * reaches with the other files of the run through {@code memo}.
+   *
+   * @param graphs the control-flow graphs of the file, in source order
+   * @param related the graphs of the files it depends on, directly or not
+   * @param specs the taint specifications
+   * @param memo the results that files of one run share
+   * @return the summaries as text, equal for equal summaries
+   */
+  public static String of(
+      final List<ControlFlowGraph> graphs,
+      final List<ControlFlowGraph> related,
+      final List<TaintSpec> specs,
+      final SummaryMemo memo
+  ) {
+    final TaintContext context = TaintContext.of(graphs, related, memo);
     final List<String> summaries = new ArrayList<>();
     for (final TaintSpec spec : specs) {
       summaries.add(summary(context, graphs, spec));

@@ -173,7 +173,11 @@ record GuardedArgument(BasicBlock block, Span span, List<Span> clean) {
   /** A source call written directly in the argument, such as {@code sink(source())}. */
   private Optional<Taint> directSource(final TaintSpec spec, final Sanitizers sanitizers) {
     return block.sites().stream()
-        .flatMap(site -> directEntry(site, spec, sanitizers).map(entry -> sourceTaint(site, entry)).stream())
+        .flatMap(
+            site -> directEntry(site, spec, sanitizers).map(
+                entry -> sourceTaint(site, entry)
+            ).stream()
+        )
         .reduce(Taint::better);
   }
 
@@ -252,7 +256,7 @@ record GuardedArgument(BasicBlock block, Span span, List<Span> clean) {
 
     boolean contain(final Span inner) {
       if (arguments == null) {
-        arguments = TaintSpans.sanitizerArguments(block, spec);
+        arguments = SanitizedSpans.arguments(block, spec);
       }
       return arguments.stream().anyMatch(argument -> TaintSpans.contains(argument, inner));
     }

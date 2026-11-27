@@ -46,7 +46,20 @@ final class ValidatingMethods {
       Map<String,
       Set<Integer>>> previous
   ) {
-    return kinds(spec).stream()
+    return of(method, kinds(spec), methods, previous);
+  }
+
+  /** Like {@link #of(LocalMethod, TaintSpec, Map, Map)} with the kinds of the specification read. */
+  static Map<String, Set<Integer>> of(
+      final LocalMethod method,
+      final Set<String> kinds,
+      final Map<String,
+      LocalMethod> methods,
+      final Map<String,
+      Map<String,
+      Set<Integer>>> previous
+  ) {
+    return kinds.stream()
         .filter(what -> marked(method.graph(), what))
         .map(what -> Map.entry(what, parameters(method, what, methods, known(previous, what))))
         .filter(found -> !found.getValue().isEmpty())
@@ -76,7 +89,7 @@ final class ValidatingMethods {
   }
 
   /** The kinds a specification trusts: its validated sanitizers that no method of a file named. */
-  private static Set<String> kinds(final TaintSpec spec) {
+  static Set<String> kinds(final TaintSpec spec) {
     return spec.sanitizers().stream()
         .filter(entry -> entry.kind() == FlowSiteKind.VALIDATED)
         .map(TaintEntry::name)

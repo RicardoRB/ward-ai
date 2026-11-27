@@ -185,6 +185,27 @@ public record TaintEntry(
     return expected.startsWith(ANY_PREFIX)
         ? site.qualifier().endsWith(expected.substring(ANY_PREFIX.length()))
         : expected.equals(site.qualifier())
-            || Arrays.asList(CHAIN_SEPARATOR.split(site.qualifier())).contains(expected);
+            || inChain(expected, site.qualifier());
+  }
+
+  /** Whether the chain, split at {@code .} and {@code ?.}, has the text as one of its members. */
+  private static boolean inChain(final String expected, final String chain) {
+    if (expected.isEmpty()) {
+      return Arrays.asList(CHAIN_SEPARATOR.split(chain)).contains(expected);
+    }
+    int start = 0;
+    while (start <= chain.length()) {
+      final int dot = chain.indexOf('.', start);
+      final int end = dot < 0 ? chain.length() : dot;
+      final int last = dot > start && chain.charAt(dot - 1) == '?' ? dot - 1 : end;
+      if (last - start == expected.length() && chain.startsWith(expected, start)) {
+        return true;
+      }
+      if (dot < 0) {
+        return false;
+      }
+      start = dot + 1;
+    }
+    return false;
   }
 }

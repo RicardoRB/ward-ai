@@ -58,7 +58,7 @@ final class SplitReturns {
     return other.sites().stream()
         .filter(site -> inOperand(call, site.span()))
         .filter(site -> site.kind() != FlowSiteKind.PARAMETER)
-        .filter(site -> !TaintSpans.sanitized(other, site.span(), call.flow().spec()))
+        .filter(site -> !SanitizedSpans.sanitized(other, site.span(), call.flow().spec()))
         .flatMap(
             site -> TaintSpans.sourceOf(site, call.flow().spec()).map(
                 entry -> origin(site, entry)
@@ -79,7 +79,7 @@ final class SplitReturns {
     return call.flow().reaching().uses().stream()
         .filter(use -> use.block() == other.id() && use.access().kind() == AccessKind.READ)
         .filter(use -> inOperand(call, use.access().span()))
-        .filter(use -> !TaintSpans.sanitized(other, use.access().span(), call.flow().spec()))
+        .filter(use -> !SanitizedSpans.sanitized(other, use.access().span(), call.flow().spec()))
         .flatMap(use -> call.flow().reaching().reaching(use).stream())
         .map(call.flow().origins()::get)
         .filter(taint -> taint != null)
