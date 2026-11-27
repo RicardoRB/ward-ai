@@ -34,7 +34,11 @@ class UnknownTypeRulesTest {
   private static final Set<String> SYNTACTIC =
       Set.of(
           "ward:java/avoid-instantiating-objects-in-loops",
+          "ward:java/assign-field-nullable",
           "ward:java/internal-api-usage",
+          "ward:java/method-no-init",
+          "ward:java/pass-nullable",
+          "ward:java/return-nullable",
           "ward:java/string-instantiation",
           "ward:java/np-always-null",
           "ward:java/np-always-null-exception",

@@ -84,16 +84,25 @@ final class NullModel {
 
   /** Returns the types of the file, outer types before the types nested in them. */
   static List<Type> types(final SyntaxNode root) {
+    return types(root, false);
+  }
+
+  /**
+   * Returns the types of the file; {@code packageMarked} tells whether another file, the package's
+   * {@code package-info.java}, marks the package {@code @NullMarked}.
+   */
+  static List<Type> types(final SyntaxNode root, final boolean packageMarked) {
+    final boolean defaultMarked = packageMarked || packageMarked(root);
     final List<Type> out = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, NullSyntax.TYPES)) {
-      out.add(type(visit, root));
+      out.add(type(visit, defaultMarked));
     }
     return out;
   }
 
-  private static Type type(final SyntaxWalk.Visit visit, final SyntaxNode root) {
+  private static Type type(final SyntaxWalk.Visit visit, final boolean defaultMarked) {
     final SyntaxNode node = visit.node();
-    final boolean marked = marked(visit);
+    final boolean marked = marked(visit, defaultMarked);
     final List<Field> fields = new ArrayList<>();
     final List<Method> methods = new ArrayList<>();
     final List<SyntaxNode> initializers = new ArrayList<>();
@@ -109,7 +118,7 @@ final class NullModel {
     return new Type(
         name,
         node,
-        marked || packageMarked(root),
+        marked,
         supertypes(node),
         fields,
         methods,
@@ -118,17 +127,29 @@ final class NullModel {
     );
   }
 
-  /** Tells whether the type or a type around it is annotated {@code @NullMarked}. */
-  private static boolean marked(final SyntaxWalk.Visit visit) {
+  /**
+   * Tells whether the type is {@code @NullMarked}: the nearest of {@code @NullMarked} and {@code
+   * @NullUnmarked} on the type or a type around it decides, else the package default.
+   */
+  private static boolean marked(final SyntaxWalk.Visit visit, final boolean defaultMarked) {
     final List<SyntaxNode> chain = new ArrayList<>(visit.ancestors());
     chain.add(visit.node());
-    for (int index = 1; index < chain.size(); index++) {
-      if (NullSyntax.TYPES.contains(chain.get(index).kind())
-          && isNullMarked(holder(chain, index))) {
-        return true;
+    for (int index = chain.size() - 1; index >= 1; index--) {
+      if (NullSyntax.TYPES.contains(chain.get(index).kind())) {
+        final List<SyntaxNode> notes = holder(chain, index);
+        if (isNullUnmarked(notes)) {
+          return false;
+        }
+        if (isNullMarked(notes)) {
+          return true;
+        }
       }
     }
-    return false;
+    return defaultMarked;
+  }
+
+  private static boolean isNullUnmarked(final List<SyntaxNode> annotations) {
+    return annotations.stream().map(NullSyntax::simpleName).anyMatch("NullUnmarked"::equals);
   }
 
   /** The annotations before the type at {@code index}, kept in its wrapper or class body entry. */

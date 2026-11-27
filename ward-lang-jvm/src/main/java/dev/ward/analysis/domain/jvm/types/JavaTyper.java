@@ -24,8 +24,8 @@ final class JavaTyper {
   }
 
   /** Types the whole unit. */
-  void run(final JavaUnitModel model) {
-    final Ctx root = new Ctx(model.scope(), Map.of(), List.of(), Optional.empty());
+  void run(final JavaUnitModel model, final List<String> packageAnnotations) {
+    final Ctx root = new Ctx(model.scope(), Map.of(), packageAnnotations, Optional.empty());
     model.classes().forEach(declaration -> visitClass(declaration, root));
   }
 

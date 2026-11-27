@@ -6,6 +6,7 @@ import dev.ward.analysis.domain.port.LanguageFrontend;
 import dev.ward.analysis.domain.types.TypeMembers;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -51,6 +52,14 @@ public final class JvmClasses {
     return new JvmClasses(shared, declared);
   }
 
+  /**
+   * Returns the qualified names of the annotations on the package, read from its {@code
+   * package-info.java} when the project has one.
+   */
+  List<String> packageAnnotations(final String packageName) {
+    return shared.packageAnnotations(packageName);
+  }
+
   /** Returns the class with the binary name {@code name}. */
   Optional<JvmClass> find(final String name) {
     final JvmClass own = local.get(name);
@@ -80,6 +89,7 @@ public final class JvmClasses {
     private final LanguageFrontend frontend;
     private final Map<String, Map<String, JvmClass>> parsed = new HashMap<>();
     private final Map<String, TypeMembers> members = new ConcurrentHashMap<>();
+    private final Map<String, List<String>> packages = new ConcurrentHashMap<>();
     private final Set<String> loading = new HashSet<>();
     private final ReentrantLock lock = new ReentrantLock();
 
@@ -87,6 +97,20 @@ public final class JvmClasses {
       this.library = library;
       this.sources = sources;
       this.frontend = frontend;
+    }
+
+    List<String> packageAnnotations(final String packageName) {
+      return packageName.isEmpty()
+          ? List.of()
+          : packages.computeIfAbsent(packageName, this::readPackage);
+    }
+
+    private List<String> readPackage(final String packageName) {
+      return sources
+          .declaring(packageName + ".package-info")
+          .filter(unit -> unit.language() == AnalysisLanguage.JAVA)
+          .map(unit -> PackageAnnotations.of(frontend.parse(unit).tree()))
+          .orElse(List.of());
     }
 
     Optional<JvmClass> find(final String name) {

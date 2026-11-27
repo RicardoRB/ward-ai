@@ -60,7 +60,7 @@ public final class NativeJvmTypeFacts implements TypeFacts {
     if (unit.language() == AnalysisLanguage.JAVA) {
       final JavaUnitModel model = JavaUnitModel.of(tree, classes::exists);
       session = new Session(classes.withLocal(model.declared()), analysis.analyze(unit, tree));
-      new JavaTyper(session).run(model);
+      new JavaTyper(session).run(model, classes.packageAnnotations(model.packageName()));
     } else {
       final KotlinUnitModel model = KotlinUnitModel.of(tree, classes::exists);
       session = new Session(classes.withLocal(model.declared()), analysis.analyze(unit, tree));
