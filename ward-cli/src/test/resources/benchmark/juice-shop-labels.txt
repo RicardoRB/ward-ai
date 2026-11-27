@@ -22,7 +22,6 @@ ward:typescript/path-traversal | routes/fileServer.ts:18 | tp | params.file reac
 ward:typescript/path-traversal | routes/keyServer.ts:14 | tp | params.file reaches res.sendFile(path.resolve(...)) of the key folder; only a slash test guards it
 ward:typescript/path-traversal | routes/logfileServer.ts:14 | tp | params.file reaches res.sendFile(path.resolve(...)) of the log folder; only a slash test guards it
 ward:typescript/path-traversal | routes/quarantineServer.ts:14 | tp | params.file reaches res.sendFile(path.resolve(...)) of the quarantine folder; only a slash test guards it
-ward:typescript/path-traversal | routes/vulnCodeFixes.ts:83 | fp | readFixes(key) answers 404 unless a fix file starts with the key, so a traversal key never reaches this read
 ward:typescript/permissive-cors | server.ts:184 | tp | cors() with defaults allows every origin
 ward:typescript/permissive-cors | server.ts:185 | tp | cors() with defaults allows every origin
 ward:typescript/script-injection | routes/userProfile.ts:65 | tp | eval of a substring of the user name

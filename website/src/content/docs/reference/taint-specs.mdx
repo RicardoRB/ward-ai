@@ -101,6 +101,13 @@ from = ["receiver", 0]
   result in a local that is only read or written with `set`, and no key of such a `set` may carry
   taint of the specification. A getter that is passed as a value or imported under another name is
   not followed.
+- TypeScript and JavaScript read a cached listing of a directory as a proof that a key holds no path
+  separator: a function with one parameter `key` that returns only `cache[key]`, where `cache` is a
+  top-level empty object that only that function mentions, and writes `cache[key] = { list }` with
+  `list` a local array that only `list.push(...)` inside `if (entry.startsWith(`${key}...`))` fills,
+  in `for (const entry of entries)` over `const entries = readdirSync(...)`. After `x = f(key)`, a
+  branch that exits on `x.list.length === 0` or `!x.list.length`, or the `else` branch of it, `key`
+  is clean in the caller. A caller that changes the returned list is not followed.
 - `from` on a propagator lists its inputs, as argument positions or `"receiver"`. The argument
   positions are the arguments that the call stores into its receiver variable, so `list.add(v)`
   with `from = [0]` taints `list` when `v` is tainted. `"receiver"` is checked but does not change

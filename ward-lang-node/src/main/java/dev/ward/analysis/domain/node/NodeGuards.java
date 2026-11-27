@@ -134,6 +134,7 @@ final class NodeGuards {
         .flatMap(Optional::stream)
         .forEach(name -> guard(name, after(branch.span())));
     nullChecks.checked(alternatives(condition), after(branch.span()));
+    nullChecks.emptied(alternatives(condition), after(branch.span()));
   }
 
   /** Cleans the checked name past the exit, and marks the check for the callers. */
@@ -161,7 +162,7 @@ final class NodeGuards {
     return split(condition, "&&");
   }
 
-  private static List<SyntaxNode> alternatives(final SyntaxNode condition) {
+  static List<SyntaxNode> alternatives(final SyntaxNode condition) {
     return split(condition, "||");
   }
 
@@ -200,7 +201,7 @@ final class NodeGuards {
   }
 
   /** A span just past a statement, which no statement contains, so its write takes no taint. */
-  private static Span after(final Span statement) {
+  static Span after(final Span statement) {
     return new Span(
         statement.endLine(),
         statement.endColumn(),

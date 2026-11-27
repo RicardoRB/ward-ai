@@ -4,10 +4,12 @@ import dev.ward.analysis.domain.ir.ControlFlowBuilder;
 import dev.ward.analysis.domain.ir.FlowSite;
 import dev.ward.analysis.domain.ir.FlowSiteKind;
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.ir.VariableAccess;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -42,11 +44,31 @@ final class NodeReturnMarks {
   private final Set<String> collections;
   private final Deque<Optional<List<String>>> members = new ArrayDeque<>();
   private final List<FlowSite> returns = new ArrayList<>();
+  private final NodeListings listings;
+  private SyntaxNode function;
+  private List<String> parameters = List.of();
   private boolean returnsMembers;
 
-  NodeReturnMarks(final ControlFlowBuilder flow, final Set<String> collections) {
+  NodeReturnMarks(
+      final ControlFlowBuilder flow,
+      final Set<String> collections,
+      final Map<String,
+      List<Integer>> caches
+  ) {
     this.flow = flow;
+    this.listings = new NodeListings(flow, caches);
     this.collections = Set.copyOf(collections);
+  }
+
+  /** Records the parameters of the body and notes them for the listing mark of {@link #finish()}. */
+  void entry(
+      final SyntaxNode body,
+      final List<VariableAccess> entries,
+      final List<FlowSite> sites
+  ) {
+    flow.record(entries, sites);
+    function = body;
+    parameters = entries.stream().map(VariableAccess::name).toList();
   }
 
   /** Enters an {@code if}: the returns inside it are members when the condition is {@code C.has(p)}. */
@@ -87,6 +109,7 @@ final class NodeReturnMarks {
    * Records the marks in the entry block, which the exit always keeps, when one of them is a fact.
    */
   void finish() {
+    listings.mark(function, parameters);
     if (returnsMembers) {
       final int last = flow.current();
       flow.moveTo(0);

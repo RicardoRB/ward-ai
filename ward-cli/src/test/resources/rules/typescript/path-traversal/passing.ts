@@ -167,3 +167,43 @@ export async function readKnownFalsy(req, res) {
   }
   return fs.readFileSync('public/' + key);
 }
+
+// A key that a cached listing of a directory proved to start the name of an entry holds no path
+// separator: the function lists an entry only for a key that starts its name, and the caller left
+// or took the other branch when the list was empty.
+const listingCache: Record<string, { fixes: string[] }> = {};
+
+export function listFixes(key: string) {
+  if (listingCache[key]) {
+    return listingCache[key];
+  }
+  const files = fs.readdirSync('data/fixes');
+  const fixes: string[] = [];
+  for (const file of files) {
+    if (file.startsWith(`${key}_`)) {
+      fixes.push(file);
+    }
+  }
+  listingCache[key] = { fixes };
+  return listingCache[key];
+}
+
+export function readListedExit(req, res) {
+  const key = req.params.key;
+  const data = listFixes(key);
+  if (data.fixes.length === 0) {
+    res.status(404).end();
+    return;
+  }
+  return fs.readFileSync('public/' + key + '.yml');
+}
+
+export function readListedElse(req, res) {
+  const key = req.body.key;
+  const data = listFixes(key);
+  if (data.fixes.length === 0) {
+    res.status(404).end();
+  } else {
+    return fs.readFileSync('public/' + key + '.yml');
+  }
+}

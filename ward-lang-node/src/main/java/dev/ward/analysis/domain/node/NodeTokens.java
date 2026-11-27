@@ -1,7 +1,9 @@
 package dev.ward.analysis.domain.node;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /** Reads the tokens of one file by position. Positions past either end read as empty text. */
 final class NodeTokens {
@@ -12,6 +14,7 @@ final class NodeTokens {
   private static final String EXPORT = "export";
   private static final String REQUIRE_WORD = "require";
   private static final String QUOTE = "'";
+  private static final String WILDCARD = "*";
 
   private final List<SyntaxNode> leaves;
 
@@ -34,6 +37,39 @@ final class NodeTokens {
 
   String kind(final int i) {
     return i < 0 || i >= leaves.size() ? "" : leaves.get(i).kind();
+  }
+
+  /**
+   * The tokens that {@code words} match from {@code start}, where {@code "*"} matches any one token;
+   * empty when a token differs. The result holds the text matched by each {@code "*"}.
+   */
+  Optional<List<String>> match(final int start, final String... words) {
+    final List<String> captured = new ArrayList<>();
+    for (int offset = 0; offset < words.length; offset++) {
+      final String token = text(start + offset);
+      if (WILDCARD.equals(words[offset])) {
+        captured.add(token);
+      } else if (!words[offset].equals(token)) {
+        return Optional.empty();
+      }
+    }
+    return Optional.of(captured);
+  }
+
+  /** The index of the brace that closes the one at {@code open}, or -1 when none does. */
+  int closing(final int open) {
+    int depth = 0;
+    for (int index = open; index < leaves.size(); index++) {
+      if (isPunctuation(index, "{")) {
+        depth++;
+      } else if (isPunctuation(index, "}")) {
+        depth--;
+        if (depth == 0) {
+          return index;
+        }
+      }
+    }
+    return -1;
   }
 
   /** Returns whether token {@code i} is the word, and is not a property after a dot. */
