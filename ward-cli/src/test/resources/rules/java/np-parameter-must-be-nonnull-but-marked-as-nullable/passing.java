@@ -15,3 +15,21 @@ class Sample {
   }
 }
 
+
+class Arguments {
+  int count(final Map<String, @Nullable Object> properties) {
+    return properties.size();
+  }
+
+  int list(List<@Nullable String> items) {
+    return items.size();
+  }
+
+  int component(@Nullable String[] items) {
+    return items.length;
+  }
+
+  int inner(Outer.@Nullable Inner value) {
+    return value.size();
+  }
+}
