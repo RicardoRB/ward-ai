@@ -1,6 +1,6 @@
 # OWASP Juice Shop v20.4.0 (MIT) against Ward's TypeScript and JavaScript security rules.
 # Archive sha-256 90551e4bcf83e7019de5bfcba8ab28b35df35b9243d91fbdc7c7e6db30c23e4e.
-# Every ward:typescript/* and ward:javascript/* rule of category security ran with the strict preset, over every .ts, .tsx, .js and .mjs file outside node_modules.
+# Every ward:typescript/* and ward:javascript/* rule of category security ran with the strict preset and min-confidence = possible, over every .ts, .tsx, .js and .mjs file outside node_modules.
 # A finding is true (tp), false (fp) or undetermined (un), as read from the code at its line; the labels are in juice-shop-labels.txt and the categories in juice-shop-categories.txt.
 # Regenerate: ./mvnw -pl ward-cli -am -Dtest=JuiceShopBenchmarkSmokeTest -Dward.benchmark.juice-shop=<dir> -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
 files 679 | not analysed (syntax errors) 30
@@ -65,7 +65,7 @@ ward:typescript/missing-frame-protection | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/no-blank-target | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/no-dangerously-set-inner-html | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/nosql-injection | findings 4 | tp 4 | fp 0 | un 0
-ward:typescript/path-traversal | findings 9 | tp 4 | fp 5 | un 0
+ward:typescript/path-traversal | findings 7 | tp 4 | fp 3 | un 0
 ward:typescript/permissive-cors | findings 2 | tp 2 | fp 0 | un 0
 ward:typescript/prototype-pollution | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/regex-injection | findings 0 | tp 0 | fp 0 | un 0

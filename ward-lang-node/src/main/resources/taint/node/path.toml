@@ -247,6 +247,19 @@ kind = "call"
 name = "basename"
 receiver = "path"
 
+# The file-type package names a file from its signature bytes: the extension and the MIME type
+# come from the package's own fixed table, not from the bytes, so they hold no path separator.
+
+[[sanitizers]]
+kind = "call"
+name = "fromBuffer"
+receiver = "file-type"
+
+[[sanitizers]]
+kind = "call"
+name = "fileTypeFromBuffer"
+receiver = "file-type"
+
 # Numeric conversions cannot carry markup or a path separator.
 
 [[sanitizers]]

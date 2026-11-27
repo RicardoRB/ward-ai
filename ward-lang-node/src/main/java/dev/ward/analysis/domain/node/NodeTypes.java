@@ -78,7 +78,9 @@ final class NodeTypes {
       return Optional.empty();
     }
     final String written = declared.getOrDefault(qualifier, qualifier);
-    return Optional.ofNullable(imports.typeOf(written)).or(() -> imports.moduleOf(root(written)));
+    return imports.objectOwner(written)
+        .or(() -> Optional.ofNullable(imports.typeOf(written)))
+        .or(() -> imports.moduleOf(root(written)));
   }
 
   /** Whether the root of a written receiver is a parameter, whose content the body cannot know. */

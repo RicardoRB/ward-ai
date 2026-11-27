@@ -115,3 +115,9 @@ export function keyedMapRead(req) {
   names.set('a', 'a.txt');
   return fs.readFileSync('public/' + names.get(req.query.key));
 }
+
+import fileType from 'file-type';
+export async function detectedExtension(req) {
+  const detected = await fileType.fromBuffer(req.body.data);
+  return fs.readFileSync('uploads/1.' + detected.ext);
+}

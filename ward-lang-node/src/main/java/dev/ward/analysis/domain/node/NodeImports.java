@@ -2,8 +2,10 @@ package dev.ward.analysis.domain.node;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,6 +44,7 @@ final class NodeImports {
 
   private final Map<String, String> modules = new HashMap<>();
   private final Map<String, String> imported = new HashMap<>();
+  private final Set<String> projectLocals = new HashSet<>();
   private final String directory;
 
   private NodeImports(final String directory) {
@@ -109,18 +112,18 @@ final class NodeImports {
     }
     final Matcher defaults = DEFAULT.matcher(text);
     if (defaults.find()) {
-      modules.put(defaults.group(1), module(defaults.group(2)));
+      bindWhole(defaults.group(1), defaults.group(2));
     }
     final Matcher namespace = NAMESPACE.matcher(text);
     if (namespace.find()) {
-      modules.put(namespace.group(1), module(namespace.group(2)));
+      bindWhole(namespace.group(1), namespace.group(2));
     }
   }
 
   private void addRequire(final String text) {
     final Matcher single = REQUIRE.matcher(text);
     if (single.find()) {
-      modules.put(single.group(1), module(single.group(2)));
+      bindWhole(single.group(1), single.group(2));
       return;
     }
     final Matcher destructured = REQUIRE_DESTRUCTURED.matcher(text);
@@ -148,6 +151,31 @@ final class NodeImports {
         imported.put(local, name);
       }
     }
+  }
+
+  private void bindWhole(final String local, final String specifier) {
+    modules.put(local, module(specifier));
+    if (specifier.startsWith(".")) {
+      projectLocals.add(local);
+    }
+  }
+
+  /**
+   * The owner of the methods of an object that another file of the project exports: {@code
+   * module#object} for {@code ns.object}, where {@code ns} is bound to a relative module as a whole.
+   *
+   * @param written a receiver as written, such as {@code security.authenticatedUsers}
+   * @return the owner, or empty when the receiver is not a member of such a module
+   */
+  Optional<String> objectOwner(final String written) {
+    final int dot = written.indexOf('.');
+    if (dot < 0 || written.indexOf('.', dot + 1) >= 0) {
+      return Optional.empty();
+    }
+    final String local = written.substring(0, dot);
+    return projectLocals.contains(local)
+        ? Optional.of(modules.get(local) + "#" + written.substring(dot + 1))
+        : Optional.empty();
   }
 
   private String module(final String specifier) {

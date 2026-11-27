@@ -178,6 +178,87 @@ kind = "member"
 name = "cookie"
 qualifier = "document"
 
+# Stored data: the rows that an ORM reads hold what users wrote into the database earlier, so a
+# value read from a row is untrusted like a request member (a second-order flow). The names are the
+# read methods of Sequelize (findByPk, findOne, findAll, findAndCountAll, findOrCreate), TypeORM
+# (findOneBy, findBy, findOneOrFail, findOneByOrFail, findAndCount, findOne) and Prisma
+# (findUnique, findFirst, findMany and their OrThrow forms); Mongoose shares findOne.
+
+[[sources]]
+kind = "call"
+name = "findByPk"
+assumed = "a row that an ORM reads is assumed to hold what a user stored"
+
+[[sources]]
+kind = "call"
+name = "findOne"
+assumed = "a row that an ORM reads is assumed to hold what a user stored"
+
+[[sources]]
+kind = "call"
+name = "findAll"
+assumed = "a row that an ORM reads is assumed to hold what a user stored"
+
+[[sources]]
+kind = "call"
+name = "findAndCountAll"
+assumed = "a row that an ORM reads is assumed to hold what a user stored"
+
+[[sources]]
+kind = "call"
+name = "findOrCreate"
+assumed = "a row that an ORM reads is assumed to hold what a user stored"
+
+[[sources]]
+kind = "call"
+name = "findOneBy"
+assumed = "a row that an ORM reads is assumed to hold what a user stored"
+
+[[sources]]
+kind = "call"
+name = "findBy"
+assumed = "a row that an ORM reads is assumed to hold what a user stored"
+
+[[sources]]
+kind = "call"
+name = "findOneOrFail"
+assumed = "a row that an ORM reads is assumed to hold what a user stored"
+
+[[sources]]
+kind = "call"
+name = "findOneByOrFail"
+assumed = "a row that an ORM reads is assumed to hold what a user stored"
+
+[[sources]]
+kind = "call"
+name = "findAndCount"
+assumed = "a row that an ORM reads is assumed to hold what a user stored"
+
+[[sources]]
+kind = "call"
+name = "findUnique"
+assumed = "a row that an ORM reads is assumed to hold what a user stored"
+
+[[sources]]
+kind = "call"
+name = "findUniqueOrThrow"
+assumed = "a row that an ORM reads is assumed to hold what a user stored"
+
+[[sources]]
+kind = "call"
+name = "findFirst"
+assumed = "a row that an ORM reads is assumed to hold what a user stored"
+
+[[sources]]
+kind = "call"
+name = "findFirstOrThrow"
+assumed = "a row that an ORM reads is assumed to hold what a user stored"
+
+[[sources]]
+kind = "call"
+name = "findMany"
+assumed = "a row that an ORM reads is assumed to hold what a user stored"
+
 # The condition of a ternary and a comparison decide a branch or a boolean: no operand is part of
 # the value (the lowering names such a span <test>).
 [[sanitizers]]

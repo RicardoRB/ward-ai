@@ -41,13 +41,14 @@ final class TaintSpecFiles {
   private static final String FROM = "from";
   private static final String PATTERN = "pattern";
   private static final String EXCEPT_CALLS = "except-calls";
+  private static final String ASSUMED = "assumed";
   private static final String STRING = "string";
   private static final String LITERAL = "literal";
   private static final String QUERY_PART = "query-part";
   private static final String VALIDATED = "validated";
   private static final Set<String> TABLES = Set.of(SOURCES, SINKS, SANITIZERS, PROPAGATORS);
   private static final Set<String> KEYS =
-      Set.of(KIND, NAME, RECEIVER, QUALIFIER, ARGUMENTS, FROM, PATTERN, EXCEPT_CALLS);
+      Set.of(KIND, NAME, RECEIVER, QUALIFIER, ARGUMENTS, FROM, PATTERN, EXCEPT_CALLS, ASSUMED);
   private static final Map<String, FlowSiteKind> KINDS =
       Map.of(
           "call",
@@ -201,8 +202,23 @@ final class TaintSpecFiles {
         arguments,
         Optional.empty(),
         exceptCalls(where, table, entry),
-        List.of()
+        assumed(where, table, entry)
     );
+  }
+
+  /** The reason a source is only assumed to hold untrusted data, which makes its findings possible. */
+  private static List<String> assumed(
+      final String where,
+      final String table,
+      final TomlTable entry
+  ) {
+    if (!entry.contains(ASSUMED)) {
+      return List.of();
+    }
+    if (!SOURCES.equals(table)) {
+      throw new RuleConfigurationException(where + " names assumed, which only sources take");
+    }
+    return List.of(text(where, entry, ASSUMED));
   }
 
   /** The calls that a sink treats as a safe value when one is its whole argument. */

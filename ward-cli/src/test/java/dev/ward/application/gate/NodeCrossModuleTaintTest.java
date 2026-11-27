@@ -49,6 +49,7 @@ class NodeCrossModuleTaintTest {
   private static final int NAMED_TAINTED_LINE = 11;
   private static final int NAMESPACE_TAINTED_LINE = 15;
   private static final int PASSTHROUGH_LINE = 23;
+  private static final int ECHOED_LINE = 10;
 
   @TempDir Path root;
 
@@ -144,5 +145,36 @@ class NodeCrossModuleTaintTest {
     assertThat(found)
         .extracting(finding -> (finding.line() - first) / HANDLER_LINES)
         .containsExactlyInAnyOrder(0, 1, 2, LAST_TAINTED);
+  }
+
+  @Test
+  void aKeyedReadInAMethodOfAnExportedObjectIsCleanAndAnEchoingMethodIsNot() {
+    final String sessions =
+        "export const sessions = {\n"
+            + "  table: {} as Record<string, string>,\n"
+            + "  get: function (token?: string) {\n"
+            + "    return token ? this.table[token] : undefined\n"
+            + "  },\n"
+            + "  echo: function (value: string) {\n"
+            + "    return value\n"
+            + "  }\n"
+            + BRACE;
+    final String route =
+        "import fs from 'node:fs'\n"
+            + "import { type Request } from 'express'\n"
+            + "import * as store from '../lib/sessions'\n"
+            + "\n"
+            + "export function lookedUp (req: Request) {\n"
+            + "  return fs.readFileSync(store.sessions.get(req.query.t as string))\n"
+            + BRACE
+            + "\n"
+            + "export function echoed (req: Request) {\n"
+            + "  return fs.readFileSync(store.sessions.echo(req.query.t as string))\n"
+            + BRACE;
+
+    final List<AnalysisFinding> found =
+        run(List.of(typescript("lib/sessions.ts", sessions), typescript("routes/c.ts", route)));
+
+    assertThat(found).extracting(AnalysisFinding::line).containsExactly(ECHOED_LINE);
   }
 }

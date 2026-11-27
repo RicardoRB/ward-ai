@@ -32,7 +32,16 @@ public final class NodeControlFlow implements ControlFlowLowering {
 
   /** Nodes through which a variable's name still reaches the function it is bound to. */
   private static final Set<String> NAME_CARRIERS =
-      Set.of(SINGLE_EXPRESSION, "expressionSequence", "anonymousFunction", "initializer");
+      Set.of(
+          SINGLE_EXPRESSION,
+          "expressionSequence",
+          "anonymousFunction",
+          "initializer",
+          "objectLiteral"
+      );
+
+  /** A {@code name: value} member of an object literal, which names the function it holds. */
+  private static final String PROPERTY = "propertyAssignment";
 
   private static final Set<String> NAME_PARTS =
       Set.of("identifier", "classElementName", "propertyName");
@@ -141,6 +150,8 @@ public final class NodeControlFlow implements ControlFlowLowering {
         childHint = variableName(node);
       } else if (NAME_CARRIERS.contains(node.kind())) {
         childHint = hint;
+      } else if (PROPERTY.equals(node.kind())) {
+        childHint = member(node, hint);
       }
       final boolean inExport =
           !NodeFlowSyntax.isFunction(node) && (exported || exports(node));
@@ -247,6 +258,15 @@ public final class NodeControlFlow implements ControlFlowLowering {
       }
       final Span span = function.span();
       return "<anonymous>@" + span.startLine() + ":" + span.startColumn();
+    }
+
+    /** The owner and name of a member of the object that a variable holds, or null. */
+    private static String member(final SyntaxNode property, final String owner) {
+      final SyntaxNode name = NodeFlowSyntax.firstOf(
+          NodeFlowSyntax.parts(property),
+          "propertyName"
+      );
+      return owner == null || name == null ? null : owner + "#" + NodeFlowSyntax.text(name);
     }
 
     private static String variableName(final SyntaxNode variable) {
