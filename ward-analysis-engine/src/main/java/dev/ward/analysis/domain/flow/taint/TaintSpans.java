@@ -28,6 +28,14 @@ final class TaintSpans {
    * receiver that a sanitizing member read lists as its argument.
    */
   static boolean sanitized(final BasicBlock block, final Span span, final TaintSpec spec) {
+    return sanitizerArguments(block, spec).stream().anyMatch(argument -> contains(argument, span));
+  }
+
+  /**
+   * The spans of the arguments of the sanitizer sites of a block; a caller that tests many spans of
+   * one block reads them once.
+   */
+  static List<Span> sanitizerArguments(final BasicBlock block, final TaintSpec spec) {
     return block.sites().stream()
         .filter(
             site ->
@@ -38,7 +46,7 @@ final class TaintSpans {
         )
         .filter(site -> spec.sanitizers().stream().anyMatch(entry -> entry.matches(site)))
         .flatMap(site -> site.arguments().stream())
-        .anyMatch(argument -> contains(argument, span));
+        .toList();
   }
 
   /** Returns the source entry that a call or member read matches, if any. */

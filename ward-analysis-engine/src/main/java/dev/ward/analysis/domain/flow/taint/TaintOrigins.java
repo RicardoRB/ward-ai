@@ -9,6 +9,7 @@ import dev.ward.analysis.domain.ir.FlowStep;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -28,6 +29,7 @@ final class TaintOrigins {
   private final ReachingDefinitions reaching;
   private final TaintSpec spec;
   private final Map<AccessSite, Taint> tainted = new HashMap<>();
+  private final Map<Integer, List<Span>> sanitizerArguments = new HashMap<>();
 
   private TaintOrigins(
       final ControlFlowGraph graph,
@@ -111,11 +113,22 @@ final class TaintOrigins {
       final BasicBlock block
   ) {
     return use.access().kind() == AccessKind.READ
+        && TaintSpans.contains(statement, use.access().span())
         && (use.block() == definition.block()
             || SplitValues.covers(block, use.access().span()))
-        && TaintSpans.contains(statement, use.access().span())
-        && !TaintSpans.sanitized(graph.blocks().get(use.block()), use.access().span(), spec)
-        && reaching.reaching(use).stream().anyMatch(tainted::containsKey);
+        && reaching.reaching(use).stream().anyMatch(tainted::containsKey)
+        && !sanitized(use);
+  }
+
+  /** Whether a use sits in a sanitizer argument; it does not change while taint propagates. */
+  private boolean sanitized(final AccessSite use) {
+    return sanitizerArguments
+        .computeIfAbsent(
+            use.block(),
+            id -> TaintSpans.sanitizerArguments(graph.blocks().get(id), spec)
+        )
+        .stream()
+        .anyMatch(argument -> TaintSpans.contains(argument, use.access().span()));
   }
 
   private Taint taintFrom(final AccessSite use, final AccessSite definition, final Span statement) {

@@ -159,20 +159,21 @@ record GuardedArgument(BasicBlock block, Span span, List<Span> clean) {
       Taint> origins,
       final TaintSpec spec
   ) {
-    final Optional<Taint> direct = directSource(spec);
+    final Sanitizers sanitizers = new Sanitizers(block, spec);
+    final Optional<Taint> direct = directSource(spec, sanitizers);
     if (direct.isPresent() && direct.get().proven()) {
       return direct;
     }
-    final Optional<Taint> read = fromReads(reaching, origins, spec);
+    final Optional<Taint> read = fromReads(reaching, origins, sanitizers);
     return direct.isPresent() && read.isPresent()
         ? Optional.of(Taint.better(direct.get(), read.get()))
         : direct.or(() -> read);
   }
 
   /** A source call written directly in the argument, such as {@code sink(source())}. */
-  private Optional<Taint> directSource(final TaintSpec spec) {
+  private Optional<Taint> directSource(final TaintSpec spec, final Sanitizers sanitizers) {
     return block.sites().stream()
-        .flatMap(site -> directEntry(site, spec).map(entry -> sourceTaint(site, entry)).stream())
+        .flatMap(site -> directEntry(site, spec, sanitizers).map(entry -> sourceTaint(site, entry)).stream())
         .reduce(Taint::better);
   }
 
@@ -184,12 +185,16 @@ record GuardedArgument(BasicBlock block, Span span, List<Span> clean) {
     ).assuming(UnfollowedCalls.through(block, span, site.span()));
   }
 
-  private Optional<TaintEntry> directEntry(final FlowSite site, final TaintSpec spec) {
+  private Optional<TaintEntry> directEntry(
+      final FlowSite site,
+      final TaintSpec spec,
+      final Sanitizers sanitizers
+  ) {
     if (!TaintSpans.contains(span, site.span())
         || isClean(site.span())
         || site.kind() == FlowSiteKind.PARAMETER
         || site.kind() == FlowSiteKind.LITERAL && !site.span().equals(span)
-        || TaintSpans.sanitized(block, site.span(), spec)) {
+        || sanitizers.contain(site.span())) {
       return Optional.empty();
     }
     return TaintSpans.sourceOf(site, spec);
@@ -203,21 +208,21 @@ record GuardedArgument(BasicBlock block, Span span, List<Span> clean) {
       final ReachingDefinitions reaching,
       final Map<AccessSite,
       Taint> origins,
-      final TaintSpec spec
+      final Sanitizers sanitizers
   ) {
     return reaching.uses().stream()
-        .filter(use -> taintedRead(use, spec))
+        .filter(use -> taintedRead(use, sanitizers))
         .flatMap(use -> readTaint(reaching, origins, use).stream())
         .reduce(Taint::better);
   }
 
-  private boolean taintedRead(final AccessSite use, final TaintSpec spec) {
+  private boolean taintedRead(final AccessSite use, final Sanitizers sanitizers) {
     final Span read = use.access().span();
     return use.block() == block.id()
         && use.access().kind() == AccessKind.READ
         && !isClean(read)
         && TaintSpans.contains(span, read)
-        && !TaintSpans.sanitized(block, read, spec);
+        && !sanitizers.contain(read);
   }
 
   private Optional<Taint> readTaint(
@@ -232,6 +237,25 @@ record GuardedArgument(BasicBlock block, Span span, List<Span> clean) {
         .filter(Objects::nonNull)
         .reduce(Taint::better)
         .map(found -> found.assuming(UnfollowedCalls.through(block, span, read)));
+  }
+
+  /** The sanitizer arguments of the block, read on first use as most arguments need none. */
+  private static final class Sanitizers {
+    private final BasicBlock block;
+    private final TaintSpec spec;
+    private List<Span> arguments;
+
+    Sanitizers(final BasicBlock block, final TaintSpec spec) {
+      this.block = block;
+      this.spec = spec;
+    }
+
+    boolean contain(final Span inner) {
+      if (arguments == null) {
+        arguments = TaintSpans.sanitizerArguments(block, spec);
+      }
+      return arguments.stream().anyMatch(argument -> TaintSpans.contains(argument, inner));
+    }
   }
 
   /** Reports whether a span lies inside a clean part. */
