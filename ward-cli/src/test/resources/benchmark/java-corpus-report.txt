@@ -14,7 +14,7 @@ spring-data-examples | files 6692 | not analysed 0
 ruoyi | files 283 | not analysed 0
 mall | files 526 | not analysed 0
 eladmin | files 277 | not analysed 0
-rules 1056 | not run (need type facts) 252 | findings 145209
+rules 1056 | not run (need type facts) 281 | findings 145209
 ward:java/aa-assertion-of-arguments | findings 9 | labelled 1 | tp 1 | fp 0 | un 0
 ward:java/abbreviation-as-word-in-name | findings 396 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/abstract-class-name | findings 97 | labelled 3 | tp 3 | fp 0 | un 0
@@ -30,7 +30,7 @@ ward:java/android-injection-before-super | findings 0 | labelled 0 | tp 0 | fp 0
 ward:java/annotated-declaration-visibility | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/annotation-location | findings 2037 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/annotation-use-style | findings 33 | labelled 3 | tp 0 | fp 0 | un 3
-ward:java/annotation-value-invalid | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:java/annotation-value-invalid | not run
 ward:java/anon-inner-length | findings 11 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/append-character-with-char | findings 125 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/array-equals | not run
@@ -45,9 +45,9 @@ ward:java/ase-assertion-with-side-effect | findings 0 | labelled 0 | tp 0 | fp 0
 ward:java/ase-assertion-with-side-effect-method | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/assert-equals-argument-order | findings 67 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/assert-statement-in-test | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/assign-field-nullable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/assign-generic-nullable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/assign-nullable-to-nonnull-array | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:java/assign-field-nullable | not run
+ward:java/assign-generic-nullable | not run
+ward:java/assign-nullable-to-nonnull-array | not run
 ward:java/assignment-in-operand | findings 39 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/assignment-to-non-final-static | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/async-callable-returns-null | not run
@@ -133,7 +133,7 @@ ward:java/bx-unboxing-immediately-reboxed | findings 1 | labelled 1 | tp 1 | fp 
 ward:java/call-super-first | not run
 ward:java/call-super-in-constructor | findings 153 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/call-super-last | not run
-ward:java/cast-to-nonnull-arg-nonnull | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:java/cast-to-nonnull-arg-nonnull | not run
 ward:java/catch-parameter-name | findings 2 | labelled 2 | tp 2 | fp 0 | un 0
 ward:java/chaining-constructor-ignores-parameter | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/check-not-null-multiple-times | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -208,7 +208,7 @@ ward:java/declaration-order | findings 1098 | labelled 3 | tp 0 | fp 0 | un 3
 ward:java/deduplicate-constants | findings 102 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/default-label-not-last-in-switch | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/dep-ann | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/dereference-nullable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:java/dereference-nullable | not run
 ward:java/dereference-with-null-branch | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/detached-test-case | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/discarded-postfix-expression | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -342,7 +342,7 @@ ward:java/fi-finalizer-nulls-fields | findings 0 | labelled 0 | tp 0 | fp 0 | un
 ward:java/fi-finalizer-only-nulls-fields | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/fi-nullify-super | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/fi-public-should-be-protected | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/field-no-init | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:java/field-no-init | not run
 ward:java/file-length | findings 172 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/final-class | findings 28 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/final-field-could-be-static | findings 32 | labelled 3 | tp 3 | fp 0 | un 0
@@ -371,10 +371,10 @@ ward:java/functional-interface-method-changed | not run
 ward:java/futures-get-checked-illegal-exception-type | not run
 ward:java/fuzzy-equals-should-not-be-used-in-equals-method | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/gc-unrelated-types | not run
-ward:java/generic-inference-failure | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:java/generic-inference-failure | not run
 ward:java/get-class-on-annotation | not run
 ward:java/get-class-on-class | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/get-on-empty-optional | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:java/get-on-empty-optional | not run
 ward:java/god-class | not run
 ward:java/google-method-name | findings 1544 | labelled 3 | tp 2 | fp 0 | un 1
 ward:java/google-non-constant-field-name | findings 152 | labelled 3 | tp 3 | fp 0 | un 0
@@ -559,7 +559,7 @@ ward:java/me-mutable-enum-field | findings 10 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/memory-segment-reference-equality | not run
 ward:java/method-count | findings 39 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/method-length | findings 119 | labelled 3 | tp 3 | fp 0 | un 0
-ward:java/method-no-init | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:java/method-no-init | not run
 ward:java/method-returns-internal-array | findings 17 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/method-type-parameter-name | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/method-with-same-name-as-enclosing-class | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -650,7 +650,7 @@ ward:java/non-runtime-annotation | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/non-serializable-class | not run
 ward:java/non-static-initializer | findings 15 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/non-thread-safe-singleton | findings 1 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/nonnull-field-read-before-init | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:java/nonnull-field-read-before-init | not run
 ward:java/np-always-null | not run
 ward:java/np-always-null-exception | not run
 ward:java/np-argument-might-be-null | not run
@@ -689,8 +689,8 @@ ward:java/null-assignment | findings 280 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/null-needs-cast-for-varargs | not run
 ward:java/null-ternary | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/nullable-on-containing-class | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/nullable-on-wrong-nested-class-level | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/nullable-varargs-unsupported | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:java/nullable-on-wrong-nested-class-level | not run
+ward:java/nullable-varargs-unsupported | not run
 ward:java/odr-open-database-resource | not run
 ward:java/odr-open-database-resource-exception-path | not run
 ward:java/one-statement-per-line | findings 1 | labelled 0 | tp 0 | fp 0 | un 0
@@ -720,8 +720,8 @@ ward:java/parameter-count | findings 47 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/parameter-name | findings 4 | labelled 3 | tp 2 | fp 0 | un 1
 ward:java/parameters-but-not-parameterized | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/parcelable-creator | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/pass-nullable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/pass-nullable-generic | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:java/pass-nullable | not run
+ward:java/pass-nullable-generic | not run
 ward:java/path-injection | findings 1 | labelled 1 | tp 0 | fp 0 | un 1
 ward:java/pattern-variable-assignment | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/pattern-variable-name | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -734,8 +734,8 @@ ward:java/pi-do-not-reuse-public-identifiers-class-names | findings 0 | labelled
 ward:java/pi-do-not-reuse-public-identifiers-field-names | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/pi-do-not-reuse-public-identifiers-local-variable-names | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/pi-do-not-reuse-public-identifiers-method-names | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/postcondition-not-satisfied | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/precondition-not-satisfied | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:java/postcondition-not-satisfied | not run
+ward:java/precondition-not-satisfied | not run
 ward:java/preconditions-invalid-placeholder | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/premature-declaration | findings 8 | labelled 3 | tp 0 | fp 0 | un 3
 ward:java/preserve-stack-trace | findings 31 | labelled 3 | tp 1 | fp 0 | un 2
@@ -799,8 +799,8 @@ ward:java/restricted-api | not run
 ward:java/return-count | findings 553 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/return-empty-collection-rather-than-null | findings 85 | labelled 3 | tp 3 | fp 0 | un 0
 ward:java/return-from-finally-block | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/return-nullable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/return-nullable-generic | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:java/return-nullable | not run
+ward:java/return-nullable-generic | not run
 ward:java/return-value-ignored | not run
 ward:java/rp-c-repeated-conditional-test | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/rr-not-checked | not run
@@ -912,7 +912,7 @@ ward:java/suspicious-hashcode-method-name | findings 0 | labelled 0 | tp 0 | fp 
 ward:java/suspicious-octal-escape | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/sw-swing-methods-invoked-in-swing-thread | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/switch-density | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/switch-expression-nullable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:java/switch-expression-nullable | not run
 ward:java/swl-sleep-with-lock-held | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/system-exit-outside-main | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/system-println | findings 182 | labelled 3 | tp 3 | fp 0 | un 0
@@ -946,7 +946,7 @@ ward:java/tree-to-string | not run
 ward:java/trust-all-certificates | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/try-fail-throwable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/type-name | findings 30 | labelled 3 | tp 3 | fp 0 | un 0
-ward:java/type-parameter-cannot-be-nullable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:java/type-parameter-cannot-be-nullable | not run
 ward:java/type-parameter-qualifier | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/uc-useless-condition | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/uc-useless-condition-type | not run
@@ -960,7 +960,7 @@ ward:java/ul-unreleased-lock-exception-path | findings 0 | labelled 0 | tp 0 | f
 ward:java/um-unnecessary-math | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/umac-uncallable-method-of-anonymous-class | not run
 ward:java/unauthenticated-cbc | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
-ward:java/unbox-nullable | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:java/unbox-nullable | not run
 ward:java/unconditional-if-statement | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/unicode-directionality-characters | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/unicode-in-code | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -987,7 +987,7 @@ ward:java/unnecessary-return | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/unnecessary-type-argument | not run
 ward:java/unnecessary-varargs-array-creation | not run
 ward:java/unnecessary-warning-suppression | findings 370 | labelled 3 | tp 3 | fp 0 | un 0
-ward:java/unrecognized-nullness-annotation-location | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:java/unrecognized-nullness-annotation-location | not run
 ward:java/unsafe-deserialization-settings | findings 1 | labelled 1 | tp 1 | fp 0 | un 0
 ward:java/unsafe-reflection | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/unsafe-wildcard | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
@@ -1058,12 +1058,12 @@ ward:java/while-loop-with-literal-boolean | findings 1 | labelled 1 | tp 1 | fp 
 ward:java/wl-using-getclass-rather-than-class-literal | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/wmi-wrong-map-iterator | findings 3 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/wrong-oneof | not run
-ward:java/wrong-override-param | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/wrong-override-param-generic | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/wrong-override-postcondition | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/wrong-override-precondition | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/wrong-override-return | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
-ward:java/wrong-override-return-generic | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
+ward:java/wrong-override-param | not run
+ward:java/wrong-override-param-generic | not run
+ward:java/wrong-override-postcondition | not run
+ward:java/wrong-override-precondition | not run
+ward:java/wrong-override-return | not run
+ward:java/wrong-override-return-generic | not run
 ward:java/wrong-test-annotation | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/ws-writeobject-sync | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
 ward:java/xfb-xml-factory-bypass | findings 0 | labelled 0 | tp 0 | fp 0 | un 0
