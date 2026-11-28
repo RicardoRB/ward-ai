@@ -195,9 +195,12 @@ jobs:
           -Dward.kotlinc.binary="$WARD_KOTLINC"
           test
 
+      # shortcut: 0.12.1 takes hours on a cold analysis cache (#798, fixed in 0.12.2), so CI pins
+      # 0.12.0, whose config and cache match; drop the pin once 0.12.2 is released.
       - name: Install Ward
         env:
           WARD_INSTALL_DIR: ${{ runner.temp }}/ward/bin
+          WARD_VERSION: v0.12.0
         run: |
           ./install.sh
           echo "$WARD_INSTALL_DIR" >> "$GITHUB_PATH"
