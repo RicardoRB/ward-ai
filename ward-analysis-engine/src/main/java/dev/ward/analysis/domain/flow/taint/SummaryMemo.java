@@ -21,6 +21,7 @@ import java.util.function.Supplier;
 public final class SummaryMemo {
   /** shortcut: stop adding past this many results; give old entries up when it matters. */
   private static final int LIMIT = 400_000;
+  private static final int HASH_STEP = 31;
 
   private final ConcurrentMap<Key, Core> results;
   private final ConcurrentMap<Identity, GraphFacts> facts = new ConcurrentHashMap<>();
@@ -113,7 +114,7 @@ public final class SummaryMemo {
     Print(final LocalMethod method, final int graphHash) {
       this.method = method;
       this.hash =
-          31 * Objects.hash(
+          HASH_STEP * Objects.hash(
               method.name(),
               method.owner(),
               method.arity(),
