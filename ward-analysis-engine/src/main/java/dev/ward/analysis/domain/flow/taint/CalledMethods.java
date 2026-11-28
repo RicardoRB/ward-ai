@@ -35,7 +35,8 @@ final class CalledMethods {
   static Map<String, LocalMethod> reachable(
       final List<ControlFlowGraph> graphs,
       final Map<String,
-      LocalMethod> external
+      LocalMethod> external,
+      final SummaryMemo memo
   ) {
     final Map<String, LocalMethod> kept = new HashMap<>();
     final Map<String, List<LocalMethod>> byCall =
@@ -52,14 +53,14 @@ final class CalledMethods {
       }
       for (final LocalMethod method : byCall.getOrDefault(call, List.of())) {
         if (kept.putIfAbsent(method.key(), method) == null) {
-          pending.addAll(callKeys(List.of(method.graph())));
+          pending.addAll(memo.facts(method.graph()).callKeys());
         }
       }
     }
     return kept;
   }
 
-  private static Set<String> callKeys(final List<ControlFlowGraph> graphs) {
+  static Set<String> callKeys(final List<ControlFlowGraph> graphs) {
     final Set<String> calls = new HashSet<>();
     for (final ControlFlowGraph graph : graphs) {
       for (final BasicBlock block : graph.blocks()) {
