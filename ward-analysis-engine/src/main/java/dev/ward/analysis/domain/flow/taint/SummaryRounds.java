@@ -3,8 +3,10 @@ package dev.ward.analysis.domain.flow.taint;
 import dev.ward.analysis.domain.ir.FlowSiteKind;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -44,7 +46,8 @@ final class SummaryRounds {
       MethodSummary> previous,
       final SummaryMemo memo,
       final Map<String,
-      SummaryMemo.Print> prints
+      SummaryMemo.Print> prints,
+      final RoundCores cores
   ) {
     final SpecIndex index = new SpecIndex(spec);
     final Set<String> kinds = ValidatingMethods.kinds(spec);
@@ -56,14 +59,42 @@ final class SummaryRounds {
         );
     for (final LocalMethod method : methods.values()) {
       final SummaryMemo.Core core =
-          memo.core(
-              key(prints.get(method.key()), index.matched(method.graph())),
-              () -> MethodSummary.core(method, spec, seeded)
-          );
+          cores.reuse(method)
+              .orElseGet(
+                  () -> cores.keep(
+                      method,
+                      memo.core(
+                          key(prints.get(method.key()), index.matched(method.graph())),
+                          () -> MethodSummary.core(method, spec, seeded)
+                      )
+                  )
+              );
       MethodSummary.of(method, core, kinds, methods, validating)
           .ifPresent(summary -> found.put(method.key(), summary));
     }
     return found;
+  }
+
+  /**
+   * The names that the last round changed: the methods whose summary is not the one before. A
+   * method that names none of them in a call, or in a use of a validated argument, gets the same
+   * matching entries again.
+   */
+  static Set<String> changed(
+      final Map<String,
+      LocalMethod> methods,
+      final Map<String,
+      MethodSummary> before,
+      final Map<String,
+      MethodSummary> after
+  ) {
+    final Set<String> names = new HashSet<>();
+    for (final String key : methods.keySet()) {
+      if (!Objects.equals(before.get(key), after.get(key))) {
+        names.add(methods.get(key).name());
+      }
+    }
+    return names;
   }
 
   static TaintSpec withParameterSource(final TaintSpec spec) {
