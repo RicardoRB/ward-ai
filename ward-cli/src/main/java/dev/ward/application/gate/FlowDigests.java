@@ -8,10 +8,10 @@ import dev.ward.analysis.domain.port.AnalysisCache;
 import dev.ward.analysis.domain.port.AnalysisFailedException;
 import dev.ward.analysis.domain.port.ParseResult;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -35,7 +35,7 @@ final class FlowDigests {
   private final String engineVersion;
   private final Map<AnalysisLanguage, FrontendSupport> support =
       new EnumMap<>(AnalysisLanguage.class);
-  private final Map<String, String> known = new HashMap<>();
+  private final Map<String, String> known = new ConcurrentHashMap<>();
 
   FlowDigests(
       final AnalysisCache cache,
@@ -55,7 +55,13 @@ final class FlowDigests {
   private String of(final SourceUnit unit) {
     final String key =
         AnalysisCacheKey.digest(List.of("flow-digest", engineVersion, unit.path(), unit.text()));
-    return known.computeIfAbsent(key, ignored -> stored(key).orElseGet(() -> compute(key, unit)));
+    final String digest = known.get(key);
+    if (digest != null) {
+      return digest;
+    }
+    final String fresh = stored(key).orElseGet(() -> compute(key, unit));
+    final String first = known.putIfAbsent(key, fresh);
+    return first == null ? fresh : first;
   }
 
   private Optional<String> stored(final String key) {
