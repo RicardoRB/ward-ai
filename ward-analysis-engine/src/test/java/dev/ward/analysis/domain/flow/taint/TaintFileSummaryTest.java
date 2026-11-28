@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 
 /** What the taint summary of a file holds, and what it ignores. */
 class TaintFileSummaryTest {
-  private static final int CALLEE = 10;
   static final TaintSpec SPEC =
       new TaintSpec(
           List.of(entry("source", Optional.empty(), List.of())),
@@ -25,6 +24,7 @@ class TaintFileSummaryTest {
           List.of(),
           List.of()
       );
+  private static final int CALLEE = 10;
 
   static TaintEntry entry(
       final String name,
