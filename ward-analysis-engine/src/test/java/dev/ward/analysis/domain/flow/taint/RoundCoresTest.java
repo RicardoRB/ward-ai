@@ -30,7 +30,7 @@ class RoundCoresTest {
   @Test
   void aMethodIsAnalysedInTheFirstRound() {
     final LocalMethod method = getterOf("source");
-    final RoundCores cores = new RoundCores();
+    final RoundCores cores = new RoundCores(Map.of());
 
     assertThat(cores.reuse(method)).isEmpty();
     cores.keep(method, CORE);
@@ -40,7 +40,7 @@ class RoundCoresTest {
   @Test
   void aMethodKeepsItsResultWhenNoChangedNameIsCalledByIt() {
     final LocalMethod method = getterOf("source");
-    final RoundCores cores = new RoundCores();
+    final RoundCores cores = new RoundCores(Map.of());
     cores.keep(method, CORE);
 
     cores.changed(Set.of("other"));
@@ -52,7 +52,7 @@ class RoundCoresTest {
   @Test
   void aMethodIsAnalysedAgainWhenItCallsAChangedName() {
     final LocalMethod method = getterOf("source");
-    final RoundCores cores = new RoundCores();
+    final RoundCores cores = new RoundCores(Map.of());
     cores.keep(method, CORE);
 
     cores.changed(Set.of("source", "other"));
@@ -106,7 +106,7 @@ class RoundCoresTest {
             1
         );
     final LocalMethod method = LocalMethod.index(List.of(graph)).values().iterator().next();
-    final RoundCores cores = new RoundCores();
+    final RoundCores cores = new RoundCores(Map.of());
     cores.keep(method, CORE);
 
     cores.changed(Set.of("isSafe"));

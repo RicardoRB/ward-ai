@@ -15,9 +15,20 @@ import java.util.Set;
  * none of them matches the same entries as before and keeps its result, with no lookup.
  */
 final class RoundCores {
+  private final Map<String, SummaryMemo.Print> prints;
   private final Map<String, SummaryMemo.Core> cores = new HashMap<>();
   private final Map<String, Set<String>> names = new HashMap<>();
   private Set<String> changed;
+
+  /** Creates the state of a file whose methods have the fingerprints {@code prints}. */
+  RoundCores(final Map<String, SummaryMemo.Print> prints) {
+    this.prints = prints;
+  }
+
+  /** The fingerprint of a method, read once for the rounds of the file. */
+  SummaryMemo.Print print(final LocalMethod method) {
+    return prints.get(method.key());
+  }
 
   /** Tells which names the last round changed; before the first call every method is analysed. */
   void changed(final Set<String> now) {

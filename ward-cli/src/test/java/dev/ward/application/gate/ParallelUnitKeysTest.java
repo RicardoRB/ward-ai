@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -28,6 +29,8 @@ import org.junit.jupiter.api.io.TempDir;
 class ParallelUnitKeysTest {
   private static final String RULE = "ward:java/path-injection";
   private static final int SERVICES = 12;
+  private static final int FOUR = 4;
+  private static final List<Integer> OTHER_THREADS = List.of(2, FOUR, 8);
   private static final String ENTITY =
       "package gen;\npublic class Table {\n  public String getGenPath() { return null; }\n}\n";
   private static final String CONTROLLER =
@@ -73,26 +76,31 @@ class ParallelUnitKeysTest {
         .findings();
   }
 
+  /** The keys a run on {@code threads} stores, after checking that it finds what {@code serial}. */
+  private Set<String> storedKeys(final int threads, final List<AnalysisFinding> serial) {
+    final Map<String, String> store = new ConcurrentHashMap<>();
+    assertThat(run(threads, store)).isEqualTo(serial);
+    return store.keySet();
+  }
+
   @Test
   void theFindingsAndTheStoredKeysAreTheSameForEveryNumberOfThreads() {
     final Map<String, String> serialStore = new ConcurrentHashMap<>();
     final List<AnalysisFinding> serial = run(1, serialStore);
 
     assertThat(serial).hasSize(SERVICES);
-    for (final int threads : List.of(2, 4, 8)) {
-      final Map<String, String> store = new ConcurrentHashMap<>();
-      assertThat(run(threads, store)).isEqualTo(serial);
-      assertThat(store.keySet()).isEqualTo(serialStore.keySet());
+    for (final int threads : OTHER_THREADS) {
+      assertThat(storedKeys(threads, serial)).isEqualTo(serialStore.keySet());
     }
   }
 
   @Test
   void aSecondRunOnManyThreadsReadsEveryResultTheFirstOneStored() {
     final Map<String, String> store = new ConcurrentHashMap<>();
-    final List<AnalysisFinding> first = run(4, store);
+    final List<AnalysisFinding> first = run(FOUR, store);
     final int stored = store.size();
 
-    assertThat(run(4, store)).isEqualTo(first);
+    assertThat(run(FOUR, store)).isEqualTo(first);
     assertThat(store).hasSize(stored);
   }
 }

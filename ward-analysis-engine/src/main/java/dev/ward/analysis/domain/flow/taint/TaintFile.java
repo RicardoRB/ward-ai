@@ -168,8 +168,7 @@ public final class TaintFile {
         && !TaintRelevance.mayFind(own, spec)) {
       return spec;
     }
-    final Map<String, SummaryMemo.Print> prints = SummaryRounds.prints(methods, memo);
-    final RoundCores cores = new RoundCores();
+    final RoundCores cores = new RoundCores(SummaryRounds.prints(methods, memo));
     Map<String, MethodSummary> known = Map.of();
     for (int round = 0; round < MAX_ROUNDS; round++) {
       final Map<String, MethodSummary> next = SummaryRounds.summarize(
@@ -177,7 +176,6 @@ public final class TaintFile {
           methods,
           known,
           memo,
-          prints,
           cores
       );
       if (next.equals(known)) {

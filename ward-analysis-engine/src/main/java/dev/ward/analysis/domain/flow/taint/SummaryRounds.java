@@ -47,8 +47,6 @@ final class SummaryRounds {
       final Map<String,
       MethodSummary> previous,
       final SummaryMemo memo,
-      final Map<String,
-      SummaryMemo.Print> prints,
       final RoundCores cores
   ) {
     final SpecIndex index = new SpecIndex(spec);
@@ -66,7 +64,7 @@ final class SummaryRounds {
                   () -> cores.keep(
                       method,
                       memo.core(
-                          key(prints.get(method.key()), index.matched(method.graph())),
+                          key(cores.print(method), index.matched(method.graph())),
                           () -> MethodSummary.core(method, spec, seeded)
                       )
                   )
