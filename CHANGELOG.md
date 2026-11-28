@@ -8,8 +8,13 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+## [0.12.2] - 2026-11-28
+
+Fewer taint false positives in Node and Java, `@NullMarked` packages and JDK nullable returns in the Java null-safety rules, a `secrets` history scan that no longer stops on large batches, and a cold `ward` gate back to the speed of 0.12.0.
+
 ### Fixed
 
+- The cold `ward` gate is back to the speed of 0.12.0 (#798). In 0.12.1 the taint summaries of every method in a file's dependency closure were computed again for each file, serially, so a cold run on a large repository did not finish in hours. The analysis of a method is now shared between the files that reach it with the same matching specification entries, the facts of each graph are read once per run, a summary round reuses the result of a method that no changed summary names, and the cache keys of the units are computed on the analysis threads. Findings are unchanged; on Ward's own repository a cold gate measured 798 s, against 823 s for 0.12.0.
 - The `secrets` history scan (`scan-history = true`) no longer fails with "the history from commit … is larger than the batch limit" (#790). A batch of 200 commits over 64 MiB is halved and read again from the same position, down to one commit; a single commit that is still over the limit is read file by file, and a file that cannot be read is skipped with a warning that names the commit, never its content. Every other commit is scanned.
 - The Java `null-safety` rules honor `@NullMarked` on a package (#792): `method-no-init`, `return-nullable`, `pass-nullable` and `assign-field-nullable` fire for every class of a package whose `package-info.java` carries `@NullMarked`, as with the class annotation, and a `@NullUnmarked` class or nested class inside a marked package or class stays unmarked. The null-safety rules now have capability `TYPES`, which reads the package annotation from the project's sources.
 - `ward:java/dereference-nullable` knows the JDK methods that may return null (#793): `Map.get`, `put`, `remove`, `putIfAbsent`, `Map.getOrDefault` and `getProperty` with a null default, `System.getProperty`, `System.getenv(String)`, `Class.getResource`, `Throwable.getMessage`, `Reference.get`, `Queue.poll` and `peek`, `BufferedReader.readLine`, `Path.getParent` and others, written from the Javadoc as a table. A call is reported when its receiver is declared in the file; a `containsKey` check or a null check of the same call in the method keeps it quiet.
