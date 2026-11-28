@@ -139,7 +139,7 @@ public final class TaintFile {
       final TaintSpec spec
   ) {
     final Map<String, LocalMethod> methods = CalledMethods.local(own, LocalMethod.index(own));
-    CalledMethods.reachable(own, context.index())
+    CalledMethods.reachable(own, context.index(), context.memo())
         .forEach(
             (key, method) ->
                 methods.put(
@@ -168,7 +168,7 @@ public final class TaintFile {
         && !TaintRelevance.mayFind(own, spec)) {
       return spec;
     }
-    final Map<String, SummaryMemo.Print> prints = SummaryRounds.prints(methods);
+    final Map<String, SummaryMemo.Print> prints = SummaryRounds.prints(methods, memo);
     final RoundCores cores = new RoundCores();
     Map<String, MethodSummary> known = Map.of();
     for (int round = 0; round < MAX_ROUNDS; round++) {

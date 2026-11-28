@@ -1,8 +1,10 @@
 package dev.ward.analysis.domain.flow.taint;
 
+import dev.ward.analysis.domain.ir.ControlFlowGraph;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,9 +23,37 @@ public final class SummaryMemo {
   private static final int LIMIT = 400_000;
 
   private final ConcurrentMap<Key, Core> results;
+  private final ConcurrentMap<Identity, GraphFacts> facts = new ConcurrentHashMap<>();
 
   private SummaryMemo(final ConcurrentMap<Key, Core> results) {
     this.results = results;
+  }
+
+  /** A graph compared by identity, as the graphs of a run are lowered once and shared. */
+  private record Identity(ControlFlowGraph graph) {
+    @Override
+    public boolean equals(final Object other) {
+      return other instanceof Identity identity && graph == identity.graph;
+    }
+
+    @Override
+    public int hashCode() {
+      return System.identityHashCode(graph);
+    }
+  }
+
+  /** The facts of a graph of another file, read once per run; read again by a disabled memo. */
+  GraphFacts facts(final ControlFlowGraph graph) {
+    if (results == null) {
+      return GraphFacts.of(graph);
+    }
+    return facts.computeIfAbsent(new Identity(graph), key -> GraphFacts.of(graph));
+  }
+
+  /** The hash of a graph: the one read for a graph of the run, or computed for a rewritten one. */
+  int hashOf(final ControlFlowGraph graph) {
+    final GraphFacts known = results == null ? null : facts.get(new Identity(graph));
+    return known == null ? graph.hashCode() : known.hash();
   }
 
   /**
@@ -80,14 +110,29 @@ public final class SummaryMemo {
     private final LocalMethod method;
     private final int hash;
 
-    Print(final LocalMethod method) {
+    Print(final LocalMethod method, final int graphHash) {
       this.method = method;
-      this.hash = method.hashCode();
+      this.hash =
+          31 * Objects.hash(
+              method.name(),
+              method.owner(),
+              method.arity(),
+              method.external(),
+              method.bare()
+          ) + graphHash;
     }
 
     @Override
     public boolean equals(final Object other) {
-      return other instanceof Print print && hash == print.hash && method.equals(print.method);
+      return other instanceof Print print
+          && hash == print.hash
+          && method.name().equals(print.method.name())
+          && method.owner().equals(print.method.owner())
+          && method.arity() == print.method.arity()
+          && method.external() == print.method.external()
+          && method.bare() == print.method.bare()
+          && (method.graph() == print.method.graph()
+              || method.graph().equals(print.method.graph()));
     }
 
     @Override

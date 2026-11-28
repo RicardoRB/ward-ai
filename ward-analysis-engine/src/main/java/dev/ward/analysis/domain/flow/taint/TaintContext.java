@@ -1,10 +1,13 @@
 package dev.ward.analysis.domain.flow.taint;
 
 import dev.ward.analysis.domain.ir.ControlFlowGraph;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.stream.Stream;
 
 /**
@@ -47,19 +50,49 @@ record TaintContext(
       final List<ControlFlowGraph> related,
       final SummaryMemo memo
   ) {
-    final Set<String> known = new HashSet<>(LocalMethod.owned(graphs));
-    final List<LocalMethod> externals = LocalMethod.externals(related);
+    final Set<String> known = new HashSet<>();
+    final Set<String> declared = new HashSet<>();
+    final List<LocalMethod> externals = new ArrayList<>();
+    final List<Implementors.Subtype> subtypes = new ArrayList<>();
+    final Map<String, Set<String>> bound = new TreeMap<>();
+    for (final ControlFlowGraph graph : graphs) {
+      final GraphFacts facts = memo.facts(graph);
+      facts.local()
+          .filter(method -> !method.owner().isEmpty())
+          .ifPresent(method -> known.add(method.owner() + "#" + method.nameKey()));
+      read(facts, declared, subtypes, bound);
+    }
+    for (final ControlFlowGraph graph : related) {
+      final GraphFacts facts = memo.facts(graph);
+      facts.external().ifPresent(externals::add);
+      read(facts, declared, subtypes, bound);
+    }
     for (final LocalMethod external : externals) {
       known.add(external.key());
     }
     return new TaintContext(
         known,
         LocalMethod.indexExternal(externals),
-        Implementors.of(Stream.concat(graphs.stream(), related.stream()).toList()),
-        LocalMethod.declared(Stream.concat(graphs.stream(), related.stream()).toList()),
-        BoundGetters.typesOf(graphs, related),
+        Implementors.fromSubtypes(subtypes),
+        declared,
+        bound,
         Stream.concat(graphs.stream(), related.stream()).toList(),
         memo
+    );
+  }
+
+  private static void read(
+      final GraphFacts facts,
+      final Set<String> declared,
+      final List<Implementors.Subtype> subtypes,
+      final Map<String,
+      Set<String>> bound
+  ) {
+    facts.local().ifPresent(method -> declared.add(method.nameKey()));
+    facts.subtype().ifPresent(subtypes::add);
+    facts.bound().forEach(
+        (annotation, types) -> bound.computeIfAbsent(annotation, key -> new TreeSet<>())
+            .addAll(types)
     );
   }
 }

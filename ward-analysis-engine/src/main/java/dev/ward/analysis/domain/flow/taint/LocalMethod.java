@@ -85,47 +85,24 @@ record LocalMethod(
    * shares can be reached only through its full owner name.
    */
   static Map<String, LocalMethod> indexExternal(final List<LocalMethod> methods) {
-    final Map<String, Long> simple =
-        methods.stream()
-            .collect(Collectors.groupingBy(LocalMethod::simpleKey, Collectors.counting()));
-    return methods.stream()
-        .map(method -> method.withBare(simple.get(method.simpleKey()) == 1))
-        .collect(Collectors.groupingBy(LocalMethod::key))
-        .entrySet()
-        .stream()
-        .filter(entry -> entry.getValue().size() == 1)
-        .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().get(0)));
-  }
-
-  /**
-   * The bodies of other files that have an owner, each parsed once, so that the keys that name them
-   * and their index are read from one parse of the graphs.
-   */
-  static List<LocalMethod> externals(final List<ControlFlowGraph> graphs) {
-    final List<LocalMethod> methods = new ArrayList<>();
-    for (final ControlFlowGraph graph : graphs) {
-      parseExternal(graph).ifPresent(methods::add);
+    final Map<String, Integer> simple = new HashMap<>();
+    for (final LocalMethod method : methods) {
+      simple.merge(method.simpleKey(), 1, Integer::sum);
     }
-    return methods;
-  }
-
-  /** The {@code Owner#name/arity} keys of the bodies that have an owner. */
-  static Set<String> owned(final List<ControlFlowGraph> graphs) {
-    return graphs.stream()
-        .map(LocalMethod::parse)
-        .flatMap(Optional::stream)
-        .filter(method -> !method.owner().isEmpty())
-        .map(method -> method.owner() + "#" + key(method.name(), method.arity()))
-        .collect(Collectors.toSet());
-  }
-
-  /** The {@code name/arity} keys of every body of the graphs, with or without an owner. */
-  static Set<String> declared(final List<ControlFlowGraph> graphs) {
-    return graphs.stream()
-        .map(LocalMethod::parse)
-        .flatMap(Optional::stream)
-        .map(method -> key(method.name(), method.arity()))
-        .collect(Collectors.toSet());
+    final Map<String, List<LocalMethod>> byKey = new HashMap<>();
+    for (final LocalMethod method : methods) {
+      final LocalMethod unique = method.withBare(simple.get(method.simpleKey()) == 1);
+      byKey.computeIfAbsent(unique.key(), key -> new ArrayList<>(1)).add(unique);
+    }
+    final Map<String, LocalMethod> index = new HashMap<>();
+    byKey.forEach(
+        (key, same) -> {
+          if (same.size() == 1) {
+            index.put(key, same.get(0));
+          }
+        }
+    );
+    return index;
   }
 
   /** Returns the method with another graph for its body. */
@@ -146,15 +123,12 @@ record LocalMethod(
     return owner.substring(owner.lastIndexOf('.') + 1);
   }
 
-  private static Optional<LocalMethod> parseExternal(final ControlFlowGraph graph) {
-    return parse(graph)
-        .filter(method -> !method.owner().isEmpty())
-        .map(
-            method -> new LocalMethod(method.name, method.owner, method.arity, graph, true, false)
-        );
+  /** The method as another file sees it. */
+  LocalMethod asExternal() {
+    return new LocalMethod(name, owner, arity, graph, true, false);
   }
 
-  private static Optional<LocalMethod> parse(final ControlFlowGraph graph) {
+  static Optional<LocalMethod> parse(final ControlFlowGraph graph) {
     final Matcher body = BODY.matcher(graph.body());
     if (!body.matches()) {
       return Optional.empty();
@@ -180,6 +154,11 @@ record LocalMethod(
   /** The key a call with this name and argument count looks up. */
   static String key(final String name, final int arity) {
     return name + "/" + arity;
+  }
+
+  /** The {@code name/arity} key that a call looks up. */
+  String nameKey() {
+    return key(name, arity);
   }
 
   String key() {

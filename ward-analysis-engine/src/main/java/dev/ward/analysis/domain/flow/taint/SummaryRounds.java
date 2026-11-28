@@ -16,14 +16,16 @@ final class SummaryRounds {
   private SummaryRounds() {}
 
   /** The fingerprint of each method, read once for the rounds of a file. */
-  static Map<String, SummaryMemo.Print> prints(final Map<String, LocalMethod> methods) {
+  static Map<String, SummaryMemo.Print> prints(
+      final Map<String,
+      LocalMethod> methods,
+      final SummaryMemo memo
+  ) {
     final Map<String, SummaryMemo.Print> prints = new HashMap<>();
-    methods.forEach((key, method) -> prints.put(key, print(method)));
+    methods.forEach(
+        (key, method) -> prints.put(key, new SummaryMemo.Print(method, memo.hashOf(method.graph())))
+    );
     return prints;
-  }
-
-  private static SummaryMemo.Print print(final LocalMethod method) {
-    return new SummaryMemo.Print(method);
   }
 
   private static SummaryMemo.Key key(

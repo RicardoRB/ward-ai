@@ -26,16 +26,33 @@ final class Implementors {
     this.subtypes = subtypes;
   }
 
+  /** A class and the type it extends or implements. */
+  record Subtype(String type, String sub) {}
+
   /** Reads the supertype facts of the graphs. */
   static Implementors of(final List<ControlFlowGraph> graphs) {
+    return fromSubtypes(graphs.stream().flatMap(graph -> subtypeOf(graph).stream()).toList());
+  }
+
+  /** The supertype fact that a graph records, or empty. */
+  static Optional<Subtype> subtypeOf(final ControlFlowGraph graph) {
+    final int mark = graph.body().indexOf(SCOPE_END + MARK);
+    if (mark <= 0) {
+      return Optional.empty();
+    }
+    return Optional.of(
+        new Subtype(
+            graph.body().substring(mark + 1 + MARK.length()),
+            owner(graph.body().substring(0, mark))
+        )
+    );
+  }
+
+  /** Arranges the supertype facts. */
+  static Implementors fromSubtypes(final List<Subtype> facts) {
     final Map<String, Set<String>> direct = new HashMap<>();
-    for (final ControlFlowGraph graph : graphs) {
-      final int mark = graph.body().indexOf(SCOPE_END + MARK);
-      if (mark > 0) {
-        final String sub = owner(graph.body().substring(0, mark));
-        final String type = graph.body().substring(mark + 1 + MARK.length());
-        add(direct, type, sub);
-      }
+    for (final Subtype fact : facts) {
+      add(direct, fact.type(), fact.sub());
     }
     return new Implementors(direct);
   }

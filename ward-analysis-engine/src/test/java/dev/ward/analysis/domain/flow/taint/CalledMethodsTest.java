@@ -51,7 +51,7 @@ class CalledMethodsTest {
     final Map<String, LocalMethod> external =
         Map.of(first.key(), first, second.key(), second, third.key(), third, unused.key(), unused);
     final ControlFlowGraph caller = method("caller", "first").graph();
-    assertThat(CalledMethods.reachable(List.of(caller), external).keySet())
+    assertThat(CalledMethods.reachable(List.of(caller), external, SummaryMemo.disabled()).keySet())
         .containsExactlyInAnyOrder(first.key(), second.key(), third.key());
   }
 
@@ -63,7 +63,8 @@ class CalledMethodsTest {
     assertThat(
         CalledMethods.reachable(
             List.of(caller),
-            Map.of(ping.key(), ping, pong.key(), pong)
+            Map.of(ping.key(), ping, pong.key(), pong),
+            SummaryMemo.disabled()
         ).keySet()
     ).containsExactlyInAnyOrder(ping.key(), pong.key());
   }
