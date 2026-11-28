@@ -5,13 +5,11 @@ import dev.ward.analysis.domain.ir.ControlFlowGraph;
 import dev.ward.analysis.domain.ir.FlowSite;
 import dev.ward.analysis.domain.ir.FlowSiteKind;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.regex.Pattern;
 
 /**
  * A specification arranged to find the entries that match the sites of a graph without testing
@@ -60,7 +58,6 @@ final class SpecIndex {
 
   private static final class Entries {
     private static final String UNQUALIFIED = "<none>";
-    private static final Pattern CHAIN = Pattern.compile("\\??\\.");
 
     private final List<TaintEntry> all;
     private final Map<String, List<Integer>> exact = new HashMap<>();
@@ -126,9 +123,25 @@ final class SpecIndex {
       test(others.get(site.kind()), site, into);
     }
 
-    /** The members of a qualifier chain, as an entry with a plain qualifier sees them. */
+    /**
+     * The members of a qualifier chain, split at {@code .} and {@code ?.}. A member that an entry
+     * with a plain qualifier could match is among them; the entry still tests the site itself.
+     */
     static List<String> chainOf(final FlowSite site) {
-      return Arrays.asList(CHAIN.split(site.qualifier()));
+      final String chain = site.qualifier();
+      if (chain.isEmpty()) {
+        return List.of();
+      }
+      final List<String> members = new ArrayList<>();
+      int start = 0;
+      while (start <= chain.length()) {
+        final int dot = chain.indexOf('.', start);
+        final int end = dot < 0 ? chain.length() : dot;
+        final int last = dot > start && chain.charAt(dot - 1) == '?' ? dot - 1 : end;
+        members.add(chain.substring(start, last));
+        start = end + 1;
+      }
+      return members;
     }
 
     private void test(
