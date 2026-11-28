@@ -104,7 +104,7 @@ from = ["receiver", 0]
 - TypeScript and JavaScript read a cached listing of a directory as a proof that a key holds no path
   separator: a function with one parameter `key` that returns only `cache[key]`, where `cache` is a
   top-level empty object that only that function mentions, and writes `cache[key] = { list }` with
-  `list` a local array that only `list.push(...)` inside `if (entry.startsWith(`${key}...`))` fills,
+  `list` a local array that only `list.push(...)` inside ``if (entry.startsWith(`${key}...`))`` fills,
   in `for (const entry of entries)` over `const entries = readdirSync(...)`. After `x = f(key)`, a
   branch that exits on `x.list.length === 0` or `!x.list.length`, or the `else` branch of it, `key`
   is clean in the caller. A caller that changes the returned list is not followed.
