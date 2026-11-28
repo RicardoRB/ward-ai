@@ -169,6 +169,7 @@ public final class TaintFile {
       return spec;
     }
     final Map<String, SummaryMemo.Print> prints = SummaryRounds.prints(methods);
+    final RoundCores cores = new RoundCores();
     Map<String, MethodSummary> known = Map.of();
     for (int round = 0; round < MAX_ROUNDS; round++) {
       final Map<String, MethodSummary> next = SummaryRounds.summarize(
@@ -176,11 +177,13 @@ public final class TaintFile {
           methods,
           known,
           memo,
-          prints
+          prints,
+          cores
       );
       if (next.equals(known)) {
         break;
       }
+      cores.changed(SummaryRounds.changed(methods, known, next));
       known = next;
     }
     if (LOG.isLoggable(Level.FINE)) {
@@ -200,9 +203,12 @@ public final class TaintFile {
     final List<TaintEntry> sources = new ArrayList<>(spec.sources());
     final List<TaintEntry> sinks = new ArrayList<>(spec.sinks());
     final List<TaintEntry> sanitizers = new ArrayList<>(spec.sanitizers());
-    summaries.forEach(
-        (key, summary) -> {
-          final LocalMethod method = methods.get(key);
+    methods.forEach(
+        (key, method) -> {
+          final MethodSummary summary = summaries.get(key);
+          if (summary == null) {
+            return;
+          }
           for (final String qualifier : method.qualifiers()) {
             if (summary.returnsTaint()) {
               sources.add(
