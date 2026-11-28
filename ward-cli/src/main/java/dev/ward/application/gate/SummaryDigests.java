@@ -4,14 +4,14 @@ import dev.ward.analysis.application.rule.FileTaintSummaries;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.AnalysisCache;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
 /**
- * The digest of the taint summary of a file, see {@link FileTaintSummaries}: what the unit reads
+ * Safe to call from several threads. The digest of the taint summary of a file, see {@link FileTaintSummaries}: what the unit reads
  * from the files it depends on, which is the same after an edit of one of them that keeps what its
  * callers take from it. The summary is computed from the control-flow graphs, so it is stored under
  * the layout-free digests of the unit and of its dependencies ({@link FlowDigests}) and the rule
@@ -25,7 +25,7 @@ final class SummaryDigests {
   private final String engineVersion;
   private final FlowDigests flows;
   private final FileTaintSummaries summaries;
-  private final Map<String, Optional<String>> known = new HashMap<>();
+  private final Map<String, Optional<String>> known = new ConcurrentHashMap<>();
 
   SummaryDigests(
       final AnalysisCache cache,
@@ -59,12 +59,16 @@ final class SummaryDigests {
         }
     );
     final String key = AnalysisCacheKey.digest(parts);
-    return known.computeIfAbsent(
-        key,
-        ignored -> cache.read(key).filter(value -> DIGEST.matcher(value).matches())
+    final Optional<String> stored = known.get(key);
+    if (stored != null) {
+      return stored;
+    }
+    final Optional<String> digest =
+        cache.read(key).filter(value -> DIGEST.matcher(value).matches())
             .map(Optional::of)
-            .orElseGet(() -> compute(key, unit))
-    );
+            .orElseGet(() -> compute(key, unit));
+    final Optional<String> first = known.putIfAbsent(key, digest);
+    return first == null ? digest : first;
   }
 
   private Optional<String> compute(final String key, final SourceUnit unit) {

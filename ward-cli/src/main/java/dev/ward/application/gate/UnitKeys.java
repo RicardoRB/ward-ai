@@ -5,18 +5,21 @@ import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.rule.DependencyView;
 import dev.ward.analysis.domain.rule.RuleDefinition;
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-/** The cache keys of the units of one run: the rule set of each language and the unit's inputs. */
+/**
+ * The cache keys of the units of one run: the rule set of each language and the unit's inputs. Safe
+ * to call from several threads.
+ */
 final class UnitKeys {
   private final String engineVersion;
   private final List<RuleDefinition> rules;
   private final DependencySnapshot snapshot;
   private final FlowDigests digests;
   private final SummaryDigests summaries;
-  private final Map<AnalysisLanguage, String> ruleSets = new EnumMap<>(AnalysisLanguage.class);
+  private final Map<AnalysisLanguage, String> ruleSets = new ConcurrentHashMap<>();
 
   UnitKeys(
       final String engineVersion,

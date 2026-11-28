@@ -122,10 +122,11 @@ final class UnitResultCache {
     final Map<SourceUnit, String> keys = new LinkedHashMap<>();
     final List<AnalysisFinding> reused = new ArrayList<>();
     final List<SourceUnit> misses = new ArrayList<>();
-    for (final SourceUnit unit : units) {
-      final String key = unitKeys.of(unit);
-      keys.put(unit, key);
-      final Optional<List<AnalysisFinding>> stored = read(cache, key);
+    final List<Keyed> keyed = engine.limit().map(units, unit -> keyed(cache, unitKeys, unit));
+    for (int index = 0; index < units.size(); index++) {
+      final SourceUnit unit = units.get(index);
+      keys.put(unit, keyed.get(index).key());
+      final Optional<List<AnalysisFinding>> stored = keyed.get(index).stored();
       if (stored.isPresent()) {
         reused.addAll(stored.get());
       } else {
@@ -163,6 +164,14 @@ final class UnitResultCache {
         ),
         snapshot.graph()
     );
+  }
+
+  /** The key of a unit and its stored findings, read on an analysis thread. */
+  private record Keyed(String key, Optional<List<AnalysisFinding>> stored) {}
+
+  private Keyed keyed(final AnalysisCache cache, final UnitKeys unitKeys, final SourceUnit unit) {
+    final String key = unitKeys.of(unit);
+    return new Keyed(key, read(cache, key));
   }
 
   private DependencySnapshot summarize(
