@@ -15,7 +15,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * A method or function that a call can name: its name, its owner, its arity and its graph. Java
@@ -44,6 +43,7 @@ record LocalMethod(
 ) {
   private static final Pattern BODY =
       Pattern.compile("^(?:(?<scope>.*)#)?(?<name>[\\w$]+)(?:\\((?<arity>\\d+)\\))?$");
+  private static final int ONLY = 1;
   private static final String THIS = "this";
   private static final char PACKAGE_END = ':';
   private static final String MARK = "ward:tainted-parameter";
@@ -89,16 +89,17 @@ record LocalMethod(
     for (final LocalMethod method : methods) {
       simple.merge(method.simpleKey(), 1, Integer::sum);
     }
-    final Map<String, List<LocalMethod>> byKey = new HashMap<>();
+    final Map<String, LocalMethod> first = new HashMap<>();
+    final Map<String, Integer> counts = new HashMap<>();
     for (final LocalMethod method : methods) {
-      final LocalMethod unique = method.withBare(simple.get(method.simpleKey()) == 1);
-      byKey.computeIfAbsent(unique.key(), key -> new ArrayList<>(1)).add(unique);
+      counts.merge(method.key(), 1, Integer::sum);
+      first.putIfAbsent(method.key(), method);
     }
     final Map<String, LocalMethod> index = new HashMap<>();
-    byKey.forEach(
-        (key, same) -> {
-          if (same.size() == 1) {
-            index.put(key, same.get(0));
+    first.forEach(
+        (key, method) -> {
+          if (counts.get(key) == ONLY) {
+            index.put(key, method.withBare(simple.get(method.simpleKey()) == ONLY));
           }
         }
     );
